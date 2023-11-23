@@ -1,5 +1,7 @@
 import RootLayout from "@/app/layout";
 import React from "react";
+import Footer from "../Footer/Footer";
+import Header from "../Header/Header";
 
 function OwanbeWebLayout({
   children,
@@ -14,7 +16,11 @@ function OwanbeWebLayout({
 }): JSX.Element {
   return (
     <RootLayout>
-      <main className={`${className}`}></main>
+      <main className={`${className} min-h-screen overflow-hidden`}>
+        <Header />
+        {children}
+        <Footer />
+      </main>
     </RootLayout>
   );
 }
