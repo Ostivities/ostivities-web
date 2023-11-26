@@ -22,12 +22,12 @@ const config: Config = {
     },
     extend: {
       colors: {
-        OWANBE_PRY: "E20000 !",
-        OWANBE_SECONDARY: "19235B",
-        OWANBE_NOTIFICATION: "FADEDE",
-        OWANBE_INFO: "A6264C",
-        OWANBE_BACKGROUND: "F7F7F7",
-        OWANBE_BORDER: "D0D4D4",
+        OWANBE_PRY: "#E20000",
+        OWANBE_SECONDARY: "#19235B",
+        OWANBE_NOTIFICATION: "#FADEDE",
+        OWANBE_INFO: "#A6264C",
+        OWANBE_BACKGROUND: "#F7F7F7",
+        OWANBE_BORDER: "#D0D4D4",
         OWANBE_ASH: "#989C9F",
       },
     },

@@ -4,6 +4,12 @@ export interface INavLinks {
 }
 
 export interface ITypography {
-  content?: string;
+  content?: string | React.ReactNode;
   className?: string;
+}
+
+export interface IFeatures {
+  icon: React.ReactNode | any;
+  title: string;
+  content: string | React.ReactNode;
 }
