@@ -100,4 +100,8 @@ body {
   font-size: 18px !important;
   font-weight: bold !important;
   text-transform: capitalize !important;
+  font-family: BricolageGrotesqueMedium !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

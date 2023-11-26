@@ -1,5 +1,6 @@
 import { Heading3, Paragraph } from "@/app/components/typography/Typography";
 import theme from "@/app/theme/theme.config";
+import ArrowRight from "@/public/arrow-right.svg";
 import LaptopHero from "@/public/laptop.png";
 import { Button, ConfigProvider } from "antd";
 import Image from "next/image";
@@ -32,10 +33,12 @@ export default function Home() {
                   unique cultural app. Join now for a vibrant experience!"
                   className="w-[86%] text-OWANBE_ASH text-lg"
                 />
-                <Button className="get-started">Get Started</Button>
+                <Button className="get-started space-x-2">
+                  <span>Get Started</span> <Image src={ArrowRight} alt="icon" />
+                </Button>
               </div>
               <div className="w-1/2">
-                <Image src={LaptopHero} alt="hero" />
+                <Image src={LaptopHero} alt="hero" className="ms-1" />
               </div>
             </div>
           </div>

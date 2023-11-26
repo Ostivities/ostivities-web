@@ -11,7 +11,11 @@ const Heading3 = ({ content, className }: ITypography) => {
 };
 
 const Paragraph = ({ className, content }: ITypography) => {
-  return <p className={`${className} font-BricolageGrotesqueMedium font-medium`}>{content}</p>;
+  return (
+    <p className={`${className} font-BricolageGrotesqueMedium font-medium`}>
+      {content}
+    </p>
+  );
 };
 
 export { Heading3, Paragraph };
