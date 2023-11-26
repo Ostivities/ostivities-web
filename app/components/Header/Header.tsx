@@ -61,7 +61,7 @@ function Header(): JSX.Element {
           </div>
         </nav>
 
-        <div className="flex flex-row items-center justify-between px-5 py-3 md:hidden lg:hidden xl:hidden">
+        <div className="flex flex-row items-center justify-between px-5 py-3 lg:hidden xl:hidden">
           <Link href="/" className="" shallow>
             <Image src={OwanbeLogo} alt="Owanbe Logo" />
           </Link>
@@ -82,10 +82,32 @@ function Header(): JSX.Element {
           placement="right"
           onClose={onClose}
           open={open}
+          style={{ borderBottom: "none !important" }}
         >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+          {NAV_LINKS.map((link: INavLinks) => (
+            <p
+              key={link.link + link.name}
+              className="font-BricolageGrotesqueMedium py-3"
+            >
+              <Link href={link.link}>{link.name}</Link>
+            </p>
+          ))}
+          <div className="flex flex-col items-start space-y-4 mt-7">
+            <Button
+              type="default"
+              size={"large"}
+              className="font-BricolageGrotesqueMedium button-styles sign-in"
+            >
+              Sign in
+            </Button>
+            <Button
+              type="default"
+              size={"large"}
+              className="font-BricolageGrotesqueMedium button-styles sign-up"
+            >
+              Sign Up
+            </Button>
+          </div>
         </Drawer>
       </header>
     </ConfigProvider>
