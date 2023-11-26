@@ -13,8 +13,22 @@ const config: Config = {
       lg: "1200px",
       xl: "1500px",
     },
-    fontFamily: {},
-    extend: { colors: {} },
+    fontFamily: {
+      BricolageGrotesqueLight: "BricolageGrotesqueLight !",
+      BricolageGrotesqueMedium: "BricolageGrotesqueMedium !",
+      BricolageGrotesqueRegular: "BricolageGrotesqueRegular !",
+      BricolageGrotesqueSemiBold: "BricolageGrotesqueSemiBold !",
+    },
+    extend: {
+      colors: {
+        OWANBE_PRY: "E20000 !",
+        OWANBE_SECONDARY: "19235B",
+        OWANBE_NOTIFICATION: "FADEDE",
+        OWANBE_INFO: "A6264C",
+        OWANBE_BACKGROUND: "F7F7F7",
+        OWANBE_BORDER: "D0D4D4",
+      },
+    },
   },
   plugins: [],
 };

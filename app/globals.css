@@ -16,6 +16,25 @@
   }
 }
 
+@layer base {
+  @font-face {
+    font-family: BricolageGrotesqueLight;
+    src: url("/fonts/BricolageGrotesque-Light.ttf");
+  }
+  @font-face {
+    font-family: BricolageGrotesqueMedium;
+    src: url("/fonts/BricolageGrotesque-Medium.ttf");
+  }
+  @font-face {
+    font-family: BricolageGrotesqueRegular;
+    src: url("/fonts/BricolageGrotesque-Regular.ttf");
+  }
+  @font-face {
+    font-family: BricolageGrotesqueSemiBold;
+    src: url("/fonts/BricolageGrotesque-SemiBold.ttf");
+  }
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -24,4 +43,41 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+
+.button-styles {
+  border-radius: 20px !important;
+  box-shadow: none !important;
+  outline: none !important;
+  font-family: BricolageGrotesqueMedium !important;
+  font-size: 16px;
+  font-weight: 500;
+  width: 120px;
+}
+.sign-up {
+  background: #e20000;
+  color: #ffffff;
+}
+
+.sign-up:hover,
+.sign-up:focus,
+.sign-up:active {
+  color: #ffffff !important;
+  background: #e20000 !important;
+  outline: #e20000 !important;
+  box-shadow: none !important;
+  border: 0.5px solid #e20000 !important;
+}
+
+.sign-in {
+  border: 1px solid #000000 !important;
+}
+
+.sign-in:hover,
+.sign-in:focus,
+.sign-in:active {
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
+  outline: 1px solid #000000 !important; /* Adjust the value as needed */
+  box-shadow: none !important;
 }

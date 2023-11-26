@@ -1,12 +1,12 @@
-import Image from "next/image";
+
 import OwanbeWebLayout from "./components/WebLayout/OwanbeWebLayout";
 
 export default function Home() {
   return (
     <OwanbeWebLayout>
-      <div className="flex flex-col items-center justify-center">
+      <section className="overflow-hidden" id="landing page">
         <h1 className="text-4xl font-bold text-gray-900">Owanbe Web</h1>
-      </div>
+      </section>
     </OwanbeWebLayout>
   );
 }
