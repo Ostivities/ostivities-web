@@ -33,6 +33,7 @@ function Advantages(): JSX.Element {
               );
             })}
           </div>
+          d
         </div>
 
         <div className="w-1/2">
