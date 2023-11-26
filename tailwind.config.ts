@@ -14,10 +14,11 @@ const config: Config = {
       xl: "1500px",
     },
     fontFamily: {
-      BricolageGrotesqueLight: "BricolageGrotesqueLight !",
-      BricolageGrotesqueMedium: "BricolageGrotesqueMedium !",
-      BricolageGrotesqueRegular: "BricolageGrotesqueRegular !",
-      BricolageGrotesqueSemiBold: "BricolageGrotesqueSemiBold !",
+      BricolageGrotesqueLight: "BricolageGrotesqueLight",
+      BricolageGrotesqueMedium: "BricolageGrotesqueMedium",
+      BricolageGrotesqueRegular: "BricolageGrotesqueRegular",
+      BricolageGrotesqueSemiBold: "BricolageGrotesqueSemiBold",
+      BricolageGrotesqueBold: "BricolageGrotesqueBold",
     },
     extend: {
       colors: {
@@ -27,6 +28,7 @@ const config: Config = {
         OWANBE_INFO: "A6264C",
         OWANBE_BACKGROUND: "F7F7F7",
         OWANBE_BORDER: "D0D4D4",
+        OWANBE_ASH: "#989C9F",
       },
     },
   },

@@ -33,6 +33,10 @@
     font-family: BricolageGrotesqueSemiBold;
     src: url("/fonts/BricolageGrotesque-SemiBold.ttf");
   }
+  @font-face {
+    font-family: BricolageGrotesqueBold;
+    src: url("/fonts/BricolageGrotesque-Bold-BF648bd57888479.ttf");
+  }
 }
 
 body {
@@ -80,4 +84,8 @@ body {
   border: 1px solid #000000 !important;
   outline: 1px solid #000000 !important; /* Adjust the value as needed */
   box-shadow: none !important;
+}
+
+:where(.css-dev-only-do-not-override-1a27wig).ant-drawer .ant-drawer-header {
+  border-bottom: none !important;
 }
