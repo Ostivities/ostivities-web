@@ -95,7 +95,7 @@ body {
   background: #19235b !important;
   padding: 10px !important;
   height: 60px !important;
-  border-radius: 20px !important;
+  border-radius: 30px !important;
   color: #ffffff !important;
   font-size: 18px !important;
   font-weight: bold !important;
@@ -104,4 +104,5 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }

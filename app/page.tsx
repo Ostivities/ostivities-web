@@ -33,8 +33,9 @@ export default function Home() {
                   unique cultural app. Join now for a vibrant experience!"
                   className="w-[86%] text-OWANBE_ASH text-lg"
                 />
-                <Button className="get-started space-x-2">
-                  <span>Get Started</span> <Image src={ArrowRight} alt="icon" />
+                <Button className="get-started space-x-2 active:overflow-hidden">
+                  <span className="overflow-hidden">Get Started</span>{" "}
+                  <Image src={ArrowRight} alt="icon" />
                 </Button>
               </div>
               <div className="w-1/2">
