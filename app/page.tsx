@@ -1,6 +1,8 @@
 import { Heading3, Paragraph } from "@/app/components/typography/Typography";
 import theme from "@/app/theme/theme.config";
-import { ConfigProvider } from "antd";
+import LaptopHero from "@/public/laptop.png";
+import { Button, ConfigProvider } from "antd";
+import Image from "next/image";
 import OwanbeWebLayout from "./components/WebLayout/OwanbeWebLayout";
 
 export default function Home() {
@@ -30,8 +32,11 @@ export default function Home() {
                   unique cultural app. Join now for a vibrant experience!"
                   className="w-[86%] text-OWANBE_ASH text-lg"
                 />
+                <Button className="get-started">Get Started</Button>
               </div>
-              <div className="w-1/2"></div>
+              <div className="w-1/2">
+                <Image src={LaptopHero} alt="hero" />
+              </div>
             </div>
           </div>
         </section>

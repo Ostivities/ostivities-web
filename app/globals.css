@@ -89,3 +89,15 @@ body {
 :where(.css-dev-only-do-not-override-1a27wig).ant-drawer .ant-drawer-header {
   border-bottom: none !important;
 }
+
+.get-started {
+  width: 30% !important;
+  background: #19235b !important;
+  padding: 10px !important;
+  height: 60px !important;
+  border-radius: 20px !important;
+  color: #ffffff !important;
+  font-size: 18px !important;
+  font-weight: bold !important;
+  text-transform: capitalize !important;
+}
