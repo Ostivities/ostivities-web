@@ -18,4 +18,12 @@ const Paragraph = ({ className, content }: ITypography) => {
   );
 };
 
-export { Heading3, Paragraph };
+const Small = ({ className, content }: ITypography) => {
+  return (
+    <small className={`${className} font-BricolageGrotesqueMedium font-medium`}>
+      {content}
+    </small>
+  );
+};
+
+export { Heading3, Paragraph, Small };
