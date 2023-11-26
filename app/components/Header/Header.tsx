@@ -1,13 +1,24 @@
+"use client";
 import theme from "@/app/theme/theme.config";
 import { NAV_LINKS } from "@/app/utils/data";
 import { INavLinks } from "@/app/utils/interface";
 import OwanbeLogo from "@/public/ownabe.svg";
-import { Button, ConfigProvider, Flex, Radio } from "antd";
+import { MenuOutlined } from "@ant-design/icons";
+import { Button, ConfigProvider, Drawer } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 function Header(): JSX.Element {
+  const [open, setOpen] = useState<boolean>(false);
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
   return (
     <ConfigProvider
       theme={{
@@ -49,6 +60,33 @@ function Header(): JSX.Element {
             </Button>
           </div>
         </nav>
+
+        <div className="flex flex-row items-center justify-between px-5 py-3 md:hidden lg:hidden xl:hidden">
+          <Link href="/" className="" shallow>
+            <Image src={OwanbeLogo} alt="Owanbe Logo" />
+          </Link>
+
+          <MenuOutlined
+            style={{ fontSize: "25px", cursor: "pointer" }}
+            onClick={showDrawer}
+          />
+        </div>
+        <Drawer
+          title={
+            <Image
+              src={OwanbeLogo}
+              alt="Owanbe Logo"
+              style={{ width: "40px" }}
+            />
+          }
+          placement="right"
+          onClose={onClose}
+          open={open}
+        >
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </Drawer>
       </header>
     </ConfigProvider>
   );
