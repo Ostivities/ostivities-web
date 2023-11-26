@@ -2,6 +2,7 @@ import { Heading3, Paragraph } from "@/app/components/typography/Typography";
 import theme from "@/app/theme/theme.config";
 import ArrowRight from "@/public/arrow-right.svg";
 import LaptopHero from "@/public/laptop.png";
+import { ArrowRightOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider } from "antd";
 import Image from "next/image";
 import OwanbeWebLayout from "./components/WebLayout/OwanbeWebLayout";
@@ -35,7 +36,8 @@ export default function Home() {
                 />
                 <Button className="get-started space-x-2 active:overflow-hidden">
                   <span className="overflow-hidden">Get Started</span>{" "}
-                  <Image src={ArrowRight} alt="icon" />
+                  {/* <Image src={ArrowRight} alt="icon" /> */}
+                  <ArrowRightOutlined />
                 </Button>
               </div>
               <div className="w-1/2">
