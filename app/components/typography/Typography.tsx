@@ -10,6 +10,16 @@ const Heading3 = ({ content, className }: ITypography) => {
   );
 };
 
+const Heading5 = ({ content, className }: ITypography) => {
+  return (
+    <h3
+      className={`font-BricolageGrotesqueBold font-bold text-2xl text-black ${className}`}
+    >
+      {content}
+    </h3>
+  );
+};
+
 const Paragraph = ({ className, content }: ITypography) => {
   return (
     <p className={`${className} font-BricolageGrotesqueMedium font-medium`}>
@@ -26,4 +36,4 @@ const Small = ({ className, content }: ITypography) => {
   );
 };
 
-export { Heading3, Paragraph, Small };
+export { Heading3, Heading5, Paragraph, Small };
