@@ -3,7 +3,7 @@ import React from "react";
 function Footer(): JSX.Element {
   return (
     <footer className="overflow-hidden">
-      <div></div>
+      <div className="container mx-auto py-6"></div>
     </footer>
   );
 }
