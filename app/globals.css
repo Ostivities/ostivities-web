@@ -115,3 +115,30 @@ body {
   background-size: initial;
   background-position: center center;
 }
+
+.footer-bottom {
+  border-top: 1px solid
+    linear-gradient(
+      90deg,
+      rgba(22, 22, 22, 0) 0%,
+      #696969 51.56%,
+      rgba(22, 22, 22, 0) 100%
+    );
+  border-image-source: linear-gradient(
+    90deg,
+    rgba(22, 22, 22, 0) 0%,
+    #696969 51.56%,
+    rgba(22, 22, 22, 0) 100%
+  );
+}
+
+.hor-rule::before {
+  content: "";
+  background: linear-gradient(
+    90deg,
+    rgba(22, 22, 22, 0) 0%,
+    #696969 51.56%,
+    rgba(22, 22, 22, 0) 100%
+  );
+  border: 1px solid transparent;
+}
