@@ -4,6 +4,7 @@ import { ConfigProvider } from "antd";
 import OwanbeWebLayout from "./components/WebLayout/OwanbeWebLayout";
 import Advantages from "./components/sections/Advantages";
 import AdvantagesTwo from "./components/sections/AdvantagesTwo";
+import ComingSoon from "./components/sections/ComingSoon";
 import Features from "./components/sections/Features";
 import Hero from "./components/sections/Hero";
 
@@ -24,6 +25,7 @@ export default function Home() {
         <Features />
         <Advantages />
         <AdvantagesTwo />
+        <ComingSoon />
       </ConfigProvider>
     </OwanbeWebLayout>
   );
