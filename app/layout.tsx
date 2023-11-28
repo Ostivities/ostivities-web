@@ -6,7 +6,7 @@ import StyledComponentsRegistry from "./lib/Registry";
 // const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Owanbe",
+  title: "Ostivities",
   description: "Event creation made easy",
 };
 
