@@ -5,7 +5,7 @@ import Mail from "@/public/envelope.svg";
 import Instagram from "@/public/instagram.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
 import Phone from "@/public/phone.svg";
-import { Button, Input, Space } from "antd";
+import { Space } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
