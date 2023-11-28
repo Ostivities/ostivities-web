@@ -1,8 +1,8 @@
 import { LEGAL, SUPPORT } from "@/app/utils/data";
+import Instagram from "@/public/Instagram.svg";
 import Linkedln from "@/public/LinkedIn.svg";
 import Twitter from "@/public/X.svg";
 import Mail from "@/public/envelope.svg";
-import Instagram from "@/public/instagram.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
 import Phone from "@/public/phone.svg";
 import { Space } from "antd";
