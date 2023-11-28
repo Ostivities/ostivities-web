@@ -1,5 +1,8 @@
 import { LEGAL, SUPPORT } from "@/app/utils/data";
+import Linkedln from "@/public/LinkedIn.svg";
+import Twitter from "@/public/X.svg";
 import Mail from "@/public/envelope.svg";
+import Instagram from "@/public/instagram.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
 import Phone from "@/public/phone.svg";
 import { Space } from "antd";
@@ -12,7 +15,7 @@ function Footer(): JSX.Element {
   return (
     <footer className="overflow-hidden mt-3">
       <div className="container mx-auto py-6">
-        <div className="flex flex-col space-y-3 py-4">
+        <div className="flex flex-col space-y-5 py-4">
           <div className="grid grid-cols-4 pb-3">
             {/* 1 */}
             <div className="flex flex-col space-y-3">
@@ -68,8 +71,12 @@ function Footer(): JSX.Element {
               />
             </div>
           </div>
-          <div className="flex flex-row items-center justify-end space-x-7">
-            <Space></Space>
+          <div className="flex flex-row items-center justify-end">
+            <Space direction="horizontal" size={24}>
+              <Image src={Instagram} alt="linkedln" />
+              <Image src={Twitter} alt="linkedln" />
+              <Image src={Linkedln} alt="linkedln" />
+            </Space>
           </div>
         </div>
         <hr className="hor-rule" />
