@@ -13,7 +13,7 @@ const Heading3 = ({ content, className }: ITypography) => {
 const Heading5 = ({ content, className }: ITypography) => {
   return (
     <h3
-      className={`font-BricolageGrotesqueBold font-bold text-2xl text-black ${className}`}
+      className={`font-BricolageGrotesqueMedium font-bold text-2xl text-OWANBE_H5 ${className}`}
     >
       {content}
     </h3>
@@ -30,7 +30,11 @@ const Paragraph = ({ className, content }: ITypography) => {
 
 const Small = ({ className, content }: ITypography) => {
   return (
-    <small className={`${className} font-BricolageGrotesqueMedium font-medium`}>
+    <small
+      className={`${className} ${
+        className !== "" ? className : "font-BricolageGrotesqueMedium"
+      } font-medium`}
+    >
       {content}
     </small>
   );

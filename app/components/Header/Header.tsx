@@ -2,7 +2,7 @@
 import theme from "@/app/theme/theme.config";
 import { NAV_LINKS } from "@/app/utils/data";
 import { INavLinks } from "@/app/utils/interface";
-import OwanbeLogo from "@/public/ownabe.svg";
+import OwanbeLogo from "@/public/owanbe.svg";
 import { MenuOutlined } from "@ant-design/icons";
 import { Button, ConfigProvider, Drawer } from "antd";
 import Image from "next/image";

@@ -78,3 +78,15 @@ export const ADVANTAGES_TWO: IFeatures[] = [
       "Rest easy knowing our vigilant administrators maintain a vibrant and respectful community, ensuring the highest standards. ",
   },
 ];
+
+export const LEGAL: INavLinks[] = [
+  { link: "/", name: "Terms of Use" },
+  { link: "/", name: "Privacy Policy" },
+  { link: "/", name: "Cookie Policy" },
+];
+
+export const SUPPORT: INavLinks[] = [
+  { link: "/", name: "Account" },
+  { link: "/", name: "Support Center" },
+  { link: "/", name: "Feedback" },
+];
