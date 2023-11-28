@@ -86,9 +86,9 @@ function Footer(): JSX.Element {
           </div>
         </div>
         <hr className="hor-rule" />
-        <div className="footer-bottom py-3">
+        <div className="footer-bottom pt-5">
           <Paragraph
-            className="text-center py-3"
+            className="text-center"
             content="Copyright 2023 - Ostivities all rights reserved "
           />
         </div>

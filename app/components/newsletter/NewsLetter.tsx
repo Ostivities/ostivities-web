@@ -11,7 +11,11 @@ const NewsLetter: React.FC = () => {
           suffix={
             <Button
               className="w-28 rounded-3xl text-white font-BricolageGrotesqueMedium font-medium hover:text-white"
-              style={{ background: "#19235b !important" }}
+              style={{
+                background: "#19235b !important",
+                boxShadow: "none",
+                outline: "none",
+              }}
             >
               Subscribe
             </Button>
