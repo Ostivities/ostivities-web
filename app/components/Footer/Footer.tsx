@@ -9,6 +9,7 @@ import { Space } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import NewsLetter from "../newsletter/NewsLetter";
 import { Heading5, Paragraph, Small } from "../typography/Typography";
 
 function Footer(): JSX.Element {
@@ -69,17 +70,18 @@ function Footer(): JSX.Element {
                 content={"Stay up to date"}
                 className="text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
               />
-              {/* <Space.Compact style={{ width: "100%" }}>
-                <Input defaultValue="Combine input and button" />
-                <Button type="primary">Submit</Button>
-              </Space.Compact> */}
+              <NewsLetter />
             </div>
           </div>
           <div className="flex flex-row items-center justify-end">
             <Space direction="horizontal" size={24}>
-              <Image src={Instagram} alt="linkedln" />
-              <Image src={Twitter} alt="linkedln" />
-              <Image src={Linkedln} alt="linkedln" />
+              <Image
+                src={Instagram}
+                alt="linkedln"
+                className="cursor-pointer"
+              />
+              <Image src={Twitter} alt="linkedln" className="cursor-pointer" />
+              <Image src={Linkedln} alt="linkedln" className="cursor-pointer" />
             </Space>
           </div>
         </div>

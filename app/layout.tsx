@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-// import { Inter } from "next/font/google";
+import { Bricolage_Grotesque, Inter } from "next/font/google";
 import "./globals.css";
 import StyledComponentsRegistry from "./lib/Registry";
 
-// const inter = Inter({ subsets: ["latin"] });
+const inter = Bricolage_Grotesque({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Ostivities",
@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={"bg-white"}>
+      <body className={`bg-white ${inter}`}>
         <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>

@@ -142,3 +142,13 @@ body {
   );
   border: 1px solid transparent;
 }
+
+.news-letter {
+  box-shadow: -13.011109352111816px 13.011109352111816px 104.08887481689453px
+    0px #a1a1a11a !important;
+  font-family: BricolageGrotesqueMedium !important;
+}
+
+.news-letter-input {
+  font-family: BricolageGrotesqueMedium !important;
+}
