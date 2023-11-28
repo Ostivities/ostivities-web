@@ -5,7 +5,7 @@ import Mail from "@/public/envelope.svg";
 import Instagram from "@/public/instagram.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
 import Phone from "@/public/phone.svg";
-import { Space } from "antd";
+import { Button, Input, Space } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -69,6 +69,10 @@ function Footer(): JSX.Element {
                 content={"Stay up to date"}
                 className="text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
               />
+              {/* <Space.Compact style={{ width: "100%" }}>
+                <Input defaultValue="Combine input and button" />
+                <Button type="primary">Submit</Button>
+              </Space.Compact> */}
             </div>
           </div>
           <div className="flex flex-row items-center justify-end">
