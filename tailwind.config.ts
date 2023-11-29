@@ -32,6 +32,7 @@ const config: Config = {
         OWANBE_TEXT: "#000000",
         OWANBE_H5: "#1B1C20",
         OWANBE_H4: "#383A47",
+        OWANBE_INACTIVE: "#FFF2F2",
       },
     },
   },

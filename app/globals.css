@@ -152,3 +152,10 @@ body {
 .news-letter-input {
   font-family: BricolageGrotesqueMedium !important;
 }
+
+.card-div {
+  position: absolute;
+  top: -1%;
+  left: 45%;
+  /* z-index: 1; */
+}

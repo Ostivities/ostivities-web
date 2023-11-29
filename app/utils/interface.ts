@@ -9,7 +9,9 @@ export interface ITypography {
 }
 
 export interface IFeatures {
-  icon: React.ReactNode | any;
-  title: string;
-  content: string | React.ReactNode;
+  icon?: React.ReactNode | any;
+  title?: string;
+  content?: string | React.ReactNode;
 }
+
+export interface IAnswes {}

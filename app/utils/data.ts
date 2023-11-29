@@ -90,3 +90,39 @@ export const SUPPORT: INavLinks[] = [
   { link: "/", name: "Support Center" },
   { link: "/", name: "Feedback" },
 ];
+
+export const Questions: string[] = [
+  "How do I create an event on Ostivities?.",
+  "How can I stay updated on Ostivities's Play Store release?.",
+  "Can I customize my event's privacy settings on Ostivities?.",
+  "Is Ostivities secure, especially for payment transactions?.",
+  "What happens if my event details change after creation?.",
+];
+
+export const Answers: IFeatures[] = [
+  {
+    title: "How do I create an event on Ostivities?",
+    content:
+      "Creating an event is simple — just navigate to the event section, fill in details, and share the joy with attendees.",
+  },
+  {
+    title: "How can I stay updated on Ostivities's Play Store release?",
+    content:
+      "Follow our social media and visit our website for updates. Get ready to download and dive into cultural festivities! 🎉 #StayTunedForOstivities",
+  },
+  {
+    title: "Can I customize my event's privacy settings on Ostivities?",
+    content:
+      "Customize your event's privacy settings on Ostivities. Whether public or Private, you have full control over who joins and sees the details.",
+  },
+  {
+    title: "Is Ostivities secure, especially for payment transactions?",
+    content:
+      "Absolutely, we prioritize your security. For paid events, our trusted payment system ensures seamless and safe transactions.",
+  },
+  {
+    title: "What happens if my event details change after creation?",
+    content:
+      "No worries! You can easily update your event details. Keep your attendees informed by making necessary changes and ensuring everyone is on the same page.",
+  },
+];

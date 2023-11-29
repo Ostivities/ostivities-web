@@ -1,10 +1,7 @@
-
 import React from "react";
 import Accordion from "../Accordion/Accordion";
 import { Heading3, Small } from "../typography/Typography";
 import Section from "./Section";
-
-
 
 function Faqs(): JSX.Element {
   const onChange = (key: string | string[]) => {
@@ -12,7 +9,7 @@ function Faqs(): JSX.Element {
   };
   return (
     <Section>
-      <div className="flex flex-col space-y-5">
+      <div className="flex flex-col space-y-5" style={{ height: "700px" }}>
         <div className="flex flex-col w-1/3">
           <Small
             content="FAQ"
