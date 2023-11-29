@@ -31,8 +31,12 @@ function Hero(): JSX.Element {
           </div>
         </div>
 
-        <div className="hidden md:hidden lg:block xl:block lg:w-1/2 xl:w-1/2 text-left">
-          <Image src={Z} alt="hero" className="ms-0" />
+        <div className="hidden md:hidden lg:block xl:block lg:w-1/2 xl:w-1/2 text-left pt-8 md:pt-8 lg:pt-0 xl:pt-0">
+          <Image
+            src={Z}
+            alt="hero"
+            className="ms-0 pt-8 md:pt-8 lg:pt-0 xl:pt-0"
+          />
         </div>
       </div>
     </Section>

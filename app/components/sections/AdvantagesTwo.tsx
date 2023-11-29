@@ -12,8 +12,12 @@ function AdvantagesTwo(): JSX.Element {
         className="flex flex-col-reverse space-y-8 lg:flex lg:flex-row lg:space-x-8 lg:items-center xl:flex xl:flex-row xl:space-x-8 xl:items-center"
         hidden
       >
-        <div className="w-full md:w-4/5 md:mx-auto lg:mx-auto xl:mx-auto lg:w-1/2 xl:w-1/2">
-          <Image src={AdvantagesBg} alt="hero" className="ms-1" />
+        <div className="w-full pt-8 md:pt-8 lg:pt-0 xl:pt-0 md:w-4/5 md:mx-auto lg:mx-auto xl:mx-auto lg:w-1/2 xl:w-1/2">
+          <Image
+            src={AdvantagesBg}
+            alt="hero"
+            className="ms-0 md:ms-0 lg:ms-1 xl:ms-1 pt-8 md:pt-8 lg:pt-0 xl:pt-0"
+          />
         </div>
 
         <div className="flex flex-col space-y-5 w-full md:w-4/5 md:mx-auto lg:mx-0 xl:mx-0 lg:w-1/2 xl:w-1/2">
