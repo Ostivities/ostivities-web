@@ -15,7 +15,7 @@ function Advantages(): JSX.Element {
               content="Advantages"
               className="text-OWANBE_PRY text-lg tracking-wider uppercase"
             />
-            <Heading3 content="Why Choose Ówànbè?" className="w-3/4" />
+            <Heading3 content="Why Choose Ostivities?" className="w-3/4" />
           </div>
           <div className="flex flex-col space-y-4">
             {ADVANTAGES.map((i, index: any) => {
