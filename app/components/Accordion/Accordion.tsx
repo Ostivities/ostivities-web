@@ -19,11 +19,7 @@ const Accordion: React.FC = () => {
 
   const Answer: IFeatures = Answers[keys];
 
-  const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
+  const avatarStyle: React.CSSProperties = { height: "14px", width: "14px" };
 
   const items: CollapseProps["items"] = [
     {
@@ -32,15 +28,19 @@ const Accordion: React.FC = () => {
         <div className="flex flex-row items-center">
           <Avatar
             style={{
-              height: "18px",
-              width: "18px",
+              ...avatarStyle,
             }}
             className={`bg-OWANBE_PRY`}
           />
           <span>How do I create an event on Ostivities?</span>
         </div>
       ),
-      children: <p>{text}</p>,
+      children: (
+        <p>
+          Creating an event is simple — just navigate to the event section, fill
+          in details, and share the joy with attendees.
+        </p>
+      ),
     },
     {
       key: "2",
@@ -48,8 +48,7 @@ const Accordion: React.FC = () => {
         <div className="flex flex-row items-center">
           <Avatar
             style={{
-              height: "18px",
-              width: "18px",
+              ...avatarStyle,
             }}
             className={`bg-OWANBE_PRY`}
           />
@@ -58,7 +57,13 @@ const Accordion: React.FC = () => {
           </span>
         </div>
       ),
-      children: <p>{text}</p>,
+      children: (
+        <p>
+          Follow our social media and visit our website for updates. Get ready
+          to download and dive into cultural festivities! 🎉
+          #StayTunedForOstivities
+        </p>
+      ),
     },
     {
       key: "3",
@@ -66,8 +71,7 @@ const Accordion: React.FC = () => {
         <div className="flex flex-row items-center">
           <Avatar
             style={{
-              height: "18px",
-              width: "18px",
+              ...avatarStyle,
             }}
             className={`bg-OWANBE_PRY`}
           />
@@ -76,7 +80,12 @@ const Accordion: React.FC = () => {
           </span>
         </div>
       ),
-      children: <p>{text}</p>,
+      children: (
+        <p>
+          Customize your event's privacy settings on Ostivities. Whether public
+          or Private, you have full control over who joins and sees the details.
+        </p>
+      ),
     },
     {
       key: "4",
@@ -84,17 +93,21 @@ const Accordion: React.FC = () => {
         <div className="flex flex-row items-center">
           <Avatar
             style={{
-              height: "18px",
-              width: "18px",
+              ...avatarStyle,
             }}
             className={`bg-OWANBE_PRY`}
           />
-          <span>
+          <span className="text-sm">
             Is Ostivities secure, especially for payment transactions?
           </span>
         </div>
       ),
-      children: <p>{text}</p>,
+      children: (
+        <p>
+          Absolutely, we prioritize your security. For paid events, our trusted
+          payment system ensures seamless and safe transactions.
+        </p>
+      ),
     },
     {
       key: "5",
@@ -102,15 +115,22 @@ const Accordion: React.FC = () => {
         <div className="flex flex-row items-center">
           <Avatar
             style={{
-              height: "18px",
-              width: "18px",
+              ...avatarStyle,
             }}
             className={`bg-OWANBE_PRY`}
           />
-          <span>What happens if my event details change after creation?</span>
+          <span className="text-sm">
+            What happens if my event details change after creation?
+          </span>
         </div>
       ),
-      children: <p>{text}</p>,
+      children: (
+        <p>
+          No worries! You can easily update your event details. Keep your
+          attendees informed by making necessary changes and ensuring everyone
+          is on the same page.
+        </p>
+      ),
     },
   ];
 
