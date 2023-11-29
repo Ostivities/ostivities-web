@@ -10,7 +10,7 @@ import Section from "./Section";
 function Hero(): JSX.Element {
   return (
     <Section>
-      <div className="flex flex-col space-y-4">
+      <div className="flex flex-col space-y-3">
         <div className="flex flex-row space-x-8 items-center">
           <div className="flex flex-col space-y-5 w-1/2">
             <Heading3
