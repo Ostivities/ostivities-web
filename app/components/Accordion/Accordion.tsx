@@ -19,7 +19,11 @@ const Accordion: React.FC = () => {
 
   const Answer: IFeatures = Answers[keys];
 
-  const avatarStyle: React.CSSProperties = { height: "14px", width: "14px" };
+  const avatarStyle: React.CSSProperties = {
+    height: "14px",
+    width: "14px",
+    display: "none",
+  };
 
   const items: CollapseProps["items"] = [
     {
@@ -32,7 +36,9 @@ const Accordion: React.FC = () => {
             }}
             className={`bg-OWANBE_PRY`}
           />
-          <span>How do I create an event on Ostivities?</span>
+          <span className="text-sm">
+            How do I create an event on Ostivities?
+          </span>
         </div>
       ),
       children: (
@@ -52,7 +58,7 @@ const Accordion: React.FC = () => {
             }}
             className={`bg-OWANBE_PRY`}
           />
-          <span>
+          <span className="text-sm">
             How can I stay updated on Ostivities's Play Store release?
           </span>
         </div>
@@ -75,7 +81,7 @@ const Accordion: React.FC = () => {
             }}
             className={`bg-OWANBE_PRY`}
           />
-          <span>
+          <span className="text-sm">
             Can I customize my event's privacy settings on Ostivities?
           </span>
         </div>
