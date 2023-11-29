@@ -2,7 +2,7 @@
 import { Answers, Questions } from "@/app/utils/data";
 import { IFeatures } from "@/app/utils/interface";
 import { RightOutlined } from "@ant-design/icons";
-import { Avatar, Card, List, Typography } from "antd";
+import { Avatar, Card, List } from "antd";
 import React, { useState } from "react";
 import { Heading5, Paragraph } from "../typography/Typography";
 
