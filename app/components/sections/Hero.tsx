@@ -12,7 +12,7 @@ function Hero(): JSX.Element {
     <Section>
       <div className="flex flex-col space-y-3 pt-5 mt-3 md:pt-5 md:mt-3 lg:pt-0 lg:mt-0 xl:pt-0 xl:mt-0">
         <div className="flex flex-col space-y-8 md:flex md:flex-col md:space-y-8 lg:flex lg:flex-row lg:space-x-8 lg:items-center xl:flex xl:flex-row xl:space-x-8 xl:items-center">
-          <div className="flex flex-col w-full space-y-5 md:flex md:flex-col md:w-full lg:flex lg:flex-col lg:space-y-5 lg:w-1/2 xl:flex xl:flex-col xl:space-y-5 xl:w-1/2">
+          <div className="flex flex-col w-full space-y-5 mx-0 md:flex md:flex-col md:w-4/5 md:mx-auto lg:mx-0 xl:mx-0 lg:flex lg:flex-col lg:space-y-5 lg:w-1/2 xl:flex xl:flex-col xl:space-y-5 xl:w-1/2">
             <Heading3
               content="Celebrate, Connect and Create Memories"
               className="w-full text-center lg:text-left xl:text-left md:w-full md:text-center lg:w-3/4 xl:w-3/4"
