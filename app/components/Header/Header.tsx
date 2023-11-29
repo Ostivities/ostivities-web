@@ -75,7 +75,7 @@ function Header(): JSX.Element {
           <Image
             src={Hamburger}
             alt="Owanbe Logo"
-            style={{ width: "40px", height: "30px" }}
+            style={{ width: "40px", height: "35px" }}
             onClick={showDrawer}
           />
         </div>
