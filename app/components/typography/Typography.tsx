@@ -3,7 +3,7 @@ import { ITypography } from "@/app/utils/interface";
 const Heading3 = ({ content, className }: ITypography) => {
   return (
     <h3
-      className={`font-BricolageGrotesqueBold font-bold text-4xl text-black ${className}`}
+      className={`font-BricolageGrotesqueBold font-bold text-lg md:text-xl lg:text-4xl xl:text-4xl text-black ${className}`}
     >
       {content}
     </h3>

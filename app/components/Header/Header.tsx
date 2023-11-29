@@ -68,7 +68,7 @@ function Header(): JSX.Element {
             <Image
               src={OwanbeLogo}
               alt="Owanbe Logo"
-              style={{ width: "60px", height: "40px" }}
+              style={{ width: "80px", height: "40px" }}
             />
           </Link>
 
@@ -84,7 +84,7 @@ function Header(): JSX.Element {
             <Image
               src={OwanbeLogo}
               alt="Owanbe Logo"
-              style={{ width: "40px" }}
+              style={{ width: "70px" }}
             />
           }
           extra={
@@ -105,7 +105,9 @@ function Header(): JSX.Element {
               key={link.link + link.name}
               className="font-BricolageGrotesqueMedium py-3 text-center"
             >
-              <Link href={link.link}>{link.name}</Link>
+              <Link href={link.link} onClick={onClose}>
+                {link.name}
+              </Link>
             </p>
           ))}
           <div className="flex flex-col items-center justify-center space-y-4 mt-7 mx-auto w-3/5">
@@ -113,7 +115,7 @@ function Header(): JSX.Element {
               type="default"
               size={"large"}
               className="font-BricolageGrotesqueMedium button-styles sign-in"
-              onClick={() => {}}
+              onClick={() => onClose()}
               style={{ width: "100%" }}
             >
               Sign in
@@ -122,7 +124,7 @@ function Header(): JSX.Element {
               type="default"
               size={"large"}
               className="font-BricolageGrotesqueMedium button-styles sign-up"
-              onClick={() => {}}
+              onClick={() => onClose()}
               style={{ width: "100%" }}
             >
               Sign Up

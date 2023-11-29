@@ -11,22 +11,22 @@ function Hero(): JSX.Element {
   return (
     <Section>
       <div className="flex flex-col space-y-3">
-        <div className="flex flex-row space-x-8 items-center">
-          <div className="flex flex-col space-y-5 w-1/2">
+        <div className="flex flex-col space-y-8 md:flex md:flex-col md:space-y-8 lg:flex lg:flex-row lg:space-x-8 lg:items-center xl:flex xl:flex-row xl:space-x-8 xl:items-center">
+          <div className="flex flex-col w-full space-y-5 md:flex md:flex-col md:w-full lg:flex lg:flex-col lg:space-y-5 lg:w-1/2 xl:flex xl:flex-col xl:space-y-5 xl:w-1/2">
             <Heading3
               content="Celebrate, Connect and Create Memories"
-              className="w-3/4"
+              className="w-full text-center lg:text-left xl:text-left md:w-full md:text-center lg:w-3/4 xl:w-3/4"
             />
             <Paragraph
               content="Embark on a journey with Ostivities — where celebrations thrive! Connect, discover, and create lasting memories. Join now for a vibrant experience!"
-              className="w-[86%] text-OWANBE_ASH text-lg"
+              className="w-full md:w-full text-center md:text-center lg:text-left xl:text-left lg:w-[86%] xl:w-[86%] text-OWANBE_ASH text-lg"
             />
-            <Button className="get-started space-x-2 active:overflow-hidden">
+            <Button className="get-started mx-auto md:mx-auto lg:mx-0 xl:mx-0 space-x-2 active:overflow-hidden">
               <span className="overflow-hidden">Get Started</span>{" "}
               <ArrowRightOutlined />
             </Button>
           </div>
-          <div className="w-1/2">
+          <div className="w-full md:w-full lg:w-1/2 xl:w-1/2">
             <Image src={LaptopHero} alt="hero" className="ms-1" />
           </div>
         </div>
