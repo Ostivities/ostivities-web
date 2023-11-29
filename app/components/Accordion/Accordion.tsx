@@ -85,9 +85,12 @@ const Accordion: React.FC = () => {
           }}
         >
           <div className="w-4/5 float-right flex flex-col space-y-8 pt-4">
-            <Heading5 className="text-left" content={Answer.title} />
+            <Heading5
+              className="text-left animate-shake transition-all ease-in-out"
+              content={Answer.title}
+            />
             <Paragraph
-              className="text-left font-light font-BricolageGrotesqueLight"
+              className="text-left font-light font-BricolageGrotesqueLight animate-shake transition-all ease-in-out"
               content={Answer.content}
             />
           </div>

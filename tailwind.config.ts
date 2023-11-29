@@ -34,6 +34,35 @@ const config: Config = {
         OWANBE_H4: "#383A47",
         OWANBE_INACTIVE: "#FFF2F2",
       },
+      keyframes: {
+        shake: {
+          "10%, 90%": {
+            transform: " translate3d(-1px, 0, 0)",
+          },
+          "20%, 80%": {
+            transform: "translate3d(2px, 0, 0)",
+          },
+          "30%, 50%, 70%": {
+            transform: "translate3d(-4px, 0, 0)",
+          },
+          "40%, 60%": {
+            transform: "translate3d(4px, 0, 0)",
+          },
+        },
+        marquee: {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+        marquee2: {
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(0%)" },
+        },
+      },
+      animation: {
+        shake: "shake 0.82s cubic-bezier(.36,.07,.19,.97) both",
+        marquee: "marquee 25s linear infinite",
+        marquee2: "marquee2 25s linear infinite",
+      },
     },
   },
   plugins: [],
