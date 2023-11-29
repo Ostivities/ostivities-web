@@ -158,3 +158,7 @@ body {
   top: -1%;
   left: 45%;
 }
+
+.ant-drawer-content-wrapper {
+  width: 100% !important;
+}
