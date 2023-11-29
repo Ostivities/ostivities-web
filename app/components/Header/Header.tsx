@@ -98,7 +98,7 @@ function Header(): JSX.Element {
           placement="right"
           // onClose={onClose}
           open={open}
-          style={{ borderBottom: "none !important" }}
+          style={{ borderBottom: "0px solid !important", width: "100%" }}
         >
           {NAV_LINKS.map((link: INavLinks) => (
             <p
