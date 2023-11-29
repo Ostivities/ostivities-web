@@ -29,7 +29,10 @@ const Accordion: React.FC = () => {
                 actions={[
                   <RightOutlined
                     key="list-loadmore-more"
-                    style={{ cursor: "pointer" }}
+                    style={{
+                      cursor: "pointer",
+                      color: keys === index ? "#E20000" : "#FFF2F2",
+                    }}
                   />,
                 ]}
                 style={{
@@ -56,7 +59,7 @@ const Accordion: React.FC = () => {
                       }`}
                     />
                   }
-                  description={item}
+                  description={<span className="text-black">{item}</span>}
                 />
               </List.Item>
             )}
