@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 import { Answers, Questions } from "@/app/utils/data";
 import { IFeatures } from "@/app/utils/interface";
