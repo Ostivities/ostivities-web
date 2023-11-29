@@ -27,7 +27,7 @@ export const FEATURES: IFeatures[] = [
     icon: Star,
     title: "Localized Discovery:",
     content:
-      "Filter events based on regions and states, bringing you closer to culturally rich experiences right in your community.",
+      "Filter events based on regions and states, bringing you closer to rich experiences right in your community.",
   },
 ];
 
@@ -36,13 +36,13 @@ export const ADVANTAGES: IFeatures[] = [
     icon: Star,
     title: "Diverse Celebrations:",
     content:
-      "Explore a rich tapestry of events, from weddings, Hangouts, Birthdays, music shows. Ówànbè ensures there's a celebration for every taste.",
+      "Explore a rich tapestry of events, from weddings, Hangouts, Birthdays, music shows. Ostivities ensures there's a celebration for every taste.",
   },
   {
     icon: Cube,
     title: "Community Connection:",
     content:
-      "Forge meaningful connections by joining and creating events that resonate with your cultural spirit. Ówànbè is where like-minded individuals unite!",
+      "Forge meaningful connections by joining and creating events that resonate with your inner spirit. Ostivities is where like-minded individuals unite!",
   },
   {
     icon: Star,
@@ -57,13 +57,13 @@ export const ADVANTAGES_TWO: IFeatures[] = [
     icon: Polygon,
     title: "Connect with Attendees:",
     content:
-      "Engage with attendees, share details and make your event truly unforgettable. Ówànbè is your canvas to paint the perfect celebration.",
+      "Engage with attendees, share details and make your event truly unforgettable. Ostivities is your canvas to paint the perfect celebration.",
   },
   {
     icon: Cube,
     title: "Localized Discovery:",
     content:
-      "Filter events based on regions and states, bringing you closer to culturally rich experiences right in your community.",
+      "Filter events based on regions and states, bringing you closer to rich experiences right in your community.",
   },
   {
     icon: Polygon,
@@ -75,7 +75,7 @@ export const ADVANTAGES_TWO: IFeatures[] = [
     icon: Cube,
     title: "Admin Oversight:",
     content:
-      "Rest easy knowing our vigilant administrators maintain a vibrant and respectful community, ensuring the highest standards. ",
+      "Rest easy knowing our vigilant administrators maintain a vibrant and respectful community, ensuring the highest standards.",
   },
 ];
 
