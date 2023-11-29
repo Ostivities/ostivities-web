@@ -20,7 +20,6 @@ function Faqs(): JSX.Element {
             className="w-3/4 capitalize"
           />
         </div>
-
         <Accordion />
       </div>
     </Section>
