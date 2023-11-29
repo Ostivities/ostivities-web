@@ -75,7 +75,7 @@ function Header(): JSX.Element {
           <Image
             src={Hamburger}
             alt="Owanbe Logo"
-            style={{ width: "24px", height: "24px" }}
+            style={{ width: "40px", height: "30px" }}
             onClick={showDrawer}
           />
         </div>
@@ -91,7 +91,7 @@ function Header(): JSX.Element {
             <Image
               src={CloseIcon}
               alt="Owanbe Logo"
-              style={{ width: "24px", height: "24px" }}
+              style={{ width: "40px", height: "35px" }}
               onClick={onClose}
             />
           }
