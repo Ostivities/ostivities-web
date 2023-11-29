@@ -1,18 +1,10 @@
 "use client";
-import { Questions } from "@/app/utils/data";
+import { Answers, Questions } from "@/app/utils/data";
+import { IFeatures } from "@/app/utils/interface";
 import { RightOutlined } from "@ant-design/icons";
 import { Avatar, Card, List, Typography } from "antd";
 import React, { useState } from "react";
 import { Heading5, Paragraph } from "../typography/Typography";
-
-const genExtra = () => (
-  <RightOutlined
-    onClick={(event) => {
-      // If you don't want click extra trigger collapse, you can prevent this:
-      event.stopPropagation();
-    }}
-  />
-);
 
 const data: string[] = [...Questions];
 
@@ -22,16 +14,15 @@ const Accordion: React.FC = () => {
   const handleItemClick = (index: any) => {
     setKeys(index);
   };
+
+  const Answer: IFeatures = Answers[keys];
+
   return (
     <div className="relative py-8">
       <div className="w-1/2 py-5">
         <>
           <List
-            // header={<div>Header</div>}
-            // footer={<div>Footer</div>}
-            // bordered
             dataSource={data}
-            // rowKey={(item: any) => React.Key}
             renderItem={(item, index: any) => (
               <List.Item
                 onClick={() => handleItemClick(index)}
@@ -91,15 +82,10 @@ const Accordion: React.FC = () => {
           }}
         >
           <div className="w-4/5 float-right flex flex-col space-y-8 pt-4">
-            <Heading5
-              className="text-left"
-              content="What happens if my event details change after creation?"
-            />
+            <Heading5 className="text-left" content={Answer.title} />
             <Paragraph
               className="text-left font-light font-BricolageGrotesqueLight"
-              content=" No worries! You can easily update your event details. Keep your
-            attendees informed by making necessary changes and ensuring everyone
-            is on the same page."
+              content={Answer.content}
             />
           </div>
         </Card>
