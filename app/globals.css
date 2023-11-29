@@ -162,3 +162,7 @@ body {
 .ant-drawer-content-wrapper {
   width: 100% !important;
 }
+
+.ant-drawer-header {
+  border-bottom: none !important;
+}
