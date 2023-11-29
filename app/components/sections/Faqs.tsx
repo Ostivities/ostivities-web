@@ -9,15 +9,18 @@ function Faqs(): JSX.Element {
   };
   return (
     <Section>
-      <div className="flex flex-col space-y-5" style={{ height: "700px" }}>
-        <div className="flex flex-col w-1/3">
+      <div
+        className="flex flex-col space-y-5 md:w-4/5 lg:w-full xl:w-full md:mx-auto lg:mx-0 xl:mx-0"
+        style={{ height: "700px" }}
+      >
+        <div className="flex flex-col w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/3">
           <Small
             content="FAQ"
             className="text-OWANBE_PRY text-lg tracking-wider uppercase"
           />
           <Heading3
             content="Frequently asked questions"
-            className="w-3/4 capitalize"
+            className="w-full md:w-full lg:w-3/4 xl:w-3/4 capitalize"
           />
         </div>
         <Accordion />
