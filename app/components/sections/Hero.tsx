@@ -18,9 +18,7 @@ function Hero(): JSX.Element {
               className="w-3/4"
             />
             <Paragraph
-              content="Embark on a cultural journey with Ówànbè — where celebrations
-                  thrive! Connect, discover, and create lasting memories on our
-                  unique cultural app. Join now for a vibrant experience!"
+              content="Embark on a journey with Ostivities — where celebrations thrive! Connect, discover, and create lasting memories. Join now for a vibrant experience!"
               className="w-[86%] text-OWANBE_ASH text-lg"
             />
             <Button className="get-started space-x-2 active:overflow-hidden">
