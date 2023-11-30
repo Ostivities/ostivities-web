@@ -110,7 +110,7 @@ function Header(): JSX.Element {
               </Link>
             </p>
           ))}
-          <div className="flex flex-col items-center justify-center space-y-4 mt-7 mx-auto w-3/5">
+          <div className="flex flex-col items-center justify-center space-y-4 mt-7 mx-auto w-3/5 md:w-1/5">
             <Button
               type="default"
               size={"large"}
