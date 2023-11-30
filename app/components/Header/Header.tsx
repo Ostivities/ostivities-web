@@ -8,9 +8,11 @@ import OwanbeLogo from "@/public/owanbe.svg";
 import { Button, ConfigProvider, Drawer } from "antd";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 function Header(): JSX.Element {
+  const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
 
   const showDrawer = () => {
@@ -28,6 +30,7 @@ function Header(): JSX.Element {
       }}
     >
       <header className="overflow-hidden">
+        {/* LG && XL SCREENS */}
         <nav className="container mx-auto relative hidden md:hidden lg:flex lg:flex-row lg:items-center lg:justify-between xl:flex xl:flex-row xl:items-center xl:justify-between py-7 px-0 md:px-5 lg:px-0 xl:px-0">
           <div>
             <Link href="/" className="" shallow>
@@ -50,6 +53,7 @@ function Header(): JSX.Element {
               type="default"
               size={"large"}
               className="font-BricolageGrotesqueMedium button-styles sign-in"
+              onClick={() => router.push("/login")}
             >
               Sign in
             </Button>
@@ -63,6 +67,7 @@ function Header(): JSX.Element {
           </div>
         </nav>
 
+        {/* SM AND MD SCREENS */}
         <div className="flex flex-row items-center justify-between px-5 py-3 lg:hidden xl:hidden">
           <Link href="/" className="" shallow>
             <Image

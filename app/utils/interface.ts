@@ -14,4 +14,6 @@ export interface IFeatures {
   content?: string | React.ReactNode;
 }
 
-export interface IAnswes {}
+export interface IAuthLayout {
+  children?: React.ReactNode;
+}
