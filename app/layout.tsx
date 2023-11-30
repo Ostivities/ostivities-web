@@ -20,7 +20,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/Favicon.png" type="image/x-icon" />
       </head>
-      <body className={`bg-white ${inter} overflow-hidden`}>
+      <body className={`bg-white ${inter} `}>
         <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>
