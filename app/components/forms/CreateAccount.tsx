@@ -1,7 +1,7 @@
 "use client";
 import { ACCOUNT_TYPE } from "@/app/utils/enums";
 import type { FormItemProps } from "antd";
-import { Button, Form, Input, Select } from "antd";
+import { Button, Col, Form, Input, Row, Select } from "antd";
 import React, { useState } from "react";
 
 function CreateAccount(): JSX.Element {
@@ -21,7 +21,7 @@ function CreateAccount(): JSX.Element {
       onFinish={onFinish}
       autoComplete="off"
       form={form}
-      className="w-full font-BricolageGrotesqueRegular"
+      className="w-full font-BricolageGrotesqueRegular flex flex-col space-y-7"
       style={{ fontFamily: "BricolageGrotesqueRegular" }}
     >
       <Form.Item
@@ -56,6 +56,29 @@ function CreateAccount(): JSX.Element {
           </Select>
         </Form.Item>
       </Form.Item>
+
+      <Row gutter={8}>
+        <Col span={12}>
+          <Form.Item
+            name="firstname"
+            label="First Name"
+            noStyle
+            rules={[{ required: true, message: "Please input first name" }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
+            name="firstname"
+            label="Last Name"
+            noStyle
+            rules={[{ required: true, message: "Please input last name" }]}
+          >
+            <Input />
+          </Form.Item>
+        </Col>
+      </Row>
     </Form>
   );
 }
