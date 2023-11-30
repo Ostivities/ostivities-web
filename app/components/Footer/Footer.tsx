@@ -16,8 +16,8 @@ function Footer(): JSX.Element {
   return (
     <footer className="overflow-hidden mt-3">
       <div className="container mx-auto py-6">
-        <div className="flex flex-col space-y-5 py-4">
-          <div className="grid grid-cols-4 pb-3">
+        <div className="flex flex-col space-y-5 py-4 w-4/5 px-6 md:px-0 xl:px-0 lg:px-0 md:w-4/5 md:mx-auto lg:w-full xl:w-full">
+          <div className="grid grid-cols-1 gap-12 md:gap-10 lg:gap-0 xl:gap-0 md:grid md:grid-cols-2 lg:grid lg:grid-cols-4 xl:grid xl:grid-cols-4 pb-3">
             {/* 1 */}
             <div className="flex flex-col space-y-3">
               <Image src={OwanbeLogo} alt="Owanbe Logo" />
@@ -25,7 +25,7 @@ function Footer(): JSX.Element {
                 <Image src={Mail} alt="icon" />
                 <Small
                   content={"Hello@Ostivities.com"}
-                  className="text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+                  className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
                 />
               </div>
 
@@ -33,7 +33,7 @@ function Footer(): JSX.Element {
                 <Image src={Phone} alt="icon" />
                 <Small
                   content={"+1 234 456 678 89"}
-                  className="text-lg  text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+                  className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
                 />
               </div>
             </div>
@@ -44,7 +44,7 @@ function Footer(): JSX.Element {
                 <Link
                   key={item.name}
                   href={item.link}
-                  className="text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+                  className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
                 >
                   {item.name}
                 </Link>
@@ -57,7 +57,7 @@ function Footer(): JSX.Element {
                 <Link
                   key={item.name}
                   href={item.link}
-                  className="text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+                  className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
                 >
                   {item.name}
                 </Link>
@@ -68,12 +68,12 @@ function Footer(): JSX.Element {
               <Heading5 content="NewsLetter" className="" />
               <Small
                 content={"Stay up to date"}
-                className="text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+                className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
               />
               <NewsLetter />
             </div>
           </div>
-          <div className="flex flex-row items-center justify-end">
+          <div className="flex flex-row items-center justify-start md:justify-end lg:justify-end xl:justify-end">
             <Space direction="horizontal" size={24}>
               <Image
                 src={Instagram}
