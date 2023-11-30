@@ -10,7 +10,8 @@ function Signup(): JSX.Element {
         <Small
           content={
             <span className="text-sm font-BricolageGrotesqueRegular">
-              Already a member? <span className="text-OWANBE_PRY">Sign in</span>
+              Already a member?{" "}
+              <span className="text-OWANBE_PRY cursor-pointer">Sign in</span>
             </span>
           }
           className="float-right place-self-end"

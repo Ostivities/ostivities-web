@@ -172,3 +172,33 @@ body {
   background-repeat: no-repeat;
   background-position: center center;
 }
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-select-single {
+  font-size: 14px;
+  height: 41px;
+  border-radius: 15px;
+  font-family: BricolageGrotesqueMedium !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-select-single:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
+  border-radius: 15px;
+  font-family: BricolageGrotesqueMedium !important;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 0px 20px;
+  height: 41px;
+  border: 1px solid #d0d4d4 !important;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-form-vertical
+  .ant-form-item-label,
+:where(.css-dev-only-do-not-override-zcfrx9).ant-col-24.ant-form-item-label,
+:where(.css-dev-only-do-not-override-zcfrx9).ant-col-xl-24.ant-form-item-label {
+  font-family: BricolageGrotesqueRegular !important;
+  font-weight: 400;
+}

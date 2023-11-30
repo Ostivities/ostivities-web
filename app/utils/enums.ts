@@ -1,0 +1,6 @@
+export enum ACCOUNT_TYPE {
+  PERSONAL = "PERSONAL",
+  ORGANISATION = "ORGANISATION",
+}
+
+export enum REQUEST_TYPE {}

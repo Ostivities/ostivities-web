@@ -23,7 +23,6 @@ function Header(): JSX.Element {
   const onClose = () => {
     setOpen(false);
   };
-  console.log(pathname, "pathname");
 
   return (
     <ConfigProvider
