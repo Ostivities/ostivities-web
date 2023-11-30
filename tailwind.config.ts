@@ -33,6 +33,8 @@ const config: Config = {
         OWANBE_H5: "#1B1C20",
         OWANBE_H4: "#383A47",
         OWANBE_INACTIVE: "#FFF2F2",
+        OWANBE_AUTH_BG: "#F8FAFC",
+        OWANBE_DARK: "#1E1E1E",
       },
       keyframes: {
         shake: {

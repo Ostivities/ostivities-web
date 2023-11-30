@@ -166,3 +166,9 @@ body {
 .ant-drawer-header {
   border-bottom: none !important;
 }
+
+.auth-background {
+  background-image: url(/public/Topology-2.svg);
+  background-repeat: no-repeat;
+  background-position: center center;
+}

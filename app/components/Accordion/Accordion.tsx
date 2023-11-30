@@ -1,12 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
+import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 import { Answers, Questions } from "@/app/utils/data";
 import { IFeatures } from "@/app/utils/interface";
 import { RightOutlined } from "@ant-design/icons";
 import type { CollapseProps } from "antd";
 import { Avatar, Card, Collapse, List } from "antd";
 import React, { Fragment, useState } from "react";
-import { Heading5, Paragraph } from "../typography/Typography";
 
 const data: string[] = [...Questions];
 
