@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Inter } from "next/font/google";
+import { Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 import StyledComponentsRegistry from "./lib/Registry";
 
@@ -17,7 +17,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`bg-white ${inter}`}>
+      <head>
+        <link rel="icon" href="/Favicon.png" type="image/x-icon" />
+      </head>
+      <body className={`bg-white ${inter} overflow-hidden`}>
         <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>

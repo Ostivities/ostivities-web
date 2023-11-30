@@ -8,11 +8,12 @@ import OwanbeLogo from "@/public/owanbe.svg";
 import { Button, ConfigProvider, Drawer } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 function Header(): JSX.Element {
   const router = useRouter();
+  const pathname = usePathname();
   const [open, setOpen] = useState<boolean>(false);
 
   const showDrawer = () => {
@@ -22,6 +23,7 @@ function Header(): JSX.Element {
   const onClose = () => {
     setOpen(false);
   };
+  console.log(pathname, "pathname");
 
   return (
     <ConfigProvider
@@ -48,22 +50,27 @@ function Header(): JSX.Element {
               </Link>
             ))}
           </div>
+
           <div className="flex flex-row items-center space-x-3">
-            <Button
-              type="default"
-              size={"large"}
-              className="font-BricolageGrotesqueMedium button-styles sign-in"
-              onClick={() => router.push("/login")}
-            >
-              Sign in
-            </Button>
-            <Button
-              type="default"
-              size={"large"}
-              className="font-BricolageGrotesqueMedium button-styles sign-up"
-            >
-              Sign Up
-            </Button>
+            {pathname == "/login" || pathname == "/signup" ? null : (
+              <>
+                <Button
+                  type="default"
+                  size={"large"}
+                  className={`font-BricolageGrotesqueMedium button-styles sign-in `}
+                  // onClick={() => router.push("/login")}
+                >
+                  Sign in
+                </Button>
+                <Button
+                  type="default"
+                  size={"large"}
+                  className="font-BricolageGrotesqueMedium button-styles sign-up"
+                >
+                  Sign Up
+                </Button>
+              </>
+            )}
           </div>
         </nav>
 

@@ -1,12 +1,12 @@
 import AuthLayout from "@/app/components/AuthLayout/AuthLayout";
 import React from "react";
 
-function Login() {
+function Signup(): JSX.Element {
   return (
     <AuthLayout>
-      <div className="">Sign in</div>
+      <div>Get started</div>
     </AuthLayout>
   );
 }
 
-export default Login;
+export default Signup;
