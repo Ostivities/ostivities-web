@@ -1,7 +1,7 @@
 "use client";
 import { ACCOUNT_TYPE } from "@/app/utils/enums";
 import type { FormItemProps } from "antd";
-import { Button, Col, Form, Input, Row, Select } from "antd";
+import { Button, Checkbox, Col, Form, Input, Row, Select } from "antd";
 import React, { useState } from "react";
 
 function CreateAccount(): JSX.Element {
@@ -118,21 +118,14 @@ function CreateAccount(): JSX.Element {
         <Col span={12}>
           <Form.Item
             label="Password"
-            style={{ fontFamily: "BricolageGrotesqueRegular" }}
-            className="font-BricolageGrotesqueRegular"
+            name="password"
+            hasFeedback
+            rules={[{ required: true, message: "Please input your password" }]}
           >
-            <Form.Item
-              name="password"
-              noStyle
-              rules={[
-                { required: true, message: "Please input your password" },
-              ]}
-            >
-              <Input.Password
-                placeholder="Enter your password"
-                className="placeholder:font-BricolageGrotesqueRegular"
-              />
-            </Form.Item>
+            <Input.Password
+              placeholder="Enter your password"
+              className="placeholder:font-BricolageGrotesqueRegular"
+            />
           </Form.Item>
         </Col>
 
@@ -166,6 +159,44 @@ function CreateAccount(): JSX.Element {
           </Form.Item>
         </Col>
       </Row>
+
+      <Form.Item
+        name="agreement"
+        valuePropName="checked"
+        rules={
+          [
+            // {
+            //   validator: (_, value) =>
+            //     value
+            //       ? Promise.resolve()
+            //       : Promise.reject(new Error("Should accept agreement")),
+            // },
+          ]
+        }
+      >
+        <Checkbox>
+          Accept our{" "}
+          <a href="" className="text-OWANBE_PRY underline">
+            terms and condition
+          </a>
+        </Checkbox>
+      </Form.Item>
+
+      <Form.Item>
+        <Button
+          type="primary"
+          htmlType="submit"
+          className="font-BricolageGrotesqueLight text-base"
+          style={{
+            background: "#E20000",
+            borderRadius: "20px",
+            width: "100%",
+            height: "51px",
+          }}
+        >
+          Sign Up
+        </Button>
+      </Form.Item>
     </Form>
   );
 }

@@ -231,5 +231,21 @@ body {
 }
 
 :where(.css-dev-only-do-not-override-zcfrx9).ant-input-affix-wrapper {
-  padding: 3px 20px;
+  padding: 0px 20px;
+  height: 44px;
+}
+
+/* :where(.css-dev-only-do-not-override-zcfrx9).ant-input-affix-wrapper
+  > input.ant-input:focus {
+  box-shadow: none !important;
+  outline: none !important;
+  border: 1px solid #d0d4d4 !important;
+} */
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-form-item
+  .ant-form-item-label
+  > label.ant-form-item-required:not(
+    .ant-form-item-required-mark-optional
+  )::before {
+  content: "" !important;
 }
