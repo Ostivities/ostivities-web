@@ -338,3 +338,11 @@ body {
 :where(.css-dev-only-do-not-override-zcfrx9).ant-switch.ant-switch-checked {
   background: #e20000;
 }
+
+:where(.css-zcfrx9).ant-input:focus,
+:where(.css-zcfrx9).ant-input:focus-within {
+  border: 1px solid #d0d4d4;
+  border-color: #d0d4d4;
+  box-shadow: none !important;
+  outline: none !important;
+}
