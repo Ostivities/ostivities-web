@@ -1,7 +1,11 @@
 "use client";
+import { Small } from "@/app/components//typography/Typography";
 import { ACCOUNT_TYPE } from "@/app/utils/enums";
-import type { FormItemProps } from "antd";
-import { Button, Checkbox, Col, Form, Input, Row, Select } from "antd";
+import Facebook from "@/public/facebook.svg";
+import Google from "@/public/google.svg";
+import Twitter from "@/public/twitter.svg";
+import { Button, Checkbox, Col, Form, Input, Row, Select, Space } from "antd";
+import Image from "next/image";
 import React, { useState } from "react";
 
 function CreateAccount(): JSX.Element {
@@ -197,6 +201,19 @@ function CreateAccount(): JSX.Element {
           Sign Up
         </Button>
       </Form.Item>
+
+      <div className="mx-auto flex flex-col space-y-5 mt-4 mb-5">
+        <Small
+          content="or sign up with "
+          className="font-BricolageGrotesqueRegular text-sm"
+        />
+
+        <Space direction="horizontal" size={"small"}>
+          <Image src={Google} alt="google" className="cursor-pointer" />
+          <Image src={Facebook} alt="fb" className="cursor-pointer" />
+          <Image src={Twitter} alt="twitter" className="cursor-pointer" />
+        </Space>
+      </div>
     </Form>
   );
 }
