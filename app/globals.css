@@ -271,9 +271,7 @@ body {
   font-size: 14px;
   line-height: 1.5714285714285714;
   list-style: none;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: BricolageGrotesqueRegular !important;
   position: relative;
   display: inline-block;
   width: 100%;
@@ -286,4 +284,25 @@ body {
   border-radius: 15px !important;
   height: 41px !important;
   transition: all 0.2s;
+}
+
+:where(.css-zcfrx9).ant-input-affix-wrapper {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+  min-width: 0;
+  padding: 4px 16px !important;
+  color: rgba(0, 0, 0, 0.88);
+  font-size: 14px;
+  line-height: 1.5714285714285714;
+  background-color: #ffffff;
+  background-image: none;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d9d9d9;
+  border-radius: 21px;
+  transition: all 0.2s;
+  height: 50px !important;
+  text-align: center;
+  font-family: BricolageGrotesqueRegular !important;
 }
