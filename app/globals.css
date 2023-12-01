@@ -174,9 +174,9 @@ body {
 }
 
 :where(.css-dev-only-do-not-override-zcfrx9).ant-select-single {
-  font-size: 14px;
-  height: 41px;
-  border-radius: 15px;
+  font-size: 14px !important;
+  height: 41px !important;
+  border-radius: 15px !important;
   font-family: BricolageGrotesqueMedium !important;
   outline: none !important;
   box-shadow: none !important;
@@ -186,12 +186,12 @@ body {
     .ant-select-customize-input
   )
   .ant-select-selector {
-  border-radius: 15px;
+  border-radius: 15px !important;
   font-family: BricolageGrotesqueMedium !important;
   outline: none !important;
   box-shadow: none !important;
-  padding: 0px 20px;
-  height: 41px;
+  padding: 0px 20px !important;
+  height: 41px !important;
   border: 1px solid #d0d4d4 !important;
 }
 
@@ -200,15 +200,15 @@ body {
 :where(.css-dev-only-do-not-override-zcfrx9).ant-col-24.ant-form-item-label,
 :where(.css-dev-only-do-not-override-zcfrx9).ant-col-xl-24.ant-form-item-label {
   font-family: BricolageGrotesqueRegular !important;
-  font-weight: 400;
+  font-weight: 400 !important;
 }
 
 :where(.css-dev-only-do-not-override-zcfrx9).ant-input {
-  border-radius: 15px;
-  height: 41px;
+  border-radius: 15px !important;
+  height: 41px !important;
   border: 1px solid #d0d4d4 !important;
   font-family: BricolageGrotesqueRegular !important;
-  padding: 0px 20px;
+  padding: 0px 20px !important;
 }
 
 :where(.css-dev-only-do-not-override-zcfrx9).ant-input:focus,
@@ -217,7 +217,7 @@ body {
 }
 
 :where(.css-dev-only-do-not-override-zcfrx9).ant-input-affix-wrapper {
-  border-radius: 15px;
+  border-radius: 15px !important;
 }
 
 :where(.css-dev-only-do-not-override-zcfrx9).ant-input-affix-wrapper
@@ -227,12 +227,12 @@ body {
 
 :where(.css-dev-only-do-not-override-zcfrx9).ant-form-item
   .ant-form-item-control-input-content {
-  height: 41px;
+  height: 41px !important;
 }
 
 :where(.css-dev-only-do-not-override-zcfrx9).ant-input-affix-wrapper {
-  padding: 0px 20px;
-  height: 44px;
+  padding: 0px 20px !important;
+  height: 44px !important;
 }
 
 /* :where(.css-dev-only-do-not-override-zcfrx9).ant-input-affix-wrapper
