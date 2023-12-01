@@ -173,7 +173,7 @@ body {
   background-position: center;
   background-size: auto;
   background-position-x: 36%;
-  background-position-y: 2%;
+  background-position-y: -15%;
 }
 
 :where(.css-dev-only-do-not-override-zcfrx9).ant-select-single {
