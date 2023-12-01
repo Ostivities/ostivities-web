@@ -311,7 +311,7 @@ body {
   flex-grow: 0;
   overflow: hidden;
   white-space: nowrap;
-  text-align: end;
+  /* text-align: end; */
   vertical-align: middle;
   font-family: "BricolageGrotesqueRegular";
 }
