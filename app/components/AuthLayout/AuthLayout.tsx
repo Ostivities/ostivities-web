@@ -12,8 +12,8 @@ function AuthLayout({ children }: IAuthLayout): JSX.Element {
         <div className="md:container md:mx-auto lg:container lg:mx-auto xl:container xl:mx-auto px-5 pt-8 pb-12 md:pb-12 lg:pb-0 xl:pb-0 md:pt-6 lg:pt-6 xl:pt-6 relative">
           <div className="flex flex-row items-center auth-background">
             <div className="w-5/12 flex flex-col">
-              <Heading3 className="hidden" content="Welcome to " />
-              <Heading3 className="hidden" content="Ostivities" />
+              <Heading3 className="" content="Welcome to " />
+              <Heading3 className="" content="Ostivities" />
             </div>
             <div className="w-7/12">
               <Card

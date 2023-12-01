@@ -204,8 +204,8 @@ function CreateAccount(): JSX.Element {
 
       <div className="mx-auto flex flex-col space-y-5 mt-4 mb-5">
         <Small
-          content="or sign up with "
-          className="font-BricolageGrotesqueRegular text-sm"
+          content="or sign up with"
+          className="font-BricolageGrotesqueRegular text-sm text-center"
         />
 
         <Space direction="horizontal" size={"small"}>
