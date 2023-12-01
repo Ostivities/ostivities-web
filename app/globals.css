@@ -306,3 +306,12 @@ body {
   text-align: center;
   font-family: BricolageGrotesqueRegular !important;
 }
+
+:where(.css-zcfrx9).ant-form-item .ant-form-item-label {
+  flex-grow: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: end;
+  vertical-align: middle;
+  font-family: "BricolageGrotesqueRegular";
+}
