@@ -332,3 +332,7 @@ body {
   line-height: 1;
   content: "" !important;
 }
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-switch.ant-switch-checked {
+  background: #e20000;
+}
