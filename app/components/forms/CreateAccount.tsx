@@ -13,7 +13,6 @@ function CreateAccount(): JSX.Element {
     console.log(value);
   };
 
-  console.log(val, "vv");
   return (
     <Form
       name="validateOnly"
@@ -21,7 +20,7 @@ function CreateAccount(): JSX.Element {
       onFinish={onFinish}
       autoComplete="off"
       form={form}
-      className="w-full font-BricolageGrotesqueRegular flex flex-col space-y-7"
+      className="w-full font-BricolageGrotesqueRegular flex flex-col"
       style={{ fontFamily: "BricolageGrotesqueRegular" }}
     >
       <Form.Item
@@ -60,22 +59,110 @@ function CreateAccount(): JSX.Element {
       <Row gutter={8}>
         <Col span={12}>
           <Form.Item
-            name="firstname"
             label="First Name"
-            noStyle
-            rules={[{ required: true, message: "Please input first name" }]}
+            style={{ fontFamily: "BricolageGrotesqueRegular" }}
+            className="font-BricolageGrotesqueRegular"
           >
-            <Input />
+            <Form.Item
+              name="firstname"
+              label="First Name"
+              noStyle
+              rules={[{ required: true, message: "Please input first name" }]}
+            >
+              <Input
+                placeholder="Enter your first name "
+                className="placeholder:font-BricolageGrotesqueRegular"
+              />
+            </Form.Item>
           </Form.Item>
         </Col>
         <Col span={12}>
           <Form.Item
-            name="firstname"
+            name="lastname"
             label="Last Name"
-            noStyle
-            rules={[{ required: true, message: "Please input last name" }]}
+            style={{ fontFamily: "BricolageGrotesqueRegular" }}
+            className="font-BricolageGrotesqueRegular"
           >
-            <Input />
+            <Form.Item
+              name="lastname"
+              label="Last Name"
+              noStyle
+              rules={[{ required: true, message: "Please input last name" }]}
+            >
+              <Input
+                placeholder="Enter your last name"
+                className="placeholder:font-BricolageGrotesqueRegular"
+              />
+            </Form.Item>
+          </Form.Item>
+        </Col>
+      </Row>
+
+      <Form.Item
+        label="Email Address"
+        style={{ fontFamily: "BricolageGrotesqueRegular" }}
+        className="font-BricolageGrotesqueRegular"
+      >
+        <Form.Item
+          noStyle
+          rules={[{ required: true, message: "Please input your email" }]}
+        >
+          <Input
+            placeholder="Enter your email"
+            className="placeholder:font-BricolageGrotesqueRegular"
+          />
+        </Form.Item>
+      </Form.Item>
+
+      <Row gutter={8}>
+        <Col span={12}>
+          <Form.Item
+            label="Password"
+            style={{ fontFamily: "BricolageGrotesqueRegular" }}
+            className="font-BricolageGrotesqueRegular"
+          >
+            <Form.Item
+              name="password"
+              noStyle
+              rules={[
+                { required: true, message: "Please input your password" },
+              ]}
+            >
+              <Input.Password
+                placeholder="Enter your password"
+                className="placeholder:font-BricolageGrotesqueRegular"
+              />
+            </Form.Item>
+          </Form.Item>
+        </Col>
+
+        <Col span={12}>
+          <Form.Item
+            name="confirm"
+            label="Confirm Password"
+            dependencies={["password"]}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: "Please confirm your password!",
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error("The new password that you entered do not match!")
+                  );
+                },
+              }),
+            ]}
+          >
+            <Input.Password
+              placeholder="Re-enter your password"
+              className="placeholder:font-BricolageGrotesqueRegular"
+            />
           </Form.Item>
         </Col>
       </Row>

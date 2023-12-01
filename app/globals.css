@@ -202,3 +202,34 @@ body {
   font-family: BricolageGrotesqueRegular !important;
   font-weight: 400;
 }
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-input {
+  border-radius: 15px;
+  height: 41px;
+  border: 1px solid #d0d4d4 !important;
+  font-family: BricolageGrotesqueRegular !important;
+  padding: 0px 20px;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-input:focus,
+:where(.css-dev-only-do-not-override-zcfrx9).ant-input:focus-within {
+  box-shadow: none !important;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-input-affix-wrapper {
+  border-radius: 15px;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-input-affix-wrapper
+  > input.ant-input {
+  border: none !important;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-form-item
+  .ant-form-item-control-input-content {
+  height: 41px;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-input-affix-wrapper {
+  padding: 3px 20px;
+}
