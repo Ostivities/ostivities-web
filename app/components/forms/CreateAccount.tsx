@@ -1,11 +1,8 @@
 "use client";
 import { Small } from "@/app/components//typography/Typography";
+import Auth from "@/app/utils/Auth";
 import { ACCOUNT_TYPE } from "@/app/utils/enums";
-import Facebook from "@/public/facebook.svg";
-import Google from "@/public/google.svg";
-import Twitter from "@/public/Twitter.svg";
-import { Button, Checkbox, Col, Form, Input, Row, Select, Space } from "antd";
-import Image from "next/image";
+import { Button, Checkbox, Col, Form, Input, Row, Select } from "antd";
 import React, { useState } from "react";
 
 function CreateAccount(): JSX.Element {
@@ -209,11 +206,7 @@ function CreateAccount(): JSX.Element {
           className="font-BricolageGrotesqueRegular text-sm text-center"
         />
 
-        <Space direction="horizontal" size={"small"}>
-          <Image src={Google} alt="google" className="cursor-pointer" />
-          <Image src={Facebook} alt="fb" className="cursor-pointer" />
-          <Image src={Twitter} alt="twitter" className="cursor-pointer" />
-        </Space>
+        <Auth />
       </div>
     </Form>
   );
