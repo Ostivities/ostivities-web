@@ -231,7 +231,7 @@ body {
 }
 
 :where(.css-dev-only-do-not-override-zcfrx9).ant-input-affix-wrapper {
-  padding: 0px 20px !important;
+  padding: 0px 10px !important;
   height: 44px !important;
 }
 
@@ -248,4 +248,9 @@ body {
     .ant-form-item-required-mark-optional
   )::before {
   content: "" !important;
+}
+
+:where(.css-zcfrx9).ant-select-single {
+  font-size: 14px;
+  height: 41px;
 }
