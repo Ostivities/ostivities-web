@@ -6,6 +6,7 @@ export interface INavLinks {
 export interface ITypography {
   content?: string | React.ReactNode;
   className?: string;
+  styles?: React.CSSProperties;
 }
 
 export interface IFeatures {

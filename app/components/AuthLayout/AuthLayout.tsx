@@ -11,9 +11,25 @@ function AuthLayout({ children }: IAuthLayout): JSX.Element {
       <section className="overflow-hidden bg-OWANBE_AUTH_BG min-h-screen">
         <div className="md:container md:mx-auto lg:container lg:mx-auto xl:container xl:mx-auto px-5 pt-8 pb-12 md:pb-12 lg:pb-0 xl:pb-0 md:pt-6 lg:pt-0 xl:pt-0 relative">
           <div className="flex flex-row items-center auth-background mt-3">
-            <div className="w-5/12 flex flex-col">
-              <Heading3 className="" content="Welcome to " />
-              <Heading3 className="" content="Ostivities" />
+            <div className="w-5/12 flex flex-col space-y-3">
+              <h5
+                className="leading-10 font-BricolageGrotesqueRegular"
+                style={{
+                  color: "#000000 !important",
+                  fontSize: "52px !important",
+                  fontWeight: "normal !important",
+                }}
+              >
+                Welcome to
+              </h5>
+              <Heading3
+                className=""
+                content="Ostivities"
+                styles={{
+                  color: "#E20000 !important",
+                  fontSize: "52px !important",
+                }}
+              />
             </div>
             <div className="w-7/12">
               <Card

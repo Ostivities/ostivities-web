@@ -112,6 +112,7 @@ function CreateAccount(): JSX.Element {
           rules={[{ required: true, message: "Please input your email" }]}
         >
           <Input
+            type="email"
             placeholder="Enter your email"
             className="placeholder:font-BricolageGrotesqueRegular"
           />

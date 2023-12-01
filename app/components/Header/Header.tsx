@@ -38,7 +38,7 @@ function Header(): JSX.Element {
               <Image
                 src={OwanbeLogo}
                 alt="Owanbe Logo"
-                style={{ height: "40px" }}
+                style={{ height: "40px"  }}
               />
             </Link>
           </div>

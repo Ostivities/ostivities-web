@@ -1,9 +1,16 @@
 import { ITypography } from "@/app/utils/interface";
 
-const Heading3 = ({ content, className }: ITypography) => {
+const Heading3 = ({ content, className, styles }: ITypography) => {
+  let _styles: React.CSSProperties = styles || {};
+  if (styles) {
+    _styles = {
+      ...styles,
+    };
+  }
   return (
     <h3
       className={`font-BricolageGrotesqueBold font-bold text-lg md:text-xl lg:text-4xl xl:text-4xl text-black ${className}`}
+      style={_styles}
     >
       {content}
     </h3>
