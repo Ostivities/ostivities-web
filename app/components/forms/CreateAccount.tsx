@@ -3,7 +3,7 @@ import { Small } from "@/app/components//typography/Typography";
 import { ACCOUNT_TYPE } from "@/app/utils/enums";
 import Facebook from "@/public/facebook.svg";
 import Google from "@/public/google.svg";
-import Twitter from "@/public/twitter.svg";
+import Twitter from "@/public/Twitter.svg";
 import { Button, Checkbox, Col, Form, Input, Row, Select, Space } from "antd";
 import Image from "next/image";
 import React, { useState } from "react";
