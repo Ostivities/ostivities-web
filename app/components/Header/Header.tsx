@@ -32,13 +32,13 @@ function Header(): JSX.Element {
     >
       <header className="overflow-hidden">
         {/* LG && XL SCREENS */}
-        <nav className="container mx-auto relative hidden md:hidden lg:flex lg:flex-row lg:items-center lg:justify-between xl:flex xl:flex-row xl:items-center xl:justify-between py-7 px-0 md:px-5 lg:px-0 xl:px-0">
+        <nav className="container mx-auto relative hidden md:hidden lg:flex lg:flex-row lg:items-center lg:justify-between xl:flex xl:flex-row xl:items-center xl:justify-between py-5 px-0 md:px-5 lg:px-0 xl:px-0">
           <div>
             <Link href="/" className="" shallow>
               <Image
                 src={OwanbeLogo}
                 alt="Owanbe Logo"
-                style={{ height: "54px" }}
+                style={{ height: "40px" }}
               />
             </Link>
           </div>
