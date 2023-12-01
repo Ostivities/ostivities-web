@@ -283,7 +283,8 @@ body {
   background-image: none;
   border-width: 1px;
   border-style: solid;
-  border-color: #d9d9d9;
+  border-color: #d0d4d4;
+  border: 1px solid #d0d4d4;
   border-radius: 20px !important;
   height: 44px !important;
   transition: all 0.2s;
@@ -302,8 +303,9 @@ body {
   background-image: none;
   border-width: 1px;
   border-style: solid;
-  border-color: #d9d9d9;
+  border-color: #d0d4d4;
   border-radius: 21px;
+  border: 1px solid #d0d4d4;
   transition: all 0.2s;
   height: 47px !important;
   text-align: center;
