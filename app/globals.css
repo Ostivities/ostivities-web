@@ -168,9 +168,10 @@ body {
 }
 
 .auth-background {
-  background-image: url(/public/Topology-2.svg);
+  background-image: url(/Topology-2.svg);
   background-repeat: no-repeat;
   background-position: center center;
+  background-size: auto;
 }
 
 :where(.css-dev-only-do-not-override-zcfrx9).ant-select-single {
