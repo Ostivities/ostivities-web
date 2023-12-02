@@ -95,6 +95,7 @@ function DashboardLayout(): JSX.Element {
             alt="Owanbe Logo"
             style={{ width: "40px", height: "35px" }}
             className="cursor-pointer"
+            onClick={() => setCollapsed(!collapsed)}
           />
         </div>
 
@@ -104,26 +105,22 @@ function DashboardLayout(): JSX.Element {
           align="center"
           size={"small"}
         >
-          <div className="align-bottom">
-            <Badge count={1}>
-              <BellFilled
-                className="cursor-pointer"
-                style={{ fontSize: "26px", color: "#8C95A1" }}
-              />
-            </Badge>
-          </div>
+          <Badge count={1}>
+            <BellFilled
+              className="cursor-pointer"
+              style={{ fontSize: "26px", color: "#8C95A1" }}
+            />
+          </Badge>
 
-          <div className="align-bottom">
-            <Avatar
-              size={40}
-              style={{
-                background: "#E20000",
-                fontFamily: "BricolageGrotesqueMedium",
-              }}
-            >
-              IR
-            </Avatar>
-          </div>
+          <Avatar
+            size={40}
+            style={{
+              background: "#E20000",
+              fontFamily: "BricolageGrotesqueMedium",
+            }}
+          >
+            IR
+          </Avatar>
         </Space>
       </Header>
       <Layout>
@@ -131,6 +128,9 @@ function DashboardLayout(): JSX.Element {
           width={200}
           style={{ background: colorBgContainer, overflowY: "scroll" }}
           breakpoint="lg"
+          trigger={null}
+          collapsible
+          collapsed={collapsed}
         >
           <Menu
             mode="inline"
