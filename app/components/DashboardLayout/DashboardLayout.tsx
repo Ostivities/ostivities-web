@@ -115,6 +115,7 @@ function DashboardLayout(): JSX.Element {
             background: colorBgContainer,
             overflowY: "scroll",
             fontFamily: "BricolageGrotesqueMedium !important",
+            paddingTop: "60px",
           }}
           breakpoint="lg"
           trigger={null}
