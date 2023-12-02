@@ -10,8 +10,8 @@ function AuthLayout({ children }: IAuthLayout): JSX.Element {
       <Header />
       <section className="overflow-hidden bg-OWANBE_AUTH_BG min-h-screen">
         <div className="md:container md:mx-auto lg:container lg:mx-auto xl:container xl:mx-auto px-5 pt-8 pb-12 md:pb-12 lg:pb-0 xl:pb-0 md:pt-6 lg:pt-0 xl:pt-0 relative">
-          <div className="flex flex-row items-center auth-background mt-3">
-            <div className="w-5/12 flex flex-col space-y-3">
+          <div className="flex flex-row items-start auth-background mt-3">
+            <div className="w-5/12 flex flex-col space-y-3 pt-80">
               <h5
                 className="leading-10 font-BricolageGrotesqueRegular"
                 style={{
@@ -31,9 +31,9 @@ function AuthLayout({ children }: IAuthLayout): JSX.Element {
                 }}
               />
             </div>
-            <div className="w-7/12">
+            <div className="w-7/12 h-screen">
               <Card
-                className="min-h-full px-5"
+                className="min-h-full px-5 pb-b"
                 style={{
                   borderRadius: "70px 70px 0px 0px",
                   boxShadow: "0px 8px 24px 0px #00000014",
