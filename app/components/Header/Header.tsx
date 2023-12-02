@@ -62,7 +62,7 @@ function Header(): JSX.Element {
                   type="default"
                   size={"large"}
                   className={`font-BricolageGrotesqueMedium button-styles sign-in `}
-                  // onClick={() => router.push("/login")}
+                  onClick={() => router.push("/login")}
                 >
                   Sign in
                 </Button>
