@@ -3,16 +3,7 @@ import Hamburger from "@/public/hamburger.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
 import { BellFilled, SettingOutlined, UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import {
-  Avatar,
-  Badge,
-  Breadcrumb,
-  Layout,
-  List,
-  Menu,
-  Space,
-  theme,
-} from "antd";
+import { Avatar, Badge, Breadcrumb, Layout, Menu, Space, theme } from "antd";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -66,6 +57,7 @@ function DashboardLayout(): JSX.Element {
           alignItems: "center",
           padding: 20,
           justifyContent: "space-between",
+          backgroundColor: "#ffffff",
         }}
       >
         <div className="demo-logo flex flex-row items-center space-x-12">
@@ -123,6 +115,10 @@ function DashboardLayout(): JSX.Element {
           trigger={null}
           collapsible
           collapsed={collapsed}
+          zeroWidthTriggerStyle={{ background: "green !important" }}
+          onBreakpoint={(broken: any) => {
+            console.log(broken, "broken");
+          }}
         >
           <Menu
             mode="inline"

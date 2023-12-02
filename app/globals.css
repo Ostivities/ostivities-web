@@ -393,3 +393,30 @@ body {
 :where(.css-zcfrx9).ant-menu .ant-menu-submenu-title .anticon + span {
   font-family: "BricolageGrotesqueRegular" !important;
 }
+
+:where(.css-zcfrx9).ant-menu-light:not(.ant-menu-horizontal)
+  .ant-menu-item:not(.ant-menu-item-selected):hover,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu:not(.ant-menu-horizontal)
+  .ant-menu-item:not(.ant-menu-item-selected):hover {
+  font-family: "BricolageGrotesqueMedium" !important;
+}
+
+:where(.css-zcfrx9).ant-menu-light
+  .ant-menu-item:not(.ant-menu-item-selected):not(
+    .ant-menu-submenu-selected
+  ):hover,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu
+  .ant-menu-item:not(.ant-menu-item-selected):not(
+    .ant-menu-submenu-selected
+  ):hover,
+:where(.css-zcfrx9).ant-menu-light
+  .ant-menu-item:not(.ant-menu-item-selected):not(.ant-menu-submenu-selected)
+  > .ant-menu-submenu-title:hover,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu
+  .ant-menu-item:not(.ant-menu-item-selected):not(.ant-menu-submenu-selected)
+  > .ant-menu-submenu-title:hover {
+  font-family: "BricolageGrotesqueMedium" !important;
+}
