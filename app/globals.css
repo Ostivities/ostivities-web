@@ -359,7 +359,8 @@ body {
   background: #e20000;
 }
 
-:where(.css-zcfrx9).ant-btn-primary {
+:where(.css-zcfrx9).ant-btn-primary,
+:where(.css-zcfrx9).ant-btn {
   box-shadow: none !important;
   font-family: "BricolageGrotesqueMedium" !important;
 }
