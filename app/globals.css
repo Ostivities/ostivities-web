@@ -370,6 +370,7 @@ body {
 :where(.css-zcfrx9).ant-input-affix-wrapper:focus,
 :where(.css-zcfrx9).ant-input-affix-wrapper:focus-within {
   border-color: #d0d4d4 !important;
+  box-shadow: none !important;
 }
 
 :where(.css-zcfrx9).ant-input:focus,
