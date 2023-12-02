@@ -152,7 +152,9 @@ function DashboardLayout(): JSX.Element {
             }}
           >
             <div className="demo-logo flex flex-row items-center space-x-12">
-              <h5>Event Discovery</h5>
+              <h5 className="font-BricolageGrotesqueRegular font-normal text-black text-3xl">
+                Event Discovery
+              </h5>
             </div>
           </Header>
 
