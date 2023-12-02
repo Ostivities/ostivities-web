@@ -3,14 +3,18 @@ import { Small } from "@/app/components/typography/Typography";
 import Auth from "@/app/utils/Auth";
 import { Button, Form, Input, Space, Switch } from "antd";
 import Link from "next/link";
-
+import { useRouter } from "next/navigation";
 import React from "react";
 
 function LoginForm(): JSX.Element {
   const [form] = Form.useForm();
+  const router = useRouter();
 
-  const onFinish = (value: object) => {
-    console.log(value);
+  const onFinish = (value: any) => {
+    console.log(value, "value");
+    if (value?.email && value?.password) {
+      router.push("/dashboard");
+    }
   };
   return (
     <Form
@@ -28,6 +32,7 @@ function LoginForm(): JSX.Element {
         className="font-BricolageGrotesqueRegular"
       >
         <Form.Item
+          name={"email"}
           noStyle
           rules={[{ required: true, message: "Please input your email" }]}
         >
@@ -50,7 +55,7 @@ function LoginForm(): JSX.Element {
           className="placeholder:font-BricolageGrotesqueRegular"
         />
       </Form.Item>
-      <Form.Item>
+      <Form.Item name="remember">
         <div className="flex flex-row items-center justify-between">
           <Form.Item
             label="Remember me"
