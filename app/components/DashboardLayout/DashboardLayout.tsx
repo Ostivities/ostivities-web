@@ -10,8 +10,8 @@ import React, { useState } from "react";
 
 const items2: MenuProps["items"] = [
   { icon: UserOutlined, title: "Discovery", link: "/dashboard" },
-  { icon: UserOutlined, title: "Events", link: "/events" },
-  { icon: SettingOutlined, title: "Settings", link: "/settings" },
+  { icon: UserOutlined, title: "Events", link: "/dashboard/events" },
+  { icon: SettingOutlined, title: "Settings", link: "/dashboard/settings" },
 ].map((icon) => {
   const key = icon.link;
 
@@ -43,7 +43,6 @@ function DashboardLayout({
   } = theme.useToken();
 
   const onClick: MenuProps["onClick"] = (e: any) => {
-    console.log("click ", e);
     router.push(e?.key);
   };
 
