@@ -21,11 +21,6 @@ import {
 import Image from "next/image";
 import React, { useState } from "react";
 
-const items1: MenuProps["items"] = ["1", "2", "3", "4"].map((key) => ({
-  key,
-  label: `nav ${key}`,
-}));
-
 const items2: MenuProps["items"] = [
   UserOutlined,
   LaptopOutlined,
@@ -47,12 +42,6 @@ const items2: MenuProps["items"] = [
     // }),
   };
 });
-
-const data = [
-  {
-    title: "Ant Design Title 1",
-  },
-];
 
 function DashboardLayout(): JSX.Element {
   const { Header, Sider, Content, Footer } = Layout;
@@ -87,7 +76,7 @@ function DashboardLayout(): JSX.Element {
             src={OwanbeLogo}
             alt="Owanbe Logo"
             style={{ height: "40px" }}
-            className="w-[110px]"
+            className="w-[110px] cursor-pointer"
           />
 
           <Image
@@ -105,18 +94,21 @@ function DashboardLayout(): JSX.Element {
           align="center"
           size={"small"}
         >
-          <Badge count={1}>
-            <BellFilled
-              className="cursor-pointer"
-              style={{ fontSize: "26px", color: "#8C95A1" }}
-            />
-          </Badge>
+          <div className="mt-5">
+            <Badge count={1}>
+              <BellFilled
+                className="cursor-pointer"
+                style={{ fontSize: "26px", color: "#8C95A1" }}
+              />
+            </Badge>
+          </div>
 
           <Avatar
             size={40}
             style={{
               background: "#E20000",
               fontFamily: "BricolageGrotesqueMedium",
+              cursor: "pointer",
             }}
           >
             IR
