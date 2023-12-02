@@ -59,8 +59,8 @@ body {
   width: 120px;
 }
 .sign-up {
-  background: #e20000;
-  color: #ffffff;
+  background: #e20000 !important;
+  color: #ffffff !important;
 }
 
 .sign-up:hover,
