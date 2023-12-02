@@ -1,7 +1,7 @@
 "use client";
 import { Small } from "@/app/components/typography/Typography";
 import Auth from "@/app/utils/Auth";
-import { Button, Form, Input, Switch } from "antd";
+import { Button, Form, Input, Space, Switch } from "antd";
 import Link from "next/link";
 import React from "react";
 
@@ -56,10 +56,12 @@ function LoginForm(): JSX.Element {
             valuePropName="checked"
             noStyle
           >
-            <Switch size="small" />{" "}
-            {/* <span className="font-BricolageGrotesqueRegular font-normal text-OWANBE_LIGHT_DARK">
-              Remember me
-            </span> */}
+            <Space direction="horizontal" size={"small"} align="baseline">
+              <Switch size="default" />
+              <span className="font-BricolageGrotesqueRegular font-normal text-OWANBE_LIGHT_DARK">
+                Remember me
+              </span>
+            </Space>
           </Form.Item>
 
           <Link
