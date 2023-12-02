@@ -1,6 +1,7 @@
 "use client";
 import { Heading3, Paragraph } from "@/app/components/typography/Typography";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Space } from "antd";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -38,7 +39,20 @@ function ForgotPasswordForm(): JSX.Element {
         </Form.Item>
       </Form.Item>
 
-      <Form.Item>
+      <div className="flex flex-row items-center justify-between">
+        <span className="font-BricolageGrotesqueRegular font-normal text-OWANBE_LIGHT_DARK">
+          Remember me
+        </span>
+
+        <Button
+          type="text"
+          className="text-OWANBE_PRY  hover:text-OWANBE_PRY  font-BricolageGrotesqueSemiBold font-semibold cursor-pointer"
+        >
+          Re-send Code
+        </Button>
+      </div>
+
+      <Form.Item style={{ marginTop: "20px" }}>
         <Button
           type="primary"
           htmlType="submit"
