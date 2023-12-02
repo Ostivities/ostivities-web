@@ -377,3 +377,19 @@ body {
 :where(.css-zcfrx9).ant-input:focus-within {
   border-color: #d0d4d4 !important;
 }
+
+:where(.css-zcfrx9).ant-menu-inline.ant-menu-root
+  .ant-menu-item
+  > .ant-menu-title-content,
+:where(.css-zcfrx9).ant-menu-inline.ant-menu-root
+  .ant-menu-submenu-title
+  > .ant-menu-title-content {
+  font-family: "BricolageGrotesqueMedium" !important;
+}
+
+:where(.css-zcfrx9).ant-menu .ant-menu-item .ant-menu-item-icon + span,
+:where(.css-zcfrx9).ant-menu .ant-menu-submenu-title .ant-menu-item-icon + span,
+:where(.css-zcfrx9).ant-menu .ant-menu-item .anticon + span,
+:where(.css-zcfrx9).ant-menu .ant-menu-submenu-title .anticon + span {
+  font-family: "BricolageGrotesqueRegular" !important;
+}
