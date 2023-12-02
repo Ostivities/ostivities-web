@@ -50,11 +50,16 @@ function LoginForm(): JSX.Element {
       </Form.Item>
       <Form.Item>
         <div className="flex flex-row items-center justify-between">
-          <Form.Item name="remember" valuePropName="checked" noStyle>
+          <Form.Item
+            label="Remember me"
+            name="remember"
+            valuePropName="checked"
+            noStyle
+          >
             <Switch />{" "}
-            <span className="font-BricolageGrotesqueRegular font-normal text-OWANBE_LIGHT_DARK">
+            {/* <span className="font-BricolageGrotesqueRegular font-normal text-OWANBE_LIGHT_DARK">
               Remember me
-            </span>
+            </span> */}
           </Form.Item>
 
           <Link

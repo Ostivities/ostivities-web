@@ -346,3 +346,15 @@ body {
   box-shadow: none !important;
   outline: none !important;
 }
+
+:where(.css-zcfrx9).ant-switch .ant-switch-inner {
+  display: block;
+  overflow: hidden;
+  border-radius: 100px;
+  height: 100%;
+  padding-inline-start: 24px;
+  padding-inline-end: 9px;
+  transition: padding-inline-start 0.2s ease-in-out,
+    padding-inline-end 0.2s ease-in-out;
+  background: #e20000;
+}
