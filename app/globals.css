@@ -364,3 +364,12 @@ body {
   box-shadow: none !important;
   font-family: "BricolageGrotesqueMedium" !important;
 }
+
+:where(.css-zcfrx9).ant-input:hover {
+  border-color: #d0d4d4 !important;
+}
+
+:where(.css-zcfrx9).ant-input:focus,
+:where(.css-zcfrx9).ant-input:focus-within {
+  border-color: #d0d4d4 !important;
+}
