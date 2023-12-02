@@ -47,6 +47,7 @@ function ForgotPasswordForm(): JSX.Element {
         <Button
           type="text"
           className="text-OWANBE_PRY  hover:text-OWANBE_PRY  font-BricolageGrotesqueSemiBold font-semibold cursor-pointer"
+          style={{ color: "#e20000" }}
         >
           Re-send Code
         </Button>
