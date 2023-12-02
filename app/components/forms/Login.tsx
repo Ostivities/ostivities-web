@@ -55,6 +55,7 @@ function LoginForm(): JSX.Element {
             name="remember"
             valuePropName="checked"
             noStyle
+            rules={[{ required: false }]}
           >
             <Space direction="horizontal" size={"small"} align="baseline">
               <Switch size="default" />
