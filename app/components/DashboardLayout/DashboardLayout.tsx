@@ -38,17 +38,6 @@ function DashboardLayout(): JSX.Element {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  function generateArray() {
-    const array = [];
-
-    for (let i = 1; i <= 1000; i++) {
-      array.push(i);
-    }
-
-    return array;
-  }
-
-  const myArray = generateArray();
   return (
     <Layout style={{ height: "100vh", fontFamily: "BricolageGrotesqueMedium" }}>
       <Header
@@ -158,26 +147,24 @@ function DashboardLayout(): JSX.Element {
             </div>
           </Header>
 
-          <Layout style={{ padding: "0 24px 24px" }}>
-            <Breadcrumb style={{ margin: "16px 0" }}>
-              <Breadcrumb.Item>Home</Breadcrumb.Item>
-              <Breadcrumb.Item>List</Breadcrumb.Item>
-              <Breadcrumb.Item>App</Breadcrumb.Item>
-            </Breadcrumb>
+          <Layout style={{ padding: "0 30px 30px" }}>
+            <Breadcrumb style={{ margin: "16px 0" }}></Breadcrumb>
             <Content
               style={{
-                padding: 24,
+                padding: 30,
                 margin: 0,
                 // minHeight: "auto",
                 maxHeight: "100%",
                 overflowY: "scroll",
                 overflowX: "hidden",
-                background: colorBgContainer,
+                // background: colorBgContainer,
+                borderRadius: "30px",
+                border: "1px solid #E5E5E5",
+                boxShadow: "0px 8px 24px 0px #00000014",
+                background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
               }}
             >
-              {[...myArray].map((item) => {
-                return <div key={item}>Content</div>;
-              })}
+              <div>Content</div>
             </Content>
           </Layout>
         </Layout>
