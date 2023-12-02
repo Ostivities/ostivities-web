@@ -5,19 +5,18 @@ import { BellFilled, SettingOutlined, UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Avatar, Badge, Breadcrumb, Layout, Menu, Space, theme } from "antd";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-//  LaptopOutlined, NotificationOutlined;
-
 const items2: MenuProps["items"] = [
-  { icon: UserOutlined, title: "Discovery" },
-  { icon: UserOutlined, title: "Events" },
-  { icon: SettingOutlined, title: "Settings" },
-].map((icon, index) => {
-  const key = String(index + 1);
+  { icon: UserOutlined, title: "Discovery", link: "/dashboard" },
+  { icon: UserOutlined, title: "Events", link: "/events" },
+  { icon: SettingOutlined, title: "Settings", link: "/settings" },
+].map((icon) => {
+  const key = icon.link;
 
   return {
-    key: `sub${key}`,
+    key: `${key}`,
     icon: React.createElement(icon.icon),
     label: icon.title,
 
@@ -36,11 +35,17 @@ function DashboardLayout({
 }: {
   children?: React.ReactNode;
 }): JSX.Element {
+  const router = useRouter();
   const { Header, Sider, Content, Footer } = Layout;
   const [collapsed, setCollapsed] = useState(true);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  const onClick: MenuProps["onClick"] = (e: any) => {
+    console.log("click ", e);
+    router.push(e?.key);
+  };
 
   return (
     <Layout style={{ height: "100vh", fontFamily: "BricolageGrotesqueMedium" }}>
@@ -132,6 +137,7 @@ function DashboardLayout({
               fontFamily: "BricolageGrotesqueMedium !important",
             }}
             items={items2}
+            onClick={onClick}
           />
         </Sider>
         <Layout>

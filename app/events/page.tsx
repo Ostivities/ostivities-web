@@ -1,12 +1,12 @@
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import React from "react";
 
-function Dashboard() {
+function Events(): JSX.Element {
   return (
     <DashboardLayout>
-      <div>Discovery</div>
+      <div>Events</div>
     </DashboardLayout>
   );
 }
 
-export default Dashboard;
+export default Events;

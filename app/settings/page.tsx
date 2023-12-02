@@ -1,12 +1,12 @@
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import React from "react";
 
-function Dashboard() {
+function Settings() {
   return (
     <DashboardLayout>
-      <div>Discovery</div>
+      <div>Settings</div>
     </DashboardLayout>
   );
 }
 
-export default Dashboard;
+export default Settings;
