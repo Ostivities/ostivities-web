@@ -8,7 +8,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Badge, Breadcrumb, Layout, Menu, Space, theme } from "antd";
+import { Avatar, Badge, Breadcrumb, Layout, Menu, Space, theme } from "antd";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -83,20 +83,26 @@ function DashboardLayout(): JSX.Element {
           />
         </div>
 
-        <Space direction="horizontal" align="center">
-          <Badge count={1} className="">
-            <BellFilled
-              className="cursor-pointer"
-              style={{ fontSize: "26px", color: "#8C95A1" }}
-            />
-          </Badge>
+        <Space
+          direction="horizontal"
+          className="space-x-8 items-center justify-center"
+          align="center"
+          size={"small"}
+        >
+          <div>
+            <Badge count={1}>
+              <BellFilled
+                className="cursor-pointer"
+                style={{ fontSize: "26px", color: "#8C95A1" }}
+              />
+            </Badge>
+          </div>
 
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            defaultSelectedKeys={["2"]}
-            items={items1}
-          />
+          <div>
+            <Avatar size={40} style={{ background: "#E20000" }}>
+              USER
+            </Avatar>
+          </div>
         </Space>
       </Header>
       <Layout>
