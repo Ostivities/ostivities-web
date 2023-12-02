@@ -63,6 +63,7 @@ function ForgotPasswordForm(): JSX.Element {
             width: "100%",
             height: "51px",
           }}
+          onClick={() => router.push("/password-reset")}
         >
           Continue
         </Button>
