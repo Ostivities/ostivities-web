@@ -153,11 +153,9 @@ function DashboardLayout(): JSX.Element {
               style={{
                 padding: 30,
                 margin: 0,
-                // minHeight: "auto",
                 maxHeight: "100%",
                 overflowY: "scroll",
                 overflowX: "hidden",
-                // background: colorBgContainer,
                 borderRadius: "30px",
                 border: "1px solid #E5E5E5",
                 boxShadow: "0px 8px 24px 0px #00000014",
