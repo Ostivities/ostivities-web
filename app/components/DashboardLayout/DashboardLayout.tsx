@@ -8,7 +8,16 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Avatar, Badge, Breadcrumb, Layout, Menu, Space, theme } from "antd";
+import {
+  Avatar,
+  Badge,
+  Breadcrumb,
+  Layout,
+  List,
+  Menu,
+  Space,
+  theme,
+} from "antd";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -38,6 +47,12 @@ const items2: MenuProps["items"] = [
     // }),
   };
 });
+
+const data = [
+  {
+    title: "Ant Design Title 1",
+  },
+];
 
 function DashboardLayout(): JSX.Element {
   const { Header, Sider, Content, Footer } = Layout;
@@ -89,7 +104,7 @@ function DashboardLayout(): JSX.Element {
           align="center"
           size={"small"}
         >
-          <div>
+          <div className="align-bottom">
             <Badge count={1}>
               <BellFilled
                 className="cursor-pointer"
@@ -98,9 +113,15 @@ function DashboardLayout(): JSX.Element {
             </Badge>
           </div>
 
-          <div>
-            <Avatar size={40} style={{ background: "#E20000" }}>
-              USER
+          <div className="align-bottom">
+            <Avatar
+              size={40}
+              style={{
+                background: "#E20000",
+                fontFamily: "BricolageGrotesqueMedium",
+              }}
+            >
+              IR
             </Avatar>
           </div>
         </Space>
