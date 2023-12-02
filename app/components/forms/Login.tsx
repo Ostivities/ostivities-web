@@ -3,10 +3,12 @@ import { Small } from "@/app/components/typography/Typography";
 import Auth from "@/app/utils/Auth";
 import { Button, Form, Input, Space, Switch } from "antd";
 import Link from "next/link";
+
 import React from "react";
 
 function LoginForm(): JSX.Element {
   const [form] = Form.useForm();
+
   const onFinish = (value: object) => {
     console.log(value);
   };
