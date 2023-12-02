@@ -179,6 +179,7 @@ const Accordion: React.FC = () => {
                         style={{
                           height: "24px",
                           width: "24px",
+                          background: keys === index ? "#E20000" : "#FFF2F2",
                         }}
                         className={`${
                           keys === index
