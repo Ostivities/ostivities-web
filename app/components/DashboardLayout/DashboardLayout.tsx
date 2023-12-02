@@ -20,7 +20,7 @@ import React, { useState } from "react";
 
 const items2: MenuProps["items"] = [
   { icon: UserOutlined, title: "Discovery" },
-  { icon: UserOutlined, title: "Discovery" },
+  { icon: UserOutlined, title: "Events" },
   { icon: SettingOutlined, title: "Settings" },
 ].map((icon, index) => {
   const key = String(index + 1);
@@ -59,7 +59,7 @@ function DashboardLayout(): JSX.Element {
 
   const myArray = generateArray();
   return (
-    <Layout style={{ height: "100vh" }}>
+    <Layout style={{ height: "100vh", fontFamily: "BricolageGrotesqueMedium" }}>
       <Header
         style={{
           display: "flex",
