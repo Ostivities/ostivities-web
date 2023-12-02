@@ -1,14 +1,15 @@
 "use client";
+import Hamburger from "@/public/hamburger.svg";
+import OwanbeLogo from "@/public/owanbe.svg";
 import {
   LaptopOutlined,
   NotificationOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Breadcrumb, Button, Layout, Menu, theme } from "antd";
-import { Content } from "next/font/google";
+import { Badge, Breadcrumb, Layout, Menu, Space, theme } from "antd";
+import Image from "next/image";
 import React, { useState } from "react";
-import Header from "../Header/Header";
 
 const items1: MenuProps["items"] = ["1", "2", "3", "4"].map((key) => ({
   key,
@@ -16,30 +17,6 @@ const items1: MenuProps["items"] = ["1", "2", "3", "4"].map((key) => ({
 }));
 
 const items2: MenuProps["items"] = [
-  UserOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
   UserOutlined,
   LaptopOutlined,
   NotificationOutlined,
@@ -51,13 +28,13 @@ const items2: MenuProps["items"] = [
     icon: React.createElement(icon),
     label: `subnav ${key}`,
 
-    children: new Array(4).fill(null).map((_, j) => {
-      const subKey = index * 4 + j + 1;
-      return {
-        key: subKey,
-        label: `option${subKey}`,
-      };
-    }),
+    // children: new Array(4).fill(null).map((_, j) => {
+    //   const subKey = index * 4 + j + 1;
+    //   return {
+    //     key: subKey,
+    //     label: `option${subKey}`,
+    //   };
+    // }),
   };
 });
 
@@ -81,19 +58,44 @@ function DashboardLayout(): JSX.Element {
   const myArray = generateArray();
   return (
     <Layout style={{ height: "100vh" }}>
-      <Header style={{ display: "flex", alignItems: "center" }}>
-        <div className="demo-logo" />
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          defaultSelectedKeys={["2"]}
-          items={items1}
-        />
+      <Header
+        style={{
+          display: "flex",
+          alignItems: "center",
+          padding: 20,
+          justifyContent: "space-between",
+        }}
+      >
+        <div className="demo-logo flex flex-row items-center space-x-12">
+          <Image
+            src={OwanbeLogo}
+            alt="Owanbe Logo"
+            style={{ height: "40px" }}
+            className="w-[110px]"
+          />
+
+          <Image
+            src={Hamburger}
+            alt="Owanbe Logo"
+            style={{ width: "40px", height: "35px" }}
+            className="cursor-pointer"
+          />
+        </div>
+
+        <Space direction="horizontal">
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            defaultSelectedKeys={["2"]}
+            items={items1}
+          />
+        </Space>
       </Header>
       <Layout>
         <Sider
           width={200}
           style={{ background: colorBgContainer, overflowY: "scroll" }}
+          breakpoint="lg"
         >
           <Menu
             mode="inline"
@@ -113,7 +115,8 @@ function DashboardLayout(): JSX.Element {
             style={{
               padding: 24,
               margin: 0,
-              minHeight: "auto",
+              // minHeight: "auto",
+              maxHeight: "100%",
               overflowY: "scroll",
               overflowX: "hidden",
               background: colorBgContainer,
