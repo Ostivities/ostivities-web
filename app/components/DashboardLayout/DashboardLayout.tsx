@@ -2,6 +2,7 @@
 import Hamburger from "@/public/hamburger.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
 import {
+  BellFilled,
   LaptopOutlined,
   NotificationOutlined,
   UserOutlined,
@@ -82,7 +83,14 @@ function DashboardLayout(): JSX.Element {
           />
         </div>
 
-        <Space direction="horizontal">
+        <Space direction="horizontal" align="center">
+          <Badge count={1} className="">
+            <BellFilled
+              className="cursor-pointer"
+              style={{ fontSize: "26px", color: "#8C95A1" }}
+            />
+          </Badge>
+
           <Menu
             theme="dark"
             mode="horizontal"
