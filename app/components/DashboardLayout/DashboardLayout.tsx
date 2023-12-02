@@ -1,12 +1,7 @@
 "use client";
 import Hamburger from "@/public/hamburger.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
-import {
-  BellFilled,
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { BellFilled, SettingOutlined, UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import {
   Avatar,
@@ -21,17 +16,19 @@ import {
 import Image from "next/image";
 import React, { useState } from "react";
 
+//  LaptopOutlined, NotificationOutlined;
+
 const items2: MenuProps["items"] = [
-  UserOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
+  { icon: UserOutlined, title: "Discovery" },
+  { icon: UserOutlined, title: "Discovery" },
+  { icon: SettingOutlined, title: "Settings" },
 ].map((icon, index) => {
   const key = String(index + 1);
 
   return {
     key: `sub${key}`,
-    icon: React.createElement(icon),
-    label: `subnav ${key}`,
+    icon: React.createElement(icon.icon),
+    label: icon.title,
 
     // children: new Array(4).fill(null).map((_, j) => {
     //   const subKey = index * 4 + j + 1;
@@ -45,7 +42,7 @@ const items2: MenuProps["items"] = [
 
 function DashboardLayout(): JSX.Element {
   const { Header, Sider, Content, Footer } = Layout;
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -98,7 +95,10 @@ function DashboardLayout(): JSX.Element {
             <Badge count={1}>
               <BellFilled
                 className="cursor-pointer"
-                style={{ fontSize: "26px", color: "#8C95A1" }}
+                style={{
+                  fontSize: "26px",
+                  color: "#8C95A1",
+                }}
               />
             </Badge>
           </div>
