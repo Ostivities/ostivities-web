@@ -56,7 +56,7 @@ function LoginForm(): JSX.Element {
             valuePropName="checked"
             noStyle
           >
-            <Switch />{" "}
+            <Switch size="small" />{" "}
             {/* <span className="font-BricolageGrotesqueRegular font-normal text-OWANBE_LIGHT_DARK">
               Remember me
             </span> */}
