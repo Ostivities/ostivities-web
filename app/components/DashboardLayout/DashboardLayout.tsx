@@ -58,6 +58,7 @@ function DashboardLayout(): JSX.Element {
           padding: 20,
           justifyContent: "space-between",
           backgroundColor: "#ffffff",
+          borderBottom: "2px solid #d0d4d4",
         }}
       >
         <div className="demo-logo flex flex-row items-center space-x-12">
@@ -110,12 +111,19 @@ function DashboardLayout(): JSX.Element {
       <Layout>
         <Sider
           width={200}
-          style={{ background: colorBgContainer, overflowY: "scroll" }}
+          style={{
+            background: colorBgContainer,
+            overflowY: "scroll",
+            fontFamily: "BricolageGrotesqueMedium !important",
+          }}
           breakpoint="lg"
           trigger={null}
           collapsible
           collapsed={collapsed}
-          zeroWidthTriggerStyle={{ background: "green !important" }}
+          zeroWidthTriggerStyle={{
+            background: "green !important",
+            fontFamily: "BricolageGrotesqueMedium !important",
+          }}
           onBreakpoint={(broken: any) => {
             console.log(broken, "broken");
           }}
@@ -124,39 +132,51 @@ function DashboardLayout(): JSX.Element {
             mode="inline"
             defaultSelectedKeys={["1"]}
             defaultOpenKeys={["sub1"]}
-            style={{ height: "100%", borderRight: 0 }}
+            style={{
+              height: "100%",
+              borderRight: 0,
+              fontFamily: "BricolageGrotesqueMedium !important",
+            }}
             items={items2}
           />
         </Sider>
-        <Layout style={{ padding: "0 24px 24px" }}>
-          <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item>
-          </Breadcrumb>
-          <Content
+        <Layout>
+          <Header
             style={{
-              padding: 24,
-              margin: 0,
-              // minHeight: "auto",
-              maxHeight: "100%",
-              overflowY: "scroll",
-              overflowX: "hidden",
-              background: colorBgContainer,
+              display: "flex",
+              alignItems: "center",
+              padding: 20,
+              justifyContent: "space-between",
+              backgroundColor: "#ffffff",
             }}
           >
-            {[...myArray].map((item) => {
-              return <div key={item}>Content</div>;
-            })}
-          </Content>
-          <Footer
-            style={{
-              textAlign: "center",
-              fontFamily: "BricolageGrotesqueMedium",
-            }}
-          >
-            Copyright 2023 - Ostivities all rights reserved
-          </Footer>
+            <div className="demo-logo flex flex-row items-center space-x-12">
+              <h5>Event Discovery</h5>
+            </div>
+          </Header>
+
+          <Layout style={{ padding: "0 24px 24px" }}>
+            <Breadcrumb style={{ margin: "16px 0" }}>
+              <Breadcrumb.Item>Home</Breadcrumb.Item>
+              <Breadcrumb.Item>List</Breadcrumb.Item>
+              <Breadcrumb.Item>App</Breadcrumb.Item>
+            </Breadcrumb>
+            <Content
+              style={{
+                padding: 24,
+                margin: 0,
+                // minHeight: "auto",
+                maxHeight: "100%",
+                overflowY: "scroll",
+                overflowX: "hidden",
+                background: colorBgContainer,
+              }}
+            >
+              {[...myArray].map((item) => {
+                return <div key={item}>Content</div>;
+              })}
+            </Content>
+          </Layout>
         </Layout>
       </Layout>
     </Layout>
