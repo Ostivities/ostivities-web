@@ -2,7 +2,11 @@ import React from "react";
 import DashboardLayout from "../components/DashboardLayout/DashboardLayout";
 
 function Dashboard() {
-  return <DashboardLayout />;
+  return (
+    <DashboardLayout>
+      <div>Discovery</div>
+    </DashboardLayout>
+  );
 }
 
 export default Dashboard;

@@ -31,7 +31,11 @@ const items2: MenuProps["items"] = [
   };
 });
 
-function DashboardLayout(): JSX.Element {
+function DashboardLayout({
+  children,
+}: {
+  children?: React.ReactNode;
+}): JSX.Element {
   const { Header, Sider, Content, Footer } = Layout;
   const [collapsed, setCollapsed] = useState(true);
   const {
@@ -153,7 +157,8 @@ function DashboardLayout(): JSX.Element {
               style={{
                 padding: 30,
                 margin: 0,
-                maxHeight: "100%",
+                height: "auto",
+                // maxHeight: "auto",
                 overflowY: "scroll",
                 overflowX: "hidden",
                 borderRadius: "30px",
@@ -162,7 +167,7 @@ function DashboardLayout(): JSX.Element {
                 background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
               }}
             >
-              <div>Content</div>
+              <div>{children}</div>
             </Content>
           </Layout>
         </Layout>
