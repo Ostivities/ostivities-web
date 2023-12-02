@@ -7,7 +7,7 @@ import React from "react";
 function PasswordReset() {
   return (
     <AuthLayout>
-      <div className="w-4/5 mx-auto flex flex-col space-y-8 pt-48">
+      <div className="w-4/5 mx-auto flex flex-col space-y-8 pt-32">
         <Space direction="vertical" size={"small"} className="w-5/6">
           <Heading3 content={"Password Reset"} className="" />
           <Paragraph
