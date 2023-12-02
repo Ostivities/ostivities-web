@@ -358,3 +358,8 @@ body {
     padding-inline-end 0.2s ease-in-out;
   background: #e20000;
 }
+
+:where(.css-zcfrx9).ant-btn-primary {
+  box-shadow: none !important;
+  font-family: "BricolageGrotesqueMedium" !important;
+}
