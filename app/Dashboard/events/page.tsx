@@ -3,7 +3,7 @@ import React from "react";
 
 function Events(): JSX.Element {
   return (
-    <DashboardLayout>
+    <DashboardLayout title="Events">
       <div>Events</div>
     </DashboardLayout>
   );

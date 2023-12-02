@@ -3,7 +3,7 @@ import React from "react";
 
 function Settings() {
   return (
-    <DashboardLayout>
+    <DashboardLayout title="Settings">
       <div>Settings</div>
     </DashboardLayout>
   );

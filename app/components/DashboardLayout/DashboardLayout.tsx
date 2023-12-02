@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const items2: MenuProps["items"] = [
-  { icon: UserOutlined, title: "Discovery", link: "/dashboard" },
+  { icon: UserOutlined, title: "Event Discovery", link: "/dashboard" },
   { icon: UserOutlined, title: "Events", link: "/dashboard/events" },
   { icon: SettingOutlined, title: "Settings", link: "/dashboard/settings" },
 ].map((icon) => {
@@ -32,8 +32,10 @@ const items2: MenuProps["items"] = [
 
 function DashboardLayout({
   children,
+  title,
 }: {
   children?: React.ReactNode;
+  title?: string;
 }): JSX.Element {
   const router = useRouter();
   const { Header, Sider, Content, Footer } = Layout;
@@ -43,6 +45,7 @@ function DashboardLayout({
   } = theme.useToken();
 
   const onClick: MenuProps["onClick"] = (e: any) => {
+    console.log(e, "click");
     router.push(e?.key);
   };
 
@@ -151,7 +154,7 @@ function DashboardLayout({
           >
             <div className="demo-logo flex flex-row items-center space-x-12">
               <h5 className="font-BricolageGrotesqueRegular font-normal text-black text-3xl">
-                Event Discovery
+                {title}
               </h5>
             </div>
           </Header>
