@@ -20,6 +20,7 @@ const items2: MenuProps["items"] = [
     icon: React.createElement(icon.icon),
     label: icon.title,
 
+    // HANDLES SUB MENU ON SIDE BAR
     // children: new Array(4).fill(null).map((_, j) => {
     //   const subKey = index * 4 + j + 1;
     //   return {
