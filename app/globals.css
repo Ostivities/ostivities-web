@@ -432,7 +432,49 @@ body {
 :where(.css-zcfrx9).ant-menu-light
   > .ant-menu.ant-menu-horizontal
   > .ant-menu-submenu-selected {
-  color: #081521;
+  color: #081521 !important;
   background-color: transparent;
   font-family: "BricolageGrotesqueMedium" !important;
+  font-weight: 600;
+}
+
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal > .ant-menu-item,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-item,
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal > .ant-menu-submenu,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-submenu {
+  font-family: "BricolageGrotesqueMedium" !important;
+  font-weight: 600;
+  color: #081521 !important;
+}
+
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-item-selected::after,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-item-selected::after,
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-submenu-selected::after,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-submenu-selected::after {
+  border-bottom-color: #e20000 !important;
+}
+
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-item-selected::after,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-item-selected::after,
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-submenu-selected::after,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-submenu-selected::after {
+  border-bottom-width: 6px !important;
+  border-bottom-color: #e20000 !important;
+  border-radius: 4px 4px 0px 0px !important;
 }
