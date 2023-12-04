@@ -18,3 +18,9 @@ export interface IFeatures {
 export interface IAuthLayout {
   children?: React.ReactNode;
 }
+
+export interface IDashboard {
+  children?: React.ReactNode;
+  title?: string;
+  tab?: React.ReactNode;
+}

@@ -3,7 +3,7 @@ import React from "react";
 
 function Events(): JSX.Element {
   return (
-    <DashboardLayout title="Events">
+    <DashboardLayout title="Events Creation" tab={<></>}>
       <div>Events</div>
     </DashboardLayout>
   );

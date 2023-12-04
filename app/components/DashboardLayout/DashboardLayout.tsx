@@ -1,4 +1,5 @@
 "use client";
+import { IDashboard } from "@/app/utils/interface";
 import Hamburger from "@/public/hamburger.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
 import { BellFilled, SettingOutlined, UserOutlined } from "@ant-design/icons";
@@ -8,9 +9,20 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
+const items1: MenuProps["items"] = [
+  {
+    label: "Create Event",
+    key: "create-event",
+  },
+  {
+    label: "Event created",
+    key: "event-create",
+  },
+];
+
 const items2: MenuProps["items"] = [
   { icon: UserOutlined, title: "Event Discovery", link: "/dashboard" },
-  { icon: UserOutlined, title: "Events", link: "/dashboard/events" },
+  { icon: UserOutlined, title: "Events Creation", link: "/dashboard/events" },
   { icon: SettingOutlined, title: "Settings", link: "/dashboard/settings" },
 ].map((icon) => {
   const key = icon.link;
@@ -31,22 +43,15 @@ const items2: MenuProps["items"] = [
   };
 });
 
-function DashboardLayout({
-  children,
-  title,
-}: {
-  children?: React.ReactNode;
-  title?: string;
-}): JSX.Element {
+function DashboardLayout({ children, title }: IDashboard): JSX.Element {
   const router = useRouter();
-  const { Header, Sider, Content, Footer } = Layout;
+  const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useState(true);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
   const onClick: MenuProps["onClick"] = (e: any) => {
-    console.log(e, "click");
     router.push(e?.key);
   };
 
@@ -158,6 +163,15 @@ function DashboardLayout({
                 {title}
               </h5>
             </div>
+            {title === "Events Creation" && (
+              <Menu
+                theme="light"
+                mode="horizontal"
+                defaultSelectedKeys={["create-event"]}
+                items={items1}
+                className="w-1/2 justify-end font-BricolageGrotesqueMedium"
+              />
+            )}
           </Header>
 
           <Layout style={{ padding: "0 30px 30px" }}>
