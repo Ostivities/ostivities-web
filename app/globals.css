@@ -421,3 +421,18 @@ body {
   > .ant-menu-submenu-title:hover {
   font-family: "BricolageGrotesqueMedium" !important;
 }
+
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-item-selected,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-item-selected,
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-submenu-selected,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-submenu-selected {
+  color: #081521;
+  background-color: transparent;
+  font-family: "BricolageGrotesqueMedium" !important;
+}
