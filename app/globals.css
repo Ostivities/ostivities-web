@@ -436,3 +436,14 @@ body {
   background-color: transparent;
   font-family: "BricolageGrotesqueMedium" !important;
 }
+
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal > .ant-menu-item,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-item,
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal > .ant-menu-submenu,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-submenu {
+  font-family: "BricolageGrotesqueMedium" !important;
+}
