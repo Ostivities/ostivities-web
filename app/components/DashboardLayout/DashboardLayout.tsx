@@ -4,7 +4,16 @@ import Hamburger from "@/public/hamburger.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
 import { BellFilled, SettingOutlined, UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Avatar, Badge, Breadcrumb, Layout, Menu, Space, theme } from "antd";
+import {
+  Avatar,
+  Badge,
+  Breadcrumb,
+  Layout,
+  Menu,
+  Space,
+  Steps,
+  theme,
+} from "antd";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -176,22 +185,71 @@ function DashboardLayout({ children, title }: IDashboard): JSX.Element {
 
           <Layout style={{ padding: "0 30px 30px" }}>
             <Breadcrumb style={{ margin: "16px 0" }}></Breadcrumb>
-            <Content
-              style={{
-                padding: 30,
-                margin: 0,
-                height: "auto",
-                // maxHeight: "auto",
-                overflowY: "scroll",
-                overflowX: "hidden",
-                borderRadius: "30px",
-                border: "1px solid #E5E5E5",
-                boxShadow: "0px 8px 24px 0px #00000014",
-                background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
-              }}
-            >
-              <div>{children}</div>
-            </Content>
+
+            {title === "Events Creation" ? (
+              <div className="flex flex-row">
+                <div className="w-1/12">
+                  <Steps
+                    progressDot
+                    current={1}
+                    direction="vertical"
+                    items={[
+                      {
+                        title: "Details",
+                        description: "",
+                      },
+                      {
+                        title: "Theme",
+                        description: "",
+                      },
+                      {
+                        title: "Tickets",
+                        description: "",
+                      },
+                    ]}
+                    size="small"
+                  />
+                </div>
+                <div className="w-11/12">
+                  <Content
+                    style={{
+                      padding: 30,
+                      margin: 0,
+                      height: "auto",
+                      // maxHeight: "auto",
+                      overflowY: "scroll",
+                      overflowX: "hidden",
+                      borderRadius: "30px",
+                      border: "1px solid #E5E5E5",
+                      boxShadow: "0px 8px 24px 0px #00000014",
+                      background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
+                      maxHeight: "auto",
+                    }}
+                  >
+                    <div>{children}</div>
+                  </Content>
+                </div>
+              </div>
+            ) : (
+              <>
+                <Content
+                  style={{
+                    padding: 30,
+                    margin: 0,
+                    height: "auto",
+                    // maxHeight: "auto",
+                    overflowY: "scroll",
+                    overflowX: "hidden",
+                    borderRadius: "30px",
+                    border: "1px solid #E5E5E5",
+                    boxShadow: "0px 8px 24px 0px #00000014",
+                    background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
+                  }}
+                >
+                  <div>{children}</div>
+                </Content>
+              </>
+            )}
           </Layout>
         </Layout>
       </Layout>
