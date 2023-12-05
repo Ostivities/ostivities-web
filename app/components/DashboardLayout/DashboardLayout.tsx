@@ -56,12 +56,18 @@ function DashboardLayout({ children, title }: IDashboard): JSX.Element {
   const router = useRouter();
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useState(true);
+  const [current, setCurrent] = useState(0);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
   const onClick: MenuProps["onClick"] = (e: any) => {
     router.push(e?.key);
+  };
+
+  const onChange = (value: number) => {
+    console.log("onChange:", value);
+    setCurrent(value);
   };
 
   return (
@@ -191,20 +197,25 @@ function DashboardLayout({ children, title }: IDashboard): JSX.Element {
                 <div className="w-1/12">
                   <Steps
                     progressDot
-                    current={1}
+                    responsive
+                    current={current}
                     direction="vertical"
+                    onChange={onChange}
                     items={[
                       {
                         title: "Details",
                         description: "",
+                        className: "font-BricolageGrotesqueRegular",
                       },
                       {
                         title: "Theme",
                         description: "",
+                        className: "font-BricolageGrotesqueRegular",
                       },
                       {
                         title: "Tickets",
                         description: "",
+                        className: "font-BricolageGrotesqueRegular",
                       },
                     ]}
                     size="small"
