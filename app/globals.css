@@ -528,4 +528,6 @@ body {
     .ant-btn-compact-first-item
   ).ant-btn-compact-last-item.ant-btn-lg {
   height: 44px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
 }

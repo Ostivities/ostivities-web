@@ -147,7 +147,7 @@ function Details(): JSX.Element {
               <Space.Compact className="w-full h-11">
                 <Input
                   style={{
-                    width: "40%",
+                    width: "70%",
                     borderTopRightRadius: "0px !important",
                     borderBottomRightRadius: "0px !important",
                   }}
