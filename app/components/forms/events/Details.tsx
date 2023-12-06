@@ -2,25 +2,12 @@
 import { Label } from "@/app/components/typography/Typography";
 import { STATES_IN_NIGERIA } from "@/app/utils/data";
 import { EVENT_INFO } from "@/app/utils/enums";
-// import { EVENT_INFO } from "@/app/utils/enums";
 import { IFormInput } from "@/app/utils/interface";
 import { UploadOutlined } from "@ant-design/icons";
 // import { schema } from "@/app/utils/validations";
 // import { yupResolver } from "@hookform/resolvers/yup";
-import {
-  Button,
-  Checkbox,
-  Col,
-  Form,
-  Input,
-  InputNumber,
-  Radio,
-  Row,
-  Select,
-  Space,
-  Upload,
-} from "antd";
-import React from "react";
+import { Button, DatePicker, Input, Radio, Select, Space, Upload } from "antd";
+import React, { useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 function Details(): JSX.Element {
@@ -31,15 +18,30 @@ function Details(): JSX.Element {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm({
+    watch,
+  } = useForm<IFormInput>({
     // resolver: yupResolver(schema),
   });
+  const watchEventInfo = watch("eventInfo");
+
+  console.log(watchEventInfo, "wss");
+
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) =>
+      //   console.log(value, name, type)
+      {
+        return;
+      }
+    );
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
   const onSubmit: SubmitHandler<IFormInput> = (data: any) => console.log(data);
   return (
     <form
       //@ts-ignore
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col space-y-5 py-5"
+      className="flex flex-col space-y-8 py-5"
     >
       <div className="grid grid-cols-2 gap-x-4">
         <div className="flex flex-col space-y-4 pr-6">
@@ -223,6 +225,90 @@ function Details(): JSX.Element {
                     Recurring Event
                   </Radio>
                 </Radio.Group>
+              </Space>
+            )}
+          />
+
+          <Controller
+            name="timeZone"
+            control={control}
+            render={({ field }) => (
+              <Space direction="vertical" size={"small"} className="w-full">
+                <Label content="Time Zone" className="" htmlFor="eventType" />
+                <Select
+                  placeholder="Select Event Type"
+                  {...field}
+                  style={{ width: "100%" }}
+                >
+                  {STATES_IN_NIGERIA.map((_i) => (
+                    <Option value={_i.state} key={_i.state}>
+                      {_i.state}
+                    </Option>
+                  ))}
+                </Select>
+              </Space>
+            )}
+          />
+
+          {watchEventInfo === EVENT_INFO.RECURRING_EVENT && (
+            <Controller
+              name="eventFrequency"
+              control={control}
+              render={({ field }) => (
+                <Space direction="vertical" size={"small"} className="w-full">
+                  <Label content="Frequency" className="" htmlFor="eventType" />
+                  <Select
+                    placeholder="Select Event Frequency"
+                    {...field}
+                    style={{ width: "100%" }}
+                  >
+                    {STATES_IN_NIGERIA.map((_i) => (
+                      <Option value={_i.state} key={_i.state}>
+                        {_i.state}
+                      </Option>
+                    ))}
+                  </Select>
+                </Space>
+              )}
+            />
+          )}
+
+          <Controller
+            name="startDateAndTime"
+            control={control}
+            render={({ field }) => (
+              <Space direction="vertical" size={"small"} className="w-full">
+                <Label
+                  content="Start Date & Time"
+                  className=""
+                  htmlFor="eventType"
+                />
+                <DatePicker
+                  {...field}
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss"
+                  className="w-full"
+                />
+              </Space>
+            )}
+          />
+
+          <Controller
+            name="endDateAndTime"
+            control={control}
+            render={({ field }) => (
+              <Space direction="vertical" size={"small"} className="w-full">
+                <Label
+                  content="Start Date & Time"
+                  className=""
+                  htmlFor="eventType"
+                />
+                <DatePicker
+                  {...field}
+                  showTime
+                  format="YYYY-MM-DD HH:mm:ss"
+                  className="w-full"
+                />
               </Space>
             )}
           />

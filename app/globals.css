@@ -548,3 +548,11 @@ body {
   color: #000000;
   font-weight: 400;
 }
+
+.ant-picker {
+  border-radius: 20px !important;
+  height: 41px !important;
+  border-color: #d0d4d4 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
