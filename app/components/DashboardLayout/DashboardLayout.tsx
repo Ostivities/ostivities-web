@@ -194,7 +194,7 @@ function DashboardLayout({ children, title }: IDashboard): JSX.Element {
 
             {title === "Events Creation" ? (
               <div
-                className="flex flex-row"
+                className="flex flex-row pb-8"
                 style={{ height: "750px !important" }}
               >
                 <div className="w-1/12">

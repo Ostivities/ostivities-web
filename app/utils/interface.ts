@@ -34,4 +34,5 @@ export interface IFormInput {
   customURL: string;
   document: string;
   eventType: string;
+  eventInfo: string;
 }

@@ -78,6 +78,17 @@ body {
   border: 1px solid #000000 !important;
 }
 
+.continue,
+.continue:hover,
+.continue:active,
+.continue:focus {
+  color: #e20000 !important;
+  background: #fadede !important;
+  border: 0.5px solid #fadede !important;
+  outline: #fadede !important;
+  box-shadow: none !important;
+}
+
 .sign-in:hover,
 .sign-in:focus,
 .sign-in:active {
@@ -530,4 +541,10 @@ body {
   height: 44px;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
+}
+
+.ant-radio-wrapper {
+  font-family: "BricolageGrotesqueRegular" !important;
+  color: #000000;
+  font-weight: 400;
 }
