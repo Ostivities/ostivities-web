@@ -34,4 +34,9 @@ export interface IFormInput {
   customURL: string;
   document: string;
   eventType: string;
+  eventInfo: string;
+  timeZone: string;
+  startDateAndTime: any;
+  endDateAndTime: any;
+  eventFrequency?: string;
 }
