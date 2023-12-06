@@ -7,6 +7,7 @@ export interface ITypography {
   content?: string | React.ReactNode;
   className?: string;
   styles?: React.CSSProperties;
+  htmlFor?: string;
 }
 
 export interface IFeatures {
@@ -23,4 +24,14 @@ export interface IDashboard {
   children?: React.ReactNode;
   title?: string;
   tab?: React.ReactNode;
+}
+
+export interface IFormInput {
+  eventName: string;
+  eventDetails: string;
+  eventState: string;
+  eventAddress: string;
+  customURL: string;
+  document: string;
+  eventType: string;
 }

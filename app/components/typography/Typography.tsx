@@ -47,4 +47,15 @@ const Small = ({ className, content }: ITypography) => {
   );
 };
 
-export { Heading3, Heading5, Paragraph, Small };
+const Label = ({ className, content, }: ITypography) => {
+  return (
+    <label
+      htmlFor=""
+      className={`${className} font-BricolageGrotesqueRegular text-sm font-normal`}
+    >
+      {content}
+    </label>
+  );
+};
+
+export { Heading3, Heading5, Label, Paragraph, Small };
