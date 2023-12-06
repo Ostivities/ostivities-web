@@ -513,3 +513,19 @@ body {
   border-bottom-color: #e20000 !important;
   border-radius: 4px 4px 0px 0px !important;
 }
+
+.upload-button {
+  height: 44px !important;
+}
+
+:where(.css-zcfrx9).ant-btn-compact-item:not(
+    .ant-btn-compact-first-item
+  ).ant-btn-compact-last-item,
+:where(.css-zcfrx9).ant-btn-compact-item:not(
+    .ant-btn-compact-first-item
+  ).ant-btn-compact-last-item.ant-btn-sm,
+:where(.css-zcfrx9).ant-btn-compact-item:not(
+    .ant-btn-compact-first-item
+  ).ant-btn-compact-last-item.ant-btn-lg {
+  height: 44px;
+}
