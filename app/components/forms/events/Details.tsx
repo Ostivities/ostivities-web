@@ -144,7 +144,7 @@ function Details(): JSX.Element {
             <Space direction="vertical" size={"small"}>
               <Label content="Supporting Doc" htmlFor="eventName" />
 
-              <Space.Compact className="w-full">
+              <Space.Compact className="w-full h-11">
                 <Input
                   style={{
                     width: "40%",
@@ -153,7 +153,10 @@ function Details(): JSX.Element {
                   }}
                   placeholder="Enter file name (optional)"
                 />
-                <Upload style={{ height: "41px", width: "60%" }}>
+                <Upload
+                  style={{ height: "41px !important", width: "60%" }}
+                  className="upload-button"
+                >
                   <Button icon={<UploadOutlined />}>Click to Upload</Button>
                 </Upload>
               </Space.Compact>
