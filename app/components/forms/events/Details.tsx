@@ -2,15 +2,18 @@
 import { Label } from "@/app/components/typography/Typography";
 import { STATES_IN_NIGERIA } from "@/app/utils/data";
 import { EVENT_INFO } from "@/app/utils/enums";
-import { IFormInput } from "@/app/utils/interface";
+import { IFormInput, IFormProps } from "@/app/utils/interface";
 import { UploadOutlined } from "@ant-design/icons";
 // import { schema } from "@/app/utils/validations";
 // import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, DatePicker, Input, Radio, Select, Space, Upload } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 function Details(): JSX.Element {
+  const [formStep, setFormStep] = useState(0);
+  const nextFormStep = () => setFormStep((currentStep) => currentStep + 1);
+
   const { Option } = Select;
 
   const {
@@ -21,13 +24,15 @@ function Details(): JSX.Element {
     watch,
   } = useForm<IFormInput>({
     // resolver: yupResolver(schema),
+    progressive: true,
+    mode: "all",
   });
   const watchEventInfo = watch("eventInfo");
 
   console.log(watchEventInfo, "wss");
 
   useEffect(() => {
-    const subscription = watch((value, { name, type }) =>
+    const subscription: any = watch((value, { name, type }) =>
       //   console.log(value, name, type)
       {
         return;

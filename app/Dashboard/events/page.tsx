@@ -1,9 +1,11 @@
+"use client";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import Details from "@/app/components/forms/events/Details";
+import Themes from "@/app/components/forms/events/Themes";
+import Tickets from "@/app/components/forms/events/Tickets";
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 import { Space } from "antd";
-
-import React from "react";
+import React, { useState } from "react";
 
 function Events(): JSX.Element {
   return (
