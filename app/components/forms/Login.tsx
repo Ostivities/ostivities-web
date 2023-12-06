@@ -40,6 +40,7 @@ function LoginForm(): JSX.Element {
             type="email"
             placeholder="Enter your email"
             className="placeholder:font-BricolageGrotesqueRegular"
+            autoComplete="off"
           />
         </Form.Item>
       </Form.Item>
