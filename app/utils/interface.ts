@@ -36,7 +36,7 @@ export interface IFormInput {
   eventType: string;
   eventInfo: string;
   timeZone: string;
-  startDateAndTime: string;
-  endDateAndTime: string;
+  startDateAndTime: any;
+  endDateAndTime: any;
   eventFrequency?: string;
 }
