@@ -193,7 +193,10 @@ function DashboardLayout({ children, title }: IDashboard): JSX.Element {
             <Breadcrumb style={{ margin: "16px 0" }}></Breadcrumb>
 
             {title === "Events Creation" ? (
-              <div className="flex flex-row">
+              <div
+                className="flex flex-row"
+                style={{ height: "750px !important" }}
+              >
                 <div className="w-1/12">
                   <Steps
                     progressDot
@@ -221,7 +224,7 @@ function DashboardLayout({ children, title }: IDashboard): JSX.Element {
                     size="small"
                   />
                 </div>
-                <div className="w-11/12">
+                <>
                   <Content
                     style={{
                       padding: 30,
@@ -239,7 +242,7 @@ function DashboardLayout({ children, title }: IDashboard): JSX.Element {
                   >
                     <div>{children}</div>
                   </Content>
-                </div>
+                </>
               </div>
             ) : (
               <>
@@ -247,7 +250,6 @@ function DashboardLayout({ children, title }: IDashboard): JSX.Element {
                   style={{
                     padding: 30,
                     margin: 0,
-                    height: "auto",
                     // maxHeight: "auto",
                     overflowY: "scroll",
                     overflowX: "hidden",
