@@ -185,7 +185,7 @@ function Details(): JSX.Element {
                     <Space.Compact className="w-full">
                       <Input
                         style={{
-                          width: "40%",
+                          width: "48%",
                           borderTopRightRadius: "0px !important",
                           borderBottomRightRadius: "0px !important",
                         }}
@@ -195,7 +195,7 @@ function Details(): JSX.Element {
                       />
                       <Input
                         style={{
-                          width: "60%",
+                          width: "52%",
                           borderTopLeftRadius: "0px !important",
                           borderBottomLeftRadius: "0px !important",
                         }}
