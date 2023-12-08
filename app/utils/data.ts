@@ -2392,3 +2392,18 @@ export const Timezones = [
     utc: ["Pacific/Apia"],
   },
 ];
+
+export const stepOne = [
+  "eventName",
+  "eventDetails",
+  "eventState",
+  "eventAddress",
+  "customURL",
+  "document",
+  "eventType",
+  "eventInfo",
+  "timeZone",
+  "startDateAndTime",
+  "endDateAndTime",
+  "eventFrequency",
+];

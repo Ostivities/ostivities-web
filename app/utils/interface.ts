@@ -45,4 +45,5 @@ export interface IFormInput {
   startDateAndTime: any;
   endDateAndTime: any;
   eventFrequency?: string;
+  eventImage?: string;
 }

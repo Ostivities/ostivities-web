@@ -37,6 +37,7 @@ const config: Config = {
         OWANBE_DARK: "#1E1E1E",
         OWANBE_LIGHT_DARK: "#120D26",
         OWANBE_BADGE: "#FBDBE2",
+        OWANBE_DEEP_RED: "#A6264C",
       },
       keyframes: {
         shake: {
