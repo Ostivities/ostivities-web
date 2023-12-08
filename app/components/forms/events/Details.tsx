@@ -6,12 +6,14 @@ import {
 } from "@/app/components/typography/Typography";
 import { STATES_IN_NIGERIA, stepOne } from "@/app/utils/data";
 import { EVENT_INFO } from "@/app/utils/enums";
-import { IFormInput, IFormProps } from "@/app/utils/interface";
-import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
+import { IFormInput } from "@/app/utils/interface";
+import { UploadOutlined } from "@ant-design/icons";
 // import { schema } from "@/app/utils/validations";
 // import { yupResolver } from "@hookform/resolvers/yup";
 import Dropzone from "@/app/components/Dropzone/Dropzone";
+import Ticket from "@/public/Ticket.svg";
 import { Button, DatePicker, Input, Radio, Select, Space, Upload } from "antd";
+import Image from "next/image";
 import React, { Fragment, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
@@ -513,7 +515,30 @@ function Details(): JSX.Element {
         )}
 
         {/* STEP 3 --> BODY 3 */}
-        {formStep === 3 && <div className=""></div>}
+        {formStep === 3 && (
+          <div
+            className="w-4/5 mx-auto text-center rounded-lg mt-4 flex items-center justify-center"
+            style={{
+              height: "400px",
+              border: "1px solid #00000040",
+              borderStyle: "dashed",
+            }}
+          >
+            <div className="flex flex-col space-y-5 justify-center items-center">
+              <Image src={Ticket} alt="ticket icon" />
+
+              <div className="flex flex-col space-y-3">
+                <h5 className="font-BricolageGrotesqueSemiBold font-semibold text-xl">
+                  Create your ticket
+                </h5>
+                <p className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK_LIGHT">
+                  Create your ticket here, it will only take less than a minute
+                </p>
+              </div>
+              
+            </div>
+          </div>
+        )}
       </form>
 
       {/* FORM BUTTONS */}
@@ -556,6 +581,19 @@ function Details(): JSX.Element {
             onClick={nextStep}
           >
             Save and Continue
+          </Button>
+        </Space>
+      )}
+
+      {formStep === 3 && (
+        <Space className="flex flex-row justify-center space-x-4">
+          <Button
+            type="default"
+            size={"large"}
+            className={`font-BricolageGrotesqueSemiBold button-styles sign-in cursor-pointer font-bold`}
+            onClick={() => setFormStep(2)}
+          >
+            Back
           </Button>
         </Space>
       )}
