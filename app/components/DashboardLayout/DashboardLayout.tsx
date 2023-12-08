@@ -211,7 +211,7 @@ function DashboardLayout({ children, title }: IDashboard): JSX.Element {
                         className: "font-BricolageGrotesqueRegular",
                       },
                       {
-                        title: "Theme",
+                        title: "Appearance",
                         description: "",
                         className: "font-BricolageGrotesqueRegular",
                       },
