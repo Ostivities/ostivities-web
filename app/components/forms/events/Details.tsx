@@ -170,7 +170,9 @@ function Details(): JSX.Element {
                   </Space>
                 )}
               />
+            </div>
 
+            <div className="flex flex-col space-y-4 pl-6">
               <Controller
                 name="customURL"
                 control={control}
@@ -206,9 +208,7 @@ function Details(): JSX.Element {
                   </Space>
                 )}
               />
-            </div>
 
-            <div className="flex flex-col space-y-4 pl-6">
               <Controller
                 name="document"
                 control={control}
@@ -299,101 +299,194 @@ function Details(): JSX.Element {
                 )}
               />
 
-              <Controller
-                name="timeZone"
-                control={control}
-                render={({ field }) => (
-                  <Space direction="vertical" size={"small"} className="w-full">
-                    <Label
-                      content="Time Zone"
-                      className=""
-                      htmlFor="eventType"
-                    />
-                    <Select
-                      placeholder="Select Event Type"
-                      {...field}
-                      style={{ width: "100%" }}
-                    >
-                      {STATES_IN_NIGERIA.map((_i) => (
-                        <Option value={_i.state} key={_i.state}>
-                          {_i.state}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Space>
-                )}
-              />
-
-              {watchEventInfo === EVENT_INFO.RECURRING_EVENT && (
-                <Controller
-                  name="eventFrequency"
-                  control={control}
-                  render={({ field }) => (
-                    <Space
-                      direction="vertical"
-                      size={"small"}
-                      className="w-full"
-                    >
-                      <Label
-                        content="Frequency"
-                        className=""
-                        htmlFor="eventType"
-                      />
-                      <Select
-                        placeholder="Select Event Frequency"
-                        {...field}
-                        style={{ width: "100%" }}
+              {watchEventInfo === EVENT_INFO.SINGLE_EVENT && (
+                <>
+                  <Controller
+                    name="timeZone"
+                    control={control}
+                    render={({ field }) => (
+                      <Space
+                        direction="vertical"
+                        size={"small"}
+                        className="w-full"
                       >
-                        {STATES_IN_NIGERIA.map((_i) => (
-                          <Option value={_i.state} key={_i.state}>
-                            {_i.state}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Space>
-                  )}
-                />
+                        <Label
+                          content="Time Zone"
+                          className=""
+                          htmlFor="eventType"
+                        />
+                        <Select
+                          placeholder="Select Event Type"
+                          {...field}
+                          style={{ width: "100%" }}
+                        >
+                          {STATES_IN_NIGERIA.map((_i) => (
+                            <Option value={_i.state} key={_i.state}>
+                              {_i.state}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Space>
+                    )}
+                  />
+                  <Controller
+                    name="startDateAndTime"
+                    control={control}
+                    render={({ field }) => (
+                      <Space
+                        direction="vertical"
+                        size={"small"}
+                        className="w-full"
+                      >
+                        <Label
+                          content="Start Date & Time"
+                          className=""
+                          htmlFor="eventType"
+                        />
+                        <DatePicker
+                          {...field}
+                          showTime
+                          format="YYYY-MM-DD HH:mm:ss"
+                          className="w-full"
+                        />
+                      </Space>
+                    )}
+                  />
+
+                  <Controller
+                    name="endDateAndTime"
+                    control={control}
+                    render={({ field }) => (
+                      <Space
+                        direction="vertical"
+                        size={"small"}
+                        className="w-full"
+                      >
+                        <Label
+                          content="End Date & Time"
+                          className=""
+                          htmlFor="eventType"
+                        />
+                        <DatePicker
+                          {...field}
+                          showTime
+                          format="YYYY-MM-DD HH:mm:ss"
+                          className="w-full"
+                        />
+                      </Space>
+                    )}
+                  />
+                </>
               )}
 
-              <Controller
-                name="startDateAndTime"
-                control={control}
-                render={({ field }) => (
-                  <Space direction="vertical" size={"small"} className="w-full">
-                    <Label
-                      content="Start Date & Time"
-                      className=""
-                      htmlFor="eventType"
-                    />
-                    <DatePicker
-                      {...field}
-                      showTime
-                      format="YYYY-MM-DD HH:mm:ss"
-                      className="w-full"
-                    />
-                  </Space>
-                )}
-              />
+              {watchEventInfo === EVENT_INFO.RECURRING_EVENT && (
+                <>
+                  <Controller
+                    name="timeZone"
+                    control={control}
+                    render={({ field }) => (
+                      <Space
+                        direction="vertical"
+                        size={"small"}
+                        className="w-full"
+                      >
+                        <Label
+                          content="Time Zone"
+                          className=""
+                          htmlFor="eventType"
+                        />
+                        <Select
+                          placeholder="Select Event Type"
+                          {...field}
+                          style={{ width: "100%" }}
+                        >
+                          {STATES_IN_NIGERIA.map((_i) => (
+                            <Option value={_i.state} key={_i.state}>
+                              {_i.state}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Space>
+                    )}
+                  />
+                  <Controller
+                    name="eventFrequency"
+                    control={control}
+                    render={({ field }) => (
+                      <Space
+                        direction="vertical"
+                        size={"small"}
+                        className="w-full"
+                      >
+                        <Label
+                          content="Frequency"
+                          className=""
+                          htmlFor="eventType"
+                        />
+                        <Select
+                          placeholder="Select Event Frequency"
+                          {...field}
+                          style={{ width: "100%" }}
+                        >
+                          {STATES_IN_NIGERIA.map((_i) => (
+                            <Option value={_i.state} key={_i.state}>
+                              {_i.state}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Space>
+                    )}
+                  />
 
-              <Controller
-                name="endDateAndTime"
-                control={control}
-                render={({ field }) => (
-                  <Space direction="vertical" size={"small"} className="w-full">
-                    <Label
-                      content="Start Date & Time"
-                      className=""
-                      htmlFor="eventType"
-                    />
-                    <DatePicker
-                      {...field}
-                      showTime
-                      format="YYYY-MM-DD HH:mm:ss"
-                      className="w-full"
-                    />
-                  </Space>
-                )}
-              />
+                  <Controller
+                    name="startDateAndTime"
+                    control={control}
+                    render={({ field }) => (
+                      <Space
+                        direction="vertical"
+                        size={"small"}
+                        className="w-full"
+                      >
+                        <Label
+                          content="Start Date & Time"
+                          className=""
+                          htmlFor="eventType"
+                        />
+                        <DatePicker
+                          {...field}
+                          showTime
+                          format="YYYY-MM-DD HH:mm:ss"
+                          className="w-full"
+                        />
+                      </Space>
+                    )}
+                  />
+
+                  <Controller
+                    name="endDateAndTime"
+                    control={control}
+                    render={({ field }) => (
+                      <Space
+                        direction="vertical"
+                        size={"small"}
+                        className="w-full"
+                      >
+                        <Label
+                          content="End Date & Time"
+                          className=""
+                          htmlFor="eventType"
+                        />
+                        <DatePicker
+                          {...field}
+                          showTime
+                          format="YYYY-MM-DD HH:mm:ss"
+                          className="w-full"
+                        />
+                      </Space>
+                    )}
+                  />
+                </>
+              )}
             </div>
           </div>
         )}
