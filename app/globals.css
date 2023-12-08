@@ -82,6 +82,12 @@ body {
 .continue:hover,
 .continue:active,
 .continue:focus {
+  border-radius: 20px !important;
+  box-shadow: none !important;
+  outline: none !important;
+  font-family: BricolageGrotesqueMedium !important;
+  font-size: 16px;
+  font-weight: 500;
   color: #e20000 !important;
   background: #fadede !important;
   border: 0.5px solid #fadede !important;

@@ -1,16 +1,23 @@
 "use client";
-import { Label } from "@/app/components/typography/Typography";
-import { STATES_IN_NIGERIA } from "@/app/utils/data";
+import {
+  Heading5,
+  Label,
+  Paragraph,
+} from "@/app/components/typography/Typography";
+import { STATES_IN_NIGERIA, stepOne } from "@/app/utils/data";
 import { EVENT_INFO } from "@/app/utils/enums";
-import { IFormInput } from "@/app/utils/interface";
-import { UploadOutlined } from "@ant-design/icons";
+import { IFormInput, IFormProps } from "@/app/utils/interface";
+import { InboxOutlined, UploadOutlined } from "@ant-design/icons";
 // import { schema } from "@/app/utils/validations";
 // import { yupResolver } from "@hookform/resolvers/yup";
+import Dropzone from "@/app/components/Dropzone/Dropzone";
 import { Button, DatePicker, Input, Radio, Select, Space, Upload } from "antd";
-import React, { useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 function Details(): JSX.Element {
+  const [formStep, setFormStep] = useState(1);
+
   const { Option } = Select;
 
   const {
@@ -19,15 +26,16 @@ function Details(): JSX.Element {
     control,
     formState: { errors },
     watch,
+    trigger,
   } = useForm<IFormInput>({
     // resolver: yupResolver(schema),
+    progressive: true,
+    mode: "all",
   });
   const watchEventInfo = watch("eventInfo");
 
-  console.log(watchEventInfo, "wss");
-
   useEffect(() => {
-    const subscription = watch((value, { name, type }) =>
+    const subscription: any = watch((value, { name, type }) =>
       //   console.log(value, name, type)
       {
         return;
@@ -36,303 +44,429 @@ function Details(): JSX.Element {
     return () => subscription.unsubscribe();
   }, [watch]);
 
-  const onSubmit: SubmitHandler<IFormInput> = (data: any) => console.log(data);
+  const onSubmit: SubmitHandler<IFormInput> = (data: any) => {
+    console.log(data, "data");
+  };
+  const nextStep = async () => {
+    // @ts-ignore
+    const output = await trigger([...stepOne], { shouldFocus: true });
+    if (!output) return;
+
+    if (formStep === 1 || formStep === 2) {
+      await handleSubmit(onSubmit)();
+      setFormStep((step) => step + 1);
+    }
+  };
+
   return (
-    <form
-      //@ts-ignore
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col space-y-8 py-5"
-    >
-      <div className="grid grid-cols-2 gap-x-4">
-        <div className="flex flex-col space-y-4 pr-6">
-          <Controller
-            name="eventName"
-            control={control}
-            render={({ field }) => (
-              <Space direction="vertical" size={"small"}>
-                <Label content="Event Name" className="" htmlFor="eventName" />
-                <Input {...field} placeholder="Enter Event Name" />
-              </Space>
-            )}
-          />
-
-          <Controller
-            name="eventDetails"
-            control={control}
-            render={({ field }) => (
-              <Space direction="vertical" size={"small"}>
-                <Label
-                  content="Event Details"
-                  className=""
-                  htmlFor="eventName"
-                />
-                <Input.TextArea
-                  {...field}
-                  placeholder="Enter Event Details"
-                  style={{
-                    height: "200px !important",
-                    paddingTop: "10px !important",
-                  }}
-                  className="py-3"
-                />
-              </Space>
-            )}
-          />
-
-          <Controller
-            name="eventState"
-            control={control}
-            render={({ field }) => (
-              <Space direction="vertical" size={"small"} className="w-full">
-                <Label content="Event State" className="" htmlFor="eventName" />
-                <Select
-                  placeholder="Select State"
-                  {...field}
-                  style={{ width: "100%" }}
-                >
-                  {STATES_IN_NIGERIA.map((_i) => (
-                    <Option value={_i.state} key={_i.state}>
-                      {_i.state}
-                    </Option>
-                  ))}
-                </Select>
-              </Space>
-            )}
-          />
-
-          <Controller
-            name="eventAddress"
-            control={control}
-            render={({ field }) => (
-              <Space direction="vertical" size={"small"}>
-                <Label
-                  content="Event Address"
-                  className=""
-                  htmlFor="eventName"
-                />
-                <Input {...field} placeholder="Enter Address" />
-              </Space>
-            )}
-          />
-        </div>
-
-        <div className="flex flex-col space-y-4 pl-6">
-          <Controller
-            name="customURL"
-            control={control}
-            render={({ field }) => (
-              <Space direction="vertical" size={"small"}>
-                <Label content="Custom URL" className="" htmlFor="eventName" />
-
-                <Space.Compact className="w-full">
-                  <Input
-                    style={{
-                      width: "40%",
-                      borderTopRightRadius: "0px !important",
-                      borderBottomRightRadius: "0px !important",
-                    }}
-                    defaultValue={"https://ostivities.com/discover"}
-                    value={"https://ostivities.com/discover"}
-                    readOnly
-                  />
-                  <Input
-                    style={{
-                      width: "60%",
-                      borderTopLeftRadius: "0px !important",
-                      borderBottomLeftRadius: "0px !important",
-                    }}
-                    {...field}
-                    placeholder=""
-                  />
-                </Space.Compact>
-              </Space>
-            )}
-          />
-
-          <Controller
-            name="document"
-            control={control}
-            render={({ field }) => (
-              <Space direction="vertical" size={"small"}>
-                <Label content="Supporting Doc" htmlFor="eventName" />
-
-                <Space.Compact className="w-full h-11">
-                  <Input
-                    style={{
-                      width: "75%",
-                      borderTopRightRadius: "0px !important",
-                      borderBottomRightRadius: "0px !important",
-                    }}
-                    placeholder="Enter file name (optional)"
-                  />
-                  <Upload
-                    style={{ height: "41px !important", width: "60%" }}
-                    className="upload-button"
-                  >
-                    <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                  </Upload>
-                </Space.Compact>
-                <span className="font-BricolageGrotesqueLight text-OWANBE_PRY text-xs font-light">
-                  *Supporting doc can be wedding invitation card for wedding
-                  event *Only JPEG, PNG & PDF Allowed & File size should not be
-                  more than 10MB
-                </span>
-              </Space>
-            )}
-          />
-
-          <Controller
-            name="eventType"
-            control={control}
-            render={({ field }) => (
-              <Space direction="vertical" size={"small"} className="w-full">
-                <Label content="Event Type" className="" htmlFor="eventType" />
-                <Select
-                  placeholder="Select Event Type"
-                  {...field}
-                  style={{ width: "100%" }}
-                >
-                  {STATES_IN_NIGERIA.map((_i) => (
-                    <Option value={_i.state} key={_i.state}>
-                      {_i.state}
-                    </Option>
-                  ))}
-                </Select>
-              </Space>
-            )}
-          />
-
-          <Controller
-            name="eventInfo"
-            control={control}
-            render={({ field }) => (
-              <Space direction="vertical" size={"small"} className="w-full">
-                <Label content="Event Info" className="" htmlFor="eventType" />
-                <Radio.Group
-                  {...field}
-                  className="w-full font-BricolageGrotesqueRegular"
-                >
-                  <Radio
-                    value={EVENT_INFO.SINGLE_EVENT}
-                    className="w-1/2 font-BricolageGrotesqueRegular"
-                  >
-                    Single Event
-                  </Radio>
-                  <Radio
-                    value={EVENT_INFO.RECURRING_EVENT}
-                    className="font-BricolageGrotesqueRegular"
-                  >
-                    Recurring Event
-                  </Radio>
-                </Radio.Group>
-              </Space>
-            )}
-          />
-
-          <Controller
-            name="timeZone"
-            control={control}
-            render={({ field }) => (
-              <Space direction="vertical" size={"small"} className="w-full">
-                <Label content="Time Zone" className="" htmlFor="eventType" />
-                <Select
-                  placeholder="Select Event Type"
-                  {...field}
-                  style={{ width: "100%" }}
-                >
-                  {STATES_IN_NIGERIA.map((_i) => (
-                    <Option value={_i.state} key={_i.state}>
-                      {_i.state}
-                    </Option>
-                  ))}
-                </Select>
-              </Space>
-            )}
-          />
-
-          {watchEventInfo === EVENT_INFO.RECURRING_EVENT && (
-            <Controller
-              name="eventFrequency"
-              control={control}
-              render={({ field }) => (
-                <Space direction="vertical" size={"small"} className="w-full">
-                  <Label content="Frequency" className="" htmlFor="eventType" />
-                  <Select
-                    placeholder="Select Event Frequency"
-                    {...field}
-                    style={{ width: "100%" }}
-                  >
-                    {STATES_IN_NIGERIA.map((_i) => (
-                      <Option value={_i.state} key={_i.state}>
-                        {_i.state}
-                      </Option>
-                    ))}
-                  </Select>
-                </Space>
-              )}
-            />
-          )}
-
-          <Controller
-            name="startDateAndTime"
-            control={control}
-            render={({ field }) => (
-              <Space direction="vertical" size={"small"} className="w-full">
-                <Label
-                  content="Start Date & Time"
-                  className=""
-                  htmlFor="eventType"
-                />
-                <DatePicker
-                  {...field}
-                  showTime
-                  format="YYYY-MM-DD HH:mm:ss"
-                  className="w-full"
-                />
-              </Space>
-            )}
-          />
-
-          <Controller
-            name="endDateAndTime"
-            control={control}
-            render={({ field }) => (
-              <Space direction="vertical" size={"small"} className="w-full">
-                <Label
-                  content="Start Date & Time"
-                  className=""
-                  htmlFor="eventType"
-                />
-                <DatePicker
-                  {...field}
-                  showTime
-                  format="YYYY-MM-DD HH:mm:ss"
-                  className="w-full"
-                />
-              </Space>
-            )}
-          />
-        </div>
-      </div>
-
-      <Space className="flex flex-row justify-center space-x-4">
-        <Button
-          type="default"
-          size={"large"}
-          className={`font-BricolageGrotesqueSemiBold button-styles sign-in cursor-pointer font-bold`}
-        >
-          Cancel
-        </Button>
-        <Button
-          type="primary"
-          htmlType="submit"
-          size="large"
-          className="font-BricolageGrotesqueSemiBold button-styles continue cursor-pointer font-bold"
-        >
-          Continue
-        </Button>
+    <Fragment>
+      <Space direction="vertical">
+        <Heading5
+          className=""
+          content={
+            formStep === 1
+              ? "Hello, Rose."
+              : formStep === 2
+              ? "Event Page Appearance."
+              : "Event Ticket."
+          }
+        />
+        <Paragraph
+          className="text-OWANBE_PRY text-xl font-normal font-BricolageGrotesqueRegular"
+          content={
+            formStep === 1
+              ? "Lets get started by creating your event "
+              : formStep === 2
+              ? "Select the appearance of your event page here"
+              : "Ostivities is free for free events. For paid events, we charge a percentage as a transaction fee."
+          }
+          styles={{ fontWeight: "normal !important" }}
+        />
       </Space>
-    </form>
+
+      <form
+        //@ts-ignore
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col space-y-8 pb-5"
+      >
+        {/* STEP 1 --> BODY 1 */}
+        {formStep === 1 && (
+          <div className="grid grid-cols-2 gap-x-4">
+            <div className="flex flex-col space-y-4 pr-6">
+              <Controller
+                name="eventName"
+                control={control}
+                render={({ field }) => (
+                  <Space direction="vertical" size={"small"}>
+                    <Label
+                      content="Event Name"
+                      className=""
+                      htmlFor="eventName"
+                    />
+                    <Input {...field} placeholder="Enter Event Name" />
+                  </Space>
+                )}
+              />
+
+              <Controller
+                name="eventDetails"
+                control={control}
+                render={({ field }) => (
+                  <Space direction="vertical" size={"small"}>
+                    <Label
+                      content="Event Details"
+                      className=""
+                      htmlFor="eventName"
+                    />
+                    <Input.TextArea
+                      {...field}
+                      placeholder="Enter Event Details"
+                      style={{
+                        height: "200px !important",
+                        paddingTop: "10px !important",
+                      }}
+                      className="py-3"
+                    />
+                  </Space>
+                )}
+              />
+
+              <Controller
+                name="eventState"
+                control={control}
+                render={({ field }) => (
+                  <Space direction="vertical" size={"small"} className="w-full">
+                    <Label
+                      content="Event State"
+                      className=""
+                      htmlFor="eventName"
+                    />
+                    <Select
+                      placeholder="Select State"
+                      {...field}
+                      style={{ width: "100%" }}
+                    >
+                      {STATES_IN_NIGERIA.map((_i) => (
+                        <Option value={_i.state} key={_i.state}>
+                          {_i.state}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Space>
+                )}
+              />
+
+              <Controller
+                name="eventAddress"
+                control={control}
+                render={({ field }) => (
+                  <Space direction="vertical" size={"small"}>
+                    <Label
+                      content="Event Address"
+                      className=""
+                      htmlFor="eventName"
+                    />
+                    <Input {...field} placeholder="Enter Address" />
+                  </Space>
+                )}
+              />
+
+              <Controller
+                name="customURL"
+                control={control}
+                render={({ field }) => (
+                  <Space direction="vertical" size={"small"}>
+                    <Label
+                      content="Custom URL"
+                      className=""
+                      htmlFor="eventName"
+                    />
+
+                    <Space.Compact className="w-full">
+                      <Input
+                        style={{
+                          width: "40%",
+                          borderTopRightRadius: "0px !important",
+                          borderBottomRightRadius: "0px !important",
+                        }}
+                        defaultValue={"https://ostivities.com/discover"}
+                        value={"https://ostivities.com/discover"}
+                        readOnly
+                      />
+                      <Input
+                        style={{
+                          width: "60%",
+                          borderTopLeftRadius: "0px !important",
+                          borderBottomLeftRadius: "0px !important",
+                        }}
+                        {...field}
+                        placeholder=""
+                      />
+                    </Space.Compact>
+                  </Space>
+                )}
+              />
+            </div>
+
+            <div className="flex flex-col space-y-4 pl-6">
+              <Controller
+                name="document"
+                control={control}
+                render={({ field }) => (
+                  <Space direction="vertical" size={"small"}>
+                    <Label content="Supporting Doc" htmlFor="eventName" />
+
+                    <Space.Compact className="w-full h-11">
+                      <Input
+                        style={{
+                          width: "75%",
+                          borderTopRightRadius: "0px !important",
+                          borderBottomRightRadius: "0px !important",
+                        }}
+                        placeholder="Enter file name (optional)"
+                      />
+                      <Upload
+                        style={{ height: "41px !important", width: "60%" }}
+                        className="upload-button"
+                      >
+                        <Button icon={<UploadOutlined />}>
+                          Click to Upload
+                        </Button>
+                      </Upload>
+                    </Space.Compact>
+                    <span className="font-BricolageGrotesqueLight text-OWANBE_PRY text-xs font-light">
+                      *Supporting doc can be wedding invitation card for wedding
+                      event *Only JPEG, PNG & PDF Allowed & File size should not
+                      be more than 10MB
+                    </span>
+                  </Space>
+                )}
+              />
+
+              <Controller
+                name="eventType"
+                control={control}
+                render={({ field }) => (
+                  <Space direction="vertical" size={"small"} className="w-full">
+                    <Label
+                      content="Event Type"
+                      className=""
+                      htmlFor="eventType"
+                    />
+                    <Select
+                      placeholder="Select Event Type"
+                      {...field}
+                      style={{ width: "100%" }}
+                    >
+                      {STATES_IN_NIGERIA.map((_i) => (
+                        <Option value={_i.state} key={_i.state}>
+                          {_i.state}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Space>
+                )}
+              />
+
+              <Controller
+                name="eventInfo"
+                control={control}
+                render={({ field }) => (
+                  <Space direction="vertical" size={"small"} className="w-full">
+                    <Label
+                      content="Event Info"
+                      className=""
+                      htmlFor="eventType"
+                    />
+                    <Radio.Group
+                      {...field}
+                      className="w-full font-BricolageGrotesqueRegular"
+                    >
+                      <Radio
+                        value={EVENT_INFO.SINGLE_EVENT}
+                        className="w-1/2 font-BricolageGrotesqueRegular"
+                      >
+                        Single Event
+                      </Radio>
+                      <Radio
+                        value={EVENT_INFO.RECURRING_EVENT}
+                        className="font-BricolageGrotesqueRegular"
+                      >
+                        Recurring Event
+                      </Radio>
+                    </Radio.Group>
+                  </Space>
+                )}
+              />
+
+              <Controller
+                name="timeZone"
+                control={control}
+                render={({ field }) => (
+                  <Space direction="vertical" size={"small"} className="w-full">
+                    <Label
+                      content="Time Zone"
+                      className=""
+                      htmlFor="eventType"
+                    />
+                    <Select
+                      placeholder="Select Event Type"
+                      {...field}
+                      style={{ width: "100%" }}
+                    >
+                      {STATES_IN_NIGERIA.map((_i) => (
+                        <Option value={_i.state} key={_i.state}>
+                          {_i.state}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Space>
+                )}
+              />
+
+              {watchEventInfo === EVENT_INFO.RECURRING_EVENT && (
+                <Controller
+                  name="eventFrequency"
+                  control={control}
+                  render={({ field }) => (
+                    <Space
+                      direction="vertical"
+                      size={"small"}
+                      className="w-full"
+                    >
+                      <Label
+                        content="Frequency"
+                        className=""
+                        htmlFor="eventType"
+                      />
+                      <Select
+                        placeholder="Select Event Frequency"
+                        {...field}
+                        style={{ width: "100%" }}
+                      >
+                        {STATES_IN_NIGERIA.map((_i) => (
+                          <Option value={_i.state} key={_i.state}>
+                            {_i.state}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Space>
+                  )}
+                />
+              )}
+
+              <Controller
+                name="startDateAndTime"
+                control={control}
+                render={({ field }) => (
+                  <Space direction="vertical" size={"small"} className="w-full">
+                    <Label
+                      content="Start Date & Time"
+                      className=""
+                      htmlFor="eventType"
+                    />
+                    <DatePicker
+                      {...field}
+                      showTime
+                      format="YYYY-MM-DD HH:mm:ss"
+                      className="w-full"
+                    />
+                  </Space>
+                )}
+              />
+
+              <Controller
+                name="endDateAndTime"
+                control={control}
+                render={({ field }) => (
+                  <Space direction="vertical" size={"small"} className="w-full">
+                    <Label
+                      content="Start Date & Time"
+                      className=""
+                      htmlFor="eventType"
+                    />
+                    <DatePicker
+                      {...field}
+                      showTime
+                      format="YYYY-MM-DD HH:mm:ss"
+                      className="w-full"
+                    />
+                  </Space>
+                )}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* STEP 2 --> BODY 2 */}
+        {formStep === 2 && (
+          <div className="flex flex-row">
+            <div className="w-1/3">
+              <Label content="Event Image" className="" />
+            </div>
+            <div className="w-3/4">
+              <Controller
+                name="eventImage"
+                control={control}
+                render={({ field }) => (
+                  <Dropzone
+                    className="w-full border-dashed border flex items-center rounded-lg cursor-pointer"
+                    {...field}
+                  />
+                )}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* STEP 3 --> BODY 3 */}
+        {formStep === 3 && <div className=""></div>}
+      </form>
+
+      {/* FORM BUTTONS */}
+      {formStep === 1 && (
+        <Space className="flex flex-row justify-center space-x-4">
+          <Button
+            type="default"
+            size={"large"}
+            className={`font-BricolageGrotesqueSemiBold button-styles sign-in cursor-pointer font-bold`}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="primary"
+            htmlType="button"
+            size="large"
+            className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
+            onClick={nextStep}
+          >
+            Save and Continue
+          </Button>
+        </Space>
+      )}
+
+      {formStep === 2 && (
+        <Space className="flex flex-row justify-center space-x-4">
+          <Button
+            type="default"
+            size={"large"}
+            className={`font-BricolageGrotesqueSemiBold button-styles sign-in cursor-pointer font-bold`}
+            onClick={() => setFormStep(1)}
+          >
+            Back
+          </Button>
+          <Button
+            type="primary"
+            htmlType="button"
+            size="large"
+            className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
+            onClick={nextStep}
+          >
+            Save and Continue
+          </Button>
+        </Space>
+      )}
+    </Fragment>
   );
 }
 

@@ -26,6 +26,12 @@ export interface IDashboard {
   tab?: React.ReactNode;
 }
 
+export interface IFormProps {
+  formStep?: number;
+  nextFormStep?: () => void;
+  formData?: any;
+}
+
 export interface IFormInput {
   eventName: string;
   eventDetails: string;
@@ -39,4 +45,5 @@ export interface IFormInput {
   startDateAndTime: any;
   endDateAndTime: any;
   eventFrequency?: string;
+  eventImage?: string;
 }

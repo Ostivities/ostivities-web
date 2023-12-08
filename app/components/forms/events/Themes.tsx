@@ -1,7 +1,7 @@
 import React from "react";
 
 function Themes(): JSX.Element {
-  return <div></div>;
+  return <div>THEME</div>;
 }
 
 export default Themes;
