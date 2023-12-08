@@ -16,9 +16,11 @@ import { Button, DatePicker, Input, Radio, Select, Space, Upload } from "antd";
 import Image from "next/image";
 import React, { Fragment, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import AddTicketModal from "../../modal/AddTicket";
 
 function Details(): JSX.Element {
   const [formStep, setFormStep] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { Option } = Select;
 
@@ -62,6 +64,11 @@ function Details(): JSX.Element {
 
   return (
     <Fragment>
+      <AddTicketModal
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        onOk={() => setIsModalOpen(false)}
+      />
       <Space direction="vertical">
         <Heading5
           className=""
@@ -535,7 +542,15 @@ function Details(): JSX.Element {
                   Create your ticket here, it will only take less than a minute
                 </p>
               </div>
-              
+              <Button
+                type="primary"
+                htmlType="button"
+                size="large"
+                className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
+                onClick={() => setIsModalOpen(true)}
+              >
+                Add ticket
+              </Button>
             </div>
           </div>
         )}

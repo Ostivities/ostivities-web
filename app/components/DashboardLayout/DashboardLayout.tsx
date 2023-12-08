@@ -239,6 +239,7 @@ function DashboardLayout({ children, title }: IDashboard): JSX.Element {
                       background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
                       maxHeight: "auto",
                     }}
+                    className="auth-background"
                   >
                     <div>{children}</div>
                   </Content>

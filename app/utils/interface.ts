@@ -47,3 +47,9 @@ export interface IFormInput {
   eventFrequency?: string;
   eventImage?: string;
 }
+
+export interface IModal {
+  open?: boolean;
+  onCancel?: any;
+  onOk?: any;
+}
