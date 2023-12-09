@@ -63,3 +63,16 @@ export type FieldType = {
   ticketDescription?: string;
   purchaseLimit?: number | any;
 };
+
+export interface FormContextProps {
+  formState: FormState;
+  setFormStage: (stage: number) => void;
+}
+
+export interface FormState {
+  stage: number | any;
+}
+
+export interface FormProviderProps {
+  children: React.ReactNode;
+}
