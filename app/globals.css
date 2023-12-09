@@ -570,6 +570,20 @@ body {
   cursor: pointer;
 }
 
+.ticket-category > div > h5 {
+  color: #000000;
+  font-family: "BricolageGrotesqueSemiBold" !important;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.ticket-category > div > p {
+  color: #000000;
+  font-family: "BricolageGrotesqueRegular" !important;
+  font-weight: 400;
+  font-size: 17px;
+}
+
 .ticket-category:hover,
 .ticket-category:active,
 .ticket-category:focus,
@@ -578,4 +592,39 @@ body {
   background: linear-gradient(0deg, #ffffff, #ffffff);
   border-radius: 20px;
   transition: ease-in-out 0.15s;
+}
+
+.ticket-category:hover > div > h5,
+.ticket-category:hover > div > p,
+.ticket-category:active > div > p,
+.ticket-category:active > div > h5 {
+  color: #e20000;
+}
+
+.ticket-title {
+  color: #000000;
+  font-family: "BricolageGrotesqueSemiBold" !important;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.ticket-subtitle {
+  color: #000000;
+  font-family: "BricolageGrotesqueRegular" !important;
+  font-weight: 400;
+  font-size: 17px;
+}
+
+.ticket-title:hover {
+  color: #e20000;
+  font-family: "BricolageGrotesqueSemiBold" !important;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.ticket-subtitle:hover {
+  color: #e20000;
+  font-family: "BricolageGrotesqueRegular" !important;
+  font-weight: 400;
+  font-size: 17px;
 }
