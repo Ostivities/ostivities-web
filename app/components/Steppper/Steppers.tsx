@@ -1,20 +1,18 @@
 "use client";
+import { useFormContext } from "@/app/contexts/form-context/FormContext";
 import { Steps } from "antd";
 import React, { useState } from "react";
 
 function Steppers(): JSX.Element {
-  const [current, setCurrent] = useState(0);
-  const onChange = (value: number) => {
-    console.log("onChange:", value);
-    setCurrent(value);
-  };
+  const { formState } = useFormContext();
+  console.log(formState.stage, "cc");
+
   return (
     <Steps
       progressDot
       responsive
-      current={current}
+      current={formState?.stage}
       direction="vertical"
-      onChange={onChange}
       items={[
         {
           title: "Details",
