@@ -1,4 +1,5 @@
 "use client";
+import FormProvider from "@/app/contexts/form-context/FormContext";
 import { IDashboard } from "@/app/utils/interface";
 import Hamburger from "@/public/hamburger.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
@@ -52,7 +53,11 @@ const items2: MenuProps["items"] = [
   };
 });
 
-function DashboardLayout({ children, title }: IDashboard): JSX.Element {
+function DashboardLayout({
+  children,
+  title,
+  steppers,
+}: IDashboard): JSX.Element {
   const router = useRouter();
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useState(true);
@@ -65,167 +70,139 @@ function DashboardLayout({ children, title }: IDashboard): JSX.Element {
     router.push(e?.key);
   };
 
-  const onChange = (value: number) => {
-    console.log("onChange:", value);
-    setCurrent(value);
-  };
-
   return (
-    <Layout style={{ height: "100vh", fontFamily: "BricolageGrotesqueMedium" }}>
-      <Header
-        style={{
-          display: "flex",
-          alignItems: "center",
-          padding: 20,
-          justifyContent: "space-between",
-          backgroundColor: "#ffffff",
-          borderBottom: "2px solid #d0d4d4",
-        }}
+    <FormProvider>
+      <Layout
+        style={{ height: "100vh", fontFamily: "BricolageGrotesqueMedium" }}
       >
-        <div className="demo-logo flex flex-row items-center space-x-12">
-          <Image
-            src={OwanbeLogo}
-            alt="Owanbe Logo"
-            style={{ height: "40px" }}
-            className="w-[110px] cursor-pointer"
-          />
-
-          <Image
-            src={Hamburger}
-            alt="Owanbe Logo"
-            style={{ width: "40px", height: "35px" }}
-            className="cursor-pointer"
-            onClick={() => setCollapsed(!collapsed)}
-          />
-        </div>
-
-        <Space
-          direction="horizontal"
-          className="space-x-8 items-center justify-center"
-          align="center"
-          size={"small"}
+        <Header
+          style={{
+            display: "flex",
+            alignItems: "center",
+            padding: 20,
+            justifyContent: "space-between",
+            backgroundColor: "#ffffff",
+            borderBottom: "2px solid #d0d4d4",
+          }}
         >
-          <div className="mt-5">
-            <Badge count={1}>
-              <BellFilled
-                className="cursor-pointer"
-                style={{
-                  fontSize: "26px",
-                  color: "#8C95A1",
-                }}
-              />
-            </Badge>
+          <div className="demo-logo flex flex-row items-center space-x-12">
+            <Image
+              src={OwanbeLogo}
+              alt="Owanbe Logo"
+              style={{ height: "40px" }}
+              className="w-[110px] cursor-pointer"
+            />
+
+            <Image
+              src={Hamburger}
+              alt="Owanbe Logo"
+              style={{ width: "40px", height: "35px" }}
+              className="cursor-pointer"
+              onClick={() => setCollapsed(!collapsed)}
+            />
           </div>
 
-          <Avatar
-            size={40}
-            style={{
-              background: "#E20000",
-              fontFamily: "BricolageGrotesqueMedium",
-              cursor: "pointer",
-            }}
+          <Space
+            direction="horizontal"
+            className="space-x-8 items-center justify-center"
+            align="center"
+            size={"small"}
           >
-            IR
-          </Avatar>
-        </Space>
-      </Header>
-      <Layout>
-        <Sider
-          width={200}
-          style={{
-            background: colorBgContainer,
-            overflowY: "scroll",
-            fontFamily: "BricolageGrotesqueMedium !important",
-            paddingTop: "60px",
-          }}
-          breakpoint="lg"
-          trigger={null}
-          collapsible
-          collapsed={collapsed}
-          zeroWidthTriggerStyle={{
-            background: "green !important",
-            fontFamily: "BricolageGrotesqueMedium !important",
-          }}
-          onBreakpoint={(broken: any) => {
-            console.log(broken, "broken");
-          }}
-        >
-          <Menu
-            mode="inline"
-            defaultSelectedKeys={["1"]}
-            defaultOpenKeys={["sub1"]}
+            <div className="mt-5">
+              <Badge count={1}>
+                <BellFilled
+                  className="cursor-pointer"
+                  style={{
+                    fontSize: "26px",
+                    color: "#8C95A1",
+                  }}
+                />
+              </Badge>
+            </div>
+
+            <Avatar
+              size={40}
+              style={{
+                background: "#E20000",
+                fontFamily: "BricolageGrotesqueMedium",
+                cursor: "pointer",
+              }}
+            >
+              IR
+            </Avatar>
+          </Space>
+        </Header>
+        <Layout>
+          <Sider
+            width={200}
             style={{
-              height: "100%",
-              borderRight: 0,
+              background: colorBgContainer,
+              overflowY: "scroll",
+              fontFamily: "BricolageGrotesqueMedium !important",
+              paddingTop: "60px",
+            }}
+            breakpoint="lg"
+            trigger={null}
+            collapsible
+            collapsed={collapsed}
+            zeroWidthTriggerStyle={{
+              background: "green !important",
               fontFamily: "BricolageGrotesqueMedium !important",
             }}
-            items={items2}
-            onClick={onClick}
-          />
-        </Sider>
-        <Layout>
-          <Header
-            style={{
-              display: "flex",
-              alignItems: "center",
-              padding: 20,
-              justifyContent: "space-between",
-              backgroundColor: "#ffffff",
+            onBreakpoint={(broken: any) => {
+              console.log(broken, "broken");
             }}
           >
-            <div className="demo-logo flex flex-row items-center space-x-12">
-              <h5 className="font-BricolageGrotesqueRegular font-normal text-black text-3xl">
-                {title}
-              </h5>
-            </div>
-            {title === "Events Creation" && (
-              <Menu
-                theme="light"
-                mode="horizontal"
-                defaultSelectedKeys={["create-event"]}
-                items={items1}
-                className="w-1/2 justify-end font-BricolageGrotesqueMedium"
-              />
-            )}
-          </Header>
+            <Menu
+              mode="inline"
+              defaultSelectedKeys={["1"]}
+              defaultOpenKeys={["sub1"]}
+              style={{
+                height: "100%",
+                borderRight: 0,
+                fontFamily: "BricolageGrotesqueMedium !important",
+              }}
+              items={items2}
+              onClick={onClick}
+            />
+          </Sider>
+          <Layout>
+            <Header
+              style={{
+                display: "flex",
+                alignItems: "center",
+                padding: 20,
+                justifyContent: "space-between",
+                backgroundColor: "#ffffff",
+              }}
+            >
+              <div className="demo-logo flex flex-row items-center space-x-12">
+                <h5 className="font-BricolageGrotesqueRegular font-normal text-black text-3xl">
+                  {title}
+                </h5>
+              </div>
+              {title === "Events Creation" && (
+                <Menu
+                  theme="light"
+                  mode="horizontal"
+                  defaultSelectedKeys={["create-event"]}
+                  items={items1}
+                  className="w-1/2 justify-end font-BricolageGrotesqueMedium"
+                />
+              )}
+            </Header>
 
-          <Layout style={{ padding: "0 30px 30px" }}>
-            <Breadcrumb style={{ margin: "16px 0" }}></Breadcrumb>
+            <Layout style={{ padding: "0 30px 30px" }}>
+              <Breadcrumb style={{ margin: "16px 0" }}></Breadcrumb>
 
-            {title === "Events Creation" ? (
-              <div
-                className="flex flex-row pb-8"
-                style={{ height: "750px !important" }}
-              >
-                <div className="w-1/12">
-                  <Steps
-                    progressDot
-                    responsive
-                    current={current}
-                    direction="vertical"
-                    onChange={onChange}
-                    items={[
-                      {
-                        title: "Details",
-                        description: "",
-                        className: "font-BricolageGrotesqueRegular",
-                      },
-                      {
-                        title: "Appearance",
-                        description: "",
-                        className: "font-BricolageGrotesqueRegular",
-                      },
-                      {
-                        title: "Tickets",
-                        description: "",
-                        className: "font-BricolageGrotesqueRegular",
-                      },
-                    ]}
-                    size="small"
-                  />
-                </div>
-                <>
-                  <Content
+              {title === "Events Creation" ? (
+                <div
+                  className="flex flex-row pb-8"
+                  style={{ height: "750px !important" }}
+                >
+                  <div className="w-1/12">{steppers}</div>
+
+                  <div
                     style={{
                       padding: 30,
                       margin: 0,
@@ -239,35 +216,35 @@ function DashboardLayout({ children, title }: IDashboard): JSX.Element {
                       background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
                       maxHeight: "auto",
                     }}
-                    className="auth-background"
+                    className="auth-background w-11/12"
+                  >
+                    <div className="w-full">{children}</div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <Content
+                    style={{
+                      padding: 30,
+                      margin: 0,
+                      // maxHeight: "auto",
+                      overflowY: "scroll",
+                      overflowX: "hidden",
+                      borderRadius: "30px",
+                      border: "1px solid #E5E5E5",
+                      boxShadow: "0px 8px 24px 0px #00000014",
+                      background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
+                    }}
                   >
                     <div>{children}</div>
                   </Content>
                 </>
-              </div>
-            ) : (
-              <>
-                <Content
-                  style={{
-                    padding: 30,
-                    margin: 0,
-                    // maxHeight: "auto",
-                    overflowY: "scroll",
-                    overflowX: "hidden",
-                    borderRadius: "30px",
-                    border: "1px solid #E5E5E5",
-                    boxShadow: "0px 8px 24px 0px #00000014",
-                    background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
-                  }}
-                >
-                  <div>{children}</div>
-                </Content>
-              </>
-            )}
+              )}
+            </Layout>
           </Layout>
         </Layout>
       </Layout>
-    </Layout>
+    </FormProvider>
   );
 }
 

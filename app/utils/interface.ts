@@ -24,6 +24,7 @@ export interface IDashboard {
   children?: React.ReactNode;
   title?: string;
   tab?: React.ReactNode;
+  steppers?: React.ReactNode;
 }
 
 export interface IFormProps {
@@ -62,3 +63,16 @@ export type FieldType = {
   ticketDescription?: string;
   purchaseLimit?: number | any;
 };
+
+export interface FormContextProps {
+  formState: FormState;
+  setFormStage: (stage: number) => void;
+}
+
+export interface FormState {
+  stage: number | any;
+}
+
+export interface FormProviderProps {
+  children: React.ReactNode;
+}

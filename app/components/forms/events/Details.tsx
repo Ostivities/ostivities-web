@@ -11,6 +11,7 @@ import { UploadOutlined } from "@ant-design/icons";
 // import { schema } from "@/app/utils/validations";
 // import { yupResolver } from "@hookform/resolvers/yup";
 import Dropzone from "@/app/components/Dropzone/Dropzone";
+import { useFormContext } from "@/app/contexts/form-context/FormContext";
 import Ticket from "@/public/Ticket.svg";
 import { Button, DatePicker, Input, Radio, Select, Space, Upload } from "antd";
 import Image from "next/image";
@@ -19,7 +20,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import AddTicketModal from "../../modal/AddTicket";
 
 function Details(): JSX.Element {
-  const [formStep, setFormStep] = useState(1);
+  const [formStep, setFormStep] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { Option } = Select;
@@ -51,6 +52,7 @@ function Details(): JSX.Element {
   const onSubmit: SubmitHandler<IFormInput> = (data: any) => {
     console.log(data, "data");
   };
+  const { formState, setFormStage } = useFormContext();
   const nextStep = async () => {
     // @ts-ignore
     const output = await trigger([...stepOne], { shouldFocus: true });
@@ -59,6 +61,7 @@ function Details(): JSX.Element {
     if (formStep === 1 || formStep === 2) {
       await handleSubmit(onSubmit)();
       setFormStep((step) => step + 1);
+      setFormStage(formState.stage + 1);
     }
   };
 
@@ -501,7 +504,7 @@ function Details(): JSX.Element {
 
         {/* STEP 2 --> BODY 2 */}
         {formStep === 2 && (
-          <div className="flex flex-row">
+          <div className="flex flex-row w-full">
             <div className="w-1/3">
               <Label content="Event Image" className="" />
             </div>
@@ -583,7 +586,10 @@ function Details(): JSX.Element {
             type="default"
             size={"large"}
             className={`font-BricolageGrotesqueSemiBold button-styles sign-in cursor-pointer font-bold`}
-            onClick={() => setFormStep(1)}
+            onClick={() => {
+              setFormStep(1);
+              setFormStage(formState.stage - 1);
+            }}
           >
             Back
           </Button>
@@ -605,7 +611,10 @@ function Details(): JSX.Element {
             type="default"
             size={"large"}
             className={`font-BricolageGrotesqueSemiBold button-styles sign-in cursor-pointer font-bold`}
-            onClick={() => setFormStep(2)}
+            onClick={() => {
+              setFormStep(2);
+              setFormStage(formState.stage - 1);
+            }}
           >
             Back
           </Button>

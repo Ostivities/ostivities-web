@@ -602,14 +602,14 @@ body {
 }
 
 .ticket-title {
-  color: #000000;
+  color: #e20000;
   font-family: "BricolageGrotesqueSemiBold" !important;
   font-weight: 600;
   font-size: 24px;
 }
 
 .ticket-subtitle {
-  color: #000000;
+  color: #e20000;
   font-family: "BricolageGrotesqueRegular" !important;
   font-weight: 400;
   font-size: 17px;
