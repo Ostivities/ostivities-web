@@ -53,3 +53,12 @@ export interface IModal {
   onCancel?: any;
   onOk?: any;
 }
+
+export type FieldType = {
+  ticketType?: string;
+  ticketName?: string;
+  ticketStock?: number;
+  ticketPrice?: number;
+  ticketDescription?: string;
+  purchaseLimit?: number | any;
+};

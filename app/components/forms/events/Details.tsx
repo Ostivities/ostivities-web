@@ -94,7 +94,6 @@ function Details(): JSX.Element {
       </Space>
 
       <form
-        //@ts-ignore
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col space-y-8 pb-5"
       >
