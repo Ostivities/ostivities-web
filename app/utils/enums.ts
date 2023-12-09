@@ -7,3 +7,8 @@ export enum EVENT_INFO {
   SINGLE_EVENT = "SINGLE_EVENT",
   RECURRING_EVENT = "RECURRING_EVENT",
 }
+
+export enum TICKET_TYPE {
+  PAID = "PAID",
+  FREE = "FREE",
+}
