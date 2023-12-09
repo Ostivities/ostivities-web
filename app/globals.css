@@ -562,3 +562,20 @@ body {
   outline: none !important;
   box-shadow: none !important;
 }
+
+.ticket-category {
+  box-shadow: 0px 8px 24px 0px rgba(0, 0, 0, 0.14);
+  background: linear-gradient(0deg, #ffffff, #ffffff);
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.ticket-category:hover,
+.ticket-category:active,
+.ticket-category:focus,
+.ticket-category:focus-within {
+  border: 1px solid #e20000;
+  background: linear-gradient(0deg, #ffffff, #ffffff);
+  border-radius: 20px;
+  transition: ease-in-out 0.15s;
+}
