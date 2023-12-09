@@ -52,7 +52,11 @@ const items2: MenuProps["items"] = [
   };
 });
 
-function DashboardLayout({ children, title }: IDashboard): JSX.Element {
+function DashboardLayout({
+  children,
+  title,
+  steppers,
+}: IDashboard): JSX.Element {
   const router = useRouter();
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useState(true);
@@ -63,11 +67,6 @@ function DashboardLayout({ children, title }: IDashboard): JSX.Element {
 
   const onClick: MenuProps["onClick"] = (e: any) => {
     router.push(e?.key);
-  };
-
-  const onChange = (value: number) => {
-    console.log("onChange:", value);
-    setCurrent(value);
   };
 
   return (
@@ -197,53 +196,26 @@ function DashboardLayout({ children, title }: IDashboard): JSX.Element {
                 className="flex flex-row pb-8"
                 style={{ height: "750px !important" }}
               >
-                <div className="w-1/12">
-                  <Steps
-                    progressDot
-                    responsive
-                    current={current}
-                    direction="vertical"
-                    onChange={onChange}
-                    items={[
-                      {
-                        title: "Details",
-                        description: "",
-                        className: "font-BricolageGrotesqueRegular",
-                      },
-                      {
-                        title: "Appearance",
-                        description: "",
-                        className: "font-BricolageGrotesqueRegular",
-                      },
-                      {
-                        title: "Tickets",
-                        description: "",
-                        className: "font-BricolageGrotesqueRegular",
-                      },
-                    ]}
-                    size="small"
-                  />
+                <div className="w-1/12">{steppers}</div>
+
+                <div
+                  style={{
+                    padding: 30,
+                    margin: 0,
+                    height: "auto",
+                    // maxHeight: "auto",
+                    overflowY: "scroll",
+                    overflowX: "hidden",
+                    borderRadius: "30px",
+                    border: "1px solid #E5E5E5",
+                    boxShadow: "0px 8px 24px 0px #00000014",
+                    background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
+                    maxHeight: "auto",
+                  }}
+                  className="auth-background w-11/12"
+                >
+                  <div className="w-full">{children}</div>
                 </div>
-                <>
-                  <Content
-                    style={{
-                      padding: 30,
-                      margin: 0,
-                      height: "auto",
-                      // maxHeight: "auto",
-                      overflowY: "scroll",
-                      overflowX: "hidden",
-                      borderRadius: "30px",
-                      border: "1px solid #E5E5E5",
-                      boxShadow: "0px 8px 24px 0px #00000014",
-                      background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
-                      maxHeight: "auto",
-                    }}
-                    className="auth-background"
-                  >
-                    <div>{children}</div>
-                  </Content>
-                </>
               </div>
             ) : (
               <>

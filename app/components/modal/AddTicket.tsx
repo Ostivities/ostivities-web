@@ -98,11 +98,11 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
       >
         {show ? (
           <form
-            className="w-full flex flex-col space-y-5"
+            className="w-full flex flex-col space-y-7 mt-8 pt-3"
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex flex-row items-center">
-              <Label content="Ticket Type" className="w-1/4" />
+              <Label content="Ticket Type" className="w-1/3" />
               <Controller
                 name="ticketType"
                 control={control}
@@ -121,7 +121,7 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
             </div>
 
             <div className="flex flex-row items-center">
-              <Label content="Ticket Name" className="w-1/4" />
+              <Label content="Ticket Name" className="w-1/3" />
               <Controller
                 name="ticketName"
                 control={control}
@@ -132,7 +132,7 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
             </div>
 
             <div className="flex flex-row items-center">
-              <Label content="Ticket Stock" className="w-1/4" />
+              <Label content="Ticket Stock" className="w-1/3" />
               <Controller
                 name="ticketStock"
                 control={control}
@@ -143,7 +143,7 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
             </div>
 
             <div className="flex flex-row items-center">
-              <Label content="Ticket Price" className="w-1/4" />
+              <Label content="Ticket Price" className="w-1/3" />
               <Controller
                 name="ticketPrice"
                 control={control}
@@ -154,7 +154,7 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
             </div>
 
             <div className="flex flex-row items-center">
-              <Label content="Purchase Limit" className="w-1/4" />
+              <Label content="Purchase Limit" className="w-1/3" />
               <Controller
                 name="purchaseLimit"
                 control={control}
@@ -165,7 +165,7 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
             </div>
 
             <div className="flex flex-row items-start">
-              <Label content="Ticket Description" className="w-1/4" />
+              <Label content="Ticket Description" className="w-1/3" />
               <Controller
                 name="ticketDescription"
                 control={control}
@@ -194,22 +194,33 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
               onClick={() => setActive("Single Ticket")}
             >
               <div className="flex flex-col space-y-2">
-                <h5
-                  className={`${
-                    activeItem === "Single Ticket"
-                      ? "ticket-title text-OWANBE_PRY"
-                      : ""
-                  }`}
-                >
-                  Single Ticket
-                </h5>
-                <p
-                  className={`${
-                    activeItem === "Single Ticket" ? "text-OWANBE_PRY" : ""
-                  }`}
-                >
-                  Grants entry for one person to the event.
-                </p>
+                {activeItem === "Single Ticket" ? (
+                  <h6 className="ticket-title">Single Ticket</h6>
+                ) : (
+                  <h5
+                    className={`${
+                      activeItem === "Single Ticket"
+                        ? "ticket-title text-OWANBE_PRY"
+                        : ""
+                    }`}
+                  >
+                    Single Ticket
+                  </h5>
+                )}
+
+                {activeItem === "Single Ticket" ? (
+                  <span className="ticket-subtitle">
+                    Grants entry for one person to the event.
+                  </span>
+                ) : (
+                  <p
+                    className={`${
+                      activeItem === "Single Ticket" ? "text-OWANBE_PRY" : ""
+                    }`}
+                  >
+                    Grants entry for one person to the event.
+                  </p>
+                )}
               </div>
 
               <Image src={Ticket} alt="ticket" />
@@ -224,24 +235,34 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
               onClick={() => setActive("Collective Ticket")}
             >
               <div className="flex flex-col space-y-2">
-                <h5
-                  className={`${
-                    activeItem === "Single Ticket"
-                      ? "ticket-title text-OWANBE_PRY"
-                      : ""
-                  }`}
-                >
-                  Collective Ticket
-                </h5>
-                <p
-                  className={`${
-                    activeItem === "Single Ticket"
-                      ? "ticket-subtitle text-OWANBE_PRY"
-                      : ""
-                  }`}
-                >
-                  Grants entry for more than one person to the event.
-                </p>
+                {activeItem === "Collective Ticket" ? (
+                  <h6 className="ticket-title">Collective Ticket</h6>
+                ) : (
+                  <h5
+                    className={`${
+                      activeItem === "Single Ticket"
+                        ? "ticket-title text-OWANBE_PRY"
+                        : ""
+                    }`}
+                  >
+                    Collective Ticket
+                  </h5>
+                )}
+                {activeItem === "Collective Ticket" ? (
+                  <span className="ticket-subtitle">
+                    Grants entry for more than one person to the event.
+                  </span>
+                ) : (
+                  <p
+                    className={`${
+                      activeItem === "Single Ticket"
+                        ? "ticket-subtitle text-OWANBE_PRY"
+                        : ""
+                    }`}
+                  >
+                    Grants entry for more than one person to the event.
+                  </p>
+                )}
               </div>
               <Image src={Ticket} alt="ticket" />
             </div>
