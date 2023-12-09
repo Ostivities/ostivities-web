@@ -24,6 +24,7 @@ export interface IDashboard {
   children?: React.ReactNode;
   title?: string;
   tab?: React.ReactNode;
+  steppers?: React.ReactNode;
 }
 
 export interface IFormProps {

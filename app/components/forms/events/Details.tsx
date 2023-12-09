@@ -501,7 +501,7 @@ function Details(): JSX.Element {
 
         {/* STEP 2 --> BODY 2 */}
         {formStep === 2 && (
-          <div className="flex flex-row">
+          <div className="flex flex-row w-full">
             <div className="w-1/3">
               <Label content="Event Image" className="" />
             </div>
