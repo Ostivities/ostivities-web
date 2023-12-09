@@ -40,7 +40,7 @@ function AddTicketModal({ open, onCancel, onOk }: IModal) {
             }`}
             onClick={() => setActive("Single Ticket")}
           >
-            <div className="flex flex-col space-y-3">
+            <div className="flex flex-col space-y-2">
               <h5
                 className={`${
                   activeItem === "Single Ticket"
@@ -70,7 +70,7 @@ function AddTicketModal({ open, onCancel, onOk }: IModal) {
             }`}
             onClick={() => setActive("Collective Ticket")}
           >
-            <div className="flex flex-col space-y-3">
+            <div className="flex flex-col space-y-2">
               <h5
                 className={`${
                   activeItem === "Single Ticket"
