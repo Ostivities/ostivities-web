@@ -22,7 +22,7 @@ export interface IAuthLayout {
 
 export interface IDashboard {
   children?: React.ReactNode;
-  title?: string;
+  title?: string | React.ReactNode;
   tab?: React.ReactNode;
   steppers?: React.ReactNode;
 }
