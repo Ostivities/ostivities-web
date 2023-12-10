@@ -106,7 +106,6 @@ function Details(): JSX.Element {
             htmlType="button"
             size="large"
             className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles float-right place-self-end"
-            onClick={() => setIsModalOpen(true)}
           >
             Add ticket
           </Button>
