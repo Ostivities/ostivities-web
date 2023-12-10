@@ -96,16 +96,6 @@ function EventTicketTable() {
   ];
   return (
     <div className="w-full flex flex-col space-y-6">
-      <div className="w-1/4 float-right place-self-end">
-        <Button
-          type="primary"
-          htmlType="button"
-          size="large"
-          className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles float-right"
-        >
-          Add Ticket
-        </Button>
-      </div>
       <Table
         columns={columns}
         dataSource={data}
