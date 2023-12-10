@@ -99,7 +99,7 @@ function EventTicketTable(): JSX.Element {
       <Table
         columns={columns}
         dataSource={data}
-        className="font-BricolageGrotesqueRegular"
+        className="font-BricolageGrotesqueRegular w-full"
       />
     </div>
   );

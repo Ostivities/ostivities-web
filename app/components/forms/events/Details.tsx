@@ -100,7 +100,16 @@ function Details(): JSX.Element {
         </Space>
       </>
       {formState.stage === 3 ? (
-        <>
+        <div className="w-full flex flex-col space-y-7">
+          <Button
+            type="primary"
+            htmlType="button"
+            size="large"
+            className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles float-right place-self-end"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Add ticket
+          </Button>
           <EventTicketTable />
           <Space className="flex flex-row justify-center space-x-4">
             <Button
@@ -123,7 +132,7 @@ function Details(): JSX.Element {
               Publish Event
             </Button>
           </Space>
-        </>
+        </div>
       ) : (
         <Fragment>
           <form
