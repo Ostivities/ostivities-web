@@ -1,8 +1,16 @@
+import { Label } from "@/app/components/typography/Typography";
 import { DataType } from "@/app/utils/interface";
-import { Table } from "antd";
+import { MenuOutlined } from "@ant-design/icons";
+import type { MenuProps } from "antd";
+import { Dropdown, Table } from "antd";
 import type { ColumnsType, TableProps } from "antd/es/table";
 import React from "react";
-import { Label } from "../typography/Typography";
+
+const items: MenuProps["items"] = [
+  { key: "1", label: <Label className="cursor-pointer" content="Edit" /> },
+  { key: "2", label: <Label className="cursor-pointer" content="Delete" /> },
+  { key: "3", label: <Label className="cursor-pointer" content="Duplicate" /> },
+];
 
 function EventTicketTable() {
   const columns: ColumnsType<DataType> = [
@@ -53,6 +61,11 @@ function EventTicketTable() {
       dataIndex: "",
       filterSearch: true,
       width: "40%",
+      render: () => (
+        <Dropdown menu={{ items }} trigger={["click"]} placement="bottomLeft">
+          <MenuOutlined className="cursor-pointer" />
+        </Dropdown>
+      ),
     },
   ];
   const data: DataType[] = [
