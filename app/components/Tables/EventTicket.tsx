@@ -2,7 +2,7 @@ import { Label } from "@/app/components/typography/Typography";
 import { DataType } from "@/app/utils/interface";
 import { MenuOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Dropdown, Table } from "antd";
+import { Button, Dropdown, Table } from "antd";
 import type { ColumnsType, TableProps } from "antd/es/table";
 import React from "react";
 
@@ -95,7 +95,17 @@ function EventTicketTable() {
     },
   ];
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col space-y-6">
+      <div className="w-1/4 float-right place-self-end">
+        <Button
+          type="primary"
+          htmlType="button"
+          size="large"
+          className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold float-right"
+        >
+          Add Ticket
+        </Button>
+      </div>
       <Table
         columns={columns}
         dataSource={data}

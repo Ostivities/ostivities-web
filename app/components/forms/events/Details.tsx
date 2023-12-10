@@ -98,7 +98,7 @@ function Details(): JSX.Element {
         />
       </Space>
       {formState.stage === 3 ? (
-        <Space direction="vertical" className="w-full" align="start">
+        <>
           <EventTicketTable />
           <Space className="flex flex-row justify-center space-x-4">
             <Button
@@ -121,7 +121,7 @@ function Details(): JSX.Element {
               Publish Event
             </Button>
           </Space>
-        </Space>
+        </>
       ) : (
         <Fragment>
           <form
