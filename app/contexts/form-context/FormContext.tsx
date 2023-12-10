@@ -3,7 +3,7 @@ import {
   FormProviderProps,
   FormState,
 } from "@/app/utils/interface";
-import { FC, ReactNode, createContext, useContext, useState } from "react";
+import { FC, createContext, useContext, useState } from "react";
 
 const initialFormState: FormState = {
   stage: 0,

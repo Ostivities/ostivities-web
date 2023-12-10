@@ -632,3 +632,7 @@ body {
 /* .ant-form-item-label {
   text-align: left;
 } */
+
+.ant-steps-icon-dot {
+  /* background: #e20000 !important; */
+}
