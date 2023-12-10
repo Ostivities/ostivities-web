@@ -101,7 +101,7 @@ function Details(): JSX.Element {
         className="flex flex-col space-y-8 pb-5"
       >
         {/* STEP 1 --> BODY 1 */}
-        {formStep === 1 && (
+        {formState.stage === 0 && (
           <div className="grid grid-cols-2 gap-x-4">
             <div className="flex flex-col space-y-4 pr-6">
               <Controller
@@ -503,7 +503,7 @@ function Details(): JSX.Element {
         )}
 
         {/* STEP 2 --> BODY 2 */}
-        {formStep === 2 && (
+        {formState.stage === 1 && (
           <div className="flex flex-row w-full">
             <div className="w-1/3">
               <Label content="Event Image" className="" />
@@ -524,7 +524,7 @@ function Details(): JSX.Element {
         )}
 
         {/* STEP 3 --> BODY 3 */}
-        {formStep === 3 && (
+        {formState.stage === 2 && (
           <div
             className="w-4/5 mx-auto text-center rounded-lg mt-4 flex items-center justify-center"
             style={{
@@ -559,7 +559,7 @@ function Details(): JSX.Element {
       </form>
 
       {/* FORM BUTTONS */}
-      {formStep === 1 && (
+      {formState.stage === 0 && (
         <Space className="flex flex-row justify-center space-x-4">
           <Button
             type="default"
@@ -580,7 +580,7 @@ function Details(): JSX.Element {
         </Space>
       )}
 
-      {formStep === 2 && (
+      {formState.stage === 1 && (
         <Space className="flex flex-row justify-center space-x-4">
           <Button
             type="default"
@@ -605,7 +605,7 @@ function Details(): JSX.Element {
         </Space>
       )}
 
-      {formStep === 3 && (
+      {formState.stage === 2 && (
         <Space className="flex flex-row justify-center space-x-4">
           <Button
             type="default"
