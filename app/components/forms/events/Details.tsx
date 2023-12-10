@@ -68,7 +68,7 @@ function Details(): JSX.Element {
   };
 
   return (
-    <>
+    <Fragment>
       <AddTicketModal
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
@@ -99,16 +99,6 @@ function Details(): JSX.Element {
       </Space>
       {formState.stage === 3 ? (
         <>
-          <div className="w-1/4 float-right place-self-end">
-            <Button
-              type="primary"
-              htmlType="button"
-              size="large"
-              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles float-right"
-            >
-              Add Ticket
-            </Button>
-          </div>
           <EventTicketTable />
           <Space className="flex flex-row justify-center space-x-4">
             <Button
@@ -133,7 +123,7 @@ function Details(): JSX.Element {
           </Space>
         </>
       ) : (
-        <>
+        <Fragment>
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col space-y-8 pb-5"
@@ -671,9 +661,9 @@ function Details(): JSX.Element {
               </Button>
             </Space>
           )}
-        </>
+        </Fragment>
       )}
-    </>
+    </Fragment>
   );
 }
 

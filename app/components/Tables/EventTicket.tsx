@@ -12,7 +12,7 @@ const items: MenuProps["items"] = [
   { key: "3", label: <Label className="cursor-pointer" content="Duplicate" /> },
 ];
 
-function EventTicketTable() {
+function EventTicketTable(): JSX.Element {
   const columns: ColumnsType<DataType> = [
     {
       title: (
