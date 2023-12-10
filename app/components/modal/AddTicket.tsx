@@ -1,4 +1,5 @@
 import { Heading5, Label } from "@/app/components/typography/Typography";
+import { useFormContext } from "@/app/contexts/form-context/FormContext";
 import { TICKET_TYPE } from "@/app/utils/enums";
 import { FieldType, IModal } from "@/app/utils/interface";
 import Ticket from "@/public/Ticket-Slant.svg";
@@ -8,6 +9,7 @@ import React, { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
+  const { formState, setFormStage } = useFormContext();
   const { Option } = Select;
   const [activeItem, setActive] = useState<string>("");
   const [show, setShow] = useState<boolean>(false);
@@ -71,9 +73,10 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
                   htmlType="submit"
                   className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
                   onClick={() => {
-                    if (activeItem !== "") {
-                      setShow(true);
-                    }
+                    onCancel();
+                    setShow(false);
+                    setActive("");
+                    setFormStage(formState.stage + 1);
                   }}
                 >
                   Continue

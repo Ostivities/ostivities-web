@@ -5,7 +5,6 @@ import React, { useState } from "react";
 
 function Steppers(): JSX.Element {
   const { formState } = useFormContext();
-  console.log(formState.stage, "cc");
 
   return (
     <Steps
