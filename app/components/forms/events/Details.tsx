@@ -98,6 +98,17 @@ function Details(): JSX.Element {
         />
       </Space>
       {formState.stage === 3 ? (
+        <>
+          <div className="w-1/4 float-right place-self-end">
+            <Button
+              type="primary"
+              htmlType="button"
+              size="large"
+              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles float-right"
+            >
+              Add Ticket
+            </Button>
+          </div>
         <Space direction="vertical" className="w-full" align="start">
           <EventTicketTable />
           <Space className="flex flex-row justify-center space-x-4">
