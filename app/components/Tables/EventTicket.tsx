@@ -88,7 +88,6 @@ function EventTicketTable() {
         dataSource={data}
         className="font-BricolageGrotesqueRegular"
       />
-      ;
     </div>
   );
 }
