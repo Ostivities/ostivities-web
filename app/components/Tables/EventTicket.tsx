@@ -101,7 +101,7 @@ function EventTicketTable() {
           type="primary"
           htmlType="button"
           size="large"
-          className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold float-right"
+          className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles float-right"
         >
           Add Ticket
         </Button>
