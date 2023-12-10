@@ -196,7 +196,7 @@ function DashboardLayout({
               )}
             </Header>
 
-            <Layout style={{ padding: "0 30px 30px" }}>
+            <Layout style={{ padding: "0 30px 30px", height: "100vh" }}>
               {title === "Events Creation" ? (
                 <div
                   className="flex flex-row pb-8 mt-8"
@@ -208,7 +208,7 @@ function DashboardLayout({
                     style={{
                       padding: 30,
                       margin: 0,
-                      height: "auto",
+                      height: "80vh",
                       // maxHeight: "auto",
                       overflowY: "scroll",
                       overflowX: "hidden",
