@@ -68,7 +68,7 @@ function Details(): JSX.Element {
   };
 
   return (
-    <>
+    <Fragment>
       <AddTicketModal
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
@@ -133,8 +133,9 @@ function Details(): JSX.Element {
             </Button>
           </Space>
         </Space>
+       </>
       ) : (
-        <>
+        <Fragment>
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col space-y-8 pb-5"
@@ -672,9 +673,9 @@ function Details(): JSX.Element {
               </Button>
             </Space>
           )}
-        </>
+        </Fragment>
       )}
-    </>
+    </Fragment>
   );
 }
 
