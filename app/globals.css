@@ -629,10 +629,8 @@ body {
   font-size: 17px;
 }
 
-/* .ant-form-item-label {
-  text-align: left;
-} */
-
-.ant-steps-icon-dot {
-  /* background: #e20000 !important; */
+.ant-table-cell {
+  font-family: "BricolageGrotesqueRegular" !important;
+  color: #333333 !important;
+  font-size: 14px !important;
 }

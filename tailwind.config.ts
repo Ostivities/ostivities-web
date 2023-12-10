@@ -40,6 +40,7 @@ const config: Config = {
         OWANBE_DEEP_RED: "#A6264C",
         OWANBE_DARK_LIGHT: "#00000060",
         OWANBE_TABLE_TITLE: "#6B6B6B",
+        OWANBE_TABLE_CELL: "#333333",
       },
       keyframes: {
         shake: {
