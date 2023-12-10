@@ -1,23 +1,15 @@
 "use client";
+import { Label } from "@/app/components/typography/Typography";
 import FormProvider from "@/app/contexts/form-context/FormContext";
 import { IDashboard } from "@/app/utils/interface";
 import Hamburger from "@/public/hamburger.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
 import { BellFilled, SettingOutlined, UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import {
-  Avatar,
-  Badge,
-  Breadcrumb,
-  Layout,
-  Menu,
-  Space,
-  Steps,
-  theme,
-} from "antd";
+import { Avatar, Badge, Dropdown, Layout, Menu, Space, theme } from "antd";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { isValidElement, useState } from "react";
 
 const items1: MenuProps["items"] = [
   {
@@ -52,6 +44,17 @@ const items2: MenuProps["items"] = [
     // }),
   };
 });
+
+const items: MenuProps["items"] = [
+  {
+    label: <Label className="cursor-pointer" content="Help" />,
+    key: "help",
+  },
+  {
+    label: <Label className="cursor-pointer" content="Sign out" />,
+    key: "sign-",
+  },
+];
 
 function DashboardLayout({
   children,
@@ -119,17 +122,18 @@ function DashboardLayout({
                 />
               </Badge>
             </div>
-
-            <Avatar
-              size={40}
-              style={{
-                background: "#E20000",
-                fontFamily: "BricolageGrotesqueMedium",
-                cursor: "pointer",
-              }}
-            >
-              IR
-            </Avatar>
+            <Dropdown menu={{ items }} trigger={["click", "hover"]}>
+              <Avatar
+                size={40}
+                style={{
+                  background: "#E20000",
+                  fontFamily: "BricolageGrotesqueMedium",
+                  cursor: "pointer",
+                }}
+              >
+                IR
+              </Avatar>
+            </Dropdown>
           </Space>
         </Header>
         <Layout>
@@ -193,12 +197,10 @@ function DashboardLayout({
             </Header>
 
             <Layout style={{ padding: "0 30px 30px" }}>
-              <Breadcrumb style={{ margin: "16px 0" }}></Breadcrumb>
-
               {title === "Events Creation" ? (
                 <div
-                  className="flex flex-row pb-8"
-                  style={{ height: "750px !important" }}
+                  className="flex flex-row pb-8 mt-8"
+                  // style={{ height: "750px !important" }}
                 >
                   <div className="w-1/12">{steppers}</div>
 
