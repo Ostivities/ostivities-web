@@ -74,29 +74,31 @@ function Details(): JSX.Element {
         onCancel={() => setIsModalOpen(false)}
         onOk={() => setIsModalOpen(false)}
       />
-      <Space direction="vertical">
-        <Heading5
-          className=""
-          content={
-            formStep === 1
-              ? "Hello, Rose."
-              : formStep === 2
-              ? "Event Page Appearance."
-              : "Event Ticket."
-          }
-        />
-        <Paragraph
-          className="text-OWANBE_PRY text-xl font-normal font-BricolageGrotesqueRegular"
-          content={
-            formStep === 1
-              ? "Lets get started by creating your event "
-              : formStep === 2
-              ? "Select the appearance of your event page here"
-              : "Ostivities is free for free events. For paid events, we charge a percentage as a transaction fee."
-          }
-          styles={{ fontWeight: "normal !important" }}
-        />
-      </Space>
+      <>
+        <Space direction="vertical">
+          <Heading5
+            className=""
+            content={
+              formStep === 1
+                ? "Hello, Rose."
+                : formStep === 2
+                ? "Event Page Appearance."
+                : "Event Ticket."
+            }
+          />
+          <Paragraph
+            className="text-OWANBE_PRY text-xl font-normal font-BricolageGrotesqueRegular"
+            content={
+              formStep === 1
+                ? "Lets get started by creating your event "
+                : formStep === 2
+                ? "Select the appearance of your event page here"
+                : "Ostivities is free for free events. For paid events, we charge a percentage as a transaction fee."
+            }
+            styles={{ fontWeight: "normal !important" }}
+          />
+        </Space>
+      </>
       {formState.stage === 3 ? (
         <>
           <div className="w-1/4 float-right place-self-end">
@@ -133,6 +135,7 @@ function Details(): JSX.Element {
             </Button>
           </Space>
         </Space>
+       </>
       ) : (
         <Fragment>
           <form
