@@ -76,3 +76,10 @@ export interface FormState {
 export interface FormProviderProps {
   children: React.ReactNode;
 }
+
+export interface DataType {
+  key: React.Key;
+  name: string;
+  age: number;
+  address: string;
+}
