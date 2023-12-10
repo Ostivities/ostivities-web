@@ -11,14 +11,14 @@ import { UploadOutlined } from "@ant-design/icons";
 // import { schema } from "@/app/utils/validations";
 // import { yupResolver } from "@hookform/resolvers/yup";
 import Dropzone from "@/app/components/Dropzone/Dropzone";
+import EventTicketTable from "@/app/components/Tables/EventTicket";
+import AddTicketModal from "@/app/components/modal/AddTicket";
 import { useFormContext } from "@/app/contexts/form-context/FormContext";
 import Ticket from "@/public/Ticket.svg";
 import { Button, DatePicker, Input, Radio, Select, Space, Upload } from "antd";
 import Image from "next/image";
 import React, { Fragment, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import EventTicketTable from "../../Tables/EventTicket";
-import AddTicketModal from "../../modal/AddTicket";
 
 function Details(): JSX.Element {
   const { formState, setFormStage } = useFormContext();
@@ -100,6 +100,27 @@ function Details(): JSX.Element {
       {formState.stage === 3 ? (
         <>
           <EventTicketTable />
+          <Space className="flex flex-row justify-center space-x-4">
+            <Button
+              type="default"
+              size={"large"}
+              className={`font-BricolageGrotesqueSemiBold button-styles sign-in cursor-pointer font-bold`}
+              onClick={() => {
+                setFormStage(formState.stage - 1);
+              }}
+            >
+              Back
+            </Button>
+            <Button
+              type="primary"
+              htmlType="button"
+              size="large"
+              className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
+              onClick={nextStep}
+            >
+              Publish Event
+            </Button>
+          </Space>
         </>
       ) : (
         <Fragment>
