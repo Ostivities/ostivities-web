@@ -11,20 +11,21 @@ function Steppers(): JSX.Element {
       progressDot
       responsive
       current={formState?.stage}
-      direction="vertical"
+      direction="horizontal"
+      labelPlacement="vertical"
       items={[
         {
-          title: "Details",
+          title: "Event Details",
           description: "",
           className: "font-BricolageGrotesqueRegular",
         },
         {
-          title: "Appearance",
+          title: "Event Image",
           description: "",
           className: "font-BricolageGrotesqueRegular",
         },
         {
-          title: "Tickets",
+          title: "Tickets Creation",
           description: "",
           className: "font-BricolageGrotesqueRegular",
         },

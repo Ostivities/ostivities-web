@@ -197,17 +197,12 @@ function DashboardLayout({
             </Header>
 
             <Layout style={{ padding: "0 30px 30px", height: "100vh" }}>
-              {title === "Events Creation" ? (
+              {/* {title === "Events Creation" ? (
                 <div
-                  className={`flex flex-row pb-8 mt-8 ${
-                    !isValidElement(steppers)
-                      ? "justify-center items-center"
-                      : ""
-                  }`}
+                  className={`flex flex-col space-y-8 pb-8 mt-8 items-center justify-center`}
                 >
-                  {}
                   <div
-                    className={`w-1/12 ${
+                    className={`mx-auto ${
                       !isValidElement(steppers) ? "hidden" : ""
                     }`}
                   >
@@ -228,9 +223,9 @@ function DashboardLayout({
                       background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
                       maxHeight: "auto",
                     }}
-                    className="auth-background w-11/12"
+                    className="auth-background w-11/12 mx-auto"
                   >
-                    <div className="w-full">{children}</div>
+                    <div className="w-full mx-auto text-center">{children}</div>
                   </div>
                 </div>
               ) : (
@@ -247,10 +242,40 @@ function DashboardLayout({
                       background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
                     }}
                   >
+                    <div
+                      className={`mx-auto ${
+                        !isValidElement(steppers) ? "hidden" : ""
+                      }`}
+                    >
+                      {steppers}
+                    </div>
                     <div>{children}</div>
                   </Content>
                 </>
-              )}
+              )} */}
+              <div className="flex flex-col space-y-8 py-8">
+                <div
+                  className={`mx-auto pb-5 ${
+                    !isValidElement(steppers) ? "hidden" : ""
+                  }`}
+                >
+                  {steppers}
+                </div>
+                <Content
+                  style={{
+                    padding: 30,
+                    margin: 0,
+                    overflowY: "scroll",
+                    overflowX: "hidden",
+                    borderRadius: "30px",
+                    border: "1px solid #E5E5E5",
+                    boxShadow: "0px 8px 24px 0px #00000014",
+                    background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
+                  }}
+                >
+                  <div>{children}</div>
+                </Content>
+              </div>
             </Layout>
           </Layout>
         </Layout>
