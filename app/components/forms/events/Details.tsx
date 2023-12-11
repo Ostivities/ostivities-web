@@ -557,10 +557,7 @@ function Details(): JSX.Element {
             {/* STEP 2 --> BODY 2 */}
             {formState.stage === 1 && (
               <div className="flex flex-row w-full">
-                <div className="w-1/3">
-                  <Label content="Event Image" className="" />
-                </div>
-                <div className="w-3/4">
+                <div className="w-full">
                   <Controller
                     name="eventImage"
                     control={control}
