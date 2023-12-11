@@ -17,10 +17,12 @@ import { useFormContext } from "@/app/contexts/form-context/FormContext";
 import Ticket from "@/public/Ticket.svg";
 import { Button, DatePicker, Input, Radio, Select, Space, Upload } from "antd";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 function Details(): JSX.Element {
+  const router = useRouter();
   const { formState, setFormStage } = useFormContext();
   const [formStep, setFormStep] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -126,7 +128,7 @@ function Details(): JSX.Element {
               htmlType="button"
               size="large"
               className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
-              onClick={nextStep}
+              onClick={() => router.push("/publish-events")}
             >
               Publish Event
             </Button>
