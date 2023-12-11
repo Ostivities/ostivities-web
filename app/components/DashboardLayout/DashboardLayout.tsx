@@ -199,10 +199,20 @@ function DashboardLayout({
             <Layout style={{ padding: "0 30px 30px", height: "100vh" }}>
               {title === "Events Creation" ? (
                 <div
-                  className="flex flex-row pb-8 mt-8"
-                  // style={{ height: "750px !important" }}
+                  className={`flex flex-row pb-8 mt-8 ${
+                    !isValidElement(steppers)
+                      ? "justify-center items-center"
+                      : ""
+                  }`}
                 >
-                  <div className="w-1/12">{steppers}</div>
+                  {}
+                  <div
+                    className={`w-1/12 ${
+                      !isValidElement(steppers) ? "hidden" : ""
+                    }`}
+                  >
+                    {steppers}
+                  </div>
 
                   <div
                     style={{
@@ -229,7 +239,6 @@ function DashboardLayout({
                     style={{
                       padding: 30,
                       margin: 0,
-                      // maxHeight: "auto",
                       overflowY: "scroll",
                       overflowX: "hidden",
                       borderRadius: "30px",

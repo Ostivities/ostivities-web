@@ -194,6 +194,15 @@ body {
   background-position-y: -15%;
 }
 
+.auth-background-light {
+  background-image: url(/Topologylight.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto;
+  background-position-x: 36%;
+  background-position-y: -15%;
+}
+
 :where(.css-dev-only-do-not-override-zcfrx9).ant-select-single {
   font-size: 14px !important;
   height: 41px !important;
@@ -633,4 +642,13 @@ body {
   font-family: "BricolageGrotesqueRegular" !important;
   color: #333333 !important;
   font-size: 14px !important;
+}
+
+.event-poster {
+  background-image: url(/card.png);
+  background-repeat: no-repeat;
+}
+
+.image-bg {
+  background: linear-gradient(180deg, rgba(13, 37, 60, 0) 51.56%, #0d253c 100%);
 }
