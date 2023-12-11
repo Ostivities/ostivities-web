@@ -199,15 +199,10 @@ function DashboardLayout({
             <Layout style={{ padding: "0 30px 30px", height: "100vh" }}>
               {title === "Events Creation" ? (
                 <div
-                  className={`flex flex-row pb-8 mt-8 ${
-                    !isValidElement(steppers)
-                      ? "justify-center items-center"
-                      : ""
-                  }`}
+                  className={`flex flex-col space-y-6 pb-8 mt-8 items-center justify-center`}
                 >
-                  {}
                   <div
-                    className={`w-1/12 ${
+                    className={`mx-auto ${
                       !isValidElement(steppers) ? "hidden" : ""
                     }`}
                   >
@@ -228,9 +223,9 @@ function DashboardLayout({
                       background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
                       maxHeight: "auto",
                     }}
-                    className="auth-background w-11/12"
+                    className="auth-background w-11/12 mx-auto"
                   >
-                    <div className="w-full">{children}</div>
+                    <div className="w-full mx-auto text-center">{children}</div>
                   </div>
                 </div>
               ) : (

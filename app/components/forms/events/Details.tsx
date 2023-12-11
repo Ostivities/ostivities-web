@@ -84,7 +84,7 @@ function Details(): JSX.Element {
               formStep === 1
                 ? "Hello, Rose."
                 : formStep === 2
-                ? "Event Page Appearance."
+                ? "Event Image."
                 : "Event Ticket."
             }
           />
@@ -557,7 +557,7 @@ function Details(): JSX.Element {
             {/* STEP 2 --> BODY 2 */}
             {formState.stage === 1 && (
               <div className="flex flex-row w-full">
-                <div className="w-full">
+                <div className="w-11/12 mx-auto">
                   <Controller
                     name="eventImage"
                     control={control}
@@ -575,7 +575,7 @@ function Details(): JSX.Element {
             {/* STEP 3 --> BODY 3 */}
             {formState.stage === 2 && (
               <div
-                className="w-4/5 mx-auto text-center rounded-lg mt-4 flex items-center justify-center"
+                className="w-11/12 mx-auto text-center rounded-lg mt-4 flex items-center justify-center"
                 style={{
                   height: "400px",
                   border: "1px solid #00000040",
