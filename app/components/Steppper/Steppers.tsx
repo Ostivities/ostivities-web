@@ -15,17 +15,17 @@ function Steppers(): JSX.Element {
       labelPlacement="vertical"
       items={[
         {
-          title: "Details",
+          title: "Event Details",
           description: "",
           className: "font-BricolageGrotesqueRegular",
         },
         {
-          title: "Appearance",
+          title: "Event Image",
           description: "",
           className: "font-BricolageGrotesqueRegular",
         },
         {
-          title: "Tickets",
+          title: "Tickets Creation",
           description: "",
           className: "font-BricolageGrotesqueRegular",
         },
