@@ -76,7 +76,7 @@ function Details(): JSX.Element {
         onCancel={() => setIsModalOpen(false)}
         onOk={() => setIsModalOpen(false)}
       />
-      <>
+      <div className="flex flex-row justify-between">
         <Space direction="vertical">
           <Heading5
             className=""
@@ -100,7 +100,20 @@ function Details(): JSX.Element {
             styles={{ fontWeight: "normal !important" }}
           />
         </Space>
-      </>
+        {formState.stage > 0 && (
+          <Button
+            type="default"
+            size={"large"}
+            className={`font-BricolageGrotesqueSemiBold button-style sign-in cursor-pointer font-bold`}
+            onClick={() => {
+              setFormStep(1);
+              setFormStage(formState.stage - 1);
+            }}
+          >
+            Back
+          </Button>
+        )}
+      </div>
       {formState.stage === 3 ? (
         <div className="w-full flex flex-col space-y-7">
           <Button
@@ -635,13 +648,13 @@ function Details(): JSX.Element {
               <Button
                 type="default"
                 size={"large"}
-                className={`font-BricolageGrotesqueSemiBold button-styles sign-in cursor-pointer font-bold`}
+                className={`font-BricolageGrotesqueSemiBold button-style sign-in cursor-pointer font-bold`}
                 onClick={() => {
                   setFormStep(1);
                   setFormStage(formState.stage - 1);
                 }}
               >
-                Back
+                Save & continue
               </Button>
               <Button
                 type="primary"
@@ -650,7 +663,7 @@ function Details(): JSX.Element {
                 className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
                 onClick={nextStep}
               >
-                Save and Continue
+                Skip & do this later
               </Button>
             </Space>
           )}
@@ -660,13 +673,22 @@ function Details(): JSX.Element {
               <Button
                 type="default"
                 size={"large"}
-                className={`font-BricolageGrotesqueSemiBold button-styles sign-in cursor-pointer font-bold`}
+                className={`font-BricolageGrotesqueSemiBold button-style sign-in cursor-pointer font-bold`}
                 onClick={() => {
                   setFormStep(2);
                   setFormStage(formState.stage - 1);
                 }}
               >
-                Back
+                Save & continue
+              </Button>
+              <Button
+                type="primary"
+                htmlType="button"
+                size="large"
+                className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
+                // onClick={nextStep}
+              >
+                Skip & do this later
               </Button>
             </Space>
           )}
