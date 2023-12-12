@@ -2,9 +2,14 @@
 import { Label } from "@/app/components/typography/Typography";
 import FormProvider from "@/app/contexts/form-context/FormContext";
 import { IDashboard } from "@/app/utils/interface";
+import EventCreation from "@/public/EventCreation.svg";
 import Hamburger from "@/public/hamburger.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
-import { BellFilled, SettingOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  BellFilled,
+  CompassOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Avatar, Badge, Dropdown, Layout, Menu, Space, theme } from "antd";
 import Image from "next/image";
@@ -23,15 +28,20 @@ const items1: MenuProps["items"] = [
 ];
 
 const items2: MenuProps["items"] = [
-  { icon: UserOutlined, title: "Event Discovery", link: "/dashboard" },
-  { icon: UserOutlined, title: "Events Creation", link: "/dashboard/events" },
+  { icon: CompassOutlined, title: "Discovery", link: "/dashboard" },
+  { icon: EventCreation, title: "Events Creation", link: "/dashboard/events" },
   { icon: SettingOutlined, title: "Settings", link: "/dashboard/settings" },
 ].map((icon) => {
   const key = icon.link;
 
   return {
     key: `${key}`,
-    icon: React.createElement(icon.icon),
+    icon:
+      icon.title === "Events Creation" ? (
+        <Image src={icon.icon} alt="event creation" />
+      ) : (
+        React.createElement(icon.icon)
+      ),
     label: icon.title,
 
     // HANDLES SUB MENU ON SIDE BAR
@@ -64,7 +74,7 @@ function DashboardLayout({
   const router = useRouter();
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useState(true);
-  const [current, setCurrent] = useState(0);
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -196,76 +206,20 @@ function DashboardLayout({
               )}
             </Header>
 
-            <Layout style={{ padding: "0 30px 30px", height: "100vh" }}>
-              {/* {title === "Events Creation" ? (
+            <Layout style={{ padding: "0 30px 30px" }}>
+              <Content className="flex flex-col space-y-8 py-8">
                 <div
-                  className={`flex flex-col space-y-8 pb-8 mt-8 items-center justify-center`}
-                >
-                  <div
-                    className={`mx-auto ${
-                      !isValidElement(steppers) ? "hidden" : ""
-                    }`}
-                  >
-                    {steppers}
-                  </div>
-
-                  <div
-                    style={{
-                      padding: 30,
-                      margin: 0,
-                      height: "80vh",
-                      // maxHeight: "auto",
-                      overflowY: "scroll",
-                      overflowX: "hidden",
-                      borderRadius: "30px",
-                      border: "1px solid #E5E5E5",
-                      boxShadow: "0px 8px 24px 0px #00000014",
-                      background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
-                      maxHeight: "auto",
-                    }}
-                    className="auth-background w-11/12 mx-auto"
-                  >
-                    <div className="w-full mx-auto text-center">{children}</div>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <Content
-                    style={{
-                      padding: 30,
-                      margin: 0,
-                      overflowY: "scroll",
-                      overflowX: "hidden",
-                      borderRadius: "30px",
-                      border: "1px solid #E5E5E5",
-                      boxShadow: "0px 8px 24px 0px #00000014",
-                      background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
-                    }}
-                  >
-                    <div
-                      className={`mx-auto ${
-                        !isValidElement(steppers) ? "hidden" : ""
-                      }`}
-                    >
-                      {steppers}
-                    </div>
-                    <div>{children}</div>
-                  </Content>
-                </>
-              )} */}
-              <div className="flex flex-col space-y-8 py-8">
-                <div
-                  className={`mx-auto pb-5 ${
+                  className={`mx-auto text-center flex flex-row items-center justify-center pb-3 ${
                     !isValidElement(steppers) ? "hidden" : ""
                   }`}
                 >
                   {steppers}
                 </div>
-                <Content
+                <div
                   style={{
                     padding: 30,
                     margin: 0,
-                    overflowY: "scroll",
+                    // overflowY: "scroll",
                     overflowX: "hidden",
                     borderRadius: "30px",
                     border: "1px solid #E5E5E5",
@@ -274,8 +228,8 @@ function DashboardLayout({
                   }}
                 >
                   <div>{children}</div>
-                </Content>
-              </div>
+                </div>
+              </Content>
             </Layout>
           </Layout>
         </Layout>

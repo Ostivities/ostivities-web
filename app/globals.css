@@ -652,3 +652,7 @@ body {
 .image-bg {
   background: linear-gradient(180deg, rgba(13, 37, 60, 0) 51.56%, #0d253c 100%);
 }
+
+/* .ant-steps-item-container {
+  width: 400px;
+} */
