@@ -13,7 +13,7 @@ function LoginForm(): JSX.Element {
   const onFinish = (value: any) => {
     console.log(value, "value");
     if (value?.email && value?.password) {
-      router.push("/dashboard");
+      router.push("/Dashboard");
     }
   };
   return (
