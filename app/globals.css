@@ -59,6 +59,16 @@ body {
   font-weight: 500;
   width: 120px;
 }
+
+.button-style {
+  border-radius: 20px !important;
+  box-shadow: none !important;
+  outline: none !important;
+  font-family: BricolageGrotesqueMedium !important;
+  font-size: 16px;
+  font-weight: 500;
+}
+
 .sign-up {
   background: #e20000 !important;
   color: #ffffff !important;
@@ -652,3 +662,7 @@ body {
 .image-bg {
   background: linear-gradient(180deg, rgba(13, 37, 60, 0) 51.56%, #0d253c 100%);
 }
+
+/* .ant-steps-item-container {
+  width: 400px;
+} */
