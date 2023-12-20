@@ -21,9 +21,11 @@ function Hero(): JSX.Element {
               content="Embark on a journey with Ostivities — where celebrations thrive! Connect, discover, and create lasting memories. Join now for a vibrant experience!"
               className="w-full md:w-full text-center md:text-center lg:text-left xl:text-left lg:w-[86%] xl:w-[86%] text-OWANBE_ASH text-lg"
             />
-            <Button className="get-started mx-auto md:mx-auto lg:mx-0 xl:mx-0 space-x-2 active:overflow-hidden">
-              <span className="overflow-hidden">Get Started</span>{" "}
-              <ArrowRightOutlined />
+            <Button className="get-started mx-auto md:mx-auto lg:mx-0 xl:mx-0 active:overflow-hidden">
+              <div className="flex items-center justify-center space-x-2">
+                <span>Get started</span>
+                <ArrowRightOutlined />
+              </div>
             </Button>
           </div>
           <div className="w-full md:w-full lg:w-1/2 xl:w-1/2">
@@ -44,3 +46,4 @@ function Hero(): JSX.Element {
 }
 
 export default Hero;
+
