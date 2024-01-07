@@ -13,6 +13,7 @@
     "@ant-design/icons": "^5.2.6",
     "@hookform/resolvers": "^3.3.2",
     "antd": "^5.11.4",
+    "clsx": "^2.1.0",
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18",
