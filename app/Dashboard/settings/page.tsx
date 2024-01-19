@@ -1,5 +1,5 @@
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
-import Button from "@/app/components/atoms/Button";
+import Button from "@/app/ui/atoms/Button";
 import { Input } from "antd";
 import {
   CaretDownOutlined,
@@ -23,14 +23,10 @@ function Settings() {
         <div className="flex justify-between mb-11">
           <div className="flex gap-x-4">
             <Input name="search" placeholder="Search staff name" />
-            <Button label="Search" variant="primary-large" />
+            <Button label="Search" />
           </div>
 
-          <Button
-            label="Add New Admin"
-            variant="primary-large"
-            prefixIcon={<PlusOutlined />}
-          />
+          <Button label="Add New Admin" prefixIcon={<PlusOutlined />} />
         </div>
 
         <table className="table-auto w-full">

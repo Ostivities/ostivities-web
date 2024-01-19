@@ -1,5 +1,3 @@
-import { HTMLAttributes, ReactNode } from "react";
-
 export interface INavLinks {
   link: string;
   name: string;
@@ -85,12 +83,4 @@ export interface DataType {
   name: string;
   age: number;
   address: string;
-}
-
-export interface ButtonAttributes extends HTMLAttributes<HTMLButtonElement> {
-  label: string;
-  disable?: boolean;
-  maxWidth?: string;
-  variant?: "primary" | "primary-large" | "outline" | "text";
-  prefixIcon?: ReactNode;
 }
