@@ -5,9 +5,9 @@ import Table from "@/app/ui/organisms/Table";
 import data from "@/app/lib/data/index.json";
 import { settingsTableHeaders } from "@/app/lib/config/constants";
 import TableSearch from "@/app/ui/organisms/Table/TableSearch";
-import TablePagination from "@/app/ui/organisms/Table/TablePagination";
 
 function Settings() {
+  // console.log(settingsTableHeaders);
   return (
     <DashboardLayout
       title="Settings"
@@ -18,8 +18,8 @@ function Settings() {
         </div>
       }
     >
-      <div className="mx-auto max-w-[95%] flex flex-col">
-        <div className="flex justify-between mb-11 w-full">
+      <div className="mx-auto md:max-w-[95%] flex flex-col h-[60dvh]">
+        <div className="flex flex-col md:flex-row justify-between mb-8 md:mb-11 w-full">
           <TableSearch />
 
           <Button
@@ -30,8 +30,6 @@ function Settings() {
         </div>
 
         <Table columns={settingsTableHeaders} data={data.settingsData} />
-
-        <TablePagination />
       </div>
     </DashboardLayout>
   );
