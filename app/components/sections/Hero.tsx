@@ -3,7 +3,6 @@ import Z from "@/public/z.svg";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import React from "react";
-import { Paragraph } from "../typography/Typography";
 import Section from "./Section";
 import H3 from "@/app/ui/atoms/H3";
 import Button from "@/app/ui/atoms/Button";
@@ -18,10 +17,12 @@ function Hero(): JSX.Element {
               content="Celebrate, Connect and Create Memories"
               className="w-full text-center lg:text-left xl:text-left md:w-full md:text-center lg:w-3/4 xl:w-3/4"
             />
-            <Paragraph
-              content="Embark on a journey with Ostivities — where celebrations thrive! Connect, discover, and create lasting memories. Join now for a vibrant experience!"
-              className="w-full md:w-full text-center md:text-center lg:text-left xl:text-left lg:w-[86%] xl:w-[86%] text-OWANBE_ASH text-lg "
-            />
+
+            <p className="w-full md:w-full text-center lg:text-left lg:w-[86%] text-OWANBE_ASH text-lg">
+              Embark on a journey with Ostivities — where celebrations thrive!
+              Connect, discover, and create lasting memories. Join now for a
+              vibrant experience!
+            </p>
             <Button
               className="lg:mx-0 max-w-xs lg:max-w-[30%]"
               label="Get Started"
@@ -30,12 +31,12 @@ function Hero(): JSX.Element {
               suffixIcon={<ArrowRightOutlined />}
             />
           </div>
-          <div className="w-full md:w-full lg:w-1/2 xl:w-1/2">
+          <div className="w-full md:w-full lg:w-1/2">
             <Image src={LaptopHero} alt="hero" className="ms-1" />
           </div>
         </div>
 
-        <div className="hidden md:hidden lg:block xl:block lg:w-1/2 xl:w-1/2 text-left pt-8 md:pt-8 lg:pt-0 xl:pt-0">
+        <div className="hidden md:hidden lg:block lg:w-1/2 text-left pt-8 lg:pt-0">
           <Image
             src={Z}
             alt="hero"

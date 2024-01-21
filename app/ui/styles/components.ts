@@ -11,15 +11,15 @@ export const buttonCva = cva(
         text: "font-BricolageGrotesqueRegular",
       },
       size: {
-        default: "py-3 px-5 font-BricolageGrotesqueRegular",
+        default: "py-2 px-6 font-BricolageGrotesqueRegular text-base",
         primary: "font-BricolageGrotesqueSemiBold py-2 px-7 text-[1.125rem]",
-        sm: "",
+        sm: "text-sm font-BricolageGrotesqueSemiBold py-[0.25rem] px-5",
         lg: "text-base py-2 px-6 font-BricolageGrotesqueRegular",
       },
     },
     defaultVariants: {
       variant: "primary",
-      size: "primary",
+      size: "default",
     },
   }
 );

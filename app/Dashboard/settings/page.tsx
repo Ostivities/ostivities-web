@@ -1,14 +1,13 @@
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import Button from "@/app/ui/atoms/Button";
-import { Input } from "antd";
-import {
-  CaretDownOutlined,
-  CaretUpOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
+import Table from "@/app/ui/organisms/Table";
+import data from "@/app/lib/data/index.json";
+import { settingsTableHeaders } from "@/app/lib/config/constants";
+import TableSearch from "@/app/ui/organisms/Table/TableSearch";
+import TablePagination from "@/app/ui/organisms/Table/TablePagination";
 
 function Settings() {
-  const headers = ["Staff Name", "Designation", "Date Assigned", "Action"];
   return (
     <DashboardLayout
       title="Settings"
@@ -19,32 +18,20 @@ function Settings() {
         </div>
       }
     >
-      <div className="">
-        <div className="flex justify-between mb-11">
-          <div className="flex gap-x-4">
-            <Input name="search" placeholder="Search staff name" />
-            <Button label="Search" />
-          </div>
+      <div className="mx-auto max-w-[95%] flex flex-col">
+        <div className="flex justify-between mb-11 w-full">
+          <TableSearch />
 
-          <Button label="Add New Admin" prefixIcon={<PlusOutlined />} />
+          <Button
+            size="default"
+            label="Add New Admin"
+            prefixIcon={<PlusOutlined />}
+          />
         </div>
 
-        <table className="table-auto w-full">
-          <thead>
-            <tr className="border-b">
-              {headers.map((header, i) => (
-                <th
-                  key={header}
-                  className="text-[0.9375rem] font-BricolageGrotesqueMedium text-OWANBE_TABLE_TITLE pb-3"
-                >
-                  {header}
-                </th>
-              ))}
-            </tr>
-          </thead>
+        <Table columns={settingsTableHeaders} data={data.settingsData} />
 
-          {/* <tbody></tbody> */}
-        </table>
+        <TablePagination />
       </div>
     </DashboardLayout>
   );

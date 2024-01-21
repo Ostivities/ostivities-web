@@ -1,6 +1,6 @@
-import { ButtonAttributes } from "@/app/lib/types";
 import { cn } from "@/app/lib/utils";
 import { buttonCva } from "../styles/components";
+import { ButtonAttributes } from "@/app/lib/types/components";
 
 const Button = ({
   label,
