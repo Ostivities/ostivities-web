@@ -47,7 +47,7 @@ const Small = ({ className, content }: ITypography) => {
   );
 };
 
-const Label = ({ className, content, }: ITypography) => {
+const Label = ({ className, content }: ITypography) => {
   return (
     <label
       htmlFor=""
