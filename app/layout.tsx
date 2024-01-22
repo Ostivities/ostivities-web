@@ -20,7 +20,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/Favicon.png" type="image/x-icon" sizes="any" />
       </head>
-      <body className={`bg-white ${inter.className} `}>
+      <body className={`bg-white ${inter.className}`}>
         <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>
