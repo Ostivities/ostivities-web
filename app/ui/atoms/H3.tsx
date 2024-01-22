@@ -1,4 +1,4 @@
-import { H3Attributes } from "@/app/lib/types";
+import { H3Attributes } from "@/app/lib/types/components";
 import { cn } from "@/app/lib/utils";
 
 const H3 = ({ className, content, ...props }: H3Attributes) => {
