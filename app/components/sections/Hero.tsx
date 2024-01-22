@@ -30,6 +30,14 @@ function Hero(): JSX.Element {
               size="default"
               suffixIcon={<ArrowRightOutlined />}
             />
+
+            <Button className="get-started mx-auto md:mx-auto lg:mx-0 xl:mx-0 active:overflow-hidden">
+              <div className="flex items-center justify-center space-x-2">
+                <span>Get started</span>
+                <ArrowRightOutlined />
+              </div>
+            </Button>
+
           </div>
           <div className="w-full md:w-full lg:w-1/2">
             <Image src={LaptopHero} alt="hero" className="ms-1" />
@@ -49,3 +57,4 @@ function Hero(): JSX.Element {
 }
 
 export default Hero;
+
