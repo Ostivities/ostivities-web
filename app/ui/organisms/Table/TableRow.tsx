@@ -21,7 +21,7 @@ const TableRows = <T, K extends keyof T>({
 
   const navigateToPage = useCallback(
     (id: string | number) => router.push(pathname + "/" + id),
-    [pathname]
+    [pathname, router]
   );
 
   const rows = data?.map((row, index) => {
