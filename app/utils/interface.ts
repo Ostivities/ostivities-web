@@ -25,6 +25,7 @@ export interface IDashboard {
   title?: string | React.ReactNode;
   tab?: React.ReactNode;
   steppers?: React.ReactNode;
+  extraComponents?: React.ReactNode;
 }
 
 export interface IFormProps {

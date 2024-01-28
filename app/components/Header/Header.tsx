@@ -1,11 +1,12 @@
 "use client";
 import theme from "@/app/theme/theme.config";
+import Button from "@/app/ui/atoms/Button";
 import { NAV_LINKS } from "@/app/utils/data";
 import { INavLinks } from "@/app/utils/interface";
 import CloseIcon from "@/public/close.svg";
 import Hamburger from "@/public/hamburger.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
-import { Button, ConfigProvider, Drawer } from "antd";
+import { ConfigProvider, Drawer } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -24,6 +25,8 @@ function Header(): JSX.Element {
     setOpen(false);
   };
 
+  const isNotLoggedIn = ["/login", "/signup"].includes(pathname);
+
   return (
     <ConfigProvider
       theme={{
@@ -32,7 +35,7 @@ function Header(): JSX.Element {
     >
       <header className="overflow-hidden">
         {/* LG && XL SCREENS */}
-        <nav className="container mx-auto relative hidden md:hidden lg:flex lg:flex-row lg:items-center lg:justify-between xl:flex xl:flex-row xl:items-center xl:justify-between py-5 px-0 md:px-5 lg:px-0 xl:px-0">
+        <nav className="container mx-auto relative hidden md:hidden lg:flex lg:flex-row lg:items-center lg:justify-between py-5 px-0 md:px-5 lg:px-0">
           <div>
             <Link href="/" className="" shallow>
               <Image
@@ -56,31 +59,24 @@ function Header(): JSX.Element {
           </div>
 
           <div className="flex flex-row items-center space-x-3">
-            {pathname == "/login" || pathname == "/signup" ? null : (
+            {isNotLoggedIn ? null : (
               <>
                 <Button
-                  type="default"
-                  size={"large"}
-                  className={`font-BricolageGrotesqueMedium button-styles sign-in `}
+                  variant="outline"
+                  label="Sign in"
                   onClick={() => router.push("/login")}
-                >
-                  Sign in
-                </Button>
+                />
                 <Button
-                  type="default"
-                  size={"large"}
-                  className="font-BricolageGrotesqueMedium button-styles sign-up"
+                  label="Sign Up"
                   onClick={() => router.push("/signup")}
-                >
-                  Sign Up
-                </Button>
+                />
               </>
             )}
           </div>
         </nav>
 
         {/* SM AND MD SCREENS */}
-        <div className="flex flex-row items-center justify-between px-5 py-3 lg:hidden xl:hidden">
+        <div className="flex flex-row items-center justify-between px-5 py-3 lg:hidden">
           <Link href="/" className="" shallow>
             <Image
               src={OwanbeLogo}
@@ -129,23 +125,16 @@ function Header(): JSX.Element {
           ))}
           <div className="flex flex-col items-center justify-center space-y-4 mt-7 mx-auto w-3/5 md:w-1/5">
             <Button
-              type="default"
-              size={"large"}
-              className="font-BricolageGrotesqueMedium button-styles sign-in"
+              variant="outline"
+              label="Sign in"
+              className="max-w-full"
               onClick={() => onClose()}
-              style={{ width: "100%" }}
-            >
-              Sign in
-            </Button>
+            />
             <Button
-              type="default"
-              size={"large"}
-              className="font-BricolageGrotesqueMedium button-styles sign-up"
+              label="Sign Up"
+              className="max-w-full"
               onClick={() => onClose()}
-              style={{ width: "100%" }}
-            >
-              Sign Up
-            </Button>
+            />
           </div>
         </Drawer>
       </header>

@@ -28,9 +28,9 @@ const items1: MenuProps["items"] = [
 ];
 
 const items2: MenuProps["items"] = [
-  { icon: CompassOutlined, title: "Discovery", link: "/dashboard" },
-  { icon: EventCreation, title: "Events Creation", link: "/dashboard/events" },
-  { icon: SettingOutlined, title: "Settings", link: "/dashboard/settings" },
+  { icon: CompassOutlined, title: "Discovery", link: "/Dashboard" },
+  { icon: EventCreation, title: "Events Creation", link: "/Dashboard/events" },
+  { icon: SettingOutlined, title: "Settings", link: "/Dashboard/settings" },
 ].map((icon) => {
   const key = icon.link;
 
@@ -70,6 +70,7 @@ function DashboardLayout({
   children,
   title,
   steppers,
+  extraComponents,
 }: IDashboard): JSX.Element {
   const router = useRouter();
   const { Header, Sider, Content } = Layout;
@@ -209,13 +210,18 @@ function DashboardLayout({
 
             <Layout style={{ padding: "0 30px 30px" }}>
               <Content className="flex flex-col space-y-8 py-8">
-                <div
-                  className={`mx-auto text-center flex flex-row items-center justify-center pb-3 ${
-                    !isValidElement(steppers) ? "hidden" : ""
-                  }`}
-                >
-                  {steppers}
-                </div>
+                {steppers && (
+                  <div
+                    className={`mx-auto text-center flex flex-row items-center justify-center pb-3 ${
+                      !isValidElement(steppers) ? "hidden" : ""
+                    }`}
+                  >
+                    {steppers}
+                  </div>
+                )}
+                {extraComponents && (
+                  <div className="mb-[1.375rem]">{extraComponents}</div>
+                )}
                 <div
                   style={{
                     padding: 30,
