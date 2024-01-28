@@ -5,9 +5,15 @@ import Table from "@/app/ui/organisms/Table";
 import data from "@/app/lib/data/index.json";
 import { settingsTableHeaders } from "@/app/lib/config/constants";
 import TableSearch from "@/app/ui/organisms/Table/TableSearch";
+import Tab from "@/app/ui/molecules/Tab";
 
 function Settings() {
-  // console.log(settingsTableHeaders);
+  const tabs = [
+    "Profile",
+    "Billing",
+    "Order Notifications",
+    "Payment Settings",
+  ];
   return (
     <DashboardLayout
       title="Settings"
@@ -18,19 +24,20 @@ function Settings() {
         </div>
       }
     >
-      <div className="mx-auto md:max-w-[95%] flex flex-col h-[60dvh]">
-        <div className="flex flex-col md:flex-row justify-between mb-8 md:mb-11 w-full">
-          <TableSearch />
-
-          <Button
-            size="default"
-            label="Add New Admin"
-            prefixIcon={<PlusOutlined />}
-          />
-        </div>
-
-        <Table columns={settingsTableHeaders} data={data.settingsData} />
-      </div>
+      <Tab tabs={tabs} currentPage="registeredUserSettingsPage" />
+      {/* <div className="mx-auto md:max-w-[95%] flex flex-col h-[60dvh]">
+        <Table
+          columns={settingsTableHeaders}
+          data={data.settingsData}
+          Btn={
+            <Button
+              size="default"
+              label="Add New Admin"
+              prefixIcon={<PlusOutlined />}
+            />
+          }
+        />
+      </div> */}
     </DashboardLayout>
   );
 }
