@@ -17,12 +17,12 @@ function Settings() {
   return (
     <DashboardLayout
       title="Settings"
-      extraComponents={
-        <div className="flex gap-x-2">
-          <Button label="Manage admin" />
-          <Button label="Revenue Generated" variant="text" />
-        </div>
-      }
+      // extraComponents={
+      //   <div className="flex gap-x-2">
+      //     <Button label="Manage admin" />
+      //     <Button label="Revenue Generated" variant="text" />
+      //   </div>
+      // }
     >
       <Tab tabs={tabs} currentPage="registeredUserSettingsPage" />
       {/* <div className="mx-auto md:max-w-[95%] flex flex-col h-[60dvh]">

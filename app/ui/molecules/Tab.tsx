@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { cn } from "@/app/lib/utils";
+import { useCallback, useState } from "react";
 
 const Tab = ({
   tabs,
@@ -11,10 +12,24 @@ const Tab = ({
 }) => {
   const [currentTab, setCurrentTab] = useState(tabs[0]);
 
+  const handleCurrentTab = useCallback((tab: string) => {
+    setCurrentTab(tab);
+  }, []);
+
   return (
-    <div>
+    <div className="flex items-center gap-x-10">
       {tabs.map((tab, i) => (
-        <div key={`${currentPage}-${tab}-${i}`}>{tab}</div>
+        <button
+          key={`${currentPage}-${tab}-${i}`}
+          onClick={() => handleCurrentTab(tab)}
+          className={cn(
+            tab === currentTab
+              ? "text-white bg-OWANBE_PRY py-3 px-8 rounded-3xl font-semibold"
+              : ""
+          )}
+        >
+          {tab}
+        </button>
       ))}
     </div>
   );

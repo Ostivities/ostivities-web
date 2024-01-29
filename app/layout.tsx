@@ -1,9 +1,20 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
+import localFont from "next/font/local";
 import StyledComponentsRegistry from "./lib/Registry";
 
-const inter = Bricolage_Grotesque({ subsets: ["latin"] });
+// const inter = Bricolage_Grotesque({ subsets: ["latin"] });
+
+const bricoLage = localFont({
+  src: [
+    {
+      path: "../public/fonts/BricolageGrotesque-Regular.ttf",
+      weight: "400",
+    },
+  ],
+  variable: "--font-bricolage",
+});
 
 export const metadata: Metadata = {
   title: "Ostivities",
@@ -20,7 +31,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/Favicon.png" type="image/x-icon" sizes="any" />
       </head>
-      <body className={`bg-white ${inter.className} `}>
+      <body className={`${bricoLage.className} bg-white`}>
         <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>
