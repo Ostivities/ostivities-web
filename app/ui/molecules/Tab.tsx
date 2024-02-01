@@ -5,22 +5,18 @@ import { useCallback, useState } from "react";
 
 const Tab = ({
   tabs,
-  currentPage,
+  currentTab,
+  handleCurrentTab,
 }: {
   tabs: string[];
-  currentPage: string;
+  currentTab: string;
+  handleCurrentTab: (tab: string) => void;
 }) => {
-  const [currentTab, setCurrentTab] = useState(tabs[0]);
-
-  const handleCurrentTab = useCallback((tab: string) => {
-    setCurrentTab(tab);
-  }, []);
-
   return (
     <div className="flex items-center gap-x-10">
       {tabs.map((tab, i) => (
         <button
-          key={`${currentPage}-${tab}-${i}`}
+          key={`${currentTab}-${tab}-${i}`}
           onClick={() => handleCurrentTab(tab)}
           className={cn(
             tab === currentTab
