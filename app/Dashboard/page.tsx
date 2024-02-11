@@ -6,7 +6,7 @@ import DiscoverEvents from '../components/DashboardLayout/DiscoverEvents';
 import PopularEvents from '../components/DashboardLayout/PopularEvents';
 import { Input, Select } from 'antd';
 
-function Dashboard() {
+function Dashboard(): JSX.Element {
   return (
     <DashboardLayout title="Event Discovery">
       <div className="flex flex-col gap-7">
