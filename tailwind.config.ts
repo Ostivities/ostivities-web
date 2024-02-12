@@ -72,6 +72,9 @@ const config: Config = {
         marquee: "marquee 25s linear infinite",
         marquee2: "marquee2 25s linear infinite",
       },
+      backgroundImage: {
+        "image-card":'linear-gradient(180deg, rgba(13, 37, 60, 0.00) 51.56%, #0D253C 100%)'
+      }
     },
   },
   plugins: [],
