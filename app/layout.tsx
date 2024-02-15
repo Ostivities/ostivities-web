@@ -4,7 +4,11 @@ import './globals.css';
 import StyledComponentsRegistry from './lib/Registry';
 import 'react-alice-carousel/lib/alice-carousel.css';
 
-const inter = Bricolage_Grotesque({ subsets: ['latin'] });
+const inter = Bricolage_Grotesque({
+  subsets: ['latin'],
+  display: 'swap',
+  adjustFontFallback: false,
+});
 
 export const metadata: Metadata = {
   title: 'Ostivities',
