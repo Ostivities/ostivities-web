@@ -10,12 +10,12 @@ import Button from "@/app/ui/atoms/Button";
 function Hero(): JSX.Element {
   return (
     <Section>
-      <div className="flex flex-col space-y-3 pt-5 mt-3 md:pt-5 md:mt-3 lg:pt-0 lg:mt-0 xl:pt-0 xl:mt-0">
+      <div className="flex flex-col space-y-3 pt-5 mt-3 md:pt-5 md:mt-3 lg:pt-0 lg:mt-0">
         <div className="flex flex-col space-y-8 md:flex md:flex-col md:space-y-8 lg:flex lg:flex-row lg:space-x-8 lg:items-center">
           <div className="flex flex-col w-full items-center space-y-5 mx-0 md:flex md:flex-col md:w-4/5 md:mx-auto lg:items-start lg:mx-0 lg:flex lg:flex-col lg:space-y-5 lg:w-1/2">
             <H3
               content="Celebrate, Connect and Create Memories"
-              className="w-full text-center lg:text-left xl:text-left md:w-full md:text-center lg:w-3/4 xl:w-3/4"
+              className="w-full text-center lg:text-left md:w-full md:text-center lg:w-3/4"
             />
 
             <p className="w-full md:w-full text-center lg:text-left lg:w-[86%] text-OWANBE_ASH text-lg">
@@ -37,11 +37,7 @@ function Hero(): JSX.Element {
         </div>
 
         <div className="hidden md:hidden lg:block lg:w-1/2 text-left pt-8 lg:pt-0">
-          <Image
-            src={Z}
-            alt="hero"
-            className="ms-0 pt-8 md:pt-8 lg:pt-0 xl:pt-0"
-          />
+          <Image src={Z} alt="hero" className="ms-0 pt-8 md:pt-8 lg:pt-0" />
         </div>
       </div>
     </Section>

@@ -1,4 +1,4 @@
-import { ITypography } from "@/app/utils/interface";
+import { ITypography } from '@/app/utils/interface';
 
 const Heading3 = ({ content, className, styles }: ITypography) => {
   let _styles: React.CSSProperties = styles || {};
@@ -19,11 +19,11 @@ const Heading3 = ({ content, className, styles }: ITypography) => {
 
 const Heading5 = ({ content, className }: ITypography) => {
   return (
-    <h3
+    <h5
       className={`font-BricolageGrotesqueMedium font-bold text-2xl text-OWANBE_H5 ${className}`}
     >
       {content}
-    </h3>
+    </h5>
   );
 };
 
@@ -39,7 +39,7 @@ const Small = ({ className, content }: ITypography) => {
   return (
     <small
       className={`${className} ${
-        className !== "" ? className : "font-BricolageGrotesqueMedium"
+        className !== '' ? className : 'font-BricolageGrotesqueMedium'
       } font-medium`}
     >
       {content}
