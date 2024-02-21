@@ -2,7 +2,7 @@
 import { Label } from '@/app/components/typography/Typography';
 import FormProvider from '@/app/contexts/form-context/FormContext';
 import { NAV_LINKS } from '@/app/utils/data';
-import { IDashboard } from '@/app/utils/interface';
+import { IDashboard, INavLinks } from '@/app/utils/interface';
 import EventCreation from '@/public/EventCreation.svg';
 import Hamburger from '@/public/hamburger.svg';
 import OwanbeLogo from '@/public/owanbe.svg';
