@@ -1,5 +1,7 @@
 import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
+import { InstagramOutlined } from '@ant-design/icons';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const page = ({ params }: { params: { id: string } }) => {
   // console.log(params);
@@ -63,26 +65,34 @@ const page = ({ params }: { params: { id: string } }) => {
                 </div>
                 <div>
                   <div className="text-sm">Contact Us</div>
-                  <div className="flex-center gap-4">
-                    <Image
-                      src="/icons/instagram.svg"
-                      alt=""
-                      height={24}
-                      width={24}
-                    />
-                    <Image src="/icons/x.svg" alt="" height={24} width={24} />
-                    <Image
-                      src="/icons/facebook.svg"
-                      alt=""
-                      height={24}
-                      width={24}
-                    />
-                    <Image
-                      src="/icons/youtube.svg"
-                      alt=""
-                      height={24}
-                      width={24}
-                    />
+                  <div className="flex-center gap-4 mt-1">
+                    <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
+                      <Image
+                        src="/icons/instagram.svg"
+                        alt=""
+                        height={14}
+                        width={14}
+                      />
+                    </div>
+                    <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
+                      <Image src="/icons/x.svg" alt="" height={14} width={14} />
+                    </div>
+                    <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
+                      <Image
+                        src="/icons/facebook.svg"
+                        alt=""
+                        height={14}
+                        width={14}
+                      />
+                    </div>
+                    <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
+                      <Image
+                        src="/icons/youtube.svg"
+                        alt=""
+                        height={16}
+                        width={16}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -103,9 +113,12 @@ const page = ({ params }: { params: { id: string } }) => {
               amet, consectetur adipiscing elit. Fusce dapibus arcu iui{' '}
             </p>
             <div className="flex justify-center mt-12">
-              <button className="rounded-full bg-OWANBE_PRY px-24 py-3 text-white text-xl font-bold">
+              <Link
+                href="/signup"
+                className="rounded-full bg-OWANBE_PRY px-24 py-3 text-white text-xl font-bold"
+              >
                 Register
-              </button>
+              </Link>
             </div>
           </div>
         </div>
