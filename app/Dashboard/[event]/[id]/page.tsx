@@ -1,14 +1,25 @@
+'use client';
+
 import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
 import { InstagramOutlined } from '@ant-design/icons';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-const page = ({ params }: { params: { id: string } }) => {
+const EventDetail = ({ params }: { params: { id: string } }) => {
+  const router = useRouter();
+
   const title = (
     <div className="flex-center gap-2">
-      <Link href="../">
-        <Image src="/icons/back-arrow.svg" alt="" height={30} width={30} />
-      </Link>
+      <Image
+        src="/icons/back-arrow.svg"
+        alt=""
+        height={30}
+        width={30}
+        onClick={() => router.back()}
+        className="cursor-pointer"
+      />
+
       <h1>Concert with davido</h1>
     </div>
   );
@@ -135,4 +146,4 @@ const page = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default page;
+export default EventDetail;
