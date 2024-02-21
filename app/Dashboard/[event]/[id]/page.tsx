@@ -1,7 +1,7 @@
 import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
 import Image from 'next/image';
 
-const page = ({ params }: { params: string }) => {
+const page = ({ params }: { params: { id: string } }) => {
   // console.log(params);
   return (
     <DashboardLayout title={'Concert with davido'}>

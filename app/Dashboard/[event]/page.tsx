@@ -1,7 +1,24 @@
+'use client';
+
 import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
 import InfoCard from '@/app/components/DashboardLayout/InfoCard';
+import { useRouter } from 'next/navigation';
+import { useLayoutEffect } from 'react';
 
-const page = () => {
+interface PropsI {
+  event: 'popular' | 'discovery' | 'paid' | 'free' | 'online';
+}
+
+const Event = ({ params }: { params: { event: string } }) => {
+  const uri = ['popular', 'discovery', 'paid', 'free', 'online'];
+  const router = useRouter();
+
+  useLayoutEffect(() => {
+    if (!uri.includes(params.event)) {
+      router.push('/Dashboard');
+    }
+  }, []);
+
   return (
     <DashboardLayout title="Popular Events">
       <section>
@@ -90,4 +107,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Event;

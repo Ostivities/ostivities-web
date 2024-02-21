@@ -1,76 +1,46 @@
-import Carousel from '../Carousel';
+import Link from 'next/link';
 import InfoCard from './InfoCard';
+import EventSection from './EventSection';
 
 const DiscoverEvents = () => {
   return (
-    <section>
-      <h2 className="font-semibold text-3xl mb-7">Discover Events</h2>
-      <Carousel>
-        <InfoCard
-          title="Agbaya Linkup"
-          about="hangout"
-          status="sold out"
-          image="/images/wed.jpeg"
-          url="/Dashboard/discovery/1"
-        />
-        <InfoCard
-          title="Agbaya Linkup"
-          about="hangout"
-          status="sold out"
-          image="/images/wed.jpeg"
-          url="/Dashboard/discovery/1"
-        />
-        <InfoCard
-          title="Agbaya Linkup"
-          about="hangout"
-          status="sold out"
-          image="/images/wed.jpeg"
-          url="/Dashboard/discovery/1"
-        />
-        <InfoCard
-          title="Agbaya Linkup"
-          about="hangout"
-          status="sold out"
-          image="/images/wed.jpeg"
-          url="/Dashboard/discovery/1"
-        />
-        <InfoCard
-          title="Agbaya Linkup"
-          about="hangout"
-          status="sold out"
-          image="/images/wed.jpeg"
-          url="/Dashboard/discovery/1"
-        />
-        <InfoCard
-          title="Agbaya Linkup"
-          about="hangout"
-          status="sold out"
-          image="/images/wed.jpeg"
-          url="/Dashboard/discovery/1"
-        />
-        <InfoCard
-          title="Agbaya Linkup"
-          about="hangout"
-          status="sold out"
-          image="/images/wed.jpeg"
-          url="/Dashboard/discovery/1"
-        />
-        <InfoCard
-          title="Agbaya Linkup"
-          about="hangout"
-          status="sold out"
-          image="/images/wed.jpeg"
-          url="/Dashboard/discovery/1"
-        />
-        <InfoCard
-          title="Agbaya Linkup"
-          about="hangout"
-          status="sold out"
-          image="/images/wed.jpeg"
-          url="/Dashboard/discovery/1"
-        />
-      </Carousel>
-    </section>
+    <EventSection title="Discover Events" uri="/Dashboard/discovery">
+      <InfoCard
+        title="Agbaya Linkup"
+        about="hangout"
+        status="sold out"
+        image="/images/wed.jpeg"
+        url="/Dashboard/discovery/1"
+      />
+      <InfoCard
+        title="Agbaya Linkup"
+        about="hangout"
+        status="sold out"
+        image="/images/wed.jpeg"
+        url="/Dashboard/discovery/1"
+      />
+      <InfoCard
+        title="Agbaya Linkup"
+        about="hangout"
+        status="sold out"
+        image="/images/wed.jpeg"
+        url="/Dashboard/discovery/1"
+      />
+      <InfoCard
+        title="Agbaya Linkup"
+        about="hangout"
+        status="sold out"
+        image="/images/wed.jpeg"
+        url="/Dashboard/discovery/1"
+      />
+      <InfoCard
+        title="Agbaya Linkup"
+        about="hangout"
+        status="sold out"
+        image="/images/wed.jpeg"
+        url="/Dashboard/discovery/1"
+      />
+    </EventSection>
   );
 };
 
