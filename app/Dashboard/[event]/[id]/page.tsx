@@ -4,9 +4,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const page = ({ params }: { params: { id: string } }) => {
-  // console.log(params);
+  const title = (
+    <div className="flex-center gap-2">
+      <Link href="../">
+        <Image src="/icons/back-arrow.svg" alt="" height={30} width={30} />
+      </Link>
+      <h1>Concert with davido</h1>
+    </div>
+  );
+
   return (
-    <DashboardLayout title={'Concert with davido'}>
+    <DashboardLayout title={title}>
       <section>
         <div className="flex gap-12">
           <div className="relative w-fit rounded-[3.125rem] overflow-hidden">
@@ -81,8 +89,8 @@ const page = ({ params }: { params: { id: string } }) => {
                       <Image
                         src="/icons/facebook.svg"
                         alt=""
-                        height={14}
-                        width={14}
+                        height={10}
+                        width={10}
                       />
                     </div>
                     <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
