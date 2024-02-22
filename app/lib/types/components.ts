@@ -34,6 +34,7 @@ export interface InputAttributes extends HTMLAttributes<HTMLInputElement> {
   suffix: ReactNode;
   mxWt: string;
   border: string;
+  labelAngle: "side" | "top";
   extraInfo: {
     label: string;
     to?: string;

@@ -1,7 +1,6 @@
-"use client";
+// "use client";
 
 import { cn } from "@/app/lib/utils";
-import { useCallback, useState } from "react";
 
 const Tab = ({
   tabs,

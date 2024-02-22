@@ -22,19 +22,14 @@ function Settings() {
   return (
     <DashboardLayout
       title="Settings"
-      // extraComponents={
-      //   <div className="flex gap-x-2">
-      //     <Button label="Manage admin" />
-      //     <Button label="Revenue Generated" variant="text" />
-      //   </div>
-      // }
+      extraComponents={
+        <Tab
+          tabs={tabs}
+          currentTab={currentTab}
+          handleCurrentTab={selectCurrentTab}
+        />
+      }
     >
-      <Tab
-        tabs={tabs}
-        currentTab={currentTab}
-        handleCurrentTab={selectCurrentTab}
-      />
-
       {currentTab === "Profile" ? (
         <Profile />
       ) : currentTab === "Billing" ? (

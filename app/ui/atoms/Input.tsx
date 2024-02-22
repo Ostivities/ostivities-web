@@ -13,21 +13,23 @@ const Input = ({
   type,
   suffix,
   extraInfo,
+  labelAngle,
+  className,
   ...rest
 }: Partial<InputAttributes>) => {
-  // const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
 
   const handleShowPassword = () => setShowPassword((prev) => !prev);
 
   const handleHidePassword = () => setShowPassword((prev) => !prev);
 
-  // const handleFocus = () => setIsFocused((prev) => !prev);
-
-  // const handleBlur = () => setIsFocused((prev) => !prev);
-
   return (
-    <div className="flex-grow flex flex-col gap-y-1">
+    <div
+      className={cn(
+        "flex flex-grow",
+        labelAngle === "top" ? "flex-col gap-y-1" : "items-center gap-x-10"
+      )}
+    >
       {label ? (
         <label htmlFor={name} className="text-base">
           {label}
@@ -36,7 +38,8 @@ const Input = ({
 
       <div
         className={cn(
-          "flex flex-1 bg-white pl-[1.0625rem] pr-4 py-[0.625rem] rounded-[0.9375rem] items-center gap-x-1 transition-all duration-200 border border-[#d1d3d6]"
+          "flex flex-1 bg-white pl-[1.0625rem] pr-4 py-[0.625rem] rounded-2xl items-center gap-x-1 transition-all duration-200 border border-[#d1d3d6]",
+          className
         )}
       >
         <input
@@ -45,8 +48,6 @@ const Input = ({
             type === "password" && showPassword ? "password" : "text" || type
           }
           name={name}
-          // onFocus={handleFocus}
-          // onBlur={handleBlur}
           id={name}
           {...rest}
         />
