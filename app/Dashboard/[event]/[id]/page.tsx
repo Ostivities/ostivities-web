@@ -133,7 +133,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
             </p>
             <div className="flex justify-center mt-12">
               <Link
-                href="/signup"
+                href="/Dashboard/tickets"
                 className="rounded-full bg-OWANBE_PRY px-24 py-3 text-white text-xl font-bold"
               >
                 Register

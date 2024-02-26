@@ -21,10 +21,14 @@ const config: Config = {
       BricolageGrotesqueBold: "BricolageGrotesqueBold",
     },
     extend: {
+      fontSize: {
+        ss:'0.625rem'
+      },
       colors: {
         OWANBE_PRY: "#E20000",
         OWANBE_SECONDARY: "#19235B",
         OWANBE_NOTIFICATION: "#FADEDE",
+        OWANBE_FADE:'#484A4B',
         OWANBE_INFO: "#A6264C",
         OWANBE_BACKGROUND: "#F7F7F7",
         OWANBE_BORDER: "#D0D4D4",
@@ -74,6 +78,9 @@ const config: Config = {
       },
       backgroundImage: {
         "image-card":'linear-gradient(180deg, rgba(13, 37, 60, 0.00) 51.56%, #0D253C 100%)'
+      },
+      boxShadow: {
+        'ticket-card':'0px 8px 24px 0px rgba(0, 0, 0, 0.08)'
       }
     },
   },

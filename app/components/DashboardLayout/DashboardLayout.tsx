@@ -178,7 +178,7 @@ function DashboardLayout({
               fontFamily: 'BricolageGrotesqueMedium !important',
             }}
             onBreakpoint={(broken: any) => {
-              console.log(broken, 'broken');
+              // console.log(broken, 'broken');
             }}
           >
             <Menu
@@ -192,6 +192,7 @@ function DashboardLayout({
               }}
               items={items2}
               onClick={onClick}
+              selectedKeys={['/Dashboard/']}
             />
           </Sider>
           <Layout
