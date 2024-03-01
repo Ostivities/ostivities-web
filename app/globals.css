@@ -1,3 +1,5 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&display=swap'); */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -15,9 +17,34 @@
     --background-end-rgb: #ffffff;
   }
 }
+
+@layer base {
+  body {
+    font-family: 'Bricolage Grotesque', sans-serif;
+  }
+
+  input {
+    outline: none !important;
+  }
+
+  .ant-btn,
+  .ant-typography,
+  .ant-input {
+    font-family: inherit !important;
+  }
+}
+
 @layer components {
   .flex-center {
     @apply flex items-center;
+  }
+
+  .card-shadow {
+    @apply shadow-ticket-card rounded-[0.9375rem] px-5 py-5 flex justify-between items-start;
+  }
+
+  .primary-btn {
+    @apply rounded-full bg-OWANBE_PRY px-24 py-2 text-white text-xl font-bold;
   }
 }
 
