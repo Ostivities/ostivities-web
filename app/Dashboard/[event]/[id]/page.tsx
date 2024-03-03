@@ -1,10 +1,31 @@
-import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
-import Image from 'next/image';
+'use client';
 
-const page = ({ params }: { params: string }) => {
-  // console.log(params);
+import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
+import { InstagramOutlined } from '@ant-design/icons';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+const EventDetail = ({ params }: { params: { id: string } }) => {
+  const router = useRouter();
+
+  const title = (
+    <div className="flex-center gap-2">
+      <Image
+        src="/icons/back-arrow.svg"
+        alt=""
+        height={30}
+        width={30}
+        onClick={() => router.back()}
+        className="cursor-pointer"
+      />
+
+      <h1>Concert with davido</h1>
+    </div>
+  );
+
   return (
-    <DashboardLayout title={'Concert with davido'}>
+    <DashboardLayout title={title}>
       <section>
         <div className="flex gap-12">
           <div className="relative w-fit rounded-[3.125rem] overflow-hidden">
@@ -63,26 +84,34 @@ const page = ({ params }: { params: string }) => {
                 </div>
                 <div>
                   <div className="text-sm">Contact Us</div>
-                  <div className="flex-center gap-4">
-                    <Image
-                      src="/icons/instagram.svg"
-                      alt=""
-                      height={24}
-                      width={24}
-                    />
-                    <Image src="/icons/x.svg" alt="" height={24} width={24} />
-                    <Image
-                      src="/icons/facebook.svg"
-                      alt=""
-                      height={24}
-                      width={24}
-                    />
-                    <Image
-                      src="/icons/youtube.svg"
-                      alt=""
-                      height={24}
-                      width={24}
-                    />
+                  <div className="flex-center gap-4 mt-1">
+                    <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
+                      <Image
+                        src="/icons/instagram.svg"
+                        alt=""
+                        height={14}
+                        width={14}
+                      />
+                    </div>
+                    <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
+                      <Image src="/icons/x.svg" alt="" height={14} width={14} />
+                    </div>
+                    <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
+                      <Image
+                        src="/icons/facebook.svg"
+                        alt=""
+                        height={10}
+                        width={10}
+                      />
+                    </div>
+                    <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
+                      <Image
+                        src="/icons/youtube.svg"
+                        alt=""
+                        height={16}
+                        width={16}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -103,9 +132,12 @@ const page = ({ params }: { params: string }) => {
               amet, consectetur adipiscing elit. Fusce dapibus arcu iui{' '}
             </p>
             <div className="flex justify-center mt-12">
-              <button className="rounded-full bg-OWANBE_PRY px-24 py-3 text-white text-xl font-bold">
+              <Link
+                href="/Dashboard/tickets"
+                className="rounded-full bg-OWANBE_PRY px-24 py-3 text-white text-xl font-bold"
+              >
                 Register
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -114,4 +146,4 @@ const page = ({ params }: { params: string }) => {
   );
 };
 
-export default page;
+export default EventDetail;

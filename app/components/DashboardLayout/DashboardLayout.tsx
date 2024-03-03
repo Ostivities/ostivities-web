@@ -1,7 +1,8 @@
 'use client';
 import { Label } from '@/app/components/typography/Typography';
 import FormProvider from '@/app/contexts/form-context/FormContext';
-import { IDashboard } from '@/app/utils/interface';
+import { NAV_LINKS } from '@/app/utils/data';
+import { IDashboard, INavLinks } from '@/app/utils/interface';
 import EventCreation from '@/public/EventCreation.svg';
 import Hamburger from '@/public/hamburger.svg';
 import OwanbeLogo from '@/public/owanbe.svg';
@@ -13,6 +14,7 @@ import {
 import type { MenuProps } from 'antd';
 import { Avatar, Badge, Dropdown, Layout, Menu, Space, theme } from 'antd';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { isValidElement, useState } from 'react';
 
@@ -115,6 +117,17 @@ function DashboardLayout({
               onClick={() => setCollapsed(!collapsed)}
             />
           </div>
+          <div className="flex flex-row items-center space-x-8">
+            {NAV_LINKS.map((link: INavLinks) => (
+              <Link
+                href={link.link}
+                key={link.link + link.name}
+                className="font-BricolageGrotesqueMedium font-medium text-base text-black"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
 
           <Space
             direction="horizontal"
@@ -165,7 +178,7 @@ function DashboardLayout({
               fontFamily: 'BricolageGrotesqueMedium !important',
             }}
             onBreakpoint={(broken: any) => {
-              console.log(broken, 'broken');
+              // console.log(broken, 'broken');
             }}
           >
             <Menu
@@ -179,6 +192,7 @@ function DashboardLayout({
               }}
               items={items2}
               onClick={onClick}
+              selectedKeys={['/Dashboard/']}
             />
           </Sider>
           <Layout
