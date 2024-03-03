@@ -4,14 +4,20 @@ import { TableProps } from "@/app/lib/types/components";
 import TableHeader from "./TableHeader";
 import TableRows from "./TableRow";
 import TablePagination from "./TablePagination";
-import { ReactNode, useCallback, useMemo, useState } from "react";
-import TableSearch from "./TableSearch";
+import { ReactNode, useCallback, useState } from "react";
+// import TableSearch from "./TableSearch";
 
 const Table = <T, K extends keyof T>({
   data,
   columns,
-  Btn,
-}: TableProps<T, K> & { Btn?: ReactNode }) => {
+  // Btn,
+  TableTop = null,
+  action = "view",
+}: TableProps<T, K> & {
+  Btn?: ReactNode;
+  TableTop?: ReactNode;
+  action?: "view" | "download";
+}) => {
   const [sortBy, setSortBy] = useState<(typeof columns)[number]["key"]>(
     columns[0]["key"]
   );
@@ -46,17 +52,18 @@ const Table = <T, K extends keyof T>({
 
   return (
     <div className="flex flex-col flex-grow justify-between overflow-x-auto">
-      <div className="flex flex-col md:flex-row justify-between w-full">
+      {/* <div className="flex flex-col md:flex-row justify-between w-full">
         <TableSearch />
 
         {Btn}
-      </div>
+      </div> */}
+      {TableTop}
       <table className="w-full table-auto flex-shrink mt-8 md:mt-11">
         <TableHeader
           handleSortandFilter={handleSortandFilter}
           columns={columns}
         />
-        <TableRows data={sortedData} columns={columns} />
+        <TableRows data={sortedData} columns={columns} action={action} />
       </table>
 
       <div className="flex-grow" />

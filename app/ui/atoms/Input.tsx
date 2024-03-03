@@ -27,7 +27,7 @@ const Input = ({
     <div
       className={cn(
         "flex flex-grow",
-        labelAngle === "top" ? "flex-col gap-y-1" : "items-center gap-x-10"
+        labelAngle === "top" ? "flex-col gap-y-1" : "items-center"
       )}
     >
       {label ? (
@@ -38,7 +38,7 @@ const Input = ({
 
       <div
         className={cn(
-          "flex flex-1 bg-white pl-[1.0625rem] pr-4 py-[0.625rem] rounded-2xl items-center gap-x-1 transition-all duration-200 border border-[#d1d3d6]",
+          "flex flex-1 bg-white pl-[1.0625rem] pr-4 py-[0.625rem] rounded-2xl items-center gap-x-1 transition-all duration-200 border border-[#d1d3d6] ml-3",
           className
         )}
       >

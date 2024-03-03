@@ -1,5 +1,3 @@
-// "use client";
-
 import { cn } from "@/app/lib/utils";
 
 const Tab = ({
@@ -20,7 +18,7 @@ const Tab = ({
           className={cn(
             tab === currentTab
               ? "text-white bg-OWANBE_PRY py-3 px-8 rounded-3xl font-semibold"
-              : ""
+              : null
           )}
         >
           {tab}

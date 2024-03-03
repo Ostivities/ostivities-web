@@ -44,3 +44,9 @@ export interface InputAttributes extends HTMLAttributes<HTMLInputElement> {
 export interface H3Attributes extends HTMLAttributes<HTMLHeadingElement> {
   content: string;
 }
+
+export interface ToggleSwitchAttributes
+  extends HTMLAttributes<HTMLInputElement> {
+  description: string;
+  label: string;
+}

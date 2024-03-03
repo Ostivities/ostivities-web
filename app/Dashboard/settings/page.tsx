@@ -1,15 +1,13 @@
 "use client";
 
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
-import Button from "@/app/ui/atoms/Button";
-import { PlusOutlined } from "@ant-design/icons";
-import Table from "@/app/ui/organisms/Table";
-import data from "@/app/lib/data/index.json";
-import { settingsTableHeaders } from "@/app/lib/config/constants";
-import TableSearch from "@/app/ui/organisms/Table/TableSearch";
 import Tab from "@/app/ui/molecules/Tab";
 import { useCallback, useState } from "react";
+
+import Billing from "@/app/ui/organisms/Billing";
 import Profile from "@/app/ui/organisms/Profile";
+import OrderNotifications from "@/app/ui/organisms/OrderNotification";
+import PaymentSetting from "@/app/ui/organisms/PaymentSetting";
 
 const tabs = ["Profile", "Billing", "Order Notifications", "Payment Settings"];
 
@@ -33,26 +31,12 @@ function Settings() {
       {currentTab === "Profile" ? (
         <Profile />
       ) : currentTab === "Billing" ? (
-        <div>Billing</div>
+        <Billing />
       ) : currentTab === "Order Notifications" ? (
-        <div>Order Notifications</div>
+        <OrderNotifications />
       ) : currentTab === "Payment Settings" ? (
-        <div>PAyment Settings</div>
+        <PaymentSetting />
       ) : null}
-
-      {/* <div className="mx-auto md:max-w-[95%] flex flex-col h-[60dvh]">
-        <Table
-          columns={settingsTableHeaders}
-          data={data.settingsData}
-          Btn={
-            <Button
-              size="default"
-              label="Add New Admin"
-              prefixIcon={<PlusOutlined />}
-            />
-          }
-        />
-      </div> */}
     </DashboardLayout>
   );
 }
