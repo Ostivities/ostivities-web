@@ -1,15 +1,21 @@
+"use client";
+
 import { TableHeaderProps } from "@/app/lib/types/components";
 import { cn } from "@/app/lib/utils";
 import { FilterIcon, SortIcon } from "@/public/svgs";
 
 const TableHeader = <T, K extends keyof T>({
   columns,
-}: TableHeaderProps<T, K>): JSX.Element => {
+  handleSortandFilter,
+}: TableHeaderProps<T, K> & {
+  handleSortandFilter: (key: (typeof columns)[number]) => void;
+}): JSX.Element => {
   const headers = [
     ...columns,
     { label: "Action", key: "action" } as (typeof columns)[number],
   ]?.map((column, index) => {
     const isActionKey = column.key === "action";
+    // console.log(column);
     return (
       <th
         className={cn(
@@ -20,12 +26,15 @@ const TableHeader = <T, K extends keyof T>({
       >
         <span
           className={cn(
-            "flex gap-x-2 items-center",
+            "flex gap-x-2 items-center cursor-pointer",
             isActionKey ? "pl-10" : ""
           )}
+          onClick={() => handleSortandFilter(column)}
         >
           {column.label}
-          {column.hasSorting ? <SortIcon /> : null}
+          {column.hasSorting ? (
+            <SortIcon onClick={() => console.log(column)} />
+          ) : null}
           {column.hasFilter ? <FilterIcon /> : null}
         </span>
       </th>

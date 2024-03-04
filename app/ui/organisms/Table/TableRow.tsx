@@ -11,7 +11,8 @@ import { cn } from "@/app/lib/utils";
 const TableRows = <T, K extends keyof T>({
   data,
   columns,
-}: TableProps<T, K>): JSX.Element => {
+  action,
+}: TableProps<T, K> & { action?: "view" | "download" }): JSX.Element => {
   const columnData = [
     ...columns,
     { action: "" } as unknown as (typeof columns)[number],
@@ -37,11 +38,20 @@ const TableRows = <T, K extends keyof T>({
             >
               {row[column.key] as string}
               {columnData.length - 1 === rowIndex ? (
-                <Button
-                  label="View"
-                  size="sm"
-                  onClick={() => navigateToPage(index)}
-                />
+                action === "view" ? (
+                  <Button
+                    label="View"
+                    size="sm"
+                    onClick={() => navigateToPage(index)}
+                  />
+                ) : (
+                  <Button
+                    label="Download"
+                    size="sm"
+                    variant="outline"
+                    onClick={() => console.log(index)}
+                  />
+                )
               ) : null}
             </td>
           );

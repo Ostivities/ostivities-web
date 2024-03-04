@@ -1,4 +1,7 @@
-import { OstivitiesSettingsAttribute } from "../types";
+import {
+  OstivitiesBillingAttribute,
+  OstivitiesSettingsAttribute,
+} from "../types";
 import { ColumnDefinitionType } from "../types/components";
 
 export const settingsTableHeaders: ColumnDefinitionType<
@@ -17,5 +20,22 @@ export const settingsTableHeaders: ColumnDefinitionType<
     key: "dateAssigned",
     hasSorting: true,
     hasFilter: true,
+  },
+];
+
+export const billingTableHeaders: ColumnDefinitionType<
+  OstivitiesBillingAttribute,
+  keyof OstivitiesBillingAttribute
+>[] = [
+  { label: "Invoice Date", key: "invoiceDate", hasSorting: true },
+  {
+    label: "Invoice ID",
+    key: "invoiceId",
+    hasSorting: true,
+  },
+  {
+    label: "Amount",
+    key: "invoiceAmount",
+    hasSorting: true,
   },
 ];
