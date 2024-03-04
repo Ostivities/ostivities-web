@@ -28,13 +28,14 @@ export interface ButtonAttributes
 }
 
 export interface InputAttributes extends HTMLAttributes<HTMLInputElement> {
-  name?: string;
-  label?: string;
-  type?: string;
-  suffix?: ReactNode;
-  mxWt?: string;
-  border?: string;
-  extraInfo?: {
+  name: string;
+  label: string;
+  type: string;
+  suffix: ReactNode;
+  mxWt: string;
+  border: string;
+  labelAngle: "side" | "top";
+  extraInfo: {
     label: string;
     to?: string;
   };
@@ -42,4 +43,10 @@ export interface InputAttributes extends HTMLAttributes<HTMLInputElement> {
 
 export interface H3Attributes extends HTMLAttributes<HTMLHeadingElement> {
   content: string;
+}
+
+export interface ToggleSwitchAttributes
+  extends HTMLAttributes<HTMLInputElement> {
+  description: string;
+  label: string;
 }

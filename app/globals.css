@@ -51,23 +51,23 @@
 @layer base {
   @font-face {
     font-family: BricolageGrotesqueLight;
-    src: url('/fonts/BricolageGrotesque-Light.ttf');
+    src: url("/fonts/BricolageGrotesque-Light.ttf");
   }
   @font-face {
     font-family: BricolageGrotesqueMedium;
-    src: url('/fonts/BricolageGrotesque-Medium.ttf');
+    src: url("/fonts/BricolageGrotesque-Medium.ttf");
   }
   @font-face {
     font-family: BricolageGrotesqueRegular;
-    src: url('/fonts/BricolageGrotesque-Regular.ttf');
+    src: url("/fonts/BricolageGrotesque-Regular.ttf");
   }
   @font-face {
     font-family: BricolageGrotesqueSemiBold;
-    src: url('/fonts/BricolageGrotesque-SemiBold.ttf');
+    src: url("/fonts/BricolageGrotesque-SemiBold.ttf");
   }
   @font-face {
     font-family: BricolageGrotesqueBold;
-    src: url('/fonts/BricolageGrotesque-Bold-BF648bd57888479.ttf');
+    src: url("/fonts/BricolageGrotesque-Bold-BF648bd57888479.ttf");
   }
 }
 
@@ -169,7 +169,7 @@ body {
 }
 
 .coming-soon {
-  background-image: url('/comingsoon.svg');
+  background-image: url("/comingsoon.svg");
   background-repeat: no-repeat;
   height: 600px;
   width: 1090px !important;
@@ -194,7 +194,7 @@ body {
 }
 
 .hor-rule::before {
-  content: '';
+  content: "";
   background: linear-gradient(
     90deg,
     rgba(22, 22, 22, 0) 0%,
@@ -320,7 +320,7 @@ body {
   > label.ant-form-item-required:not(
     .ant-form-item-required-mark-optional
   )::before {
-  content: '' !important;
+  content: "" !important;
 }
 
 :where(.css-zcfrx9).ant-select-single {
@@ -388,7 +388,7 @@ body {
   white-space: nowrap;
   /* text-align: end; */
   vertical-align: middle;
-  font-family: 'BricolageGrotesqueRegular';
+  font-family: "BricolageGrotesqueRegular";
 }
 
 :where(.css-zcfrx9).ant-form-item
@@ -402,7 +402,7 @@ body {
   font-size: 14px;
   font-family: SimSun, sans-serif;
   line-height: 1;
-  content: '' !important;
+  content: "" !important;
 }
 
 :where(.css-dev-only-do-not-override-zcfrx9).ant-switch.ant-switch-checked {
@@ -432,7 +432,7 @@ body {
 :where(.css-zcfrx9).ant-btn-primary,
 :where(.css-zcfrx9).ant-btn {
   box-shadow: none !important;
-  font-family: 'BricolageGrotesqueMedium' !important;
+  font-family: "BricolageGrotesqueMedium" !important;
 }
 
 :where(.css-zcfrx9).ant-input:hover,
@@ -454,14 +454,14 @@ body {
 :where(.css-zcfrx9).ant-menu-inline.ant-menu-root
   .ant-menu-submenu-title
   > .ant-menu-title-content {
-  font-family: 'BricolageGrotesqueMedium' !important;
+  font-family: "BricolageGrotesqueMedium" !important;
 }
 
 :where(.css-zcfrx9).ant-menu .ant-menu-item .ant-menu-item-icon + span,
 :where(.css-zcfrx9).ant-menu .ant-menu-submenu-title .ant-menu-item-icon + span,
 :where(.css-zcfrx9).ant-menu .ant-menu-item .anticon + span,
 :where(.css-zcfrx9).ant-menu .ant-menu-submenu-title .anticon + span {
-  font-family: 'BricolageGrotesqueRegular' !important;
+  font-family: "BricolageGrotesqueRegular" !important;
 }
 
 :where(.css-zcfrx9).ant-menu-light:not(.ant-menu-horizontal)
@@ -469,7 +469,7 @@ body {
 :where(.css-zcfrx9).ant-menu-light
   > .ant-menu:not(.ant-menu-horizontal)
   .ant-menu-item:not(.ant-menu-item-selected):hover {
-  font-family: 'BricolageGrotesqueMedium' !important;
+  font-family: "BricolageGrotesqueMedium" !important;
 }
 
 :where(.css-zcfrx9).ant-menu-light
@@ -488,7 +488,7 @@ body {
   > .ant-menu
   .ant-menu-item:not(.ant-menu-item-selected):not(.ant-menu-submenu-selected)
   > .ant-menu-submenu-title:hover {
-  font-family: 'BricolageGrotesqueMedium' !important;
+  font-family: "BricolageGrotesqueMedium" !important;
 }
 
 :where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal
@@ -503,7 +503,7 @@ body {
   > .ant-menu-submenu-selected {
   color: #081521 !important;
   background-color: transparent;
-  font-family: 'BricolageGrotesqueMedium' !important;
+  font-family: "BricolageGrotesqueMedium" !important;
   font-weight: 600;
 }
 
@@ -515,7 +515,7 @@ body {
 :where(.css-zcfrx9).ant-menu-light
   > .ant-menu.ant-menu-horizontal
   > .ant-menu-submenu {
-  font-family: 'BricolageGrotesqueMedium' !important;
+  font-family: "BricolageGrotesqueMedium" !important;
   font-weight: 600;
   color: #081521 !important;
 }
@@ -602,7 +602,7 @@ body {
 }
 
 .ant-radio-wrapper {
-  font-family: 'BricolageGrotesqueRegular' !important;
+  font-family: "BricolageGrotesqueRegular" !important;
   color: #000000;
   font-weight: 400;
 }
@@ -624,14 +624,14 @@ body {
 
 .ticket-category > div > h5 {
   color: #000000;
-  font-family: 'BricolageGrotesqueSemiBold' !important;
+  font-family: "BricolageGrotesqueSemiBold" !important;
   font-weight: 600;
   font-size: 24px;
 }
 
 .ticket-category > div > p {
   color: #000000;
-  font-family: 'BricolageGrotesqueRegular' !important;
+  font-family: "BricolageGrotesqueRegular" !important;
   font-weight: 400;
   font-size: 17px;
 }
@@ -655,34 +655,34 @@ body {
 
 .ticket-title {
   color: #e20000;
-  font-family: 'BricolageGrotesqueSemiBold' !important;
+  font-family: "BricolageGrotesqueSemiBold" !important;
   font-weight: 600;
   font-size: 24px;
 }
 
 .ticket-subtitle {
   color: #e20000;
-  font-family: 'BricolageGrotesqueRegular' !important;
+  font-family: "BricolageGrotesqueRegular" !important;
   font-weight: 400;
   font-size: 17px;
 }
 
 .ticket-title:hover {
   color: #e20000;
-  font-family: 'BricolageGrotesqueSemiBold' !important;
+  font-family: "BricolageGrotesqueSemiBold" !important;
   font-weight: 600;
   font-size: 24px;
 }
 
 .ticket-subtitle:hover {
   color: #e20000;
-  font-family: 'BricolageGrotesqueRegular' !important;
+  font-family: "BricolageGrotesqueRegular" !important;
   font-weight: 400;
   font-size: 17px;
 }
 
 .ant-table-cell {
-  font-family: 'BricolageGrotesqueRegular' !important;
+  font-family: "BricolageGrotesqueRegular" !important;
   color: #333333 !important;
   font-size: 14px !important;
 }
