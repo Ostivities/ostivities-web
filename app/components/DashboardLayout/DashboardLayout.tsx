@@ -176,7 +176,7 @@ function DashboardLayout({
             width={200}
             style={{
               background: colorBgContainer,
-              overflowY: 'scroll',
+              // overflowY: 'scroll',
               fontFamily: 'BricolageGrotesqueMedium !important',
               paddingTop: '60px',
             }}
@@ -241,8 +241,8 @@ function DashboardLayout({
 
             <Layout
               style={{
-                padding: '0 30px 30px',
-                overflow: 'scroll',
+                padding: '0 30px',
+                overflowY: 'scroll',
               }}
             >
               <Content className="flex flex-col space-y-8 py-8">
@@ -265,7 +265,7 @@ function DashboardLayout({
                     boxShadow: '0px 8px 24px 0px #00000014',
                     background: 'linear-gradient(0deg, #FFFFFF, #FFFFFF)',
                   }}
-                  className=" px-12 py-16"
+                  className="px-12 py-16"
                 >
                   <div>{children}</div>
                 </div>
