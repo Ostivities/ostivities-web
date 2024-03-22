@@ -1,16 +1,16 @@
-"use client";
-import theme from "@/app/theme/theme.config";
-import Button from "@/app/ui/atoms/Button";
-import { NAV_LINKS } from "@/app/utils/data";
-import { INavLinks } from "@/app/utils/interface";
-import CloseIcon from "@/public/close.svg";
-import Hamburger from "@/public/hamburger.svg";
-import OwanbeLogo from "@/public/owanbe.svg";
-import { ConfigProvider, Drawer } from "antd";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+'use client';
+import theme from '@/app/theme/theme.config';
+import Button from '@/app/ui/atoms/Button';
+import { NAV_LINKS } from '@/app/utils/data';
+import { INavLinks } from '@/app/utils/interface';
+import CloseIcon from '@/public/close.svg';
+import Hamburger from '@/public/hamburger.svg';
+import OwanbeLogo from '@/public/owanbe.svg';
+import { ConfigProvider, Drawer } from 'antd';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 
 function Header(): JSX.Element {
   const router = useRouter();
@@ -25,7 +25,7 @@ function Header(): JSX.Element {
     setOpen(false);
   };
 
-  const isNotLoggedIn = ["/login", "/signup"].includes(pathname);
+  const isNotLoggedIn = ['/login', '/signup'].includes(pathname);
 
   return (
     <ConfigProvider
@@ -41,7 +41,7 @@ function Header(): JSX.Element {
               <Image
                 src={OwanbeLogo}
                 alt="Owanbe Logo"
-                style={{ height: "40px" }}
+                style={{ height: '40px' }}
                 className="w-[110px]"
               />
             </Link>
@@ -51,7 +51,7 @@ function Header(): JSX.Element {
               <Link
                 href={link.link}
                 key={link.link + link.name}
-                className="font-BricolageGrotesqueMedium font-medium text-base"
+                className="font-BricolageGrotesqueMedium font-medium text-base text-OWANBE_PRY"
               >
                 {link.name}
               </Link>
@@ -64,11 +64,11 @@ function Header(): JSX.Element {
                 <Button
                   variant="outline"
                   label="Sign in"
-                  onClick={() => router.push("/login")}
+                  onClick={() => router.push('/login')}
                 />
                 <Button
                   label="Sign Up"
-                  onClick={() => router.push("/signup")}
+                  onClick={() => router.push('/signup')}
                 />
               </>
             )}
@@ -81,14 +81,14 @@ function Header(): JSX.Element {
             <Image
               src={OwanbeLogo}
               alt="Owanbe Logo"
-              style={{ width: "80px", height: "40px" }}
+              style={{ width: '80px', height: '40px' }}
             />
           </Link>
 
           <Image
             src={Hamburger}
             alt="Owanbe Logo"
-            style={{ width: "40px", height: "35px" }}
+            style={{ width: '40px', height: '35px' }}
             onClick={showDrawer}
           />
         </div>
@@ -97,21 +97,21 @@ function Header(): JSX.Element {
             <Image
               src={OwanbeLogo}
               alt="Owanbe Logo"
-              style={{ width: "70px" }}
+              style={{ width: '70px' }}
             />
           }
           extra={
             <Image
               src={CloseIcon}
               alt="Owanbe Logo"
-              style={{ width: "40px", height: "35px" }}
+              style={{ width: '40px', height: '35px' }}
               onClick={onClose}
             />
           }
           placement="right"
           // onClose={onClose}
           open={open}
-          style={{ borderBottom: "0px solid !important", width: "100%" }}
+          style={{ borderBottom: '0px solid !important', width: '100%' }}
         >
           {NAV_LINKS.map((link: INavLinks) => (
             <p
