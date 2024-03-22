@@ -17,6 +17,10 @@ function Header(): JSX.Element {
   const pathname = usePathname();
   const [open, setOpen] = useState<boolean>(false);
 
+  const pathCheck =
+    pathname.split('/').includes('password-reset') ||
+    pathname.split('/').includes('forgot-password');
+
   const showDrawer = () => {
     setOpen(true);
   };
@@ -35,7 +39,7 @@ function Header(): JSX.Element {
     >
       <header className="overflow-hidden">
         {/* LG && XL SCREENS */}
-        <nav className="container mx-auto relative hidden md:hidden lg:flex lg:flex-row lg:items-center lg:justify-between py-5 px-0 md:px-5 lg:px-0">
+        <nav className="container mx-auto relative hidden md:hidden lg:grid lg:grid-cols-3 py-5 px-0 md:px-5 lg:px-0">
           <div>
             <Link href="/" className="" shallow>
               <Image
@@ -51,28 +55,30 @@ function Header(): JSX.Element {
               <Link
                 href={link.link}
                 key={link.link + link.name}
-                className="font-BricolageGrotesqueMedium font-medium text-base text-OWANBE_PRY"
+                className="font-BricolageGrotesqueMedium font-medium text-base text-black hover:text-OWANBE_PRY"
               >
                 {link.name}
               </Link>
             ))}
           </div>
 
-          <div className="flex flex-row items-center space-x-3">
-            {isNotLoggedIn ? null : (
-              <>
-                <Button
-                  variant="outline"
-                  label="Sign in"
-                  onClick={() => router.push('/login')}
-                />
-                <Button
-                  label="Sign Up"
-                  onClick={() => router.push('/signup')}
-                />
-              </>
-            )}
-          </div>
+          {!pathCheck && (
+            <div className="flex flex-row items-end justify-end space-x-3">
+              {isNotLoggedIn ? null : (
+                <>
+                  <Button
+                    variant="outline"
+                    label="Sign in"
+                    onClick={() => router.push('/login')}
+                  />
+                  <Button
+                    label="Sign Up"
+                    onClick={() => router.push('/signup')}
+                  />
+                </>
+              )}
+            </div>
+          )}
         </nav>
 
         {/* SM AND MD SCREENS */}

@@ -3,11 +3,12 @@
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 
 function ForgotPasswordForm(): JSX.Element {
   const router = useRouter();
   const [form] = Form.useForm();
+  const [email, setEmail] = useState('');
 
   const onFinish = (value: object) => {
     console.log(value);
@@ -28,11 +29,14 @@ function ForgotPasswordForm(): JSX.Element {
         className="font-BricolageGrotesqueRegular"
       >
         <Form.Item
+          name="emailAddress"
           noStyle
           rules={[{ required: true, message: 'Please input your email' }]}
         >
           <Input
             type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
             className="placeholder:font-BricolageGrotesqueRegular"
           />
@@ -46,14 +50,6 @@ function ForgotPasswordForm(): JSX.Element {
         >
           <ArrowLeftOutlined /> <span>I remember my password</span>
         </div>
-
-        <Button
-          type="text"
-          className="text-OWANBE_PRY  hover:text-OWANBE_PRY  font-BricolageGrotesqueSemiBold font-semibold cursor-pointer"
-          style={{ color: '#e20000' }}
-        >
-          Re-send Code
-        </Button>
       </div>
 
       <Form.Item style={{ marginTop: '20px' }}>
@@ -67,7 +63,7 @@ function ForgotPasswordForm(): JSX.Element {
             width: '100%',
             height: '51px',
           }}
-          onClick={() => router.push('/password-reset')}
+          onClick={() => email !== '' && router.push('/password-reset')}
         >
           Continue
         </Button>

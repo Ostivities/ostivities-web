@@ -1,8 +1,8 @@
 'use client';
-import { Small } from '@/app/components//typography/Typography';
-import Auth from '@/app/utils/Auth';
+// import { Small } from '@/app/components//typography/Typography';
+// import Auth from '@/app/utils/Auth';
 import { ACCOUNT_TYPE } from '@/app/utils/enums';
-import { Button, Checkbox, Col, Form, Input, Row, Select } from 'antd';
+import { Button, Col, Form, Input, Row, Select, Space } from 'antd';
 import React, { useState } from 'react';
 
 function CreateAccount(): JSX.Element {
@@ -13,7 +13,7 @@ function CreateAccount(): JSX.Element {
   const onFinish = (value: object) => {
     console.log(value);
   };
-  console.log(val);
+  // console.log(val);
 
   return (
     <Form
@@ -31,7 +31,7 @@ function CreateAccount(): JSX.Element {
         className="font-BricolageGrotesqueRegular"
         help={
           !val ? null : (
-            <span className="font-BricolageGrotesqueLight text-OWANBE_INFO">
+            <span className="font-BricolageGrotesqueLight text-OWANBE_PRY">
               {val === ACCOUNT_TYPE.PERSONAL
                 ? 'Are you an individual looking to sell tickets? This account type is tailored for you.'
                 : 'Are you a registered business looking to sell tickets? This account type is tailored for you.'}
@@ -65,12 +65,16 @@ function CreateAccount(): JSX.Element {
           className="font-BricolageGrotesqueRegular !mt-3"
         >
           <Form.Item
+            name="businessName"
+            label="Business Name"
             noStyle
-            rules={[{ required: true, message: 'Please input your email' }]}
+            rules={[
+              { required: true, message: 'Please input your Business Name' },
+            ]}
           >
             <Input
               type="email"
-              placeholder="Enter your email"
+              placeholder="Enter your Business Name"
               className="placeholder:font-BricolageGrotesqueRegular"
             />
           </Form.Item>
@@ -81,7 +85,7 @@ function CreateAccount(): JSX.Element {
             <Form.Item
               label="First Name"
               style={{ fontFamily: 'BricolageGrotesqueRegular' }}
-              className="font-BricolageGrotesqueRegular !mt-3"
+              className="font-BricolageGrotesqueRegular"
             >
               <Form.Item
                 name="firstname"
@@ -101,7 +105,7 @@ function CreateAccount(): JSX.Element {
               name="lastname"
               label="Last Name"
               style={{ fontFamily: 'BricolageGrotesqueRegular' }}
-              className="font-BricolageGrotesqueRegular !mt-3"
+              className="font-BricolageGrotesqueRegular"
             >
               <Form.Item
                 name="lastname"
@@ -126,6 +130,7 @@ function CreateAccount(): JSX.Element {
       >
         <Form.Item
           noStyle
+          name="emailAddress"
           rules={[{ required: true, message: 'Please input your email' }]}
         >
           <Input
@@ -196,14 +201,16 @@ function CreateAccount(): JSX.Element {
           ]
         }
       >
-        <Checkbox>
-          Accept our{' '}
-          <a href="" className="text-OWANBE_PRY underline">
-            terms and condition
-          </a>
-        </Checkbox>
+        <Space direction="horizontal" size={'small'} align="baseline">
+          <input type="checkbox" name="" className="cursor-pointer" />
+          <span className="font-BricolageGrotesqueRegular font-normal text-OWANBE_LIGHT_DARK">
+            Accept our{' '}
+            <a href="" className="text-OWANBE_PRY underline">
+              terms and condition
+            </a>
+          </span>
+        </Space>
       </Form.Item>
-
       <Form.Item>
         <Button
           type="primary"
@@ -220,14 +227,14 @@ function CreateAccount(): JSX.Element {
         </Button>
       </Form.Item>
 
-      <div className="mx-auto flex flex-col space-y-5 mt-4 mb-5">
+      {/* <div className="mx-auto flex flex-col space-y-5 mt-4 mb-5">
         <Small
           content="or sign up with"
           className="font-BricolageGrotesqueRegular text-sm text-center"
         />
 
         <Auth />
-      </div>
+      </div> */}
     </Form>
   );
 }

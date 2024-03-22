@@ -98,14 +98,14 @@ function LoginForm(): JSX.Element {
         </Button>
       </Form.Item>
 
-      <div className="mx-auto flex flex-col space-y-5 mt-4 mb-5">
+      {/* <div className="mx-auto flex flex-col space-y-5 mt-4 mb-5">
         <Small
           content="or sign in with"
           className="font-BricolageGrotesqueRegular text-sm text-center"
         />
 
         <Auth />
-      </div>
+      </div> */}
     </Form>
   );
 }
