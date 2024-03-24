@@ -23,7 +23,7 @@ function Login() {
           className="float-right place-self-end"
         />
 
-        <div className="w-4/5 mx-auto flex flex-col space-y-8">
+        <div className="md:w-4/5 md:mx-auto flex flex-col space-y-8">
           <Heading5 className="" content="Sign into your account" />
           <LoginForm />
         </div>
