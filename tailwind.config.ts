@@ -82,7 +82,8 @@ const config: Config = {
         "image-card":'linear-gradient(180deg, rgba(13, 37, 60, 0.00) 51.56%, #0D253C 100%)'
       },
       boxShadow: {
-        'ticket-card':'0px 8px 24px 0px rgba(0, 0, 0, 0.08)'
+        'ticket-card': '0px 8px 24px 0px rgba(0, 0, 0, 0.08)',
+        input:'-13.011px 13.011px 104.089px 0px rgba(161, 161, 161, 0.10)',
       }
     },
   },

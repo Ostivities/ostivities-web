@@ -19,16 +19,16 @@ function Hero(): JSX.Element {
               className="w-full text-center lg:text-left md:w-full md:text-center lg:w-3/4"
             />
 
-            <p className="w-full md:w-full text-center lg:text-left lg:w-[86%] text-OWANBE_ASH text-lg">
+            <p className="w-full md:w-full font-BricolageGrotesqueMedium text-center lg:text-left lg:w-[86%] text-OWANBE_ASH text-lg">
               Embark on a journey with Ostivities — where celebrations thrive!
               Connect, discover, and create lasting memories. Join now for a
               vibrant experience!
             </p>
             <Link
               href="/Dashboard"
-              className=" bg-OWANBE_SECONDARY rounded-full text-white px-8 py-2"
+              className=" bg-OWANBE_SECONDARY rounded-full hover:!text-white text-white px-8 py-2"
             >
-              <span className=" pr-1">Get Started</span> <ArrowRightOutlined />
+              <span className=" pr-1">Find Event</span> <ArrowRightOutlined />
             </Link>
           </div>
           <div className="w-full md:w-full lg:w-1/2">

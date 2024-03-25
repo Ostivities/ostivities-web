@@ -28,10 +28,15 @@ function PasswordResetForm(): JSX.Element {
           noStyle
           rules={[{ required: true, message: 'Please input reset code' }]}
         >
-          <Input
-            placeholder="Enter your code"
-            className="placeholder:font-BricolageGrotesqueRegular"
-          />
+          <div className="flex items-center gap-3">
+            <Input
+              placeholder="Enter your code"
+              className="placeholder:font-BricolageGrotesqueRegular flex-1"
+            />
+            <button className=" text-OWANBE_PRY text-xs font-semibold">
+              Re-send code
+            </button>
+          </div>
         </Form.Item>
       </Form.Item>
 
