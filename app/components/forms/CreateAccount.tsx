@@ -73,7 +73,7 @@ function CreateAccount(): JSX.Element {
             ]}
           >
             <Input
-              type="email"
+              type="text"
               placeholder="Enter your Business Name"
               className="placeholder:font-BricolageGrotesqueRegular"
             />
@@ -187,35 +187,28 @@ function CreateAccount(): JSX.Element {
         </Col>
       </Row>
 
-      <Form.Item
-        name="agreement"
-        valuePropName="checked"
-        rules={
-          [
-            // {
-            //   validator: (_, value) =>
-            //     value
-            //       ? Promise.resolve()
-            //       : Promise.reject(new Error("Should accept agreement")),
-            // },
-          ]
-        }
-      >
-        <Space direction="horizontal" size={'small'} align="baseline">
-          <input type="checkbox" name="" className="cursor-pointer" />
-          <span className="font-BricolageGrotesqueRegular font-normal text-OWANBE_LIGHT_DARK">
-            Accept our{' '}
-            <a href="" className="text-OWANBE_PRY underline">
-              terms and condition
-            </a>
-          </span>
-        </Space>
-      </Form.Item>
+      <label htmlFor="terms" className="flex-center gap-2 cursor-pointer">
+        <div>
+          <input
+            type="checkbox"
+            name="terms"
+            id="terms"
+            className="cursor-pointer mt-0"
+          />
+        </div>
+        <span className="font-BricolageGrotesqueRegular font-normal text-OWANBE_LIGHT_DARK">
+          Accept our{' '}
+          <a href="" className="text-OWANBE_PRY underline">
+            terms and condition
+          </a>
+        </span>
+      </label>
+
       <Form.Item>
         <Button
           type="primary"
           htmlType="submit"
-          className="font-BricolageGrotesqueLight text-base"
+          className="font-BricolageGrotesqueLight text-base mt-5"
           style={{
             background: '#E20000',
             borderRadius: '20px',

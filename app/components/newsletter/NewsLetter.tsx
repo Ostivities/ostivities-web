@@ -1,28 +1,23 @@
-"use client";
-import { Button, Input, Space } from "antd";
+'use client';
+import { Button, Input, Space } from 'antd';
 
 const NewsLetter: React.FC = () => {
   return (
-    <>
-      <Space style={{ width: "100%" }}>
-        <Input
+    <div style={{ width: '100%' }}>
+      <div
+        // htmlFor="subscribe"
+        className="flex-center shadow-lg bg-white px-3 py-2 rounded-full"
+      >
+        <input
+          type="text"
           placeholder="Your email"
-          className="rounded-3xl news-letter font-BricolageGrotesqueMedium font-medium placeholder:font-BricolageGrotesqueMedium"
-          suffix={
-            <Button
-              className="w-28 rounded-3xl text-white font-BricolageGrotesqueMedium font-medium hover:text-white"
-              style={{
-                background: "#19235b !important",
-                boxShadow: "none",
-                outline: "none",
-              }}
-            >
-              Subscribe
-            </Button>
-          }
+          className="outline-none flex-[30%] w-1/2 bg-white"
         />
-      </Space>
-    </>
+        <button className="flex-[20%] w-28 px-4 py-1 !bg-OWANBE_SECONDARY outline-none shadow-none rounded-3xl text-white font-BricolageGrotesqueMedium font-medium hover:text-white">
+          Subscribe
+        </button>
+      </div>
+    </div>
   );
 };
 
