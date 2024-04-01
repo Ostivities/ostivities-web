@@ -26,7 +26,7 @@ function Hero(): JSX.Element {
             </p>
             <Link
               href="/Dashboard"
-              className=" bg-OWANBE_SECONDARY rounded-full hover:!text-white text-white px-8 py-2"
+              className=" bg-OWANBE_SECONDARY hover:!bg-OWANBE_PRY transition-all duration-300 rounded-full hover:!text-white text-white px-8 py-2"
             >
               <span className=" pr-1">Find Event</span> <ArrowRightOutlined />
             </Link>

@@ -11,6 +11,7 @@ import {
   BellFilled,
   CompassOutlined,
   SettingOutlined,
+  CaretDownFilled,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Avatar, Badge, Dropdown, Layout, Menu, Space, theme } from 'antd';
@@ -85,15 +86,24 @@ function DashboardLayout({
     token: { colorBgContainer },
   } = theme.useToken();
 
+  const endpoints = ['events', 'settings'];
+
+  const index = pathname.split('/')[2];
+
+  const confirmIndex = endpoints.includes(index);
+
+  const path = confirmIndex ? `/${index}` : '';
+
+  const [currentPah, setCurrentPah] = useState(`/Dashboard${path}`);
+
   const onClick: MenuProps['onClick'] = (e: any) => {
+    setCurrentPah(e?.key);
     router.push(e?.key);
   };
 
   const pathCheck =
     pathname.split('/').includes('settings') ||
     pathname.split('/').includes('events');
-
-  // console.log(pathCheck);
 
   return (
     <FormProvider>
@@ -158,16 +168,27 @@ function DashboardLayout({
               </Badge>
             </div>
             <Dropdown menu={{ items }} trigger={['click', 'hover']}>
-              <Avatar
-                size={40}
-                style={{
-                  background: '#E20000',
-                  fontFamily: 'BricolageGrotesqueMedium',
-                  cursor: 'pointer',
-                }}
-              >
-                IR
-              </Avatar>
+              <div className="flex-center gap-4 cursor-pointer">
+                <Avatar
+                  size={40}
+                  style={{
+                    background: '#E20000',
+                    fontFamily: 'BricolageGrotesqueMedium',
+                    cursor: 'pointer',
+                  }}
+                >
+                  IR
+                </Avatar>
+                <div className="h-fit flex gap-4">
+                  <div className="flex flex-col justify-start">
+                    <h3 className=" text-sm text-OWANBE_TABLE_CELL">
+                      Onome Rose
+                    </h3>
+                    <span className="text-xs text-[#8C95A1]">User</span>
+                  </div>
+                  <CaretDownFilled />
+                </div>
+              </div>
             </Dropdown>
           </Space>
         </Header>
@@ -199,11 +220,12 @@ function DashboardLayout({
               style={{
                 height: '100%',
                 borderRight: 0,
+                border: 0,
                 fontFamily: 'BricolageGrotesqueMedium !important',
               }}
               items={items2}
               onClick={onClick}
-              selectedKeys={['/Dashboard/']}
+              selectedKeys={[currentPah]}
             />
           </Sider>
           <Layout
