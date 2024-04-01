@@ -1,6 +1,12 @@
+'use client';
+
 import Link from 'next/link';
+import { PlusSquareOutlined } from '@ant-design/icons';
+import { useState } from 'react';
 
 const Summary = ({ continueBtn }: { continueBtn?: boolean }) => {
+  const [toggleDiscount, setToggleDiscount] = useState(false);
+
   return (
     <section className="flex-1">
       <h2 className=" text-3xl text-center">Summary</h2>
@@ -8,6 +14,33 @@ const Summary = ({ continueBtn }: { continueBtn?: boolean }) => {
         <div>
           <h3 className=" text-OWANBE_PRY text-xl">Event</h3>
           <span className="text-OWANBE_FADE">Concert with Davido</span>
+        </div>
+        <div className="mt-3">
+          {!toggleDiscount && (
+            <div
+              onClick={() => setToggleDiscount(true)}
+              className="flex-center gap-2 text-OWANBE_PRY text-xl cursor-pointer"
+            >
+              <h3>Add discount code </h3>{' '}
+              <PlusSquareOutlined className="rounded-full" />
+            </div>
+          )}
+          {toggleDiscount && (
+            <>
+              <div className={`flex-center gap-3 w-full`}>
+                <input
+                  type="text"
+                  className="border border-[#888] rounded-[0.625rem] w-full py-1 px-3"
+                />
+                <button className="py-2 px-7 rounded-full bg-OWANBE_PRY font-semibold text-white">
+                  Add
+                </button>
+              </div>
+              <span className=" text-OWANBE_PRY text-xs">
+                discount code has been applied to checkout!
+              </span>
+            </>
+          )}
         </div>
         <div>
           <div className=" mt-3 border-b border-[#525252] pb-10">

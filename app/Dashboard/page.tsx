@@ -10,7 +10,7 @@ import { PlusOutlined } from '@ant-design/icons';
 function Dashboard(): JSX.Element {
   const header = (
     <div className="flex-center justify-between w-full">
-      <span>Event Discovery</span>
+      <span>Discovery</span>
       <button className=" bg-OWANBE_PRY rounded-full px-4 py-2 text-xs font-semibold text-white">
         {' '}
         <PlusOutlined /> <span className="pl-1">Create New Event</span>
