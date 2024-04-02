@@ -19,6 +19,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { isValidElement, useState } from 'react';
+import useLocalStorage from 'use-local-storage';
 
 const items1: MenuProps['items'] = [
   {
@@ -80,7 +81,7 @@ function DashboardLayout({
   const pathname = usePathname();
 
   const { Header, Sider, Content } = Layout;
-  const [collapsed, setCollapsed] = useState(true);
+  const [collapsed, setCollapsed] = useLocalStorage<string>('sidebar', 'false');
 
   const {
     token: { colorBgContainer },
@@ -104,6 +105,11 @@ function DashboardLayout({
   const pathCheck =
     pathname.split('/').includes('settings') ||
     pathname.split('/').includes('events');
+
+  const toggleSidebar = () => {
+    console.log(collapsed);
+    setCollapsed(collapsed === 'true' ? 'false' : 'true');
+  };
 
   return (
     <FormProvider>
@@ -133,7 +139,7 @@ function DashboardLayout({
               alt="Owanbe Logo"
               style={{ width: '40px', height: '35px' }}
               className="cursor-pointer"
-              onClick={() => setCollapsed(!collapsed)}
+              onClick={toggleSidebar}
             />
           </div>
           {!pathCheck && (
@@ -204,7 +210,7 @@ function DashboardLayout({
             breakpoint="lg"
             trigger={null}
             collapsible
-            collapsed={!collapsed}
+            collapsed={collapsed === 'false' ? false : true}
             zeroWidthTriggerStyle={{
               background: 'green !important',
               fontFamily: 'BricolageGrotesqueMedium !important',
@@ -226,6 +232,9 @@ function DashboardLayout({
               items={items2}
               onClick={onClick}
               selectedKeys={[currentPah]}
+              className={`${
+                collapsed === 'true' ? 'collapsed-side-nav' : 'side-nav'
+              }`}
             />
           </Sider>
           <Layout
