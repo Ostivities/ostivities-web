@@ -39,7 +39,7 @@ const Event = ({ params }: { params: { event: string } }) => {
     <DashboardLayout title={title}>
       <section>
         <h2 className="font-semibold text-3xl mb-3">Explore Popular Events</h2>
-        <div className="grid grid-cols-5 gap-3 gap-y-6">
+        <div className="grid grid-cols-5 gap-3 gap-y-6 mt-7">
           <InfoCard
             title="Agbaya Linkup"
             about="hangout"

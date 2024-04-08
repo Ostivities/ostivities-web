@@ -6,12 +6,18 @@ import DiscoverEvents from '../components/DashboardLayout/DiscoverEvents';
 import PopularEvents from '../components/DashboardLayout/PopularEvents';
 import { Input, Select } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { useRouter } from 'next/navigation';
 
 function Dashboard(): JSX.Element {
+  const route = useRouter();
+
   const header = (
     <div className="flex-center justify-between w-full">
       <span>Discovery</span>
-      <button className=" bg-OWANBE_PRY rounded-full px-4 py-2 text-xs font-semibold text-white">
+      <button
+        onClick={() => route.push('/Dashboard/events')}
+        className=" bg-OWANBE_PRY rounded-full px-4 py-2 text-xs font-semibold text-white"
+      >
         {' '}
         <PlusOutlined /> <span className="pl-1">Create New Event</span>
       </button>
