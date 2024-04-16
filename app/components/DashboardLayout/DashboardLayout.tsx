@@ -111,6 +111,8 @@ function DashboardLayout({
     setCollapsed(collapsed === 'true' ? 'false' : 'true');
   };
 
+  const [toggleNotifications, setToggleNotifications] = useState(false);
+
   return (
     <FormProvider>
       <Layout
@@ -170,8 +172,33 @@ function DashboardLayout({
                     fontSize: '26px',
                     color: '#8C95A1',
                   }}
+                  onClick={() => setToggleNotifications((prev) => !prev)}
                 />
               </Badge>
+              <div
+                className={`absolute right-0 min-w-[40rem] w-[40rem] transition-all ${
+                  toggleNotifications ? ' translate-y-0' : '-translate-y-[150%]'
+                }
+                }`}
+              >
+                <div className="bg-white rounded-[1.25rem] pl-6 pr-7 pt-4 pb-10 shadow-ticket-card">
+                  <div className="text-center font-semibold">Notifications</div>
+                  <div className="flex flex-col gap-7">
+                    <div className="flex-center gap-5">
+                      <div className=" bg-OWANBE_NOTIFICATION w-6 h-6 rounded-full"></div>
+                      <p className="text-base font-normal">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      </p>
+                    </div>
+                    <div className="flex-center gap-5">
+                      <div className=" bg-OWANBE_NOTIFICATION w-6 h-6 rounded-full"></div>
+                      <p className="text-base font-normal">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <Dropdown menu={{ items }} trigger={['click', 'hover']}>
               <div className="flex-center gap-4 cursor-pointer">
