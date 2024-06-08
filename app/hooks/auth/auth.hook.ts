@@ -25,12 +25,14 @@ export const useRegister = () => {
 };
 
 export const useLogin = () => {
-  const { data } = useMutation({
+  const loginUser = useMutation({
     mutationFn: (data: ILogin) => {
       return API_SERVICE._loginUser(data);
     },
     mutationKey: [LOGIN_USER],
     onSuccess: (data: AxiosResponse) => {
+      const accessToken = data?.data?.data?.accessToken;
+      sessionStorage.setItem("token", accessToken);
       message.success(data?.data?.message);
     },
     onError: (error: AxiosError | any) => {
@@ -40,5 +42,5 @@ export const useLogin = () => {
         : message.error(error?.response?.data?.message[0]);
     },
   });
-  return { data };
+  return { loginUser };
 };

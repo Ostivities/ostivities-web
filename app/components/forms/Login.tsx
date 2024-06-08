@@ -1,40 +1,52 @@
-'use client';
-import { Small } from '@/app/components/typography/Typography';
-import Auth from '@/app/utils/Auth';
-import { Button, Form, Input, Space, Switch } from 'antd';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import React from 'react';
+"use client";
+import { Small } from "@/app/components/typography/Typography";
+import { useLogin } from "@/app/hooks/auth/auth.hook";
+import Auth from "@/app/utils/Auth";
+import { ILogin } from "@/app/utils/interface";
+import { Button, Form, FormProps, Input, Space, Switch } from "antd";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React from "react";
 
 function LoginForm(): JSX.Element {
+  const { loginUser } = useLogin();
   const [form] = Form.useForm();
   const router = useRouter();
 
-  const onFinish = (value: any) => {
-    console.log(value, 'value');
-    if (value?.email && value?.password) {
-      router.push('/Dashboard');
+  const onFinish: FormProps<ILogin>["onFinish"] = async (value) => {
+    if (value) {
+      const response = await loginUser.mutateAsync(value);
+      if (response.status === 200) {
+        form.resetFields();
+        router.push("/dashboard");
+      }
     }
   };
+
+  const onFinishFailed: FormProps<ILogin>["onFinishFailed"] = (errorInfo) => {
+    return errorInfo;
+  };
+
   return (
     <Form
       name="validateOnly"
       layout="vertical"
       onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
       autoComplete="off"
       form={form}
       className="w-full font-BricolageGrotesqueRegular flex flex-col"
-      style={{ fontFamily: 'BricolageGrotesqueRegular' }}
+      style={{ fontFamily: "BricolageGrotesqueRegular" }}
     >
       <Form.Item
         label="Email Address"
-        style={{ fontFamily: 'BricolageGrotesqueRegular' }}
+        style={{ fontFamily: "BricolageGrotesqueRegular" }}
         className="font-BricolageGrotesqueRegular"
       >
         <Form.Item
-          name={'email'}
+          name={"email"}
           noStyle
-          rules={[{ required: true, message: 'Please input your email' }]}
+          rules={[{ required: true, message: "Please input your email" }]}
         >
           <Input
             type="email"
@@ -49,7 +61,7 @@ function LoginForm(): JSX.Element {
         label="Password"
         name="password"
         hasFeedback
-        rules={[{ required: true, message: 'Please input your password' }]}
+        rules={[{ required: true, message: "Please input your password" }]}
       >
         <Input.Password
           placeholder="Enter your password"
@@ -65,7 +77,7 @@ function LoginForm(): JSX.Element {
             noStyle
             rules={[{ required: false }]}
           >
-            <Space direction="horizontal" size={'small'} align="baseline">
+            <Space direction="horizontal" size={"small"} align="baseline">
               <input type="checkbox" name="" className="cursor-pointer" />
               <span className="font-BricolageGrotesqueRegular font-normal text-OWANBE_LIGHT_DARK">
                 Remember me
@@ -88,11 +100,12 @@ function LoginForm(): JSX.Element {
           htmlType="submit"
           className="font-BricolageGrotesqueLight text-base"
           style={{
-            background: '#E20000',
-            borderRadius: '20px',
-            width: '100%',
-            height: '51px',
+            background: "#E20000",
+            borderRadius: "20px",
+            width: "100%",
+            height: "51px",
           }}
+          loading={loginUser.isPending}
         >
           Sign In
         </Button>
