@@ -56,6 +56,13 @@
   .primary-btn {
     @apply rounded-full bg-OWANBE_PRY px-24 py-2 text-white hover:!text-white text-xl font-bold;
   }
+
+  .side-nav-links {
+    /* color: #181515 !important;
+    background-color: #fadede !important;
+    border-left: 5px solid #e20000; */
+    @apply !text-[#181515] !bg-OWANBE_NOTIFICATION !border border-l !border-OWANBE_PRY;
+  }
 }
 
 @layer base {
@@ -265,22 +272,18 @@ body {
   background-position-y: -15%;
 }
 
-:where(.css-dev-only-do-not-override-zcfrx9).ant-menu-light
-  .ant-menu-item-selected,
-:where(.css-dev-only-do-not-override-zcfrx9)
-  .ant-menu-light
-  > .ant-menu
-  .ant-menu-item-selected {
+.side-nav > .ant-menu-item-selected {
   color: #181515 !important;
   background-color: #fadede !important;
   border-left: 5px solid #e20000;
-  border-radius: 0%;
+  border-radius: 0px !important;
+  border-top-right-radius: 1.25rem !important ;
+  border-bottom-right-radius: 1.25rem !important ;
 }
 
-:where(.css-dev-only-do-not-override-zcfrx9).ant-menu .ant-menu-item,
-:where(.css-dev-only-do-not-override-zcfrx9).ant-menu .ant-menu-submenu,
-:where(.css-dev-only-do-not-override-zcfrx9).ant-menu .ant-menu-submenu-title {
-  border-radius: 50px !important;
+.collapsed-side-nav > .ant-menu-item-selected {
+  color: white !important;
+  background-color: #e20000 !important;
 }
 
 :where(.css-dev-only-do-not-override-zcfrx9).ant-select-single {
