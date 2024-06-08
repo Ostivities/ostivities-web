@@ -69,7 +69,7 @@ function LoginForm(): JSX.Element {
         />
       </Form.Item>
       <Form.Item name="remember">
-        <div className="flex flex-row items-center justify-between">
+        <div className="flex flex-row items-center justify-end">
           <Form.Item
             label="Remember me"
             name="remember"
@@ -78,10 +78,10 @@ function LoginForm(): JSX.Element {
             rules={[{ required: false }]}
           >
             <Space direction="horizontal" size={"small"} align="baseline">
-              <input type="checkbox" name="" className="cursor-pointer" />
+              {/* <input type="checkbox" name="" className="cursor-pointer" />
               <span className="font-BricolageGrotesqueRegular font-normal text-OWANBE_LIGHT_DARK">
                 Remember me
-              </span>
+              </span> */}
             </Space>
           </Form.Item>
 
