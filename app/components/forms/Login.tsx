@@ -18,7 +18,7 @@ function LoginForm(): JSX.Element {
       const response = await loginUser.mutateAsync(value);
       if (response.status === 200) {
         form.resetFields();
-        router.push("/dashboard");
+        router.push("/Dashboard");
       }
     }
   };
