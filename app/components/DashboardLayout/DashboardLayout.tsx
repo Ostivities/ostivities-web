@@ -1,47 +1,47 @@
-'use client';
+"use client";
 
-import { Label } from '@/app/components/typography/Typography';
-import FormProvider from '@/app/contexts/form-context/FormContext';
-import { NAV_LINKS } from '@/app/utils/data';
-import { IDashboard, INavLinks } from '@/app/utils/interface';
-import EventCreation from '@/public/EventCreation.svg';
-import Hamburger from '@/public/hamburger.svg';
-import OwanbeLogo from '@/public/owanbe.svg';
+import { Label } from "@/app/components/typography/Typography";
+import FormProvider from "@/app/contexts/form-context/FormContext";
+import { NAV_LINKS } from "@/app/utils/data";
+import { IDashboard, INavLinks } from "@/app/utils/interface";
+import EventCreation from "@/public/EventCreation.svg";
+import Hamburger from "@/public/hamburger.svg";
+import OwanbeLogo from "@/public/owanbe.svg";
 import {
   BellFilled,
+  CaretDownFilled,
   CompassOutlined,
   SettingOutlined,
-  CaretDownFilled,
-} from '@ant-design/icons';
-import type { MenuProps } from 'antd';
-import { Avatar, Badge, Dropdown, Layout, Menu, Space, theme } from 'antd';
-import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import React, { isValidElement, useState } from 'react';
+} from "@ant-design/icons";
+import type { MenuProps } from "antd";
+import { Avatar, Badge, Dropdown, Layout, Menu, Space, theme } from "antd";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import React, { isValidElement, useState } from "react";
 
-const items1: MenuProps['items'] = [
+const items1: MenuProps["items"] = [
   {
-    label: 'Create Event',
-    key: 'create-event',
+    label: "Create Event",
+    key: "create-event",
   },
   {
-    label: 'Event created',
-    key: 'event-create',
+    label: "Event created",
+    key: "event-create",
   },
 ];
 
-const items2: MenuProps['items'] = [
-  { icon: CompassOutlined, title: 'Discovery', link: '/Dashboard' },
-  { icon: EventCreation, title: 'Events Creation', link: '/Dashboard/events' },
-  { icon: SettingOutlined, title: 'Settings', link: '/Dashboard/settings' },
+const items2: MenuProps["items"] = [
+  { icon: CompassOutlined, title: "Discovery", link: "/dashboard" },
+  { icon: EventCreation, title: "Events Creation", link: "/dashboard/events" },
+  { icon: SettingOutlined, title: "Settings", link: "/dashboard/settings" },
 ].map((icon) => {
   const key = icon.link;
 
   return {
     key: `${key}`,
     icon:
-      icon.title === 'Events Creation' ? (
+      icon.title === "Events Creation" ? (
         <Image src={icon.icon} alt="event creation" />
       ) : (
         React.createElement(icon.icon)
@@ -59,14 +59,14 @@ const items2: MenuProps['items'] = [
   };
 });
 
-const items: MenuProps['items'] = [
+const items: MenuProps["items"] = [
   {
     label: <Label className="cursor-pointer" content="Help" />,
-    key: 'help',
+    key: "help",
   },
   {
     label: <Label className="cursor-pointer" content="Sign out" />,
-    key: 'sign-',
+    key: "sign-",
   },
 ];
 
@@ -86,52 +86,52 @@ function DashboardLayout({
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const endpoints = ['events', 'settings'];
+  const endpoints = ["events", "settings"];
 
-  const index = pathname.split('/')[2];
+  const index = pathname.split("/")[2];
 
   const confirmIndex = endpoints.includes(index);
 
-  const path = confirmIndex ? `/${index}` : '';
+  const path = confirmIndex ? `/${index}` : "";
 
   const [currentPah, setCurrentPah] = useState(`/Dashboard${path}`);
 
-  const onClick: MenuProps['onClick'] = (e: any) => {
+  const onClick: MenuProps["onClick"] = (e: any) => {
     setCurrentPah(e?.key);
     router.push(e?.key);
   };
 
   const pathCheck =
-    pathname.split('/').includes('settings') ||
-    pathname.split('/').includes('events');
+    pathname.split("/").includes("settings") ||
+    pathname.split("/").includes("events");
 
   return (
     <FormProvider>
       <Layout
-        style={{ height: '100vh', fontFamily: 'BricolageGrotesqueMedium' }}
+        style={{ height: "100vh", fontFamily: "BricolageGrotesqueMedium" }}
       >
         <Header
           style={{
-            display: 'flex',
-            alignItems: 'center',
+            display: "flex",
+            alignItems: "center",
             padding: 20,
-            justifyContent: 'space-between',
-            backgroundColor: '#ffffff',
-            borderBottom: '2px solid #d0d4d4',
+            justifyContent: "space-between",
+            backgroundColor: "#ffffff",
+            borderBottom: "2px solid #d0d4d4",
           }}
         >
           <div className="demo-logo flex flex-row items-center space-x-12">
             <Image
               src={OwanbeLogo}
               alt="Owanbe Logo"
-              style={{ height: '40px' }}
+              style={{ height: "40px" }}
               className="w-[110px] cursor-pointer"
             />
 
             <Image
               src={Hamburger}
               alt="Owanbe Logo"
-              style={{ width: '40px', height: '35px' }}
+              style={{ width: "40px", height: "35px" }}
               className="cursor-pointer"
               onClick={() => setCollapsed(!collapsed)}
             />
@@ -154,27 +154,27 @@ function DashboardLayout({
             direction="horizontal"
             className="space-x-8 items-center justify-center"
             align="center"
-            size={'small'}
+            size={"small"}
           >
             <div className="mt-5">
               <Badge count={1}>
                 <BellFilled
                   className="cursor-pointer"
                   style={{
-                    fontSize: '26px',
-                    color: '#8C95A1',
+                    fontSize: "26px",
+                    color: "#8C95A1",
                   }}
                 />
               </Badge>
             </div>
-            <Dropdown menu={{ items }} trigger={['click', 'hover']}>
+            <Dropdown menu={{ items }} trigger={["click", "hover"]}>
               <div className="flex-center gap-4 cursor-pointer">
                 <Avatar
                   size={40}
                   style={{
-                    background: '#E20000',
-                    fontFamily: 'BricolageGrotesqueMedium',
-                    cursor: 'pointer',
+                    background: "#E20000",
+                    fontFamily: "BricolageGrotesqueMedium",
+                    cursor: "pointer",
                   }}
                 >
                   IR
@@ -198,16 +198,16 @@ function DashboardLayout({
             style={{
               background: colorBgContainer,
               // overflowY: 'scroll',
-              fontFamily: 'BricolageGrotesqueMedium !important',
-              paddingTop: '60px',
+              fontFamily: "BricolageGrotesqueMedium !important",
+              paddingTop: "60px",
             }}
             breakpoint="lg"
             trigger={null}
             collapsible
             collapsed={!collapsed}
             zeroWidthTriggerStyle={{
-              background: 'green !important',
-              fontFamily: 'BricolageGrotesqueMedium !important',
+              background: "green !important",
+              fontFamily: "BricolageGrotesqueMedium !important",
             }}
             onBreakpoint={(broken: any) => {
               // console.log(broken, 'broken');
@@ -215,13 +215,13 @@ function DashboardLayout({
           >
             <Menu
               mode="inline"
-              defaultSelectedKeys={['1']}
-              defaultOpenKeys={['sub1']}
+              defaultSelectedKeys={["1"]}
+              defaultOpenKeys={["sub1"]}
               style={{
-                height: '100%',
+                height: "100%",
                 borderRight: 0,
                 border: 0,
-                fontFamily: 'BricolageGrotesqueMedium !important',
+                fontFamily: "BricolageGrotesqueMedium !important",
               }}
               items={items2}
               onClick={onClick}
@@ -237,11 +237,11 @@ function DashboardLayout({
           >
             <Header
               style={{
-                display: 'flex',
-                alignItems: 'center',
+                display: "flex",
+                alignItems: "center",
                 padding: 20,
-                justifyContent: 'space-between',
-                backgroundColor: '#ffffff',
+                justifyContent: "space-between",
+                backgroundColor: "#ffffff",
               }}
             >
               <div className="demo-logo w-full">
@@ -250,11 +250,11 @@ function DashboardLayout({
                 </h5>
               </div>
 
-              {title === 'Events Creation' && (
+              {title === "Events Creation" && (
                 <Menu
                   theme="light"
                   mode="horizontal"
-                  defaultSelectedKeys={['create-event']}
+                  defaultSelectedKeys={["create-event"]}
                   items={items1}
                   className="w-1/2 justify-end font-BricolageGrotesqueMedium"
                 />
@@ -263,15 +263,15 @@ function DashboardLayout({
 
             <Layout
               style={{
-                padding: '0 30px',
-                overflowY: 'scroll',
+                padding: "0 30px",
+                overflowY: "scroll",
               }}
             >
               <Content className="flex flex-col space-y-8 py-8">
                 {steppers && (
                   <div
                     className={`mx-auto text-center flex flex-row items-center justify-center pb-3 ${
-                      !isValidElement(steppers) ? 'hidden' : ''
+                      !isValidElement(steppers) ? "hidden" : ""
                     }`}
                   >
                     {steppers}
@@ -282,10 +282,10 @@ function DashboardLayout({
                 )}
                 <div
                   style={{
-                    borderRadius: '30px',
-                    border: '1px solid #E5E5E5',
-                    boxShadow: '0px 8px 24px 0px #00000014',
-                    background: 'linear-gradient(0deg, #FFFFFF, #FFFFFF)',
+                    borderRadius: "30px",
+                    border: "1px solid #E5E5E5",
+                    boxShadow: "0px 8px 24px 0px #00000014",
+                    background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
                   }}
                   className="px-12 py-16"
                 >
