@@ -1,3 +1,8 @@
+export enum ACCOUNT_TYPE {
+  PERSONAL = "PERSONAL",
+  ORGANISATION = "ORGANISATION",
+}
+
 export interface INavLinks {
   link: string;
   name: string;
@@ -83,4 +88,19 @@ export interface DataType {
   name: string;
   age: number;
   address: string;
+}
+
+export interface IUser {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  accountType: ACCOUNT_TYPE;
+  confirmPassword: string;
+  remember: boolean;
+}
+
+export interface ILogin {
+  email: string;
+  password: string;
 }
