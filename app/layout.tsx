@@ -1,18 +1,19 @@
-import type { Metadata } from 'next';
-import { Bricolage_Grotesque } from 'next/font/google';
-import './globals.css';
-import StyledComponentsRegistry from './lib/Registry';
-import 'react-alice-carousel/lib/alice-carousel.css';
+import type { Metadata } from "next";
+import { Bricolage_Grotesque } from "next/font/google";
+import "react-alice-carousel/lib/alice-carousel.css";
+import "./globals.css";
+import StyledComponentsRegistry from "./lib/Registry";
+import Providers from "./providers";
 
 const inter = Bricolage_Grotesque({
-  subsets: ['latin'],
-  display: 'swap',
+  subsets: ["latin"],
+  display: "swap",
   adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
-  title: 'Ostivities',
-  description: 'Event creation made easy',
+  title: "Ostivities",
+  description: "Event creation made easy",
 };
 
 export default function RootLayout({
@@ -28,7 +29,9 @@ export default function RootLayout({
       <body
         className={`bg-white ${inter.className} overflow-y-auto min-h-screen`}
       >
-        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        <Providers>
+          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        </Providers>
       </body>
     </html>
   );

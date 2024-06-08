@@ -1,38 +1,65 @@
-'use client';
-import { ACCOUNT_TYPE } from '@/app/utils/enums';
-import { Button, Col, Form, Input, Row, Select, Space } from 'antd';
-import React, { useState } from 'react';
+"use client";
+import { useRegister } from "@/app/hooks/auth/auth.hook";
+import { ACCOUNT_TYPE } from "@/app/utils/enums";
+import { IUser } from "@/app/utils/interface";
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  FormProps,
+  Input,
+  Row,
+  Select,
+  Space,
+} from "antd";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 function CreateAccount(): JSX.Element {
+  const router = useRouter();
+  const { registerUser } = useRegister();
   const [form] = Form.useForm();
   const { Option } = Select;
-  const [val, setval] = useState<string>('');
+  const [val, setval] = useState<string>("");
 
-  const onFinish = (value: object) => {
-    console.log(value);
+  const accountType: string = Form.useWatch("event", form);
+
+  const onFinish: FormProps<IUser>["onFinish"] = async (values) => {
+    if (values) {
+      const response = await registerUser.mutateAsync(values);
+      if (response.status === 201) {
+        form.resetFields();
+        router.push("/login", { shallow: true });
+      }
+    }
   };
-  // console.log(val);
+
+  const onFinishFailed: FormProps<IUser>["onFinishFailed"] = (errorInfo) => {
+    return errorInfo;
+  };
 
   return (
     <Form
       name="validateOnly"
       layout="vertical"
       onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
       autoComplete="off"
       form={form}
       className="w-full font-BricolageGrotesqueRegular flex flex-col"
-      style={{ fontFamily: 'BricolageGrotesqueRegular' }}
+      style={{ fontFamily: "BricolageGrotesqueRegular" }}
     >
       <Form.Item
         label="Choose an Account Type"
-        style={{ fontFamily: 'BricolageGrotesqueRegular' }}
+        style={{ fontFamily: "BricolageGrotesqueRegular" }}
         className="font-BricolageGrotesqueRegular"
         help={
           !val ? null : (
             <span className="font-BricolageGrotesqueLight text-OWANBE_PRY">
               {val === ACCOUNT_TYPE.PERSONAL
-                ? 'Are you an individual looking to sell tickets? This account type is tailored for you.'
-                : 'Are you a registered business looking to sell tickets? This account type is tailored for you.'}
+                ? "Are you an individual looking to sell tickets? This account type is tailored for you."
+                : "Are you a registered business looking to sell tickets? This account type is tailored for you."}
             </span>
           )
         }
@@ -43,11 +70,9 @@ function CreateAccount(): JSX.Element {
           rules={[
             {
               required: true,
-              message: 'Please select an account type',
+              message: "Please select an account type",
             },
           ]}
-          //@ts-ignore
-          getValueProps={(value: any) => setval(value)}
         >
           <Select placeholder="Select">
             <Option value={ACCOUNT_TYPE.PERSONAL}>Personal</Option>
@@ -56,10 +81,10 @@ function CreateAccount(): JSX.Element {
         </Form.Item>
       </Form.Item>
 
-      {val === 'ORGANISATION' ? (
+      {accountType === ACCOUNT_TYPE.ORGANISATION ? (
         <Form.Item
           label="Registered Business Name"
-          style={{ fontFamily: 'BricolageGrotesqueRegular' }}
+          style={{ fontFamily: "BricolageGrotesqueRegular" }}
           className="font-BricolageGrotesqueRegular !mt-3"
         >
           <Form.Item
@@ -67,7 +92,7 @@ function CreateAccount(): JSX.Element {
             label="Business Name"
             noStyle
             rules={[
-              { required: true, message: 'Please input your Business Name' },
+              { required: true, message: "Please input your Business Name" },
             ]}
           >
             <Input
@@ -82,14 +107,14 @@ function CreateAccount(): JSX.Element {
           <Col span={12}>
             <Form.Item
               label="First Name"
-              style={{ fontFamily: 'BricolageGrotesqueRegular' }}
+              style={{ fontFamily: "BricolageGrotesqueRegular" }}
               className="font-BricolageGrotesqueRegular"
             >
               <Form.Item
-                name="firstname"
+                name="firstName"
                 label="First Name"
                 noStyle
-                rules={[{ required: true, message: 'Please input first name' }]}
+                rules={[{ required: true, message: "Please input first name" }]}
               >
                 <Input
                   placeholder="Enter your first name "
@@ -100,16 +125,15 @@ function CreateAccount(): JSX.Element {
           </Col>
           <Col span={12}>
             <Form.Item
-              name="lastname"
               label="Last Name"
-              style={{ fontFamily: 'BricolageGrotesqueRegular' }}
+              style={{ fontFamily: "BricolageGrotesqueRegular" }}
               className="font-BricolageGrotesqueRegular"
             >
               <Form.Item
-                name="lastname"
+                name="lastName"
                 label="Last Name"
                 noStyle
-                rules={[{ required: true, message: 'Please input last name' }]}
+                rules={[{ required: true, message: "Please input last name" }]}
               >
                 <Input
                   placeholder="Enter your last name"
@@ -123,13 +147,13 @@ function CreateAccount(): JSX.Element {
 
       <Form.Item
         label="Email Address"
-        style={{ fontFamily: 'BricolageGrotesqueRegular' }}
+        style={{ fontFamily: "BricolageGrotesqueRegular" }}
         className="font-BricolageGrotesqueRegular"
       >
         <Form.Item
           noStyle
-          name="emailAddress"
-          rules={[{ required: true, message: 'Please input your email' }]}
+          name="email"
+          rules={[{ required: true, message: "Please input your email" }]}
         >
           <Input
             type="email"
@@ -145,7 +169,7 @@ function CreateAccount(): JSX.Element {
             label="Password"
             name="password"
             hasFeedback
-            rules={[{ required: true, message: 'Please input your password' }]}
+            rules={[{ required: true, message: "Please input your password" }]}
           >
             <Input.Password
               placeholder="Enter your password"
@@ -156,23 +180,21 @@ function CreateAccount(): JSX.Element {
 
         <Col span={12}>
           <Form.Item
-            name="confirm"
+            name="confirmPassword"
             label="Confirm Password"
-            dependencies={['password']}
+            dependencies={["password"]}
             hasFeedback
             rules={[
               {
                 required: true,
-                message: 'Please confirm your password!',
+                message: "Please confirm your password!",
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
-                  if (!value || getFieldValue('password') === value) {
+                  if (!value || getFieldValue("password") === value) {
                     return Promise.resolve();
                   }
-                  return Promise.reject(
-                    new Error('The new password that you entered do not match!')
-                  );
+                  return Promise.reject(new Error("Passwords do not match!"));
                 },
               }),
             ]}
@@ -185,7 +207,7 @@ function CreateAccount(): JSX.Element {
         </Col>
       </Row>
 
-      <label htmlFor="terms" className="flex-center gap-2 cursor-pointer">
+      {/* <label htmlFor="terms" className="flex-center gap-2 cursor-pointer">
         <div>
           <input
             type="checkbox"
@@ -195,12 +217,21 @@ function CreateAccount(): JSX.Element {
           />
         </div>
         <span className="font-BricolageGrotesqueRegular font-normal text-OWANBE_LIGHT_DARK">
-          Accept our{' '}
+          Accept our{" "}
           <a href="" className="text-OWANBE_PRY underline">
             terms and condition
           </a>
         </span>
-      </label>
+      </label> */}
+      <Form.Item
+        name="remember"
+        valuePropName="checked"
+        rules={[
+          { required: true, message: "Please read the Terms and Conditions" },
+        ]}
+      >
+        <Checkbox>Terms and agreement</Checkbox>
+      </Form.Item>
 
       <Form.Item>
         <Button
@@ -208,11 +239,12 @@ function CreateAccount(): JSX.Element {
           htmlType="submit"
           className="font-BricolageGrotesqueLight text-base mt-5"
           style={{
-            background: '#E20000',
-            borderRadius: '20px',
-            width: '100%',
-            height: '51px',
+            background: "#E20000",
+            borderRadius: "20px",
+            width: "100%",
+            height: "51px",
           }}
+          loading={registerUser.isPending}
         >
           Sign Up
         </Button>
