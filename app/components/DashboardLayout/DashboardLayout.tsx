@@ -32,9 +32,9 @@ const items1: MenuProps["items"] = [
 ];
 
 const items2: MenuProps["items"] = [
-  { icon: CompassOutlined, title: "Discovery", link: "/dashboard" },
-  { icon: EventCreation, title: "Events Creation", link: "/dashboard/events" },
-  { icon: SettingOutlined, title: "Settings", link: "/dashboard/settings" },
+  { icon: CompassOutlined, title: "Discovery", link: "/Dashboard" },
+  { icon: EventCreation, title: "Events Creation", link: "/Dashboard/events" },
+  { icon: SettingOutlined, title: "Settings", link: "/Dashboard/settings" },
 ].map((icon) => {
   const key = icon.link;
 
