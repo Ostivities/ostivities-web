@@ -59,17 +59,6 @@ const items2: MenuProps["items"] = [
   };
 });
 
-const items: MenuProps["items"] = [
-  {
-    label: <Label className="cursor-pointer" content="Help" />,
-    key: "help",
-  },
-  {
-    label: <Label className="cursor-pointer" content="Sign out" />,
-    key: "sign-",
-  },
-];
-
 function DashboardLayout({
   children,
   title,
@@ -78,6 +67,27 @@ function DashboardLayout({
 }: IDashboard): JSX.Element {
   const router = useRouter();
   const pathname = usePathname();
+
+  const items: MenuProps["items"] = [
+    {
+      label: <Label className="cursor-pointer" content="Help" />,
+      key: "help",
+    },
+    {
+      label: (
+        <span
+          className="cursor-pointer"
+          onClick={() => {
+            sessionStorage.clear();
+            router.push("/login");
+          }}
+        >
+          Sign out
+        </span>
+      ),
+      key: "sign-",
+    },
+  ];
 
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useState(true);
