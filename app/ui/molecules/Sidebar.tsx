@@ -9,13 +9,14 @@ import Image from "next/image";
 
 import EventCreation from "@/public/EventCreation.svg";
 
-import { CompassOutlined, SettingOutlined } from "@ant-design/icons";
+import { CompassOutlined, QuestionOutlined, SettingOutlined } from "@ant-design/icons";
 import { createElement } from "react";
 
 const items2: MenuProps["items"] = [
   { icon: CompassOutlined, title: "Discovery", link: "/Dashboard" },
   { icon: EventCreation, title: "Events Creation", link: "/Dashboard/events" },
   { icon: SettingOutlined, title: "Settings", link: "/Dashboard/settings" },
+  { icon: QuestionOutlined, title: "Comming Soon", link: "/Dashboard/" },
 ].map((icon) => {
   const key = icon.link;
 

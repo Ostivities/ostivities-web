@@ -12,7 +12,7 @@ const Summary = ({ continueBtn }: { continueBtn?: boolean }) => {
       <h2 className=" text-3xl text-center">Summary</h2>
       <section className=" mt-14 px-20 h-4/5 border-l border-[#525252]">
         <div>
-          <h3 className=" text-OWANBE_PRY text-xl">Event</h3>
+          <h3 className=" text-OWANBE_PRY text-xl">Event Name</h3>
           <span className="text-OWANBE_FADE">Concert with Davido</span>
         </div>
         <div className="mt-3">
@@ -37,17 +37,17 @@ const Summary = ({ continueBtn }: { continueBtn?: boolean }) => {
                 </button>
               </div>
               <span className=" text-OWANBE_PRY text-xs">
-                discount code has been applied to checkout!
+                Discount code has been applied to checkout!
               </span>
             </>
           )}
         </div>
         <div>
           <div className=" mt-3 border-b border-[#525252] pb-10">
-            <h3 className=" text-OWANBE_PRY text-xl">Payment details</h3>
+            <h3 className=" text-OWANBE_PRY text-xl">Payment Details</h3>
             <div className="flex flex-col gap-2 mt-2 text-OWANBE_FADE">
               <div className="flex-center justify-between">
-                <div>Tickets fee x 2 - Early Bird</div>
+                <div>Ticket fee x 2 - Early Bird</div>
                 <div>#10,000.00</div>
               </div>
               <div className="flex-center justify-between">

@@ -72,7 +72,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                   />
                 </div>
                 <div>
-                  <div className="text-sm">Loaction</div>
+                  <div className="text-sm">Location</div>
                   <div>3, Eko Hotel Roundabout, Lagos </div>
                 </div>
               </div>

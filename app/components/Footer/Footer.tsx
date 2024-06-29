@@ -89,7 +89,7 @@ function Footer(): JSX.Element {
         <div className="footer-bottom pt-5">
           <Paragraph
             className="text-center"
-            content="Copyright 2023 - Ostivities all rights reserved "
+            content="Copyright 2024 - Ostivities all rights reserved "
           />
         </div>
       </div>

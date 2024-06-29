@@ -27,6 +27,7 @@ const config: Config = {
       },
       colors: {
         OWANBE_PRY: "#E20000",
+        OWANBE_PRY2: "#FADEDE",
         OWANBE_SECONDARY: "#19235B",
         OWANBE_NOTIFICATION: "#FADEDE",
         OWANBE_FADE: '#484A4B',
