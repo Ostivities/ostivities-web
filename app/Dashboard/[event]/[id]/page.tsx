@@ -73,7 +73,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                 </div>
                 <div>
                   <div className="text-sm">Location</div>
-                  <div>3, Eko Hotel Roundabout, Lagos </div>
+                  <div>3, Eko Hotel, Lagos </div>
                 </div>
               </div>
               <div className="flex gap-3">
@@ -120,7 +120,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
             Join us for an unforgettable night of music and entertainment with Davido as 
             he take the stage at Eko Hotel and Suites. Known for their electrifying performances and 
             chart-topping hits, Davido will bring his unique music and 
-            energy to life in a live concert experience you won’t want to miss.
+            energy to life in a live concert experience you will not want to miss.
             Get ready to sing along to your favorite songs, enjoy breathtaking live performances, 
             and create lasting memories.{' '} 
             </p>

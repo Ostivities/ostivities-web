@@ -14,7 +14,7 @@ import { createElement } from "react";
 
 const items2: MenuProps["items"] = [
   { icon: CompassOutlined, title: "Discovery", link: "/Dashboard" },
-  { icon: EventCreation, title: "Events Creation", link: "/Dashboard/events" },
+  { icon: EventCreation, title: "Event Creation", link: "/Dashboard/events" },
   { icon: SettingOutlined, title: "Settings", link: "/Dashboard/settings" },
 ].map((icon) => {
   const key = icon.link;
@@ -22,7 +22,7 @@ const items2: MenuProps["items"] = [
   return {
     key: `${key}`,
     icon:
-      icon.title === "Events Creation" ? (
+      icon.title === "Event Creation" ? (
         <Image src={icon.icon} alt="event creation" />
       ) : (
         createElement(icon.icon)

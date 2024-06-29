@@ -5,7 +5,7 @@ import React from "react";
 
 function Events(): JSX.Element {
   return (
-    <DashboardLayout title="Events Creation" steppers={<Steppers />}>
+    <DashboardLayout title="Event Creation" steppers={<Steppers />}>
       <div className="w-5/6 mx-auto flex flex-col space-y-5 py-6">
         <Details />
       </div>
