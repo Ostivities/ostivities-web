@@ -7,8 +7,8 @@ const DiscoverEvents = () => {
     <EventSection title="Discover Events">
       <InfoCard
         title="Concert with Davido"
-        about="hangout"
-        status="sold out"
+        about="Concert"
+        status="Get TicketS"
         image="/images/placeholder.png"
         url="/Dashboard/discovery/1"
       />
@@ -21,8 +21,8 @@ const DiscoverEvents = () => {
       />
       <InfoCard
         title="Concert with Davido"
-        about="hangout"
-        status="sold out"
+        about="Concert"
+        status="Get Tickets"
         image="/images/placeholder.png"
         url="/Dashboard/discovery/1"
       />
