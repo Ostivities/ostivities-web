@@ -6,10 +6,10 @@ const DiscoverEvents = () => {
   return (
     <EventSection title="Discover Events">
       <InfoCard
-        title="Agbaya Linkup"
+        title="Concert with Davido"
         about="hangout"
         status="sold out"
-        image="/images/wed.png"
+        image="/images/placeholder.png"
         url="/Dashboard/discovery/1"
       />
       <InfoCard
@@ -20,10 +20,10 @@ const DiscoverEvents = () => {
         url="/Dashboard/discovery/1"
       />
       <InfoCard
-        title="Agbaya Linkup"
+        title="Concert with Davido"
         about="hangout"
         status="sold out"
-        image="/images/wed.png"
+        image="/images/placeholder.png"
         url="/Dashboard/discovery/1"
       />
       <InfoCard
