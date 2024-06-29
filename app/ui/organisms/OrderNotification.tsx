@@ -9,7 +9,7 @@ const OrderNotification = () => {
         <>
           <H4 content="Order Notifications" />
           <p className="text-OWANBE_PRY mt-3">
-            How frequently should we send order notification by email?
+            How frequently should we send you order notifications?
           </p>
         </>
 

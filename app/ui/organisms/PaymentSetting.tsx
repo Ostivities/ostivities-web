@@ -9,7 +9,7 @@ const PaymentSetting = () => {
         <>
           <H4 content="Payment Setting" />
           <p className="text-OWANBE_PRY mt-3">
-            How frequently do you want to receive payouts of ticket sales?
+            When would you like to receive payouts of your event ticket sales?
           </p>
         </>
 

@@ -72,7 +72,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                   />
                 </div>
                 <div>
-                  <div className="text-sm">Location</div>
+                  <div className="text-sm">Loction</div>
                   <div>3, Eko Hotel Roundabout, Lagos </div>
                 </div>
               </div>
@@ -117,17 +117,12 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
           </div>
           <div className="flex-1 h-fit my-auto border-l border-black px-6">
             <p>
-              consectetur adipiscing elit. Fusce dapibus arcu id dui cursus
-              egestas Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Fusce dapibus arcu id dui cursus egestas Lorem ipsum dolor sit
-              amet, consectetur adipiscing elit. Fusce dapibus arcu id dui
-              cursus egestas. Lorem ipsum dolor sit amet, consectetur adipiscing
-              elit. Fusce dapibus arcu iui consectetur adipiscing elit. Fusce
-              dapibus arcu id dui cursus egestas Lorem ipsum dolor sit amet,
-              consectetur adipiscing elit. Fusce dapibus arcu id dui cursus
-              egestas Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Fusce dapibus arcu id dui cursus egestas. Lorem ipsum dolor sit
-              amet, consectetur adipiscing elit. Fusce dapibus arcu iui{' '}
+            Join us for an unforgettable night of music and entertainment with Davido as 
+            he take the stage at Eko Hotel and Suites. Known for their electrifying performances and 
+            chart-topping hits, Davido will bring his unique music and 
+            energy to life in a live concert experience you won’t want to miss.
+            Get ready to sing along to your favorite songs, enjoy breathtaking live performances, 
+            and create lasting memories.{' '} 
             </p>
             <div className="flex justify-center mt-12">
               <button

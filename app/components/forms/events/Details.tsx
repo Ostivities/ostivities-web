@@ -92,7 +92,7 @@ function Details(): JSX.Element {
             className="text-OWANBE_PRY text-xl font-normal font-BricolageGrotesqueRegular"
             content={
               formStep === 1
-                ? "Lets get started by creating your event "
+                ? "Lets get you started by creating your event"
                 : formStep === 2
                 ? "Select the appearance of your event page here"
                 : "Ostivities is free for free events. For paid events, we charge a percentage as a transaction fee."
@@ -282,7 +282,7 @@ function Details(): JSX.Element {
                     control={control}
                     render={({ field }) => (
                       <Space direction="vertical" size={"small"}>
-                        <Label content="Supporting Doc" htmlFor="eventName" />
+                        <Label content="Upload Supporting Doc" htmlFor="eventName" />
 
                         <Space.Compact className="w-full h-11">
                           <Input
@@ -303,9 +303,8 @@ function Details(): JSX.Element {
                           </Upload>
                         </Space.Compact>
                         <span className="font-BricolageGrotesqueLight text-OWANBE_PRY text-xs font-light">
-                          *Supporting doc can be wedding invitation card for
-                          wedding event *Only JPEG, PNG & PDF Allowed & File
-                          size should not be more than 10MB
+                          *Supporting doc can be Wedding Card, Birthday Card among many others.
+                          *Only JPEG, PNG & PDF Allowed and file size should not be more than 10MB.
                         </span>
                       </Space>
                     )}
