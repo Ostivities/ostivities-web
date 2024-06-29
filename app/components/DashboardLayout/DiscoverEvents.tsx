@@ -8,7 +8,7 @@ const DiscoverEvents = () => {
       <InfoCard
         title="Concert with Davido"
         about="Concert"
-        status="Get TicketS"
+        status="Get Tickets"
         image="/images/placeholder.png"
         url="/Dashboard/discovery/1"
       />
