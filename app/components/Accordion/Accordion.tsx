@@ -59,15 +59,14 @@ const Accordion: React.FC = () => {
             className={`bg-OWANBE_PRY`}
           />
           <span className="text-sm">
-            How can I stay updated on Ostivities's Play Store release?
+          How do I find events near me?
           </span>
         </div>
       ),
       children: (
         <p>
-          Follow our social media and visit our website for updates. Get ready
-          to download and dive into cultural festivities! 🎉
-          #StayTunedForOstivities
+          You can use our location-based filtering feature to explore events based on your geographical proximity. 
+          Simply enter your location, and Ostivities will display relevant events near you.
         </p>
       ),
     },
@@ -82,14 +81,16 @@ const Accordion: React.FC = () => {
             className={`bg-OWANBE_PRY`}
           />
           <span className="text-sm">
-            Can I customize my event's privacy settings on Ostivities?
+          How do I create an event on Ostivities?
           </span>
         </div>
       ),
       children: (
         <p>
-          Customize your event's privacy settings on Ostivities. Whether public
-          or Private, you have full control over who joins and sees the details.
+          Creating an event on Ostivities is simple. Sign up for an account, 
+          click on "Create Event," and 
+          follow the prompts to enter event details, 
+          upload an invitation card, and set the date and time.
         </p>
       ),
     },
@@ -126,15 +127,14 @@ const Accordion: React.FC = () => {
             className={`bg-OWANBE_PRY`}
           />
           <span className="text-sm">
-            What happens if my event details change after creation?
+          How does ticketing work on Ostivities?
           </span>
         </div>
       ),
       children: (
         <p>
-          No worries! You can easily update your event details. Keep your
-          attendees informed by making necessary changes and ensuring everyone
-          is on the same page.
+          Event hosts can sell tickets directly through our platform. Attendees can purchase tickets online, 
+          and each ticket will include a unique, scannable barcode for secure entry..
         </p>
       ),
     },
