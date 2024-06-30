@@ -230,7 +230,7 @@ function CreateAccount(): JSX.Element {
           { required: true, message: "Please read the Terms and Conditions" },
         ]}
       >
-        <Checkbox>Terms and agreement</Checkbox>
+        <Checkbox>Terms and Conditions</Checkbox>
       </Form.Item>
 
       <Form.Item>
