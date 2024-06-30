@@ -4,7 +4,7 @@ import {
   Label,
   Paragraph,
 } from "@/app/components/typography/Typography";
-import { STATES_IN_NIGERIA, stepOne } from "@/app/utils/data";
+import { EVENT_TYPES, STATES_IN_NIGERIA, stepOne } from "@/app/utils/data";
 import { EVENT_INFO } from "@/app/utils/enums";
 import { IFormInput } from "@/app/utils/interface";
 import { UploadOutlined } from "@ant-design/icons";
@@ -325,16 +325,18 @@ function Details(): JSX.Element {
                           htmlFor="eventType"
                         />
                         <Select
-                          placeholder="Select Event Type"
+                  defaultValue="Select event type"
+                  className="w-full"
+                  placeholder="Select Event Type"
                           {...field}
                           style={{ width: "100%" }}
-                        >
-                          {STATES_IN_NIGERIA.map((_i) => (
-                            <Option value={_i.state} key={_i.state}>
-                              {_i.state}
-                            </Option>
-                          ))}
-                        </Select>
+                          
+                 
+                  options={[
+                    ...EVENT_TYPES
+                  ]}
+                />
+                        
                       </Space>
                     )}
                   />

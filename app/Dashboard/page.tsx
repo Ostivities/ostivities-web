@@ -7,10 +7,22 @@ import PopularEvents from '../components/DashboardLayout/PopularEvents';
 import { Input, Select } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
+import { Country, State } from "country-state-city";
+import { EVENT_TYPES } from '../utils/data';
 
 function Dashboard(): JSX.Element {
   const route = useRouter();
-
+  const COUNTRY_JSON: any = Country.getAllCountries().map((i: any) => {
+    return { value: i?.name, label: i?.name, isoCode: i?.isoCode };
+  });
+const STATE_BY_COUNTRYCODE = (stateCode: string): { label: string; value: string }[] => {
+  const result: any = State.getStatesOfCountry(stateCode);
+  const stateJson: { label: string; value: string }[] = result.map((i: any) => {
+    return { label: i?.name, value: i?.name };
+  });
+  return stateJson;
+};
+  
   const header = (
     <div className="flex-center justify-between w-full">
       <span>Discovery</span>
@@ -29,7 +41,7 @@ function Dashboard(): JSX.Element {
         <DiscoverEvents />
         <div className="border-[1px] border-[#FADEDE] rounded-3xl p-8 shadow-md ">
           <h3 className="font-semibold mb-3">
-            Find Events Happening around you
+            Find Events Happening around you.
           </h3>
           <div>
             <form action="" className="flex gap-4 [&>lable]:flex-1">
@@ -44,10 +56,7 @@ function Dashboard(): JSX.Element {
                   className="w-full"
                   // onChange={handleChange}
                   options={[
-                    { value: 'jack', label: 'Jack' },
-                    { value: 'lucy', label: 'Lucy' },
-                    { value: 'Yiminghe', label: 'yiminghe' },
-                    { value: 'disabled', label: 'Disabled', disabled: true },
+                    ...STATE_BY_COUNTRYCODE("NG")
                   ]}
                 />
               </label>
@@ -58,10 +67,7 @@ function Dashboard(): JSX.Element {
                   className="w-full"
                   // onChange={handleChange}
                   options={[
-                    { value: 'jack', label: 'Jack' },
-                    { value: 'lucy', label: 'Lucy' },
-                    { value: 'Yiminghe', label: 'yiminghe' },
-                    { value: 'disabled', label: 'Disabled', disabled: true },
+                    ...EVENT_TYPES
                   ]}
                 />
               </label>
