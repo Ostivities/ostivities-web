@@ -92,11 +92,11 @@ export const SUPPORT: INavLinks[] = [
 ];
 
 export const Questions: string[] = [
-  "How do I create an event on Ostivities?.",
-  "How do I find events near me?.",
-  "How do I create an event on Ostivities?.",
-  "Is Ostivities secure, especially for payment transactions?.",
-  "How does ticketing works on Ostivities?.",
+  "How do I create an event on Ostivities?",
+  "How do I find events near me?",
+  "How do I create an event on Ostivities?",
+  "Is Ostivities secure, especially for payment transactions?",
+  "How does ticketing works on Ostivities?",
 ];
 
 export const Answers: IFeatures[] = [
