@@ -9,25 +9,22 @@ import Image from "next/image";
 
 import EventCreation from "@/public/EventCreation.svg";
 
-import { CompassOutlined, QuestionOutlined, SettingOutlined } from "@ant-design/icons";
+import { CompassOutlined, FileAddOutlined, QuestionCircleOutlined, QuestionOutlined, SettingOutlined } from "@ant-design/icons";
 import { createElement } from "react";
+import React from "react";
 
-const items2: MenuProps["items"] = [
-  { icon: CompassOutlined, title: "Discovery", link: "/Dashboard" },
-  { icon: EventCreation, title: "Event Creation", link: "/Dashboard/events" },
-  { icon: SettingOutlined, title: "Settings", link: "/Dashboard/settings" },
-].map((icon) => {
-  const key = icon.link;
+const items2: MenuProps['items'] = [
+  { icon: CompassOutlined, title: 'Discovery', link: '/Dashboard' },
+  { icon: FileAddOutlined, title: 'Event Creation', link: '/Dashboard/events' },
+  { icon: SettingOutlined, title: 'Settings', link: '/Dashboard/settings' },
+  { icon: QuestionCircleOutlined, title: 'Coming Soon', link: '/Dashboard/' },
+].map((item) => {
+  const key = item.link;
 
   return {
     key: `${key}`,
-    icon:
-      icon.title === "Event Creation" ? (
-        <Image src={icon.icon} alt="event creation" />
-      ) : (
-        createElement(icon.icon)
-      ),
-    label: icon.title,
+    icon: React.createElement(item.icon),
+    label: item.title,
 
     // HANDLES SUB MENU ON SIDE BAR
     // children: new Array(4).fill(null).map((_, j) => {
