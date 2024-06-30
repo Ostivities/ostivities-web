@@ -117,7 +117,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
           </div>
           <div className="flex-1 h-fit my-auto border-l border-black px-6">
             <p>
-            Join us for an unforgettable night of music and entertainment with Davido as 
+            `Join us for an unforgettable night of music and entertainment with Davido as 
             he take the stage at Eko Hotel and Suites. Known for their electrifying performances and 
             chart-topping hits, Davido will bring his unique music and 
             energy to life in a live concert experience you wont want to miss.
@@ -126,7 +126,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
             enjoy breathtaking live performances, and create lasting memories. 
             Whether you're a long-time fan or new to his music, this concert promises an 
             exhilarating evening filled with passion, talent, and fun.
-            get your tickets now and be part of a night to remember!{' '} 
+            get your tickets now and be part of a night to remember!` 
             </p>
             <div className="flex justify-center mt-12">
               <button
