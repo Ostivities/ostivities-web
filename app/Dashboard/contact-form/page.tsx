@@ -65,7 +65,7 @@ const ContactForm = () => {
                     {...register('firstName', { required: true })}
                   />
                 </label>
-                {errors.firstName && <span>Please provide first name</span>}
+                {errors.firstName && <span>Please provide your first name</span>}
               </div>
               <div>
                 <label htmlFor="lastname" className="grid grid-cols-6 gap-4">
@@ -78,7 +78,7 @@ const ContactForm = () => {
                     {...register('lastName', { required: true })}
                   />
                 </label>
-                {errors.lastName && <span>Please provide Last name</span>}
+                {errors.lastName && <span>Please provide your Last name</span>}
               </div>
               <div>
                 <label htmlFor="email" className="grid grid-cols-6 gap-4">
@@ -91,7 +91,7 @@ const ContactForm = () => {
                     {...register('email', { required: true })}
                   />
                 </label>
-                {errors.email && <span>Please provide Email</span>}
+                {errors.email && <span>Please provide your Email</span>}
               </div>
               <div>
                 <label
@@ -108,7 +108,7 @@ const ContactForm = () => {
                   />
                 </label>
                 {errors.confirmEmail && (
-                  <span>Please provide Confirmation Email</span>
+                  <span>Please confirm your Email</span>
                 )}
               </div>
               <div>
@@ -135,7 +135,7 @@ const ContactForm = () => {
                     />
                   </div>
                 </label>
-                {errors.phoneNumber && <span>Please provide Phone Number</span>}
+                {errors.phoneNumber && <span>Please provide your Phone Number</span>}
               </div>
             </form>
           </div>
