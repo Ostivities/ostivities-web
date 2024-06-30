@@ -12,6 +12,8 @@ import {
   CompassOutlined,
   SettingOutlined,
   CaretDownFilled,
+  QuestionCircleOutlined,
+  FileAddOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Avatar, Badge, Dropdown, Layout, Menu, Space, theme } from 'antd';
@@ -33,21 +35,17 @@ const items1: MenuProps['items'] = [
 ];
 
 const items2: MenuProps['items'] = [
-  { icon: CompassOutlined, title: 'Events Discovery', link: '/Dashboard' },
-  { icon: EventCreation, title: 'Events Creation', link: '/Dashboard/events' },
+  { icon: CompassOutlined, title: 'Discovery', link: '/Dashboard' },
+  { icon: FileAddOutlined, title: 'Event Creation', link: '/Dashboard/events' },
   { icon: SettingOutlined, title: 'Settings', link: '/Dashboard/settings' },
-].map((icon) => {
-  const key = icon.link;
+  { icon: QuestionCircleOutlined, title: 'Coming Soon', link: '/Dashboard/' },
+].map((item) => {
+  const key = item.link;
 
   return {
     key: `${key}`,
-    icon:
-      icon.title === 'Events Creation' ? (
-        <Image src={icon.icon} alt="event creation" />
-      ) : (
-        React.createElement(icon.icon)
-      ),
-    label: icon.title,
+    icon: React.createElement(item.icon),
+    label: item.title,
 
     // HANDLES SUB MENU ON SIDE BAR
     // children: new Array(4).fill(null).map((_, j) => {

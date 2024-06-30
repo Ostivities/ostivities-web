@@ -88,7 +88,7 @@ const Accordion: React.FC = () => {
       children: (
         <p>
           Creating an event on Ostivities is simple. Sign up for an account, 
-          click on "Create Event," and 
+          click on Create Event and 
           follow the prompts to enter event details, 
           upload an invitation card, and set the date and time.
         </p>
@@ -127,14 +127,14 @@ const Accordion: React.FC = () => {
             className={`bg-OWANBE_PRY`}
           />
           <span className="text-sm">
-          How does ticketing work on Ostivities?
+          How does ticketing works on Ostivities?
           </span>
         </div>
       ),
       children: (
         <p>
           Event hosts can sell tickets directly through our platform. Attendees can purchase tickets online, 
-          and each ticket will include a unique, scannable barcode for secure entry..
+          and each ticket will include a unique, scannable barcode for secure entry.
         </p>
       ),
     },

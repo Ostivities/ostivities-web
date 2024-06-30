@@ -120,16 +120,20 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
             Join us for an unforgettable night of music and entertainment with Davido as 
             he take the stage at Eko Hotel and Suites. Known for their electrifying performances and 
             chart-topping hits, Davido will bring his unique music and 
-            energy to life in a live concert experience you will not want to miss.
+            energy to life in a live concert experience you wont want to miss.
             Get ready to sing along to your favorite songs, enjoy breathtaking live performances, 
-            and create lasting memories.{' '} 
+            and create lasting memories. Get ready to sing along to your favorite songs, 
+            enjoy breathtaking live performances, and create lasting memories. 
+            Whether you're a long-time fan or new to his music, this concert promises an 
+            exhilarating evening filled with passion, talent, and fun.
+            get your tickets now and be part of a night to remember!{' '} 
             </p>
             <div className="flex justify-center mt-12">
               <button
                 onClick={() => router.push('/Dashboard/tickets')}
                 className="rounded-full bg-OWANBE_PRY px-24 py-3 text-white text-xl font-bold"
               >
-                Register
+                Get Tickets
               </button>
             </div>
           </div>

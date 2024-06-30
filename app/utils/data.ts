@@ -93,10 +93,10 @@ export const SUPPORT: INavLinks[] = [
 
 export const Questions: string[] = [
   "How do I create an event on Ostivities?.",
-  "How can I stay updated on Ostivities's Play Store release?.",
-  "Can I customize my event's privacy settings on Ostivities?.",
+  "How do I find events near me?.",
+  "How do I create an event on Ostivities?.",
   "Is Ostivities secure, especially for payment transactions?.",
-  "What happens if my event details change after creation?.",
+  "How does ticketing works on Ostivities?.",
 ];
 
 export const Answers: IFeatures[] = [
@@ -106,14 +106,14 @@ export const Answers: IFeatures[] = [
       "Creating an event is simple — just navigate to the event section, fill in details, and share the joy with attendees.",
   },
   {
-    title: "How can I stay updated on Ostivities's Play Store release?",
+    title: "How do I find events near me?",
     content:
-      "Follow our social media and visit our website for updates. Get ready to download and dive into cultural festivities! 🎉 #StayTunedForOstivities",
+      "You can use our location-based filtering feature to explore events based on your geographical proximity. Simply enter your location, and Ostivities will display relevant events near you.",
   },
   {
-    title: "Can I customize my event's privacy settings on Ostivities?",
+    title: "How do I create an event on Ostivities?",
     content:
-      "Customize your event's privacy settings on Ostivities. Whether public or Private, you have full control over who joins and sees the details.",
+      "Creating an event on Ostivities is simple. Sign up for an account, click on Create Event and follow the prompts to enter event details, upload an invitation card, and set the date and time.",
   },
   {
     title: "Is Ostivities secure, especially for payment transactions?",
@@ -121,9 +121,9 @@ export const Answers: IFeatures[] = [
       "Absolutely, we prioritize your security. For paid events, our trusted payment system ensures seamless and safe transactions.",
   },
   {
-    title: "What happens if my event details change after creation?",
+    title: "How does ticketing works on Ostivities?",
     content:
-      "No worries! You can easily update your event details. Keep your attendees informed by making necessary changes and ensuring everyone is on the same page.",
+      "Event hosts can sell tickets directly through our platform. Attendees can purchase tickets online, and each ticket will include a unique, scannable barcode for secure entry.",
   },
 ];
 
