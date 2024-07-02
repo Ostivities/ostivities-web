@@ -29,7 +29,7 @@ const Tickets = () => {
         <section className="flex-1 pr-16">
           <div className="flex-center justify-between">
             <div className="flex-center gap-3">
-              <div className="w-10 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
+              <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
                 <Image
                   src="/icons/calendar.svg"
                   alt=""
