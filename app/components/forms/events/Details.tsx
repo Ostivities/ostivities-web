@@ -613,7 +613,7 @@ function Details(): JSX.Element {
                 className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
                 onClick={nextStep}
               >
-                Save and Continue
+                Save & Continue
               </Button>
             </Space>
           )}

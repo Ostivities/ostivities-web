@@ -24,7 +24,7 @@ const Payment = () => {
         className="cursor-pointer"
       />
 
-      <h1>Concert with davido</h1>
+      <h1>Concert with Davido</h1>
     </div>
   );
 
@@ -54,18 +54,18 @@ const Payment = () => {
                   </div>
                   <div>
                     <h2 className="text-lg text-OWANBE_PRY">
-                      Pay with Card or Bank
+                      Pay with Card
                     </h2>
                     <span className="text-ss">
                       Pay with a MasterCard, Visa, Verve Card or directly with
-                      your bank
+                      your bank.
                     </span>
                   </div>
                 </div>
                 <Image
-                  src="/images/paystack.svg"
-                  alt="paystack"
-                  height={18}
+                  src="/images/MasterCard.svg"
+                  alt="mastercard"
+                  height={25}
                   width={80}
                 />
               </div>
@@ -79,17 +79,10 @@ const Payment = () => {
                       Pay with Bank Transfer
                     </h2>
                     <span className="text-ss">
-                      Pay with a MasterCard, Visa, Verve Card or directly with
-                      your bank
+                      Make payment by transferring to our dedicated account number.
                     </span>
                   </div>
                 </div>
-                <Image
-                  src="/images/paystack.svg"
-                  alt="paystack"
-                  height={18}
-                  width={80}
-                />
               </div>
             </div>
             <div className="flex-center gap-2 mt-3 [&>p>a]:text-OWANBE_PRY">

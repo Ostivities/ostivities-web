@@ -18,7 +18,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
         className="cursor-pointer"
       />
 
-      <h1>Concert with davido</h1>
+      <h1>Concert with Davido</h1>
     </div>
   );
 
