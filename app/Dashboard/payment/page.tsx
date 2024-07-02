@@ -91,7 +91,7 @@ const Payment = () => {
               </div>
               <p>
                 I accept the{' '}
-                <Link href="#">terms and condition, Refund Policy</Link> and
+                <Link href="#">Terms and condition, Refund Policy</Link> and
                 <Link href="#"> Privacy Policy</Link>
               </p>
             </div>
