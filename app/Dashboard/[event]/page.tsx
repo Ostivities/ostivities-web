@@ -44,7 +44,7 @@ const Event = ({ params }: { params: { event: string } }) => {
         title="Concert with Davido"
         about="Concert"
         status="Get Tickets"
-        image="/images/placeholder.png"
+        image="/images/placeholder-1.png"
         url="/Dashboard/discovery/1"
       />
       <InfoCard
@@ -72,35 +72,35 @@ const Event = ({ params }: { params: { event: string } }) => {
             title="Concert with Davido"
             about="Concert"
             status="sold out"
-            image="/images/placeholder.png"
+            image="/images/placeholder-1.png"
             url="/Dashboard/popular/1"
           />
           <InfoCard
             title="Concert with Davido"
             about="Concert"
             status="sold out"
-            image="/images/placeholder.png"
+            image="/images/placeholder-1.png"
             url="/popular/1"
           />
           <InfoCard
             title="Concert with Davido"
             about="Concert"
             status="sold out"
-            image="/images/placeholder.png"
+            image="/images/placeholder-1.png"
             url="/Dashboard/popular/1"
           />
           <InfoCard
             title="Concert with Davido"
             about="Concert"
             status="sold out"
-            image="/images/placeholder.png"
+            image="/images/placeholder-1.png"
             url="/Dashboard/popular/1"
           />
           <InfoCard
             title="Concert with Davido"
             about="Concert"
             status="sold out"
-            image="/images/placeholder.png"
+            image="/images/placeholder-1.png"
             url="/Dashboard/popular/1"
           />
         </div>

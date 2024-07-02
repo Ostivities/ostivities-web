@@ -9,7 +9,7 @@ const DiscoverEvents = () => {
         title="Concert with Davido"
         about="Concert"
         status="Get Tickets"
-        image="/images/placeholder.png"
+        image="/images/placeholder-1.png"
         url="/Dashboard/discovery/1"
       />
       <InfoCard

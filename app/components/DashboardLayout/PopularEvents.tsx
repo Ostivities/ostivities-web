@@ -8,35 +8,35 @@ const PopularEvents = () => {
         title="Concert with Davido"
         about="Concert"
         status="sold out"
-        image="/images/placeholder.png"
+        image="/images/placeholder-1.png"
         url="/Dashboard/popular/1"
       />
       <InfoCard
         title="Concert with Davido"
         about="Concert"
         status="sold out"
-        image="/images/placeholder.png"
+        image="/images/placeholder-1.png"
         url="/Dashboard/popular/1"
       />
       <InfoCard
         title="Concert with Davido"
         about="Concert"
         status="sold out"
-        image="/images/placeholder.png"
+        image="/images/placeholder-1.png"
         url="/Dashboard/popular/1"
       />
       <InfoCard
         title="Concert with Davido"
         about="Concert"
         status="sold out"
-        image="/images/placeholder.png"
+        image="/images/placeholder-1.png"
         url="/Dashboard/popular/1"
       />
       <InfoCard
         title="Concert with Davido"
         about="Concert"
         status="sold out"
-        image="/images/placeholder.png"
+        image="/images/placeholder-1.png"
         url="/Dashboard/popular/1"
       />
     </EventSection>
