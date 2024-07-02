@@ -32,7 +32,7 @@ const Summary = ({ continueBtn }: { continueBtn?: boolean }) => {
                   type="text"
                   className="border border-[#888] rounded-[0.625rem] w-full py-1 px-3"
                 />
-                <button className="py-2 px-7 rounded-full bg-OWANBE_PRY font-semibold text-white">
+                <button className="py-1 px-7 rounded-full bg-OWANBE_PRY font-semibold text-white">
                   Add
                 </button>
               </div>
