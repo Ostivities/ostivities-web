@@ -23,7 +23,7 @@ const PopularEvents = () => {
         about="hangout"
         status="sold out"
         image="/images/wed.png"
-        url="/Dashboard/popular/1"
+        url="/popular/1"
       />
       <InfoCard
         title="Agbaya Linkup"

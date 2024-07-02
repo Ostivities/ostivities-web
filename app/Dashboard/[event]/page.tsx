@@ -87,7 +87,7 @@ const Event = ({ params }: { params: { event: string } }) => {
             about="hangout"
             status="sold out"
             image="/images/wed.jpeg"
-            url="/Dashboard/popular/1"
+            url="/popular/1"
           />
           <InfoCard
             title="Agbaya Linkup"

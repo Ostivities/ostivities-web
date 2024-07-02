@@ -2,6 +2,7 @@
 
 import { Label } from '@/app/components/typography/Typography';
 import FormProvider from '@/app/contexts/form-context/FormContext';
+import Button from '@/app/ui/atoms/Button';
 import { NAV_LINKS } from '@/app/utils/data';
 import { IDashboard, INavLinks } from '@/app/utils/interface';
 import EventCreation from '@/public/EventCreation.svg';
@@ -58,6 +59,18 @@ const items2: MenuProps['items'] = [
   };
 });
 
+const items3: MenuProps['items'] = [
+  { icon: CompassOutlined, title: 'Discovery', link: '/Dashboard' },
+].map((item) => {
+  const key = item.link;
+
+  return {
+    key: `${key}`,
+    icon: React.createElement(item.icon),
+    label: item.title,
+  };
+});
+
 const items: MenuProps['items'] = [
   {
     label: <Label className="cursor-pointer" content="Help" />,
@@ -74,6 +87,7 @@ function DashboardLayout({
   title,
   steppers,
   extraComponents,
+  isLoggedIn,
 }: IDashboard): JSX.Element {
   const router = useRouter();
   const pathname = usePathname();
@@ -124,6 +138,7 @@ function DashboardLayout({
             borderBottom: '2px solid #d0d4d4',
           }}
         >
+
           <div className="demo-logo flex flex-row items-center space-x-12">
             <Image
               src={OwanbeLogo}
@@ -140,61 +155,83 @@ function DashboardLayout({
               onClick={toggleSidebar}
             />
           </div>
-          {!pathCheck && (
-            <div className="flex flex-row items-center space-x-8">
-              {NAV_LINKS.map((link: INavLinks) => (
-                <Link
-                  href={link.link}
-                  key={link.link + link.name}
-                  className="font-BricolageGrotesqueMedium font-medium text-base text-black"
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
-          )}
-
-          <Space
-            direction="horizontal"
-            className="space-x-8 items-center justify-center"
-            align="center"
-            size={'small'}
-          >
-            <div className="mt-5">
-              <Badge count={1}>
-                <BellFilled
-                  className="cursor-pointer"
-                  style={{
-                    fontSize: '26px',
-                    color: '#8C95A1',
-                  }}
-                />
-              </Badge>
-            </div>
-            <Dropdown menu={{ items }} trigger={['click', 'hover']}>
-              <div className="flex-center gap-4 cursor-pointer">
-                <Avatar
-                  size={40}
-                  style={{
-                    background: '#E20000',
-                    fontFamily: 'BricolageGrotesqueMedium',
-                    cursor: 'pointer',
-                  }}
-                >
-                  IR
-                </Avatar>
-                <div className="h-fit flex gap-4">
-                  <div className="flex flex-col justify-start">
-                    <h3 className=" text-sm text-OWANBE_TABLE_CELL">
-                      Onome Rose
-                    </h3>
-                    <span className="text-xs text-[#8C95A1]">User</span>
-                  </div>
-                  <CaretDownFilled />
-                </div>
+          {!isLoggedIn && (
+            <>
+              <div className="flex flex-row items-center space-x-8">
+                {NAV_LINKS.map((link: INavLinks) => (
+                  <Link
+                    href={link.link}
+                    key={link.link + link.name}
+                    className="font-BricolageGrotesqueMedium font-medium text-base text-black"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
               </div>
-            </Dropdown>
-          </Space>
+              <div className="flex flex-row items-end justify-end space-x-3">
+                <>
+                  <Button
+                    variant="outline"
+                    label="Sign in"
+                    onClick={() => router.push('/login')}
+                  />
+                  <Button
+                    label="Sign Up"
+                    onClick={() => router.push('/signup')}
+                  />
+                </>
+              </div>
+            </>
+          )}
+          {
+            isLoggedIn && (
+              <>
+                <Space
+                  direction="horizontal"
+                  className="space-x-8 items-center justify-center"
+                  align="center"
+                  size={'small'}
+                >
+                  <div className="mt-5">
+                    <Badge count={1}>
+                      <BellFilled
+                        className="cursor-pointer"
+                        style={{
+                          fontSize: '26px',
+                          color: '#8C95A1',
+                        }}
+                      />
+                    </Badge>
+                  </div>
+                  <Dropdown menu={{ items }} trigger={['click', 'hover']}>
+                    <div className="flex-center gap-4 cursor-pointer">
+                      <Avatar
+                        size={40}
+                        style={{
+                          background: '#E20000',
+                          fontFamily: 'BricolageGrotesqueMedium',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        IR
+                      </Avatar>
+                      <div className="h-fit flex gap-4">
+                        <div className="flex flex-col justify-start">
+                          <h3 className=" text-sm text-OWANBE_TABLE_CELL">
+                            Onome Rose
+                          </h3>
+                          <span className="text-xs text-[#8C95A1]">User</span>
+                        </div>
+                        <CaretDownFilled />
+                      </div>
+                    </div>
+                  </Dropdown>
+                </Space>
+              </>
+            )
+          }
+
+
         </Header>
         <Layout>
           <Sider
@@ -227,12 +264,11 @@ function DashboardLayout({
                 border: 0,
                 fontFamily: 'BricolageGrotesqueMedium !important',
               }}
-              items={items2}
+              items={isLoggedIn ? items2 : items3}
               onClick={onClick}
               selectedKeys={[currentPah]}
-              className={`${
-                collapsed === 'true' ? 'collapsed-side-nav' : 'side-nav'
-              }`}
+              className={`${collapsed === 'true' ? 'collapsed-side-nav' : 'side-nav'
+                }`}
             />
           </Sider>
           <Layout
@@ -277,9 +313,8 @@ function DashboardLayout({
               <Content className="flex flex-col space-y-8 py-8">
                 {steppers && (
                   <div
-                    className={`mx-auto text-center flex flex-row items-center justify-center pb-3 ${
-                      !isValidElement(steppers) ? 'hidden' : ''
-                    }`}
+                    className={`mx-auto text-center flex flex-row items-center justify-center pb-3 ${!isValidElement(steppers) ? 'hidden' : ''
+                      }`}
                   >
                     {steppers}
                   </div>

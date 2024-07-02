@@ -83,7 +83,7 @@ function CreateAccount(): JSX.Element {
 
       {accountType === ACCOUNT_TYPE.ORGANISATION ? (
         <Form.Item
-          label="Registered Business Name"
+          label="Business Name"
           style={{ fontFamily: "BricolageGrotesqueRegular" }}
           className="font-BricolageGrotesqueRegular !mt-3"
         >

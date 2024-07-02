@@ -2412,7 +2412,7 @@ export const EVENT_TYPES: {label: string; value: string}[] = [
                     { value: 'Birthday Party', label: 'Birthday Party' },
                     { value: 'Concert', label: 'Concert' },
                     { value: 'Paint & Sip', label: 'Paint & Sip' },
-                    { value: 'TGIF/Hangouts', label: 'TGIF/Hangouts' },
+                    { value: 'Hangouts', label: 'Hangouts' },
                     { value: 'Webinar', label: 'Webinar' },
                     { value: 'Conference', label: 'Conference' },
                     { value: 'Others', label: 'Others' },
