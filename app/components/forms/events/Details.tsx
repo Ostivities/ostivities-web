@@ -187,13 +187,13 @@ function Details(): JSX.Element {
                           htmlFor="eventName"
                         />
                         <Input.TextArea
-                          {...field}
-                          placeholder="Enter Event Details"
-                          style={{
-                            height: "200px !important",
-                            paddingTop: "10px !important",
-                          }}
-                          className="py-3"
+  {...field}
+  placeholder="Enter Event Details"
+  style={{
+    minHeight: "200px",
+    paddingTop: "10px",
+  }}
+  className="py-3"
                         />
                       </Space>
                     )}
