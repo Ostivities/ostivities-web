@@ -30,7 +30,7 @@ function CreateAccount(): JSX.Element {
       const response = await registerUser.mutateAsync(values);
       if (response.status === 201) {
         form.resetFields();
-        router.push("/login", { shallow: true });
+        router.push("/login");
       }
     }
   };
