@@ -739,3 +739,224 @@ body {
 /* .ant-steps-item-container {
   width: 400px;
 } */
+
+.custom-upload-button {
+  border-color: #000000 !important;
+  color: #000000 !important;
+}
+
+.custom-upload-button:hover {
+  border-color: #e20000 !important;
+  color: #e20000 !important;
+}
+
+/* Override Ant Design primary and related colors */
+.ant-btn-primary,
+.ant-btn-primary:not(.ant-btn-background-ghost):not(.ant-btn-background-ghost-hover),
+.ant-btn-primary:focus,
+.ant-btn-primary:hover,
+.ant-btn-primary:active,
+.ant-btn-primary.active,
+.ant-btn-primary.disabled,
+.ant-btn-primary[disabled],
+.ant-btn-primary.disabled:hover,
+.ant-btn-primary[disabled]:hover,
+.ant-btn-primary.disabled:focus,
+.ant-btn-primary[disabled]:focus,
+.ant-btn-primary.disabled:active,
+.ant-btn-primary[disabled]:active,
+.ant-btn-primary-disabled,
+.ant-btn-primary-disabled:hover,
+.ant-btn-primary-disabled:focus,
+.ant-btn-primary-disabled:active,
+.ant-btn-primary-disabled.active,
+.ant-btn-primary-disabled.disabled,
+.ant-btn-primary-disabled[disabled] {
+  background-color: #e20000;
+  border-color: #e20000;
+  color: #fff;
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus,
+.ant-btn-primary:active,
+.ant-btn-primary.active {
+  background-color: #e20000;
+  border-color: #e20000;
+}
+
+.ant-btn-background-ghost:not(.ant-btn-primary):hover,
+.ant-btn-background-ghost:not(.ant-btn-primary):focus,
+.ant-btn-background-ghost:not(.ant-btn-primary):active,
+.ant-btn-background-ghost:not(.ant-btn-primary).active,
+.ant-btn-background-ghost:not(.ant-btn-primary).disabled,
+.ant-btn-background-ghost:not(.ant-btn-primary)[disabled] {
+  border-color: #e20000;
+}
+
+.ant-radio-checked .ant-radio-inner,
+.ant-radio-checked .ant-radio-input:focus + .ant-radio-inner,
+.ant-radio-checked .ant-radio-inner:hover,
+.ant-radio-checked:hover .ant-radio-inner,
+.ant-radio-checked:focus .ant-radio-inner {
+  border-color: #e20000;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner,
+.ant-checkbox-checked .ant-checkbox-inner:hover {
+  background-color: #e20000;
+  border-color: #e20000;
+}
+
+.ant-switch-checked .ant-switch-handle:before {
+  background-color: #e20000;
+}
+
+.ant-tag,
+.ant-tag-checkable {
+  color: #e20000;
+  border-color: #e20000;
+}
+
+.ant-tag-checkable-checked {
+  background-color: #e20000;
+}
+
+.ant-menu-item-selected,
+.ant-menu-item-active,
+.ant-menu-submenu-popup.ant-menu-submenu-open,
+.ant-menu-submenu-popup.ant-menu-submenu-active,
+.ant-menu-submenu-selected,
+.ant-menu-submenu-active,
+.ant-menu-submenu-title:hover {
+  background-color: #e20000;
+}
+
+.ant-menu-dark .ant-menu-item-selected {
+  background-color: #e20000;
+}
+
+.ant-menu-dark .ant-menu-item:hover {
+  color: #e20000;
+}
+
+.ant-layout-sider-dark .ant-menu-dark .ant-menu-item:hover {
+  color: #e20000;
+}
+
+.ant-tabs-ink-bar {
+  background-color: #e20000;
+}
+
+.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #e20000;
+}
+
+.ant-select-focused .ant-select-selector {
+  border-color: #e20000;
+  box-shadow: 0 0 0 2px rgba(226, 0, 0, 0.2);
+}
+
+.ant-slider-handle:focus,
+.ant-slider-handle:hover,
+.ant-slider-handle-click-focused,
+.ant-slider-handle-click-hover,
+.ant-slider-mark-text-active,
+.ant-slider-mark-text {
+  border-color: #e20000;
+}
+
+.ant-input:focus,
+.ant-input:hover,
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper:hover {
+  border-color: #e20000;
+}
+
+.ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.ant-checkbox:hover .ant-checkbox-inner,
+.ant-checkbox-input:focus + .ant-checkbox-inner,
+.ant-checkbox-checked .ant-checkbox-inner {
+  border-color: #e20000;
+}
+
+.ant-radio-wrapper:hover .ant-radio-inner,
+.ant-radio:hover .ant-radio-inner,
+.ant-radio-input:focus + .ant-radio-inner,
+.ant-radio-checked .ant-radio-inner {
+  border-color: #e20000;
+}
+
+.ant-picker-input > input:focus,
+.ant-picker-input > input:hover {
+  border-color: #e20000;
+}
+
+.ant-calendar-picker:hover .ant-calendar-picker-input {
+  border-color: #e20000;
+}
+
+.ant-calendar-picker:focus .ant-calendar-picker-input {
+  border-color: #e20000;
+}
+
+.ant-cascader-picker:focus .ant-input,
+.ant-cascader-picker:hover .ant-input {
+  border-color: #e20000;
+}
+
+.ant-calendar-selected-day .ant-calendar-date {
+  background: #e20000;
+}
+
+.ant-calendar-selected-date .ant-calendar-date {
+  background: #e20000;
+}
+
+.ant-calendar-today .ant-calendar-date {
+  border-color: #e20000;
+}
+
+.ant-calendar-selected-date .ant-calendar-date:hover,
+.ant-calendar-today .ant-calendar-date:hover {
+  background: #e20000;
+}
+
+.ant-pagination-item-active a,
+.ant-pagination-item-active a:hover,
+.ant-pagination-item-active:focus a,
+.ant-pagination-item-active:focus a:hover {
+  color: #e20000;
+  border-color: #e20000;
+}
+
+.ant-pagination-item:hover a,
+.ant-pagination-item:hover a:hover,
+.ant-pagination-item:focus a,
+.ant-pagination-item:focus a:hover {
+  border-color: #e20000;
+}
+
+.ant-pagination-item-link:focus,
+.ant-pagination-item-link:hover {
+  border-color: #e20000;
+}
+
+.ant-page-header-heading-title {
+  color: #e20000;
+}
+
+.ant-form-item-explain-error {
+  color: #e20000;
+}
+
+.ant-picker-panel-container .ant-picker-today-btn {
+  color: #e20000;
+}
+
+.ant-picker-cell-selected .ant-picker-cell-inner,
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner {
+  background-color: #e20000;
+}
+
+/* Other components and states can be similarly overridden */

@@ -13,7 +13,7 @@ import useLocalStorage from 'use-local-storage';
 
 function Dashboard(): JSX.Element {
   const route = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useLocalStorage<boolean>('user', false)
+  const [isLoggedIn, setIsLoggedIn] = useLocalStorage<boolean>('user', true)
   const COUNTRY_JSON: any = Country.getAllCountries().map((i: any) => {
     return { value: i?.name, label: i?.name, isoCode: i?.isoCode };
   });

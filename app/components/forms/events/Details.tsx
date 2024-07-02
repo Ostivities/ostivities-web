@@ -4,6 +4,7 @@ import {
   Label,
   Paragraph,
 } from "@/app/components/typography/Typography";
+
 import { EVENT_TYPES, STATES_IN_NIGERIA, stepOne } from "@/app/utils/data";
 import { EVENT_INFO } from "@/app/utils/enums";
 import { IFormInput } from "@/app/utils/interface";
@@ -20,6 +21,9 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { global } from "styled-jsx/css";
+
+
 
 function Details(): JSX.Element {
   const router = useRouter();
@@ -277,69 +281,39 @@ function Details(): JSX.Element {
                     )}
                   />
 
-                  <Controller
-                    name="document"
-                    control={control}
-                    render={({ field }) => (
-                      <Space direction="vertical" size={"small"}>
-                        <Label content="Upload Supporting Doc" htmlFor="eventName" />
+<Controller
+  name="document"
+  control={control}
+  render={({ field }) => (
+    <Space direction="vertical" size={"small"}>
+      <Label content="Upload Supporting Doc" htmlFor="eventName" />
 
-                        <Space.Compact className="w-full h-11">
-                          <Input
-                            style={{
-                              width: "75%",
-                              borderTopRightRadius: "0px !important",
-                              borderBottomRightRadius: "0px !important",
-                            }}
-                            placeholder="Enter file name (optional)"
-                          />
-                          <Upload
-                            style={{ height: "41px !important", width: "60%" }}
-                            className="upload-button"
-                          >
-                            <Button icon={<UploadOutlined />}>
-                              Click to Upload
-                            </Button>
-                          </Upload>
-                        </Space.Compact>
-                        <span className="font-BricolageGrotesqueLight text-OWANBE_PRY text-xs font-light">
-                          *Supporting doc can be Wedding Card, Birthday Card among many others.
-                          *Only JPEG, PNG & PDF Allowed and file size should not be more than 10MB.
-                        </span>
-                      </Space>
-                    )}
-                  />
+      <Space.Compact className="w-full h-11">
+        <Input
+          style={{
+            width: "75%",
+            borderTopRightRadius: "0px !important",
+            borderBottomRightRadius: "0px !important",
+          }}
+          placeholder="Enter file name (optional)"
+        />
+        <Upload
+          style={{ height: "41px !important", width: "60%" }}
+          className="upload-button"
+        >
+          <Button icon={<UploadOutlined />} className="custom-upload-button">
+            Click to Upload
+          </Button>
+        </Upload>
+      </Space.Compact>
+      <span className="font-BricolageGrotesqueLight text-OWANBE_PRY text-xs font-light">
+        *Supporting doc can be Wedding Card, Birthday Card among many others.
+        *Only JPEG, PNG & PDF Allowed and file size should not be more than 10MB.
+      </span>
+    </Space>
+  )}
+/>
 
-                  <Controller
-                    name="eventType"
-                    control={control}
-                    render={({ field }) => (
-                      <Space
-                        direction="vertical"
-                        size={"small"}
-                        className="w-full"
-                      >
-                        <Label
-                          content="Event Type"
-                          className=""
-                          htmlFor="eventType"
-                        />
-                        <Select
-                  defaultValue="Select event type"
-                  className="w-full"
-                  placeholder="Select Event Type"
-                          {...field}
-                          style={{ width: "100%" }}
-                          
-                 
-                  options={[
-                    ...EVENT_TYPES
-                  ]}
-                />
-                        
-                      </Space>
-                    )}
-                  />
 
                   <Controller
                     name="eventInfo"
