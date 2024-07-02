@@ -23,7 +23,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
   );
 
   return (
-    <DashboardLayout title={title}>
+    <DashboardLayout title={title} isLoggedIn>
       <section>
         <div className="flex gap-12">
           <div className="relative w-fit rounded-[3.125rem] overflow-hidden">
