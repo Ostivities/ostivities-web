@@ -71,29 +71,32 @@ const items3: MenuProps['items'] = [
   };
 });
 
-const items: MenuProps['items'] = [
-  {
-    label: <Label className="cursor-pointer" content="Help" />,
-    key: 'help',
-  },
-  {
-    label: <Label className="cursor-pointer" content="Sign out" />,
-    key: 'sign-',
-  },
-];
+
 
 function DashboardLayout({
   children,
   title,
   steppers,
   extraComponents,
-  isLoggedIn,
 }: IDashboard): JSX.Element {
   const router = useRouter();
   const pathname = usePathname();
 
+
+  const items: MenuProps['items'] = [
+    {
+      label: <Label className="cursor-pointer" content="Help" />,
+      key: 'help',
+    },
+    {
+      label: <Label className="cursor-pointer" content="Sign out" />,
+      key: 'sign-',
+      onClick:() => router.push("/login")
+    },
+  ];
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useLocalStorage<string>('sidebar', 'false');
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
 
   const {
     token: { colorBgContainer },
