@@ -2411,6 +2411,7 @@ export const EVENT_TYPES: {label: string; value: string}[] = [
   { value: 'Wedding Party', label: 'Wedding Party' },
                     { value: 'Birthday Party', label: 'Birthday Party' },
                     { value: 'Concert', label: 'Concert' },
+                    { value: 'Event', label: 'Event' },
                     { value: 'Paint & Sip', label: 'Paint & Sip' },
                     { value: 'Hangouts', label: 'Hangouts' },
                     { value: 'Webinar', label: 'Webinar' },

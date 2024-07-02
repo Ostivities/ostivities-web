@@ -74,14 +74,14 @@ function CreateAccount(): JSX.Element {
             },
           ]}
         >
-          <Select placeholder="Select">
+          <Select placeholder="Select" onChange={(e)=>{setval(e)}}>
             <Option value={ACCOUNT_TYPE.PERSONAL}>Personal</Option>
             <Option value={ACCOUNT_TYPE.ORGANISATION}>Organization</Option>
           </Select>
         </Form.Item>
       </Form.Item>
 
-      {accountType === ACCOUNT_TYPE.ORGANISATION ? (
+      {val === ACCOUNT_TYPE.ORGANISATION ? (
         <Form.Item
           label="Business Name"
           style={{ fontFamily: "BricolageGrotesqueRegular" }}

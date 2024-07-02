@@ -5,38 +5,38 @@ const PopularEvents = () => {
   return (
     <EventSection title="Popular Events" uri="/Dashboard/popular">
       <InfoCard
-        title="Agbaya Linkup"
-        about="hangout"
+        title="Concert with Davido"
+        about="Concert"
         status="sold out"
-        image="/images/wed.png"
+        image="/images/placeholder.png"
         url="/Dashboard/popular/1"
       />
       <InfoCard
-        title="Agbaya Linkup"
-        about="hangout"
+        title="Concert with Davido"
+        about="Concert"
         status="sold out"
-        image="/images/wed.png"
+        image="/images/placeholder.png"
         url="/Dashboard/popular/1"
       />
       <InfoCard
-        title="Agbaya Linkup"
-        about="hangout"
+        title="Concert with Davido"
+        about="Concert"
         status="sold out"
-        image="/images/wed.png"
-        url="/popular/1"
-      />
-      <InfoCard
-        title="Agbaya Linkup"
-        about="hangout"
-        status="sold out"
-        image="/images/wed.png"
+        image="/images/placeholder.png"
         url="/Dashboard/popular/1"
       />
       <InfoCard
-        title="Agbaya Linkup"
-        about="hangout"
+        title="Concert with Davido"
+        about="Concert"
         status="sold out"
-        image="/images/wed.png"
+        image="/images/placeholder.png"
+        url="/Dashboard/popular/1"
+      />
+      <InfoCard
+        title="Concert with Davido"
+        about="Concert"
+        status="sold out"
+        image="/images/placeholder.png"
         url="/Dashboard/popular/1"
       />
     </EventSection>
