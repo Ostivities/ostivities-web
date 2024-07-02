@@ -96,7 +96,7 @@ function DashboardLayout({
   ];
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useLocalStorage<string>('sidebar', 'false');
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+  const [isLoggedIn, setIsLoggedIn] = useLocalStorage<boolean>('user', false)
 
   const {
     token: { colorBgContainer },
