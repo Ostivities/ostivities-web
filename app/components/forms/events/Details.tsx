@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { global } from "styled-jsx/css";
+import "@/app/globals.css";
 
 function Details(): JSX.Element {
   const router = useRouter();
