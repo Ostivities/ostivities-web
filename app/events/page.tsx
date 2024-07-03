@@ -1,7 +1,6 @@
 'use client';
 
-import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
-import React, { useState } from 'react';
+import React from 'react';
 import DiscoverEvents from '../components/DashboardLayout/DiscoverEvents';
 import PopularEvents from '../components/DashboardLayout/PopularEvents';
 import { Input, Select } from 'antd';
@@ -9,11 +8,10 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { Country, State } from "country-state-city";
 import { EVENT_TYPES } from '../utils/data';
-import useLocalStorage from 'use-local-storage';
+import DashboardLayout from '../components/DashboardLayout/DashboardLayout';
 
-function Dashboard(): JSX.Element {
+function PublicEvents(): JSX.Element {
   const route = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useLocalStorage<boolean>('user', true)
   const COUNTRY_JSON: any = Country.getAllCountries().map((i: any) => {
     return { value: i?.name, label: i?.name, isoCode: i?.isoCode };
   });
@@ -28,13 +26,6 @@ const STATE_BY_COUNTRYCODE = (stateCode: string): { label: string; value: string
   const header = (
     <div className="flex-center justify-between w-full">
       <span>Discovery</span>
-      {isLoggedIn && <button
-        onClick={() => route.push('/Dashboard/events')}
-        className=" bg-OWANBE_PRY rounded-full px-4 py-2 text-xs font-semibold text-white"
-      >
-        {' '}
-        <PlusOutlined /> <span className="pl-1">Create New Event</span>
-      </button>}
     </div>
   );
   return (
@@ -87,4 +78,4 @@ const STATE_BY_COUNTRYCODE = (stateCode: string): { label: string; value: string
   );
 }
 
-export default Dashboard;
+export default PublicEvents;

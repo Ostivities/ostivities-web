@@ -4,12 +4,11 @@ import {
   Label,
   Paragraph,
 } from "@/app/components/typography/Typography";
+
 import { EVENT_TYPES, STATES_IN_NIGERIA, stepOne } from "@/app/utils/data";
 import { EVENT_INFO } from "@/app/utils/enums";
 import { IFormInput } from "@/app/utils/interface";
-import { UploadOutlined } from "@ant-design/icons";
-// import { schema } from "@/app/utils/validations";
-// import { yupResolver } from "@hookform/resolvers/yup";
+import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
 import Dropzone from "@/app/components/Dropzone/Dropzone";
 import EventTicketTable from "@/app/components/Tables/EventTicket";
 import AddTicketModal from "@/app/components/modal/AddTicket";
@@ -20,12 +19,30 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { global } from "styled-jsx/css";
+import "@/app/globals.css";
 
 function Details(): JSX.Element {
   const router = useRouter();
   const { formState, setFormStage } = useFormContext();
   const [formStep, setFormStep] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState(null);
+
+  // Example time zones in Africa
+  const AFRICAN_TIME_ZONES = [
+    { label: "West Africa Time (WAT)", value: "WAT" },
+    { label: "Central Africa Time (CAT)", value: "CAT" },
+    { label: "South Africa Standard Time (SAST)", value: "SAST" },
+    { label: "East Africa Time (EAT)", value: "EAT" },
+  ];
+
+  // Example event frequencies
+  const EVENT_FREQUENCIES = [
+    { label: "Daily", value: "daily" },
+    { label: "Weekly", value: "weekly" },
+    { label: "Monthly", value: "monthly" },
+  ];
 
   const { Option } = Select;
 
@@ -37,19 +54,16 @@ function Details(): JSX.Element {
     watch,
     trigger,
   } = useForm<IFormInput>({
-    // resolver: yupResolver(schema),
     progressive: true,
     mode: "all",
   });
+
   const watchEventInfo = watch("eventInfo");
 
   useEffect(() => {
-    const subscription: any = watch((value, { name, type }) =>
-      //   console.log(value, name, type)
-      {
-        return;
-      }
-    );
+    const subscription: any = watch((value, { name, type }) => {
+      return;
+    });
     return () => subscription.unsubscribe();
   }, [watch]);
 
@@ -69,6 +83,12 @@ function Details(): JSX.Element {
     }
   };
 
+  const handleUploadChange = (info: { file: { status: string; name: React.SetStateAction<null>; }; }) => {
+    if (info.file.status === "done") {
+      setUploadedFile(info.file.name);
+    }
+  };
+
   return (
     <Fragment>
       <AddTicketModal
@@ -82,20 +102,20 @@ function Details(): JSX.Element {
             className=""
             content={
               formStep === 1
-                ? "Hello, Rose."
+                ? "Hello, Rose"
                 : formStep === 2
-                ? "Event Image."
-                : "Event Ticket."
+                ? "Event Image"
+                : "Event Ticket"
             }
           />
           <Paragraph
             className="text-OWANBE_PRY text-xl font-normal font-BricolageGrotesqueRegular"
             content={
               formStep === 1
-                ? "Lets get you started by creating your event"
+                ? "Lets get you started by creating your event."
                 : formStep === 2
-                ? "Select the appearance of your event page here"
-                : "Ostivities is free for free events. For paid events, we charge a percentage as a transaction fee."
+                ? "Upload the image that will appear on your event page here."
+                : "Ostivities is free for free events. For paid events, we charge a transaction fee."
             }
             styles={{ fontWeight: "normal !important" }}
           />
@@ -183,13 +203,13 @@ function Details(): JSX.Element {
                           htmlFor="eventName"
                         />
                         <Input.TextArea
-                          {...field}
-                          placeholder="Enter Event Details"
-                          style={{
-                            height: "200px !important",
-                            paddingTop: "10px !important",
-                          }}
-                          className="py-3"
+  {...field}
+  placeholder="Enter Event Details"
+  style={{
+    minHeight: "200px",
+    paddingTop: "10px",
+  }}
+  className="py-3"
                         />
                       </Space>
                     )}
@@ -277,69 +297,59 @@ function Details(): JSX.Element {
                     )}
                   />
 
-                  <Controller
-                    name="document"
-                    control={control}
-                    render={({ field }) => (
-                      <Space direction="vertical" size={"small"}>
-                        <Label content="Upload Supporting Doc" htmlFor="eventName" />
+<Space direction="vertical" size="small">
+      <Controller
+        name="document"
+        control={control}
+        render={({ field }) => (
+          <Space direction="vertical" size="small">
+            <Label content="Upload Supporting Doc" htmlFor="eventName" />
 
-                        <Space.Compact className="w-full h-11">
-                          <Input
-                            style={{
-                              width: "75%",
-                              borderTopRightRadius: "0px !important",
-                              borderBottomRightRadius: "0px !important",
-                            }}
-                            placeholder="Enter file name (optional)"
-                          />
-                          <Upload
-                            style={{ height: "41px !important", width: "60%" }}
-                            className="upload-button"
-                          >
-                            <Button icon={<UploadOutlined />}>
-                              Click to Upload
-                            </Button>
-                          </Upload>
-                        </Space.Compact>
-                        <span className="font-BricolageGrotesqueLight text-OWANBE_PRY text-xs font-light">
-                          *Supporting doc can be Wedding Card, Birthday Card among many others.
-                          *Only JPEG, PNG & PDF Allowed and file size should not be more than 10MB.
-                        </span>
-                      </Space>
-                    )}
+            <Space.Compact className="w-full h-11">
+              <Input
+                style={{
+                  width: "75%",
+                  borderTopRightRadius: "0px !important",
+                  borderBottomRightRadius: "0px !important",
+                }}
+                placeholder="Enter file name (optional)"
+              />
+              <Upload
+                showUploadList={false}
+                beforeUpload={() => false}
+                className="upload-button"
+                onChange={(info) => {
+                  const file = info.fileList[0]; // Only take the first file
+                  field.onChange(file ? [file] : []); // Override with the new file or empty array
+                }}
+              >
+                <Button icon={<UploadOutlined />} className="custom-upload-button">
+                  Click to Upload
+                </Button>
+              </Upload>
+            </Space.Compact>
+            <span className="font-BricolageGrotesqueLight text-OWANBE_PRY text-xs font-light">
+              *Supporting doc can be Wedding Card, Birthday Card among many
+              others. *Only JPEG, PNG & PDF Allowed and file size should not be
+              more than 10MB.
+            </span>
+            {Array.isArray(field.value) && field.value.length > 0 && (
+              <div className="font-BricolageGrotesqueLight text-xs text-gray-400">
+                Uploaded File:
+                <Space>
+                  <span>{field.value[0].name}</span>
+                  <DeleteOutlined
+                    style={{ color: "#e20000", cursor: "pointer" }}
+                    onClick={() => field.onChange([])} // Clear the uploaded file
                   />
+                </Space>
+              </div>
+            )}
+          </Space>
+        )}
+      />
+    </Space>
 
-                  <Controller
-                    name="eventType"
-                    control={control}
-                    render={({ field }) => (
-                      <Space
-                        direction="vertical"
-                        size={"small"}
-                        className="w-full"
-                      >
-                        <Label
-                          content="Event Type"
-                          className=""
-                          htmlFor="eventType"
-                        />
-                        <Select
-                  defaultValue="Select event type"
-                  className="w-full"
-                  placeholder="Select Event Type"
-                          {...field}
-                          style={{ width: "100%" }}
-                          
-                 
-                  options={[
-                    ...EVENT_TYPES
-                  ]}
-                />
-                        
-                      </Space>
-                    )}
-                  />
 
                   <Controller
                     name="eventInfo"
@@ -379,33 +389,33 @@ function Details(): JSX.Element {
                   {watchEventInfo === EVENT_INFO.SINGLE_EVENT && (
                     <>
                       <Controller
-                        name="timeZone"
-                        control={control}
-                        render={({ field }) => (
-                          <Space
-                            direction="vertical"
-                            size={"small"}
-                            className="w-full"
-                          >
-                            <Label
-                              content="Time Zone"
-                              className=""
-                              htmlFor="eventType"
-                            />
-                            <Select
-                              placeholder="Select Event Type"
-                              {...field}
-                              style={{ width: "100%" }}
-                            >
-                              {STATES_IN_NIGERIA.map((_i) => (
-                                <Option value={_i.state} key={_i.state}>
-                                  {_i.state}
-                                </Option>
-                              ))}
-                            </Select>
-                          </Space>
-                        )}
-                      />
+  name="timeZone"
+  control={control}
+  render={({ field }) => (
+    <Space
+      direction="vertical"
+      size={"small"}
+      className="w-full"
+    >
+      <Label
+        content="Time Zone"
+        className=""
+        htmlFor="timeZone"
+      />
+      <Select
+        placeholder="Select Time Zone"
+        {...field}
+        style={{ width: "100%" }}
+      >
+        {AFRICAN_TIME_ZONES.map((zone) => (
+          <Option value={zone.value} key={zone.value}>
+            {zone.label}
+          </Option>
+        ))}
+      </Select>
+    </Space>
+  )}
+/>
                       <Controller
                         name="startDateAndTime"
                         control={control}
@@ -459,61 +469,62 @@ function Details(): JSX.Element {
                   {watchEventInfo === EVENT_INFO.RECURRING_EVENT && (
                     <>
                       <Controller
-                        name="timeZone"
-                        control={control}
-                        render={({ field }) => (
-                          <Space
-                            direction="vertical"
-                            size={"small"}
-                            className="w-full"
-                          >
-                            <Label
-                              content="Time Zone"
-                              className=""
-                              htmlFor="eventType"
-                            />
-                            <Select
-                              placeholder="Select Event Type"
-                              {...field}
-                              style={{ width: "100%" }}
-                            >
-                              {STATES_IN_NIGERIA.map((_i) => (
-                                <Option value={_i.state} key={_i.state}>
-                                  {_i.state}
-                                </Option>
-                              ))}
-                            </Select>
-                          </Space>
-                        )}
-                      />
-                      <Controller
-                        name="eventFrequency"
-                        control={control}
-                        render={({ field }) => (
-                          <Space
-                            direction="vertical"
-                            size={"small"}
-                            className="w-full"
-                          >
-                            <Label
-                              content="Frequency"
-                              className=""
-                              htmlFor="eventType"
-                            />
-                            <Select
-                              placeholder="Select Event Frequency"
-                              {...field}
-                              style={{ width: "100%" }}
-                            >
-                              {STATES_IN_NIGERIA.map((_i) => (
-                                <Option value={_i.state} key={_i.state}>
-                                  {_i.state}
-                                </Option>
-                              ))}
-                            </Select>
-                          </Space>
-                        )}
-                      />
+  name="timeZone"
+  control={control}
+  render={({ field }) => (
+    <Space
+      direction="vertical"
+      size={"small"}
+      className="w-full"
+    >
+      <Label
+        content="Time Zone"
+        className=""
+        htmlFor="timeZone"
+      />
+      <Select
+        placeholder="Select Time Zone"
+        {...field}
+        style={{ width: "100%" }}
+      >
+        {AFRICAN_TIME_ZONES.map((zone) => (
+          <Option value={zone.value} key={zone.value}>
+            {zone.label}
+          </Option>
+        ))}
+      </Select>
+    </Space>
+  )}
+/>
+
+<Controller
+  name="eventFrequency"
+  control={control}
+  render={({ field }) => (
+    <Space
+      direction="vertical"
+      size={"small"}
+      className="w-full"
+    >
+      <Label
+        content="Frequency"
+        className=""
+        htmlFor="eventFrequency"
+      />
+      <Select
+        placeholder="Select Event Frequency"
+        {...field}
+        style={{ width: "100%" }}
+      >
+        {EVENT_FREQUENCIES.map((frequency) => (
+          <Option value={frequency.value} key={frequency.value}>
+            {frequency.label}
+          </Option>
+        ))}
+      </Select>
+    </Space>
+  )}
+/>
 
                       <Controller
                         name="startDateAndTime"
@@ -601,11 +612,11 @@ function Details(): JSX.Element {
 
                   <div className="flex flex-col space-y-3">
                     <h5 className="font-BricolageGrotesqueSemiBold font-semibold text-xl">
-                      Create your ticket
+                      Create your tickets
                     </h5>
                     <p className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK_LIGHT">
-                      Create your ticket here, it will only take less than a
-                      minute
+                      Create your tickets here, it will only take less than a
+                      minute.
                     </p>
                   </div>
                   <Button
@@ -639,7 +650,7 @@ function Details(): JSX.Element {
                 className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
                 onClick={nextStep}
               >
-                Save and Continue
+                Save & Continue
               </Button>
             </Space>
           )}

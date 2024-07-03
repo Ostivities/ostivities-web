@@ -24,7 +24,7 @@ const Payment = () => {
         className="cursor-pointer"
       />
 
-      <h1>Concert with davido</h1>
+      <h1>Concert with Davido</h1>
     </div>
   );
 
@@ -37,7 +37,7 @@ const Payment = () => {
   }, [minutes, remainingSeconds]);
 
   return (
-    <DashboardLayout title={title}>
+    <DashboardLayout title={title} isLoggedIn>
       <section className="flex gap-12">
         <section className="flex-1">
           <div className=" bg-OWANBE_NOTIFICATION px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem]">
@@ -54,18 +54,18 @@ const Payment = () => {
                   </div>
                   <div>
                     <h2 className="text-lg text-OWANBE_PRY">
-                      Pay with Card or Bank
+                      Pay with Card
                     </h2>
                     <span className="text-ss">
                       Pay with a MasterCard, Visa, Verve Card or directly with
-                      your bank
+                      your bank.
                     </span>
                   </div>
                 </div>
                 <Image
-                  src="/images/paystack.svg"
-                  alt="paystack"
-                  height={18}
+                  src="/images/MasterCard.svg"
+                  alt="mastercard"
+                  height={25}
                   width={80}
                 />
               </div>
@@ -79,17 +79,10 @@ const Payment = () => {
                       Pay with Bank Transfer
                     </h2>
                     <span className="text-ss">
-                      Pay with a MasterCard, Visa, Verve Card or directly with
-                      your bank
+                      Make payment by transferring to our dedicated account number.
                     </span>
                   </div>
                 </div>
-                <Image
-                  src="/images/paystack.svg"
-                  alt="paystack"
-                  height={18}
-                  width={80}
-                />
               </div>
             </div>
             <div className="flex-center gap-2 mt-3 [&>p>a]:text-OWANBE_PRY">
@@ -98,7 +91,7 @@ const Payment = () => {
               </div>
               <p>
                 I accept the{' '}
-                <Link href="#">terms and condition, Refund Policy</Link> and
+                <Link href="#">Terms and condition, Refund Policy</Link> and
                 <Link href="#"> Privacy Policy</Link>
               </p>
             </div>

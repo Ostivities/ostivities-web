@@ -24,8 +24,8 @@ const Tickets = () => {
   );
 
   return (
-    <DashboardLayout title={title}>
-      <section className="flex gap-12">
+    <DashboardLayout title={title} isLoggedIn>
+      <section className="flex gap-5">
         <section className="flex-1 pr-16">
           <div className="flex-center justify-between">
             <div className="flex-center gap-3">
@@ -33,8 +33,8 @@ const Tickets = () => {
                 <Image
                   src="/icons/calendar.svg"
                   alt=""
-                  height={30}
-                  width={30}
+                  height={25}
+                  width={25}
                 />
               </div>
               <div>
@@ -44,7 +44,7 @@ const Tickets = () => {
             </div>
             <div className="flex-center gap-3">
               <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
-                <Image src="/icons/time.svg" alt="" height={30} width={30} />
+                <Image src="/icons/time.svg" alt="" height={25} width={25} />
               </div>
               <div>
                 <h3 className="text-xs">Time</h3>
@@ -52,8 +52,8 @@ const Tickets = () => {
               </div>
             </div>
           </div>
-          <div className=" mt-7 flex flex-col gap-6">
-            {Array.from({ length: 3 }, (_, index) => (
+          <div className=" mt-12 flex flex-col gap-6">
+            {Array.from({ length: 2 }, (_, index) => (
               <div key={index} className="card-shadow">
                 <div>
                   <h2 className=" text-OWANBE_PRY text-lg">Early Bird</h2>
