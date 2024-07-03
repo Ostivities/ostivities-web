@@ -972,5 +972,25 @@ body {
 }
 
 input, .ant-input, .ant-select, .ant-picker, .ant-radio, .ant-input-textarea, .ant-upload {
-  border-radius: 12px !important;
+  border-radius: 5px !important;
+}
+.input-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-label {
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.input-field {
+  height: 40px; /* Adjust the height as needed */
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  transition: border-color 0.3s;
 }

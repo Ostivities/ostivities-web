@@ -10,7 +10,7 @@ const OrganizationProfile = () => {
       <div className="grid grid-cols-2 gap-x-14 items-start w-full">
         <div className="grid gap-y-9">
           <Input label="Account Type" className="ml-14" />
-          <Input label="Reg Business Name" />
+          <Input label="Business Name" className="ml-12" />
         </div>
 
         <div className="grid gap-y-9">
@@ -29,7 +29,7 @@ const OrganizationProfile = () => {
           <Input label="New Password" className="ml-12" type="password" />
         </div>
 
-        <Input label="Repeat Password" className="ml-12" type="password" />
+        <Input label="Confirm Password" className="ml-12" type="password" />
       </div>
 
       <Button

@@ -21,7 +21,7 @@ function Footer(): JSX.Element {
             {/* 1 */}
             <div className="flex flex-col space-y-3">
               <Image src={OwanbeLogo} alt="Owanbe Logo" />
-              <div className="flex flex-row items-center space-x-3">
+              <div className="flex flex-row items-center space-x-5">
                 <Image src={Mail} alt="icon" />
                 <Small
                   content={"Hello@Ostivities.com"}
