@@ -74,7 +74,7 @@ const STATE_BY_COUNTRYCODE = (stateCode: string): { label: string; value: string
                 />
               </label>
               <div className="flex items-end">
-                <button className=" place-items-end w-36 h-fit text-sm text-white bg-OWANBE_PRY py-3 px-12 rounded-full">
+                <button className=" place-items-end w-36 h-fit text-sm text-white bg-OWANBE_PRY py-1.5 px-12 rounded-full">
                   Apply
                 </button>
               </div>
