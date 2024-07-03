@@ -30,6 +30,20 @@ function Details(): JSX.Element {
   const { formState, setFormStage } = useFormContext();
   const [formStep, setFormStep] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // Example time zones in Africa
+const AFRICAN_TIME_ZONES = [
+  { label: "West Africa Time (WAT)", value: "WAT" },
+  { label: "Central Africa Time (CAT)", value: "CAT" },
+  { label: "South Africa Standard Time (SAST)", value: "SAST" },
+  { label: "East Africa Time (EAT)", value: "EAT" },
+];
+
+// Example event frequencies
+const EVENT_FREQUENCIES = [
+  { label: "Daily", value: "daily" },
+  { label: "Weekly", value: "weekly" },
+  { label: "Monthly", value: "monthly" },
+];
 
   const { Option } = Select;
 
@@ -353,33 +367,33 @@ function Details(): JSX.Element {
                   {watchEventInfo === EVENT_INFO.SINGLE_EVENT && (
                     <>
                       <Controller
-                        name="timeZone"
-                        control={control}
-                        render={({ field }) => (
-                          <Space
-                            direction="vertical"
-                            size={"small"}
-                            className="w-full"
-                          >
-                            <Label
-                              content="Time Zone"
-                              className=""
-                              htmlFor="eventType"
-                            />
-                            <Select
-                              placeholder="Select Event Type"
-                              {...field}
-                              style={{ width: "100%" }}
-                            >
-                              {STATES_IN_NIGERIA.map((_i) => (
-                                <Option value={_i.state} key={_i.state}>
-                                  {_i.state}
-                                </Option>
-                              ))}
-                            </Select>
-                          </Space>
-                        )}
-                      />
+  name="timeZone"
+  control={control}
+  render={({ field }) => (
+    <Space
+      direction="vertical"
+      size={"small"}
+      className="w-full"
+    >
+      <Label
+        content="Time Zone"
+        className=""
+        htmlFor="timeZone"
+      />
+      <Select
+        placeholder="Select Time Zone"
+        {...field}
+        style={{ width: "100%" }}
+      >
+        {AFRICAN_TIME_ZONES.map((zone) => (
+          <Option value={zone.value} key={zone.value}>
+            {zone.label}
+          </Option>
+        ))}
+      </Select>
+    </Space>
+  )}
+/>
                       <Controller
                         name="startDateAndTime"
                         control={control}
@@ -433,61 +447,62 @@ function Details(): JSX.Element {
                   {watchEventInfo === EVENT_INFO.RECURRING_EVENT && (
                     <>
                       <Controller
-                        name="timeZone"
-                        control={control}
-                        render={({ field }) => (
-                          <Space
-                            direction="vertical"
-                            size={"small"}
-                            className="w-full"
-                          >
-                            <Label
-                              content="Time Zone"
-                              className=""
-                              htmlFor="eventType"
-                            />
-                            <Select
-                              placeholder="Select Event Type"
-                              {...field}
-                              style={{ width: "100%" }}
-                            >
-                              {STATES_IN_NIGERIA.map((_i) => (
-                                <Option value={_i.state} key={_i.state}>
-                                  {_i.state}
-                                </Option>
-                              ))}
-                            </Select>
-                          </Space>
-                        )}
-                      />
-                      <Controller
-                        name="eventFrequency"
-                        control={control}
-                        render={({ field }) => (
-                          <Space
-                            direction="vertical"
-                            size={"small"}
-                            className="w-full"
-                          >
-                            <Label
-                              content="Frequency"
-                              className=""
-                              htmlFor="eventType"
-                            />
-                            <Select
-                              placeholder="Select Event Frequency"
-                              {...field}
-                              style={{ width: "100%" }}
-                            >
-                              {STATES_IN_NIGERIA.map((_i) => (
-                                <Option value={_i.state} key={_i.state}>
-                                  {_i.state}
-                                </Option>
-                              ))}
-                            </Select>
-                          </Space>
-                        )}
-                      />
+  name="timeZone"
+  control={control}
+  render={({ field }) => (
+    <Space
+      direction="vertical"
+      size={"small"}
+      className="w-full"
+    >
+      <Label
+        content="Time Zone"
+        className=""
+        htmlFor="timeZone"
+      />
+      <Select
+        placeholder="Select Time Zone"
+        {...field}
+        style={{ width: "100%" }}
+      >
+        {AFRICAN_TIME_ZONES.map((zone) => (
+          <Option value={zone.value} key={zone.value}>
+            {zone.label}
+          </Option>
+        ))}
+      </Select>
+    </Space>
+  )}
+/>
+
+<Controller
+  name="eventFrequency"
+  control={control}
+  render={({ field }) => (
+    <Space
+      direction="vertical"
+      size={"small"}
+      className="w-full"
+    >
+      <Label
+        content="Frequency"
+        className=""
+        htmlFor="eventFrequency"
+      />
+      <Select
+        placeholder="Select Event Frequency"
+        {...field}
+        style={{ width: "100%" }}
+      >
+        {EVENT_FREQUENCIES.map((frequency) => (
+          <Option value={frequency.value} key={frequency.value}>
+            {frequency.label}
+          </Option>
+        ))}
+      </Select>
+    </Space>
+  )}
+/>
 
                       <Controller
                         name="startDateAndTime"
