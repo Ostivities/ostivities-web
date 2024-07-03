@@ -305,7 +305,7 @@ function Details(): JSX.Element {
           <Space direction="vertical" size="small">
             <Label content="Upload Supporting Doc" htmlFor="eventName" />
 
-            <Space.Compact className="w-full h-11">
+            <Space.Compact className="w-full h-8">
               <Input
                 style={{
                   width: "75%",
