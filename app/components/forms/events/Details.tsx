@@ -8,9 +8,7 @@ import {
 import { EVENT_TYPES, STATES_IN_NIGERIA, stepOne } from "@/app/utils/data";
 import { EVENT_INFO } from "@/app/utils/enums";
 import { IFormInput } from "@/app/utils/interface";
-import { UploadOutlined } from "@ant-design/icons";
-// import { schema } from "@/app/utils/validations";
-// import { yupResolver } from "@hookform/resolvers/yup";
+import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
 import Dropzone from "@/app/components/Dropzone/Dropzone";
 import EventTicketTable from "@/app/components/Tables/EventTicket";
 import AddTicketModal from "@/app/components/modal/AddTicket";
@@ -23,27 +21,27 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { global } from "styled-jsx/css";
 
-
-
 function Details(): JSX.Element {
   const router = useRouter();
   const { formState, setFormStage } = useFormContext();
   const [formStep, setFormStep] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // Example time zones in Africa
-const AFRICAN_TIME_ZONES = [
-  { label: "West Africa Time (WAT)", value: "WAT" },
-  { label: "Central Africa Time (CAT)", value: "CAT" },
-  { label: "South Africa Standard Time (SAST)", value: "SAST" },
-  { label: "East Africa Time (EAT)", value: "EAT" },
-];
+  const [uploadedFile, setUploadedFile] = useState(null);
 
-// Example event frequencies
-const EVENT_FREQUENCIES = [
-  { label: "Daily", value: "daily" },
-  { label: "Weekly", value: "weekly" },
-  { label: "Monthly", value: "monthly" },
-];
+  // Example time zones in Africa
+  const AFRICAN_TIME_ZONES = [
+    { label: "West Africa Time (WAT)", value: "WAT" },
+    { label: "Central Africa Time (CAT)", value: "CAT" },
+    { label: "South Africa Standard Time (SAST)", value: "SAST" },
+    { label: "East Africa Time (EAT)", value: "EAT" },
+  ];
+
+  // Example event frequencies
+  const EVENT_FREQUENCIES = [
+    { label: "Daily", value: "daily" },
+    { label: "Weekly", value: "weekly" },
+    { label: "Monthly", value: "monthly" },
+  ];
 
   const { Option } = Select;
 
@@ -55,19 +53,16 @@ const EVENT_FREQUENCIES = [
     watch,
     trigger,
   } = useForm<IFormInput>({
-    // resolver: yupResolver(schema),
     progressive: true,
     mode: "all",
   });
+
   const watchEventInfo = watch("eventInfo");
 
   useEffect(() => {
-    const subscription: any = watch((value, { name, type }) =>
-      //   console.log(value, name, type)
-      {
-        return;
-      }
-    );
+    const subscription: any = watch((value, { name, type }) => {
+      return;
+    });
     return () => subscription.unsubscribe();
   }, [watch]);
 
@@ -84,6 +79,12 @@ const EVENT_FREQUENCIES = [
       await handleSubmit(onSubmit)();
       setFormStep((step) => step + 1);
       setFormStage(formState.stage + 1);
+    }
+  };
+
+  const handleUploadChange = (info: { file: { status: string; name: React.SetStateAction<null>; }; }) => {
+    if (info.file.status === "done") {
+      setUploadedFile(info.file.name);
     }
   };
 
@@ -295,38 +296,58 @@ const EVENT_FREQUENCIES = [
                     )}
                   />
 
-<Controller
-  name="document"
-  control={control}
-  render={({ field }) => (
-    <Space direction="vertical" size={"small"}>
-      <Label content="Upload Supporting Doc" htmlFor="eventName" />
+<Space direction="vertical" size="small">
+      <Controller
+        name="document"
+        control={control}
+        render={({ field }) => (
+          <Space direction="vertical" size="small">
+            <Label content="Upload Supporting Doc" htmlFor="eventName" />
 
-      <Space.Compact className="w-full h-11">
-        <Input
-          style={{
-            width: "75%",
-            borderTopRightRadius: "0px !important",
-            borderBottomRightRadius: "0px !important",
-          }}
-          placeholder="Enter file name (optional)"
-        />
-        <Upload
-          style={{ height: "41px !important", width: "60%" }}
-          className="upload-button"
-        >
-          <Button icon={<UploadOutlined />} className="custom-upload-button">
-            Click to Upload
-          </Button>
-        </Upload>
-      </Space.Compact>
-      <span className="font-BricolageGrotesqueLight text-OWANBE_PRY text-xs font-light">
-        *Supporting doc can be Wedding Card, Birthday Card among many others.
-        *Only JPEG, PNG & PDF Allowed and file size should not be more than 10MB.
-      </span>
+            <Space.Compact className="w-full h-11">
+              <Input
+                style={{
+                  width: "75%",
+                  borderTopRightRadius: "0px !important",
+                  borderBottomRightRadius: "0px !important",
+                }}
+                placeholder="Enter file name (optional)"
+              />
+              <Upload
+                showUploadList={false}
+                beforeUpload={() => false}
+                className="upload-button"
+                onChange={(info) => {
+                  const file = info.fileList[0]; // Only take the first file
+                  field.onChange(file ? [file] : []); // Override with the new file or empty array
+                }}
+              >
+                <Button icon={<UploadOutlined />} className="custom-upload-button">
+                  Click to Upload
+                </Button>
+              </Upload>
+            </Space.Compact>
+            <span className="font-BricolageGrotesqueLight text-OWANBE_PRY text-xs font-light">
+              *Supporting doc can be Wedding Card, Birthday Card among many
+              others. *Only JPEG, PNG & PDF Allowed and file size should not be
+              more than 10MB.
+            </span>
+            {Array.isArray(field.value) && field.value.length > 0 && (
+              <div className="font-BricolageGrotesqueLight text-xs text-gray-400">
+                Uploaded File:
+                <Space>
+                  <span>{field.value[0].name}</span>
+                  <DeleteOutlined
+                    style={{ color: "#e20000", cursor: "pointer" }}
+                    onClick={() => field.onChange([])} // Clear the uploaded file
+                  />
+                </Space>
+              </div>
+            )}
+          </Space>
+        )}
+      />
     </Space>
-  )}
-/>
 
 
                   <Controller
