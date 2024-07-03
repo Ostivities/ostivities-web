@@ -959,4 +959,15 @@ body {
   background-color: #e20000;
 }
 
-/* Other components and states can be similarly overridden */
+/* global.css */
+.custom-heading {
+  color: #E20000 !important;
+  font-size: 52px !important;
+}
+
+.welcome-heading {
+  color: #000000 !important;
+  font-size: 52px !important;
+  font-weight: normal !important;
+}
+

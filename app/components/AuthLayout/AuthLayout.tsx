@@ -1,9 +1,9 @@
 import Header from '@/app/components/Header/Header';
-import { Heading3 } from '@/app/components/typography/Typography';
+import { Heading3 } from '@/app/components/typography/Heading3';
 import { IAuthLayout } from '@/app/utils/interface';
 import { Card } from 'antd';
-import { usePathname } from 'next/navigation';
 import React from 'react';
+
 
 function AuthLayout({ children }: IAuthLayout): JSX.Element {
   return (
@@ -14,22 +14,13 @@ function AuthLayout({ children }: IAuthLayout): JSX.Element {
           <div className="flex flex-row items-start auth-background mt-3">
             <div className="hidden w-5/12 md:flex flex-col space-y-3 pt-80">
               <h5
-                className="leading-10 font-BricolageGrotesqueRegular"
-                style={{
-                  color: '#000000 !important',
-                  fontSize: '52px !important',
-                  fontWeight: 'normal !important',
-                }}
+                className="leading-10 font-BricolageGrotesqueRegular welcome-heading"
               >
                 Welcome to
               </h5>
               <Heading3
-                className=""
+                className="custom-heading"
                 content="Ostivities"
-                styles={{
-                  color: '#E20000 !important',
-                  fontSize: '52px !important',
-                }}
               />
             </div>
             <div className="w-full md:w-7/12 h-screen">
