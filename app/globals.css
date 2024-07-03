@@ -741,8 +741,8 @@ body {
 } */
 
 .custom-upload-button {
-  border-color: #000000 !important;
-  color: #000000 !important;
+  border-color: #d0d4d4 !important;
+  color: #010101 !important;
 }
 
 .custom-upload-button:hover {
