@@ -29,6 +29,9 @@ function Details(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [uploadedFile, setUploadedFile] = useState(null);
   
+  
+
+
 
   // Example time zones in Africa
   const AFRICAN_TIME_ZONES = [
@@ -150,21 +153,22 @@ function Details(): JSX.Element {
             <Button
               type="default"
               size={"large"}
-              className={`font-BricolageGrotesqueSemiBold button-styles sign-in cursor-pointer font-bold`}
+              className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
               onClick={() => {
                 setFormStage(formState.stage - 1);
               }}
             >
-              Back
+              Skip & do this later
             </Button>
             <Button
-              type="primary"
+              type="default"
               htmlType="button"
               size="large"
-              className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
+              className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
               onClick={() => router.push("/publish-events")}
+              
             >
-              Publish Event
+              Continue
             </Button>
           </Space>
         </div>
@@ -690,10 +694,7 @@ function Details(): JSX.Element {
                 type="default"
                 size={"large"}
                 className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
-                onClick={() => {
-                  setFormStep(1);
-                  setFormStage(formState.stage - 1);
-                }}
+                onClick={nextStep}
               >
                 Save & continue
               </Button>
@@ -716,8 +717,7 @@ function Details(): JSX.Element {
                 size={"large"}
                 className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
                 onClick={() => {
-                  setFormStep(2);
-                  setFormStage(formState.stage - 1);
+                  router.push('/publish-events')
                 }}
               >
                 Save & continue
@@ -727,7 +727,9 @@ function Details(): JSX.Element {
                 htmlType="button"
                 size="large"
                 className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
-                // onClick={nextStep}
+                onClick={() => {
+                  router.push('/publish-events')
+                }}
               >
                 Skip & do this later
               </Button>
