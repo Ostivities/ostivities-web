@@ -29,12 +29,14 @@ const PublishEvent = (): JSX.Element => {
         <div className="flex gap-12">
           <div className="relative w-fit rounded-[3.125rem] overflow-hidden">
             <Image
-              src="/images/placeholder-6.png"
-              alt=""
-              height={600}
-              width={464}
-              className=""
-            />
+                width={400}
+                height={600}
+                src={
+                  "https://res.cloudinary.com/dreezy/image/upload/v1702233880/card_iphh6v.png"
+                }
+                className="rounded-[50px]"
+                alt=""
+              />
             <div className="absolute inset-0 bg-image-card"></div>
           </div>
           <div className="py-8">
