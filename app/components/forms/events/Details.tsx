@@ -320,7 +320,7 @@ function Details(): JSX.Element {
                   borderTopRightRadius: "0px !important",
                   borderBottomRightRadius: "0px !important",
                 }}
-                placeholder="Enter File Name"
+                placeholder="Enter file name (optional)"
               />
               <Upload
                 showUploadList={false}
