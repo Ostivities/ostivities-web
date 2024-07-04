@@ -20,7 +20,7 @@ const OrderNotification = () => {
           </p>
         </>
 
-        <div className="flex flex-col gap-y-9 mt-11">
+        <div className="flex flex-col gap-y-8 mt-11">
           <ToggleSwitch
             label="instantOrder"
             description="Instantly, for each order as it comes in."

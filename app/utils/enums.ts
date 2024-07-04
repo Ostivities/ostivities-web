@@ -8,6 +8,7 @@ export enum EVENT_INFO {
   RECURRING_EVENT = "RECURRING_EVENT",
   eventLocationType = "eventLocationType",
   FREQUENCIES = "FREQUENCIES",
+  map = "map",
 }
 
 export enum TICKET_TYPE {

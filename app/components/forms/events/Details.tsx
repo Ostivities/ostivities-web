@@ -452,163 +452,132 @@ function Details(): JSX.Element {
     </Space>
   )}
 />
-                      <Controller
-                        name="startDateAndTime"
-                        control={control}
-                        render={({ field }) => (
-                          <Space
-                            direction="vertical"
-                            size={"small"}
-                            className="w-full"
-                          >
-                            <Label
-                              content="Start Date & Time"
-                              className=""
-                              htmlFor="eventType"
-                            />
-                            <DatePicker
-                              {...field}
-                              showTime
-                              format="YYYY-MM-DD HH:mm:ss"
-                              className="w-full"
-                            />
-                          </Space>
-                        )}
-                      />
+<Space direction="horizontal" size="large" className="w-full">
+  {/* Start Date & Time */}
+  <div style={{ width: '300px', marginRight: '-63px' }}>
+    <Label content="Start Date & Time" htmlFor="startDateAndTime" />
+    <Controller
+      name="startDateAndTime"
+      control={control}
+      render={({ field }) => (
+        <DatePicker
+          {...field}
+          showTime
+          format="YYYY-MM-DD HH:mm:ss"
+          style={{ width: '80%', height: '33px' }}
+        />
+      )}
+    />
+  </div>
 
-                      <Controller
-                        name="endDateAndTime"
-                        control={control}
-                        render={({ field }) => (
-                          <Space
-                            direction="vertical"
-                            size={"small"}
-                            className="w-full"
-                          >
-                            <Label
-                              content="End Date & Time"
-                              className=""
-                              htmlFor="eventType"
-                            />
-                            <DatePicker
-                              {...field}
-                              showTime
-                              format="YYYY-MM-DD HH:mm:ss"
-                              className="w-full"
-                            />
-                          </Space>
-                        )}
-                      />
+  {/* End Date & Time */}
+  <div style={{ width: '300px' }}>
+    <Label content="End Date & Time" htmlFor="endDateAndTime" />
+    <Controller
+      name="endDateAndTime"
+      control={control}
+      render={({ field }) => (
+        <DatePicker
+          {...field}
+          showTime
+          format="YYYY-MM-DD HH:mm:ss"
+          style={{ width: '80%', height: '33px' }}
+        />
+      )}
+    />
+  </div>
+</Space>
+
+                    
                     </>
                   )}
 
                   {watchEventInfo === EVENT_INFO.RECURRING_EVENT && (
                     <>
-                      <Controller
-  name="timeZone"
-  control={control}
-  render={({ field }) => (
-    <Space
-      direction="vertical"
-      size={"small"}
-      className="w-full"
-    >
-      <Label
-        content="Time Zone"
-        className=""
-        htmlFor="timeZone"
-      />
-      <Select
-        placeholder="Select Time Zone"
-        {...field}
-        style={{ width: "100%" }}
-      >
-        {AFRICAN_TIME_ZONES.map((zone) => (
-          <Option value={zone.value} key={zone.value}>
-            {zone.label}
-          </Option>
-        ))}
-      </Select>
-    </Space>
-  )}
-/>
+                      <Space direction="horizontal" size="large" className="w-full">
+  {/* Time Zone */}
+  <div style={{ width: '300px', marginRight: '-63px' }}>
+    <Label content="Time Zone" htmlFor="timeZone" />
+    <Controller
+      name="timeZone"
+      control={control}
+      render={({ field }) => (
+        <Select
+          placeholder="Select Time Zone"
+          {...field}
+          style={{ width: '80%', height: '33px' }}
+        >
+          {AFRICAN_TIME_ZONES.map((zone) => (
+            <Option value={zone.value} key={zone.value}>
+              {zone.label}
+            </Option>
+          ))}
+        </Select>
+      )}
+    />
+  </div>
 
-<Controller
-  name="eventFrequency"
-  control={control}
-  render={({ field }) => (
-    <Space
-      direction="vertical"
-      size={"small"}
-      className="w-full"
-    >
-      <Label
-        content="Frequency"
-        className=""
-        htmlFor="eventFrequency"
-      />
-      <Select
-        placeholder="Select Event Frequency"
-        {...field}
-        style={{ width: "100%" }}
-      >
-        {EVENT_FREQUENCIES.map((frequency) => (
-          <Option value={frequency.value} key={frequency.value}>
-            {frequency.label}
-          </Option>
-        ))}
-      </Select>
-    </Space>
-  )}
-/>
+  {/* Frequency */}
+  <div style={{ width: '300px' }}>
+    <Label content="Frequency" htmlFor="eventFrequency" />
+    <Controller
+      name="eventFrequency"
+      control={control}
+      render={({ field }) => (
+        <Select
+          placeholder="Select Event Frequency"
+          {...field}
+          style={{ width: '80%', height: '33px' }}
+        >
+          {EVENT_FREQUENCIES.map((frequency) => (
+            <Option value={frequency.value} key={frequency.value}>
+              {frequency.label}
+            </Option>
+          ))}
+        </Select>
+      )}
+    />
+  </div>
+</Space>
 
-                      <Controller
-                        name="startDateAndTime"
-                        control={control}
-                        render={({ field }) => (
-                          <Space
-                            direction="vertical"
-                            size={"small"}
-                            className="w-full"
-                          >
-                            <Label
-                              content="Start Date & Time"
-                              className=""
-                              htmlFor="eventType"
-                            />
-                            <DatePicker
-                              {...field}
-                              showTime
-                              format="YYYY-MM-DD HH:mm:ss"
-                              className="w-full"
-                            />
-                          </Space>
-                        )}
-                      />
+  
+<Space direction="horizontal" size="large" className="w-full">
+  {/* Start Date & Time */}
+  <div style={{ width: '300px', marginRight: '-63px' }}>
+    <Label content="Start Date & Time" htmlFor="startDateAndTime" />
+    <Controller
+      name="startDateAndTime"
+      control={control}
+      render={({ field }) => (
+        <DatePicker
+          {...field}
+          showTime
+          format="YYYY-MM-DD HH:mm:ss"
+          style={{ width: '80%', height: '33px' }}
+        />
+      )}
+    />
+  </div>
 
-                      <Controller
-                        name="endDateAndTime"
-                        control={control}
-                        render={({ field }) => (
-                          <Space
-                            direction="vertical"
-                            size={"small"}
-                            className="w-full"
-                          >
-                            <Label
-                              content="End Date & Time"
-                              className=""
-                              htmlFor="eventType"
-                            />
-                            <DatePicker
-                              {...field}
-                              showTime
-                              format="YYYY-MM-DD HH:mm:ss"
-                              className="w-full"
-                            />
-                          </Space>
-                        )}
-                      />
+  {/* End Date & Time */}
+  <div style={{ width: '300px' }}>
+    <Label content="End Date & Time" htmlFor="endDateAndTime" />
+    <Controller
+      name="endDateAndTime"
+      control={control}
+      render={({ field }) => (
+        <DatePicker
+          {...field}
+          showTime
+          format="YYYY-MM-DD HH:mm:ss"
+          style={{ width: '80%', height: '33px' }}
+        />
+      )}
+    />
+  </div>
+</Space>
+
+                        
                     </>
                   )}
                 </div>

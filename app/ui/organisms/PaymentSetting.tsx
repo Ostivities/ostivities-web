@@ -20,7 +20,7 @@ const PaymentSetting = () => {
           </p>
         </>
 
-        <div className="flex flex-col gap-y-9 mt-11">
+        <div className="flex flex-col gap-y-8 mt-11">
           <ToggleSwitch
             label="weeklyPayment"
             description="Weekly, Payments will be grouped and processed weekly, with disbursements made every Friday."
