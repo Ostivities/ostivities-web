@@ -28,6 +28,10 @@ function Details(): JSX.Element {
   const [formStep, setFormStep] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [uploadedFile, setUploadedFile] = useState(null);
+  
+  
+
+
 
   // Example time zones in Africa
   const AFRICAN_TIME_ZONES = [
@@ -304,7 +308,10 @@ function Details(): JSX.Element {
         control={control}
         render={({ field }) => (
           <Space direction="vertical" size="small">
-            <Label content="Upload Supporting Doc" htmlFor="eventName" />
+            <Label 
+      content={<span>Upload Supporting Doc <span className="optional-text">(optional)</span></span>} 
+      htmlFor="eventName" 
+    />
 
             <Space.Compact className="w-full h-8">
               <Input
@@ -349,6 +356,34 @@ function Details(): JSX.Element {
           </Space>
         )}
       />
+       <Controller
+                    name="eventType"
+                    control={control}
+                    render={({ field }) => (
+                      <Space
+                        direction="vertical"
+                        size={"small"}
+                        className="w-full"
+                      >
+                        <Label
+                          content="Event Type"
+                          className=""
+                          htmlFor="eventType"
+                        />
+                        <Select
+                          placeholder="Select Event Type"
+                          {...field}
+                          style={{ width: "100%" }}
+                        >
+                          {EVENT_TYPES.map((_i) => (
+                            <Option value={_i.value} key={_i.label}>
+                              {_i.label}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Space>
+                    )}
+                  />
     </Space>
 
 
