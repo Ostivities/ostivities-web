@@ -28,6 +28,7 @@ function Details(): JSX.Element {
   const [formStep, setFormStep] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [uploadedFile, setUploadedFile] = useState(null);
+  
 
   // Example time zones in Africa
   const AFRICAN_TIME_ZONES = [
@@ -149,22 +150,21 @@ function Details(): JSX.Element {
             <Button
               type="default"
               size={"large"}
-              className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
+              className={`font-BricolageGrotesqueSemiBold button-styles sign-in cursor-pointer font-bold`}
               onClick={() => {
                 setFormStage(formState.stage - 1);
               }}
             >
-              Skip & do this later
+              Back
             </Button>
             <Button
-              type="default"
+              type="primary"
               htmlType="button"
               size="large"
-              className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
+              className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
               onClick={() => router.push("/publish-events")}
-              
             >
-              Continue
+              Publish Event
             </Button>
           </Space>
         </div>
@@ -349,6 +349,34 @@ function Details(): JSX.Element {
           </Space>
         )}
       />
+       <Controller
+                    name="eventType"
+                    control={control}
+                    render={({ field }) => (
+                      <Space
+                        direction="vertical"
+                        size={"small"}
+                        className="w-full"
+                      >
+                        <Label
+                          content="Event Type"
+                          className=""
+                          htmlFor="eventType"
+                        />
+                        <Select
+                          placeholder="Select Event Type"
+                          {...field}
+                          style={{ width: "100%" }}
+                        >
+                          {EVENT_TYPES.map((_i) => (
+                            <Option value={_i.value} key={_i.label}>
+                              {_i.label}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Space>
+                    )}
+                  />
     </Space>
 
 
@@ -662,7 +690,10 @@ function Details(): JSX.Element {
                 type="default"
                 size={"large"}
                 className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
-                onClick={nextStep}
+                onClick={() => {
+                  setFormStep(1);
+                  setFormStage(formState.stage - 1);
+                }}
               >
                 Save & continue
               </Button>
@@ -685,7 +716,8 @@ function Details(): JSX.Element {
                 size={"large"}
                 className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
                 onClick={() => {
-                  router.push('/publish-events')
+                  setFormStep(2);
+                  setFormStage(formState.stage - 1);
                 }}
               >
                 Save & continue
@@ -695,9 +727,7 @@ function Details(): JSX.Element {
                 htmlType="button"
                 size="large"
                 className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
-                onClick={() => {
-                  router.push('/publish-events')
-                }}
+                // onClick={nextStep}
               >
                 Skip & do this later
               </Button>
