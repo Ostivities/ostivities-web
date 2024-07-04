@@ -29,14 +29,12 @@ const PublishEvent = (): JSX.Element => {
         <div className="flex gap-12">
           <div className="relative w-fit rounded-[3.125rem] overflow-hidden">
             <Image
-                width={400}
-                height={600}
-                src={
-                  "https://res.cloudinary.com/dreezy/image/upload/v1702233880/card_iphh6v.png"
-                }
-                className="rounded-[50px]"
-                alt=""
-              />
+              src="/images/placeholder-6.png"
+              alt=""
+              height={600}
+              width={464}
+              className=""
+            />
             <div className="absolute inset-0 bg-image-card"></div>
           </div>
           <div className="py-8">
@@ -119,14 +117,14 @@ const PublishEvent = (): JSX.Element => {
             </div>
           </div>
           <div className="flex-1 h-fit my-auto border-l border-black px-6">
-            <p>
-              Join us for an unforgettable night of music and entertainment with Davido as he takes the stage at Eko Hotel and Suites.
-              Known for his electrifying performances and chart-topping hits, Davido will bring his unique music and energy to life
-              in a live concert experience you won't want to miss. Get ready to sing along to your favorite songs, enjoy breathtaking
-              live performances, and create lasting memories. Whether you're a long-time fan or new to his music,
-              this concert promises an exhilarating evening filled with passion, talent, and fun. Get your tickets
-              now and be part of a night to remember!
-            </p>
+          <p>
+  Join us for an unforgettable night of music and entertainment with Davido as he takes the stage at Eko Hotel and Suites.
+  Known for his electrifying performances and chart-topping hits, Davido will bring his unique music and energy to life
+  in a live concert experience you won&#39;t want to miss. Get ready to sing along to your favorite songs, enjoy breathtaking
+  live performances, and create lasting memories. Whether you&#39;re a long-time fan or new to his music,
+  this concert promises an exhilarating evening filled with passion, talent, and fun. Get your tickets
+  now and be part of a night to remember!
+</p>
             <div className="flex justify-center mt-12 gap-3">
             <Button
                 type="default"
