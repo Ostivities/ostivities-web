@@ -211,7 +211,8 @@ function Details(): JSX.Element {
   {...field}
   placeholder="Enter Event Details"
   style={{
-    minHeight: "200px",
+    minHeight: "220px",
+    maxHeight: "220px",
     paddingTop: "10px",
   }}
   className="py-3"
@@ -283,7 +284,7 @@ function Details(): JSX.Element {
             width: "48%",
             borderTopRightRadius: "0px !important",
             borderBottomRightRadius: "0px !important",
-            color: "#000000",  // Text color in e20000
+            color: "#000000",
           }}
           defaultValue="https://ostivities.com/discover/"
           value="https://ostivities.com/discover/"
