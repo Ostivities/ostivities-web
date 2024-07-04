@@ -266,41 +266,44 @@ function Details(): JSX.Element {
                 </div>
 
                 <div className="flex flex-col space-y-4 pl-6">
-                  <Controller
-                    name="customURL"
-                    control={control}
-                    render={({ field }) => (
-                      <Space direction="vertical" size={"small"}>
-                        <Label
-                          content="Custom URL"
-                          className=""
-                          htmlFor="eventName"
-                        />
+                <Controller
+  name="customURL"
+  control={control}
+  render={({ field }) => (
+    <Space direction="vertical" size="small">
+      <Label
+        content="Custom URL"
+        className=""
+        htmlFor="eventName"
+      />
 
-                        <Space.Compact className="w-full">
-                          <Input
-                            style={{
-                              width: "48%",
-                              borderTopRightRadius: "0px !important",
-                              borderBottomRightRadius: "0px !important",
-                            }}
-                            defaultValue={"https://ostivities.com/discover"}
-                            value={"https://ostivities.com/discover"}
-                            readOnly
-                          />
-                          <Input
-                            style={{
-                              width: "52%",
-                              borderTopLeftRadius: "0px !important",
-                              borderBottomLeftRadius: "0px !important",
-                            }}
-                            {...field}
-                            placeholder=""
-                          />
-                        </Space.Compact>
-                      </Space>
-                    )}
-                  />
+      <Space.Compact className="w-full">
+        <Input
+          style={{
+            width: "48%",
+            borderTopRightRadius: "0px !important",
+            borderBottomRightRadius: "0px !important",
+            color: "#000000",  // Text color in e20000
+          }}
+          defaultValue="https://ostivities.com/discover/"
+          value="https://ostivities.com/discover/"
+          disabled
+        />
+        <Input
+          style={{
+            width: "52%",
+            borderTopLeftRadius: "0px !important",
+            borderBottomLeftRadius: "0px !important",
+          }}
+          {...field}
+          placeholder="Enter your desired name"
+        />
+      </Space.Compact>
+    </Space>
+  )}
+/>
+
+                    
 
 <Space direction="vertical" size="small">
       <Controller
