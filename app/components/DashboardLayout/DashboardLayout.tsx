@@ -23,6 +23,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { isValidElement, useState } from 'react';
 import useLocalStorage from 'use-local-storage';
+import useFetch from '../forms/events/auth';
 
 const items1: MenuProps['items'] = [
   {
@@ -95,12 +96,13 @@ function DashboardLayout({
     },
   ];
   const { Header, Sider, Content } = Layout;
-  const [collapsed, setCollapsed] = useLocalStorage<string>('sidebar', 'false');
-  const [isLoggedIn, setIsLoggedIn] = useLocalStorage<boolean>('user', false)
-
+  const [collapsed, setCollapsed] = useLocalStorage<boolean>('sidebar', true);
+  const {isLoggedIn} = useFetch()
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  
 
   const endpoints = ['events', 'settings'];
 
@@ -123,7 +125,7 @@ function DashboardLayout({
 
   const toggleSidebar = () => {
     console.log(collapsed);
-    setCollapsed(collapsed === 'true' ? 'false' : 'true');
+    setCollapsed((prevValues) => !prevValues );
   };
 
   return (
@@ -248,7 +250,7 @@ function DashboardLayout({
             breakpoint="lg"
             trigger={null}
             collapsible
-            collapsed={collapsed === 'false' ? false : true}
+            collapsed={collapsed}
             zeroWidthTriggerStyle={{
               background: 'green !important',
               fontFamily: 'BricolageGrotesqueMedium !important',
@@ -270,7 +272,7 @@ function DashboardLayout({
               items={isLoggedIn ? items2 : items3}
               onClick={onClick}
               selectedKeys={[currentPah]}
-              className={`${collapsed === 'true' ? 'collapsed-side-nav' : 'side-nav'
+              className={`${collapsed === true ? 'collapsed-side-nav' : 'side-nav'
                 }`}
             />
           </Sider>

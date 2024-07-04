@@ -9,11 +9,11 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { Country, State } from "country-state-city";
 import { EVENT_TYPES } from '../utils/data';
-import useLocalStorage from 'use-local-storage';
+import useFetch from '../components/forms/events/auth';
 
 function Dashboard(): JSX.Element {
   const route = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useLocalStorage<boolean>('user', true)
+  const {isLoggedIn} = useFetch()
   const COUNTRY_JSON: any = Country.getAllCountries().map((i: any) => {
     return { value: i?.name, label: i?.name, isoCode: i?.isoCode };
   });
