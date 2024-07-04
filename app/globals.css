@@ -1008,4 +1008,7 @@ input, .ant-input, .ant-select, .ant-picker, .ant-radio, .ant-input-textarea, .a
 .equal-width-button {
   width: 174px; /* Adjust the width as needed */
 }
+.optional-text {
+  color: #e20000;
+}
 

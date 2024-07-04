@@ -308,7 +308,10 @@ function Details(): JSX.Element {
         control={control}
         render={({ field }) => (
           <Space direction="vertical" size="small">
-            <Label content="Upload Supporting Doc" htmlFor="eventName" />
+            <Label 
+      content={<span>Upload Supporting Doc <span className="optional-text">(optional)</span></span>} 
+      htmlFor="eventName" 
+    />
 
             <Space.Compact className="w-full h-8">
               <Input
@@ -317,7 +320,7 @@ function Details(): JSX.Element {
                   borderTopRightRadius: "0px !important",
                   borderBottomRightRadius: "0px !important",
                 }}
-                placeholder="Enter file name (optional)"
+                placeholder="Enter File Name"
               />
               <Upload
                 showUploadList={false}
