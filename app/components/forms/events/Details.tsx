@@ -104,7 +104,7 @@ function Details(): JSX.Element {
               formStep === 1
                 ? "Hello, Rose"
                 : formStep === 2
-                ? "Event Image"
+                ? "Event Image/Appearance"
                 : "Event Ticket"
             }
           />
@@ -114,7 +114,7 @@ function Details(): JSX.Element {
               formStep === 1
                 ? "Lets get you started by creating your event."
                 : formStep === 2
-                ? "Upload the image that will appear on your event page here."
+                ? "Upload your event image here."
                 : "Ostivities is free for free events. For paid events, we charge a transaction fee."
             }
             styles={{ fontWeight: "normal !important" }}
@@ -639,7 +639,7 @@ function Details(): JSX.Element {
               <Button
                 type="default"
                 size={"large"}
-                className={`font-BricolageGrotesqueSemiBold button-styles sign-in cursor-pointer font-bold`}
+                className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
               >
                 Cancel
               </Button>
@@ -647,7 +647,7 @@ function Details(): JSX.Element {
                 type="primary"
                 htmlType="button"
                 size="large"
-                className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
+                className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
                 onClick={nextStep}
               >
                 Save & Continue
@@ -660,7 +660,7 @@ function Details(): JSX.Element {
               <Button
                 type="default"
                 size={"large"}
-                className={`font-BricolageGrotesqueSemiBold button-style sign-in cursor-pointer font-bold`}
+                className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
                 onClick={() => {
                   setFormStep(1);
                   setFormStage(formState.stage - 1);
@@ -672,7 +672,7 @@ function Details(): JSX.Element {
                 type="primary"
                 htmlType="button"
                 size="large"
-                className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
+                className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
                 onClick={nextStep}
               >
                 Skip & do this later
@@ -685,7 +685,7 @@ function Details(): JSX.Element {
               <Button
                 type="default"
                 size={"large"}
-                className={`font-BricolageGrotesqueSemiBold button-style sign-in cursor-pointer font-bold`}
+                className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
                 onClick={() => {
                   setFormStep(2);
                   setFormStage(formState.stage - 1);
@@ -697,7 +697,7 @@ function Details(): JSX.Element {
                 type="primary"
                 htmlType="button"
                 size="large"
-                className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
+                className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
                 // onClick={nextStep}
               >
                 Skip & do this later

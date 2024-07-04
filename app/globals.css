@@ -994,3 +994,18 @@ input, .ant-input, .ant-select, .ant-picker, .ant-radio, .ant-input-textarea, .a
   border-radius: 4px;
   transition: border-color 0.3s;
 }
+.custom-button {
+  background-color: #e20000 !important;
+  color: white !important;
+  border: none !important;
+}
+
+.custom-button:hover {
+  background-color: #e20000 !important;
+  color: white !important;
+  border: none !important;
+}
+.equal-width-button {
+  width: 174px; /* Adjust the width as needed */
+}
+
