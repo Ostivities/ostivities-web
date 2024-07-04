@@ -37,8 +37,8 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
             <div className="absolute inset-0 bg-image-card"></div>
           </div>
           <div className="py-8">
-            <h2 className="font-semibold text-3xl">About this event</h2>
-            <div className="mt-6 flex flex-col gap-12">
+            <h2 className="font-semibold text-2xl">About this event</h2>
+            <div className="mt-14 flex flex-col gap-12">
               <div className="flex gap-3">
                 <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
                   <Image
