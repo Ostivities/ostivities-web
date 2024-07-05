@@ -19,7 +19,8 @@ function Settings() {
   }, []);
   return (
     <DashboardLayout
-      title="Settings"
+      title=<h1 style={{ fontSize: '24px' }}>Settings</h1>
+
       extraComponents={
         <Tab
           tabs={tabs}

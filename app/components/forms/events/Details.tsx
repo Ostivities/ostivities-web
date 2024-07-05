@@ -8,19 +8,21 @@ import {
 import { EVENT_TYPES, STATES_IN_NIGERIA, stepOne } from "@/app/utils/data";
 import { EVENT_INFO } from "@/app/utils/enums";
 import { IFormInput } from "@/app/utils/interface";
-import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
+import { DeleteOutlined, FacebookFilled, InstagramFilled, UploadOutlined } from "@ant-design/icons";
 import Dropzone from "@/app/components/Dropzone/Dropzone";
 import EventTicketTable from "@/app/components/Tables/EventTicket";
 import AddTicketModal from "@/app/components/modal/AddTicket";
 import { useFormContext } from "@/app/contexts/form-context/FormContext";
 import Ticket from "@/public/Ticket.svg";
-import { Button, DatePicker, Input, Radio, Select, Space, Upload } from "antd";
+import { Button, Col, DatePicker, Input, Radio, Row, Select, Space, Upload } from "antd";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { global } from "styled-jsx/css";
 import "@/app/globals.css";
+import { TwitterOutlined, FacebookOutlined, InstagramOutlined, LinkOutlined } from '@ant-design/icons';
+
 
 function Details(): JSX.Element {
   const router = useRouter();
@@ -211,7 +213,8 @@ function Details(): JSX.Element {
   {...field}
   placeholder="Enter Event Details"
   style={{
-    minHeight: "200px",
+    minHeight: "220px",
+    maxHeight: "220px",
     paddingTop: "10px",
   }}
   className="py-3"
@@ -283,7 +286,7 @@ function Details(): JSX.Element {
             width: "48%",
             borderTopRightRadius: "0px !important",
             borderBottomRightRadius: "0px !important",
-            color: "#000000",  // Text color in e20000
+            color: "#000000",
           }}
           defaultValue="https://ostivities.com/discover/"
           value="https://ostivities.com/discover/"
@@ -491,6 +494,103 @@ function Details(): JSX.Element {
   </div>
 </Space>
 
+<Space direction="vertical" size="small" style={{ marginBottom: '4px' }}>
+  <label htmlFor="socialdetails" className="" style={{ marginBottom: '4px', fontSize: '14.5px', fontFamily: 'BricolageGrotesqueregular' }}>
+    Social Media Details <span style={{ color: '#e20000' }}>(optional)</span>
+  </label>
+
+  <Row gutter={[16, 8]}>
+    {/* Website Link Field */}
+    <Col xs={24} sm={12}>
+      <Controller
+        name="websiteUrl" // Use a descriptive name (e.g., websiteUrl)
+        control={control}
+        render={({ field }) => (
+          <Space direction="vertical" size="small" style={{ width: '100%' }}>
+            <Input
+              prefix={<LinkOutlined />}
+              style={{
+                width: "100%",
+                color: "#000000",
+                marginTop: "8px", // Adjust spacing between label and field
+              }}
+              {...field}
+              placeholder="Enter your website URL"
+            />
+          </Space>
+        )}
+      />
+    </Col>
+
+    {/* Twitter Field */}
+    <Col xs={24} sm={12}>
+      <Controller
+        name="twitterUrl" // Use a descriptive name (e.g., twitterUrl)
+        control={control}
+        render={({ field }) => (
+          <Space direction="vertical" size="small" style={{ width: '100%' }}>
+            <Input
+              prefix={<TwitterOutlined />}
+              style={{
+                width: "100%",
+                color: "#000000",
+                marginTop: "8px", // Adjust spacing between label and field
+              }}
+              {...field}
+              placeholder="Enter your Twitter URL"
+            />
+          </Space>
+        )}
+      />
+    </Col>
+
+    {/* Facebook Field */}
+    <Col xs={24} sm={12}>
+      <Controller
+        name="facebookUrl" // Use a descriptive name (e.g., facebookUrl)
+        control={control}
+        render={({ field }) => (
+          <Space direction="vertical" size="small" style={{ width: '100%' }}>
+            <Input
+              prefix={<FacebookFilled />}
+              style={{
+                width: "100%",
+                color: "#000000",
+                marginTop: "8px", // Adjust spacing between label and field
+              }}
+              {...field}
+              placeholder="Enter your Facebook URL"
+            />
+          </Space>
+        )}
+      />
+    </Col>
+
+    {/* Instagram Field */}
+    <Col xs={24} sm={12}>
+      <Controller
+        name="instagramUrl" // Use a descriptive name (e.g., instagramUrl)
+        control={control}
+        render={({ field }) => (
+          <Space direction="vertical" size="small" style={{ width: '100%' }}>
+            <Input
+              prefix={<InstagramFilled />}
+              style={{
+                width: "100%",
+                color: "#000000",
+                marginTop: "8px", // Adjust spacing between label and field
+              }}
+              {...field}
+              placeholder="Enter your Instagram URL"
+            />
+          </Space>
+        )}
+      />
+    </Col>
+
+    {/* ... Add similar Controllers for other social media fields ... */}
+  </Row>
+</Space>
                     
                     </>
                   )}
@@ -578,6 +678,104 @@ function Details(): JSX.Element {
       )}
     />
   </div>
+</Space>
+
+<Space direction="vertical" size="small" style={{ marginBottom: '4px' }}>
+  <label htmlFor="socialdetails" className="" style={{ marginBottom: '4px', fontSize: '14.5px', fontFamily: 'BricolageGrotesqueregular' }}>
+    Social Media Details <span style={{ color: '#e20000' }}>(optional)</span>
+  </label>
+
+  <Row gutter={[16, 8]}>
+    {/* Website Link Field */}
+    <Col xs={24} sm={12}>
+      <Controller
+        name="websiteUrl" // Use a descriptive name (e.g., websiteUrl)
+        control={control}
+        render={({ field }) => (
+          <Space direction="vertical" size="small" style={{ width: '100%' }}>
+            <Input
+              prefix={<LinkOutlined />}
+              style={{
+                width: "100%",
+                color: "#000000",
+                marginTop: "8px", // Adjust spacing between label and field
+              }}
+              {...field}
+              placeholder="Enter your website URL"
+            />
+          </Space>
+        )}
+      />
+    </Col>
+
+    {/* Twitter Field */}
+    <Col xs={24} sm={12}>
+      <Controller
+        name="twitterUrl" // Use a descriptive name (e.g., twitterUrl)
+        control={control}
+        render={({ field }) => (
+          <Space direction="vertical" size="small" style={{ width: '100%' }}>
+            <Input
+              prefix={<TwitterOutlined />}
+              style={{
+                width: "100%",
+                color: "#000000",
+                marginTop: "8px", // Adjust spacing between label and field
+              }}
+              {...field}
+              placeholder="Enter your Twitter URL"
+            />
+          </Space>
+        )}
+      />
+    </Col>
+
+    {/* Facebook Field */}
+    <Col xs={24} sm={12}>
+      <Controller
+        name="facebookUrl" // Use a descriptive name (e.g., facebookUrl)
+        control={control}
+        render={({ field }) => (
+          <Space direction="vertical" size="small" style={{ width: '100%' }}>
+            <Input
+              prefix={<FacebookFilled/>}
+              style={{
+                width: "100%",
+                color: "#000000",
+                marginTop: "8px", // Adjust spacing between label and field
+              }}
+              {...field}
+              placeholder="Enter your Facebook URL"
+            />
+          </Space>
+        )}
+      />
+    </Col>
+
+    {/* Instagram Field */}
+    <Col xs={24} sm={12}>
+      <Controller
+        name="instagramUrl" // Use a descriptive name (e.g., instagramUrl)
+        control={control}
+        render={({ field }) => (
+          <Space direction="vertical" size="small" style={{ width: '100%' }}>
+            <Input
+              prefix={<InstagramFilled/>}
+              style={{
+                width: "100%",
+                color: "#000000",
+                marginTop: "8px", // Adjust spacing between label and field
+              }}
+              {...field}
+              placeholder="Enter your Instagram URL"
+            />
+          </Space>
+        )}
+      />
+    </Col>
+
+    {/* ... Add similar Controllers for other social media fields ... */}
+  </Row>
 </Space>
 
                         

@@ -21,13 +21,14 @@ const ContactForm = () => {
       <Image
         src="/icons/back-arrow.svg"
         alt=""
-        height={30}
-        width={30}
+        height={25}
+        width={25}
         onClick={() => router.back()}
         className="cursor-pointer"
       />
 
-      <h1>Choose your Tickets</h1>
+<h1 style={{ fontSize: '24px' }}>Choose your tickets</h1>
+
     </div>
   );
 

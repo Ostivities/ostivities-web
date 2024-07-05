@@ -1011,4 +1011,7 @@ input, .ant-input, .ant-select, .ant-picker, .ant-radio, .ant-input-textarea, .a
 .optional-text {
   color: #e20000;
 }
+.bold-text {
+  font-weight: 600;
+}
 
