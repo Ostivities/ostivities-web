@@ -1,5 +1,4 @@
 "use client";
-
 import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
 import { Button } from 'antd';
 import Image from 'next/image';
