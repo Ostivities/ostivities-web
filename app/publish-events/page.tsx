@@ -13,13 +13,14 @@ const PublishEvent = (): JSX.Element => {
       <Image
         src="/icons/back-arrow.svg"
         alt=""
-        height={30}
-        width={30}
+        height={25}
+        width={25}
         onClick={() => router.back()}
         className="cursor-pointer"
       />
 
-      <h1>Publish your event</h1>
+<h1 style={{ fontSize: '24px' }}>Publish your event</h1>
+
     </div>
   );
 
@@ -50,7 +51,7 @@ const PublishEvent = (): JSX.Element => {
                   />
                 </div>
                 <div>
-                  <div className="text-sm">Date</div>
+                <div className="text-sm" style={{ fontWeight: 600 }}>Date</div>
                   <div>14 December, 2023</div>
                 </div>
               </div>
@@ -59,8 +60,8 @@ const PublishEvent = (): JSX.Element => {
                   <Image src="/icons/time.svg" alt="" height={30} width={30} />
                 </div>
                 <div>
-                  <div className="text-sm">Time</div>
-                  <div>5:00PM - 10:00PM WAT</div>
+                  <div className="text-sm"style={{ fontWeight: 600 }}>Time</div>
+                  <div>5PM - 10PM WAT</div>
                 </div>
               </div>
               <div className="flex gap-3">
@@ -73,7 +74,7 @@ const PublishEvent = (): JSX.Element => {
                   />
                 </div>
                 <div>
-                  <div className="text-sm">Location</div>
+                  <div className="text-sm"style={{ fontWeight: 600 }}>Location</div>
                   <div>3, Eko Hotel, Lagos </div>
                 </div>
               </div>
@@ -82,7 +83,7 @@ const PublishEvent = (): JSX.Element => {
                   <Image src="/icons/phone.svg" alt="" height={30} width={30} />
                 </div>
                 <div>
-                  <div className="text-sm">Contact Us</div>
+                  <div className="text-sm"style={{ fontWeight: 600 }}>Contact Us</div>
                   <div className="flex-center gap-4 mt-1">
                     <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
                       <Image

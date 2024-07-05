@@ -18,13 +18,13 @@ const Payment = () => {
       <Image
         src="/icons/back-arrow.svg"
         alt=""
-        height={30}
-        width={30}
+        height={25}
+        width={25}
         onClick={() => router.back()}
         className="cursor-pointer"
       />
 
-      <h1>Concert with Davido</h1>
+<h1 style={{ fontSize: '24px' }}>Concert with Davido</h1>
     </div>
   );
 

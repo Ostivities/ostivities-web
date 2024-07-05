@@ -27,7 +27,8 @@ const STATE_BY_COUNTRYCODE = (stateCode: string): { label: string; value: string
   
   const header = (
     <div className="flex-center justify-between w-full">
-      <span>Discovery</span>
+      <h1 style={{ fontSize: '24px' }}>Discovery</h1>
+
       {isLoggedIn && <button
         onClick={() => route.push('/Dashboard/events')}
         className=" bg-OWANBE_PRY rounded-full px-4 py-2 text-xs font-semibold text-white"
