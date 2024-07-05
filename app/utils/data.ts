@@ -2406,6 +2406,10 @@ export const stepOne = [
   "startDateAndTime",
   "endDateAndTime",
   "eventFrequency",
+  "websiteUrl",
+  "twitterUrl",
+  "facebookUrl",
+  "instagramUrl",
 ];
 export const EVENT_TYPES: {label: string; value: string}[] = [
   { value: 'Wedding Party', label: 'Wedding Party' },

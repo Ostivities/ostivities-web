@@ -59,6 +59,10 @@ export interface IFormInput {
   endDateAndTime: any;
   eventFrequency?: string;
   eventImage?: string;
+  websiteUrl?: string;
+  twitterUrl?: string; 
+  facebookUrl?: string;
+  instagramUrl?: string;
 }
 
 export interface IModal {
