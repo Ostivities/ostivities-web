@@ -20,12 +20,12 @@ const Event = ({ params }: { params: { event: string } }) => {
       <Image
         src="/icons/back-arrow.svg"
         alt=""
-        height={30}
-        width={30}
+        height={25}
+        width={25}
         onClick={() => router.back()}
         className="cursor-pointer"
       />
-      <h1>Popular Events</h1>
+<h1 style={{ fontSize: '24px' }}>Popular Events</h1>
     </div>
   );
 

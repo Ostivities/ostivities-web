@@ -152,12 +152,13 @@ function DashboardLayout({
               className="w-[110px] cursor-pointer"
             />
 
-            <Image
-              src={Hamburger}
-              alt="Owanbe Logo"
-              style={{ width: '40px', height: '35px' }}
-              className="cursor-pointer"
-              onClick={toggleSidebar}
+<Image
+  src={Hamburger}
+  alt="Owanbe Logo"
+  style={{ width: '40px', height: '35px', borderRadius: '10px' }}
+  className="cursor-pointer"
+  onClick={toggleSidebar}
+
             />
           </div>
           {!isLoggedIn && (
@@ -198,12 +199,12 @@ function DashboardLayout({
                   size={'small'}
                 >
                   <div className="mt-5">
-                    <Badge count={1}>
+                    <Badge count={2}>
                       <BellFilled
                         className="cursor-pointer"
                         style={{
                           fontSize: '26px',
-                          color: '#8C95A1',
+                          color: '#757474',
                         }}
                       />
                     </Badge>
@@ -218,7 +219,7 @@ function DashboardLayout({
                           cursor: 'pointer',
                         }}
                       >
-                        IR
+                        OR
                       </Avatar>
                       <div className="h-fit flex gap-4">
                         <div className="flex flex-col justify-start">

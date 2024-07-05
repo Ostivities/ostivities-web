@@ -86,6 +86,7 @@ export interface FormContextProps {
 }
 
 export interface FormState {
+  stages: any;
   stage: number | any;
 }
 

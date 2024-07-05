@@ -11,7 +11,7 @@ function Signup(): JSX.Element {
         <Small
           content={
             <span className="text-sm font-BricolageGrotesqueRegular">
-              Already a member?{" "}
+              Existing user?{" "}
               <Link
                 href={"/login"}
                 className="text-OWANBE_PRY underline cursor-pointer hover:text-OWANBE_PRY hover:underline"

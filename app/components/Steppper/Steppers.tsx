@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { useFormContext } from '@/app/contexts/form-context/FormContext';
 import { MdOutlineEdit } from 'react-icons/md';
 import { IoImageOutline, IoTicketOutline } from 'react-icons/io5';
@@ -8,6 +8,8 @@ import { Label } from '../typography/Typography';
 
 function Steppers(): JSX.Element {
   const { formState } = useFormContext();
+
+  const stepsCount = formState?.stages?.length || 3; // Handle potential missing stages
 
   return (
     <Steps
@@ -27,7 +29,7 @@ function Steppers(): JSX.Element {
               style={{
                 width: '33px',
                 height: '33px',
-                background: formState?.stage === 0 ? '#E20000' : '#fff',
+                background: '#E20000', // Fixed color for the first step icon
                 borderRadius: '100%',
                 padding: '7px',
                 display: 'flex',
@@ -35,10 +37,13 @@ function Steppers(): JSX.Element {
                 justifyContent: 'center',
               }}
             >
-              <MdOutlineEdit size={19} color={formState?.stage === 0 ? '#fff' : '#000'} />
+              <MdOutlineEdit
+                size={19}
+                color="#fff" // Fixed color for the first step icon
+              />
             </div>
           ),
-          status: formState?.stage === 0 ? 'process' : 'wait',
+          status: 'process', // Always set status to 'process' for the first step
         },
         {
           title: <Label content="Event Image" />,
@@ -49,7 +54,7 @@ function Steppers(): JSX.Element {
               style={{
                 width: '33px',
                 height: '33px',
-                background: formState?.stage === 1 ? '#E20000' : '#fff',
+                background: formState?.stage >= 1 ? '#E20000' : '#fff', // Background color based on stage
                 borderRadius: '100%',
                 padding: '7px',
                 display: 'flex',
@@ -57,7 +62,10 @@ function Steppers(): JSX.Element {
                 justifyContent: 'center',
               }}
             >
-              <IoImageOutline size={19} color={formState?.stage === 1 ? '#fff' : '#000'} />
+              <IoImageOutline
+                size={19}
+                color={formState?.stage >= 1 ? '#fff' : '#000'} // Icon color based on stage
+              />
             </div>
           ),
           status: formState?.stage === 1 ? 'process' : formState?.stage > 1 ? 'finish' : 'wait',
@@ -71,7 +79,7 @@ function Steppers(): JSX.Element {
               style={{
                 width: '33px',
                 height: '33px',
-                background: formState?.stage === 2 ? '#E20000' : '#fff',
+                background: formState?.stage >= 2 ? '#E20000' : '#fff', // Background color based on stage
                 borderRadius: '100%',
                 padding: '7px',
                 display: 'flex',
@@ -79,14 +87,21 @@ function Steppers(): JSX.Element {
                 justifyContent: 'center',
               }}
             >
-              <IoTicketOutline size={19} color={formState?.stage === 2 ? '#fff' : '#000'} />
+              <IoTicketOutline
+                size={19}
+                color={formState?.stage >= 2 ? '#fff' : '#000'} // Icon color based on stage
+              />
             </div>
           ),
           status: formState?.stage === 2 ? 'process' : formState?.stage > 2 ? 'finish' : 'wait',
         },
       ]}
       size="default"
-    />
+    >
+      {/* Customizing the line between steps */}
+      <Steps.Step status={formState?.stage >= 1 ? 'finish' : 'wait'} />
+      <Steps.Step status={formState?.stage >= 2 ? 'finish' : 'wait'} />
+    </Steps>
   );
 }
 
