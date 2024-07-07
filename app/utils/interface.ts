@@ -95,6 +95,13 @@ export interface FormProviderProps {
 }
 
 export interface DataType {
+  eventName: any;
+  eventType: any;
+  ticketSold: any;
+  type: any;
+  sold: any;
+  dateCreated: string | number | Date;
+  status: any;
   key: React.Key;
   name: string;
   age: number;

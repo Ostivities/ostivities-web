@@ -38,7 +38,7 @@ const items1: MenuProps['items'] = [
 
 const items2: MenuProps['items'] = [
   { icon: CompassOutlined, title: 'Discovery', link: '/Dashboard' },
-  { icon: FileAddOutlined, title: 'Event Creation', link: '/Dashboard/events' },
+  { icon: FileAddOutlined, title: 'Create Event', link: '/Dashboard/events' },
   { icon: SettingOutlined, title: 'Settings', link: '/Dashboard/settings' },
   { icon: QuestionCircleOutlined, title: 'Coming Soon', link: '/Dashboard/' },
 ].map((item) => {
@@ -128,6 +128,8 @@ function DashboardLayout({
     setCollapsed((prevValues) => !prevValues );
   };
 
+  const [toggleNotifications, setToggleNotifications] = useState(false);
+
   return (
     <FormProvider>
       <Layout
@@ -198,16 +200,48 @@ function DashboardLayout({
                   align="center"
                   size={'small'}
                 >
-                  <div className="mt-5">
-                    <Badge count={2}>
-                      <BellFilled
-                        className="cursor-pointer"
-                        style={{
-                          fontSize: '26px',
-                          color: '#757474',
-                        }}
-                      />
-                    </Badge>
+                  <div className="mt-5 relative">
+  <Badge count={2}>
+    <BellFilled
+      className="cursor-pointer"
+      style={{
+        fontSize: '26px',
+        color: '#8C95A1',
+      }}
+      onClick={() => setToggleNotifications((prev) => !prev)}
+    />
+  </Badge>
+  <div
+    className={`fixed top-16 right-0 min-w-[30rem] w-[30rem] transition-all z-50 ${
+      toggleNotifications ? ' translate-y-0' : '-translate-y-[150%]'
+    }`}
+  >
+    <div className="bg-white rounded-[1.25rem] pl-6 pr-7 pt-4 pb-10 shadow-ticket-card">
+      <div className="text-center font-semibold">Notifications</div>
+      <div className="flex flex-col gap-3">
+        <div className="flex-center gap-3">
+          <div className="!bg-OWANBE_NOTIFICATION w-4 h-4 rounded-full"></div>
+          <p className="text-base font-normal" style={{ fontSize: '14px' }}>
+            You have a new sale{' '}
+            <a href="#" style={{ color: '#e20000', textDecoration: 'underline', fontSize: '14px' }}>
+              click to view
+            </a>.
+          </p>
+
+                    </div>
+                    <div className="flex-center gap-3">
+                      <div className=" !bg-OWANBE_NOTIFICATION w-4 h-4 rounded-full"></div>
+                      <p className="text-base font-normal" style={{ fontSize: '14px' }}>
+            You have a new attendee{' '}
+            <a href="#" style={{ color: '#e20000', textDecoration: 'underline', fontSize: '14px' }}>
+              click to view
+  </a>.
+</p>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
                   </div>
                   <Dropdown menu={{ items }} trigger={['click', 'hover']}>
                     <div className="flex-center gap-4 cursor-pointer">

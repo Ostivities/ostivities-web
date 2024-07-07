@@ -8,6 +8,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { global } from "styled-jsx/css";
+import "@/app/globals.css";
 
 const Payment = () => {
   const router = useRouter();
@@ -24,7 +26,7 @@ const Payment = () => {
         className="cursor-pointer"
       />
 
-<h1 style={{ fontSize: '24px' }}>Concert with Davido</h1>
+<h1 style={{ fontSize: '24px' }}>Payment Options</h1>
     </div>
   );
 
@@ -85,15 +87,17 @@ const Payment = () => {
                 </div>
               </div>
             </div>
-            <div className="flex-center gap-2 mt-3 [&>p>a]:text-OWANBE_PRY">
+            <div className="flex-center gap-2 mt-7 [&>p>a]:text-OWANBE_PRY">
               <div className="">
-                <input type="checkbox" name="" id="" />
+                
               </div>
-              <p>
-                I accept the{' '}
-                <Link href="#">Terms and condition, Refund Policy</Link> and
-                <Link href="#"> Privacy Policy</Link>
-              </p>
+
+              <p className="checkbox-label">
+  <input type="checkbox" name="" id="" /> I accept the 
+  <a href="#" className="policy-link">Terms and Conditions</a>, 
+  <a href="#" className="policy-link">Refund Policy</a> and 
+  <a href="#" className="policy-link">Privacy Policy</a>.
+</p>
             </div>
             <div className=" mt-10">
               <button className="primary-btn w-full">Make Payment</button>

@@ -15,6 +15,8 @@ import {
 } from "antd";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { global } from "styled-jsx/css";
+import "@/app/globals.css";
 
 function CreateAccount(): JSX.Element {
   const router = useRouter();
@@ -224,13 +226,23 @@ function CreateAccount(): JSX.Element {
         </span>
       </label> */}
       <Form.Item
-        name="remember"
+        name="terms"
         valuePropName="checked"
         rules={[
-          { required: true, message: "Please read the Terms and Conditions" },
+          { required: true, message: "Please accept the Terms and Conditions" },
         ]}
       >
-        <Checkbox>Terms and Conditions</Checkbox>
+        <Checkbox>
+          I accept the{" "}
+          <a 
+            href="/terms-and-conditions" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            style={{ color: "#e20000", textDecoration: "none" }}
+          >
+            Terms and Conditions
+          </a>
+        </Checkbox>
       </Form.Item>
 
       <Form.Item>

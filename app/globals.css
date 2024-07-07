@@ -1014,4 +1014,178 @@ input, .ant-input, .ant-select, .ant-picker, .ant-radio, .ant-input-textarea, .a
 .bold-text {
   font-weight: 600;
 }
+:root {
+  --default-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC",
+    "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei",
+    "Source Han Sans CN", sans-serif;
+}
 
+.main-container {
+  overflow: hidden;
+}
+
+.main-container,
+.main-container * {
+  box-sizing: border-box;
+}
+
+input,
+select,
+textarea,
+button {
+  outline: 0;
+}
+
+.main-container {
+  position: relative;
+  width: 1538px;
+  height: 72px;
+  margin: 0 auto;
+}
+.rectangle {
+  position: absolute;
+  width: 1538px;
+  height: 72px;
+  top: 0;
+  left: 0;
+  background: #ffffff;
+  z-index: 1;
+}
+.flex-row-aa {
+  position: relative;
+  width: 1443px;
+  height: 53px;
+  margin: 18px 0 0 48px;
+  z-index: 5;
+}
+.event-creation {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: absolute;
+  height: 36px;
+  top: 0;
+  left: 0;
+  color: #000000;
+  font-family: Bricolage Grotesque, var(--default-font-family);
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 36px;
+  text-align: left;
+  white-space: nowrap;
+  letter-spacing: 0.6px;
+  z-index: 4;
+}
+.frame {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  gap: 24px;
+  position: absolute;
+  width: 217px;
+  height: 35px;
+  top: 18px;
+  right: 0;
+  z-index: 5;
+}
+.frame-1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  gap: 12px;
+  position: relative;
+  width: 93px;
+  z-index: 6;
+}
+.create-event {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  flex-basis: auto;
+  position: relative;
+  width: 93px;
+  height: 17px;
+  color: #071420;
+  font-family: Bricolage Grotesque, var(--default-font-family);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16.8px;
+  text-align: center;
+  white-space: nowrap;
+  letter-spacing: 0.56px;
+  z-index: 7;
+}
+.rectangle-2 {
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+  height: 6px;
+  background: #e20000;
+  z-index: 8;
+  border-radius: 4px 4px 0 0;
+}
+.frame-3 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  gap: 12px;
+  position: relative;
+  width: 100px;
+  height: 35px;
+  z-index: 9;
+}
+.event-created {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  flex-basis: auto;
+  position: relative;
+  width: 100px;
+  height: 17px;
+  color: #a6abaf;
+  font-family: Bricolage Grotesque, var(--default-font-family);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16.8px;
+  text-align: center;
+  white-space: nowrap;
+  letter-spacing: 0.56px;
+  z-index: 10;
+}
+.rectangle-4 {
+  position: relative;
+  width: 1538px;
+  height: 1px;
+  margin: 0 0 0 0;
+  background: #e9eaeb;
+  z-index: 2;
+}
+/* styles/custom-checkbox.css */
+.custom-checkbox .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #e20000;
+  border-color: #e20000;
+}
+.custom-checkbox .ant-checkbox-checked::after {
+  border-color: #e20000;
+  }
+  .policy-link {
+    color: #e20000;
+    margin: 0 5px; /* Add margin to create space between the links */
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+  }
+
+  .checkbox-label input[type="checkbox"] {
+    margin-right: 8px; /* Adjust the spacing as needed */
+  }

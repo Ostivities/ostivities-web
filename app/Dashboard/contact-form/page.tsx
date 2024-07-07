@@ -5,6 +5,9 @@ import Summary from '@/app/components/Discovery/Summary';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { Form, Input, Select } from 'antd';
+import { global } from "styled-jsx/css";
+import "@/app/globals.css";
 
 interface Inputs {
   firstName: string;
@@ -27,7 +30,7 @@ const ContactForm = () => {
         className="cursor-pointer"
       />
 
-<h1 style={{ fontSize: '24px' }}>Choose your tickets</h1>
+<h1 style={{ fontSize: '24px' }}>Contact Information</h1>
 
     </div>
   );
@@ -115,7 +118,7 @@ const ContactForm = () => {
               <div>
                 <label htmlFor="phoneNumber" className="grid grid-cols-6 gap-4">
                   <span className="col-span-2 self-center">Phone Number</span>
-                  <div className="flex border border-[#D1D3D6] rounded-full col-span-4">
+                  <div className="flex border border-[#D1D3D6] rounded 15 col-span-4">
                     <select
                       name="code"
                       id="code"
@@ -141,7 +144,7 @@ const ContactForm = () => {
             </form>
           </div>
         </section>
-        <Summary continueBtn />
+        <Summary continueBtn to={"/Dashboard/payment"} />
       </section>
     </DashboardLayout>
   );

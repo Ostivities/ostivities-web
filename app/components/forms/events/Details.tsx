@@ -24,6 +24,7 @@ import "@/app/globals.css";
 import { TwitterOutlined, FacebookOutlined, InstagramOutlined, LinkOutlined } from '@ant-design/icons';
 
 
+
 function Details(): JSX.Element {
   const router = useRouter();
   const { formState, setFormStage } = useFormContext();
