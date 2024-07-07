@@ -1,8 +1,9 @@
+"use client";
 import { Label } from "@/app/components/typography/Typography";
 import { DataType } from "@/app/utils/interface";
 import { Button, Input, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const { Search } = Input;
 
@@ -10,6 +11,7 @@ const EventTicketTable: React.FC = () => {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+
 
   const columns: ColumnsType<DataType> = [
     {

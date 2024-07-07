@@ -1,10 +1,20 @@
 "use client";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import Details from "@/app/components/forms/eventscreated/Details";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 function Events(): JSX.Element {
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState('eventsCreated'); // Set 'eventsCreated' as the initial active tab
+
+  useEffect(() => {
+    if (activeTab === "createEvent") {
+      router.push('/Dashboard/events')   
+    }else {
+      router.push('/Dashboard/eventscreated')  
+    }
+  }, [activeTab])
 
   const title = (
     <div className="flex justify-between items-center w-full relative pb-2">

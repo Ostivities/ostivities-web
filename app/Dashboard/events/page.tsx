@@ -2,19 +2,29 @@
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import Steppers from "@/app/components/Steppper/Steppers";
 import Details from "@/app/components/forms/events/Details";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 function Events(): JSX.Element {
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState('createEvent');
+
+  useEffect(() => {
+    if (activeTab === "createEvent") {
+      router.push('/Dashboard/events')   
+    }else {
+      router.push('/Dashboard/eventscreated')  
+    }
+  }, [activeTab])
 
   const title = (
     <div className="flex justify-between items-center w-full relative pb-2">
-      <h1 style={{ fontSize: '24px' }}>Create Event</h1>
+      <h1 style={{ fontSize: '24px' }}>{activeTab === "createEvent" ? "Create Event": " Events Created"}</h1>
       <div className="flex space-x-4">
         <span
           className={`font-medium cursor-pointer relative ${activeTab === 'createEvent' ? 'text-black' : 'text-gray-400'}`}
           style={{ fontSize: '15px' }}
-          onClick={() => setActiveTab('createEvent')}
+          onClick={() => {setActiveTab("createEvent");  router.push('/dashboard/events')}}
         >
           Create Event
           {activeTab === 'createEvent' && (
