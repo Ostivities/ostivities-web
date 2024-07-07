@@ -126,12 +126,12 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
             now and be part of a night to remember!
             </p>
             <div className="flex justify-center mt-12">
-              <button
-                onClick={() => router.push('/Dashboard/tickets')}
-                className="rounded-full bg-OWANBE_PRY px-24 py-3 text-white text-xl font-bold"
-              >
-                Get Tickets
-              </button>
+            <button
+  onClick={() => router.push('/Dashboard/tickets')}
+  className="w-full rounded-full bg-OWANBE_PRY px-24 py-3 text-white text-xl font-bold"
+>
+  Register
+</button>
             </div>
           </div>
         </div>

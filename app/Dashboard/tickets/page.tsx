@@ -83,7 +83,7 @@ const Tickets = () => {
             ))}
           </div>
         </section>
-        <Summary continueBtn />
+        <Summary continueBtn to={"/Dashboard/contact-form"} />
       </section>
     </DashboardLayout>
   );

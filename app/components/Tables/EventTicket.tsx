@@ -68,7 +68,7 @@ function EventTicketTable(): JSX.Element {
       ),
     },
   ];
-  const data: DataType[] = [
+  const data: any[] = [
     {
       key: "1",
       name: "John Brown",

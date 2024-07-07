@@ -96,9 +96,16 @@ export interface FormProviderProps {
 
 export interface DataType {
   key: React.Key;
-  name: string;
-  age: number;
-  address: string;
+  eventName: string;
+  eventType: string;
+  ticketSold: number;
+  type?: string; // Optional, since it's not used in the data generation
+  sold?: number; // Optional, since it's not used in the data generation
+  dateCreated: string | number | Date;
+  status: 'Active' | 'Closed' | 'Pending';
+  name?: string; // Optional, since it's not used in the data generation
+  age?: number|any;  // Optional, since it's not used in the data generation
+  address?: string; // Optional, since it's not used in the data generation
 }
 
 export interface IUser {

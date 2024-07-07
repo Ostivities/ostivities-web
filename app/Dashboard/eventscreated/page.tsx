@@ -1,13 +1,12 @@
-'use client';
+"use client";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
-import Steppers from "@/app/components/Steppper/Steppers";
-import Details from "@/app/components/forms/events/Details";
+import Details from "@/app/components/forms/eventscreated/Details";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 function Events(): JSX.Element {
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState('createEvent');
+  const [activeTab, setActiveTab] = useState('eventsCreated'); // Set 'eventsCreated' as the initial active tab
 
   useEffect(() => {
     if (activeTab === "createEvent") {
@@ -19,12 +18,12 @@ function Events(): JSX.Element {
 
   const title = (
     <div className="flex justify-between items-center w-full relative pb-2">
-      <h1 style={{ fontSize: '24px' }}>{activeTab === "createEvent" ? "Create Event": " Events Created"}</h1>
+      <h1 style={{ fontSize: '24px' }}>Events Created</h1>
       <div className="flex space-x-4">
         <span
           className={`font-medium cursor-pointer relative ${activeTab === 'createEvent' ? 'text-black' : 'text-gray-400'}`}
           style={{ fontSize: '15px' }}
-          onClick={() => {setActiveTab("createEvent");  router.push('/dashboard/events')}}
+          onClick={() => setActiveTab('createEvent')}
         >
           Create Event
           {activeTab === 'createEvent' && (
@@ -46,14 +45,15 @@ function Events(): JSX.Element {
   );
 
   return (
-    <DashboardLayout title={title} steppers={<Steppers />} isLoggedIn>
+    <DashboardLayout title={title} isLoggedIn>
       <div className="w-5/6 mx-auto flex flex-col space-y-5 py-6">
-        <Details />
+        {/* Content for Events Created */}
+        {/* For example, <EventsCreatedComponent /> */}
+        {/* Replace with your actual content for Events Created */}
+        <Details/>
       </div>
     </DashboardLayout>
   );
 }
 
 export default Events;
-
-
