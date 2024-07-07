@@ -23,7 +23,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { isValidElement, useState } from 'react';
 import useLocalStorage from 'use-local-storage';
-import useFetch from '../forms/events/auth';
+import useFetch from '../forms/create-events/auth';
 
 const items1: MenuProps['items'] = [
   {
@@ -38,7 +38,7 @@ const items1: MenuProps['items'] = [
 
 const items2: MenuProps['items'] = [
   { icon: CompassOutlined, title: 'Discovery', link: '/Dashboard' },
-  { icon: FileAddOutlined, title: 'Create Event', link: '/Dashboard/events' },
+  { icon: FileAddOutlined, title: 'Create Event', link: '/Dashboard/create-events' },
   { icon: SettingOutlined, title: 'Settings', link: '/Dashboard/settings' },
   { icon: QuestionCircleOutlined, title: 'Coming Soon', link: '/Dashboard/' },
 ].map((item) => {
@@ -104,7 +104,7 @@ function DashboardLayout({
 
   
 
-  const endpoints = ['events', 'settings'];
+  const endpoints = ['create-events', 'settings'];
 
   const index = pathname.split('/')[2];
 
@@ -121,7 +121,7 @@ function DashboardLayout({
 
   const pathCheck =
     pathname.split('/').includes('settings') ||
-    pathname.split('/').includes('events');
+    pathname.split('/').includes('create-events');
 
   const toggleSidebar = () => {
     console.log(collapsed);

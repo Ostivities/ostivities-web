@@ -9,7 +9,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { Country, State } from "country-state-city";
 import { EVENT_TYPES } from '../utils/data';
-import useFetch from '../components/forms/events/auth';
+import useFetch from '../components/forms/create-events/auth';
 
 function Dashboard(): JSX.Element {
   const route = useRouter();
@@ -30,7 +30,7 @@ const STATE_BY_COUNTRYCODE = (stateCode: string): { label: string; value: string
       <h1 style={{ fontSize: '24px' }}>Discovery</h1>
 
       {isLoggedIn && <button
-        onClick={() => route.push('/Dashboard/events')}
+        onClick={() => route.push('/Dashboard/create-events')}
         className=" bg-OWANBE_PRY rounded-full px-4 py-2 text-xs font-semibold text-white"
       >
         {' '}

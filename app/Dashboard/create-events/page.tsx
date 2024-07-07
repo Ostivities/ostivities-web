@@ -1,7 +1,7 @@
 'use client';
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import Steppers from "@/app/components/Steppper/Steppers";
-import Details from "@/app/components/forms/events/Details";
+import Details from "@/app/components/forms/create-events/Details";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -11,9 +11,9 @@ function Events(): JSX.Element {
 
   useEffect(() => {
     if (activeTab === "createEvent") {
-      router.push('/Dashboard/events')   
+      router.push('/Dashboard/create-events')   
     }else {
-      router.push('/Dashboard/eventscreated')  
+      router.push('/Dashboard/events-created')  
     }
   }, [activeTab])
 
@@ -24,7 +24,7 @@ function Events(): JSX.Element {
         <span
           className={`font-medium cursor-pointer relative ${activeTab === 'createEvent' ? 'text-black' : 'text-gray-400'}`}
           style={{ fontSize: '15px' }}
-          onClick={() => {setActiveTab("createEvent");  router.push('/dashboard/events')}}
+          onClick={() => {setActiveTab("createEvent");  router.push('/dashboard/create-events')}}
         >
           Create Event
           {activeTab === 'createEvent' && (
