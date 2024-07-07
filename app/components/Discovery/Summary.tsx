@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
-const Summary = ({ continueBtn,to }: { continueBtn?: boolean;to?:string }) => {
+const Summary = ({ continueBtn,to }: { continueBtn?: boolean;to?:string|any }) => {
   const [showInput, setShowInput] = useState(false);
   const [discountApplied, setDiscountApplied] = useState(false);
   const [discountCode, setDiscountCode] = useState('');
