@@ -52,7 +52,7 @@ const EventTicketTable: React.FC = () => {
         />
       ),
       dataIndex: "dateCreated",
-      sorter: (a, b) => new Date(a.dateCreated) - new Date(b.dateCreated),
+      sorter: (a:any, b:any) => a.dateCreated - b.dateCreated,
     },
     {
       title: (
@@ -98,7 +98,7 @@ const EventTicketTable: React.FC = () => {
     dateCreated: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
     status: ["Active", "Closed", "Pending"][
       Math.floor(Math.random() * 3)
-    ],
+    ] as 'Active' | 'Closed' | 'Pending',
   }));
 
   const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,7 +115,7 @@ const EventTicketTable: React.FC = () => {
         <Search
           placeholder="Search events"
           onChange={onSearchChange}
-          style={{ width: 200 }}
+          style={{ width: 300 }}
         />
       </div>
       <Table

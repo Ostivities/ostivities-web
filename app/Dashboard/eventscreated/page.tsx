@@ -50,7 +50,7 @@ function Events(): JSX.Element {
         {/* Content for Events Created */}
         {/* For example, <EventsCreatedComponent /> */}
         {/* Replace with your actual content for Events Created */}
-        <Details isLoggedIn={undefined} />
+        <Details/>
       </div>
     </DashboardLayout>
   );
