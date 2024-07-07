@@ -104,7 +104,7 @@ export interface DataType {
   dateCreated: string | number | Date;
   status: 'Active' | 'Closed' | 'Pending';
   name?: string; // Optional, since it's not used in the data generation
-  age?: number;  // Optional, since it's not used in the data generation
+  age?: number|any;  // Optional, since it's not used in the data generation
   address?: string; // Optional, since it's not used in the data generation
 }
 
