@@ -60,7 +60,7 @@ export interface IFormInput {
   eventFrequency?: string;
   eventImage?: string;
   websiteUrl?: string;
-  twitterUrl?: string; 
+  twitterUrl?: string;
   facebookUrl?: string;
   instagramUrl?: string;
 }
@@ -102,9 +102,9 @@ export interface DataType {
   type?: string; // Optional, since it's not used in the data generation
   sold?: number; // Optional, since it's not used in the data generation
   dateCreated: string | number | Date;
-  status: 'Active' | 'Closed' | 'Pending';
+  status: "Active" | "Closed" | "Pending";
   name?: string; // Optional, since it's not used in the data generation
-  age?: number|any;  // Optional, since it's not used in the data generation
+  age?: number | any; // Optional, since it's not used in the data generation
   address?: string; // Optional, since it's not used in the data generation
 }
 
@@ -115,7 +115,8 @@ export interface IUser {
   password: string;
   accountType: ACCOUNT_TYPE;
   confirmPassword: string;
-  remember: boolean;
+  terms_and_condition: boolean;
+  businessName: string;
 }
 
 export interface ILogin {
