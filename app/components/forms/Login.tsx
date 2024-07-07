@@ -3,7 +3,7 @@ import { Small } from "@/app/components/typography/Typography";
 import { useLogin } from "@/app/hooks/auth/auth.hook";
 import Auth from "@/app/utils/Auth";
 import { ILogin } from "@/app/utils/interface";
-import { Button, Checkbox, Form, FormProps, Input, Space } from "antd";
+import { Button, Form, FormProps, Input, Space } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -70,18 +70,7 @@ function LoginForm(): JSX.Element {
       </Form.Item>
 
       <Form.Item>
-        <div className="flex flex-row items-center justify-between">
-          <Form.Item
-            name="remember"
-            valuePropName="checked"
-            noStyle
-            rules={[{ required: false }]}
-          >
-            <Checkbox className="font-BricolageGrotesqueRegular">
-              Remember me
-            </Checkbox>
-          </Form.Item>
-
+        <div className="flex flex-row items-center justify-end">
           <Link
             className="text-OWANBE_PRY underline hover:text-OWANBE_PRY hover:underline font-BricolageGrotesqueSemiBold font-semibold"
             href="/forgot-password"
@@ -121,4 +110,3 @@ function LoginForm(): JSX.Element {
 }
 
 export default LoginForm;
-
