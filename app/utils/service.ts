@@ -5,7 +5,7 @@ import { ILogin, IUser } from "./interface";
 
 export class API_SERVICE {
   static async _registerUser(data: IUser) {
-    const { confirmPassword, remember, ...rest } = data;
+    const { confirmPassword, ...rest } = data;
     return await instance({
       url: `/auth/register`,
       method: HttpMethod.POST,
