@@ -15,7 +15,7 @@ import React from "react";
 
 const items2: MenuProps['items'] = [
   { icon: CompassOutlined, title: 'Discovery', link: '/Dashboard' },
-  { icon: FileAddOutlined, title: 'Create Event', link: '/Dashboard/events' },
+  { icon: FileAddOutlined, title: 'Create Event', link: '/Dashboard/' },
   { icon: SettingOutlined, title: 'Settings', link: '/Dashboard/settings' },
   { icon: QuestionCircleOutlined, title: 'Coming Soon', link: '/Dashboard/' },
 ].map((item) => {

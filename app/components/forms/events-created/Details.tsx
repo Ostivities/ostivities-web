@@ -3,7 +3,7 @@ import { Label } from "@/app/components/typography/Typography";
 import { DataType } from "@/app/utils/interface";
 import { Button, Input, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const { Search } = Input;
 
@@ -11,7 +11,18 @@ const EventTicketTable: React.FC = () => {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
+  const data: DataType[] = Array.from({ length: 50 }, (_, index) => ({
+    key: `${index + 1}`,
+    eventName: `Event ${index + 1}`,
+    eventType: `Type ${index + 1}`,
+    ticketSold: Math.floor(Math.random() * 100),
+    dateCreated: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
+    status: ["Active", "Closed", "Pending"][
+      Math.floor(Math.random() * 3)
+    ] as 'Active' | 'Closed' | 'Pending',
+  }));
 
   const columns: ColumnsType<DataType> = [
     {
@@ -52,7 +63,7 @@ const EventTicketTable: React.FC = () => {
         />
       ),
       dataIndex: "dateCreated",
-      sorter: (a:any, b:any) => a.dateCreated - b.dateCreated,
+      sorter: (a: any, b: any) => a.dateCreated - b.dateCreated,
     },
     {
       title: (
@@ -90,17 +101,6 @@ const EventTicketTable: React.FC = () => {
     },
   ];
 
-  const data: DataType[] = Array.from({ length: 50 }, (_, index) => ({
-    key: `${index + 1}`,
-    eventName: `Event ${index + 1}`,
-    eventType: `Type ${index + 1}`,
-    ticketSold: Math.floor(Math.random() * 100),
-    dateCreated: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
-    status: ["Active", "Closed", "Pending"][
-      Math.floor(Math.random() * 3)
-    ] as 'Active' | 'Closed' | 'Pending',
-  }));
-
   const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
@@ -108,6 +108,8 @@ const EventTicketTable: React.FC = () => {
   const filteredData = data.filter((item) =>
     item.eventName.toLowerCase().includes(searchText.toLowerCase())
   );
+
+  const hasSelected = selectedRowKeys.length > 0;
 
   return (
     <div className="w-full flex flex-col space-y-6">
@@ -117,8 +119,25 @@ const EventTicketTable: React.FC = () => {
           onChange={onSearchChange}
           style={{ width: 300 }}
         />
+        {hasSelected && (
+          <Button
+            type="primary"
+            danger
+            style={{ borderRadius: 15 }}
+            onClick={() => {
+              // Handle delete logic here
+              console.log('Delete selected:', selectedRowKeys);
+            }}
+          >
+            Delete
+          </Button>
+        )}
       </div>
       <Table
+        rowSelection={{
+          selectedRowKeys,
+          onChange: (keys) => setSelectedRowKeys(keys),
+        }}
         columns={columns}
         dataSource={filteredData}
         className="font-BricolageGrotesqueRegular w-full"

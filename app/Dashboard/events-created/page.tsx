@@ -1,6 +1,6 @@
 "use client";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
-import Details from "@/app/components/forms/eventscreated/Details";
+import Details from "@/app/components/forms/events-created/Details";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -10,9 +10,9 @@ function Events(): JSX.Element {
 
   useEffect(() => {
     if (activeTab === "createEvent") {
-      router.push('/Dashboard/events')   
+      router.push('/Dashboard/create-events')   
     }else {
-      router.push('/Dashboard/eventscreated')  
+      router.push('/Dashboard/events-created')  
     }
   }, [activeTab])
 
