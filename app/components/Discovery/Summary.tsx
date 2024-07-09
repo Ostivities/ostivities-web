@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { global } from "styled-jsx/css";
+import "@/app/globals.css";
 
 interface SummaryProps {
   continueBtn?: boolean;
@@ -51,7 +53,6 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
           {showInput && (
             <>
               <div className="mt-3">
-                <h3 className="text-OWANBE_PRY text-lg">Enter discount code</h3>
               </div>
               <div className="flex-center gap-3 w-full mt-3">
                 <input

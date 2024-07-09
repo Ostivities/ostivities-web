@@ -5,6 +5,8 @@ import Summary from '@/app/components/Discovery/Summary';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { global } from "styled-jsx/css";
+import "@/app/globals.css";
 
 const Tickets = () => {
   const router = useRouter();
@@ -18,9 +20,7 @@ const Tickets = () => {
         onClick={() => router.back()}
         className="cursor-pointer"
       />
-
-<h1 style={{ fontSize: '24px' }}>Choose your tickets</h1>
-
+      <h1 style={{ fontSize: '24px' }}>Choose your tickets</h1>
     </div>
   );
 
@@ -53,24 +53,26 @@ const Tickets = () => {
               </div>
             </div>
           </div>
-          <div className=" mt-20 flex flex-col gap-6">
+          <div className="mt-20 flex flex-col gap-6">
             {Array.from({ length: 2 }, (_, index) => (
               <div key={index} className="card-shadow">
                 <div>
-                  <h2 className=" text-OWANBE_PRY text-lg">Early Bird</h2>
+                  <h2 className="text-xl">Early Bird</h2>
                   <h3>
-                    <span className=" text-OWANBE_PRY text-sm">#5,000</span>{' '}
+                    <span className="text-OWANBE_PRY text-xl">#5,000</span>{' '}
                     Including #300 fee
                   </h3>
-                  <p className=" text-ss mt-4">
+                  <p className="text-ss mt-5">
                     lorem ipsum dolor sit amet, consectetur adicing elit. Fusce
-                    dapibus arcu id dui cursus{' '}
+                    dapibus arcu id dui cursus lorem ipsum dolor sit amet, consectetur adicing elit. 
+                    Fusce dapibus arcu id dui cursus{' '}
                   </p>
                 </div>
                 <select
                   name="amount"
                   id=""
-                  className=" px-2 py-1 border-[0.5px] border-[#525252] rounded-md w-16 bg-white text-lg"
+                  className="px-2 py-0.5 border-[0.5px] border-[#525252] rounded-md w-16 bg-white text-lg"
+                  required  // Added required attribute here
                 >
                   <option value="0">0</option>
                   {Array.from({ length: 10 }, (_, index) => (
@@ -90,3 +92,4 @@ const Tickets = () => {
 };
 
 export default Tickets;
+

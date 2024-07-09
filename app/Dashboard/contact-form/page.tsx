@@ -5,7 +5,7 @@ import Summary from '@/app/components/Discovery/Summary';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Form, Input, Select, Row, Col } from 'antd';
-import { useTimer } from '@/app/hooks/countdown';
+import { useState } from 'react';
 import "@/app/globals.css";
 
 interface Inputs {
@@ -33,9 +33,20 @@ const ContactForm = () => {
   );
 
   const [form] = Form.useForm();
+  const [isFormValid, setIsFormValid] = useState(false); // State to track form validity
 
   const onFinish = (values: Inputs) => {
     console.log(values);
+  };
+
+  // Function to validate form and update isFormValid state
+  const validateForm = async () => {
+    try {
+      await form.validateFields();
+      setIsFormValid(true);
+    } catch (error) {
+      setIsFormValid(false);
+    }
   };
 
   return (
@@ -73,6 +84,7 @@ const ContactForm = () => {
               onFinish={onFinish}
               layout="vertical"
               className="form-spacing"
+              onValuesChange={validateForm} // Validate form on any change
             >
               <Row gutter={16}>
                 <Col span={12}>
