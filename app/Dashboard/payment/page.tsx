@@ -91,9 +91,9 @@ const Payment = () => {
 
               <p className="checkbox-label">
                 <input type="checkbox" name="" id="" /> I accept the 
-                <a href="#" className="policy-link">Terms and Conditions</a>, 
+                <a href="#" className="policy-link">Terms and Conditions,</a> 
                 <a href="#" className="policy-link">Refund Policy</a> and 
-                <a href="#" className="policy-link">Privacy Policy</a>.
+                <a href="#" className="policy-link">Privacy Policy</a>
               </p>
             </div>
           </div>

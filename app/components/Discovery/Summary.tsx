@@ -35,7 +35,7 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
 
   return (
     <section className="flex-1">
-      <h2 className="text-3xl text-center">Summary</h2>
+      <h2 className="text-3xl text-center" style={{ fontWeight: 600, }}>Summary</h2>
       <section className="mt-14 px-20 h-4/5 border-l border-[#525252]">
         <div>
           <h3 className="text-OWANBE_PRY text-lg">Event name</h3>
@@ -94,27 +94,27 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
             <div className="flex flex-col gap-2 mt-2 text-OWANBE_FADE">
               <div className="flex-center justify-between">
                 <div>Ticket fee x 2 - Early Bird</div>
-                <div>#10,000.00</div>
+                <div>₦10,000.00</div>
               </div>
               <div className="flex-center justify-between">
                 <div>Fees</div>
-                <div>#300.00</div>
+                <div>₦300.00</div>
               </div>
               {discountApplied && (
                 <div className="flex-center justify-between">
                   <div>Discount</div>
-                  <div>-#100.00</div> {/* Adjust this based on your discount logic */}
+                  <div>-₦100.00</div> {/* Adjust this based on your discount logic */}
                 </div>
               )}
               <div className="flex-center justify-between">
                 <div>Subtotal</div>
-                <div>#10,200.00</div> {/* Adjust this based on your calculation */}
+                <div>₦10,200.00</div> {/* Adjust this based on your calculation */}
               </div>
             </div>
           </div>
           <div className="flex-center justify-between font-semibold text-2xl text-OWANBE_PRY my-6">
             <div>Total</div>
-            <div>#10,200.00</div> {/* Adjust this based on your calculation */}
+            <div>₦10,200.00</div> {/* Adjust this based on your calculation */}
           </div>
           {continueBtn && (
             <div className="flex justify-center mt-12 mb-6 w-full">
