@@ -53,7 +53,7 @@ const Tickets = () => {
               </div>
             </div>
           </div>
-          <div className=" mt-12 flex flex-col gap-6">
+          <div className=" mt-20 flex flex-col gap-6">
             {Array.from({ length: 2 }, (_, index) => (
               <div key={index} className="card-shadow">
                 <div>

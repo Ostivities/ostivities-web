@@ -5,6 +5,7 @@ import Summary from '@/app/components/Discovery/Summary';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Form, Input, Select, Row, Col } from 'antd';
+import { useTimer } from '@/app/hooks/countdown';
 import "@/app/globals.css";
 
 interface Inputs {
@@ -40,11 +41,31 @@ const ContactForm = () => {
   return (
     <DashboardLayout title={title} isLoggedIn>
       <section className="flex gap-12">
-        <section className="flex-1 pr-17">
-          <div className=" bg-OWANBE_NOTIFICATION px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem]">
-            We have reserved your tickets please complete checkout within{' '}
-            <span className=" text-OWANBE_PRY">10:00</span> to secure your
-            tickets.
+        <section className="flex-1 pr-1">
+        <div className="flex-center justify-between">
+            <div className="flex-center gap-3">
+              <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
+                <Image
+                  src="/icons/calendar.svg"
+                  alt=""
+                  height={25}
+                  width={25}
+                />
+              </div>
+              <div>
+                <h3 className="text-xs">Date</h3>
+                <span>14 December, 2023</span>
+              </div>
+            </div>
+            <div className="flex-center gap-3">
+              <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
+                <Image src="/icons/time.svg" alt="" height={25} width={25} />
+              </div>
+              <div>
+                <h3 className="text-xs">Time</h3>
+                <span>5:00PM - 10:00PM WAT</span>
+              </div>
+            </div>
           </div>
           <div className="pr-full mt-16">
             <Form
