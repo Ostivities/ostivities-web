@@ -3,7 +3,13 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
-const Summary = ({ continueBtn,to }: { continueBtn?: boolean;to?:string|any }) => {
+interface SummaryProps {
+  continueBtn?: boolean;
+  to?: string | any;
+  paymentBtn?: boolean;
+}
+
+const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
   const [showInput, setShowInput] = useState(false);
   const [discountApplied, setDiscountApplied] = useState(false);
   const [discountCode, setDiscountCode] = useState('');
@@ -88,6 +94,11 @@ const Summary = ({ continueBtn,to }: { continueBtn?: boolean;to?:string|any }) =
               <Link href={to} className="primary-btn hover:none w-full text-center">
                 Continue
               </Link>
+            </div>
+          )}
+          {paymentBtn && (
+            <div className="flex justify-center mt-12 mb-6 w-full">
+              <button className="primary-btn w-full">Make Payment</button>
             </div>
           )}
         </div>
