@@ -1,5 +1,9 @@
-import { LOGIN_USER, REGISTER_USER } from "@/app/utils/constants";
-import { ILogin, IUser } from "@/app/utils/interface";
+import {
+  LOGIN_USER,
+  REGISTER_USER,
+  RESET_PASSWORD_TOKEN,
+} from "@/app/utils/constants";
+import { ILogin, IResetToken, IUser } from "@/app/utils/interface";
 import { API_SERVICE } from "@/app/utils/service";
 import { useMutation } from "@tanstack/react-query";
 import { message } from "antd";
@@ -30,6 +34,27 @@ export const useLogin = () => {
       return API_SERVICE._loginUser(data);
     },
     mutationKey: [LOGIN_USER],
+    onSuccess: (data: AxiosResponse) => {
+      const accessToken = data?.data?.data?.accessToken;
+      sessionStorage.setItem("token", accessToken);
+      message.success(data?.data?.message);
+    },
+    onError: (error: AxiosError | any) => {
+      const errorMessage = error?.response?.data?.message;
+      typeof errorMessage === "string"
+        ? message.error(error?.response?.data?.message)
+        : message.error(error?.response?.data?.message?.[0]);
+    },
+  });
+  return { loginUser };
+};
+
+export const useRsetToken = () => {
+  const loginUser = useMutation({
+    mutationFn: (data: IResetToken) => {
+      return API_SERVICE._resetToken(data);
+    },
+    mutationKey: [RESET_PASSWORD_TOKEN],
     onSuccess: (data: AxiosResponse) => {
       const accessToken = data?.data?.data?.accessToken;
       sessionStorage.setItem("token", accessToken);
