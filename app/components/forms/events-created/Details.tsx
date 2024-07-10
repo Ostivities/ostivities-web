@@ -4,6 +4,9 @@ import { DataType } from "@/app/utils/interface";
 import { Button, Input, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "@/app/globals.css";
+import Details from "../about-event/Details";
 
 const { Search } = Input;
 
@@ -93,7 +96,7 @@ const EventTicketTable: React.FC = () => {
         <Button
           type="primary"
           shape="round"
-          style={{ borderRadius: "15px" }}
+          style={{ borderRadius: "15px", backgroundColor: "#e20000", borderColor: "#e20000" }}
         >
           View
         </Button>
