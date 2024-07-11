@@ -6,9 +6,9 @@ import type { ColumnsType } from "antd/es/table";
 import React, { useState } from "react";
 import "@/app/globals.css";
 import * as XLSX from "xlsx";
+import { DeleteOutlined, FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import { DeleteOutlined, FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
 
 const { Search } = Input;
 
@@ -141,7 +141,7 @@ const EventTicketTable: React.FC = () => {
       XLSX.writeFile(wb, "EventsCreated.xlsx");
     } else if (format === "pdf") {
       const doc = new jsPDF();
-      doc.autoTable({
+      (doc as any).autoTable({
         head: [Object.keys(exportData[0])],
         body: exportData.map((item) => Object.values(item)),
         didDrawCell: (data: { column: { index: number; }; cell: { styles: { fillColor: string; }; }; }) => {
