@@ -5,23 +5,22 @@ import {
   Paragraph,
 } from "@/app/components/typography/Typography";
 
-import { EVENT_TYPES, STATES_IN_NIGERIA, stepOne } from "@/app/utils/data";
-import { EVENT_INFO } from "@/app/utils/enums";
-import { IFormInput } from "@/app/utils/interface";
-import { DeleteOutlined, FacebookFilled, InstagramFilled, UploadOutlined } from "@ant-design/icons";
 import Dropzone from "@/app/components/Dropzone/Dropzone";
 import EventTicketTable from "@/app/components/Tables/EventTicket";
 import AddTicketModal from "@/app/components/modal/AddTicket";
 import { useFormContext } from "@/app/contexts/form-context/FormContext";
+import "@/app/globals.css";
+import { EVENT_TYPES, STATES_IN_NIGERIA, stepOne } from "@/app/utils/data";
+import { EVENT_INFO } from "@/app/utils/enums";
+import { IFormInput } from "@/app/utils/interface";
 import Ticket from "@/public/Ticket.svg";
+import { DeleteOutlined, FacebookFilled, FacebookOutlined, InstagramFilled, InstagramOutlined, LinkOutlined, TwitterOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Col, DatePicker, Input, Radio, Row, Select, Space, Upload } from "antd";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { global } from "styled-jsx/css";
-import "@/app/globals.css";
-import { TwitterOutlined, FacebookOutlined, InstagramOutlined, LinkOutlined } from '@ant-design/icons';
 
 
 
@@ -33,8 +32,6 @@ function Details(): JSX.Element {
   const [uploadedFile, setUploadedFile] = useState(null);
   
   
-
-
 
   // Example time zones in Africa
   const AFRICAN_TIME_ZONES = [
