@@ -132,6 +132,7 @@ function Details(): JSX.Element {
             type="default"
             size={"large"}
             className={`font-BricolageGrotesqueSemiBold button-style sign-in cursor-pointer font-bold`}
+            style={{ width: '150px' }}
             onClick={() => {
               setFormStep(1);
               setFormStage(formState.stage - 1);
