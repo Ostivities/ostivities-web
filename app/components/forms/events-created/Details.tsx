@@ -4,8 +4,11 @@ import { DataType } from "@/app/utils/interface";
 import { Button, Input, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import "@/app/globals.css";
+import * as XLSX from "xlsx";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import { DeleteOutlined, FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
 
 const { Search } = Input;
 
@@ -46,6 +49,13 @@ const EventTicketTable: React.FC = () => {
       ),
       dataIndex: "eventType",
       sorter: (a, b) => a.eventType.localeCompare(b.eventType),
+      filters: [
+        { text: 'Type 1', value: 'Type 1' },
+        { text: 'Type 2', value: 'Type 2' },
+        { text: 'Type 3', value: 'Type 3' },
+        // Add more types as needed
+      ],
+      onFilter: (value, record) => record.eventType.includes(value as string),
     },
     {
       title: (
@@ -75,6 +85,12 @@ const EventTicketTable: React.FC = () => {
         />
       ),
       dataIndex: "status",
+      filters: [
+        { text: 'Active', value: 'Active' },
+        { text: 'Closed', value: 'Closed' },
+        { text: 'Pending', value: 'Pending' },
+      ],
+      onFilter: (value, record) => record.status.includes(value as string),
       render: (status) => {
         let color;
         if (status === "Active") color = "green";
@@ -113,6 +129,31 @@ const EventTicketTable: React.FC = () => {
 
   const hasSelected = selectedRowKeys.length > 0;
 
+  const handleExport = (format: string) => {
+    const exportData = selectedRowKeys.length
+      ? data.filter((item) => selectedRowKeys.includes(item.key))
+      : data;
+
+    if (format === "excel") {
+      const ws = XLSX.utils.json_to_sheet(exportData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Data");
+      XLSX.writeFile(wb, "EventsCreated.xlsx");
+    } else if (format === "pdf") {
+      const doc = new jsPDF();
+      doc.autoTable({
+        head: [Object.keys(exportData[0])],
+        body: exportData.map((item) => Object.values(item)),
+        didDrawCell: (data: { column: { index: number; }; cell: { styles: { fillColor: string; }; }; }) => {
+          if (data.column.index === 0) {
+            data.cell.styles.fillColor = '#e20000';
+          }
+        },
+      });
+      doc.save("EventsCreated.pdf");
+    }
+  };
+
   return (
     <div className="w-full flex flex-col space-y-6">
       <div className="flex justify-between items-center mb-4">
@@ -122,17 +163,36 @@ const EventTicketTable: React.FC = () => {
           style={{ width: 300 }}
         />
         {hasSelected && (
-          <Button
-            type="primary"
-            danger
-            style={{ borderRadius: 15 }}
-            onClick={() => {
-              // Handle delete logic here
-              console.log('Delete selected:', selectedRowKeys);
-            }}
-          >
-            Delete
-          </Button>
+          <div>
+            <Button
+              type="primary"
+              className="font-BricolageGrotesqueSemiBold continue font-bold custom-button"
+              danger
+              style={{ borderRadius: 15, marginRight: 8 }}
+              onClick={() => {
+                // Handle delete logic here
+                console.log("Delete selected:", selectedRowKeys);
+              }}
+            >
+              <DeleteOutlined />
+            </Button>
+            <Button
+              type="default"
+              className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
+              style={{ borderRadius: 15, marginRight: 8 }}
+              onClick={() => handleExport("excel")}
+            >
+              <FileExcelOutlined />
+            </Button>
+            <Button
+              type="default"
+              className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
+              style={{ borderRadius: 15 }}
+              onClick={() => handleExport("pdf")}
+            >
+              <FilePdfOutlined />
+            </Button>
+          </div>
         )}
       </div>
       <Table
@@ -152,7 +212,7 @@ const EventTicketTable: React.FC = () => {
             setPageSize(size);
           },
         }}
-        scroll={{ x: 'max-content' }}
+        scroll={{ x: "max-content" }}
       />
     </div>
   );
