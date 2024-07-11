@@ -1,10 +1,13 @@
 'use client';
 
+import { useState } from 'react'; // Import useState hook
 import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
 import Summary from '@/app/components/Discovery/Summary';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { global } from "styled-jsx/css";
+import "@/app/globals.css";
 
 const Tickets = () => {
   const router = useRouter();
@@ -18,16 +21,26 @@ const Tickets = () => {
         onClick={() => router.back()}
         className="cursor-pointer"
       />
-
-<h1 style={{ fontSize: '24px' }}>Choose your tickets</h1>
-
+      <h1 style={{ fontSize: '24px' }}>Choose your tickets</h1>
     </div>
   );
 
+  const remainingTickets = [8, 5]; // Example remaining tickets for each type
+
+  // State to manage selected ticket counts
+  const [selectedTickets, setSelectedTickets] = useState(Array.from({ length: remainingTickets.length }, () => 0));
+
+  // Function to handle change in ticket selection
+  const handleTicketChange = (index: number, value: number) => {
+    const newSelectedTickets = [...selectedTickets];
+    newSelectedTickets[index] = value;
+    setSelectedTickets(newSelectedTickets);
+  };
+
   return (
     <DashboardLayout title={title} isLoggedIn>
-      <section className="flex gap-5">
-        <section className="flex-1 pr-16">
+      <section className="flex gap-12">
+        <section className="flex-1 pr-17">
           <div className="flex-center justify-between">
             <div className="flex-center gap-3">
               <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
@@ -53,32 +66,39 @@ const Tickets = () => {
               </div>
             </div>
           </div>
-          <div className=" mt-12 flex flex-col gap-6">
-            {Array.from({ length: 2 }, (_, index) => (
-              <div key={index} className="card-shadow">
+          <div className="mt-20 flex flex-col gap-6">
+            {remainingTickets.map((remaining, index) => (
+              <div key={index} className="card-shadow flex justify-between items-center">
                 <div>
-                  <h2 className=" text-OWANBE_PRY text-lg">Early Bird</h2>
+                  <h2 className="text-md" style={{ fontWeight: 500, fontSize: '18px' }}>Early Bird</h2>
                   <h3>
-                    <span className=" text-OWANBE_PRY text-sm">#5,000</span>{' '}
-                    Including #300 fee
+                    <span className="text-OWANBE_PRY text-xl" style={{ fontWeight: 500, fontSize: '16px' }}>₦5,000</span>{' '}
+                    <span style={{ fontWeight: 400, fontSize: '12px' }}>Including ₦300 fee</span>
                   </h3>
-                  <p className=" text-ss mt-4">
-                    lorem ipsum dolor sit amet, consectetur adicing elit. Fusce
-                    dapibus arcu id dui cursus{' '}
+                  <p style={{ fontSize: '12px', color: 'grey', marginTop: '20px' }}>
+                    Your pass to sweet music and ambiance
                   </p>
                 </div>
-                <select
-                  name="amount"
-                  id=""
-                  className=" px-2 py-1 border-[0.5px] border-[#525252] rounded-md w-16 bg-white text-lg"
-                >
-                  <option value="0">0</option>
-                  {Array.from({ length: 10 }, (_, index) => (
-                    <option key={index} value={String(index + 1)}>
-                      {String(index + 1)}
-                    </option>
-                  ))}
-                </select>
+                <div className="flex items-center">
+                  <select
+                    name={`amount-${index}`}
+                    id={`amount-${index}`}
+                    className="px-2 py-0.5 border-[0.5px] border-[#525252] rounded-md w-16 bg-white text-lg"
+                    value={selectedTickets[index]}
+                    onChange={(e) => handleTicketChange(index, parseInt(e.target.value))}
+                    required
+                  >
+                    <option value="0">0</option>
+                    {Array.from({ length: remaining }, (_, optionIndex) => (
+                      <option key={optionIndex + 1} value={optionIndex + 1}>
+                        {optionIndex + 1}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="ml-2" style={{ fontSize: '12px', color: 'grey' }}>
+                    {remaining} remaining
+                  </span>
+                </div>
               </div>
             ))}
           </div>
@@ -90,3 +110,4 @@ const Tickets = () => {
 };
 
 export default Tickets;
+

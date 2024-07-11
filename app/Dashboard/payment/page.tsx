@@ -5,10 +5,8 @@ import Summary from '@/app/components/Discovery/Summary';
 import TimerModal from '@/app/components/Modal/TimerModal';
 import { useTimer } from '@/app/hooks/countdown';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { global } from "styled-jsx/css";
 import "@/app/globals.css";
 
 const Payment = () => {
@@ -25,8 +23,7 @@ const Payment = () => {
         onClick={() => router.back()}
         className="cursor-pointer"
       />
-
-<h1 style={{ fontSize: '24px' }}>Payment Options</h1>
+      <h1 style={{ fontSize: '24px' }}>Payment Options</h1>
     </div>
   );
 
@@ -47,7 +44,7 @@ const Payment = () => {
             <span className=" text-OWANBE_PRY">{timer}</span>
             to secure your tickets.
           </div>
-          <div className="pr-16 mt-16">
+          <div className="pr-full mt-20">
             <div className="flex flex-col gap-8">
               <div className="card-shadow flex justify-between">
                 <div className="flex gap-3 items-start">
@@ -93,18 +90,15 @@ const Payment = () => {
               </div>
 
               <p className="checkbox-label">
-  <input type="checkbox" name="" id="" /> I accept the 
-  <a href="#" className="policy-link">Terms and Conditions</a>, 
-  <a href="#" className="policy-link">Refund Policy</a> and 
-  <a href="#" className="policy-link">Privacy Policy</a>.
-</p>
-            </div>
-            <div className=" mt-10">
-              <button className="primary-btn w-full">Make Payment</button>
+                <input type="checkbox" name="" id="" /> I accept the 
+                <a href="#" className="policy-link">Terms and Conditions,</a> 
+                <a href="#" className="policy-link">Refund Policy</a> and 
+                <a href="#" className="policy-link">Privacy Policy</a>
+              </p>
             </div>
           </div>
         </section>
-        <Summary />
+        <Summary paymentBtn to={"/Dashboard/payment"} />
         {modal && <TimerModal />}
       </section>
     </DashboardLayout>
