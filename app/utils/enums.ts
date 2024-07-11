@@ -6,6 +6,9 @@ export enum ACCOUNT_TYPE {
 export enum EVENT_INFO {
   SINGLE_EVENT = "SINGLE_EVENT",
   RECURRING_EVENT = "RECURRING_EVENT",
+  eventLocationType = "eventLocationType",
+  FREQUENCIES = "FREQUENCIES",
+  map = "map",
 }
 
 export enum TICKET_TYPE {

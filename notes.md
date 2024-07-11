@@ -18,9 +18,9 @@
                 <Form.Item
                   name={"eventDetails"}
                   label="Event Details"
-                  style={{ height: "200px !important" }}
+                  style={{ minheight: "200px !important" }}
                 >
-                  <Input.TextArea style={{ height: "200px !important" }} />
+                  <Input.TextArea style={{ minheight: "200px !important" }} />
                 </Form.Item>
 
                 <Form.Item

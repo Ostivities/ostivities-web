@@ -18,7 +18,7 @@ export const useRegister = () => {
       const errorMessage = error?.response?.data?.message;
       typeof errorMessage === "string"
         ? message.error(error?.response?.data?.message)
-        : message.error(error?.response?.data?.message[0]);
+        : message.error(error?.response?.data?.message?.[0]);
     },
   });
   return { registerUser };
@@ -39,7 +39,7 @@ export const useLogin = () => {
       const errorMessage = error?.response?.data?.message;
       typeof errorMessage === "string"
         ? message.error(error?.response?.data?.message)
-        : message.error(error?.response?.data?.message[0]);
+        : message.error(error?.response?.data?.message?.[0]);
     },
   });
   return { loginUser };

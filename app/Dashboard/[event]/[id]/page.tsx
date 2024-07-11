@@ -12,23 +12,24 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
       <Image
         src="/icons/back-arrow.svg"
         alt=""
-        height={30}
-        width={30}
+        height={25}
+        width={25}
         onClick={() => router.back()}
         className="cursor-pointer"
       />
 
-      <h1>Concert with davido</h1>
+<h1 style={{ fontSize: '24px' }}>Concert with Davido</h1>
+
     </div>
   );
 
   return (
-    <DashboardLayout title={title}>
+    <DashboardLayout title={title} isLoggedIn>
       <section>
         <div className="flex gap-12">
           <div className="relative w-fit rounded-[3.125rem] overflow-hidden">
             <Image
-              src="/images/placeholder.png"
+              src="/images/placeholder-6.png"
               alt=""
               height={600}
               width={464}
@@ -37,8 +38,8 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
             <div className="absolute inset-0 bg-image-card"></div>
           </div>
           <div className="py-8">
-            <h2 className="font-semibold text-3xl">About this event</h2>
-            <div className="mt-6 flex flex-col gap-12">
+            <h2 className="font-semibold text-2xl">About this event</h2>
+            <div className="mt-14 flex flex-col gap-12">
               <div className="flex gap-3">
                 <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
                   <Image
@@ -49,7 +50,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                   />
                 </div>
                 <div>
-                  <div className="text-sm">Date</div>
+                  <div className="text-sm"style={{ fontWeight: 600 }}>Date</div>
                   <div>14 December, 2023</div>
                 </div>
               </div>
@@ -58,7 +59,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                   <Image src="/icons/time.svg" alt="" height={30} width={30} />
                 </div>
                 <div>
-                  <div className="text-sm">Time</div>
+                  <div className="text-sm"style={{ fontWeight: 600 }}>Time</div>
                   <div>5:00PM - 10:00PM WAT</div>
                 </div>
               </div>
@@ -72,7 +73,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                   />
                 </div>
                 <div>
-                  <div className="text-sm">Location</div>
+                  <div className="text-sm"style={{ fontWeight: 600 }}>Location</div>
                   <div>3, Eko Hotel, Lagos </div>
                 </div>
               </div>
@@ -81,7 +82,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                   <Image src="/icons/phone.svg" alt="" height={30} width={30} />
                 </div>
                 <div>
-                  <div className="text-sm">Contact Us</div>
+                  <div className="text-sm"style={{ fontWeight: 600 }}>Contact Us</div>
                   <div className="flex-center gap-4 mt-1">
                     <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
                       <Image
@@ -125,12 +126,12 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
             now and be part of a night to remember!
             </p>
             <div className="flex justify-center mt-12">
-              <button
-                onClick={() => router.push('/Dashboard/tickets')}
-                className="rounded-full bg-OWANBE_PRY px-24 py-3 text-white text-xl font-bold"
-              >
-                Get Tickets
-              </button>
+            <button
+  onClick={() => router.push('/Dashboard/tickets')}
+  className="w-full rounded-full bg-OWANBE_PRY px-24 py-3 text-white text-xl font-bold"
+>
+  Register
+</button>
             </div>
           </div>
         </div>

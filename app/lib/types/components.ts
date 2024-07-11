@@ -49,4 +49,7 @@ export interface ToggleSwitchAttributes
   extends HTMLAttributes<HTMLInputElement> {
   description: string;
   label: string;
+  isActive: boolean;
+  onToggle: () => void;
 }
+

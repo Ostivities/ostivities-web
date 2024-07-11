@@ -7,6 +7,7 @@ import { FC, createContext, useContext, useState } from "react";
 
 const initialFormState: FormState = {
   stage: 0,
+  stages: undefined
 };
 
 const FormContext = createContext<FormContextProps | undefined>(undefined);

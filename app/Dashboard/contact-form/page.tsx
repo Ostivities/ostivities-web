@@ -4,7 +4,9 @@ import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
 import Summary from '@/app/components/Discovery/Summary';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { Form, Input, Select, Row, Col } from 'antd';
+import { useState } from 'react';
+import "@/app/globals.css";
 
 interface Inputs {
   firstName: string;
@@ -21,126 +23,125 @@ const ContactForm = () => {
       <Image
         src="/icons/back-arrow.svg"
         alt=""
-        height={30}
-        width={30}
+        height={25}
+        width={25}
         onClick={() => router.back()}
         className="cursor-pointer"
       />
-
-      <h1>Choose your Tickets</h1>
+      <h1 style={{ fontSize: '24px' }}>Contact Information</h1>
     </div>
   );
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const [form] = Form.useForm();
+  const [isFormValid, setIsFormValid] = useState(false); // State to track form validity
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onFinish = (values: Inputs) => {
+    console.log(values);
+  };
+
+  // Function to validate form and update isFormValid state
+  const validateForm = async () => {
+    try {
+      await form.validateFields();
+      setIsFormValid(true);
+    } catch (error) {
+      setIsFormValid(false);
+    }
+  };
 
   return (
-    <DashboardLayout title={title}>
+    <DashboardLayout title={title} isLoggedIn>
       <section className="flex gap-12">
-        <section className="flex-1 pr-16">
-          <div className=" bg-OWANBE_NOTIFICATION px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem]">
-            We have reserved your tickets please complete checkout within{' '}
-            <span className=" text-OWANBE_PRY">10:00</span> to secure your
-            tickets.
+        <section className="flex-1 pr-1">
+        <div className="flex-center justify-between">
+            <div className="flex-center gap-3">
+              <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
+                <Image
+                  src="/icons/calendar.svg"
+                  alt=""
+                  height={25}
+                  width={25}
+                />
+              </div>
+              <div>
+                <h3 className="text-xs">Date</h3>
+                <span>14 December, 2023</span>
+              </div>
+            </div>
+            <div className="flex-center gap-3">
+              <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
+                <Image src="/icons/time.svg" alt="" height={25} width={25} />
+              </div>
+              <div>
+                <h3 className="text-xs">Time</h3>
+                <span>5:00PM - 10:00PM WAT</span>
+              </div>
+            </div>
           </div>
-          <div className="pr-16 mt-16">
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col gap-10"
+          <div className="pr-full mt-16">
+            <Form
+              form={form}
+              onFinish={onFinish}
+              layout="vertical"
+              className="form-spacing"
+              onValuesChange={validateForm} // Validate form on any change
             >
-              <div>
-                <label htmlFor="firstname" className="grid grid-cols-6 gap-4">
-                  <span className="col-span-2 self-center">First Name</span>
-                  <input
-                    type="text"
-                    id="firstname"
-                    placeholder="Enter First Name"
-                    className="border border-[#D1D3D6] rounded-full py-2 px-3 col-span-4"
-                    {...register('firstName', { required: true })}
-                  />
-                </label>
-                {errors.firstName && <span>Please provide your first name</span>}
-              </div>
-              <div>
-                <label htmlFor="lastname" className="grid grid-cols-6 gap-4">
-                  <span className="col-span-2 self-center">Last Name</span>
-                  <input
-                    type="text"
-                    id="lastname"
-                    placeholder="Enter Last Name"
-                    className="border border-[#D1D3D6] rounded-full py-2 px-3 fle col-span-4"
-                    {...register('lastName', { required: true })}
-                  />
-                </label>
-                {errors.lastName && <span>Please provide your Last name</span>}
-              </div>
-              <div>
-                <label htmlFor="email" className="grid grid-cols-6 gap-4">
-                  <span className="col-span-2 self-center">Email Address</span>
-                  <input
-                    type="email"
-                    id="email"
-                    placeholder="Enter Email Address"
-                    className="border border-[#D1D3D6] rounded-full py-2 px-3 col-span-4"
-                    {...register('email', { required: true })}
-                  />
-                </label>
-                {errors.email && <span>Please provide your Email</span>}
-              </div>
-              <div>
-                <label
-                  htmlFor="confirmemail"
-                  className="grid grid-cols-6 gap-4"
-                >
-                  <span className="col-span-2 self-center">Confirm Email</span>
-                  <input
-                    type="text"
-                    id="confirmemail"
-                    placeholder="Confirm Email Address"
-                    className="border border-[#D1D3D6] rounded-full py-2 px-3 col-span-4"
-                    {...register('confirmEmail', { required: true })}
-                  />
-                </label>
-                {errors.confirmEmail && (
-                  <span>Please confirm your Email</span>
-                )}
-              </div>
-              <div>
-                <label htmlFor="phoneNumber" className="grid grid-cols-6 gap-4">
-                  <span className="col-span-2 self-center">Phone Number</span>
-                  <div className="flex border border-[#D1D3D6] rounded-full col-span-4">
-                    <select
-                      name="code"
-                      id="code"
-                      className="bg-transparent py-2 px-3 border-r border-[#D1D3D6]"
-                    >
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item
+                    label="First Name"
+                    name="firstName"
+                    rules={[{ required: true, message: 'Please provide your first name' }]}
+                  >
+                    <Input placeholder="Enter First Name" />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item
+                    label="Last Name"
+                    name="lastName"
+                    rules={[{ required: true, message: 'Please provide your last name' }]}
+                  >
+                    <Input placeholder="Enter Last Name" />
+                  </Form.Item>
+                </Col>
+              </Row>
+              <Form.Item
+                label="Email Address"
+                name="email"
+                rules={[{ required: true, message: 'Please provide your email' }]}
+              >
+                <Input type="email" placeholder="Enter Email Address" />
+              </Form.Item>
+              <Form.Item
+                label="Confirm Email"
+                name="confirmEmail"
+                rules={[{ required: true, message: 'Please confirm your email' }]}
+              >
+                <Input type="email" placeholder="Confirm Email Address" />
+              </Form.Item>
+              <Form.Item
+                label="Phone Number"
+                name="phoneNumber"
+                rules={[{ required: true, message: 'Please provide your phone number' }]}
+              >
+                <Input
+                  addonBefore={
+                    <Select defaultValue="231">
                       {Array.from({ length: 5 }, (_, index) => (
-                        <option key={index} value={`23${index + 1}`}>
-                          +23{String(index + 1)}
-                        </option>
+                        <Select.Option key={index} value={`23${index + 1}`}>
+                          +23{index + 1}
+                        </Select.Option>
                       ))}
-                    </select>
-                    <input
-                      type="text"
-                      id="phoneNumber"
-                      placeholder="Enter Phone Number"
-                      className="py-2 px-3"
-                      {...register('phoneNumber', { required: true })}
-                    />
-                  </div>
-                </label>
-                {errors.phoneNumber && <span>Please provide your Phone Number</span>}
-              </div>
-            </form>
+                    </Select>
+                  }
+                  placeholder="Enter Phone Number"
+                />
+              </Form.Item>
+            </Form>
           </div>
         </section>
-        <Summary continueBtn />
+        <Summary continueBtn to={"/Dashboard/payment"} />
       </section>
     </DashboardLayout>
   );

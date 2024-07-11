@@ -5,9 +5,9 @@ import Summary from '@/app/components/Discovery/Summary';
 import TimerModal from '@/app/components/Modal/TimerModal';
 import { useTimer } from '@/app/hooks/countdown';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import "@/app/globals.css";
 
 const Payment = () => {
   const router = useRouter();
@@ -18,13 +18,12 @@ const Payment = () => {
       <Image
         src="/icons/back-arrow.svg"
         alt=""
-        height={30}
-        width={30}
+        height={25}
+        width={25}
         onClick={() => router.back()}
         className="cursor-pointer"
       />
-
-      <h1>Concert with davido</h1>
+      <h1 style={{ fontSize: '24px' }}>Payment Options</h1>
     </div>
   );
 
@@ -37,7 +36,7 @@ const Payment = () => {
   }, [minutes, remainingSeconds]);
 
   return (
-    <DashboardLayout title={title}>
+    <DashboardLayout title={title} isLoggedIn>
       <section className="flex gap-12">
         <section className="flex-1">
           <div className=" bg-OWANBE_NOTIFICATION px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem]">
@@ -45,7 +44,7 @@ const Payment = () => {
             <span className=" text-OWANBE_PRY">{timer}</span>
             to secure your tickets.
           </div>
-          <div className="pr-16 mt-16">
+          <div className="pr-full mt-20">
             <div className="flex flex-col gap-8">
               <div className="card-shadow flex justify-between">
                 <div className="flex gap-3 items-start">
@@ -54,18 +53,18 @@ const Payment = () => {
                   </div>
                   <div>
                     <h2 className="text-lg text-OWANBE_PRY">
-                      Pay with Card or Bank
+                      Pay with Card
                     </h2>
                     <span className="text-ss">
                       Pay with a MasterCard, Visa, Verve Card or directly with
-                      your bank
+                      your bank.
                     </span>
                   </div>
                 </div>
                 <Image
-                  src="/images/paystack.svg"
-                  alt="paystack"
-                  height={18}
+                  src="/images/MasterCard.svg"
+                  alt="mastercard"
+                  height={25}
                   width={80}
                 />
               </div>
@@ -79,35 +78,27 @@ const Payment = () => {
                       Pay with Bank Transfer
                     </h2>
                     <span className="text-ss">
-                      Pay with a MasterCard, Visa, Verve Card or directly with
-                      your bank
+                      Make payment by transferring to our dedicated account number.
                     </span>
                   </div>
                 </div>
-                <Image
-                  src="/images/paystack.svg"
-                  alt="paystack"
-                  height={18}
-                  width={80}
-                />
               </div>
             </div>
-            <div className="flex-center gap-2 mt-3 [&>p>a]:text-OWANBE_PRY">
+            <div className="flex-center gap-2 mt-7 [&>p>a]:text-OWANBE_PRY">
               <div className="">
-                <input type="checkbox" name="" id="" />
+                
               </div>
-              <p>
-                I accept the{' '}
-                <Link href="#">terms and condition, Refund Policy</Link> and
-                <Link href="#"> Privacy Policy</Link>
+
+              <p className="checkbox-label">
+                <input type="checkbox" name="" id="" /> I accept the 
+                <a href="#" className="policy-link">Terms and Conditions,</a> 
+                <a href="#" className="policy-link">Refund Policy</a> and 
+                <a href="#" className="policy-link">Privacy Policy</a>
               </p>
-            </div>
-            <div className=" mt-10">
-              <button className="primary-btn w-full">Make Payment</button>
             </div>
           </div>
         </section>
-        <Summary />
+        <Summary paymentBtn to={"/Dashboard/payment"} />
         {modal && <TimerModal />}
       </section>
     </DashboardLayout>

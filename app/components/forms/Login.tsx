@@ -3,7 +3,7 @@ import { Small } from "@/app/components/typography/Typography";
 import { useLogin } from "@/app/hooks/auth/auth.hook";
 import Auth from "@/app/utils/Auth";
 import { ILogin } from "@/app/utils/interface";
-import { Button, Form, FormProps, Input, Space, Switch } from "antd";
+import { Button, Form, FormProps, Input, Space } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -68,23 +68,9 @@ function LoginForm(): JSX.Element {
           className="placeholder:font-BricolageGrotesqueRegular"
         />
       </Form.Item>
-      <Form.Item name="remember">
-        <div className="flex flex-row items-center justify-end">
-          <Form.Item
-            label="Remember me"
-            name="remember"
-            valuePropName="checked"
-            noStyle
-            rules={[{ required: false }]}
-          >
-            <Space direction="horizontal" size={"small"} align="baseline">
-              {/* <input type="checkbox" name="" className="cursor-pointer" />
-              <span className="font-BricolageGrotesqueRegular font-normal text-OWANBE_LIGHT_DARK">
-                Remember me
-              </span> */}
-            </Space>
-          </Form.Item>
 
+      <Form.Item>
+        <div className="flex flex-row items-center justify-end">
           <Link
             className="text-OWANBE_PRY underline hover:text-OWANBE_PRY hover:underline font-BricolageGrotesqueSemiBold font-semibold"
             href="/forgot-password"

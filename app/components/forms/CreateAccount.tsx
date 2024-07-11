@@ -1,4 +1,5 @@
 "use client";
+import "@/app/globals.css";
 import { useRegister } from "@/app/hooks/auth/auth.hook";
 import { ACCOUNT_TYPE } from "@/app/utils/enums";
 import { IUser } from "@/app/utils/interface";
@@ -15,6 +16,7 @@ import {
 } from "antd";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { global } from "styled-jsx/css";
 
 function CreateAccount(): JSX.Element {
   const router = useRouter();
@@ -23,14 +25,12 @@ function CreateAccount(): JSX.Element {
   const { Option } = Select;
   const [val, setval] = useState<string>("");
 
-  const accountType: string = Form.useWatch("event", form);
-
   const onFinish: FormProps<IUser>["onFinish"] = async (values) => {
     if (values) {
       const response = await registerUser.mutateAsync(values);
       if (response.status === 201) {
         form.resetFields();
-        router.push("/login", { shallow: true });
+        router.push("/login");
       }
     }
   };
@@ -64,7 +64,7 @@ function CreateAccount(): JSX.Element {
           )
         }
       >
-        <Form.Item
+        <Form.Item<IUser>
           name="accountType"
           noStyle
           rules={[
@@ -74,25 +74,33 @@ function CreateAccount(): JSX.Element {
             },
           ]}
         >
-          <Select placeholder="Select">
+          <Select
+            placeholder="Select"
+            onChange={(e) => {
+              setval(e);
+            }}
+          >
             <Option value={ACCOUNT_TYPE.PERSONAL}>Personal</Option>
             <Option value={ACCOUNT_TYPE.ORGANISATION}>Organization</Option>
           </Select>
         </Form.Item>
       </Form.Item>
 
-      {accountType === ACCOUNT_TYPE.ORGANISATION ? (
+      {val === ACCOUNT_TYPE.ORGANISATION ? (
         <Form.Item
-          label="Registered Business Name"
+          label="Business Name"
           style={{ fontFamily: "BricolageGrotesqueRegular" }}
           className="font-BricolageGrotesqueRegular !mt-3"
         >
-          <Form.Item
+          <Form.Item<IUser>
             name="businessName"
             label="Business Name"
             noStyle
             rules={[
-              { required: true, message: "Please input your Business Name" },
+              {
+                required: val === ACCOUNT_TYPE.ORGANISATION,
+                message: "Please input your Business Name",
+              },
             ]}
           >
             <Input
@@ -110,11 +118,16 @@ function CreateAccount(): JSX.Element {
               style={{ fontFamily: "BricolageGrotesqueRegular" }}
               className="font-BricolageGrotesqueRegular"
             >
-              <Form.Item
+              <Form.Item<IUser>
                 name="firstName"
                 label="First Name"
                 noStyle
-                rules={[{ required: true, message: "Please input first name" }]}
+                rules={[
+                  {
+                    required: val === ACCOUNT_TYPE.PERSONAL,
+                    message: "Please input first name",
+                  },
+                ]}
               >
                 <Input
                   placeholder="Enter your first name "
@@ -129,11 +142,16 @@ function CreateAccount(): JSX.Element {
               style={{ fontFamily: "BricolageGrotesqueRegular" }}
               className="font-BricolageGrotesqueRegular"
             >
-              <Form.Item
+              <Form.Item<IUser>
                 name="lastName"
                 label="Last Name"
                 noStyle
-                rules={[{ required: true, message: "Please input last name" }]}
+                rules={[
+                  {
+                    required: val === ACCOUNT_TYPE.PERSONAL,
+                    message: "Please input last name",
+                  },
+                ]}
               >
                 <Input
                   placeholder="Enter your last name"
@@ -150,7 +168,7 @@ function CreateAccount(): JSX.Element {
         style={{ fontFamily: "BricolageGrotesqueRegular" }}
         className="font-BricolageGrotesqueRegular"
       >
-        <Form.Item
+        <Form.Item<IUser>
           noStyle
           name="email"
           rules={[{ required: true, message: "Please input your email" }]}
@@ -165,7 +183,7 @@ function CreateAccount(): JSX.Element {
 
       <Row gutter={8}>
         <Col span={12}>
-          <Form.Item
+          <Form.Item<IUser>
             label="Password"
             name="password"
             hasFeedback
@@ -179,7 +197,7 @@ function CreateAccount(): JSX.Element {
         </Col>
 
         <Col span={12}>
-          <Form.Item
+          <Form.Item<IUser>
             name="confirmPassword"
             label="Confirm Password"
             dependencies={["password"]}
@@ -223,14 +241,24 @@ function CreateAccount(): JSX.Element {
           </a>
         </span>
       </label> */}
-      <Form.Item
-        name="remember"
+      <Form.Item<IUser>
+        name="terms_and_condition"
         valuePropName="checked"
         rules={[
-          { required: true, message: "Please read the Terms and Conditions" },
+          { required: true, message: "Please accept the Terms and Conditions" },
         ]}
       >
-        <Checkbox>Terms and Conditions</Checkbox>
+        <Checkbox>
+          I accept the{" "}
+          <a
+            href="/terms-and-conditions"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#e20000", textDecoration: "none" }}
+          >
+            Terms and Conditions
+          </a>
+        </Checkbox>
       </Form.Item>
 
       <Form.Item>

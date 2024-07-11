@@ -1,3 +1,5 @@
+import React from "react";
+
 export enum ACCOUNT_TYPE {
   PERSONAL = "PERSONAL",
   ORGANISATION = "ORGANISATION",
@@ -31,8 +33,12 @@ export interface IDashboard {
   tab?: React.ReactNode;
   steppers?: React.ReactNode;
   extraComponents?: React.ReactNode;
+  isLoggedIn?: Boolean | React.ReactNode;
 }
 
+export interface IHeader {
+  isLoggedIn?: Boolean | React.ReactNode;
+}
 export interface IFormProps {
   formStep?: number;
   nextFormStep?: () => void;
@@ -53,6 +59,10 @@ export interface IFormInput {
   endDateAndTime: any;
   eventFrequency?: string;
   eventImage?: string;
+  websiteUrl?: string;
+  twitterUrl?: string;
+  facebookUrl?: string;
+  instagramUrl?: string;
 }
 
 export interface IModal {
@@ -76,6 +86,7 @@ export interface FormContextProps {
 }
 
 export interface FormState {
+  stages: any;
   stage: number | any;
 }
 
@@ -85,9 +96,16 @@ export interface FormProviderProps {
 
 export interface DataType {
   key: React.Key;
-  name: string;
-  age: number;
-  address: string;
+  eventName: string;
+  eventType: string;
+  ticketSold: number;
+  type?: string; // Optional, since it's not used in the data generation
+  sold?: number; // Optional, since it's not used in the data generation
+  dateCreated: string | number | Date;
+  status: "Active" | "Closed" | "Pending";
+  name?: string; // Optional, since it's not used in the data generation
+  age?: number | any; // Optional, since it's not used in the data generation
+  address?: string; // Optional, since it's not used in the data generation
 }
 
 export interface IUser {
@@ -97,7 +115,8 @@ export interface IUser {
   password: string;
   accountType: ACCOUNT_TYPE;
   confirmPassword: string;
-  remember: boolean;
+  terms_and_condition: boolean;
+  businessName: string;
 }
 
 export interface ILogin {

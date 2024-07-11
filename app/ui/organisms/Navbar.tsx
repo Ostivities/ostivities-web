@@ -62,7 +62,7 @@ const Navbar = ({ setCollapsed }: { setCollapsed: () => void }) => {
           <Image
             src={Hamburger}
             alt="Owanbe Logo"
-            style={{ width: "40px", height: "35px" }}
+            style={{ width: "40px", height: "35px", borderRadius: '10px' }}
             className="cursor-pointer"
             onClick={setCollapsed}
           />
@@ -75,12 +75,12 @@ const Navbar = ({ setCollapsed }: { setCollapsed: () => void }) => {
           size={"small"}
         >
           <div className="mt-5">
-            <Badge count={1}>
+            <Badge count={2}>
               <BellFilled
                 className="cursor-pointer"
                 style={{
                   fontSize: "26px",
-                  color: "#8C95A1",
+                  color: "#757474",
                 }}
               />
             </Badge>
@@ -94,7 +94,7 @@ const Navbar = ({ setCollapsed }: { setCollapsed: () => void }) => {
                 cursor: "pointer",
               }}
             >
-              IR
+              OR
             </Avatar>
           </Dropdown>
         </Space>
