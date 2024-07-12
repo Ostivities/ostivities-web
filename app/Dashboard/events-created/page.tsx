@@ -14,7 +14,7 @@ function Events(): JSX.Element {
     }else {
       router.push('/Dashboard/events-created')  
     }
-  }, [activeTab])
+  }, [activeTab, router])
 
   const title = (
     <div className="flex justify-between items-center w-full relative pb-2">

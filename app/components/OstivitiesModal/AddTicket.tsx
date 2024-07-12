@@ -1,5 +1,3 @@
-import CollectiveTicket from "@/app/components/Modal/CollectiveTicket";
-import SingleTicket from "@/app/components/Modal/SingleTicket";
 import { Heading5 } from "@/app/components/typography/Typography";
 import { useFormContext } from "@/app/contexts/form-context/FormContext";
 import { FieldType, IModal } from "@/app/utils/interface";
@@ -11,50 +9,10 @@ import { Button, Modal, Space } from "antd";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import CollectiveTicket from "./CollectiveTicket";
+import SingleTicket from "./SingleTicket";
 
-interface AddTicketModalProps extends IModal {
-  singleTicketTitle?: string;
-  singleTicketSubtitle?: string;
-  collectiveTicketTitle?: string;
-  collectiveTicketSubtitle?: string;
-  continueButtonText?: string;
-  cancelButtonText?: string;
-  addButtonText?: string;
-  modalWidth?: number;
-  singleTicketStyles?: React.CSSProperties;
-  collectiveTicketStyles?: React.CSSProperties;
-  modalStyles?: {
-    header?: string;
-    body?: string;
-    content?: string;
-    footer?: string;
-  };
-  singleTicketTitleFontSize?: string;
-  singleTicketSubtitleFontSize?: string;
-  collectiveTicketTitleFontSize?: string;
-  collectiveTicketSubtitleFontSize?: string;
-}
-
-function AddTicketModal({
-  open,
-  onCancel,
-  onOk,
-  singleTicketTitle = "Single Ticket",
-  singleTicketSubtitle = "Grants entry for one person to the event.",
-  collectiveTicketTitle = "Collective Ticket",
-  collectiveTicketSubtitle = "Grants entry for more than one person to the event.",
-  continueButtonText = "Continue",
-  cancelButtonText = "Cancel",
-  addButtonText = "Add Ticket",
-  modalWidth = 700,
-  singleTicketStyles,
-  collectiveTicketStyles,
-  modalStyles,
-  singleTicketTitleFontSize = "1.25rem", // Default font size for the single ticket title
-  singleTicketSubtitleFontSize = "0.8rem", // Default font size for the single ticket subtitle
-  collectiveTicketTitleFontSize = "1.25rem", // Default font size for the collective ticket title
-  collectiveTicketSubtitleFontSize = "0.8rem" // Default font size for the collective ticket subtitle
-}: AddTicketModalProps): JSX.Element {
+function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
   const { formState, setFormStage } = useFormContext();
   const [activeItem, setActive] = useState<string>("");
   const [show, setShow] = useState<boolean>(false);
@@ -71,6 +29,7 @@ function AddTicketModal({
     watch,
     trigger,
   } = useForm<FieldType>({
+    // resolver: yupResolver(schema),
     progressive: true,
     mode: "all",
   });
@@ -97,9 +56,9 @@ function AddTicketModal({
           setShow(false);
           setActive("");
         }}
-        className={modalStyles?.content}
-        width={modalWidth}
-        footer={(
+        classNames={{ header: "", body: "", content: "", footer: "" }}
+        width={700}
+        footer={(params: any) => (
           <div className="flex flex-row items-center justify-center py-6">
             {show ? (
               <Space>
@@ -113,7 +72,7 @@ function AddTicketModal({
                     }
                   }}
                 >
-                  {cancelButtonText}
+                  Cancel
                 </Button>
                 <Button
                   type="primary"
@@ -127,7 +86,7 @@ function AddTicketModal({
                     setFormStage(formState.stage + 1);
                   }}
                 >
-                  {addButtonText}
+                  Save
                 </Button>
               </Space>
             ) : (
@@ -145,7 +104,7 @@ function AddTicketModal({
                   fontFamily: "BricolageGrotesqueMedium",
                 }}
               >
-                {continueButtonText}
+                Continue
               </Button>
             )}
           </div>
@@ -168,11 +127,10 @@ function AddTicketModal({
                   : ""
               } transition-all ease-in-out`}
               onClick={() => setActive("Single Ticket")}
-              style={singleTicketStyles}
             >
               <div className="flex flex-col space-y- justify-center items-center">
                 {activeItem === "Single Ticket" ? (
-                  <h6 className="ticket-title text-center" style={{ fontSize: singleTicketTitleFontSize }}>{singleTicketTitle}</h6>
+                  <h6 className="ticket-title text-center">Single Ticket</h6>
                 ) : (
                   <h5
                     className={`${
@@ -180,15 +138,14 @@ function AddTicketModal({
                         ? "ticket-title text-OWANBE_PRY text-center"
                         : ""
                     }`}
-                    style={{ fontSize: singleTicketTitleFontSize }}
                   >
-                    {singleTicketTitle}
+                    Single Ticket
                   </h5>
                 )}
 
                 {activeItem === "Single Ticket" ? (
-                  <span className="ticket-subtitle text-center" style={{ fontSize: singleTicketSubtitleFontSize }}>
-                    {singleTicketSubtitle}
+                  <span className="ticket-subtitle text-center">
+                    Grants entry for one person to the event.
                   </span>
                 ) : (
                   <p
@@ -197,9 +154,8 @@ function AddTicketModal({
                         ? "text-OWANBE_PRY text-center"
                         : "text-center"
                     }`}
-                    style={{ fontSize: singleTicketSubtitleFontSize }}
                   >
-                    {singleTicketSubtitle}
+                    Grants entry for one person to the event.
                   </p>
                 )}
               </div>
@@ -218,39 +174,36 @@ function AddTicketModal({
                   : ""
               } transition-all ease-in-out`}
               onClick={() => setActive("Collective Ticket")}
-              style={collectiveTicketStyles}
             >
               <div className="flex flex-col space-y-2 justify-center items-center">
                 {activeItem === "Collective Ticket" ? (
-                  <h6 className="ticket-title text-center" style={{ fontSize: collectiveTicketTitleFontSize }}>
-                    {collectiveTicketTitle}
+                  <h6 className="ticket-title text-center">
+                    Collective Ticket
                   </h6>
                 ) : (
                   <h5
                     className={`${
-                      activeItem === "Collective Ticket"
+                      activeItem === "Single Ticket"
                         ? "ticket-title text-OWANBE_PRY text-center"
                         : ""
                     }`}
-                    style={{ fontSize: collectiveTicketTitleFontSize }}
                   >
-                    {collectiveTicketTitle}
+                    Collective Ticket
                   </h5>
                 )}
                 {activeItem === "Collective Ticket" ? (
-                  <span className="ticket-subtitle text-center" style={{ fontSize: collectiveTicketSubtitleFontSize }}>
-                    {collectiveTicketSubtitle}
+                  <span className="ticket-subtitle text-center">
+                    Grants entry for more than one person to the event.
                   </span>
                 ) : (
                   <p
                     className={`${
-                      activeItem === "Collective Ticket"
+                      activeItem === "Single Ticket"
                         ? "ticket-subtitle text-OWANBE_PRY text-center"
                         : ""
                     }`}
-                    style={{ fontSize: collectiveTicketSubtitleFontSize }}
                   >
-                    {collectiveTicketSubtitle}
+                    Grants entry for more than one person to the event.
                   </p>
                 )}
               </div>

@@ -2,7 +2,7 @@
 
 import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
 import Summary from '@/app/components/Discovery/Summary';
-import TimerModal from '@/app/components/Modal/TimerModal';
+import TimerModal from '@/app/components/OstivitiesModal/TimerModal';
 import { useTimer } from '@/app/hooks/countdown';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
