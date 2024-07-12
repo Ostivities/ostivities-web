@@ -1,18 +1,25 @@
-import { Heading5, Label } from "@/app/components/typography/Typography";
+import CollectiveTicket from "@/app/components/modal/CollectiveTicket";
+import SingleTicket from "@/app/components/modal/SingleTicket";
+import { Heading5 } from "@/app/components/typography/Typography";
 import { useFormContext } from "@/app/contexts/form-context/FormContext";
-import { TICKET_TYPE } from "@/app/utils/enums";
 import { FieldType, IModal } from "@/app/utils/interface";
+import TicketDoubleDark from "@/public/ticket-double-dark.svg";
+import TicketDoubleRed from "@/public/ticket-double-red.svg";
+import TicketSingleRed from "@/public/Ticket-redsvg.svg";
 import Ticket from "@/public/Ticket-Slant.svg";
-import { Button, Form, Input, Modal, Select, Space } from "antd";
+import { Button, Modal, Space } from "antd";
 import Image from "next/image";
-import React, { useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import React, { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
   const { formState, setFormStage } = useFormContext();
-  const { Option } = Select;
   const [activeItem, setActive] = useState<string>("");
   const [show, setShow] = useState<boolean>(false);
+
+  useEffect(() => {
+    setActive("Single Ticket");
+  }, []);
 
   const {
     register,
@@ -79,18 +86,22 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
                     setFormStage(formState.stage + 1);
                   }}
                 >
-                  Continue
+                  Save
                 </Button>
               </Space>
             ) : (
               <Button
                 type="primary"
                 size={"large"}
-                className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
+                className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64 rounded-2xl"
                 onClick={() => {
                   if (activeItem !== "") {
                     setShow(true);
                   }
+                }}
+                style={{
+                  borderRadius: "16px",
+                  fontFamily: "BricolageGrotesqueMedium",
                 }}
               >
                 Continue
@@ -100,110 +111,31 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
         )}
       >
         {show ? (
-          <form
-            className="w-full flex flex-col space-y-7 mt-8 pt-3"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <div className="flex flex-row items-center">
-              <Label content="Ticket Type" className="w-1/3" />
-              <Controller
-                name="ticketType"
-                control={control}
-                render={({ field }) => (
-                  <Select
-                    placeholder="Select Ticket Type"
-                    {...field}
-                    style={{ width: "100%" }}
-                    className="w-3/4"
-                  >
-                    <Option value={TICKET_TYPE.PAID}>Paid</Option>
-                    <Option value={TICKET_TYPE.FREE}>Free</Option>
-                  </Select>
-                )}
-              />
-            </div>
-
-            <div className="flex flex-row items-center">
-              <Label content="Ticket Name" className="w-1/3" />
-              <Controller
-                name="ticketName"
-                control={control}
-                render={({ field }) => (
-                  <Input {...field} placeholder="Enter Ticket Name" />
-                )}
-              />
-            </div>
-
-            <div className="flex flex-row items-center">
-              <Label content="Ticket Stock" className="w-1/3" />
-              <Controller
-                name="ticketStock"
-                control={control}
-                render={({ field }) => (
-                  <Input {...field} placeholder="Enter Ticket Name" />
-                )}
-              />
-            </div>
-
-            <div className="flex flex-row items-center">
-              <Label content="Ticket Price" className="w-1/3" />
-              <Controller
-                name="ticketPrice"
-                control={control}
-                render={({ field }) => (
-                  <Input {...field} placeholder="Enter Ticket Price" />
-                )}
-              />
-            </div>
-
-            <div className="flex flex-row items-center">
-              <Label content="Purchase Limit" className="w-1/3" />
-              <Controller
-                name="purchaseLimit"
-                control={control}
-                render={({ field }) => (
-                  <Input {...field} placeholder="Enter Purchase Limit" />
-                )}
-              />
-            </div>
-
-            <div className="flex flex-row items-start">
-              <Label content="Ticket Description" className="w-1/3" />
-              <Controller
-                name="ticketDescription"
-                control={control}
-                render={({ field }) => (
-                  <Input.TextArea
-                    {...field}
-                    placeholder="Enter Description"
-                    style={{
-                      height: "200px !important",
-                      paddingTop: "10px !important",
-                    }}
-                    className="py-3"
-                  />
-                )}
-              />
-            </div>
-          </form>
+          <>
+            {activeItem === "Single Ticket" ? (
+              <SingleTicket />
+            ) : (
+              <CollectiveTicket />
+            )}
+          </>
         ) : (
-          <div className="flex flex-col space-y-7 py-9">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-6 py-9">
             <div
-              className={`w-full py-8 flex flex-row items-start justify-between ticket-category px-6 ${
+              className={`w-full flex flex-col space-y-9 items-center justify-center py-9 px-6 ticket-category ${
                 activeItem === "Single Ticket"
                   ? "border border-OWANBE_PRY rounded-[20px]"
                   : ""
               } transition-all ease-in-out`}
               onClick={() => setActive("Single Ticket")}
             >
-              <div className="flex flex-col space-y-2">
+              <div className="flex flex-col space-y- justify-center items-center">
                 {activeItem === "Single Ticket" ? (
-                  <h6 className="ticket-title">Single Ticket</h6>
+                  <h6 className="ticket-title text-center">Single Ticket</h6>
                 ) : (
                   <h5
                     className={`${
                       activeItem === "Single Ticket"
-                        ? "ticket-title text-OWANBE_PRY"
+                        ? "ticket-title text-OWANBE_PRY text-center"
                         : ""
                     }`}
                   >
@@ -212,13 +144,15 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
                 )}
 
                 {activeItem === "Single Ticket" ? (
-                  <span className="ticket-subtitle">
+                  <span className="ticket-subtitle text-center">
                     Grants entry for one person to the event.
                   </span>
                 ) : (
                   <p
                     className={`${
-                      activeItem === "Single Ticket" ? "text-OWANBE_PRY" : ""
+                      activeItem === "Single Ticket"
+                        ? "text-OWANBE_PRY text-center"
+                        : "text-center"
                     }`}
                   >
                     Grants entry for one person to the event.
@@ -226,25 +160,31 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
                 )}
               </div>
 
-              <Image src={Ticket} alt="ticket" />
+              <Image
+                src={activeItem === "Single Ticket" ? Ticket : TicketSingleRed}
+                alt="ticket"
+                className="mx-auto"
+              />
             </div>
 
             <div
-              className={`w-full py-8 flex flex-row items-start justify-between ticket-category px-6 ${
+              className={`w-full flex flex-col space-y-9 items-center justify-center py-9 px-6 ticket-category ${
                 activeItem === "Collective Ticket"
                   ? "border border-OWANBE_PRY rounded-[20px]"
                   : ""
               } transition-all ease-in-out`}
               onClick={() => setActive("Collective Ticket")}
             >
-              <div className="flex flex-col space-y-2">
+              <div className="flex flex-col space-y-2 justify-center items-center">
                 {activeItem === "Collective Ticket" ? (
-                  <h6 className="ticket-title">Collective Ticket</h6>
+                  <h6 className="ticket-title text-center">
+                    Collective Ticket
+                  </h6>
                 ) : (
                   <h5
                     className={`${
                       activeItem === "Single Ticket"
-                        ? "ticket-title text-OWANBE_PRY"
+                        ? "ticket-title text-OWANBE_PRY text-center"
                         : ""
                     }`}
                   >
@@ -252,14 +192,14 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
                   </h5>
                 )}
                 {activeItem === "Collective Ticket" ? (
-                  <span className="ticket-subtitle">
+                  <span className="ticket-subtitle text-center">
                     Grants entry for more than one person to the event.
                   </span>
                 ) : (
                   <p
                     className={`${
                       activeItem === "Single Ticket"
-                        ? "ticket-subtitle text-OWANBE_PRY"
+                        ? "ticket-subtitle text-OWANBE_PRY text-center"
                         : ""
                     }`}
                   >
@@ -267,7 +207,15 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
                   </p>
                 )}
               </div>
-              <Image src={Ticket} alt="ticket" />
+              <Image
+                src={
+                  activeItem === "Collective Ticket"
+                    ? TicketDoubleRed
+                    : TicketDoubleDark
+                }
+                alt="ticket"
+                className="mx-auto"
+              />
             </div>
           </div>
         )}

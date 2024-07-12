@@ -4,21 +4,23 @@ import {
   Label,
   Paragraph,
 } from "@/app/components/typography/Typography";
-import { EVENT_TYPES, STATES_IN_NIGERIA, stepOne } from "@/app/utils/data";
-import { EVENT_INFO } from "@/app/utils/enums";
-import { IFormInput } from "@/app/utils/interface";
-import { DeleteOutlined, FacebookFilled, InstagramFilled, UploadOutlined, TwitterOutlined, LinkOutlined } from "@ant-design/icons";
+
 import Dropzone from "@/app/components/Dropzone/Dropzone";
 import EventTicketTable from "@/app/components/Tables/EventTicket";
 import AddTicketModal from "@/app/components/modal/AddTicket";
 import { useFormContext } from "@/app/contexts/form-context/FormContext";
+import "@/app/globals.css";
+import { EVENT_TYPES, STATES_IN_NIGERIA, stepOne } from "@/app/utils/data";
+import { EVENT_INFO } from "@/app/utils/enums";
+import { IFormInput } from "@/app/utils/interface";
 import Ticket from "@/public/Ticket.svg";
+import { DeleteOutlined, FacebookFilled, InstagramFilled, LinkOutlined, TwitterOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Col, DatePicker, Input, Radio, Row, Select, Space, Upload } from "antd";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import "@/app/globals.css";
+
 
 function Details(): JSX.Element {
   const router = useRouter();
@@ -27,7 +29,7 @@ function Details(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [userName, setUserName] = useState("Rose"); // default value
-
+  
   const AFRICAN_TIME_ZONES = [
     { label: "West Africa Time (WAT)", value: "WAT" },
     { label: "Central Africa Time (CAT)", value: "CAT" },
