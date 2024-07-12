@@ -1,37 +1,46 @@
-'use client';
+"use client";
 
-import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import { IResetToken } from "@/app/utils/interface";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import { Button, Form, FormProps, Input } from "antd";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 function ForgotPasswordForm(): JSX.Element {
   const router = useRouter();
   const [form] = Form.useForm();
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
 
-  const onFinish = (value: object) => {
+  const onFinish: FormProps<IResetToken>["onFinish"] = (value) => {
     console.log(value);
   };
+
+  const onFinishFailed: FormProps<IResetToken>["onFinishFailed"] = (
+    errorInfo
+  ) => {
+    return errorInfo;
+  };
+
   return (
     <Form
       name="validateOnly"
       layout="vertical"
       onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
       autoComplete="off"
       form={form}
       className="w-full font-BricolageGrotesqueRegular flex flex-col"
-      style={{ fontFamily: 'BricolageGrotesqueRegular' }}
+      style={{ fontFamily: "BricolageGrotesqueRegular" }}
     >
       <Form.Item
         label="Email Address"
-        style={{ fontFamily: 'BricolageGrotesqueRegular' }}
+        style={{ fontFamily: "BricolageGrotesqueRegular" }}
         className="font-BricolageGrotesqueRegular"
       >
         <Form.Item
           name="emailAddress"
           noStyle
-          rules={[{ required: true, message: 'Please input your email' }]}
+          rules={[{ required: true, message: "Please input your email" }]}
         >
           <Input
             type="email"
@@ -52,18 +61,18 @@ function ForgotPasswordForm(): JSX.Element {
         </div>
       </div>
 
-      <Form.Item style={{ marginTop: '20px' }}>
+      <Form.Item style={{ marginTop: "20px" }}>
         <Button
           type="primary"
           htmlType="submit"
           className="font-BricolageGrotesqueLight text-base"
           style={{
-            background: '#E20000',
-            borderRadius: '20px',
-            width: '100%',
-            height: '51px',
+            background: "#E20000",
+            borderRadius: "20px",
+            width: "100%",
+            height: "51px",
           }}
-          onClick={() => email !== '' && router.push('/password-reset')}
+          onClick={() => email !== "" && router.push("/password-reset")}
         >
           Continue
         </Button>

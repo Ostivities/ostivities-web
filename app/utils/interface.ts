@@ -123,3 +123,8 @@ export interface ILogin {
   email: string;
   password: string;
 }
+
+export interface IResetToken {
+  email: string;
+  originUrl: string;
+}
