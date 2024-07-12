@@ -1,8 +1,8 @@
+import "@/app/globals.css";
+import { Controller } from "react-hook-form";
 import Button from "../../atoms/Button";
 import H4 from "../../atoms/H4";
 import Input from "../../atoms/Input";
-import { Controller } from "react-hook-form";
-import "@/app/globals.css";
 
 const UserProfile = () => {
   const inputStyle = {
@@ -62,7 +62,7 @@ const UserProfile = () => {
                 <label className="input-label">Last Name</label>
                 <Input
                   {...field}
-                  placeholder="Enter Last Name"
+                  placeholder={"Enter Last Name"}
                   style={inputStyle}
                   className="input-field"
                 />
