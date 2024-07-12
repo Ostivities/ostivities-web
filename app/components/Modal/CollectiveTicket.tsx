@@ -11,6 +11,7 @@ const CollectiveTicket = (): JSX.Element => {
   const [groupPrice, setGroupPrice] = useState<number | null>(null);
   const [groupSize, setGroupSize] = useState<number | null>(null);
   const [pricePerTicket, setPricePerTicket] = useState<number | null>(null);
+  const [ticketStockValue, setTicketStockValue] = useState<string>("limited"); // Default to "limited"
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     console.log("Success:", values);
@@ -37,7 +38,11 @@ const CollectiveTicket = (): JSX.Element => {
   };
 
   const prefixSelector = (
-    <Select defaultValue="unlimited" style={{ width: 120 }}>
+    <Select
+      defaultValue="limited"
+      style={{ width: 120 }}
+      onChange={(value: string) => setTicketStockValue(value)}
+    >
       <Option value="limited">Limited</Option>
       <Option value="unlimited">Unlimited</Option>
     </Select>
@@ -78,7 +83,11 @@ const CollectiveTicket = (): JSX.Element => {
         rules={[{ required: true, message: "Please input your ticket stock!" }]}
         style={{ marginBottom: '8px' }}
       >
-        <Input addonBefore={prefixSelector} placeholder="Enter ticket stock" />
+        <Input
+          addonBefore={prefixSelector}
+          placeholder={ticketStockValue === "unlimited" ? "∞" : "Enter ticket stock"}
+          disabled={ticketStockValue === "unlimited"}
+        />
       </Form.Item>
 
       <Form.Item<FieldType>
