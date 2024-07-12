@@ -4,7 +4,6 @@ import {
   Label,
   Paragraph,
 } from "@/app/components/typography/Typography";
-
 import Dropzone from "@/app/components/Dropzone/Dropzone";
 import EventTicketTable from "@/app/components/Tables/EventTicket";
 import AddTicketModal from "@/app/components/modal/AddTicket";
