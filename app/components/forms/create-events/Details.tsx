@@ -6,7 +6,7 @@ import {
 } from "@/app/components/typography/Typography";
 import Dropzone from "@/app/components/Dropzone/Dropzone";
 import EventTicketTable from "@/app/components/Tables/EventTicket";
-import AddTicketModal from "@/app/components/modal/AddTicket";
+import AddTicketModal from "@/app/components/Modal/AddTicket";
 import { useFormContext } from "@/app/contexts/form-context/FormContext";
 import "@/app/globals.css";
 import { EVENT_TYPES, STATES_IN_NIGERIA, stepOne } from "@/app/utils/data";
