@@ -143,7 +143,7 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
                   </h5>
                 )}
 
-                {activeItem === "Single Ticket" ? (
+{activeItem === "Single Ticket" ? (
                   <span className="ticket-subtitle text-center">
                     Grants entry for one person to the event.
                   </span>
@@ -152,12 +152,12 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
                     className={`${
                       activeItem === "Single Ticket"
                         ? "text-OWANBE_PRY text-center"
-                        : "text-center"
+                        : "text-center mx-auto"
                     }`}
                   >
                     Grants entry for one person to the event.
                   </p>
-                )}
+                )}
               </div>
 
               <Image
