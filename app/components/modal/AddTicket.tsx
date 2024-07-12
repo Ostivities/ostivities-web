@@ -1,5 +1,5 @@
-import CollectiveTicket from "@/app/components/modal/CollectiveTicket";
-import SingleTicket from "@/app/components/modal/SingleTicket";
+import CollectiveTicket from "@/app/components/Modal/CollectiveTicket";
+import SingleTicket from "@/app/components/Modal/SingleTicket";
 import { Heading5 } from "@/app/components/typography/Typography";
 import { useFormContext } from "@/app/contexts/form-context/FormContext";
 import { FieldType, IModal } from "@/app/utils/interface";

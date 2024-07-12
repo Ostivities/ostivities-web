@@ -4,7 +4,6 @@ import {
   Label,
   Paragraph,
 } from "@/app/components/typography/Typography";
-
 import Dropzone from "@/app/components/Dropzone/Dropzone";
 import EventTicketTable from "@/app/components/Tables/EventTicket";
 import AddTicketModal from "@/app/components/modal/AddTicket";
@@ -14,14 +13,12 @@ import { EVENT_TYPES, STATES_IN_NIGERIA, stepOne } from "@/app/utils/data";
 import { EVENT_INFO } from "@/app/utils/enums";
 import { IFormInput } from "@/app/utils/interface";
 import Ticket from "@/public/Ticket.svg";
-import { DeleteOutlined, FacebookFilled, FacebookOutlined, InstagramFilled, InstagramOutlined, LinkOutlined, TwitterOutlined, UploadOutlined } from "@ant-design/icons";
+import { DeleteOutlined, FacebookFilled, InstagramFilled, LinkOutlined, TwitterOutlined, UploadOutlined } from "@ant-design/icons";
 import { Button, Col, DatePicker, Input, Radio, Row, Select, Space, Upload } from "antd";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { global } from "styled-jsx/css";
-
 
 
 function Details(): JSX.Element {
@@ -30,10 +27,8 @@ function Details(): JSX.Element {
   const [formStep, setFormStep] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [uploadedFile, setUploadedFile] = useState(null);
+  const [userName, setUserName] = useState("Rose"); // default value
   
-  
-
-  // Example time zones in Africa
   const AFRICAN_TIME_ZONES = [
     { label: "West Africa Time (WAT)", value: "WAT" },
     { label: "Central Africa Time (CAT)", value: "CAT" },
@@ -41,7 +36,6 @@ function Details(): JSX.Element {
     { label: "East Africa Time (EAT)", value: "EAT" },
   ];
 
-  // Example event frequencies
   const EVENT_FREQUENCIES = [
     { label: "Daily", value: "daily" },
     { label: "Weekly", value: "weekly" },
@@ -70,6 +64,22 @@ function Details(): JSX.Element {
     });
     return () => subscription.unsubscribe();
   }, [watch]);
+
+  useEffect(() => {
+    // Simulate fetching user data
+    const fetchUserData = async () => {
+      // Fetch user data here, e.g., from an API or context
+      const user = {
+        firstName: "Rose",
+        businessName: "Ostivities"
+      };
+      
+      const name = user.firstName || user.businessName || "User";
+      setUserName(name);
+    };
+
+    fetchUserData();
+  }, []);
 
   const onSubmit: SubmitHandler<IFormInput> = (data: any) => {
     console.log(data, "data");
@@ -106,7 +116,7 @@ function Details(): JSX.Element {
             className=""
             content={
               formStep === 1
-                ? "Hello, Rose"
+                ? `Hello, ${userName}`
                 : formStep === 2
                 ? "Event Image/Appearance"
                 : "Event Ticket"
