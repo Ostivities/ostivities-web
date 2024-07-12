@@ -9,7 +9,7 @@ const SingleTicket = (): JSX.Element => {
   const { Option } = Select;
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    console.log("Success:", values);
+    return values;
   };
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
