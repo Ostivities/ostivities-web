@@ -1,19 +1,5 @@
-import {
-  CloseOutlined,
-  MinusCircleOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
-import {
-  Button,
-  Card,
-  Checkbox,
-  Form,
-  FormProps,
-  Input,
-  Select,
-  Space,
-} from "antd";
-import TextArea from "antd/es/input/TextArea";
+import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Form, FormProps, Input, Select } from "antd";
 import React from "react";
 
 interface FieldType {}
@@ -39,24 +25,6 @@ const CollectiveTicket = (): JSX.Element => {
     wrapperCol: {
       xs: { span: 24 },
       sm: { span: 20 },
-    },
-  };
-
-  const formItemLayoutAddField = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 6 },
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 20 },
-    },
-  };
-
-  const formItemLayoutWithOutLabel = {
-    wrapperCol: {
-      xs: { span: 24, offset: 0 },
-      sm: { span: 20, offset: 0 },
     },
   };
 
