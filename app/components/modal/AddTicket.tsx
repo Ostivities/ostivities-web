@@ -1,4 +1,6 @@
-import { Heading5, Label } from "@/app/components/typography/Typography";
+import CollectiveTicket from "@/app/components/modal/CollectiveTicket";
+import SingleTicket from "@/app/components/modal/SingleTicket";
+import { Heading5 } from "@/app/components/typography/Typography";
 import { useFormContext } from "@/app/contexts/form-context/FormContext";
 import { FieldType, IModal } from "@/app/utils/interface";
 import TicketDoubleDark from "@/public/ticket-double-dark.svg";
@@ -9,8 +11,6 @@ import { Button, Modal, Space } from "antd";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import CollectiveTicket from "./CollectiveTicket";
-import SingleTicket from "./SingleTicket";
 
 function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
   const { formState, setFormStage } = useFormContext();
