@@ -1,5 +1,3 @@
-import CollectiveTicket from "@/app/components/Modal/CollectiveTicket";
-import SingleTicket from "@/app/components/Modal/SingleTicket";
 import { Heading5 } from "@/app/components/typography/Typography";
 import { useFormContext } from "@/app/contexts/form-context/FormContext";
 import { FieldType, IModal } from "@/app/utils/interface";
@@ -11,6 +9,8 @@ import { Button, Modal, Space } from "antd";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import CollectiveTicket from "./CollectiveTicket";
+import SingleTicket from "./SingleTicket";
 
 function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
   const { formState, setFormStage } = useFormContext();

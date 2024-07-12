@@ -1,25 +1,41 @@
 "use client";
+import Dropzone from "@/app/components/Dropzone/Dropzone";
+import AddTicketModal from "@/app/components/OstivitiesModal/AddTicket";
+import EventTicketTable from "@/app/components/Tables/EventTicket";
 import {
   Heading5,
   Label,
   Paragraph,
 } from "@/app/components/typography/Typography";
-import Dropzone from "@/app/components/Dropzone/Dropzone";
-import EventTicketTable from "@/app/components/Tables/EventTicket";
-import AddTicketModal from "@/app/components/Modal/AddTicket";
 import { useFormContext } from "@/app/contexts/form-context/FormContext";
 import "@/app/globals.css";
 import { EVENT_TYPES, STATES_IN_NIGERIA, stepOne } from "@/app/utils/data";
 import { EVENT_INFO } from "@/app/utils/enums";
 import { IFormInput } from "@/app/utils/interface";
 import Ticket from "@/public/Ticket.svg";
-import { DeleteOutlined, FacebookFilled, InstagramFilled, LinkOutlined, TwitterOutlined, UploadOutlined } from "@ant-design/icons";
-import { Button, Col, DatePicker, Input, Radio, Row, Select, Space, Upload } from "antd";
+import {
+  DeleteOutlined,
+  FacebookFilled,
+  InstagramFilled,
+  LinkOutlined,
+  TwitterOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
+import {
+  Button,
+  Col,
+  DatePicker,
+  Input,
+  Radio,
+  Row,
+  Select,
+  Space,
+  Upload,
+} from "antd";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-
 
 function Details(): JSX.Element {
   const router = useRouter();
@@ -28,7 +44,7 @@ function Details(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [userName, setUserName] = useState("Rose"); // default value
-  
+
   const AFRICAN_TIME_ZONES = [
     { label: "West Africa Time (WAT)", value: "WAT" },
     { label: "Central Africa Time (CAT)", value: "CAT" },
@@ -71,9 +87,9 @@ function Details(): JSX.Element {
       // Fetch user data here, e.g., from an API or context
       const user = {
         firstName: "Rose",
-        businessName: "Ostivities"
+        businessName: "Ostivities",
       };
-      
+
       const name = user.firstName || user.businessName || "User";
       setUserName(name);
     };
@@ -97,7 +113,9 @@ function Details(): JSX.Element {
     }
   };
 
-  const handleUploadChange = (info: { file: { status: string; name: React.SetStateAction<null>; }; }) => {
+  const handleUploadChange = (info: {
+    file: { status: string; name: React.SetStateAction<null> };
+  }) => {
     if (info.file.status === "done") {
       setUploadedFile(info.file.name);
     }
@@ -139,7 +157,7 @@ function Details(): JSX.Element {
             type="default"
             size={"large"}
             className={`font-BricolageGrotesqueSemiBold button-style sign-in cursor-pointer font-bold`}
-            style={{ width: '150px' }}
+            style={{ width: "150px" }}
             onClick={() => {
               setFormStep(1);
               setFormStage(formState.stage - 1);
@@ -177,7 +195,6 @@ function Details(): JSX.Element {
               size="large"
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
               onClick={() => router.push("/publish-events")}
-              
             >
               Continue
             </Button>
@@ -219,14 +236,14 @@ function Details(): JSX.Element {
                           htmlFor="eventName"
                         />
                         <Input.TextArea
-  {...field}
-  placeholder="Enter Event Details"
-  style={{
-    minHeight: "220px",
-    maxHeight: "220px",
-    paddingTop: "10px",
-  }}
-  className="py-3"
+                          {...field}
+                          placeholder="Enter Event Details"
+                          style={{
+                            minHeight: "220px",
+                            maxHeight: "220px",
+                            paddingTop: "10px",
+                          }}
+                          className="py-3"
                         />
                       </Space>
                     )}
@@ -278,129 +295,140 @@ function Details(): JSX.Element {
                 </div>
 
                 <div className="flex flex-col space-y-4 pl-6">
-                <Controller
-  name="customURL"
-  control={control}
-  render={({ field }) => (
-    <Space direction="vertical" size="small">
-      <Label
-        content="Custom URL"
-        className=""
-        htmlFor="eventName"
-      />
-
-      <Space.Compact className="w-full">
-        <Input
-          style={{
-            width: "48%",
-            borderTopRightRadius: "0px !important",
-            borderBottomRightRadius: "0px !important",
-            color: "#000000",
-          }}
-          defaultValue="https://ostivities.com/discover/"
-          value="https://ostivities.com/discover/"
-          disabled
-        />
-        <Input
-          style={{
-            width: "52%",
-            borderTopLeftRadius: "0px !important",
-            borderBottomLeftRadius: "0px !important",
-          }}
-          {...field}
-          placeholder="Enter your desired name"
-        />
-      </Space.Compact>
-    </Space>
-  )}
-/>
-
-                    
-
-<Space direction="vertical" size="small">
-      <Controller
-        name="document"
-        control={control}
-        render={({ field }) => (
-          <Space direction="vertical" size="small">
-            <Label 
-      content={<span>Upload Supporting Doc <span className="optional-text">(optional)</span></span>} 
-      htmlFor="eventName" 
-    />
-
-            <Space.Compact className="w-full h-8">
-              <Input
-                style={{
-                  width: "75%",
-                  borderTopRightRadius: "0px !important",
-                  borderBottomRightRadius: "0px !important",
-                }}
-                placeholder="Enter file name (optional)"
-              />
-              <Upload
-                showUploadList={false}
-                beforeUpload={() => false}
-                className="upload-button"
-                onChange={(info) => {
-                  const file = info.fileList[0]; // Only take the first file
-                  field.onChange(file ? [file] : []); // Override with the new file or empty array
-                }}
-              >
-                <Button icon={<UploadOutlined />} className="custom-upload-button">
-                  Click to Upload
-                </Button>
-              </Upload>
-            </Space.Compact>
-            <span className="font-BricolageGrotesqueLight text-OWANBE_PRY text-xs font-light">
-              *Supporting doc can be Wedding Card, Birthday Card among many
-              others. *Only JPEG, PNG & PDF Allowed and file size should not be
-              more than 10MB.
-            </span>
-            {Array.isArray(field.value) && field.value.length > 0 && (
-              <div className="font-BricolageGrotesqueLight text-xs text-gray-400">
-                Uploaded File:
-                <Space>
-                  <span>{field.value[0].name}</span>
-                  <DeleteOutlined
-                    style={{ color: "#e20000", cursor: "pointer" }}
-                    onClick={() => field.onChange([])} // Clear the uploaded file
-                  />
-                </Space>
-              </div>
-            )}
-          </Space>
-        )}
-      />
-       <Controller
-                    name="eventType"
+                  <Controller
+                    name="customURL"
                     control={control}
                     render={({ field }) => (
-                      <Space
-                        direction="vertical"
-                        size={"small"}
-                        className="w-full"
-                      >
+                      <Space direction="vertical" size="small">
                         <Label
-                          content="Event Type"
+                          content="Custom URL"
                           className=""
-                          htmlFor="eventType"
+                          htmlFor="eventName"
                         />
-                        <Select
-                          placeholder="Select Event Type"
-                          {...field}
-                          style={{ width: "100%" }}
-                        >
-                          {EVENT_TYPES.map((_i) => (
-                            <Option value={_i.value} key={_i.label}>
-                              {_i.label}
-                            </Option>
-                          ))}
-                        </Select>
+
+                        <Space.Compact className="w-full">
+                          <Input
+                            style={{
+                              width: "48%",
+                              borderTopRightRadius: "0px !important",
+                              borderBottomRightRadius: "0px !important",
+                              color: "#000000",
+                            }}
+                            defaultValue="https://ostivities.com/discover/"
+                            value="https://ostivities.com/discover/"
+                            disabled
+                          />
+                          <Input
+                            style={{
+                              width: "52%",
+                              borderTopLeftRadius: "0px !important",
+                              borderBottomLeftRadius: "0px !important",
+                            }}
+                            {...field}
+                            placeholder="Enter your desired name"
+                          />
+                        </Space.Compact>
                       </Space>
                     )}
                   />
-    </Space>
 
+                  <Space direction="vertical" size="small">
+                    <Controller
+                      name="document"
+                      control={control}
+                      render={({ field }) => (
+                        <Space direction="vertical" size="small">
+                          <Label
+                            content={
+                              <span>
+                                Upload Supporting Doc{" "}
+                                <span className="optional-text">
+                                  (optional)
+                                </span>
+                              </span>
+                            }
+                            htmlFor="eventName"
+                          />
+
+                          <Space.Compact className="w-full h-8">
+                            <Input
+                              style={{
+                                width: "75%",
+                                borderTopRightRadius: "0px !important",
+                                borderBottomRightRadius: "0px !important",
+                              }}
+                              placeholder="Enter file name (optional)"
+                            />
+                            <Upload
+                              showUploadList={false}
+                              beforeUpload={() => false}
+                              className="upload-button"
+                              onChange={(info) => {
+                                const file = info.fileList[0]; // Only take the first file
+                                field.onChange(file ? [file] : []); // Override with the new file or empty array
+                              }}
+                            >
+                              <Button
+                                icon={<UploadOutlined />}
+                                className="custom-upload-button"
+                              >
+                                Click to Upload
+                              </Button>
+                            </Upload>
+                          </Space.Compact>
+                          <span className="font-BricolageGrotesqueLight text-OWANBE_PRY text-xs font-light">
+                            *Supporting doc can be Wedding Card, Birthday Card
+                            among many others. *Only JPEG, PNG & PDF Allowed and
+                            file size should not be more than 10MB.
+                          </span>
+                          {Array.isArray(field.value) &&
+                            field.value.length > 0 && (
+                              <div className="font-BricolageGrotesqueLight text-xs text-gray-400">
+                                Uploaded File:
+                                <Space>
+                                  <span>{field.value[0].name}</span>
+                                  <DeleteOutlined
+                                    style={{
+                                      color: "#e20000",
+                                      cursor: "pointer",
+                                    }}
+                                    onClick={() => field.onChange([])} // Clear the uploaded file
+                                  />
+                                </Space>
+                              </div>
+                            )}
+                        </Space>
+                      )}
+                    />
+                    <Controller
+                      name="eventType"
+                      control={control}
+                      render={({ field }) => (
+                        <Space
+                          direction="vertical"
+                          size={"small"}
+                          className="w-full"
+                        >
+                          <Label
+                            content="Event Type"
+                            className=""
+                            htmlFor="eventType"
+                          />
+                          <Select
+                            placeholder="Select Event Type"
+                            {...field}
+                            style={{ width: "100%" }}
+                          >
+                            {EVENT_TYPES.map((_i) => (
+                              <Option value={_i.value} key={_i.label}>
+                                {_i.label}
+                              </Option>
+                            ))}
+                          </Select>
+                        </Space>
+                      )}
+                    />
+                  </Space>
 
                   <Controller
                     name="eventInfo"
@@ -440,354 +468,435 @@ function Details(): JSX.Element {
                   {watchEventInfo === EVENT_INFO.SINGLE_EVENT && (
                     <>
                       <Controller
-  name="timeZone"
-  control={control}
-  render={({ field }) => (
-    <Space
-      direction="vertical"
-      size={"small"}
-      className="w-full"
-    >
-      <Label
-        content="Time Zone"
-        className=""
-        htmlFor="timeZone"
-      />
-      <Select
-        placeholder="Select Time Zone"
-        {...field}
-        style={{ width: "100%" }}
-      >
-        {AFRICAN_TIME_ZONES.map((zone) => (
-          <Option value={zone.value} key={zone.value}>
-            {zone.label}
-          </Option>
-        ))}
-      </Select>
-    </Space>
-  )}
-/>
-<Space direction="horizontal" size="large" className="w-full">
-  {/* Start Date & Time */}
-  <div style={{ width: '300px', marginRight: '-63px' }}>
-    <Label content="Start Date & Time" htmlFor="startDateAndTime" />
-    <Controller
-      name="startDateAndTime"
-      control={control}
-      render={({ field }) => (
-        <DatePicker
-          {...field}
-          showTime
-          format="YYYY-MM-DD HH:mm:ss"
-          style={{ width: '80%', height: '33px' }}
-        />
-      )}
-    />
-  </div>
+                        name="timeZone"
+                        control={control}
+                        render={({ field }) => (
+                          <Space
+                            direction="vertical"
+                            size={"small"}
+                            className="w-full"
+                          >
+                            <Label
+                              content="Time Zone"
+                              className=""
+                              htmlFor="timeZone"
+                            />
+                            <Select
+                              placeholder="Select Time Zone"
+                              {...field}
+                              style={{ width: "100%" }}
+                            >
+                              {AFRICAN_TIME_ZONES.map((zone) => (
+                                <Option value={zone.value} key={zone.value}>
+                                  {zone.label}
+                                </Option>
+                              ))}
+                            </Select>
+                          </Space>
+                        )}
+                      />
+                      <Space
+                        direction="horizontal"
+                        size="large"
+                        className="w-full"
+                      >
+                        {/* Start Date & Time */}
+                        <div style={{ width: "300px", marginRight: "-63px" }}>
+                          <Label
+                            content="Start Date & Time"
+                            htmlFor="startDateAndTime"
+                          />
+                          <Controller
+                            name="startDateAndTime"
+                            control={control}
+                            render={({ field }) => (
+                              <DatePicker
+                                {...field}
+                                showTime
+                                format="YYYY-MM-DD HH:mm:ss"
+                                style={{ width: "80%", height: "33px" }}
+                              />
+                            )}
+                          />
+                        </div>
 
-  {/* End Date & Time */}
-  <div style={{ width: '300px' }}>
-    <Label content="End Date & Time" htmlFor="endDateAndTime" />
-    <Controller
-      name="endDateAndTime"
-      control={control}
-      render={({ field }) => (
-        <DatePicker
-          {...field}
-          showTime
-          format="YYYY-MM-DD HH:mm:ss"
-          style={{ width: '80%', height: '33px' }}
-        />
-      )}
-    />
-  </div>
-</Space>
+                        {/* End Date & Time */}
+                        <div style={{ width: "300px" }}>
+                          <Label
+                            content="End Date & Time"
+                            htmlFor="endDateAndTime"
+                          />
+                          <Controller
+                            name="endDateAndTime"
+                            control={control}
+                            render={({ field }) => (
+                              <DatePicker
+                                {...field}
+                                showTime
+                                format="YYYY-MM-DD HH:mm:ss"
+                                style={{ width: "80%", height: "33px" }}
+                              />
+                            )}
+                          />
+                        </div>
+                      </Space>
 
-<Space direction="vertical" size="small" style={{ marginBottom: '4px' }}>
-  <label htmlFor="socialdetails" className="" style={{ marginBottom: '4px', fontSize: '14.5px', fontFamily: 'BricolageGrotesqueregular' }}>
-    Social Media Details <span style={{ color: '#e20000' }}>(optional)</span>
-  </label>
+                      <Space
+                        direction="vertical"
+                        size="small"
+                        style={{ marginBottom: "4px" }}
+                      >
+                        <label
+                          htmlFor="socialdetails"
+                          className=""
+                          style={{
+                            marginBottom: "4px",
+                            fontSize: "14.5px",
+                            fontFamily: "BricolageGrotesqueregular",
+                          }}
+                        >
+                          Social Media Details{" "}
+                          <span style={{ color: "#e20000" }}>(optional)</span>
+                        </label>
 
-  <Row gutter={[16, 8]}>
-    {/* Website Link Field */}
-    <Col xs={24} sm={12}>
-      <Controller
-        name="websiteUrl" // Use a descriptive name (e.g., websiteUrl)
-        control={control}
-        render={({ field }) => (
-          <Space direction="vertical" size="small" style={{ width: '100%' }}>
-            <Input
-              prefix={<LinkOutlined />}
-              style={{
-                width: "100%",
-                color: "#000000",
-                marginTop: "8px", // Adjust spacing between label and field
-              }}
-              {...field}
-              placeholder="Enter your website URL"
-            />
-          </Space>
-        )}
-      />
-    </Col>
+                        <Row gutter={[16, 8]}>
+                          {/* Website Link Field */}
+                          <Col xs={24} sm={12}>
+                            <Controller
+                              name="websiteUrl" // Use a descriptive name (e.g., websiteUrl)
+                              control={control}
+                              render={({ field }) => (
+                                <Space
+                                  direction="vertical"
+                                  size="small"
+                                  style={{ width: "100%" }}
+                                >
+                                  <Input
+                                    prefix={<LinkOutlined />}
+                                    style={{
+                                      width: "100%",
+                                      color: "#000000",
+                                      marginTop: "8px", // Adjust spacing between label and field
+                                    }}
+                                    {...field}
+                                    placeholder="Enter your website URL"
+                                  />
+                                </Space>
+                              )}
+                            />
+                          </Col>
 
-    {/* Twitter Field */}
-    <Col xs={24} sm={12}>
-      <Controller
-        name="twitterUrl" // Use a descriptive name (e.g., twitterUrl)
-        control={control}
-        render={({ field }) => (
-          <Space direction="vertical" size="small" style={{ width: '100%' }}>
-            <Input
-              prefix={<TwitterOutlined />}
-              style={{
-                width: "100%",
-                color: "#000000",
-                marginTop: "8px", // Adjust spacing between label and field
-              }}
-              {...field}
-              placeholder="Enter your Twitter URL"
-            />
-          </Space>
-        )}
-      />
-    </Col>
+                          {/* Twitter Field */}
+                          <Col xs={24} sm={12}>
+                            <Controller
+                              name="twitterUrl" // Use a descriptive name (e.g., twitterUrl)
+                              control={control}
+                              render={({ field }) => (
+                                <Space
+                                  direction="vertical"
+                                  size="small"
+                                  style={{ width: "100%" }}
+                                >
+                                  <Input
+                                    prefix={<TwitterOutlined />}
+                                    style={{
+                                      width: "100%",
+                                      color: "#000000",
+                                      marginTop: "8px", // Adjust spacing between label and field
+                                    }}
+                                    {...field}
+                                    placeholder="Enter your Twitter URL"
+                                  />
+                                </Space>
+                              )}
+                            />
+                          </Col>
 
-    {/* Facebook Field */}
-    <Col xs={24} sm={12}>
-      <Controller
-        name="facebookUrl" // Use a descriptive name (e.g., facebookUrl)
-        control={control}
-        render={({ field }) => (
-          <Space direction="vertical" size="small" style={{ width: '100%' }}>
-            <Input
-              prefix={<FacebookFilled />}
-              style={{
-                width: "100%",
-                color: "#000000",
-                marginTop: "8px", // Adjust spacing between label and field
-              }}
-              {...field}
-              placeholder="Enter your Facebook URL"
-            />
-          </Space>
-        )}
-      />
-    </Col>
+                          {/* Facebook Field */}
+                          <Col xs={24} sm={12}>
+                            <Controller
+                              name="facebookUrl" // Use a descriptive name (e.g., facebookUrl)
+                              control={control}
+                              render={({ field }) => (
+                                <Space
+                                  direction="vertical"
+                                  size="small"
+                                  style={{ width: "100%" }}
+                                >
+                                  <Input
+                                    prefix={<FacebookFilled />}
+                                    style={{
+                                      width: "100%",
+                                      color: "#000000",
+                                      marginTop: "8px", // Adjust spacing between label and field
+                                    }}
+                                    {...field}
+                                    placeholder="Enter your Facebook URL"
+                                  />
+                                </Space>
+                              )}
+                            />
+                          </Col>
 
-    {/* Instagram Field */}
-    <Col xs={24} sm={12}>
-      <Controller
-        name="instagramUrl" // Use a descriptive name (e.g., instagramUrl)
-        control={control}
-        render={({ field }) => (
-          <Space direction="vertical" size="small" style={{ width: '100%' }}>
-            <Input
-              prefix={<InstagramFilled />}
-              style={{
-                width: "100%",
-                color: "#000000",
-                marginTop: "8px", // Adjust spacing between label and field
-              }}
-              {...field}
-              placeholder="Enter your Instagram URL"
-            />
-          </Space>
-        )}
-      />
-    </Col>
+                          {/* Instagram Field */}
+                          <Col xs={24} sm={12}>
+                            <Controller
+                              name="instagramUrl" // Use a descriptive name (e.g., instagramUrl)
+                              control={control}
+                              render={({ field }) => (
+                                <Space
+                                  direction="vertical"
+                                  size="small"
+                                  style={{ width: "100%" }}
+                                >
+                                  <Input
+                                    prefix={<InstagramFilled />}
+                                    style={{
+                                      width: "100%",
+                                      color: "#000000",
+                                      marginTop: "8px", // Adjust spacing between label and field
+                                    }}
+                                    {...field}
+                                    placeholder="Enter your Instagram URL"
+                                  />
+                                </Space>
+                              )}
+                            />
+                          </Col>
 
-    {/* ... Add similar Controllers for other social media fields ... */}
-  </Row>
-</Space>
-                    
+                          {/* ... Add similar Controllers for other social media fields ... */}
+                        </Row>
+                      </Space>
                     </>
                   )}
 
                   {watchEventInfo === EVENT_INFO.RECURRING_EVENT && (
                     <>
-                      <Space direction="horizontal" size="large" className="w-full">
-  {/* Time Zone */}
-  <div style={{ width: '300px', marginRight: '-63px' }}>
-    <Label content="Time Zone" htmlFor="timeZone" />
-    <Controller
-      name="timeZone"
-      control={control}
-      render={({ field }) => (
-        <Select
-          placeholder="Select Time Zone"
-          {...field}
-          style={{ width: '80%', height: '33px' }}
-        >
-          {AFRICAN_TIME_ZONES.map((zone) => (
-            <Option value={zone.value} key={zone.value}>
-              {zone.label}
-            </Option>
-          ))}
-        </Select>
-      )}
-    />
-  </div>
+                      <Space
+                        direction="horizontal"
+                        size="large"
+                        className="w-full"
+                      >
+                        {/* Time Zone */}
+                        <div style={{ width: "300px", marginRight: "-63px" }}>
+                          <Label content="Time Zone" htmlFor="timeZone" />
+                          <Controller
+                            name="timeZone"
+                            control={control}
+                            render={({ field }) => (
+                              <Select
+                                placeholder="Select Time Zone"
+                                {...field}
+                                style={{ width: "80%", height: "33px" }}
+                              >
+                                {AFRICAN_TIME_ZONES.map((zone) => (
+                                  <Option value={zone.value} key={zone.value}>
+                                    {zone.label}
+                                  </Option>
+                                ))}
+                              </Select>
+                            )}
+                          />
+                        </div>
 
-  {/* Frequency */}
-  <div style={{ width: '300px' }}>
-    <Label content="Frequency" htmlFor="eventFrequency" />
-    <Controller
-      name="eventFrequency"
-      control={control}
-      render={({ field }) => (
-        <Select
-          placeholder="Select Event Frequency"
-          {...field}
-          style={{ width: '80%', height: '33px' }}
-        >
-          {EVENT_FREQUENCIES.map((frequency) => (
-            <Option value={frequency.value} key={frequency.value}>
-              {frequency.label}
-            </Option>
-          ))}
-        </Select>
-      )}
-    />
-  </div>
-</Space>
+                        {/* Frequency */}
+                        <div style={{ width: "300px" }}>
+                          <Label content="Frequency" htmlFor="eventFrequency" />
+                          <Controller
+                            name="eventFrequency"
+                            control={control}
+                            render={({ field }) => (
+                              <Select
+                                placeholder="Select Event Frequency"
+                                {...field}
+                                style={{ width: "80%", height: "33px" }}
+                              >
+                                {EVENT_FREQUENCIES.map((frequency) => (
+                                  <Option
+                                    value={frequency.value}
+                                    key={frequency.value}
+                                  >
+                                    {frequency.label}
+                                  </Option>
+                                ))}
+                              </Select>
+                            )}
+                          />
+                        </div>
+                      </Space>
 
-  
-<Space direction="horizontal" size="large" className="w-full">
-  {/* Start Date & Time */}
-  <div style={{ width: '300px', marginRight: '-63px' }}>
-    <Label content="Start Date & Time" htmlFor="startDateAndTime" />
-    <Controller
-      name="startDateAndTime"
-      control={control}
-      render={({ field }) => (
-        <DatePicker
-          {...field}
-          showTime
-          format="YYYY-MM-DD HH:mm:ss"
-          style={{ width: '80%', height: '33px' }}
-        />
-      )}
-    />
-  </div>
+                      <Space
+                        direction="horizontal"
+                        size="large"
+                        className="w-full"
+                      >
+                        {/* Start Date & Time */}
+                        <div style={{ width: "300px", marginRight: "-63px" }}>
+                          <Label
+                            content="Start Date & Time"
+                            htmlFor="startDateAndTime"
+                          />
+                          <Controller
+                            name="startDateAndTime"
+                            control={control}
+                            render={({ field }) => (
+                              <DatePicker
+                                {...field}
+                                showTime
+                                format="YYYY-MM-DD HH:mm:ss"
+                                style={{ width: "80%", height: "33px" }}
+                              />
+                            )}
+                          />
+                        </div>
 
-  {/* End Date & Time */}
-  <div style={{ width: '300px' }}>
-    <Label content="End Date & Time" htmlFor="endDateAndTime" />
-    <Controller
-      name="endDateAndTime"
-      control={control}
-      render={({ field }) => (
-        <DatePicker
-          {...field}
-          showTime
-          format="YYYY-MM-DD HH:mm:ss"
-          style={{ width: '80%', height: '33px' }}
-        />
-      )}
-    />
-  </div>
-</Space>
+                        {/* End Date & Time */}
+                        <div style={{ width: "300px" }}>
+                          <Label
+                            content="End Date & Time"
+                            htmlFor="endDateAndTime"
+                          />
+                          <Controller
+                            name="endDateAndTime"
+                            control={control}
+                            render={({ field }) => (
+                              <DatePicker
+                                {...field}
+                                showTime
+                                format="YYYY-MM-DD HH:mm:ss"
+                                style={{ width: "80%", height: "33px" }}
+                              />
+                            )}
+                          />
+                        </div>
+                      </Space>
 
-<Space direction="vertical" size="small" style={{ marginBottom: '4px' }}>
-  <label htmlFor="socialdetails" className="" style={{ marginBottom: '4px', fontSize: '14.5px', fontFamily: 'BricolageGrotesqueregular' }}>
-    Social Media Details <span style={{ color: '#e20000' }}>(optional)</span>
-  </label>
+                      <Space
+                        direction="vertical"
+                        size="small"
+                        style={{ marginBottom: "4px" }}
+                      >
+                        <label
+                          htmlFor="socialdetails"
+                          className=""
+                          style={{
+                            marginBottom: "4px",
+                            fontSize: "14.5px",
+                            fontFamily: "BricolageGrotesqueregular",
+                          }}
+                        >
+                          Social Media Details{" "}
+                          <span style={{ color: "#e20000" }}>(optional)</span>
+                        </label>
 
-  <Row gutter={[16, 8]}>
-    {/* Website Link Field */}
-    <Col xs={24} sm={12}>
-      <Controller
-        name="websiteUrl" // Use a descriptive name (e.g., websiteUrl)
-        control={control}
-        render={({ field }) => (
-          <Space direction="vertical" size="small" style={{ width: '100%' }}>
-            <Input
-              prefix={<LinkOutlined />}
-              style={{
-                width: "100%",
-                color: "#000000",
-                marginTop: "8px", // Adjust spacing between label and field
-              }}
-              {...field}
-              placeholder="Enter your website URL"
-            />
-          </Space>
-        )}
-      />
-    </Col>
+                        <Row gutter={[16, 8]}>
+                          {/* Website Link Field */}
+                          <Col xs={24} sm={12}>
+                            <Controller
+                              name="websiteUrl" // Use a descriptive name (e.g., websiteUrl)
+                              control={control}
+                              render={({ field }) => (
+                                <Space
+                                  direction="vertical"
+                                  size="small"
+                                  style={{ width: "100%" }}
+                                >
+                                  <Input
+                                    prefix={<LinkOutlined />}
+                                    style={{
+                                      width: "100%",
+                                      color: "#000000",
+                                      marginTop: "8px", // Adjust spacing between label and field
+                                    }}
+                                    {...field}
+                                    placeholder="Enter your website URL"
+                                  />
+                                </Space>
+                              )}
+                            />
+                          </Col>
 
-    {/* Twitter Field */}
-    <Col xs={24} sm={12}>
-      <Controller
-        name="twitterUrl" // Use a descriptive name (e.g., twitterUrl)
-        control={control}
-        render={({ field }) => (
-          <Space direction="vertical" size="small" style={{ width: '100%' }}>
-            <Input
-              prefix={<TwitterOutlined />}
-              style={{
-                width: "100%",
-                color: "#000000",
-                marginTop: "8px", // Adjust spacing between label and field
-              }}
-              {...field}
-              placeholder="Enter your Twitter URL"
-            />
-          </Space>
-        )}
-      />
-    </Col>
+                          {/* Twitter Field */}
+                          <Col xs={24} sm={12}>
+                            <Controller
+                              name="twitterUrl" // Use a descriptive name (e.g., twitterUrl)
+                              control={control}
+                              render={({ field }) => (
+                                <Space
+                                  direction="vertical"
+                                  size="small"
+                                  style={{ width: "100%" }}
+                                >
+                                  <Input
+                                    prefix={<TwitterOutlined />}
+                                    style={{
+                                      width: "100%",
+                                      color: "#000000",
+                                      marginTop: "8px", // Adjust spacing between label and field
+                                    }}
+                                    {...field}
+                                    placeholder="Enter your Twitter URL"
+                                  />
+                                </Space>
+                              )}
+                            />
+                          </Col>
 
-    {/* Facebook Field */}
-    <Col xs={24} sm={12}>
-      <Controller
-        name="facebookUrl" // Use a descriptive name (e.g., facebookUrl)
-        control={control}
-        render={({ field }) => (
-          <Space direction="vertical" size="small" style={{ width: '100%' }}>
-            <Input
-              prefix={<FacebookFilled/>}
-              style={{
-                width: "100%",
-                color: "#000000",
-                marginTop: "8px", // Adjust spacing between label and field
-              }}
-              {...field}
-              placeholder="Enter your Facebook URL"
-            />
-          </Space>
-        )}
-      />
-    </Col>
+                          {/* Facebook Field */}
+                          <Col xs={24} sm={12}>
+                            <Controller
+                              name="facebookUrl" // Use a descriptive name (e.g., facebookUrl)
+                              control={control}
+                              render={({ field }) => (
+                                <Space
+                                  direction="vertical"
+                                  size="small"
+                                  style={{ width: "100%" }}
+                                >
+                                  <Input
+                                    prefix={<FacebookFilled />}
+                                    style={{
+                                      width: "100%",
+                                      color: "#000000",
+                                      marginTop: "8px", // Adjust spacing between label and field
+                                    }}
+                                    {...field}
+                                    placeholder="Enter your Facebook URL"
+                                  />
+                                </Space>
+                              )}
+                            />
+                          </Col>
 
-    {/* Instagram Field */}
-    <Col xs={24} sm={12}>
-      <Controller
-        name="instagramUrl" // Use a descriptive name (e.g., instagramUrl)
-        control={control}
-        render={({ field }) => (
-          <Space direction="vertical" size="small" style={{ width: '100%' }}>
-            <Input
-              prefix={<InstagramFilled/>}
-              style={{
-                width: "100%",
-                color: "#000000",
-                marginTop: "8px", // Adjust spacing between label and field
-              }}
-              {...field}
-              placeholder="Enter your Instagram URL"
-            />
-          </Space>
-        )}
-      />
-    </Col>
+                          {/* Instagram Field */}
+                          <Col xs={24} sm={12}>
+                            <Controller
+                              name="instagramUrl" // Use a descriptive name (e.g., instagramUrl)
+                              control={control}
+                              render={({ field }) => (
+                                <Space
+                                  direction="vertical"
+                                  size="small"
+                                  style={{ width: "100%" }}
+                                >
+                                  <Input
+                                    prefix={<InstagramFilled />}
+                                    style={{
+                                      width: "100%",
+                                      color: "#000000",
+                                      marginTop: "8px", // Adjust spacing between label and field
+                                    }}
+                                    {...field}
+                                    placeholder="Enter your Instagram URL"
+                                  />
+                                </Space>
+                              )}
+                            />
+                          </Col>
 
-    {/* ... Add similar Controllers for other social media fields ... */}
-  </Row>
-</Space>
-
-                        
+                          {/* ... Add similar Controllers for other social media fields ... */}
+                        </Row>
+                      </Space>
                     </>
                   )}
                 </div>
@@ -899,7 +1008,7 @@ function Details(): JSX.Element {
                 size={"large"}
                 className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
                 onClick={() => {
-                  router.push('/publish-events')
+                  router.push("/publish-events");
                 }}
               >
                 Save & continue
@@ -910,7 +1019,7 @@ function Details(): JSX.Element {
                 size="large"
                 className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
                 onClick={() => {
-                  router.push('/publish-events')
+                  router.push("/publish-events");
                 }}
               >
                 Skip & do this later
