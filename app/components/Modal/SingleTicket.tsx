@@ -15,7 +15,7 @@ const SingleTicket = (): JSX.Element => {
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
     errorInfo
   ) => {
-    console.log("Failed:", errorInfo);
+    return errorInfo;
   };
 
   const formItemLayout = {
