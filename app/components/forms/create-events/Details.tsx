@@ -7,7 +7,7 @@ import {
 import { EVENT_TYPES, STATES_IN_NIGERIA, stepOne } from "@/app/utils/data";
 import { EVENT_INFO } from "@/app/utils/enums";
 import { IFormInput } from "@/app/utils/interface";
-import { DeleteOutlined, FacebookFilled, InstagramFilled, UploadOutlined } from "@ant-design/icons";
+import { DeleteOutlined, FacebookFilled, InstagramFilled, UploadOutlined, TwitterOutlined, LinkOutlined } from "@ant-design/icons";
 import Dropzone from "@/app/components/Dropzone/Dropzone";
 import EventTicketTable from "@/app/components/Tables/EventTicket";
 import AddTicketModal from "@/app/components/modal/AddTicket";
@@ -19,7 +19,6 @@ import { useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import "@/app/globals.css";
-import { TwitterOutlined, FacebookOutlined, InstagramOutlined, LinkOutlined } from '@ant-design/icons';
 
 function Details(): JSX.Element {
   const router = useRouter();
