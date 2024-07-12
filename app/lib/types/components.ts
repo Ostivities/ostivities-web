@@ -1,6 +1,6 @@
-import { HTMLAttributes, ReactNode } from "react";
-import { VariantProps } from "class-variance-authority";
 import { buttonCva } from "@/app/ui/styles/components";
+import { VariantProps } from "class-variance-authority";
+import { HTMLAttributes, ReactNode } from "react";
 
 export type ColumnDefinitionType<T, K extends keyof T> = {
   key: K;
@@ -35,6 +35,7 @@ export interface InputAttributes extends HTMLAttributes<HTMLInputElement> {
   mxWt: string;
   border: string;
   labelAngle: "side" | "top";
+  placeholder: string;
   extraInfo: {
     label: string;
     to?: string;
@@ -52,4 +53,3 @@ export interface ToggleSwitchAttributes
   isActive: boolean;
   onToggle: () => void;
 }
-
