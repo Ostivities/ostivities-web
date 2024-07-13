@@ -106,6 +106,7 @@ export interface DataType {
   name?: string; // Optional, since it's not used in the data generation
   age?: number | any; // Optional, since it's not used in the data generation
   address?: string; // Optional, since it's not used in the data generation
+  id?: string; // Optional, since it's not used in the data generation
 }
 
 export interface IUser {
