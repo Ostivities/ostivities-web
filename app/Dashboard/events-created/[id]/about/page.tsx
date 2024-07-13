@@ -1,6 +1,7 @@
 "use client";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import { Heading5, Label } from "@/app/components/typography/Typography";
+import useComponentDisabled from "@/app/hooks/utils/utils.hooks";
 import {
   AFRICAN_TIME_ZONES,
   EVENT_FREQUENCIES,
@@ -35,7 +36,7 @@ interface FieldType {}
 const AboutEvent = () => {
   const [form] = Form.useForm();
   const watchEventInfo = Form.useWatch("eventInfo", form);
-  const [componentDisabled, setComponentDisabled] = useState<boolean>(true);
+  const [componentDisabled, setComponentDisabled] = useComponentDisabled();
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     return values;

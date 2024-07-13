@@ -42,7 +42,7 @@ function Dropzone({ className }: { className?: string }): JSX.Element {
       >
         <input {...getInputProps()} />
         {selectedImage ? (
-          <img
+          <Image
             src={selectedImage}
             alt="Selected Image"
             style={{
