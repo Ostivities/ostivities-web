@@ -1,12 +1,13 @@
 "use client";
+import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import React from "react";
-import EventsDetails from "../page";
+
 
 const AboutEvent = () => {
   return (
-    <EventsDetails>
+    <EventDetailsComponent>
       <div>about an event</div>
-    </EventsDetails>
+    </EventDetailsComponent>
   );
 };
 

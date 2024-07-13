@@ -1,11 +1,12 @@
+import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import React from "react";
 import EventsDetails from "../page";
 
 const EventSales = () => {
   return (
-    <EventsDetails>
-      <div>Event sales page</div>
-    </EventsDetails>
+    <EventDetailsComponent>
+      <div>event page sales</div>
+    </EventDetailsComponent>
   );
 };
 
