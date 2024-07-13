@@ -9,7 +9,13 @@ import {
 } from "@/app/components/typography/Typography";
 import { useFormContext } from "@/app/contexts/form-context/FormContext";
 import "@/app/globals.css";
-import { EVENT_TYPES, STATES_IN_NIGERIA, stepOne } from "@/app/utils/data";
+import {
+  AFRICAN_TIME_ZONES,
+  EVENT_FREQUENCIES,
+  EVENT_TYPES,
+  STATES_IN_NIGERIA,
+  stepOne,
+} from "@/app/utils/data";
 import { EVENT_INFO } from "@/app/utils/enums";
 import { IFormInput } from "@/app/utils/interface";
 import Ticket from "@/public/Ticket.svg";
@@ -44,19 +50,6 @@ function Details(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [userName, setUserName] = useState("Rose"); // default value
-
-  const AFRICAN_TIME_ZONES = [
-    { label: "West Africa Time (WAT)", value: "WAT" },
-    { label: "Central Africa Time (CAT)", value: "CAT" },
-    { label: "South Africa Standard Time (SAST)", value: "SAST" },
-    { label: "East Africa Time (EAT)", value: "EAT" },
-  ];
-
-  const EVENT_FREQUENCIES = [
-    { label: "Daily", value: "daily" },
-    { label: "Weekly", value: "weekly" },
-    { label: "Monthly", value: "monthly" },
-  ];
 
   const { Option } = Select;
 

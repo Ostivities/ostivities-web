@@ -2417,3 +2417,16 @@ export const EVENT_TYPES: { label: string; value: string }[] = [
   { value: "Conference", label: "Conference" },
   { value: "Others", label: "Others" },
 ];
+
+export const AFRICAN_TIME_ZONES = [
+  { label: "West Africa Time (WAT)", value: "WAT" },
+  { label: "Central Africa Time (CAT)", value: "CAT" },
+  { label: "South Africa Standard Time (SAST)", value: "SAST" },
+  { label: "East Africa Time (EAT)", value: "EAT" },
+];
+
+export const EVENT_FREQUENCIES = [
+  { label: "Daily", value: "daily" },
+  { label: "Weekly", value: "weekly" },
+  { label: "Monthly", value: "monthly" },
+];
