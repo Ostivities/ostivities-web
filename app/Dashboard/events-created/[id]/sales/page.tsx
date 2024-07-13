@@ -5,7 +5,7 @@ import EventsDetails from "../page";
 const EventSales = () => {
   return (
     <EventDetailsComponent>
-      <div>event page sales</div>
+      <div className="flex flex-col space-y-5"></div>
     </EventDetailsComponent>
   );
 };
