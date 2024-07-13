@@ -1,6 +1,5 @@
 "use client";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
-import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import type { MenuProps } from "antd";
 import { Button, Dropdown, Space, Switch } from "antd";
 import Link from "next/link";
@@ -10,7 +9,11 @@ import { HiMiniArrowLongLeft } from "react-icons/hi2";
 import { IoChevronDown } from "react-icons/io5";
 import { LiaExternalLinkAltSolid } from "react-icons/lia";
 
-export default function Page(): JSX.Element {
+export default function EventDetailsComponent({
+  children,
+}: {
+  children: React.ReactNode;
+}): JSX.Element {
   const pathname = usePathname();
   const params = useParams();
   const router = useRouter();
@@ -250,8 +253,18 @@ export default function Page(): JSX.Element {
   );
 
   return (
-    <EventDetailsComponent>
-      <></>
-    </EventDetailsComponent>
+    <DashboardLayout
+      title={title}
+      isLoggedIn
+      extraComponents={
+        <>
+          <ExtraTab />
+        </>
+      }
+    >
+      <div className="w-full mx-auto flex flex-col space-y-5 py-2">
+        <>{children}</>
+      </div>
+    </DashboardLayout>
   );
 }

@@ -1,6 +1,7 @@
 import Cube from "@/public/cube.svg";
 import Polygon from "@/public/polygon.svg";
 import Star from "@/public/star.svg";
+import { MenuProps } from "antd";
 import { IFeatures, INavLinks } from "./interface";
 
 export const NAV_LINKS: INavLinks[] = [
@@ -1118,7 +1119,6 @@ export const STATES_IN_NIGERIA = [
     ],
   },
 ];
-
 
 export const Timezones = [
   {
@@ -2405,14 +2405,15 @@ export const stepOne = [
   "facebookUrl",
   "instagramUrl",
 ];
-export const EVENT_TYPES: {label: string; value: string}[] = [
-  { value: 'Wedding Party', label: 'Wedding Party' },
-                    { value: 'Birthday Party', label: 'Birthday Party' },
-                    { value: 'Concert', label: 'Concert' },
-                    { value: 'Event', label: 'Event' },
-                    { value: 'Paint & Sip', label: 'Paint & Sip' },
-                    { value: 'Hangouts', label: 'Hangouts' },
-                    { value: 'Webinar', label: 'Webinar' },
-                    { value: 'Conference', label: 'Conference' },
-                    { value: 'Others', label: 'Others' },
-]
+
+export const EVENT_TYPES: { label: string; value: string }[] = [
+  { value: "Wedding Party", label: "Wedding Party" },
+  { value: "Birthday Party", label: "Birthday Party" },
+  { value: "Concert", label: "Concert" },
+  { value: "Event", label: "Event" },
+  { value: "Paint & Sip", label: "Paint & Sip" },
+  { value: "Hangouts", label: "Hangouts" },
+  { value: "Webinar", label: "Webinar" },
+  { value: "Conference", label: "Conference" },
+  { value: "Others", label: "Others" },
+];
