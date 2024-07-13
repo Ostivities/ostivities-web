@@ -1,6 +1,6 @@
 "use client";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
-import { Label } from "@/app/components/typography/Typography";
+import { Heading5, Label } from "@/app/components/typography/Typography";
 import {
   AFRICAN_TIME_ZONES,
   EVENT_FREQUENCIES,
@@ -58,7 +58,11 @@ const AboutEvent = () => {
         form={form}
         disabled={componentDisabled}
       >
-        <div className="grid grid-cols-2 gap-x-8 px-6">
+        <Space direction="vertical">
+          <Heading5 className="pb-5" content={"Event Details"} />
+        </Space>
+
+        <div className="grid grid-cols-2 gap-x-8">
           <Space direction="vertical" size={"small"}>
             <Form.Item
               name={"eventName"}
