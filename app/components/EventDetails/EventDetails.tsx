@@ -1,7 +1,7 @@
 "use client";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import type { MenuProps } from "antd";
-import { Button, Dropdown, Space, Switch } from "antd";
+import { Button, Card, Dropdown, Space, Switch } from "antd";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React from "react";
@@ -103,101 +103,160 @@ export default function EventDetailsComponent({
     ];
 
     return (
-      <div className="flex flex-row items-center space-x-4">
-        <Button
-          type={pathname.includes("about") ? "primary" : "text"}
-          size={"middle"}
-          className={`font-BricolageGrotesqueSemiBold ${
-            pathname.includes("about") ? "sign-up" : ""
-          } cursor-pointer font-bold w-32 rounded-2xl`}
-          style={{
-            borderRadius: "16px",
-            fontFamily: "BricolageGrotesqueMedium",
-          }}
-          onClick={() => {
-            router.push(`/Dashboard/events-created/${params?.id}/about`);
-          }}
-        >
-          About
-        </Button>
-        <Dropdown
-          menu={{
-            items: TicktItems,
-            onClick: handleMenuClick,
-          }}
-        >
+      <div className={`flex flex-row items-center justify-between`}>
+        <div className="flex flex-row items-center space-x-4">
           <Button
-            type={pathname.includes("tickets") ? "primary" : "text"}
-            className={`font-BricolageGrotesqueSemiBold cursor-pointer font-bold w-32 rounded-2xl ${
-              pathname.includes("tickets") ? "sign-up" : ""
-            }`}
+            type={pathname.includes("about") ? "primary" : "text"}
+            size={"middle"}
+            className={`font-BricolageGrotesqueSemiBold ${
+              pathname.includes("about") ? "sign-up" : ""
+            } cursor-pointer font-bold w-32 rounded-2xl`}
             style={{
               borderRadius: "16px",
               fontFamily: "BricolageGrotesqueMedium",
             }}
+            onClick={() => {
+              router.push(`/Dashboard/events-created/${params?.id}/about`);
+            }}
           >
-            <Space>
-              Tickets
-              <IoChevronDown
-                color={`${
-                  pathname.includes("tickets") ? "#ffffff" : "#000000"
-                }`}
-              />
-            </Space>
+            About
           </Button>
-        </Dropdown>
+          <Dropdown
+            menu={{
+              items: TicktItems,
+              onClick: handleMenuClick,
+            }}
+          >
+            <Button
+              type={pathname.includes("tickets") ? "primary" : "text"}
+              className={`font-BricolageGrotesqueSemiBold cursor-pointer font-bold w-32 rounded-2xl ${
+                pathname.includes("tickets") ? "sign-up" : ""
+              }`}
+              style={{
+                borderRadius: "16px",
+                fontFamily: "BricolageGrotesqueMedium",
+              }}
+            >
+              <Space>
+                Tickets
+                <IoChevronDown
+                  color={`${
+                    pathname.includes("tickets") ? "#ffffff" : "#000000"
+                  }`}
+                />
+              </Space>
+            </Button>
+          </Dropdown>
 
-        <Button
-          type={pathname.includes("event_page_view") ? "primary" : "text"}
-          size={"middle"}
-          className={`font-BricolageGrotesqueSemiBold ${
-            pathname.includes("event_page_view") ? "sign-up" : ""
-          } cursor-pointer font-bold w-32 rounded-2xl`}
-          style={{
-            borderRadius: "16px",
-            fontFamily: "BricolageGrotesqueMedium",
-          }}
-          onClick={() => {
-            router.push(
-              `/Dashboard/events-created/${params?.id}/event_page_view`
-            );
-          }}
-        >
-          Event Page view
-        </Button>
-
-        <Dropdown menu={{ items: GuestItems, onClick: handleMenuClick }}>
           <Button
-            type={pathname.includes("guestlist") ? "primary" : "text"}
-            className="font-BricolageGrotesqueSemiBold cursor-pointer font-bold w-32 rounded-2xl"
+            type={pathname.includes("event_page_view") ? "primary" : "text"}
+            size={"middle"}
+            className={`font-BricolageGrotesqueSemiBold ${
+              pathname.includes("event_page_view") ? "sign-up" : ""
+            } cursor-pointer font-bold w-32 rounded-2xl`}
             style={{
               borderRadius: "16px",
               fontFamily: "BricolageGrotesqueMedium",
             }}
+            onClick={() => {
+              router.push(
+                `/Dashboard/events-created/${params?.id}/event_page_view`
+              );
+            }}
           >
-            <Space>
-              Guest List
-              <IoChevronDown />
-            </Space>
+            Event Page view
           </Button>
-        </Dropdown>
 
-        <Button
-          type={pathname.includes("sales") ? "primary" : "text"}
-          size={"middle"}
-          className={`font-BricolageGrotesqueSemiBold ${
-            pathname.includes("sales") ? "sign-up" : ""
-          } cursor-pointer font-bold w-32 rounded-2xl`}
+          <Dropdown menu={{ items: GuestItems, onClick: handleMenuClick }}>
+            <Button
+              type={pathname.includes("guestlist") ? "primary" : "text"}
+              className="font-BricolageGrotesqueSemiBold cursor-pointer font-bold w-32 rounded-2xl"
+              style={{
+                borderRadius: "16px",
+                fontFamily: "BricolageGrotesqueMedium",
+              }}
+            >
+              <Space>
+                Guest List
+                <IoChevronDown />
+              </Space>
+            </Button>
+          </Dropdown>
+
+          <Button
+            type={pathname.includes("sales") ? "primary" : "text"}
+            size={"middle"}
+            className={`font-BricolageGrotesqueSemiBold ${
+              pathname.includes("sales") ? "sign-up" : ""
+            } cursor-pointer font-bold w-32 rounded-2xl`}
+            style={{
+              borderRadius: "16px",
+              fontFamily: "BricolageGrotesqueMedium",
+            }}
+            onClick={() => {
+              router.push(`/Dashboard/events-created/${params?.id}/sales`);
+            }}
+          >
+            Sales
+          </Button>
+        </div>
+        {pathname.includes("sales") && (
+          <div className="flex flex-row">
+            <Button
+              type={"default"}
+              size={"middle"}
+              className={`font-BricolageGrotesqueSemiBold  cursor-pointer font-bold w-44 rounded-2xl place-self-end float-right`}
+              style={{
+                borderRadius: "16px",
+                fontFamily: "BricolageGrotesqueMedium",
+                float: "right",
+              }}
+              onClick={() => {
+                router.push(`/Dashboard/events-created/${params?.id}/sales`);
+              }}
+            >
+              Add Payment Details
+            </Button>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const SalesMetrics = (): JSX.Element => {
+    const CardMetrics = ({
+      title,
+      value,
+    }: {
+      title: string;
+      value: number | string;
+    }): JSX.Element => {
+      return (
+        <Card
+          className="rounded-3xl"
           style={{
-            borderRadius: "16px",
-            fontFamily: "BricolageGrotesqueMedium",
-          }}
-          onClick={() => {
-            router.push(`/Dashboard/events-created/${params?.id}/sales`);
+            borderRadius: "30px",
+            boxShadow: "0px 8px 24px 0px #00000014",
           }}
         >
-          Sales
-        </Button>
+          <div className="flex flex-col space-y-8 mx-auto text-center py-6">
+            <p className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_PRY text-lg">
+              {title}
+            </p>
+            <p className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_DARK text-2xl">
+              {value}
+            </p>
+          </div>
+        </Card>
+      );
+    };
+    return (
+      <div className="grid grid-cols-3 gap-x-8">
+        <CardMetrics title="Tickets Sold" value={20} />
+
+        <CardMetrics title="Total Revenue" value={20} />
+
+        <CardMetrics title="Next Payout Date" value={"2024-04-07"} />
       </div>
     );
   };
@@ -257,9 +316,14 @@ export default function EventDetailsComponent({
       title={title}
       isLoggedIn
       extraComponents={
-        <>
+        <div
+          className={`flex flex-col ${
+            pathname.includes("sales") ? "space-y-8" : ""
+          }`}
+        >
           <ExtraTab />
-        </>
+          {pathname.includes("sales") && <SalesMetrics />}
+        </div>
       }
     >
       <div className="w-full mx-auto flex flex-col space-y-5 py-2">
