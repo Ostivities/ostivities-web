@@ -20,12 +20,10 @@ function EventsDetails({
   const onChange = (checked: boolean) => {
     console.log(`switch to ${checked}`);
   };
-  console.log(params?.id, "params");
 
   const ExtraTab = (): JSX.Element => {
     const handleMenuClick: MenuProps["onClick"] = (e) => {
-      // message.info("Click on menu item.");
-      console.log("click", e);
+      return e;
     };
 
     const TicktItems: MenuProps["items"] = [
@@ -170,7 +168,7 @@ function EventsDetails({
 
         <Dropdown menu={{ items: GuestItems, onClick: handleMenuClick }}>
           <Button
-            type="text"
+            type={pathname.includes("guestlist") ? "primary" : "text"}
             className="font-BricolageGrotesqueSemiBold cursor-pointer font-bold w-32 rounded-2xl"
             style={{
               borderRadius: "16px",
