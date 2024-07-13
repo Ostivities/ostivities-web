@@ -107,6 +107,7 @@ const UserProfile = () => {
         content="Update Password"
         className="text-base text-OWANBE_PRY font-BricolageGrotesqueRegular mt-10 mb-8 self-start"
       />
+      
       <div className="grid grid-cols-2 gap-x-14 items-end w-full">
         <div className="grid gap-y-9">
           <Controller
