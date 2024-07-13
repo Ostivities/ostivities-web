@@ -1,6 +1,5 @@
 "use client";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
-import { GuestItems, TicktItems } from "@/app/utils/data";
 import type { MenuProps } from "antd";
 import { Button, Dropdown, Space, Switch } from "antd";
 import Link from "next/link";
@@ -29,6 +28,82 @@ function EventsDetails({
       console.log("click", e);
     };
 
+    const TicktItems: MenuProps["items"] = [
+      {
+        label: (
+          <Link
+            href={`/Dashboard/events-created/${params?.id}/tickets`}
+            className={`font-BricolageGrotesqueRegular font-normal text-sm ${
+              pathname.includes("tickets")
+                ? "text-OWANBE_PRY"
+                : "text-OWANBE_DARK"
+            }`}
+          >
+            Tickets
+          </Link>
+        ),
+        key: "1",
+      },
+      {
+        label: (
+          <Link
+            href={`/Dashboard/events-created/${params?.id}/tickets/discounts`}
+            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          >
+            Discounts
+          </Link>
+        ),
+        key: "2",
+      },
+      {
+        label: (
+          <Link
+            href={`/Dashboard/events-created/${params?.id}/tickets/email`}
+            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          >
+            Ticket E-mail
+          </Link>
+        ),
+        key: "3",
+      },
+    ];
+
+    const GuestItems: MenuProps["items"] = [
+      {
+        label: (
+          <Link
+            href={`/Dashboard/events-created/${params?.id}/guestlist`}
+            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          >
+            Guestlist
+          </Link>
+        ),
+        key: "1",
+      },
+      {
+        label: (
+          <Link
+            href={`/Dashboard/events-created/${params?.id}/guestlist/email`}
+            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          >
+            Email Guestlist
+          </Link>
+        ),
+        key: "2",
+      },
+      {
+        label: (
+          <Link
+            href={`/Dashboard/events-created/${params?.id}/guestlist/summary`}
+            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          >
+            Check in Summary
+          </Link>
+        ),
+        key: "3",
+      },
+    ];
+
     return (
       <div className="flex flex-row items-center space-x-4">
         <Button
@@ -42,9 +117,7 @@ function EventsDetails({
             fontFamily: "BricolageGrotesqueMedium",
           }}
           onClick={() => {
-            router.push(
-              `/Dashboard/events-created/${params?.id}/about`
-            );
+            router.push(`/Dashboard/events-created/${params?.id}/about`);
           }}
         >
           About
@@ -56,8 +129,10 @@ function EventsDetails({
           }}
         >
           <Button
-            type="text"
-            className="font-BricolageGrotesqueSemiBold cursor-pointer font-bold w-32 rounded-2xl"
+            type={pathname.includes("tickets") ? "primary" : "text"}
+            className={`font-BricolageGrotesqueSemiBold cursor-pointer font-bold w-32 rounded-2xl ${
+              pathname.includes("tickets") ? "sign-up" : ""
+            }`}
             style={{
               borderRadius: "16px",
               fontFamily: "BricolageGrotesqueMedium",
@@ -65,7 +140,11 @@ function EventsDetails({
           >
             <Space>
               Tickets
-              <IoChevronDown />
+              <IoChevronDown
+                color={`${
+                  pathname.includes("tickets") ? "#ffffff" : "#000000"
+                }`}
+              />
             </Space>
           </Button>
         </Dropdown>
