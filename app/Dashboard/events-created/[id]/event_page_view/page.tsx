@@ -38,8 +38,8 @@ const EventPageView = () => {
             <Image
               src={imageUrl}
               alt="Event Image"
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: "cover" }}
               className=""
             />
             <div className="absolute inset-0 bg-image-card"></div>
@@ -163,4 +163,3 @@ const EventPageView = () => {
 };
 
 export default EventPageView;
-
