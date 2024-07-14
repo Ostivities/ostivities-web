@@ -22,16 +22,16 @@ const config: Config = {
     },
     extend: {
       fontSize: {
-        ss: '0.625rem',
-        mx:'0.9375rem'
+        ss: "0.625rem",
+        mx: "0.9375rem",
       },
       colors: {
         OWANBE_PRY: "#E20000",
         OWANBE_PRY2: "#FADEDE",
         OWANBE_SECONDARY: "#19235B",
         OWANBE_NOTIFICATION: "#FADEDE",
-        OWANBE_FADE: '#484A4B',
-        OWAMBE_FADE_TEXT:'#706A70',
+        OWANBE_FADE: "#484A4B",
+        OWAMBE_FADE_TEXT: "#706A70",
         OWANBE_INFO: "#A6264C",
         OWANBE_BACKGROUND: "#F7F7F7",
         OWANBE_BORDER: "#D0D4D4",
@@ -49,6 +49,7 @@ const config: Config = {
         OWANBE_DARK_LIGHT: "#00000060",
         OWANBE_TABLE_TITLE: "#6B6B6B",
         OWANBE_TABLE_CELL: "#333333",
+        OWANBE_DARK_SHADE: "#6F6C6F",
       },
       keyframes: {
         shake: {
@@ -80,12 +81,13 @@ const config: Config = {
         marquee2: "marquee2 25s linear infinite",
       },
       backgroundImage: {
-        "image-card":'linear-gradient(180deg, rgba(13, 37, 60, 0.00) 51.56%, #0D253C 100%)'
+        "image-card":
+          "linear-gradient(180deg, rgba(13, 37, 60, 0.00) 51.56%, #0D253C 100%)",
       },
       boxShadow: {
-        'ticket-card': '0px 8px 24px 0px rgba(0, 0, 0, 0.08)',
-        input:'-13.011px 13.011px 104.089px 0px rgba(161, 161, 161, 0.10)',
-      }
+        "ticket-card": "0px 8px 24px 0px rgba(0, 0, 0, 0.08)",
+        input: "-13.011px 13.011px 104.089px 0px rgba(161, 161, 161, 0.10)",
+      },
     },
   },
   plugins: [],

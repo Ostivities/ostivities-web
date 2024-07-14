@@ -1,6 +1,7 @@
 "use client";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import AddTicketModal from "@/app/components/OstivitiesModal/AddTicket";
+import DeleteTicket from "@/app/components/OstivitiesModal/DeleteTicket";
 import UpdateTicket from "@/app/components/OstivitiesModal/UpdateTicket";
 import {
   Heading5,
@@ -30,6 +31,8 @@ const EventTickets = () => {
   const [pageSize, setPageSize] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isShown, setIsShown] = useState(false);
+  const [actionType, setActionType] = useState<"delete" | "warning">();
 
   const GuestItems: MenuProps["items"] = [
     {
@@ -51,6 +54,10 @@ const EventTickets = () => {
           type="link"
           className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           style={{ color: "#000000", fontFamily: "BricolageGrotesqueRegular" }}
+          onClick={() => {
+            setIsShown(true);
+            setActionType("warning");
+          }}
         >
           Duplicate
         </Button>
@@ -63,6 +70,10 @@ const EventTickets = () => {
           type="link"
           className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           style={{ color: "#000000", fontFamily: "BricolageGrotesqueRegular" }}
+          onClick={() => {
+            setIsShown(true);
+            setActionType("delete");
+          }}
         >
           Delete
         </Button>
@@ -141,6 +152,12 @@ const EventTickets = () => {
         open={isOpen}
         onCancel={() => setIsOpen(false)}
         onOk={() => setIsOpen(false)}
+      />
+      <DeleteTicket
+        open={isShown}
+        onCancel={() => setIsShown(false)}
+        onOk={() => setIsShown(false)}
+        actionType={actionType}
       />
       <EventDetailsComponent>
         <Space direction="vertical" size="large">
