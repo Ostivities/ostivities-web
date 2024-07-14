@@ -86,7 +86,7 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
                     setFormStage(formState.stage + 1);
                   }}
                 >
-                  Save
+                  Add Ticket
                 </Button>
               </Space>
             ) : (
