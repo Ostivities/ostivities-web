@@ -1,10 +1,11 @@
 import ShieldIcon from "@/app/components/Icons/ShieldIcon";
+import WarningIcon from "@/app/components/Icons/WarningIcon";
 import { IModal } from "@/app/utils/interface";
 import { Button, Modal, Space } from "antd";
 import React from "react";
 import { Paragraph } from "../typography/Typography";
 
-const DeleteTicket = ({ open, onCancel, onOk }: IModal) => {
+const DeleteTicket = ({ open, onCancel, onOk, actionType }: IModal) => {
   return (
     <Modal
       title={null}
@@ -31,7 +32,8 @@ const DeleteTicket = ({ open, onCancel, onOk }: IModal) => {
             }}
             onClick={onCancel}
           >
-            Yes, delete
+            Yes, {actionType === "delete" && "delete"}{" "}
+            {actionType === "warning" && "duplicate"}
           </Button>
           <Button
             type={"default"}
@@ -56,11 +58,16 @@ const DeleteTicket = ({ open, onCancel, onOk }: IModal) => {
         className="pb-7 pt-8"
       >
         <div className="mx-auto text-center flex flex-row w-full justify-center items-center">
-          <ShieldIcon />
+          {actionType === "delete" && <ShieldIcon />}
+          {actionType === "warning" && <WarningIcon />}
         </div>
         <Paragraph
           className="text-OWANBE_DARK_SHADE text-sm font-normal font-BricolageGrotesqueRegular text-center mx-auto"
-          content={"Are you sure you want to delete this ticket?"}
+          content={
+            actionType === "delete"
+              ? `Are you sure you want to delete this ticket?`
+              : `Are you sure you want to duplicate this ticket?`
+          }
           styles={{ fontWeight: "normal !important" }}
         />
       </Space>
