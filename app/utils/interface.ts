@@ -69,6 +69,7 @@ export interface IModal {
   open?: boolean;
   onCancel?: any;
   onOk?: any;
+  actionType?: "delete" | "warning";
 }
 
 export type FieldType = {
