@@ -12,7 +12,6 @@ import "react-quill/dist/quill.snow.css";
 
 const EventTicketsEmail = () => {
   const [value, setValue] = useState("");
-
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"],
     ["blockquote", "code-block"],
