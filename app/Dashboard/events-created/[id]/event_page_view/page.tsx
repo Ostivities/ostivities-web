@@ -1,18 +1,18 @@
 "use client";
 import React, { useState } from "react";
-import Dropzone from "@/app/components/Dropzone/Dropzone";
-import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
+import { UploadChangeParam } from "antd/lib/upload";
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 import useComponentDisabled from "@/app/hooks/utils/utils.hooks";
 import { Button, Space, Upload } from "antd";
 import Image from "next/image";
+import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 
 const EventPageView = () => {
   const [componentDisabled, setComponentDisabled] = useComponentDisabled();
   const [imageUrl, setImageUrl] = useState("/images/placeholder-6.png");
   const [buttonText, setButtonText] = useState("Update Image");
 
-  const handleImageUpload = (info) => {
+  const handleImageUpload = (info: UploadChangeParam<any>) => {
     if (info.file.status === 'done') {
       const url = URL.createObjectURL(info.file.originFileObj);
       setImageUrl(url);
@@ -152,7 +152,6 @@ const EventPageView = () => {
                 borderRadius: "16px",
                 fontFamily: "BricolageGrotesqueMedium",
               }}
-              
             >
               {buttonText}
             </Button>
@@ -164,3 +163,4 @@ const EventPageView = () => {
 };
 
 export default EventPageView;
+
