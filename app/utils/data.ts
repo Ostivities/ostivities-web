@@ -2430,3 +2430,29 @@ export const EVENT_FREQUENCIES = [
   { label: "Weekly", value: "weekly" },
   { label: "Monthly", value: "monthly" },
 ];
+
+export const NigerianBanks = [
+  { label: "Access Bank", value: "access-bank" },
+  { label: "Citibank Nigeria", value: "citibank-nigeria" },
+  { label: "Ecobank Nigeria", value: "ecobank-nigeria" },
+  { label: "Fidelity Bank", value: "fidelity-bank" },
+  { label: "First Bank of Nigeria", value: "first-bank-of-nigeria" },
+  { label: "First City Monument Bank (FCMB)", value: "fcmb" },
+  { label: "Guaranty Trust Bank (GTBank)", value: "gtbank" },
+  { label: "Heritage Bank", value: "heritage-bank" },
+  { label: "Keystone Bank", value: "keystone-bank" },
+  { label: "Polaris Bank", value: "polaris-bank" },
+  { label: "Providus Bank", value: "providus-bank" },
+  { label: "Stanbic IBTC Bank", value: "stanbic-ibtc-bank" },
+  {
+    label: "Standard Chartered Bank Nigeria",
+    value: "standard-chartered-bank-nigeria",
+  },
+  { label: "Sterling Bank", value: "sterling-bank" },
+  { label: "Suntrust Bank Nigeria", value: "suntrust-bank-nigeria" },
+  { label: "Union Bank of Nigeria", value: "union-bank-of-nigeria" },
+  { label: "United Bank for Africa (UBA)", value: "uba" },
+  { label: "Unity Bank", value: "unity-bank" },
+  { label: "Wema Bank", value: "wema-bank" },
+  { label: "Zenith Bank", value: "zenith-bank" },
+];

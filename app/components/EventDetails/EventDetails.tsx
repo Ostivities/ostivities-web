@@ -1,19 +1,22 @@
 "use client";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
+import useModal from "@/app/hooks/useModal";
 import type { MenuProps } from "antd";
 import { Button, Card, Dropdown, Space, Switch } from "antd";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { HiMiniArrowLongLeft } from "react-icons/hi2";
 import { IoChevronDown } from "react-icons/io5";
 import { LiaExternalLinkAltSolid } from "react-icons/lia";
+import PaymentDetails from "../OstivitiesModal/PaymentDetails";
 
 export default function EventDetailsComponent({
   children,
 }: {
   children: React.ReactNode;
 }): JSX.Element {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const pathname = usePathname();
   const params = useParams();
   const router = useRouter();
@@ -211,9 +214,7 @@ export default function EventDetailsComponent({
                 fontFamily: "BricolageGrotesqueMedium",
                 float: "right",
               }}
-              onClick={() => {
-                router.push(`/Dashboard/events-created/${params?.id}/sales`);
-              }}
+              onClick={() => setIsModalOpen(true)}
             >
               Add Payment Details
             </Button>
@@ -312,23 +313,30 @@ export default function EventDetailsComponent({
   );
 
   return (
-    <DashboardLayout
-      title={title}
-      isLoggedIn
-      extraComponents={
-        <div
-          className={`flex flex-col ${
-            pathname.includes("sales") ? "space-y-8" : ""
-          }`}
-        >
-          <ExtraTab />
-          {pathname.includes("sales") && <SalesMetrics />}
+    <React.Fragment>
+      <PaymentDetails
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+      />
+
+      <DashboardLayout
+        title={title}
+        isLoggedIn
+        extraComponents={
+          <div
+            className={`flex flex-col ${
+              pathname.includes("sales") ? "space-y-8" : ""
+            }`}
+          >
+            <ExtraTab />
+            {pathname.includes("sales") && <SalesMetrics />}
+          </div>
+        }
+      >
+        <div className="w-full mx-auto flex flex-col space-y-5 py-2">
+          <>{children}</>
         </div>
-      }
-    >
-      <div className="w-full mx-auto flex flex-col space-y-5 py-2">
-        <>{children}</>
-      </div>
-    </DashboardLayout>
+      </DashboardLayout>
+    </React.Fragment>
   );
 }
