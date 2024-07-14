@@ -51,7 +51,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                 </div>
                 <div>
                   <div className="text-sm"style={{ fontWeight: 600 }}>Date</div>
-                  <div>14 December, 2023</div>
+                  <div>14 December, 2023</div> 
                 </div>
               </div>
               <div className="flex gap-3">

@@ -8,7 +8,7 @@ import {
 import { generateRandomString } from "@/app/utils/helper";
 import { SalesDataType } from "@/app/utils/interface";
 import { MenuOutlined } from "@ant-design/icons";
-import { Button, Dropdown, MenuProps, Space, Table } from "antd";
+import { Button, Dropdown, Menu, Space, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import React, { useState } from "react";
 
@@ -17,30 +17,30 @@ const EventTickets = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
-  const GuestItems: MenuProps["items"] = [
+  const GuestItems = [
     {
-      label: (
+      key: "1",
+      children: (
         <span className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK">
           Edit
         </span>
       ),
-      key: "1",
     },
     {
-      label: (
+      key: "2",
+      children: (
         <span className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK">
           Duplicate
         </span>
       ),
-      key: "2",
     },
     {
-      label: (
+      key: "3",
+      children: (
         <span className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK">
           Delete
         </span>
       ),
-      key: "3",
     },
   ];
 
@@ -116,11 +116,11 @@ const EventTickets = () => {
         />
       ),
       dataIndex: "action",
-      sorter: false,
+      key: "action",
       render: (text: any, record: SalesDataType) => {
         return (
           <Space direction="vertical" size={"small"}>
-            <Dropdown menu={{ items: GuestItems }}>
+            <Dropdown overlay={<Menu>{GuestItems.map((item) => <Menu.Item key={item.key}>{item.children}</Menu.Item>)}</Menu>}>
               <MenuOutlined className="cursor-pointer text-lg" />
             </Dropdown>
           </Space>
@@ -129,19 +129,36 @@ const EventTickets = () => {
     },
   ];
 
+  function setIsModalOpen(arg0: boolean): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <EventDetailsComponent>
       <Space direction="vertical" size={"large"}>
         <Space direction="vertical" size={"small"}>
           <Heading5 className="" content={"Event Ticket "} />
           <Paragraph
-            className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
+            className="text-OWANBE_PRY text-md font-normal font-BricolageGrotesqueRegular"
             content={
               "Ostivities is free for free events. For paid events, we charge a percentage as a transaction fee."
             }
             styles={{ fontWeight: "normal !important" }}
           />
         </Space>
+
+        <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "16px" }}>
+          <Button
+            type="primary"
+            htmlType="button"
+            size="large"
+            className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles float-right place-self-end"
+            onClick={() => setIsModalOpen(true)}
+            style={{ borderRadius: 15 }}
+          >
+            Add Ticket
+          </Button>
+        </div>
 
         <Table
           rowSelection={{
@@ -168,3 +185,5 @@ const EventTickets = () => {
 };
 
 export default EventTickets;
+
+
