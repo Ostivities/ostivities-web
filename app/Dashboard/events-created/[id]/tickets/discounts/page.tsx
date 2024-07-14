@@ -1,11 +1,15 @@
+"use client";
+import Discount from "@/app/components/Discounts/Discount";
+import DiscountCode from "@/app/components/Discounts/DiscountCode";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
+import { useDiscount } from "@/app/contexts/discount-context/DiscountContext";
 import React from "react";
-import EventsDetails from "../../page";
 
 const EventTicketDiscount = () => {
+  const { discount } = useDiscount();
   return (
     <EventDetailsComponent>
-      <div>event page ticket discount</div>
+      {discount === "Discount" ? <Discount /> : <DiscountCode />}
     </EventDetailsComponent>
   );
 };
