@@ -1,19 +1,18 @@
-'use client';
+"use client";
 
-import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
-import InfoCard from '@/app/components/DashboardLayout/InfoCard';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useLayoutEffect } from 'react';
+import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
+import InfoCard from "@/app/components/DashboardLayout/InfoCard";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useLayoutEffect } from "react";
 
 interface PropsI {
-  event: 'popular' | 'discovery' | 'paid' | 'free' | 'online';
+  event: "popular" | "discovery" | "paid" | "free" | "online";
 }
 
 const Event = ({ params }: { params: { event: string } }) => {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const uri = ['popular', 'discovery', 'paid', 'free', 'online'];
+  const uri = ["popular", "discovery", "paid", "free", "online"];
   const router = useRouter();
 
   const title = (
@@ -26,13 +25,13 @@ const Event = ({ params }: { params: { event: string } }) => {
         onClick={() => router.back()}
         className="cursor-pointer"
       />
-<h1 style={{ fontSize: '24px' }}>Popular Events</h1>
+      <h1 style={{ fontSize: "24px" }}>Popular Events</h1>
     </div>
   );
 
   useLayoutEffect(() => {
     if (!uri.includes(params.event)) {
-      router.push('/Dashboard');
+      router.push("/Dashboard");
     }
   }, [params.event, router, uri]);
 
@@ -41,34 +40,34 @@ const Event = ({ params }: { params: { event: string } }) => {
       <section>
         <h2 className="font-semibold text-3xl mb-3">Explore Popular Events</h2>
         <div className="grid grid-cols-5 gap-3 gap-y-6 mt-7">
-        <InfoCard
-        title="Concert with Davido"
-        about="Concert"
-        status="Get Tickets"
-        image="/images/placeholder-1.png"
-        url="/Dashboard/discovery/1"
-      />
-      <InfoCard
-        title="Muslim Tech Expo"
-        about="Event"
-        status="sold out"
-        image="/images/placeholder-2.png"
-        url="/Dashboard/discovery/1"
-      />
-      <InfoCard
-        title="Tobi weds Shade"
-        about="Wedding"
-        status="Get Tickets"
-        image="/images/placeholder-4.png"
-        url="/Dashboard/discovery/1"
-      />
-      <InfoCard
-        title="Agbaya Linkup"
-        about="Hangout"
-        status="sold out"
-        image="/images/placeholder-5.png"
-        url="/Dashboard/discovery/1"
-      />
+          <InfoCard
+            title="Concert with Davido"
+            about="Concert"
+            status="Get Tickets"
+            image="/images/placeholder-1.png"
+            url="/Dashboard/discovery/1"
+          />
+          <InfoCard
+            title="Muslim Tech Expo"
+            about="Event"
+            status="sold out"
+            image="/images/placeholder-2.png"
+            url="/Dashboard/discovery/1"
+          />
+          <InfoCard
+            title="Tobi weds Shade"
+            about="Wedding"
+            status="Get Tickets"
+            image="/images/placeholder-4.png"
+            url="/Dashboard/discovery/1"
+          />
+          <InfoCard
+            title="Agbaya Linkup"
+            about="Hangout"
+            status="sold out"
+            image="/images/placeholder-5.png"
+            url="/Dashboard/discovery/1"
+          />
           <InfoCard
             title="Concert with Davido"
             about="Concert"
