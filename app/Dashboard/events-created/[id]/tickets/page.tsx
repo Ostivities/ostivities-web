@@ -11,7 +11,7 @@ import {
 import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
 import { SalesDataType } from "@/app/utils/interface";
 import { MenuOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Menu, Space, Table } from "antd";
+import { Button, Dropdown, Menu, MenuProps, Space, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import React, { useState } from "react";
 
@@ -34,7 +34,12 @@ const EventTickets = () => {
   const [isShown, setIsShown] = useState(false);
   const [actionType, setActionType] = useState<"delete" | "warning">();
 
-  const GuestItems: MenuProps["items"] = [
+  interface MenuItemType {
+    label: React.ReactNode;
+    key: string;
+  }
+
+  const GuestItems: MenuItemType[] = [
     {
       label: (
         <Button
