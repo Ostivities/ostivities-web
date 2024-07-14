@@ -14,7 +14,7 @@ const EventPageView = () => {
     <EventDetailsComponent>
       <div className="flex flex-row w-full">
         <div className="w-11/12 flex flex-col space-y-5">
-          <Space direction="vertical">
+          <Space direction="vertical" size={"small"}>
             <Heading5 className="" content={"Event Page Appearance"} />
             <Paragraph
               className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
