@@ -8,6 +8,7 @@ import React from "react";
 import { HiMiniArrowLongLeft } from "react-icons/hi2";
 import { IoChevronDown } from "react-icons/io5";
 import { LiaExternalLinkAltSolid } from "react-icons/lia";
+import Image from 'next/image';
 
 export default function EventDetailsComponent({
   children,
@@ -264,7 +265,11 @@ export default function EventDetailsComponent({
   const title = (
     <div className="flex items-center w-full relative pb-2 space-x-8">
       <div className="flex flex-row items-center space-x-2 cursor-pointer">
-        <HiMiniArrowLongLeft
+      <Image
+        src="/icons/back-arrow.svg"
+        alt=""
+        height={25}
+        width={25}
           onClick={() => {
             router.push(`/Dashboard/events-created`);
           }}

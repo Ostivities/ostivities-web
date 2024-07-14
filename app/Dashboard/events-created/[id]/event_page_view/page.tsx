@@ -29,17 +29,21 @@ const EventPageView = () => {
                 src={PlaceholderImage}
                 alt="Selected Image"
                 style={{
-                  width: "100%",
-                  height: "100%",
+                  height: "400px",
+                  border: "1px solid #00000040",
+                  borderRadius: "16px",
+                  borderStyle: "dashed",
+                  display: "flex",
                   objectFit: "cover",
-                  borderRadius: "10px",
-                  margin: "auto",
-                  textAlign: "center",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  position: "relative",
+                  overflow: "hidden",
                 }}
               />
             </div>
           ) : (
-            <Dropzone className="w-full border-dashed border flex items-center rounded-lg cursor-pointer" />
+            <Dropzone className="w-full border-dashed border flex items-center rounded-lg cursor-pointer " />
           )}
 
           <div className="flex flex-row items-center justify-center">
