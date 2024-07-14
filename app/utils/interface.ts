@@ -110,6 +110,8 @@ export interface DataType {
 }
 
 export interface SalesDataType {
+  eventType: any;
+  dateCreated: any;
   key: React.Key;
   eventName: string;
   ticketSold: number;

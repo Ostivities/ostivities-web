@@ -346,13 +346,13 @@ export default function EventDetailsComponent({
           <Button
             type="primary"
             size={"middle"}
-            className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-32 rounded-2xl"
+            className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl"
             style={{
               borderRadius: "16px",
               fontFamily: "BricolageGrotesqueMedium",
             }}
           >
-            Publish event
+            Unpublish event
           </Button>
         </div>
         <div className="flex flex-row items-center space-x-1">
