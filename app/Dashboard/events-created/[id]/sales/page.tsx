@@ -1,7 +1,7 @@
 "use client";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import { Heading5, Label } from "@/app/components/typography/Typography";
-import { generateRandomString } from "@/app/utils/helper";
+import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
 import { SalesDataType } from "@/app/utils/interface";
 import { Button, Space, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
@@ -11,23 +11,6 @@ const EventSales = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-
-  const eventNames = [
-    "Music Concert",
-    "Art Exhibition",
-    "Tech Conference",
-    "Food Festival",
-    "Sports Meet",
-    "Charity Gala",
-    "Comedy Show",
-    "Theater Play",
-    "Film Screening",
-    "Book Fair",
-  ];
-
-  // Function to get a random event name from the array
-  const getRandomEventName = () =>
-    eventNames[Math.floor(Math.random() * eventNames.length)];
 
   const data: SalesDataType[] = Array.from({ length: 50 }, (_, index) => ({
     key: `${index + 1}`,
