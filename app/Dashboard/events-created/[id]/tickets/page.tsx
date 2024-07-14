@@ -1,5 +1,6 @@
 "use client";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
+import AddTicketModal from "@/app/components/OstivitiesModal/AddTicket";
 import {
   Heading5,
   Label,
@@ -16,6 +17,7 @@ const EventTickets = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const GuestItems = [
     {
@@ -129,58 +131,64 @@ const EventTickets = () => {
     },
   ];
 
-  function setIsModalOpen(arg0: boolean): void {
-    throw new Error("Function not implemented.");
-  }
+  
 
   return (
-    <EventDetailsComponent>
-      <Space direction="vertical" size={"large"}>
-        <Space direction="vertical" size={"small"}>
-          <Heading5 className="" content={"Event Ticket "} />
-          <Paragraph
-            className="text-OWANBE_PRY text-md font-normal font-BricolageGrotesqueRegular"
-            content={
-              "Ostivities is free for free events. For paid events, we charge a percentage as a transaction fee."
-            }
-            styles={{ fontWeight: "normal !important" }}
-          />
+    <React.Fragment>
+      <AddTicketModal
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        onOk={() => setIsModalOpen(false)}
+      />
+      <EventDetailsComponent>
+        <Space direction="vertical" size={"large"}>
+          <Space direction="vertical" size={"small"}>
+            <Heading5 className="" content={"Event Ticket "} />
+            <Paragraph
+              className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
+              content={
+                "Ostivities is free for free events. For paid events, we charge a percentage as a transaction fee."
+              }
+              styles={{ fontWeight: "normal !important" }}
+            />
+          </Space>
+
+          <Space direction="vertical" size={"large"} style={{ width: "100%" }}>
+            <Button
+              type={"primary"}
+              size={"large"}
+              className={`font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-32 rounded-2xl float-end`}
+              style={{
+                borderRadius: "16px",
+                fontFamily: "BricolageGrotesqueMedium",
+              }}
+              onClick={() => setIsModalOpen(true)}
+            >
+              Add Ticket
+            </Button>
+            <Table
+              rowSelection={{
+                selectedRowKeys,
+                onChange: (keys) => setSelectedRowKeys(keys),
+              }}
+              columns={columns}
+              dataSource={data}
+              className="font-BricolageGrotesqueRegular w-full"
+              pagination={{
+                current: currentPage,
+                pageSize: pageSize,
+                total: data.length,
+                onChange: (page, size) => {
+                  setCurrentPage(page);
+                  setPageSize(size);
+                },
+              }}
+              scroll={{ x: "max-content" }}
+            />
+          </Space>
         </Space>
-
-        <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "16px" }}>
-          <Button
-            type="primary"
-            htmlType="button"
-            size="large"
-            className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles float-right place-self-end"
-            onClick={() => setIsModalOpen(true)}
-            style={{ borderRadius: 15 }}
-          >
-            Add Ticket
-          </Button>
-        </div>
-
-        <Table
-          rowSelection={{
-            selectedRowKeys,
-            onChange: (keys) => setSelectedRowKeys(keys),
-          }}
-          columns={columns}
-          dataSource={data}
-          className="font-BricolageGrotesqueRegular w-full"
-          pagination={{
-            current: currentPage,
-            pageSize: pageSize,
-            total: data.length,
-            onChange: (page, size) => {
-              setCurrentPage(page);
-              setPageSize(size);
-            },
-          }}
-          scroll={{ x: "max-content" }}
-        />
-      </Space>
-    </EventDetailsComponent>
+      </EventDetailsComponent>
+    </React.Fragment>
   );
 };
 
