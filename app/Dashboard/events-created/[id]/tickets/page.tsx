@@ -1,12 +1,13 @@
 "use client";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import AddTicketModal from "@/app/components/OstivitiesModal/AddTicket";
+import UpdateTicket from "@/app/components/OstivitiesModal/UpdateTicket";
 import {
   Heading5,
   Label,
   Paragraph,
 } from "@/app/components/typography/Typography";
-import { generateRandomString } from "@/app/utils/helper";
+import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
 import { SalesDataType } from "@/app/utils/interface";
 import { MenuOutlined } from "@ant-design/icons";
 import { Button, Dropdown, MenuProps, Space, Table } from "antd";
@@ -18,50 +19,47 @@ const EventTickets = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const GuestItems: MenuProps["items"] = [
     {
       label: (
-        <span className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK">
+        <Button
+          type="link"
+          className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          style={{ color: "#000000", fontFamily: "BricolageGrotesqueRegular" }}
+          onClick={() => setIsOpen(true)}
+        >
           Edit
-        </span>
+        </Button>
       ),
       key: "1",
     },
     {
       label: (
-        <span className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK">
+        <Button
+          type="link"
+          className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          style={{ color: "#000000", fontFamily: "BricolageGrotesqueRegular" }}
+        >
           Duplicate
-        </span>
+        </Button>
       ),
       key: "2",
     },
     {
       label: (
-        <span className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK">
+        <Button
+          type="link"
+          className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          style={{ color: "#000000", fontFamily: "BricolageGrotesqueRegular" }}
+        >
           Delete
-        </span>
+        </Button>
       ),
       key: "3",
     },
   ];
-
-  const eventNames = [
-    "Music Concert",
-    "Art Exhibition",
-    "Tech Conference",
-    "Food Festival",
-    "Sports Meet",
-    "Charity Gala",
-    "Comedy Show",
-    "Theater Play",
-    "Film Screening",
-    "Book Fair",
-  ];
-
-  // Function to get a random event name from the array
-  const getRandomEventName = () =>
-    eventNames[Math.floor(Math.random() * eventNames.length)];
 
   const data: SalesDataType[] = Array.from({ length: 50 }, (_, index) => ({
     key: `${index + 1}`,
@@ -137,6 +135,11 @@ const EventTickets = () => {
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         onOk={() => setIsModalOpen(false)}
+      />
+      <UpdateTicket
+        open={isOpen}
+        onCancel={() => setIsOpen(false)}
+        onOk={() => setIsOpen(false)}
       />
       <EventDetailsComponent>
         <Space direction="vertical" size={"large"}>
