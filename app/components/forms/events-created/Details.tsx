@@ -42,7 +42,7 @@ const EventTicketTable: React.FC = () => {
     {
       title: (
         <Label
-          content="Event Name"
+          content="Ticket Name"
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
