@@ -110,7 +110,7 @@ export default function EventDetailsComponent({
         <div className="flex flex-row items-center space-x-4">
           <Button
             type={pathname.includes("about") ? "primary" : "text"}
-            size={"middle"}
+            size={"large"}
             className={`font-BricolageGrotesqueSemiBold ${
               pathname.includes("about") ? "sign-up" : ""
             } cursor-pointer font-bold w-32 rounded-2xl`}
@@ -139,6 +139,7 @@ export default function EventDetailsComponent({
                 borderRadius: "16px",
                 fontFamily: "BricolageGrotesqueMedium",
               }}
+              size="large"
             >
               <Space>
                 Tickets
@@ -153,10 +154,10 @@ export default function EventDetailsComponent({
 
           <Button
             type={pathname.includes("event_page_view") ? "primary" : "text"}
-            size={"middle"}
+            size="large"
             className={`font-BricolageGrotesqueSemiBold ${
               pathname.includes("event_page_view") ? "sign-up" : ""
-            } cursor-pointer font-bold w-32 rounded-2xl`}
+            } cursor-pointer font-bold w-40 rounded-2xl`}
             style={{
               borderRadius: "16px",
               fontFamily: "BricolageGrotesqueMedium",
@@ -178,6 +179,7 @@ export default function EventDetailsComponent({
                 borderRadius: "16px",
                 fontFamily: "BricolageGrotesqueMedium",
               }}
+              size="large"
             >
               <Space>
                 Guest List
@@ -188,7 +190,7 @@ export default function EventDetailsComponent({
 
           <Button
             type={pathname.includes("sales") ? "primary" : "text"}
-            size={"middle"}
+            size="large"
             className={`font-BricolageGrotesqueSemiBold ${
               pathname.includes("sales") ? "sign-up" : ""
             } cursor-pointer font-bold w-32 rounded-2xl`}
@@ -207,8 +209,8 @@ export default function EventDetailsComponent({
           <div className="flex flex-row">
             <Button
               type={"default"}
-              size={"middle"}
-              className={`font-BricolageGrotesqueSemiBold  cursor-pointer font-bold w-44 rounded-2xl place-self-end float-right`}
+              size={"large"}
+              className={`font-BricolageGrotesqueSemiBold  cursor-pointer font-bold w-48 rounded-2xl place-self-end float-right`}
               style={{
                 borderRadius: "16px",
                 fontFamily: "BricolageGrotesqueMedium",
