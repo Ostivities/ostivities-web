@@ -1,13 +1,15 @@
 "use client";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
+import useModal from "@/app/hooks/useModal";
 import type { MenuProps } from "antd";
 import { Button, Card, Dropdown, Space, Switch } from "antd";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { HiMiniArrowLongLeft } from "react-icons/hi2";
 import { IoChevronDown } from "react-icons/io5";
 import { LiaExternalLinkAltSolid } from "react-icons/lia";
+import PaymentDetails from "../OstivitiesModal/PaymentDetails";
 import Image from 'next/image';
 
 export default function EventDetailsComponent({
@@ -15,6 +17,7 @@ export default function EventDetailsComponent({
 }: {
   children: React.ReactNode;
 }): JSX.Element {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const pathname = usePathname();
   const params = useParams();
   const router = useRouter();
@@ -108,7 +111,7 @@ export default function EventDetailsComponent({
         <div className="flex flex-row items-center space-x-4">
           <Button
             type={pathname.includes("about") ? "primary" : "text"}
-            size={"middle"}
+            size={"large"}
             className={`font-BricolageGrotesqueSemiBold ${
               pathname.includes("about") ? "sign-up" : ""
             } cursor-pointer font-bold w-32 rounded-2xl`}
@@ -137,6 +140,7 @@ export default function EventDetailsComponent({
                 borderRadius: "16px",
                 fontFamily: "BricolageGrotesqueMedium",
               }}
+              size="large"
             >
               <Space>
                 Tickets
@@ -151,10 +155,10 @@ export default function EventDetailsComponent({
 
           <Button
             type={pathname.includes("event_page_view") ? "primary" : "text"}
-            size={"middle"}
+            size="large"
             className={`font-BricolageGrotesqueSemiBold ${
               pathname.includes("event_page_view") ? "sign-up" : ""
-            } cursor-pointer font-bold w-32 rounded-2xl`}
+            } cursor-pointer font-bold w-40 rounded-2xl`}
             style={{
               borderRadius: "16px",
               fontFamily: "BricolageGrotesqueMedium",
@@ -176,6 +180,7 @@ export default function EventDetailsComponent({
                 borderRadius: "16px",
                 fontFamily: "BricolageGrotesqueMedium",
               }}
+              size="large"
             >
               <Space>
                 Guest List
@@ -186,7 +191,7 @@ export default function EventDetailsComponent({
 
           <Button
             type={pathname.includes("sales") ? "primary" : "text"}
-            size={"middle"}
+            size="large"
             className={`font-BricolageGrotesqueSemiBold ${
               pathname.includes("sales") ? "sign-up" : ""
             } cursor-pointer font-bold w-32 rounded-2xl`}
@@ -205,16 +210,14 @@ export default function EventDetailsComponent({
           <div className="flex flex-row">
             <Button
               type={"default"}
-              size={"middle"}
-              className={`font-BricolageGrotesqueSemiBold  cursor-pointer font-bold w-44 rounded-2xl place-self-end float-right`}
+              size={"large"}
+              className={`font-BricolageGrotesqueSemiBold  cursor-pointer font-bold w-48 rounded-2xl place-self-end float-right`}
               style={{
                 borderRadius: "16px",
                 fontFamily: "BricolageGrotesqueMedium",
                 float: "right",
               }}
-              onClick={() => {
-                router.push(`/Dashboard/events-created/${params?.id}/sales`);
-              }}
+              onClick={() => setIsModalOpen(true)}
             >
               Add Payment Details
             </Button>
@@ -317,23 +320,30 @@ export default function EventDetailsComponent({
   );
 
   return (
-    <DashboardLayout
-      title={title}
-      isLoggedIn
-      extraComponents={
-        <div
-          className={`flex flex-col ${
-            pathname.includes("sales") ? "space-y-8" : ""
-          }`}
-        >
-          <ExtraTab />
-          {pathname.includes("sales") && <SalesMetrics />}
+    <React.Fragment>
+      <PaymentDetails
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+      />
+
+      <DashboardLayout
+        title={title}
+        isLoggedIn
+        extraComponents={
+          <div
+            className={`flex flex-col ${
+              pathname.includes("sales") ? "space-y-8" : ""
+            }`}
+          >
+            <ExtraTab />
+            {pathname.includes("sales") && <SalesMetrics />}
+          </div>
+        }
+      >
+        <div className="w-full mx-auto flex flex-col space-y-5 py-2">
+          <>{children}</>
         </div>
-      }
-    >
-      <div className="w-full mx-auto flex flex-col space-y-5 py-2">
-        <>{children}</>
-      </div>
-    </DashboardLayout>
+      </DashboardLayout>
+    </React.Fragment>
   );
 }
