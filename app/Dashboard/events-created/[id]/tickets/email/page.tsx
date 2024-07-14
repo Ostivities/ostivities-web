@@ -12,9 +12,8 @@ import "react-quill/dist/quill.snow.css";
 
 const EventTicketsEmail = () => {
   const [value, setValue] = useState("");
-
   const toolbarOptions = [
-    ["bold", "italic", "underline", "strike"], // toggled buttons
+    ["bold", "italic", "underline", "strike"],
     ["blockquote", "code-block"],
     ["link", "image", "video", "formula"],
 
@@ -37,13 +36,13 @@ const EventTicketsEmail = () => {
   const modules = {
     toolbar: {
       container: toolbarOptions,
-      handlers: {
-        quote: function (this: any, value: string) {
-          if (value === "under" || value === "over") {
-            this.quill.format("blockquote", value);
-          }
-        },
-      },
+      // handlers: {
+      //   quote: function (this: any, value: string) {
+      //     if (value === "under" || value === "over") {
+      //       this.quill.format("blockquote", value);
+      //     }
+      //   },
+      // },
     },
   };
 
