@@ -116,7 +116,7 @@ export default function EventDetailsComponent({
               pathname.includes("about") ? "sign-up" : ""
             } cursor-pointer font-bold w-32 rounded-2xl`}
             style={{
-              borderRadius: "16px",
+              borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
             }}
             onClick={() => {
@@ -137,7 +137,7 @@ export default function EventDetailsComponent({
                 pathname.includes("tickets") ? "sign-up" : ""
               }`}
               style={{
-                borderRadius: "16px",
+                borderRadius: "25px",
                 fontFamily: "BricolageGrotesqueMedium",
               }}
               size="large"
@@ -160,7 +160,7 @@ export default function EventDetailsComponent({
               pathname.includes("event_page_view") ? "sign-up" : ""
             } cursor-pointer font-bold w-40 rounded-2xl`}
             style={{
-              borderRadius: "16px",
+              borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
             }}
             onClick={() => {
@@ -177,7 +177,7 @@ export default function EventDetailsComponent({
               type={pathname.includes("guestlist") ? "primary" : "text"}
               className="font-BricolageGrotesqueSemiBold cursor-pointer font-bold w-32 rounded-2xl"
               style={{
-                borderRadius: "16px",
+                borderRadius: "25px",
                 fontFamily: "BricolageGrotesqueMedium",
               }}
               size="large"
@@ -196,7 +196,7 @@ export default function EventDetailsComponent({
               pathname.includes("sales") ? "sign-up" : ""
             } cursor-pointer font-bold w-32 rounded-2xl`}
             style={{
-              borderRadius: "16px",
+              borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
             }}
             onClick={() => {
@@ -213,7 +213,7 @@ export default function EventDetailsComponent({
               size={"large"}
               className={`font-BricolageGrotesqueSemiBold  cursor-pointer font-bold w-48 rounded-2xl place-self-end float-right`}
               style={{
-                borderRadius: "16px",
+                borderRadius: "25px",
                 fontFamily: "BricolageGrotesqueMedium",
                 float: "right",
               }}
@@ -231,9 +231,17 @@ export default function EventDetailsComponent({
     const CardMetrics = ({
       title,
       value,
+      cardStyle = {},
+      titleStyle = {},
+      valueStyle = {},
+      containerStyle = {},
     }: {
       title: string;
       value: number | string;
+      cardStyle?: React.CSSProperties;
+      titleStyle?: React.CSSProperties;
+      valueStyle?: React.CSSProperties;
+      containerStyle?: React.CSSProperties;
     }): JSX.Element => {
       return (
         <Card
@@ -241,30 +249,77 @@ export default function EventDetailsComponent({
           style={{
             borderRadius: "30px",
             boxShadow: "0px 8px 24px 0px #00000014",
+            ...cardStyle,
           }}
         >
-          <div className="flex flex-col space-y-8 mx-auto text-center py-6">
-            <p className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_PRY text-lg">
+          <div
+            className="flex flex-col mx-auto text-center py-6"
+            style={containerStyle}
+          >
+            <p
+              className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_PRY"
+              style={titleStyle}
+            >
               {title}
             </p>
-            <p className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_DARK text-2xl">
+            <p
+              className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_DARK"
+              style={valueStyle}
+            >
               {value}
             </p>
           </div>
         </Card>
       );
     };
+  
+    const cardStyle = {
+      width: 'full', // Adjust card width
+      height: '150px', // Adjust card height
+    };
+  
+    const titleStyle = {
+      fontSize: '20px', // Adjust title text size
+    };
+  
+    const valueStyle = {
+      fontSize: '19px', // Adjust value text size
+    };
+  
+    const containerStyle = {
+      gap: '4px', // Adjust the spacing between title and value (you can customize this)
+    };
+  
     return (
       <div className="grid grid-cols-3 gap-x-8">
-        <CardMetrics title="Tickets Sold" value={20} />
-
-        <CardMetrics title="Total Revenue" value={20} />
-
-        <CardMetrics title="Next Payout Date" value={"2024-04-07"} />
+        <CardMetrics
+          title="Tickets Sold"
+          value={20}
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+        <CardMetrics
+          title="Total Revenue"
+          value={20}
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+        <CardMetrics
+          title="Next Payout Date"
+          value={"2024-04-07"}
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
       </div>
     );
   };
-
+  
   const title = (
     <div className="flex items-center w-full relative pb-2 space-x-8">
       <div className="flex flex-row items-center space-x-2 cursor-pointer">

@@ -12,6 +12,7 @@ interface PropsI {
 }
 
 const Event = ({ params }: { params: { event: string } }) => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const uri = ['popular', 'discovery', 'paid', 'free', 'online'];
   const router = useRouter();
 
@@ -33,7 +34,7 @@ const Event = ({ params }: { params: { event: string } }) => {
     if (!uri.includes(params.event)) {
       router.push('/Dashboard');
     }
-  }, []);
+  }, [params.event, router, uri]);
 
   return (
     <DashboardLayout title={title} isLoggedIn>
