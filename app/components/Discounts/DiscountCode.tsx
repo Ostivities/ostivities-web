@@ -16,6 +16,8 @@ interface FieldType {}
 
 const DiscountCode = (): JSX.Element => {
   const { toggleDiscount } = useDiscount();
+  const [form] = Form.useForm();
+  const [ticketApplicable, setTicketApplicable] = useState("All Tickets");
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     return values;
@@ -27,8 +29,13 @@ const DiscountCode = (): JSX.Element => {
     return errorInfo;
   };
 
+  const handleTicketApplicableChange = (value: string) => {
+    setTicketApplicable(value);
+  };
+
   return (
     <Form<FieldType>
+      form={form}
       name="basic"
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
@@ -36,35 +43,28 @@ const DiscountCode = (): JSX.Element => {
       layout="vertical"
       className="w-full flex flex-col space-y-6"
     >
-      <Space direction="vertical" size={"large"} style={{ width: "100%" }}>
-        <Space direction="vertical" size={"small"} style={{ width: "100%" }}>
-          <Heading5 className="" content={"Discount Code"} />
+      <Space direction="vertical" size="large" style={{ width: "100%" }}>
+        <Space direction="vertical" size="small" style={{ width: "100%" }}>
+          <Heading5 content="Discount Code" />
           <div className="grid grid-cols-2 gap-x-8">
             <Form.Item<FieldType>
               label={<Label content="Discount code" />}
               name="discountCode"
-              rules={[
-                { required: true, message: "Please input your ticket name!" },
-              ]}
+              rules={[{ required: true, message: "Please input the discount code!" }]}
             >
-              <Input placeholder="Enter ticket name" />
+              <Input placeholder="Enter discount code" />
             </Form.Item>
 
             <Form.Item<FieldType>
               label={<Label content="Discount Value" />}
               name="discountValue"
-              rules={[
-                { required: true, message: "Please input your ticket name!" },
-              ]}
+              rules={[{ required: true, message: "Please input the discount value!" }]}
             >
               <InputNumber
-                placeholder="Enter group price"
+                placeholder="Enter discount value"
                 style={{ width: "100%" }}
                 min={0}
-                // onChange={handleGroupPriceChange}
-                formatter={(value) =>
-                  `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                }
+                formatter={(value) => `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                 parser={(value) => value?.replace(/\₦\s?|(,*)/g, "") as any}
               />
             </Form.Item>
@@ -72,41 +72,51 @@ const DiscountCode = (): JSX.Element => {
             <Form.Item<FieldType>
               label={<Label content="Ticket Applicable" />}
               name="ticketApplicable"
-              rules={[
-                { required: true, message: "Please input your ticket name!" },
-              ]}
+              rules={[{ required: true, message: "Please select the ticket applicable!" }]}
             >
-              <Select placeholder="Select type">
-                <Select.Option value={2}>Couple</Select.Option>
-                <Select.Option value={3}>Trio</Select.Option>
-                <Select.Option value={4}>Quads</Select.Option>
+              <Select
+                placeholder="Select ticket applicable"
+                onChange={handleTicketApplicableChange}
+              >
+                <Select.Option value="All Tickets">All Tickets</Select.Option>
+                <Select.Option value="Individual Ticket">Individual Ticket</Select.Option>
               </Select>
             </Form.Item>
+
+            {ticketApplicable === "Individual Ticket" && (
+              <Form.Item<FieldType>
+                label={<Label content="Select Ticket" />}
+                name="selectTicket"
+                rules={[{ required: true, message: "Please select the ticket!" }]}
+              >
+                <Select placeholder="Select ticket">
+                  {/* Map through your created tickets here */}
+                  <Select.Option value="Ticket 1">Ticket 1</Select.Option>
+                  <Select.Option value="Ticket 2">Ticket 2</Select.Option>
+                  <Select.Option value="Ticket 3">Ticket 3</Select.Option>
+                </Select>
+              </Form.Item>
+            )}
           </div>
         </Space>
-        <Space direction="vertical" size={"small"} style={{ width: "100%" }}>
-          <Heading5 className="" content={"Usage Limit"} />
+        <Space direction="vertical" size="small" style={{ width: "100%" }}>
+          <Heading5 content="Usage Limit" />
           <div className="grid grid-cols-2 gap-x-8">
             <Form.Item<FieldType>
               label={<Label content="Usage Limit" />}
               name="usageLimit"
-              rules={[
-                { required: true, message: "Please input your ticket name!" },
-              ]}
+              rules={[{ required: true, message: "Please select the usage limit!" }]}
             >
-              <Select placeholder="Select type">
-                <Select.Option value={2}>Couple</Select.Option>
-                <Select.Option value={3}>Trio</Select.Option>
-                <Select.Option value={4}>Quads</Select.Option>
+              <Select placeholder="Select usage limit">
+                <Select.Option value="Unlimited">Unlimited</Select.Option>
+                <Select.Option value="Useable Once">Useable Once</Select.Option>
               </Select>
             </Form.Item>
 
             <Form.Item<FieldType>
               label={<Label content="Start Date & Time" />}
               name="startDate"
-              rules={[
-                { required: true, message: "Please input your ticket name!" },
-              ]}
+              rules={[{ required: true, message: "Please input the start date and time!" }]}
             >
               <DatePicker
                 showTime
@@ -118,9 +128,7 @@ const DiscountCode = (): JSX.Element => {
             <Form.Item<FieldType>
               label={<Label content="End Date & Time" />}
               name="endDate"
-              rules={[
-                { required: true, message: "Please input your ticket name!" },
-              ]}
+              rules={[{ required: true, message: "Please input the end date and time!" }]}
             >
               <DatePicker
                 showTime
@@ -134,7 +142,7 @@ const DiscountCode = (): JSX.Element => {
 
       <Space
         direction="horizontal"
-        size={"large"}
+        size="large"
         style={{
           width: "100%",
           margin: "auto",
@@ -148,12 +156,9 @@ const DiscountCode = (): JSX.Element => {
           <Button
             type="default"
             htmlType="button"
-            size={"large"}
-            className={`font-BricolageGrotesqueSemiBold continue  cursor-pointer font-bold w-48 rounded-2xl`}
-            style={{
-              borderRadius: "16px",
-              fontFamily: "BricolageGrotesqueMedium",
-            }}
+            size="large"
+            className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold w-48 rounded-2xl"
+            style={{ borderRadius: "16px", fontFamily: "BricolageGrotesqueMedium" }}
             onClick={toggleDiscount}
           >
             Cancel
