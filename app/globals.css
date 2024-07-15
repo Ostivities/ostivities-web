@@ -1224,3 +1224,10 @@ button {
   border: none;
   box-shadow: 0px 2px 5px 0px #00000014;
 }
+.profile-image-container {
+  border: 1px solid #7b7b7b; /* Change the color and width of the border as needed */
+  padding: 2px; /* Add some padding inside the border */
+  border-radius: 50%; /* Ensure the border is circular */
+  width: fit-content; /* Ensure the container size fits the image */
+  height: fit-content; /* Ensure the container size fits the image */
+}

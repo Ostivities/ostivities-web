@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { UploadChangeParam } from "antd/lib/upload";
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 import useComponentDisabled from "@/app/hooks/utils/utils.hooks";
-import { Button, Space, Upload } from "antd";
+import { Button, message, Space, Upload } from "antd";
 import Image from "next/image";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 
@@ -14,11 +14,26 @@ const EventPageView = () => {
   const [isImageUploaded, setIsImageUploaded] = useState(false);
 
   const handleImageUpload = (info: UploadChangeParam<any>) => {
+    const { file } = info;
+
+    // Check file format and size
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    const isLt10M = file.size / 1024 / 1024 < 10;
+  
+    if (!isJpgOrPng) {
+      message.error('You can only upload JPEG or PNG files!');
+      return false;
+    }
+    if (!isLt10M) {
+      message.error('Image must be smaller than 10MB!');
+      return false;
+    }
     if (info.file.status === 'done') {
       const url = URL.createObjectURL(info.file.originFileObj);
       setImageUrl(url);
       setButtonText("Save Changes");
       setIsImageUploaded(true);
+      message.success(`${info.file.name} Event Image Updated successfully`);
     }
   };
 
