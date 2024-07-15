@@ -11,13 +11,23 @@ const EventPageView = () => {
   const [componentDisabled, setComponentDisabled] = useComponentDisabled();
   const [imageUrl, setImageUrl] = useState("/images/placeholder-6.png");
   const [buttonText, setButtonText] = useState("Update Image");
+  const [isImageUploaded, setIsImageUploaded] = useState(false);
 
   const handleImageUpload = (info: UploadChangeParam<any>) => {
     if (info.file.status === 'done') {
       const url = URL.createObjectURL(info.file.originFileObj);
       setImageUrl(url);
       setButtonText("Save Changes");
+      setIsImageUploaded(true);
     }
+  };
+
+  const handleSaveChanges = () => {
+    // Implement the logic to save the image
+    console.log("Image saved:", imageUrl);
+    // After saving, you can reset the button text if needed
+    setButtonText("Update Image");
+    setIsImageUploaded(false);
   };
 
   return (
@@ -135,18 +145,34 @@ const EventPageView = () => {
           </div>
         </div>
         <div className="flex justify-center mt-8">
-          <Upload
-            name="image"
-            listType="picture"
-            className="upload-list-inline"
-            showUploadList={false}
-            onChange={handleImageUpload}
-          >
+          {!isImageUploaded ? (
+            <Upload
+              name="image"
+              listType="picture"
+              className="upload-list-inline"
+              showUploadList={false}
+              onChange={handleImageUpload}
+            >
+              <Button
+                type="default"
+                htmlType="button"
+                size={"large"}
+                disabled={false}
+                className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
+                style={{
+                  borderRadius: "16px",
+                  fontFamily: "BricolageGrotesqueMedium",
+                }}
+              >
+                {buttonText}
+              </Button>
+            </Upload>
+          ) : (
             <Button
               type="default"
               htmlType="button"
               size={"large"}
-              disabled={false}
+              onClick={handleSaveChanges}
               className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
               style={{
                 borderRadius: "16px",
@@ -155,7 +181,7 @@ const EventPageView = () => {
             >
               {buttonText}
             </Button>
-          </Upload>
+          )}
         </div>
       </Space>
     </EventDetailsComponent>

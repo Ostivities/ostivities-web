@@ -46,7 +46,7 @@ const Discount = (): JSX.Element => {
             size="large"
             className={`font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl`}
             style={{
-              borderRadius: "16px",
+              borderRadius: "20px",
               fontFamily: "BricolageGrotesqueMedium",
             }}
             onClick={toggleDiscount}

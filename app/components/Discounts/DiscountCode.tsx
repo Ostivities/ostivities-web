@@ -10,7 +10,7 @@ import {
   Space,
 } from "antd";
 import React, { useState } from "react";
-import { Heading5, Label } from "../typography/Typography";
+import { Heading5, Label } from "../typography/Typography"; // Ensure Label component is correctly imported
 
 interface FieldType {}
 
@@ -34,7 +34,7 @@ const DiscountCode = (): JSX.Element => {
   };
 
   return (
-    <Form<FieldType>
+    <Form
       form={form}
       name="basic"
       onFinish={onFinish}
@@ -47,16 +47,16 @@ const DiscountCode = (): JSX.Element => {
         <Space direction="vertical" size="small" style={{ width: "100%" }}>
           <Heading5 content="Discount Code" />
           <div className="grid grid-cols-2 gap-x-8">
-            <Form.Item<FieldType>
-              label={<Label content="Discount code" />}
+            <Form.Item
+              label={<Label content="Discount code" />} // Correct usage of Label component
               name="discountCode"
               rules={[{ required: true, message: "Please input the discount code!" }]}
             >
               <Input placeholder="Enter discount code" />
             </Form.Item>
 
-            <Form.Item<FieldType>
-              label={<Label content="Discount Value" />}
+            <Form.Item
+              label={<Label content="Discount Value" />} // Correct usage of Label component
               name="discountValue"
               rules={[{ required: true, message: "Please input the discount value!" }]}
             >
@@ -69,8 +69,8 @@ const DiscountCode = (): JSX.Element => {
               />
             </Form.Item>
 
-            <Form.Item<FieldType>
-              label={<Label content="Ticket Applicable" />}
+            <Form.Item
+              label={<Label content="Ticket Applicable" />} // Correct usage of Label component
               name="ticketApplicable"
               rules={[{ required: true, message: "Please select the ticket applicable!" }]}
             >
@@ -84,8 +84,8 @@ const DiscountCode = (): JSX.Element => {
             </Form.Item>
 
             {ticketApplicable === "Individual Ticket" && (
-              <Form.Item<FieldType>
-                label={<Label content="Select Ticket" />}
+              <Form.Item
+                label={<Label content="Select Ticket" />} // Correct usage of Label component
                 name="selectTicket"
                 rules={[{ required: true, message: "Please select the ticket!" }]}
               >
@@ -102,8 +102,8 @@ const DiscountCode = (): JSX.Element => {
         <Space direction="vertical" size="small" style={{ width: "100%" }}>
           <Heading5 content="Usage Limit" />
           <div className="grid grid-cols-2 gap-x-8">
-            <Form.Item<FieldType>
-              label={<Label content="Usage Limit" />}
+            <Form.Item
+              label={<Label content="Usage Limit" />} // Correct usage of Label component
               name="usageLimit"
               rules={[{ required: true, message: "Please select the usage limit!" }]}
             >
@@ -113,10 +113,10 @@ const DiscountCode = (): JSX.Element => {
               </Select>
             </Form.Item>
 
-            <Form.Item<FieldType>
-              label={<Label content="Start Date & Time" />}
-              name="startDate"
-              rules={[{ required: true, message: "Please input the start date and time!" }]}
+            <Form.Item
+              label={<Label content="End Date & Time" />} // Correct usage of Label component
+              name="endDate"
+              rules={[{ required: true, message: "Please input the end date and time!" }]}
             >
               <DatePicker
                 showTime
@@ -125,10 +125,10 @@ const DiscountCode = (): JSX.Element => {
               />
             </Form.Item>
 
-            <Form.Item<FieldType>
-              label={<Label content="End Date & Time" />}
-              name="endDate"
-              rules={[{ required: true, message: "Please input the end date and time!" }]}
+            <Form.Item
+              label={<Label content="Start Date & Time" />} // Correct usage of Label component
+              name="startDate"
+              rules={[{ required: true, message: "Please input the start date and time!" }]}
             >
               <DatePicker
                 showTime
