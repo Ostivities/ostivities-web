@@ -11,9 +11,19 @@ import {
 import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
 import { SalesDataType } from "@/app/utils/interface";
 import { MenuOutlined } from "@ant-design/icons";
-import { Button, Dropdown, MenuProps, Space, Table } from "antd";
+import { Button, Dropdown, Menu, MenuProps, Space, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import React, { useState } from "react";
+
+// Currency formatter for Naira (₦)
+const formatCurrency = (amount: number) => {
+  const formatter = new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    minimumFractionDigits: 0,
+  });
+  return formatter.format(amount);
+};
 
 const EventTickets = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -24,7 +34,12 @@ const EventTickets = () => {
   const [isShown, setIsShown] = useState(false);
   const [actionType, setActionType] = useState<"delete" | "warning">();
 
-  const GuestItems: MenuProps["items"] = [
+  interface MenuItemType {
+    label: React.ReactNode;
+    key: string;
+  }
+
+  const GuestItems: MenuItemType[] = [
     {
       label: (
         <Button
@@ -77,9 +92,7 @@ const EventTickets = () => {
     eventName: getRandomEventName(),
     eventType: `Type ${index + 1}`,
     ticketSold: Math.floor(Math.random() * 100),
-    sales: Math.floor(Math.random() * 100),
     revenue: Math.floor(Math.random() * 10000),
-    fees: Math.floor(Math.random() * 1000),
     dateCreated: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
     status: ["Active", "Closed", "Pending"][Math.floor(Math.random() * 3)] as
       | "Active"
@@ -88,55 +101,48 @@ const EventTickets = () => {
     id: generateRandomString(10),
   }));
 
+  const handleMenuClick = (key: string) => {
+    // Handle menu item clicks
+    console.log("Clicked on:", key);
+  };
+
   const columns: ColumnsType<SalesDataType> = [
     {
-      title: (
-        <Label
-          content="Ticket Name"
-          className="font-semibold text-OWANBE_TABLE_TITLE"
-        />
-      ),
+      title: <Label content="Ticket Name" className="font-semibold text-OWANBE_TABLE_TITLE" />,
       dataIndex: "eventName",
       sorter: (a, b) => a.eventName.localeCompare(b.eventName),
     },
     {
-      title: (
-        <Label
-          content="Ticket Quantity"
-          className="font-semibold text-OWANBE_TABLE_TITLE"
-        />
-      ),
+      title: <Label content="Ticket Quantity" className="font-semibold text-OWANBE_TABLE_TITLE" />,
       dataIndex: "ticketSold",
       sorter: (a, b) => a.eventName.localeCompare(b.eventName),
     },
     {
-      title: (
-        <Label
-          content="Total Price"
-          className="font-semibold text-OWANBE_TABLE_TITLE"
-        />
-      ),
+      title: <Label content="Ticket Price" className="font-semibold text-OWANBE_TABLE_TITLE" />,
       dataIndex: "revenue",
       sorter: (a, b) => a.eventName.localeCompare(b.eventName),
+      render: (revenue: number) => <span>{formatCurrency(revenue)}</span>,
     },
     {
-      title: (
-        <Label
-          content="Action"
-          className="font-semibold text-OWANBE_TABLE_TITLE"
-        />
-      ),
+      title: <Label content="Action" className="font-semibold text-OWANBE_TABLE_TITLE" />,
       dataIndex: "action",
-      sorter: false,
-      render: (text: any, record: SalesDataType) => {
-        return (
-          <Space direction="vertical" size={"small"}>
-            <Dropdown menu={{ items: GuestItems }}>
-              <MenuOutlined className="cursor-pointer text-lg" />
-            </Dropdown>
-          </Space>
-        );
-      },
+      key: "action",
+      render: (text: any, record: SalesDataType) => (
+        <Space direction="vertical" size="small">
+          <Dropdown
+            overlay={
+              <Menu onClick={({ key }) => handleMenuClick(key.toString())}>
+                {GuestItems.map((item) => (
+                  <Menu.Item key={item.key}>{item.label}</Menu.Item>
+                ))}
+              </Menu>
+            }
+            trigger={["click"]}
+          >
+            <MenuOutlined className="cursor-pointer text-lg" />
+          </Dropdown>
+        </Space>
+      ),
     },
   ];
 
@@ -159,25 +165,23 @@ const EventTickets = () => {
         actionType={actionType}
       />
       <EventDetailsComponent>
-        <Space direction="vertical" size={"large"}>
-          <Space direction="vertical" size={"small"}>
+        <Space direction="vertical" size="large">
+          <Space direction="vertical" size="small">
             <Heading5 className="" content={"Event Ticket "} />
             <Paragraph
               className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
-              content={
-                "Ostivities is free for free events. For paid events, we charge a percentage as a transaction fee."
-              }
+              content="Ostivities is free for free events. For paid events, we charge a percentage as a transaction fee."
               styles={{ fontWeight: "normal !important" }}
             />
           </Space>
 
-          <Space direction="vertical" size={"large"} style={{ width: "100%" }}>
+          <Space direction="vertical" size="large" style={{ width: "100%" }}>
             <Button
-              type={"primary"}
-              size={"large"}
-              className={`font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-32 rounded-2xl float-end`}
+              type="primary"
+              size="large"
+              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-32 rounded-2xl float-end"
               style={{
-                borderRadius: "16px",
+                borderRadius: "20px",
                 fontFamily: "BricolageGrotesqueMedium",
               }}
               onClick={() => setIsModalOpen(true)}

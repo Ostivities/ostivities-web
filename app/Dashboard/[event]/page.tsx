@@ -1,18 +1,15 @@
 "use client";
-
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import InfoCard from "@/app/components/DashboardLayout/InfoCard";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useMemo } from "react";
 
 interface PropsI {
   event: "popular" | "discovery" | "paid" | "free" | "online";
 }
 
 const Event = ({ params }: { params: { event: string } }) => {
-  const uri = ["popular", "discovery", "paid", "free", "online"];
   const router = useRouter();
 
   const title = (
@@ -28,6 +25,9 @@ const Event = ({ params }: { params: { event: string } }) => {
       <h1 style={{ fontSize: "24px" }}>Popular Events</h1>
     </div>
   );
+
+  // Memoize uri array
+  const uri = useMemo(() => ["popular", "discovery", "paid", "free", "online"], []);
 
   useLayoutEffect(() => {
     if (!uri.includes(params.event)) {
