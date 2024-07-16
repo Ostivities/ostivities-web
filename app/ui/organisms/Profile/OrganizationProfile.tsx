@@ -5,7 +5,7 @@ import Image from 'next/image';
 import "@/app/globals.css"; // Assuming this is where your global styles are imported
 
 const OrganizationProfile = () => {
-  const [profileImage, setProfileImage] = useState<string>("https://res.cloudinary.com/ddgehpmnq/image/upload/v1721068630/emptyimage_u2vvtv.png"); // State for profile image URL
+  const [profileImage, setProfileImage] = useState<string>("/images/emptyimage.png"); // State for profile image URL
   const [uploadButton, setUploadButton] = useState<string>("Update"); // State for button text
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false); // State to track if image is uploaded
 
@@ -46,10 +46,10 @@ const OrganizationProfile = () => {
   // Function to handle image removal
   const handleRemoveImage = () => {
     Modal.confirm({
-      title: 'Are you sure you want to remove the profile picture?',
+      title: 'Are you sure you want to remove your profile picture?',
       icon: null,
       onOk() {
-        setProfileImage("https://res.cloudinary.com/ddgehpmnq/image/upload/v1721068630/emptyimage_u2vvtv.png"); // Reset profile image to default
+        setProfileImage("/images/emptyimage.png"); // Reset profile image to default
         setUploadButton("Update"); // Change button text back to "Update"
         setIsImageUploaded(false); // Set image upload state to false
         message.success('Profile picture removed successfully');
@@ -78,7 +78,7 @@ const OrganizationProfile = () => {
     alt="Profile Picture"
     width={96} // Equivalent to w-24
     height={96} // Equivalent to h-24
-    className="object-cover rounded-full"
+    className="object-cover w-24 h-24 rounded-full"
           />
         </div>
         

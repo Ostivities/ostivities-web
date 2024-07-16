@@ -53,7 +53,7 @@ const EventPageView = () => {
           <Paragraph
             className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
             content={
-              "This is how your event page will appear. Upload your event image here (*Only JPEG & PNG Allowed & File size should not be more than 10MB)."
+              "This is how your event page will appear. Upload your event image here (Only JPEG & PNG Allowed & File size should not be more than 10MB)."
             }
             styles={{ fontWeight: "normal !important" }}
           />
@@ -83,7 +83,7 @@ const EventPageView = () => {
                 </div>
                 <div>
                   <div className="text-sm" style={{ fontWeight: 600 }}>Date</div>
-                  <div>14 December, 2023</div>
+                  <div>xx xxxx, xxxx</div>
                 </div>
               </div>
               <div className="flex gap-3">
@@ -92,7 +92,7 @@ const EventPageView = () => {
                 </div>
                 <div>
                   <div className="text-sm" style={{ fontWeight: 600 }}>Time</div>
-                  <div>5:00PM - 10:00PM WAT</div>
+                  <div>xx:xx - xx:xx</div>
                 </div>
               </div>
               <div className="flex gap-3 items-center">
@@ -106,7 +106,7 @@ const EventPageView = () => {
                 </div>
                 <div>
                   <div className="text-sm" style={{ fontWeight: 600 }}>Location</div>
-                  <div>3, Eko Hotel, Lagos</div>
+                  <div>xxxxxxxx</div>
                 </div>
               </div>
               <div className="flex gap-3 items-center">
@@ -150,12 +150,13 @@ const EventPageView = () => {
           </div>
           <div className="flex-1 h-fit my-auto border-l border-black px-10" style={{ marginTop: '150px' }}>
             <p>
-            Join us for an unforgettable night of music and entertainment with Davido as he takes the stage at Eko Hotel and Suites. 
-            Known for their electrifying performances and chart-topping hits, Davido will bring his unique music and energy to life 
-            in a live concert experience you won&apos;t want to miss. Get ready to sing along to your favorite songs, enjoy breathtaking 
-            live performances, and create lasting memories. Whether you&apos;re a long-time fan or new to his music, 
-            this concert promises an exhilarating evening filled with passion, talent, and fun. Get your tickets 
-            now and be part of a night to remember!
+            Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum 
+            Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum 
+            Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum 
+            Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum 
+            Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum 
+            Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum. 
+           
             </p>
           </div>
         </div>
@@ -175,7 +176,7 @@ const EventPageView = () => {
                 disabled={false}
                 className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
                 style={{
-                  borderRadius: "16px",
+                  borderRadius: "20px",
                   fontFamily: "BricolageGrotesqueMedium",
                 }}
               >
@@ -190,7 +191,7 @@ const EventPageView = () => {
               onClick={handleSaveChanges}
               className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
               style={{
-                borderRadius: "16px",
+                borderRadius: "20px",
                 fontFamily: "BricolageGrotesqueMedium",
               }}
             >
