@@ -1,61 +1,18 @@
 "use client";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
-import {
-  Heading5,
-  Label,
-  Paragraph,
-} from "@/app/components/typography/Typography";
+import EmailEditor from "@/app/components/QuillEditor/EmailEditor";
+import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 import { Button, Input, Space } from "antd";
-import React, { useState, useEffect } from "react";
-import dynamic from 'next/dynamic';
-import "react-quill/dist/quill.snow.css";
-
-// Dynamically import ReactQuill
-const ReactQuill = dynamic(() => import('react-quill'), {
-  ssr: false,
-});
+import React, { useState } from "react";
 
 const EventTicketsEmail = () => {
-  const [value, setValue] = useState("");
-  const [isClient, setIsClient] = useState(false);
+  const [editorContent, setEditorContent] = useState("");
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  const toolbarOptions = [
-    ["bold", "italic", "underline", "strike"],
-    ["blockquote", "code-block"],
-    ["link", "image", "video", "formula"],
-
-    [{ header: 1 }, { header: 2 }], // custom button values
-    [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
-    [{ script: "sub" }, { script: "super" }], // superscript/subscript
-    [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
-    [{ direction: "rtl" }], // text direction
-
-    [{ size: ["small", false, "large", "huge"] }], // custom dropdown
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-    [{ font: [] }],
-    [{ align: [] }],
-
-    ["clean"], // remove formatting button
-  ];
-
-  const modules = {
-    toolbar: {
-      container: toolbarOptions,
-      // handlers: {
-      //   quote: function (this: any, value: string) {
-      //     if (value === "under" || value === "over") {
-      //       this.quill.format("blockquote", value);
-      //     }
-      //   },
-      // },
-    },
+  const handleEditorChange = (content: React.SetStateAction<string>) => {
+    setEditorContent(content);
   };
+
+  console.log(editorContent, "Editor content");
 
   return (
     <EventDetailsComponent>
@@ -70,19 +27,10 @@ const EventTicketsEmail = () => {
           />
 
           <div className="w-11/12 mb-14">
-            {isClient && (
-              <ReactQuill
-                theme="snow"
-                value={value}
-                onChange={setValue}
-                className="rounded-br-lg rounded-bl-lg h-60"
-                style={{
-                  borderBottomLeftRadius: "15px",
-                  borderBottomRightRadius: "15px",
-                }}
-                modules={modules}
-              />
-            )}
+            <EmailEditor
+              initialValue="<p>Write your email here!</p>"
+              onChange={handleEditorChange}
+            />
           </div>
           <Space
             direction="horizontal"
