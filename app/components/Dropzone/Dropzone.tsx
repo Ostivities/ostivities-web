@@ -8,6 +8,7 @@ function Dropzone({ className }: { className?: string }): JSX.Element {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
+    debugger;
     const file = acceptedFiles[0];
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -30,7 +31,6 @@ function Dropzone({ className }: { className?: string }): JSX.Element {
       <div
         {...getRootProps({ className: `${className}` })}
         style={{
-          height: "400px",
           border: "1px solid #00000040",
           borderStyle: "dashed",
           display: "flex",

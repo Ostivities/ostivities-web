@@ -3,11 +3,18 @@ import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import { Heading5, Label } from "@/app/components/typography/Typography";
 import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
 import { SalesDataType } from "@/app/utils/interface";
-import { Button, Space, Table } from "antd";
-import type { ColumnsType } from "antd/es/table";
+import { Button, Input, Space, Table } from "antd";
+import { FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import * as XLSX from "xlsx";
 import React, { useState } from "react";
+import { ColumnsType } from "antd/es/table";
+
+const { Search } = Input;
 
 const EventSales = () => {
+  const [searchText, setSearchText] = useState("");
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -47,7 +54,7 @@ const EventSales = () => {
         />
       ),
       dataIndex: "ticketSold",
-      sorter: (a, b) => a.eventName.localeCompare(b.eventName),
+      sorter: (a, b) => a.ticketSold - b.ticketSold,
     },
     {
       title: (
@@ -57,7 +64,8 @@ const EventSales = () => {
         />
       ),
       dataIndex: "revenue",
-      sorter: (a, b) => a.eventName.localeCompare(b.eventName),
+      sorter: (a, b) => (a.revenue ?? 0) - (b.revenue ?? 0),
+      render: text => `₦${text.toLocaleString()}`,
     },
     {
       title: (
@@ -67,7 +75,8 @@ const EventSales = () => {
         />
       ),
       dataIndex: "fees",
-      sorter: (a, b) => a.eventName.localeCompare(b.eventName),
+      sorter: (a, b) => (a.fees ?? 0) - (b.fees ?? 0),
+      render: text => `₦${text.toLocaleString()}`,
     },
     {
       title: (
@@ -77,27 +86,98 @@ const EventSales = () => {
         />
       ),
       dataIndex: "sales",
-      sorter: (a, b) => a.eventName.localeCompare(b.eventName),
+      sorter: (a, b) => (a.sales ?? 0) - (b.sales ?? 0),
+      render: text => `₦${text.toLocaleString()}`,
     },
   ];
 
+  const handleExport = (format: string) => {
+    const exportData = selectedRowKeys.length
+      ? data.filter((item) => selectedRowKeys.includes(item.key))
+      : data;
+
+    const formattedExportData = exportData.map(item => ({
+      "Ticket Name": item.eventName,
+      "Total Ticket Sold": item.ticketSold,
+      "Total Sales Revenue": item.revenue,
+      "Fees": item.fees,
+      "Net Sales Revenue": item.sales,
+    }));
+
+    if (format === "excel") {
+      const ws = XLSX.utils.json_to_sheet(formattedExportData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Payment History");
+      XLSX.writeFile(wb, "Payment History.xlsx");
+    } else if (format === "pdf") {
+      const doc = new jsPDF();
+      (doc as any).autoTable({
+        head: [Object.keys(formattedExportData[0])],
+        body: formattedExportData.map(item => Object.values(item)),
+        didDrawCell: (data: {
+          column: { index: number };
+          cell: { styles: { fillColor: string } };
+        }) => {
+          if (data.column.index === 0) {
+            data.cell.styles.fillColor = "#e20000";
+          }
+        },
+      });
+      doc.save("Payment History.pdf");
+    }
+  };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+  };
+
+  const filteredData = data.filter(item =>
+    item.eventName.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   return (
     <EventDetailsComponent>
-      <Space direction="vertical" size={"middle"}>
+      <Space direction="vertical" size="middle" className="w-full">
         <Heading5 className="pb-5" content={"Payment History"} />
-
+        <Space className="w-full justify-between">
+          <Search
+            placeholder="Search Ticket Name"
+            onChange={handleSearch}
+            style={{ width: 300 }}
+          />
+          {selectedRowKeys.length > 0 && (
+            <Space>
+              <Button
+                type="default"
+                className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                style={{ borderRadius: 15, marginRight: 8 }}
+                onClick={() => handleExport("excel")}
+              >
+                <FileExcelOutlined />
+              </Button>
+              <Button
+                type="default"
+                className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                style={{ borderRadius: 15 }}
+                onClick={() => handleExport("pdf")}
+              >
+                <FilePdfOutlined />
+              </Button>
+            </Space>
+          )}
+        </Space>
         <Table
           rowSelection={{
             selectedRowKeys,
             onChange: (keys) => setSelectedRowKeys(keys),
           }}
           columns={columns}
-          dataSource={data}
+          dataSource={filteredData}
           className="font-BricolageGrotesqueRegular w-full"
           pagination={{
             current: currentPage,
             pageSize: pageSize,
-            total: data.length,
+            total: filteredData.length,
             onChange: (page, size) => {
               setCurrentPage(page);
               setPageSize(size);

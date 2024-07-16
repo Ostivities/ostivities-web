@@ -6,12 +6,23 @@ import {
   Paragraph,
 } from "@/app/components/typography/Typography";
 import { Button, Input, Space } from "antd";
-import React, { useState } from "react";
-import ReactQuill, { Quill } from "react-quill";
+import React, { useState, useEffect } from "react";
+import dynamic from 'next/dynamic';
 import "react-quill/dist/quill.snow.css";
+
+// Dynamically import ReactQuill
+const ReactQuill = dynamic(() => import('react-quill'), {
+  ssr: false,
+});
 
 const EventTicketsEmail = () => {
   const [value, setValue] = useState("");
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"],
     ["blockquote", "code-block"],
@@ -54,22 +65,24 @@ const EventTicketsEmail = () => {
         <Space direction="vertical" size={"middle"} style={{ width: "100%" }}>
           <Paragraph
             className="text-OWANBE_DARK text-sm font-normal font-BricolageGrotesqueRegular"
-            content={"Message for ticket e-mail"}
+            content={"Enter your ticket e-mail message"}
             styles={{ fontWeight: "normal !important" }}
           />
 
           <div className="w-11/12 mb-14">
-            <ReactQuill
-              theme="snow"
-              value={value}
-              onChange={setValue}
-              className="rounded-br-lg rounded-bl-lg h-60"
-              style={{
-                borderBottomLeftRadius: "15px",
-                borderBottomRightRadius: "15px",
-              }}
-              modules={modules}
-            />
+            {isClient && (
+              <ReactQuill
+                theme="snow"
+                value={value}
+                onChange={setValue}
+                className="rounded-br-lg rounded-bl-lg h-60"
+                style={{
+                  borderBottomLeftRadius: "15px",
+                  borderBottomRightRadius: "15px",
+                }}
+                modules={modules}
+              />
+            )}
           </div>
           <Space
             direction="horizontal"
@@ -91,7 +104,7 @@ const EventTicketsEmail = () => {
               <Input
                 placeholder="Enter address"
                 type="email"
-                style={{ width: "100%" }}
+                style={{ width: "120%" }}
               />
             </Space>
             <div className="">

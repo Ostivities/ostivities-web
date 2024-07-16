@@ -1,5 +1,6 @@
 "use client";
 import Dropzone from "@/app/components/Dropzone/Dropzone";
+import EventPageAppearance from "@/app/components/forms/create-events/EventPageAppearance";
 import AddTicketModal from "@/app/components/OstivitiesModal/AddTicket";
 import EventTicketTable from "@/app/components/Tables/EventTicket";
 import {
@@ -129,17 +130,17 @@ function Details(): JSX.Element {
               formStep === 1
                 ? `Hello, ${userName}`
                 : formStep === 2
-                ? "Event Image/Appearance"
+                ? "Event Page Appearance"
                 : "Event Ticket"
             }
           />
           <Paragraph
-            className="text-OWANBE_PRY text-xl font-normal font-BricolageGrotesqueRegular"
+            className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
             content={
               formStep === 1
                 ? "Lets get you started by creating your event."
                 : formStep === 2
-                ? "Upload your event image here."
+                ? "Upload your event image here (Only JPEG & PNG Allowed & File size should not be more than 10MB)."
                 : "Ostivities is free for free events. For paid events, we charge a transaction fee."
             }
             styles={{ fontWeight: "normal !important" }}
@@ -899,14 +900,12 @@ function Details(): JSX.Element {
             {/* STEP 2 --> BODY 2 */}
             {formState.stage === 1 && (
               <div className="flex flex-row w-full">
-                <div className="w-11/12 mx-auto">
+                <div className="w-11/10 mx-auto">
                   <Controller
                     name="eventImage"
                     control={control}
                     render={({ field }) => (
-                      <Dropzone
-                        className="w-full border-dashed border flex items-center rounded-lg cursor-pointer"
-                        {...field}
+                      <EventPageAppearance
                       />
                     )}
                   />

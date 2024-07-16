@@ -18,7 +18,7 @@ function Steppers(): JSX.Element {
       direction="horizontal"
       labelPlacement="vertical"
       className="mx-auto"
-      style={{ width: '400px' }}
+      style={{ width: '500px' }}
       items={[
         {
           title: <Label content="Event Details" />,
@@ -46,7 +46,7 @@ function Steppers(): JSX.Element {
           status: 'process', // Always set status to 'process' for the first step
         },
         {
-          title: <Label content="Event Image" />,
+          title: <Label content="Event Page" />,
           description: '',
           className: 'font-BricolageGrotesqueRegular',
           icon: (
