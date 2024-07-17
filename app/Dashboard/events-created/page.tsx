@@ -5,16 +5,16 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 function Events(): JSX.Element {
-  const router = useRouter()
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState('eventsCreated'); // Set 'eventsCreated' as the initial active tab
 
   useEffect(() => {
     if (activeTab === "createEvent") {
-      router.push('/Dashboard/create-events')   
-    }else {
-      router.push('/Dashboard/events-created')  
+      router.push('/Dashboard/create-events');   
+    } else {
+      router.push('/Dashboard/events-created');  
     }
-  }, [activeTab, router])
+  }, [activeTab, router]);
 
   const title = (
     <div className="flex justify-between items-center w-full relative pb-2">
@@ -46,11 +46,11 @@ function Events(): JSX.Element {
 
   return (
     <DashboardLayout title={title} isLoggedIn>
-      <div className="w-5/6 mx-auto flex flex-col space-y-5 py-6">
+      <div className="w-full mx-auto flex flex-col space-y-5 py-6">
         {/* Content for Events Created */}
         {/* For example, <EventsCreatedComponent /> */}
         {/* Replace with your actual content for Events Created */}
-        <Details/>
+        <Details />
       </div>
     </DashboardLayout>
   );
