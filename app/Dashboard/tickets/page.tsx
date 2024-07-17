@@ -52,7 +52,7 @@ const Tickets = () => {
                 />
               </div>
               <div>
-                <h3 className="text-xs">Date</h3>
+                <h3 className="text-sm" style={{ fontWeight: 600 }}>Date</h3>
                 <span>14 December, 2023</span>
               </div>
             </div>
@@ -61,7 +61,7 @@ const Tickets = () => {
                 <Image src="/icons/time.svg" alt="" height={25} width={25} />
               </div>
               <div>
-                <h3 className="text-xs">Time</h3>
+                <h3 className="text-sm" style={{ fontWeight: 600 }}>Time</h3>
                 <span>5:00PM - 10:00PM WAT</span>
               </div>
             </div>
@@ -70,12 +70,12 @@ const Tickets = () => {
             {remainingTickets.map((remaining, index) => (
               <div key={index} className="card-shadow flex justify-between items-center">
                 <div>
-                  <h2 className="text-md" style={{ fontWeight: 500, fontSize: '18px' }}>Early Bird</h2>
+                  <h2 className="text-lg font-BricolageGrotesqueMedium" style={{ fontWeight: 500, fontSize: '18px' }}>Early Bird</h2>
                   <h3>
-                    <span className="text-OWANBE_PRY text-xl" style={{ fontWeight: 500, fontSize: '16px' }}>₦5,000</span>{' '}
-                    <span style={{ fontWeight: 400, fontSize: '12px' }}>Including ₦300 fee</span>
+                    <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>₦5,000</span>{' '}
+                    <span className="text-s font-BricolageGrotesqueRegular"style={{ fontWeight: 400, fontSize: '12px' }}>Including ₦300 fee</span>
                   </h3>
-                  <p style={{ fontSize: '12px', color: 'grey', marginTop: '20px' }}>
+                  <p className="text-s font-BricolageGrotesqueRegular" style={{ fontSize: '12px', color: 'black', marginTop: '17px' }}>
                     Your pass to sweet music and ambiance
                   </p>
                 </div>

@@ -52,7 +52,7 @@ const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
       title={
         <>
           <Heading5
-            content={"Add Payment Details"}
+            content={"Add Payment Details"} 
             className=""
             styles={{ fontSize: "18px" }} // Adjust font size here
           />

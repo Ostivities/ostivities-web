@@ -24,7 +24,7 @@ const GuestDetail = ({ open, onCancel, onOk, data }: IModal) => {
             size="large"
             className={`font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold rounded-2xl mx-auto place-self-center`}
             style={{
-              borderRadius: "16px",
+              borderRadius: "20px",
               fontFamily: "BricolageGrotesqueMedium",
             }}
             onClick={onCancel}
