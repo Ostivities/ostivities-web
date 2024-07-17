@@ -65,8 +65,8 @@ const DeleteTicket = ({ open, onCancel, onOk, actionType }: IModal) => {
           className="text-OWANBE_DARK_SHADE text-sm font-normal font-BricolageGrotesqueRegular text-center mx-auto"
           content={
             actionType === "delete"
-              ? `Are you sure you want to delete this ticket?`
-              : `Are you sure you want to duplicate this ticket?`
+              ? `Are you sure you want to delete this entry?`
+              : `Are you sure you want to duplicate this entry?`
           }
           styles={{ fontWeight: "normal !important" }}
         />
