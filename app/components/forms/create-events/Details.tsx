@@ -140,7 +140,7 @@ function Details(): JSX.Element {
               formStep === 1
                 ? "Lets get you started by creating your event."
                 : formStep === 2
-                ? "Upload your event image here (Only JPEG & PNG Allowed & File size should not be more than 10MB)."
+                ? "Upload your event image here by clicking the camera icon (File size should not be more than 10MB)."
                 : "Ostivities is free for free events. For paid events, we charge a transaction fee."
             }
             styles={{ fontWeight: "normal !important" }}

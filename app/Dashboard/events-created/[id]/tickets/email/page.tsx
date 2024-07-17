@@ -26,40 +26,31 @@ const EventTicketsEmail = () => {
             styles={{ fontWeight: "normal !important" }}
           />
 
-          <div className="w-11/12 mb-14">
+          <div className="mb-4 pb-12 w-full">
             <EmailEditor
               initialValue="<p>Write your email here!</p>"
               onChange={handleEditorChange}
-            />
+             />
           </div>
-          <Space
-            direction="horizontal"
-            size={"large"}
-            style={{ width: "100%" }}
-            align="center"
-            className="space-x-6"
-          >
-            <Space
-              direction="horizontal"
-              size={"large"}
-              style={{ width: "100%" }}
-            >
+
+          <div className="pt-3 flex flex-row">
+            <div className="flex flex-row items-center space-x-6 w-1/2">
               <Paragraph
                 className="text-OWANBE_DARK text-sm font-normal font-BricolageGrotesqueRegular"
-                content={"Enter Address to send test Message"}
+                content={"Enter Email Address to send test Message"}
                 styles={{ fontWeight: "normal !important" }}
               />
               <Input
                 placeholder="Enter address"
                 type="email"
-                style={{ width: "120%" }}
+                style={{ width: "50%" }}
               />
-            </Space>
+            </div>
             <div className="">
               <Button
                 type={"primary"}
                 size="middle"
-                className={`font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-32 rounded-2xl`}
+                className={`font-BricolageGrotesqueSemiBold continue font-bold w-32 rounded-2xl`}
                 style={{
                   borderRadius: "16px",
                   fontFamily: "BricolageGrotesqueMedium",
@@ -69,8 +60,19 @@ const EventTicketsEmail = () => {
                 Send test
               </Button>
             </div>
+          </div>
+
+          <div className="flex justify-center pt-8 pb-8">
+  <Button
+    type="primary"
+    size="large"
+    htmlType="button"
+    className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
+  >
+    Send Email
+  </Button>
+</div>
           </Space>
-        </Space>
       </Space>
     </EventDetailsComponent>
   );

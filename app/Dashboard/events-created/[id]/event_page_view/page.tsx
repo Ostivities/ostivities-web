@@ -53,7 +53,7 @@ const EventPageView = () => {
           <Paragraph
             className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
             content={
-              "This is how your event page will appear. Upload your event image here (Only JPEG & PNG Allowed & File size should not be more than 10MB)."
+              "This is how your event page will appear. Upload/Update your event image here by clicking the update image button."
             }
             styles={{ fontWeight: "normal !important" }}
           />
