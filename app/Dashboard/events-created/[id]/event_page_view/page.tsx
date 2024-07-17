@@ -9,7 +9,7 @@ import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 
 const EventPageView = () => {
   const [componentDisabled, setComponentDisabled] = useComponentDisabled();
-  const [imageUrl, setImageUrl] = useState("/images/placeholder-6.png");
+  const [imageUrl, setImageUrl] = useState("/images/emptyimage2.png");
   const [buttonText, setButtonText] = useState("Update Image");
   const [isImageUploaded, setIsImageUploaded] = useState(false);
 

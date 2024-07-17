@@ -53,6 +53,7 @@ const EventPageAppearance: React.FC = () => {
             style={{ objectFit: "cover" }}
             className=""
           />
+          <div className="absolute inset-0 bg-image-card"></div>
           <Upload
             showUploadList={false}
             onChange={handleUpload}
