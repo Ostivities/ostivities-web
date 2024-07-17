@@ -18,7 +18,7 @@ import * as XLSX from "xlsx";
 
 const { Search } = Input;
 
-const EventTicketTable: React.FC = () => {
+const EventsCreatedTable: React.FC = () => {
   const router = useRouter();
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,7 +42,7 @@ const EventTicketTable: React.FC = () => {
     {
       title: (
         <Label
-          content="Ticket Name"
+          content="Event Name"
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
@@ -69,7 +69,7 @@ const EventTicketTable: React.FC = () => {
     {
       title: (
         <Label
-          content="Ticket Sold"
+          content="Tickets Sold"
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
@@ -84,7 +84,7 @@ const EventTicketTable: React.FC = () => {
         />
       ),
       dataIndex: "dateCreated",
-      sorter: (a: any, b: any) => a.dateCreated - b.dateCreated,
+      sorter: (a: any, b: any) => new Date(a.dateCreated).getTime() - new Date(b.dateCreated).getTime(),
     },
     {
       title: (
@@ -150,16 +150,19 @@ const EventTicketTable: React.FC = () => {
       ? data.filter((item) => selectedRowKeys.includes(item.key))
       : data;
 
+    // Prepare data for export without 'id' column
+    const dataToExport = exportData.map(({ id, ...rest }) => rest);
+
     if (format === "excel") {
-      const ws = XLSX.utils.json_to_sheet(exportData);
+      const ws = XLSX.utils.json_to_sheet(dataToExport);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Data");
       XLSX.writeFile(wb, "EventsCreated.xlsx");
     } else if (format === "pdf") {
       const doc = new jsPDF();
       (doc as any).autoTable({
-        head: [Object.keys(exportData[0])],
-        body: exportData.map((item) => Object.values(item)),
+        head: [Object.keys(dataToExport[0])],
+        body: dataToExport.map((item) => Object.values(item)),
         didDrawCell: (data: {
           column: { index: number };
           cell: { styles: { fillColor: string } };
@@ -237,4 +240,4 @@ const EventTicketTable: React.FC = () => {
   );
 };
 
-export default EventTicketTable;
+export default EventsCreatedTable;

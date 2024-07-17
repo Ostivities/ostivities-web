@@ -2,10 +2,21 @@
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import { Heading5, Label } from "@/app/components/typography/Typography";
 import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
-import { SalesDataType } from "@/app/utils/interface";
-import { Button, Space, Table } from "antd";
-import { ColumnsType } from "antd/es/table";
+import { SummaryDataType } from "@/app/utils/interface";
+import { Button, Input, Space, Table } from "antd";
+import { FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import * as XLSX from "xlsx";
 import React, { useState } from "react";
+import { ColumnsType } from "antd/es/table";
+
+const { Search } = Input;
+
+function getRandomBuyerName(): string {
+  const names = ["John Doe", "Jane Smith", "Michael Johnson", "Emily Brown", "David Wilson"];
+  return names[Math.floor(Math.random() * names.length)];
+}
 
 const EventsGuestListSummary = () => {
   const [searchText, setSearchText] = useState("");
@@ -13,23 +24,14 @@ const EventsGuestListSummary = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
-  const data: SalesDataType[] = Array.from({ length: 50 }, (_, index) => ({
+  const data: SummaryDataType[] = Array.from({ length: 50 }, (_, index) => ({
     key: `${index + 1}`,
-    eventName: getRandomEventName(),
-    eventType: `Type ${index + 1}`,
-    ticketSold: Math.floor(Math.random() * 100),
-    sales: Math.floor(Math.random() * 100),
-    revenue: Math.floor(Math.random() * 10000),
-    fees: Math.floor(Math.random() * 1000),
-    dateCreated: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
-    status: ["Active", "Closed", "Pending"][Math.floor(Math.random() * 3)] as
-      | "Active"
-      | "Closed"
-      | "Pending",
-    id: generateRandomString(10),
+    buyerName: getRandomBuyerName(),
+    ticketName: `Ticket ${index + 1}`,
+    checkedInBy: `2024-07-${(index + 1).toString().padStart(2, "0")}, ${Math.floor(Math.random() * 12)}:${Math.floor(Math.random() * 60).toString().padStart(2, "0")}${Math.random() > 0.5 ? 'am' : 'pm'}`,
   }));
 
-  const columns: ColumnsType<SalesDataType> = [
+  const columns: ColumnsType<SummaryDataType> = [
     {
       title: (
         <Label
@@ -37,8 +39,8 @@ const EventsGuestListSummary = () => {
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
-      dataIndex: "eventName",
-      sorter: (a, b) => a.eventName.localeCompare(b.eventName),
+      dataIndex: "buyerName",
+      sorter: (a, b) => a.buyerName.localeCompare(b.buyerName),
     },
     {
       title: (
@@ -47,8 +49,8 @@ const EventsGuestListSummary = () => {
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
-      dataIndex: "ticketSold",
-      sorter: (a, b) => a.ticketSold - b.ticketSold,
+      dataIndex: "ticketName",
+      sorter: (a, b) => a.ticketName.localeCompare(b.ticketName),
     },
     {
       title: (
@@ -57,13 +59,43 @@ const EventsGuestListSummary = () => {
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
-      dataIndex: "dateCreated",
-      sorter: (a, b) => a.ticketSold - b.ticketSold,
+      dataIndex: "checkedInBy",
+      sorter: (a, b) => new Date(a.checkedInBy).getTime() - new Date(b.checkedInBy).getTime(),
     },
   ];
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+  };
+
+  const handleExport = (format: string) => {
+    const exportData = selectedRowKeys.length
+      ? data.filter((item) => selectedRowKeys.includes(item.key))
+      : data;
+
+    const formattedExportData = exportData.map((item) => ({
+      "Buyer Name": item.buyerName,
+      "Ticket Name": item.ticketName,
+      "Checked in By": item.checkedInBy,
+    }));
+
+    if (format === "excel") {
+      const ws = XLSX.utils.json_to_sheet(formattedExportData);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "GuestListSummary");
+      XLSX.writeFile(wb, "GuestListSummary.xlsx");
+    } else if (format === "pdf") {
+      const doc = new jsPDF();
+      (doc as any).autoTable({
+        head: [Object.keys(formattedExportData[0])],
+        body: formattedExportData.map((item) => Object.values(item)),
+      });
+      doc.save("GuestListSummary.pdf");
+    }
+  };
+
   const filteredData = data.filter((item) =>
-    item.eventName.toLowerCase().includes(searchText.toLowerCase())
+    item.buyerName.toLowerCase().includes(searchText.toLowerCase())
   );
 
   return (
@@ -71,40 +103,53 @@ const EventsGuestListSummary = () => {
       <Space direction="vertical" size="middle" className="w-full">
         <Heading5 className="pb-5" content={"Checked In Summary"} />
 
-        <Space
-          className="w-full justify-between"
-          direction="vertical"
-          size={"middle"}
-        >
-          <Button
-            type="default"
-            size="large"
-            className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold float-end w-32 place-self-end"
-            style={{ borderRadius: 15 }}
-          >
-            Export
-          </Button>
-
-          <Table
-            rowSelection={{
-              selectedRowKeys,
-              onChange: (keys) => setSelectedRowKeys(keys),
-            }}
-            columns={columns}
-            dataSource={filteredData}
-            className="font-BricolageGrotesqueRegular w-full"
-            pagination={{
-              current: currentPage,
-              pageSize: pageSize,
-              total: filteredData.length,
-              onChange: (page, size) => {
-                setCurrentPage(page);
-                setPageSize(size);
-              },
-            }}
-            scroll={{ x: "max-content" }}
+        <Space className="w-full justify-between">
+          <Search
+            placeholder="Search Buyer Name"
+            onChange={handleSearch}
+            style={{ width: 300 }}
           />
+          {selectedRowKeys.length > 0 && (
+            <Space>
+              <Button
+                type="default"
+                className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                style={{ borderRadius: 15, marginRight: 8 }}
+                onClick={() => handleExport("excel")}
+              >
+                <FileExcelOutlined />
+              </Button>
+              <Button
+                type="default"
+                className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                style={{ borderRadius: 15 }}
+                onClick={() => handleExport("pdf")}
+              >
+                <FilePdfOutlined />
+              </Button>
+            </Space>
+          )}
         </Space>
+
+        <Table
+          rowSelection={{
+            selectedRowKeys,
+            onChange: (keys) => setSelectedRowKeys(keys),
+          }}
+          columns={columns}
+          dataSource={filteredData}
+          className="font-BricolageGrotesqueRegular w-full"
+          pagination={{
+            current: currentPage,
+            pageSize: pageSize,
+            total: filteredData.length,
+            onChange: (page, size) => {
+              setCurrentPage(page);
+              setPageSize(size);
+            },
+          }}
+          scroll={{ x: "max-content" }}
+        />
       </Space>
     </EventDetailsComponent>
   );
