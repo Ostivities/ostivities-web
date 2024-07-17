@@ -70,7 +70,7 @@ const EventPageView = () => {
             <div className="absolute inset-0 bg-image-card"></div>
           </div>
           <div className="py-8">
-            <h2 className="font-semibold text-2xl">About this event</h2>
+          <Heading5 className="text-2xl" content={"About this event"} />
             <div className="mt-12 flex flex-col gap-12">
               <div className="flex gap-3 items-center">
                 <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
