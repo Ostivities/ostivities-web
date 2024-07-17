@@ -361,7 +361,7 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
               fontFamily: "BricolageGrotesqueMedium",
             }}
           >
-            Unpublish event
+            UnPublish Event
           </Button>
         </div>
         <div className="flex flex-row items-center space-x-1">
