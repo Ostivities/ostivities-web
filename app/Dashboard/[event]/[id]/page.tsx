@@ -117,7 +117,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
               </div>
             </div>
           </div>
-          <div className="flex-1 h-fit my-auto border-l border-black px-6">
+          <div className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-6">
             <p>
             Join us for an unforgettable night of music and entertainment with Davido as he takes the stage at Eko Hotel and Suites. 
             Known for their electrifying performances and chart-topping hits, Davido will bring his unique music and energy to life 
