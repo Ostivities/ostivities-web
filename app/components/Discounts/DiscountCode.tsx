@@ -171,7 +171,7 @@ const DiscountCode = (): JSX.Element => {
             size="large"
             className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
           >
-            Save
+            Create
           </Button>
         </Form.Item>
       </Space>

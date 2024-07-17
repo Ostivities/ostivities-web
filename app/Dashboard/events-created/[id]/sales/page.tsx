@@ -2,7 +2,7 @@
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import { Heading5, Label } from "@/app/components/typography/Typography";
 import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
-import { SalesDataType } from "@/app/utils/interface";
+import { SalesDataType, PaymentDataType } from "@/app/utils/interface";
 import { Button, Input, Space, Table } from "antd";
 import { FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
 import jsPDF from "jspdf";
@@ -19,6 +19,11 @@ const EventSales = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
+  const [paymentSearchText, setPaymentSearchText] = useState("");
+  const [selectedPaymentRowKeys, setSelectedPaymentRowKeys] = useState<React.Key[]>([]);
+  const [currentPaymentPage, setCurrentPaymentPage] = useState(1);
+  const [paymentPageSize, setPaymentPageSize] = useState(10);
+
   const data: SalesDataType[] = Array.from({ length: 50 }, (_, index) => ({
     key: `${index + 1}`,
     eventName: getRandomEventName(),
@@ -33,6 +38,15 @@ const EventSales = () => {
       | "Closed"
       | "Pending",
     id: generateRandomString(10),
+  }));
+
+  const paymentData: PaymentDataType[] = Array.from({ length: 20 }, (_, index) => ({
+    key: `${index + 1}`,
+    recipient: `Recipient ${index + 1}`,
+    bankAccount: `******${Math.floor(100000 + Math.random() * 900000).toString()}`,
+    transferFee: Math.floor(Math.random() * 1000),
+    payout: Math.floor(Math.random() * 10000),
+    paymentDate: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
   }));
 
   const columns: ColumnsType<SalesDataType> = [
@@ -91,24 +105,79 @@ const EventSales = () => {
     },
   ];
 
-  const handleExport = (format: string) => {
-    const exportData = selectedRowKeys.length
-      ? data.filter((item) => selectedRowKeys.includes(item.key))
-      : data;
+  const paymentColumns: ColumnsType<PaymentDataType> = [
+    {
+      title: (
+        <Label
+          content="Recipient"
+          className="font-semibold text-OWANBE_TABLE_TITLE"
+        />
+      ),
+      dataIndex: "recipient",
+      sorter: (a, b) => a.recipient.localeCompare(b.recipient),
+    },
+    {
+      title: (
+        <Label
+          content="Bank Account"
+          className="font-semibold text-OWANBE_TABLE_TITLE"
+        />
+      ),
+      dataIndex: "bankAccount",
+      render: text => `******${text.slice(-4)}`,
+    },
+    {
+      title: (
+        <Label
+          content="Transfer Fee"
+          className="font-semibold text-OWANBE_TABLE_TITLE"
+        />
+      ),
+      dataIndex: "transferFee",
+      sorter: (a, b) => (a.transferFee ?? 0) - (b.transferFee ?? 0),
+      render: text => `₦${text.toLocaleString()}`,
+    },
+    {
+      title: (
+        <Label
+          content="Payout"
+          className="font-semibold text-OWANBE_TABLE_TITLE"
+        />
+      ),
+      dataIndex: "payout",
+      sorter: (a, b) => (a.payout ?? 0) - (b.payout ?? 0),
+      render: text => `₦${text.toLocaleString()}`,
+    },
+    {
+      title: (
+        <Label
+          content="Payment Date"
+          className="font-semibold text-OWANBE_TABLE_TITLE"
+        />
+      ),
+      dataIndex: "paymentDate",
+      sorter: (a, b) => new Date(a.paymentDate).getTime() - new Date(b.paymentDate).getTime(),
+    },
+  ];
 
-    const formattedExportData = exportData.map(item => ({
-      "Ticket Name": item.eventName,
-      "Total Ticket Sold": item.ticketSold,
-      "Total Sales Revenue": item.revenue,
-      "Fees": item.fees,
-      "Net Sales Revenue": item.sales,
-    }));
+  const handleExport = (format: string, dataToExport: any[], columns: ColumnsType<any>, fileName: string) => {
+    const formattedExportData = dataToExport.map(item => {
+      const formattedItem: { [key: string]: any } = {};
+      columns.forEach(column => {
+        if ('title' in column && 'dataIndex' in column) {
+          const title = (column.title as React.ReactNode) as { props?: { content?: string } };
+          const columnTitle = title?.props?.content || 'Unknown';
+          formattedItem[columnTitle] = item[column.dataIndex as keyof typeof item];
+        }
+      });
+      return formattedItem;
+    });
 
     if (format === "excel") {
       const ws = XLSX.utils.json_to_sheet(formattedExportData);
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Payment History");
-      XLSX.writeFile(wb, "Payment History.xlsx");
+      XLSX.utils.book_append_sheet(wb, ws, fileName);
+      XLSX.writeFile(wb, `${fileName}.xlsx`);
     } else if (format === "pdf") {
       const doc = new jsPDF();
       (doc as any).autoTable({
@@ -123,7 +192,7 @@ const EventSales = () => {
           }
         },
       });
-      doc.save("Payment History.pdf");
+      doc.save(`${fileName}.pdf`);
     }
   };
 
@@ -131,14 +200,22 @@ const EventSales = () => {
     setSearchText(e.target.value);
   };
 
+  const handlePaymentSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPaymentSearchText(e.target.value);
+  };
+
   const filteredData = data.filter(item =>
     item.eventName.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+  const filteredPaymentData = paymentData.filter(item =>
+    item.recipient.toLowerCase().includes(paymentSearchText.toLowerCase())
   );
 
   return (
     <EventDetailsComponent>
       <Space direction="vertical" size="middle" className="w-full">
-        <Heading5 className="pb-5" content={"Payment History"} />
+        <Heading5 className="pb-5" content={"Sales"} />
         <Space className="w-full justify-between">
           <Search
             placeholder="Search Ticket Name"
@@ -151,7 +228,7 @@ const EventSales = () => {
                 type="default"
                 className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
                 style={{ borderRadius: 15, marginRight: 8 }}
-                onClick={() => handleExport("excel")}
+                onClick={() => handleExport("excel", data.filter((item) => selectedRowKeys.includes(item.key)), columns, "Sales")}
               >
                 <FileExcelOutlined />
               </Button>
@@ -159,7 +236,7 @@ const EventSales = () => {
                 type="default"
                 className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
                 style={{ borderRadius: 15 }}
-                onClick={() => handleExport("pdf")}
+                onClick={() => handleExport("pdf", data.filter((item) => selectedRowKeys.includes(item.key)), columns, "Sales")}
               >
                 <FilePdfOutlined />
               </Button>
@@ -181,6 +258,53 @@ const EventSales = () => {
             onChange: (page, size) => {
               setCurrentPage(page);
               setPageSize(size);
+            },
+          }}
+          scroll={{ x: "max-content" }}
+        />
+        <Heading5 className="pt-10 pb-5" content={"Payment History"} />
+        <Space className="w-full justify-between">
+          <Search
+            placeholder="Search Recipient Name"
+            onChange={handlePaymentSearch}
+            style={{ width: 300 }}
+          />
+          {selectedPaymentRowKeys.length > 0 && (
+            <Space>
+              <Button
+                type="default"
+                className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                style={{ borderRadius: 15, marginRight: 8 }}
+                onClick={() => handleExport("excel", paymentData.filter((item) => selectedPaymentRowKeys.includes(item.key)), paymentColumns, "PaymentHistory")}
+              >
+                <FileExcelOutlined />
+              </Button>
+              <Button
+                type="default"
+                className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                style={{ borderRadius: 15 }}
+                onClick={() => handleExport("pdf", paymentData.filter((item) => selectedPaymentRowKeys.includes(item.key)), paymentColumns, "PaymentHistory")}
+              >
+                <FilePdfOutlined />
+              </Button>
+            </Space>
+          )}
+        </Space>
+        <Table
+          rowSelection={{
+            selectedRowKeys: selectedPaymentRowKeys,
+            onChange: (keys) => setSelectedPaymentRowKeys(keys),
+          }}
+          columns={paymentColumns}
+          dataSource={filteredPaymentData}
+          className="font-BricolageGrotesqueRegular w-full"
+          pagination={{
+            current: currentPaymentPage,
+            pageSize: paymentPageSize,
+            total: filteredPaymentData.length,
+            onChange: (page, size) => {
+              setCurrentPaymentPage(page);
+              setPaymentPageSize(size);
             },
           }}
           scroll={{ x: "max-content" }}

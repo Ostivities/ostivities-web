@@ -70,6 +70,7 @@ export interface IModal {
   onCancel?: any;
   onOk?: any;
   actionType?: "delete" | "warning";
+  data?: any;
 }
 
 export type FieldType = {
@@ -124,6 +125,22 @@ export interface SalesDataType {
   revenue?: number; // Optional, since it's not used in the data generation
   fees?: number; // Optional, since it's not used in the data generation
   sales?: number; // Optional, since it
+}
+
+export interface SummaryDataType {
+  key: string;
+  buyerName: string;
+  ticketName: string;
+  checkedInBy: string;
+}
+
+export interface PaymentDataType {
+  key: string;
+  recipient: string;
+  bankAccount: string;
+  transferFee: number;
+  payout: number;
+  paymentDate: string;
 }
 
 export interface IUser {

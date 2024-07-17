@@ -170,7 +170,7 @@ const EventTickets = () => {
             <Heading5 className="" content={"Event Ticket "} />
             <Paragraph
               className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
-              content="Ostivities is free for free events. For paid events, we charge a percentage as a transaction fee."
+              content="For free events, Ostivities is free. For paid events, we charge a percentage-based transaction fee on ticket sales."
               styles={{ fontWeight: "normal !important" }}
             />
           </Space>
@@ -186,7 +186,7 @@ const EventTickets = () => {
               }}
               onClick={() => setIsModalOpen(true)}
             >
-              Add Ticket
+              Add Tickets
             </Button>
             <Table
               rowSelection={{

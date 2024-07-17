@@ -232,23 +232,8 @@ export default function Page(): JSX.Element {
               fontFamily: "BricolageGrotesqueMedium",
             }}
           >
-            Publish event
+            Publish Event
           </Button>
-        </div>
-        <div className="flex flex-row items-center space-x-1">
-          <LiaExternalLinkAltSolid
-            color="#E20000"
-            width={14}
-            height={14}
-            className="cursor-pointer text-lg"
-          />
-          <Link
-            href={"/Dashboard"}
-            target="_self"
-            className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK cursor-pointer"
-          >
-            Copy Link
-          </Link>
         </div>
       </div>
     </div>

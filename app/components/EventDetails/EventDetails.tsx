@@ -289,6 +289,15 @@ export default function EventDetailsComponent({
     const containerStyle = {
       gap: '4px', // Adjust the spacing between title and value (you can customize this)
     };
+
+    const salesRevenue = 2000;
+
+const formattedRevenue = new Intl.NumberFormat('en-NG', {
+  style: 'currency',
+  currency: 'NGN',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+}).format(salesRevenue);
   
     return (
       <div className="grid grid-cols-3 gap-x-8">
@@ -301,13 +310,13 @@ export default function EventDetailsComponent({
           containerStyle={containerStyle}
         />
         <CardMetrics
-          title="Total Revenue"
-          value={20}
-          cardStyle={cardStyle}
-          titleStyle={titleStyle}
-          valueStyle={valueStyle}
-          containerStyle={containerStyle}
-        />
+  title="Sales Revenue"
+  value={formattedRevenue}
+  cardStyle={cardStyle}
+  titleStyle={titleStyle}
+  valueStyle={valueStyle}
+  containerStyle={containerStyle}
+/>
         <CardMetrics
           title="Next Payout Date"
           value={"2024-04-07"}
@@ -352,7 +361,7 @@ export default function EventDetailsComponent({
               fontFamily: "BricolageGrotesqueMedium",
             }}
           >
-            Unpublish event
+            UnPublish Event
           </Button>
         </div>
         <div className="flex flex-row items-center space-x-1">
@@ -363,7 +372,7 @@ export default function EventDetailsComponent({
             className="cursor-pointer text-lg"
           />
           <Link
-            href={"/Dashboard"}
+            href={""}
             target="_self"
             className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK cursor-pointer"
           >

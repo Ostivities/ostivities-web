@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { global } from "styled-jsx/css";
 import "@/app/globals.css";
+import { Heading5 } from '../typography/Typography';
 
 interface SummaryProps {
   continueBtn?: boolean;
@@ -35,7 +36,7 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
 
   return (
     <section className="flex-1">
-      <h2 className="text-3xl text-center" style={{ fontWeight: 600, }}>Summary</h2>
+      <Heading5 className="text-3xl text-center" content={"Summary"} />
       <section className="mt-14 px-20 h-4/5 border-l border-[#525252]">
         <div>
           <h3 className="text-OWANBE_PRY text-lg">Event name</h3>
