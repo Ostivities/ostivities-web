@@ -1,10 +1,10 @@
 import React, { createContext, ReactNode, useContext, useState } from "react";
 
-type DiscountState = "Discount" | "Discount_Code";
+type DiscountState = "Discount" | "Discount_Code" | "Discount_Record";
 
 interface DiscountContextProps {
   discount: DiscountState;
-  toggleDiscount: () => void;
+  toggleDiscount: (stateValue: DiscountState) => void;
 }
 
 const DiscountContext = createContext<DiscountContextProps | undefined>(
@@ -26,10 +26,8 @@ interface DiscountProviderProps {
 const DiscountProvider: React.FC<DiscountProviderProps> = ({ children }) => {
   const [discount, setDiscount] = useState<DiscountState>("Discount");
 
-  const toggleDiscount = () => {
-    setDiscount((prevState) =>
-      prevState === "Discount" ? "Discount_Code" : "Discount"
-    );
+  const toggleDiscount = (stateValue: DiscountState) => {
+    setDiscount(stateValue);
   };
 
   return (
