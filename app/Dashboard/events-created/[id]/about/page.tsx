@@ -583,7 +583,7 @@ const AboutEvent = () => {
               disabled={false}
               className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
               style={{
-                borderRadius: "16px",
+                borderRadius: "20px",
                 fontFamily: "BricolageGrotesqueMedium",
               }}
               onClick={() => {
