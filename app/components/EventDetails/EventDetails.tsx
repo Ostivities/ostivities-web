@@ -372,7 +372,7 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
             className="cursor-pointer text-lg"
           />
           <Link
-            href={"/Dashboard"}
+            href={""}
             target="_self"
             className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK cursor-pointer"
           >
