@@ -50,7 +50,9 @@ const DiscountCode = (): JSX.Element => {
             <Form.Item
               label={<Label content="Discount code" />} // Correct usage of Label component
               name="discountCode"
-              rules={[{ required: true, message: "Please input the discount code!" }]}
+              rules={[
+                { required: true, message: "Please input the discount code!" },
+              ]}
             >
               <Input placeholder="Enter discount code" />
             </Form.Item>
@@ -58,13 +60,17 @@ const DiscountCode = (): JSX.Element => {
             <Form.Item
               label={<Label content="Discount Value" />} // Correct usage of Label component
               name="discountValue"
-              rules={[{ required: true, message: "Please input the discount value!" }]}
+              rules={[
+                { required: true, message: "Please input the discount value!" },
+              ]}
             >
               <InputNumber
                 placeholder="Enter discount value"
                 style={{ width: "100%" }}
                 min={0}
-                formatter={(value) => `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                formatter={(value) =>
+                  `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                }
                 parser={(value) => value?.replace(/\₦\s?|(,*)/g, "") as any}
               />
             </Form.Item>
@@ -72,14 +78,21 @@ const DiscountCode = (): JSX.Element => {
             <Form.Item
               label={<Label content="Ticket Applicable" />} // Correct usage of Label component
               name="ticketApplicable"
-              rules={[{ required: true, message: "Please select the ticket applicable!" }]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please select the ticket applicable!",
+                },
+              ]}
             >
               <Select
                 placeholder="Select ticket applicable"
                 onChange={handleTicketApplicableChange}
               >
                 <Select.Option value="All Tickets">All Tickets</Select.Option>
-                <Select.Option value="Individual Ticket">Individual Ticket</Select.Option>
+                <Select.Option value="Individual Ticket">
+                  Individual Ticket
+                </Select.Option>
               </Select>
             </Form.Item>
 
@@ -87,7 +100,9 @@ const DiscountCode = (): JSX.Element => {
               <Form.Item
                 label={<Label content="Select Ticket" />} // Correct usage of Label component
                 name="selectTicket"
-                rules={[{ required: true, message: "Please select the ticket!" }]}
+                rules={[
+                  { required: true, message: "Please select the ticket!" },
+                ]}
               >
                 <Select placeholder="Select ticket">
                   {/* Map through your created tickets here */}
@@ -105,7 +120,9 @@ const DiscountCode = (): JSX.Element => {
             <Form.Item
               label={<Label content="Usage Limit" />} // Correct usage of Label component
               name="usageLimit"
-              rules={[{ required: true, message: "Please select the usage limit!" }]}
+              rules={[
+                { required: true, message: "Please select the usage limit!" },
+              ]}
             >
               <Select placeholder="Select usage limit">
                 <Select.Option value="Unlimited">Unlimited</Select.Option>
@@ -116,7 +133,12 @@ const DiscountCode = (): JSX.Element => {
             <Form.Item
               label={<Label content="End Date & Time" />} // Correct usage of Label component
               name="endDate"
-              rules={[{ required: true, message: "Please input the end date and time!" }]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input the end date and time!",
+                },
+              ]}
             >
               <DatePicker
                 showTime
@@ -128,7 +150,12 @@ const DiscountCode = (): JSX.Element => {
             <Form.Item
               label={<Label content="Start Date & Time" />} // Correct usage of Label component
               name="startDate"
-              rules={[{ required: true, message: "Please input the start date and time!" }]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input the start date and time!",
+                },
+              ]}
             >
               <DatePicker
                 showTime
@@ -158,8 +185,11 @@ const DiscountCode = (): JSX.Element => {
             htmlType="button"
             size="large"
             className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold w-48 rounded-2xl"
-            style={{ borderRadius: "16px", fontFamily: "BricolageGrotesqueMedium" }}
-            onClick={toggleDiscount}
+            style={{
+              borderRadius: "16px",
+              fontFamily: "BricolageGrotesqueMedium",
+            }}
+            onClick={() => toggleDiscount("Discount")}
           >
             Cancel
           </Button>
@@ -167,9 +197,10 @@ const DiscountCode = (): JSX.Element => {
         <Form.Item>
           <Button
             type="default"
-            htmlType="submit"
+            htmlType="button"
             size="large"
             className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
+            onClick={() => toggleDiscount("Discount_Record")}
           >
             Create
           </Button>
