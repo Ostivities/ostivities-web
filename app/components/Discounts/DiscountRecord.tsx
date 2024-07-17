@@ -6,6 +6,7 @@ import { Button, Dropdown, Space, Table } from "antd";
 import { MenuItemType } from "antd/es/menu/interface";
 import { ColumnsType } from "antd/es/table";
 import React, { useState } from "react";
+import DeleteTicket from "../OstivitiesModal/DeleteTicket";
 import { Heading5, Label } from "../typography/Typography";
 
 const DiscountRecord = (): JSX.Element => {
@@ -14,6 +15,8 @@ const DiscountRecord = (): JSX.Element => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [isShown, setIsShown] = useState(false);
+  const [actionType, setActionType] = useState<"delete" | "warning">();
 
   const GuestItems: MenuItemType[] = [
     {
@@ -42,8 +45,8 @@ const DiscountRecord = (): JSX.Element => {
             fontFamily: "BricolageGrotesqueRegular",
           }}
           onClick={() => {
-            // setIsShown(true);
-            // setActionType("warning");
+            setIsShown(true);
+            setActionType("warning");
           }}
         >
           Duplicate
@@ -61,8 +64,8 @@ const DiscountRecord = (): JSX.Element => {
             fontFamily: "BricolageGrotesqueRegular",
           }}
           onClick={() => {
-            // setIsShown(true);
-            // setActionType("delete");
+            setIsShown(true);
+            setActionType("delete");
           }}
         >
           Delete
@@ -151,29 +154,37 @@ const DiscountRecord = (): JSX.Element => {
   };
 
   return (
-    <Space direction="vertical" size={"large"} className="w-full">
-      <Heading5 className="pb-5" content={"Discount Code"} />
-
-      <Table
-        rowSelection={{
-          selectedRowKeys,
-          onChange: (keys) => setSelectedRowKeys(keys),
-        }}
-        columns={columns}
-        dataSource={filteredData}
-        className="font-BricolageGrotesqueRegular w-full"
-        pagination={{
-          current: currentPage,
-          pageSize: pageSize,
-          total: filteredData.length,
-          onChange: (page, size) => {
-            setCurrentPage(page);
-            setPageSize(size);
-          },
-        }}
-        scroll={{ x: "max-content" }}
+    <React.Fragment>
+      <DeleteTicket
+        open={isShown}
+        onCancel={() => setIsShown(false)}
+        onOk={() => setIsShown(false)}
+        actionType={actionType}
       />
-    </Space>
+      <Space direction="vertical" size={"large"} className="w-full">
+        <Heading5 className="pb-5" content={"Discount Code"} />
+
+        <Table
+          rowSelection={{
+            selectedRowKeys,
+            onChange: (keys) => setSelectedRowKeys(keys),
+          }}
+          columns={columns}
+          dataSource={filteredData}
+          className="font-BricolageGrotesqueRegular w-full"
+          pagination={{
+            current: currentPage,
+            pageSize: pageSize,
+            total: filteredData.length,
+            onChange: (page, size) => {
+              setCurrentPage(page);
+              setPageSize(size);
+            },
+          }}
+          scroll={{ x: "max-content" }}
+        />
+      </Space>
+    </React.Fragment>
   );
 };
 
