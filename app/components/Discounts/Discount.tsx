@@ -49,7 +49,7 @@ const Discount = (): JSX.Element => {
               borderRadius: "20px",
               fontFamily: "BricolageGrotesqueMedium",
             }}
-            onClick={toggleDiscount}
+            onClick={() => toggleDiscount("Discount_Code")}
           >
             Create Discount
           </Button>
