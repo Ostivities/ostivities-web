@@ -60,7 +60,7 @@ const AboutEvent = () => {
         disabled={componentDisabled}
       >
         <Space direction="vertical">
-          <Heading5 className="pb-5" content={"Event Details"} />
+          <Heading5 className="pb-8" content={"Event Details"} />
         </Space>
 
         <div className="grid grid-cols-2 gap-x-8">
@@ -583,7 +583,7 @@ const AboutEvent = () => {
               disabled={false}
               className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
               style={{
-                borderRadius: "16px",
+                borderRadius: "20px",
                 fontFamily: "BricolageGrotesqueMedium",
               }}
               onClick={() => {

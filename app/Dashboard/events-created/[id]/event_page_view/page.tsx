@@ -9,7 +9,7 @@ import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 
 const EventPageView = () => {
   const [componentDisabled, setComponentDisabled] = useComponentDisabled();
-  const [imageUrl, setImageUrl] = useState("/images/placeholder-6.png");
+  const [imageUrl, setImageUrl] = useState("/images/emptyimage2.png");
   const [buttonText, setButtonText] = useState("Update Image");
   const [isImageUploaded, setIsImageUploaded] = useState(false);
 
@@ -53,7 +53,7 @@ const EventPageView = () => {
           <Paragraph
             className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
             content={
-              "This is how your event page will appear. Upload your event image here (Only JPEG & PNG Allowed & File size should not be more than 10MB)."
+              "This is how your event page will appear. Upload/Update your event image here by clicking the update image button."
             }
             styles={{ fontWeight: "normal !important" }}
           />
@@ -70,7 +70,7 @@ const EventPageView = () => {
             <div className="absolute inset-0 bg-image-card"></div>
           </div>
           <div className="py-8">
-            <h2 className="font-semibold text-2xl">About this event</h2>
+          <Heading5 className="text-2xl" content={"About this event"} />
             <div className="mt-12 flex flex-col gap-12">
               <div className="flex gap-3 items-center">
                 <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">

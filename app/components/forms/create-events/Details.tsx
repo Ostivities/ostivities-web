@@ -140,8 +140,8 @@ function Details(): JSX.Element {
               formStep === 1
                 ? "Lets get you started by creating your event."
                 : formStep === 2
-                ? "Upload your event image here (Only JPEG & PNG Allowed & File size should not be more than 10MB)."
-                : "Ostivities is free for free events. For paid events, we charge a transaction fee."
+                ? "Upload your event image here by clicking the camera icon (File size should not be more than 10MB)."
+                : "For free events, Ostivities is free. For paid events, we charge a percentage-based transaction fee on ticket sales."
             }
             styles={{ fontWeight: "normal !important" }}
           />
@@ -163,14 +163,7 @@ function Details(): JSX.Element {
       </div>
       {formState.stage === 3 ? (
         <div className="w-full flex flex-col space-y-7">
-          <Button
-            type="primary"
-            htmlType="button"
-            size="large"
-            className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles float-right place-self-end"
-          >
-            Add ticket
-          </Button>
+          
           <EventTicketTable />
           <Space className="flex flex-row justify-center space-x-4">
             <Button
@@ -942,7 +935,7 @@ function Details(): JSX.Element {
                     className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
                     onClick={() => setIsModalOpen(true)}
                   >
-                    Add ticket
+                    Add Tickets
                   </Button>
                 </div>
               </div>

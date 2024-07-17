@@ -127,6 +127,22 @@ export interface SalesDataType {
   sales?: number; // Optional, since it
 }
 
+export interface SummaryDataType {
+  key: string;
+  buyerName: string;
+  ticketName: string;
+  checkedInBy: string;
+}
+
+export interface PaymentDataType {
+  key: string;
+  recipient: string;
+  bankAccount: string;
+  transferFee: number;
+  payout: number;
+  paymentDate: string;
+}
+
 export interface IUser {
   firstName: string;
   lastName: string;

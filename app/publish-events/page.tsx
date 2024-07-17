@@ -3,6 +3,7 @@ import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
 import { Button } from 'antd';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { Heading5 } from '../components/typography/Typography';
 
 const PublishEvent = (): JSX.Element => {
   const router = useRouter();
@@ -38,7 +39,7 @@ const PublishEvent = (): JSX.Element => {
             <div className="absolute inset-0 bg-image-card"></div>
           </div>
           <div className="py-8">
-            <h2 className="font-semibold text-2xl">About this event</h2>
+          <Heading5 className="text-2xl" content={"About this event"} />
             <div className="mt-14 flex flex-col gap-12">
               <div className="flex gap-3">
                 <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">

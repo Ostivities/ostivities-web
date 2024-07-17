@@ -10,8 +10,11 @@ interface FieldType {}
 const EventsGuestListEmail = () => {
   const [form] = Form.useForm();
   const [editorContent, setEditorContent] = useState("");
+  const [recipientType, setRecipientType] = useState<string>("all");
+  const [selectedTickets, setSelectedTickets] = useState<string[]>([]);
+  const [selectedAttendees, setSelectedAttendees] = useState<string[]>([]);
 
-  const handleEditorChange = (content: React.SetStateAction<string>) => {
+  const handleEditorChange = (content: string) => {
     setEditorContent(content);
   };
 
@@ -23,6 +26,27 @@ const EventsGuestListEmail = () => {
     errorInfo
   ) => {
     return errorInfo;
+  };
+
+  const handleRecipientTypeChange = (value: string) => {
+    setRecipientType(value);
+    // Reset selections when recipient type changes
+    setSelectedTickets([]);
+    setSelectedAttendees([]);
+  };
+
+  const handleTicketTypeChange = (value: string[]) => {
+    setSelectedTickets(value);
+  };
+
+  const handleAttendeeSearch = (value: string) => {
+    // Simulate fetching attendees based on search value
+    // Replace with actual fetching logic
+    // For example: fetchAttendees(value).then(data => setAttendees(data));
+  };
+
+  const handleSelectAttendee = (value: string) => {
+    setSelectedAttendees([...selectedAttendees, value]);
   };
 
   return (
@@ -45,7 +69,7 @@ const EventsGuestListEmail = () => {
               label="Sender Name"
               name="senderName"
               rules={[
-                { required: true, message: "Please input your ticket name!" },
+                { required: true, message: "Please input your sender name!" },
               ]}
               style={{ marginBottom: "8px" }}
             >
@@ -54,9 +78,9 @@ const EventsGuestListEmail = () => {
 
             <Form.Item<FieldType>
               label="Reply To"
-              name="senderName"
+              name="replyTo"
               rules={[
-                { required: true, message: "Please input your ticket name!" },
+                { required: true, message: "Please input your reply email!" },
               ]}
               style={{ marginBottom: "8px" }}
             >
@@ -67,14 +91,17 @@ const EventsGuestListEmail = () => {
               label="Recipients"
               name="recipients"
               rules={[
-                { required: true, message: "Please input your ticket name!" },
+                { required: true, message: "Please select recipient type!" },
               ]}
               style={{ marginBottom: "8px" }}
             >
-              <Select placeholder="Select ticket type">
-                <Select.Option value="all">All attendee</Select.Option>
-                <Select.Option value="all">Guestlist by ticket</Select.Option>
-                <Select.Option value="all">Selected attendee</Select.Option>
+              <Select
+                placeholder="Select recipient type"
+                onChange={handleRecipientTypeChange}
+              >
+                <Select.Option value="all">All attendees</Select.Option>
+                <Select.Option value="ticket">Guestlist by ticket</Select.Option>
+                <Select.Option value="selected">Selected attendees</Select.Option>
               </Select>
             </Form.Item>
 
@@ -82,13 +109,66 @@ const EventsGuestListEmail = () => {
               label="Email Subject"
               name="subject"
               rules={[
-                { required: true, message: "Please input your ticket name!" },
+                { required: true, message: "Please input email subject!" },
               ]}
               style={{ marginBottom: "8px" }}
             >
               <Input placeholder="Enter email subject" />
             </Form.Item>
           </div>
+
+          {recipientType === "ticket" && (
+            <Form.Item<FieldType>
+              label="Select Tickets"
+              name="selectedTickets"
+              style={{ marginBottom: "8px" }}
+            >
+              <Select
+                mode="multiple"
+                placeholder="Select tickets"
+                onChange={handleTicketTypeChange}
+              >
+                {/* Replace with dynamic data */}
+                <Select.Option value="ticketType1">Ticket Type 1</Select.Option>
+                <Select.Option value="ticketType2">Ticket Type 2</Select.Option>
+                <Select.Option value="ticketType3">Ticket Type 3</Select.Option>
+              </Select>
+            </Form.Item>
+          )}
+
+          {recipientType === "selected" && (
+            <Form.Item<FieldType>
+              label="Select Attendees"
+              name="selectedAttendees"
+              style={{ marginBottom: "8px" }}
+            >
+              <Input.Search
+                placeholder="Search and select attendees"
+                onSearch={handleAttendeeSearch}
+                enterButton
+                allowClear
+                style={{ width: "100%" }}
+              />
+              <Space direction="vertical" style={{ marginTop: "8px" }}>
+                {selectedAttendees.map((attendee) => (
+                  <Space key={attendee}>
+                    {attendee}
+                    <Button
+                      type="text"
+                      size="small"
+                      onClick={() =>
+                        setSelectedAttendees(
+                          selectedAttendees.filter((item) => item !== attendee)
+                        )
+                      }
+                    >
+                      Remove
+                    </Button>
+                  </Space>
+                ))}
+              </Space>
+            </Form.Item>
+          )}
 
           <div className="mb-4 pb-12 w-full">
             <EmailEditor
@@ -97,11 +177,11 @@ const EventsGuestListEmail = () => {
             />
           </div>
 
-          <div className="pt-4 flex flex-row">
-            <div className="flex flex-row items-center space-x-3 w-1/2">
+          <div className="pt-3 flex flex-row">
+            <div className="flex flex-row items-center space-x-6 w-1/2">
               <Paragraph
                 className="text-OWANBE_DARK text-sm font-normal font-BricolageGrotesqueRegular"
-                content={"Enter Address to send test Message"}
+                content={"Enter Email Address to send test Message"}
                 styles={{ fontWeight: "normal !important" }}
               />
               <Input
@@ -114,7 +194,7 @@ const EventsGuestListEmail = () => {
               <Button
                 type={"primary"}
                 size="middle"
-                className={`font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-32 rounded-2xl`}
+                className={`font-BricolageGrotesqueSemiBold continue font-bold w-32 rounded-2xl`}
                 style={{
                   borderRadius: "16px",
                   fontFamily: "BricolageGrotesqueMedium",
@@ -131,9 +211,9 @@ const EventsGuestListEmail = () => {
               type="primary"
               size={"large"}
               htmlType="button"
-              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles w-44"
+              className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
             >
-              Send
+              Send Email
             </Button>
           </div>
         </Form>
