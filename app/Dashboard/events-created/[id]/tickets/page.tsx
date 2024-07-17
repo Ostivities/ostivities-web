@@ -186,7 +186,7 @@ const EventTickets = () => {
               }}
               onClick={() => setIsModalOpen(true)}
             >
-              Add Ticket
+              Add Tickets
             </Button>
             <Table
               rowSelection={{

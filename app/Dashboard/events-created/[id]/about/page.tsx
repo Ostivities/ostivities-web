@@ -60,7 +60,7 @@ const AboutEvent = () => {
         disabled={componentDisabled}
       >
         <Space direction="vertical">
-          <Heading5 className="pb-5" content={"Event Details"} />
+          <Heading5 className="pb-8" content={"Event Details"} />
         </Space>
 
         <div className="grid grid-cols-2 gap-x-8">
