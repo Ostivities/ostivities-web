@@ -1,18 +1,19 @@
 "use client";
-import React, { useState } from "react";
-import { Button, Input, Space, Table } from "antd";
-import { FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
-import * as XLSX from "xlsx";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
+import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
+import GuestDetail from "@/app/components/OstivitiesModal/GuestDetail";
+import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 import {
   generateRandomString,
   getRandomEventName,
   getRandomName,
 } from "@/app/utils/helper";
-import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
-import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 import { SalesDataType } from "@/app/utils/interface";
+import { FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
+import { Button, Input, Space, Table } from "antd";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+import React, { useState } from "react";
+import * as XLSX from "xlsx";
 
 const { Search } = Input;
 
@@ -21,6 +22,8 @@ const EventsGuestList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalData, setModalData] = useState<any>({});
 
   const data: SalesDataType[] = Array.from({ length: 50 }, (_, index) => ({
     key: `${index + 1}`,
@@ -52,17 +55,20 @@ const EventsGuestList = () => {
     {
       title: "Ticket Name",
       dataIndex: "eventName",
-      sorter: (a: SalesDataType, b: SalesDataType) => a.eventName.localeCompare(b.eventName),
+      sorter: (a: SalesDataType, b: SalesDataType) =>
+        a.eventName.localeCompare(b.eventName),
     },
     {
       title: "Ticket Quantity",
       dataIndex: "ticketSold",
-      sorter: (a: SalesDataType, b: SalesDataType) => a.ticketSold - b.ticketSold,
+      sorter: (a: SalesDataType, b: SalesDataType) =>
+        a.ticketSold - b.ticketSold,
     },
     {
       title: "Buyer Name",
       dataIndex: "eventType",
-      sorter: (a: SalesDataType, b: SalesDataType) => a.eventType.localeCompare(b.eventType),
+      sorter: (a: SalesDataType, b: SalesDataType) =>
+        a.eventType.localeCompare(b.eventType),
     },
     {
       title: "Order Number",
@@ -77,13 +83,18 @@ const EventsGuestList = () => {
     {
       title: "Order Date",
       dataIndex: "dateCreated",
-      sorter: (a: SalesDataType, b: SalesDataType) => a.dateCreated.localeCompare(b.dateCreated),
+      sorter: (a: SalesDataType, b: SalesDataType) =>
+        a.dateCreated.localeCompare(b.dateCreated),
     },
     {
       title: "Action",
       dataIndex: "action",
       render: (text: any, record: SalesDataType) => (
-        <Button type="primary" onClick={() => handleAction(record)} style={{ borderRadius: '20px' }}>
+        <Button
+          type="primary"
+          onClick={() => handleAction(record)}
+          style={{ borderRadius: "20px" }}
+        >
           View
         </Button>
       ),
@@ -95,7 +106,7 @@ const EventsGuestList = () => {
       ? data.filter((item) => selectedRowKeys.includes(item.key))
       : data;
 
-    const formattedExportData = exportData.map(item => ({
+    const formattedExportData = exportData.map((item) => ({
       "Ticket Name": item.eventName,
       "Ticket Quantity": item.ticketSold,
       "Buyer Name": item.eventType,
@@ -112,85 +123,94 @@ const EventsGuestList = () => {
       const doc = new jsPDF();
       (doc as any).autoTable({
         head: [Object.keys(formattedExportData[0])],
-        body: formattedExportData.map(item => Object.values(item)),
+        body: formattedExportData.map((item) => Object.values(item)),
       });
       doc.save("Guest List.pdf");
     }
   };
 
   const handleAction = (record: SalesDataType) => {
-    // Handle action when view button is clicked
-    console.log("View action for record:", record);
+    setIsModalOpen(true);
+    setModalData(record);
   };
 
   return (
-    <EventDetailsComponent>
-      <Space direction="vertical" size={"large"}>
-        <Space direction="vertical" size={"middle"} style={{ width: "100%" }}>
-          <Heading5 className="" content={"Guest List"} />
-          <Paragraph
-            className="text-OWANBE_PRY font-normal font-BricolageGrotesqueRegular text-center mx-auto border border-OWANBE_PRY bg-OWANBE_PRY2 rounded-lg w-[500px] h-14 flex flex-row items-center justify-center text-3xl py-8 place-self-center"
-            content={`${filteredData.length} Guests`}
-            styles={{ fontWeight: "normal !important" }}
-          />
-        </Space>
-
-        <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-          <Space direction="horizontal" align="center" size="middle" style={{ width: "100%" }} className="justify-between pt-5">
-            <Search
-              placeholder="Search Ticket Name or Buyer Name"
-              onSearch={handleSearch}
-              onChange={(e) => handleSearch(e.target.value)}
-              style={{ width: 300 }}
+    <React.Fragment>
+      <GuestDetail
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        data={modalData}
+      />
+      <EventDetailsComponent>
+        <Space direction="vertical" size={"large"}>
+          <Space direction="vertical" size={"middle"} style={{ width: "100%" }}>
+            <Heading5 className="" content={"Guest List"} />
+            <Paragraph
+              className="text-OWANBE_PRY font-normal font-BricolageGrotesqueRegular text-center mx-auto border border-OWANBE_PRY bg-OWANBE_PRY2 rounded-lg w-[500px] h-14 flex flex-row items-center justify-center text-3xl py-8 place-self-center"
+              content={`${filteredData.length} Guests`}
+              styles={{ fontWeight: "normal !important" }}
             />
-            {selectedRowKeys.length > 0 && (
-              <Space>
-                <Button
-                  type="default"
-                  className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
-                  style={{ borderRadius: 15, marginRight: 8 }}
-                  onClick={() => handleExport("excel")}
-                >
-                  <FileExcelOutlined />
-                </Button>
-                <Button
-                  type="default"
-                  className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
-                  style={{ borderRadius: 15 }}
-                  onClick={() => handleExport("pdf")}
-                >
-                  <FilePdfOutlined />
-                </Button>
-              </Space>
-            )}
           </Space>
 
-          <Table
-            rowSelection={{
-              selectedRowKeys,
-              onChange: (keys) => setSelectedRowKeys(keys),
-            }}
-            columns={columns}
-            dataSource={filteredData}
-            pagination={{
-              current: currentPage,
-              pageSize: pageSize,
-              total: filteredData.length,
-              onChange: (page, size) => {
-                setCurrentPage(page);
-                setPageSize(size);
-              },
-            }}
-            scroll={{ x: "max-content" }}
-          />
+          <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+            <Space
+              direction="horizontal"
+              align="center"
+              size="middle"
+              style={{ width: "100%" }}
+              className="justify-between pt-5"
+            >
+              <Search
+                placeholder="Search Ticket Name or Buyer Name"
+                onSearch={handleSearch}
+                onChange={(e) => handleSearch(e.target.value)}
+                style={{ width: 300 }}
+              />
+              {selectedRowKeys.length > 0 && (
+                <Space>
+                  <Button
+                    type="default"
+                    className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                    style={{ borderRadius: 15, marginRight: 8 }}
+                    onClick={() => handleExport("excel")}
+                  >
+                    <FileExcelOutlined />
+                  </Button>
+                  <Button
+                    type="default"
+                    className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                    style={{ borderRadius: 15 }}
+                    onClick={() => handleExport("pdf")}
+                  >
+                    <FilePdfOutlined />
+                  </Button>
+                </Space>
+              )}
+            </Space>
+
+            <Table
+              rowSelection={{
+                selectedRowKeys,
+                onChange: (keys) => setSelectedRowKeys(keys),
+              }}
+              columns={columns}
+              dataSource={filteredData}
+              pagination={{
+                current: currentPage,
+                pageSize: pageSize,
+                total: filteredData.length,
+                onChange: (page, size) => {
+                  setCurrentPage(page);
+                  setPageSize(size);
+                },
+              }}
+              scroll={{ x: "max-content" }}
+            />
+          </Space>
         </Space>
-      </Space>
-    </EventDetailsComponent>
+      </EventDetailsComponent>
+    </React.Fragment>
   );
 };
 
 export default EventsGuestList;
-
-
-
-
