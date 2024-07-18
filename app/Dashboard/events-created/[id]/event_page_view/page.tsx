@@ -174,7 +174,7 @@ const EventPageView = () => {
                 htmlType="button"
                 size={"large"}
                 disabled={false}
-                className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
+                className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-60 rounded-2xl"
                 style={{
                   borderRadius: "20px",
                   fontFamily: "BricolageGrotesqueMedium",
