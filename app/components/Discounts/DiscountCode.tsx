@@ -131,7 +131,7 @@ const DiscountCode = (): JSX.Element => {
                 placeholder="Select ticket applicable"
                 onChange={handleTicketApplicableChange}
               >
-                <Select.Option value="All Tickets">All Tickets in The Current Event</Select.Option>
+                <Select.Option value="All Tickets">All Tickets In The Current Event</Select.Option>
                 <Select.Option value="Specific Ticket Types">
                   Specific Ticket Types
                 </Select.Option>

@@ -357,7 +357,7 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
             size={"middle"}
             className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl"
             style={{
-              borderRadius: "16px",
+              borderRadius: "20px",
               fontFamily: "BricolageGrotesqueMedium",
             }}
           >
