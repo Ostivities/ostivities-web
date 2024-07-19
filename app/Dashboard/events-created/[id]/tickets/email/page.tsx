@@ -69,7 +69,7 @@ const EventTicketsEmail = () => {
     htmlType="button"
     className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
   >
-    Send Email
+    Initiate
   </Button>
 </div>
           </Space>

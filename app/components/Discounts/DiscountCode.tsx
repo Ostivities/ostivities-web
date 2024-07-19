@@ -18,6 +18,7 @@ const DiscountCode = (): JSX.Element => {
   const { toggleDiscount } = useDiscount();
   const [form] = Form.useForm();
   const [ticketApplicable, setTicketApplicable] = useState("All Tickets");
+  const [discountType, setDiscountType] = useState("");
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     return values;
@@ -31,6 +32,10 @@ const DiscountCode = (): JSX.Element => {
 
   const handleTicketApplicableChange = (value: string) => {
     setTicketApplicable(value);
+  };
+
+  const handleDiscountTypeChange = (value: string) => {
+    setDiscountType(value);
   };
 
   return (
@@ -58,22 +63,59 @@ const DiscountCode = (): JSX.Element => {
             </Form.Item>
 
             <Form.Item
-              label={<Label content="Discount Value" />} // Correct usage of Label component
-              name="discountValue"
+              label={<Label content="Discount Type" />} // Correct usage of Label component
+              name="discountType"
               rules={[
-                { required: true, message: "Please input the discount value!" },
+                { required: true, message: "Please select the discount type!" },
               ]}
             >
-              <InputNumber
-                placeholder="Enter discount value"
-                style={{ width: "100%" }}
-                min={0}
-                formatter={(value) =>
-                  `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                }
-                parser={(value) => value?.replace(/\₦\s?|(,*)/g, "") as any}
-              />
+              <Select
+                placeholder="Select discount type"
+                onChange={handleDiscountTypeChange}
+              >
+                <Select.Option value="Percentage">Percentage Discount</Select.Option>
+                <Select.Option value="Fixed Value">Fixed Value Discount</Select.Option>
+              </Select>
             </Form.Item>
+
+            {discountType === "Percentage" && (
+              <Form.Item
+                label={<Label content="Discount Value" />} // Correct usage of Label component
+                name="discountValue"
+                rules={[
+                  { required: true, message: "Please input the discount value!" },
+                ]}
+              >
+                <InputNumber
+                  placeholder="Enter discount value"
+                  style={{ width: "100%" }}
+                  min={0}
+                  max={100}
+                  formatter={(value) => `${value}%`}
+                  parser={(value) => value?.replace('%', '') as any}
+                />
+              </Form.Item>
+            )}
+
+            {discountType === "Fixed Value" && (
+              <Form.Item
+                label={<Label content="Discount Value" />} // Correct usage of Label component
+                name="discountValue"
+                rules={[
+                  { required: true, message: "Please input the discount value!" },
+                ]}
+              >
+                <InputNumber
+                  placeholder="Enter discount value"
+                  style={{ width: "100%" }}
+                  min={0}
+                  formatter={(value) =>
+                    `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
+                  parser={(value) => value?.replace(/\₦\s?|(,*)/g, "") as any}
+                />
+              </Form.Item>
+            )}
 
             <Form.Item
               label={<Label content="Ticket Applicable" />} // Correct usage of Label component
@@ -89,14 +131,14 @@ const DiscountCode = (): JSX.Element => {
                 placeholder="Select ticket applicable"
                 onChange={handleTicketApplicableChange}
               >
-                <Select.Option value="All Tickets">All Tickets</Select.Option>
-                <Select.Option value="Individual Ticket">
-                  Individual Ticket
+                <Select.Option value="All Tickets">All Tickets In The Current Event</Select.Option>
+                <Select.Option value="Specific Ticket Types">
+                  Specific Ticket Types
                 </Select.Option>
               </Select>
             </Form.Item>
 
-            {ticketApplicable === "Individual Ticket" && (
+            {ticketApplicable === "Specific Ticket Types" && (
               <Form.Item
                 label={<Label content="Select Ticket" />} // Correct usage of Label component
                 name="selectTicket"

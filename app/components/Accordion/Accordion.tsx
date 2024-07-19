@@ -37,14 +37,14 @@ const Accordion: React.FC = () => {
             className={`bg-OWANBE_PRY`}
           />
           <span className="text-sm">
-            How do I create an event on Ostivities?
+          What is Ostivities?
           </span>
         </div>
       ),
       children: (
         <p>
-          Creating an event is simple — just navigate to the event section, fill
-          in details, and share the joy with attendees.
+          Ostivities is an event management platform designed to help organizers create, promote, 
+          and manage events efficiently. Our platform offers tools for ticketing, guest management, and event analytics. 
         </p>
       ),
     },
@@ -87,10 +87,8 @@ const Accordion: React.FC = () => {
       ),
       children: (
         <p>
-          Creating an event on Ostivities is simple. Sign up for an account, 
-          click on Create Event and 
-          follow the prompts to enter event details, 
-          upload an invitation card, and set the date and time.
+          To create an event, log in to your Ostivities account, navigate to the 'Create Event' section, and fill out the required details such as 
+          event name, date, location, and ticket types. Once completed, you can publish your event and start promoting it.
         </p>
       ),
     },

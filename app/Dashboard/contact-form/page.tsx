@@ -67,7 +67,7 @@ const ContactForm = () => {
                 />
               </div>
               <div>
-                <h3 className="text-xs">Date</h3>
+                <h3 className="text-sm"style={{ fontWeight: 600 }}>Date</h3> 
                 <span>14 December, 2023</span>
               </div>
             </div>
@@ -76,7 +76,7 @@ const ContactForm = () => {
                 <Image src="/icons/time.svg" alt="" height={25} width={25} />
               </div>
               <div>
-                <h3 className="text-xs">Time</h3>
+                <h3 className="text-sm"style={{ fontWeight: 600 }}>Time</h3>
                 <span>5:00PM - 10:00PM WAT</span>
               </div>
             </div>
@@ -123,7 +123,7 @@ const ContactForm = () => {
               >
                 <Input type="email" placeholder="Confirm Email Address" />
               </Form.Item>
-              <Form.Item
+              <Form.Item 
                 label="Phone Number"
                 name="phoneNumber"
                 rules={[{ required: true, message: 'Please provide your phone number' }]}
@@ -142,7 +142,7 @@ const ContactForm = () => {
                 />
               </Form.Item>
 
-              <Heading5 className="pt-10 pb-5" content={"Additional Information"} />
+              <Heading5 className="pt-10 pb-5" content={"Additional Informations"} />
 
               <Form.Item
                 label="Info 1"

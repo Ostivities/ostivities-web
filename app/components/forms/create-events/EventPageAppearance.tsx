@@ -144,7 +144,7 @@ const EventPageAppearance: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="flex-1 h-fit my-auto border-l border-black px-5" style={{ marginTop: '150px' }}>
+        <div className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-5" style={{ marginTop: '150px' }}>
           <p>
             Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum 
             Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum 

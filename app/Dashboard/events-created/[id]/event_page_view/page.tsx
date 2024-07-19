@@ -148,7 +148,7 @@ const EventPageView = () => {
               </div>
             </div>
           </div>
-          <div className="flex-1 h-fit my-auto border-l border-black px-10" style={{ marginTop: '150px' }}>
+          <div className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-10" style={{ marginTop: '150px' }}>
             <p>
             Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum 
             Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum 
@@ -174,7 +174,7 @@ const EventPageView = () => {
                 htmlType="button"
                 size={"large"}
                 disabled={false}
-                className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
+                className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-60 rounded-2xl"
                 style={{
                   borderRadius: "20px",
                   fontFamily: "BricolageGrotesqueMedium",
