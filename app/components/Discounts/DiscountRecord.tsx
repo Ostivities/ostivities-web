@@ -1,6 +1,6 @@
 import { useDiscount } from "@/app/contexts/discount-context/DiscountContext";
 import { getRandomName } from "@/app/utils/helper";
-import { SummaryDataType } from "@/app/utils/interface";
+import { DiscountDataType } from "@/app/utils/interface"; // Import the new interface
 import { MenuOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Space, Table } from "antd";
 import { MenuItemType } from "antd/es/menu/interface";
@@ -28,7 +28,6 @@ const DiscountRecord = (): JSX.Element => {
             color: "#000000",
             fontFamily: "BricolageGrotesqueRegular",
           }}
-          //   onClick={() => setIsOpen(true)}
         >
           Edit
         </Button>
@@ -75,11 +74,11 @@ const DiscountRecord = (): JSX.Element => {
     },
   ];
 
-  const data: SummaryDataType[] = Array.from({ length: 50 }, (_, index) => ({
+  const data: DiscountDataType[] = Array.from({ length: 50 }, (_, index) => ({
     key: `${index + 1}`,
-    buyerName: getRandomName(),
-    ticketName: `Ticket ${index + 1}`,
-    checkedInBy: `2024-07-${(index + 1)
+    discountCode: `DISCOUNT${index + 1}`,
+    uses: `${Math.floor(Math.random() * 100)} uses`,
+    dateEnding: `2023-10-${(index + 1)
       .toString()
       .padStart(2, "0")}, ${Math.floor(Math.random() * 12)}:${Math.floor(
       Math.random() * 60
@@ -89,40 +88,40 @@ const DiscountRecord = (): JSX.Element => {
   }));
 
   const filteredData = data.filter((item) =>
-    item.buyerName.toLowerCase().includes(searchText.toLowerCase())
+    item.discountCode.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  const columns: ColumnsType<SummaryDataType> = [
+  const columns: ColumnsType<DiscountDataType> = [
     {
       title: (
         <Label
-          content="Discount Name"
+          content="Discount Code"
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
-      dataIndex: "buyerName",
-      sorter: (a, b) => a.buyerName.localeCompare(b.buyerName),
+      dataIndex: "discountCode",
+      sorter: (a, b) => a.discountCode.localeCompare(b.discountCode),
     },
     {
       title: (
         <Label
-          content="Users"
+          content="Uses"
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
-      dataIndex: "ticketName",
-      sorter: (a, b) => a.ticketName.localeCompare(b.ticketName),
+      dataIndex: "uses",
+      sorter: (a, b) => a.uses.localeCompare(b.uses),
     },
     {
       title: (
         <Label
-          content="Date ending"
+          content="Date Ending"
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
-      dataIndex: "checkedInBy",
+      dataIndex: "dateEnding",
       sorter: (a, b) =>
-        new Date(a.checkedInBy).getTime() - new Date(b.checkedInBy).getTime(),
+        new Date(a.dateEnding).getTime() - new Date(b.dateEnding).getTime(),
     },
     {
       title: (
@@ -133,12 +132,11 @@ const DiscountRecord = (): JSX.Element => {
       ),
       dataIndex: "action",
       key: "action",
-      render: (text: any, record: SummaryDataType) => (
+      render: (text: any, record: DiscountDataType) => (
         <Space direction="vertical" size="small">
           <Dropdown
             menu={{
               items: GuestItems,
-              //   onClick: handleMenuClick(key.toString()),
             }}
             trigger={["click", "hover"]}
           >
@@ -164,25 +162,39 @@ const DiscountRecord = (): JSX.Element => {
       <Space direction="vertical" size={"large"} className="w-full">
         <Heading5 className="pb-5" content={"Discount Code"} />
 
-        <Table
-          rowSelection={{
-            selectedRowKeys,
-            onChange: (keys) => setSelectedRowKeys(keys),
-          }}
-          columns={columns}
-          dataSource={filteredData}
-          className="font-BricolageGrotesqueRegular w-full"
-          pagination={{
-            current: currentPage,
-            pageSize: pageSize,
-            total: filteredData.length,
-            onChange: (page, size) => {
-              setCurrentPage(page);
-              setPageSize(size);
-            },
-          }}
-          scroll={{ x: "max-content" }}
-        />
+        <Space direction="vertical" size={"large"} className="w-full">
+          <div className="flex flex-row items-center justify-end">
+            <Button
+              type="primary"
+              size={"large"}
+              htmlType="submit"
+              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles place-self-end"
+              onClick={() => toggleDiscount("Discount")}
+            >
+              Create
+            </Button>
+          </div>
+
+          <Table
+            rowSelection={{
+              selectedRowKeys,
+              onChange: (keys) => setSelectedRowKeys(keys),
+            }}
+            columns={columns}
+            dataSource={filteredData}
+            className="font-BricolageGrotesqueRegular w-full"
+            pagination={{
+              current: currentPage,
+              pageSize: pageSize,
+              total: filteredData.length,
+              onChange: (page, size) => {
+                setCurrentPage(page);
+                setPageSize(size);
+              },
+            }}
+            scroll={{ x: "max-content" }}
+          />
+        </Space>
       </Space>
     </React.Fragment>
   );

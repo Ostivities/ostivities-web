@@ -132,7 +132,11 @@ export interface SummaryDataType {
   buyerName: string;
   ticketName: string;
   checkedInBy: string;
+  discountCode?: string;  // optional if they can be null or undefined
+  uses?: number;
+  dateEnding?: string;
 }
+
 
 export interface PaymentDataType {
   key: string;
@@ -162,4 +166,11 @@ export interface ILogin {
 export interface IResetToken {
   email: string;
   originUrl: string;
+}
+
+export interface DiscountDataType {
+  key: string;
+  discountCode: string;
+  uses: string;
+  dateEnding: string;
 }
