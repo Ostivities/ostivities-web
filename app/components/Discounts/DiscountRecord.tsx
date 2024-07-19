@@ -162,25 +162,39 @@ const DiscountRecord = (): JSX.Element => {
       <Space direction="vertical" size={"large"} className="w-full">
         <Heading5 className="pb-5" content={"Discount Code"} />
 
-        <Table
-          rowSelection={{
-            selectedRowKeys,
-            onChange: (keys) => setSelectedRowKeys(keys),
-          }}
-          columns={columns}
-          dataSource={filteredData}
-          className="font-BricolageGrotesqueRegular w-full"
-          pagination={{
-            current: currentPage,
-            pageSize: pageSize,
-            total: filteredData.length,
-            onChange: (page, size) => {
-              setCurrentPage(page);
-              setPageSize(size);
-            },
-          }}
-          scroll={{ x: "max-content" }}
-        />
+        <Space direction="vertical" size={"large"} className="w-full">
+          <div className="flex flex-row items-center justify-end">
+            <Button
+              type="primary"
+              size={"large"}
+              htmlType="submit"
+              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles place-self-end"
+              onClick={() => toggleDiscount("Discount")}
+            >
+              Create
+            </Button>
+          </div>
+
+          <Table
+            rowSelection={{
+              selectedRowKeys,
+              onChange: (keys) => setSelectedRowKeys(keys),
+            }}
+            columns={columns}
+            dataSource={filteredData}
+            className="font-BricolageGrotesqueRegular w-full"
+            pagination={{
+              current: currentPage,
+              pageSize: pageSize,
+              total: filteredData.length,
+              onChange: (page, size) => {
+                setCurrentPage(page);
+                setPageSize(size);
+              },
+            }}
+            scroll={{ x: "max-content" }}
+          />
+        </Space>
       </Space>
     </React.Fragment>
   );
