@@ -1,5 +1,4 @@
 "use client";
-import Dropzone from "@/app/components/Dropzone/Dropzone";
 import EventPageAppearance from "@/app/components/forms/create-events/EventPageAppearance";
 import AddTicketModal from "@/app/components/OstivitiesModal/AddTicket";
 import EventTicketTable from "@/app/components/Tables/EventTicket";
