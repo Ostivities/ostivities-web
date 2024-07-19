@@ -75,7 +75,9 @@ const PublishEvent = (): JSX.Element => {
                 </div>
                 <div>
                   <div className="text-sm"style={{ fontWeight: 600 }}>Location</div>
-                  <div>3, Eko Hotel, Lagos </div>
+                  <div>
+  <a href="https://www.google.com/maps/search/?api=1&query=Eko+Hotels+Suites" target="_blank">Eko Hotels & Suites</a>
+</div>
                 </div>
               </div>
               <div className="flex gap-3">
