@@ -2,7 +2,8 @@
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import EmailEditor from "@/app/components/QuillEditor/EmailEditor";
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
-import { Button, Form, FormProps, Input, Select, Space } from "antd";
+import { Button, Form, FormProps, Input, Select, Space, Upload, UploadFile } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 
 interface FieldType {}
@@ -13,6 +14,7 @@ const EventsGuestListEmail = () => {
   const [recipientType, setRecipientType] = useState<string>("all");
   const [selectedTickets, setSelectedTickets] = useState<string[]>([]);
   const [selectedAttendees, setSelectedAttendees] = useState<string[]>([]);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const handleEditorChange = (content: string) => {
     setEditorContent(content);
@@ -47,6 +49,10 @@ const EventsGuestListEmail = () => {
 
   const handleSelectAttendee = (value: string) => {
     setSelectedAttendees([...selectedAttendees, value]);
+  };
+
+  const handleFileChange = ({ fileList: newFileList }: { fileList: UploadFile[] }) => {
+    setFileList(newFileList);
   };
 
   return (
@@ -169,6 +175,20 @@ const EventsGuestListEmail = () => {
               </Space>
             </Form.Item>
           )}
+
+          <Form.Item<FieldType>
+            label="Attachments"
+            name="attachments"
+            style={{ marginBottom: "8px" }}
+          >
+            <Upload
+              fileList={fileList}
+              onChange={handleFileChange}
+              beforeUpload={() => false} // Prevent automatic upload
+            >
+              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+            </Upload>
+          </Form.Item>
 
           <div className="mb-4 pb-12 w-full">
             <EmailEditor

@@ -971,7 +971,7 @@ function Details(): JSX.Element {
                 className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
                 onClick={nextStep}
               >
-                Save & continue
+                Skip & do this later 
               </Button>
               <Button
                 type="primary"
@@ -980,7 +980,7 @@ function Details(): JSX.Element {
                 className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
                 onClick={nextStep}
               >
-                Skip & do this later
+                Save & continue
               </Button>
             </Space>
           )}
@@ -995,7 +995,7 @@ function Details(): JSX.Element {
                   router.push("/publish-events");
                 }}
               >
-                Save & continue
+                Skip & do this later
               </Button>
               <Button
                 type="primary"
@@ -1006,7 +1006,7 @@ function Details(): JSX.Element {
                   router.push("/publish-events");
                 }}
               >
-                Skip & do this later
+                Save & continue
               </Button>
             </Space>
           )}
