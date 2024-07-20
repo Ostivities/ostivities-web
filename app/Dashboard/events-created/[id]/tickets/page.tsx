@@ -11,9 +11,9 @@ import {
 import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
 import { SalesDataType } from "@/app/utils/interface";
 import { MenuOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Menu, MenuProps, Space, Table } from "antd";
+import { Button, Dropdown, Menu, Space, Table, Input } from "antd";
 import { ColumnsType } from "antd/es/table";
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 // Currency formatter for Naira (₦)
 const formatCurrency = (amount: number) => {
@@ -33,6 +33,36 @@ const EventTickets = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isShown, setIsShown] = useState(false);
   const [actionType, setActionType] = useState<"delete" | "warning">();
+  const [searchText, setSearchText] = useState("");
+  const [filteredData, setFilteredData] = useState<SalesDataType[]>([]);
+
+  const data: SalesDataType[] = useMemo(() =>
+    Array.from({ length: 50 }, (_, index) => ({
+      key: `${index + 1}`,
+      eventName: getRandomEventName(),
+      eventType: `Type ${index + 1}`,
+      ticketSold: Math.floor(Math.random() * 100),
+      revenue: Math.floor(Math.random() * 10000),
+      dateCreated: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
+      status: ["Active", "Closed", "Pending"][Math.floor(Math.random() * 3)] as
+        | "Active"
+        | "Closed"
+        | "Pending",
+      id: generateRandomString(10),
+    }))
+  , []);
+
+  useEffect(() => {
+    setFilteredData(
+      data.filter((item) =>
+        item.eventName.toLowerCase().includes(searchText.toLowerCase())
+      )
+    );
+  }, [searchText, data]);
+
+  const handleSearch = (value: string) => {
+    setSearchText(value);
+  };
 
   interface MenuItemType {
     label: React.ReactNode;
@@ -86,20 +116,6 @@ const EventTickets = () => {
       key: "3",
     },
   ];
-
-  const data: SalesDataType[] = Array.from({ length: 50 }, (_, index) => ({
-    key: `${index + 1}`,
-    eventName: getRandomEventName(),
-    eventType: `Type ${index + 1}`,
-    ticketSold: Math.floor(Math.random() * 100),
-    revenue: Math.floor(Math.random() * 10000),
-    dateCreated: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
-    status: ["Active", "Closed", "Pending"][Math.floor(Math.random() * 3)] as
-      | "Active"
-      | "Closed"
-      | "Pending",
-    id: generateRandomString(10),
-  }));
 
   const handleMenuClick = (key: string) => {
     // Handle menu item clicks
@@ -188,18 +204,24 @@ const EventTickets = () => {
             >
               Add Tickets
             </Button>
+            <Input.Search
+              placeholder="Search tickets"
+              onSearch={handleSearch}
+              onChange={(e) => handleSearch(e.target.value)}
+              style={{ marginBottom: 16, width: 300 }}
+            />
             <Table
               rowSelection={{
                 selectedRowKeys,
                 onChange: (keys) => setSelectedRowKeys(keys),
               }}
               columns={columns}
-              dataSource={data}
+              dataSource={filteredData}
               className="font-BricolageGrotesqueRegular w-full"
               pagination={{
                 current: currentPage,
                 pageSize: pageSize,
-                total: data.length,
+                total: filteredData.length,
                 onChange: (page, size) => {
                   setCurrentPage(page);
                   setPageSize(size);
