@@ -169,7 +169,7 @@ const DiscountRecord = (): JSX.Element => {
               size={"large"}
               htmlType="submit"
               className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles place-self-end"
-              onClick={() => toggleDiscount("Discount")}
+              onClick={() => toggleDiscount("Discount_Code")}
             >
               Create
             </Button>
