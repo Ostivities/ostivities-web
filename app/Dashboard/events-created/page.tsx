@@ -13,7 +13,7 @@ function Events(): JSX.Element {
       router.push('/Dashboard/create-events');   
     } else {
       router.push('/Dashboard/events-created');  
-    }
+    } 
   }, [activeTab, router]);
 
   const title = (

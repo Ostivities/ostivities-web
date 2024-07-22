@@ -30,7 +30,7 @@ function Events(): JSX.Element {
           style={{ fontSize: "15px" }}
           onClick={() => {
             setActiveTab("createEvent");
-            router.push("/dashboard/create-events");
+            router.push("/Dashboard/create-events");
           }}
         >
           Create Event
@@ -56,7 +56,7 @@ function Events(): JSX.Element {
 
   return (
     <DashboardLayout title={title} steppers={<Steppers />} isLoggedIn>
-      <div className="w-5/6 mx-auto flex flex-col space-y-5 py-6">
+      <div className="w-full mx-auto flex flex-col space-y-5 py-6">
         <Details />
       </div>
     </DashboardLayout>
