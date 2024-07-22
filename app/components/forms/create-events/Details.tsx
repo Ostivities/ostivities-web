@@ -26,6 +26,7 @@ import {
   LinkOutlined,
   TwitterOutlined,
   UploadOutlined,
+  XOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -487,7 +488,7 @@ function Details(): JSX.Element {
                         className="w-full"
                       >
                         {/* Start Date & Time */}
-                        <div style={{ width: "300px", marginRight: "-63px" }}>
+                        <div style={{ width: "353px", marginRight: "-77px" }}>
                           <Label
                             content="Start Date & Time"
                             htmlFor="startDateAndTime"
@@ -507,7 +508,7 @@ function Details(): JSX.Element {
                         </div>
 
                         {/* End Date & Time */}
-                        <div style={{ width: "300px" }}>
+                        <div style={{ width: "353px" }}>
                           <Label
                             content="End Date & Time"
                             htmlFor="endDateAndTime"
@@ -584,14 +585,14 @@ function Details(): JSX.Element {
                                   style={{ width: "100%" }}
                                 >
                                   <Input
-                                    prefix={<TwitterOutlined />}
+                                    prefix={<XOutlined />}
                                     style={{
                                       width: "100%",
                                       color: "#000000",
                                       marginTop: "8px", // Adjust spacing between label and field
                                     }}
                                     {...field}
-                                    placeholder="Enter your Twitter URL"
+                                    placeholder="Enter your Twitter/X URL"
                                   />
                                 </Space>
                               )}
@@ -663,9 +664,13 @@ function Details(): JSX.Element {
                         size="large"
                         className="w-full"
                       >
+                        
                         {/* Time Zone */}
-                        <div style={{ width: "300px", marginRight: "-63px" }}>
-                          <Label content="Time Zone" htmlFor="timeZone" />
+                        <div style={{ width: "300px", marginRight: "-25px" }}>
+                          <Label 
+                          content="Time Zone" 
+                          htmlFor="timeZone"
+                          />
                           <Controller
                             name="timeZone"
                             control={control}
@@ -673,7 +678,7 @@ function Details(): JSX.Element {
                               <Select
                                 placeholder="Select Time Zone"
                                 {...field}
-                                style={{ width: "80%", height: "33px" }}
+                                style={{ width: "94%", height: "33px" }}
                               >
                                 {AFRICAN_TIME_ZONES.map((zone) => (
                                   <Option value={zone.value} key={zone.value}>
@@ -695,7 +700,7 @@ function Details(): JSX.Element {
                               <Select
                                 placeholder="Select Event Frequency"
                                 {...field}
-                                style={{ width: "80%", height: "33px" }}
+                                style={{ width: "94%", height: "33px" }}
                               >
                                 {EVENT_FREQUENCIES.map((frequency) => (
                                   <Option
@@ -717,7 +722,7 @@ function Details(): JSX.Element {
                         className="w-full"
                       >
                         {/* Start Date & Time */}
-                        <div style={{ width: "300px", marginRight: "-63px" }}>
+                        <div style={{ width: "353px", marginRight: "-77px" }}>
                           <Label
                             content="Start Date & Time"
                             htmlFor="startDateAndTime"
@@ -737,7 +742,7 @@ function Details(): JSX.Element {
                         </div>
 
                         {/* End Date & Time */}
-                        <div style={{ width: "300px" }}>
+                        <div style={{ width: "353px" }}>
                           <Label
                             content="End Date & Time"
                             htmlFor="endDateAndTime"
@@ -814,14 +819,14 @@ function Details(): JSX.Element {
                                   style={{ width: "100%" }}
                                 >
                                   <Input
-                                    prefix={<TwitterOutlined />}
+                                    prefix={<XOutlined />}
                                     style={{
                                       width: "100%",
                                       color: "#000000",
                                       marginTop: "8px", // Adjust spacing between label and field
                                     }}
                                     {...field}
-                                    placeholder="Enter your Twitter URL"
+                                    placeholder="Enter your Twitter/X URL"
                                   />
                                 </Space>
                               )}

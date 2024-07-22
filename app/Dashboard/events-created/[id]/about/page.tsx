@@ -15,6 +15,7 @@ import {
   LinkOutlined,
   TwitterOutlined,
   UploadOutlined,
+  XOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -182,7 +183,7 @@ const AboutEvent = () => {
                 />
                 <Input
                   style={{
-                    width: "52%",
+                    width: "100%",
                     borderTopLeftRadius: "0px !important",
                     borderBottomLeftRadius: "0px !important",
                   }}
@@ -213,7 +214,7 @@ const AboutEvent = () => {
                 <Space.Compact className="w-full h-8">
                   <Input
                     style={{
-                      width: "75%",
+                      width: "90%",
                       borderTopRightRadius: "0px !important",
                       borderBottomRightRadius: "0px !important",
                     }}
@@ -308,7 +309,7 @@ const AboutEvent = () => {
                 </Form.Item>
                 <Space direction="horizontal" size="large" className="w-full">
                   {/* Start Date & Time */}
-                  <Form.Item style={{ width: "300px", marginRight: "-63px" }}>
+                  <Form.Item style={{ width: "363px", marginRight: "-79px" }}>
                     <Label
                       content="Start Date & Time"
                       htmlFor="startDateAndTime"
@@ -321,7 +322,7 @@ const AboutEvent = () => {
                   </Form.Item>
 
                   {/* End Date & Time */}
-                  <Form.Item style={{ width: "300px" }}>
+                  <Form.Item style={{ width: "363px" }}>
                     <Label content="End Date & Time" htmlFor="endDateAndTime" />
                     <DatePicker
                       showTime
@@ -373,13 +374,13 @@ const AboutEvent = () => {
                     <Col xs={24} sm={12}>
                       <Form.Item style={{ width: "100%" }}>
                         <Input
-                          prefix={<TwitterOutlined />}
+                          prefix={<XOutlined />}
                           style={{
                             width: "100%",
                             color: "#000000",
                             marginTop: "8px", // Adjust spacing between label and field
                           }}
-                          placeholder="Enter your Twitter URL"
+                          placeholder="Enter your Twitter/X URL"
                         />
                       </Form.Item>
                     </Col>
@@ -424,11 +425,11 @@ const AboutEvent = () => {
               <Form.Item>
                 <Space direction="horizontal" size="large" className="w-full">
                   {/* Time Zone */}
-                  <Form.Item style={{ width: "300px", marginRight: "-63px" }}>
+                  <Form.Item style={{ width: "300px", marginRight: "-15px" }}>
                     <Label content="Time Zone" htmlFor="timeZone" />
                     <Select
                       placeholder="Select Time Zone"
-                      style={{ width: "80%", height: "33px" }}
+                      style={{ width: "97%", height: "33px" }}
                     >
                       {AFRICAN_TIME_ZONES.map((zone) => (
                         <Select.Option value={zone.value} key={zone.value}>
@@ -443,7 +444,7 @@ const AboutEvent = () => {
                     <Label content="Frequency" htmlFor="eventFrequency" />
                     <Select
                       placeholder="Select Event Frequency"
-                      style={{ width: "80%", height: "33px" }}
+                      style={{ width: "97%", height: "33px" }}
                     >
                       {EVENT_FREQUENCIES.map((frequency) => (
                         <Select.Option
@@ -459,7 +460,7 @@ const AboutEvent = () => {
 
                 <Space direction="horizontal" size="large" className="w-full">
                   {/* Start Date & Time */}
-                  <Form.Item style={{ width: "300px", marginRight: "-63px" }}>
+                  <Form.Item style={{ width: "363px", marginRight: "-79px" }}>
                     <Label
                       content="Start Date & Time"
                       htmlFor="startDateAndTime"
@@ -472,7 +473,7 @@ const AboutEvent = () => {
                   </Form.Item>
 
                   {/* End Date & Time */}
-                  <Form.Item style={{ width: "300px" }}>
+                  <Form.Item style={{ width: "363px" }}>
                     <Label content="End Date & Time" htmlFor="endDateAndTime" />
                     <DatePicker
                       showTime
@@ -520,13 +521,13 @@ const AboutEvent = () => {
                     <Col xs={24} sm={12}>
                       <Form.Item style={{ width: "100%" }}>
                         <Input
-                          prefix={<TwitterOutlined />}
+                          prefix={<XOutlined />}
                           style={{
                             width: "100%",
                             color: "#000000",
                             marginTop: "8px", // Adjust spacing between label and field
                           }}
-                          placeholder="Enter your Twitter URL"
+                          placeholder="Enter your Twitter/X URL"
                         />
                       </Form.Item>
                     </Col>
@@ -600,7 +601,7 @@ const AboutEvent = () => {
               disabled={false}
               className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
               style={{
-                borderRadius: "16px",
+                borderRadius: "20px",
                 fontFamily: "BricolageGrotesqueMedium",
               }}
               onClick={() => {
