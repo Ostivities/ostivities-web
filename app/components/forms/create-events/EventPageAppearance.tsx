@@ -114,7 +114,7 @@ const EventPageAppearance: React.FC = () => {
                 <div className="flex items-center gap-4 mt-1">
                   <div className="bg-black w-6 h-6 rounded-full flex items-center justify-center">
                     <Image
-                      src="/icons/instagram.svg"
+                      src="/icons/link.svg"
                       alt=""
                       height={14}
                       width={14}
@@ -133,7 +133,7 @@ const EventPageAppearance: React.FC = () => {
                   </div>
                   <div className="bg-black w-6 h-6 rounded-full flex items-center justify-center">
                     <Image
-                      src="/icons/youtube.svg"
+                      src="/icons/instagram.svg"
                       alt=""
                       height={16}
                       width={16}
@@ -149,7 +149,8 @@ const EventPageAppearance: React.FC = () => {
             Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum 
             Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum 
             Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum 
-            Lorem ipsum Lorem 
+            Lorem ipsum Lorem  ipsum Lorem  ipsum Lorem  ipsum Lorem  ipsum Lorem  ipsum Lorem  ipsum Lorem  ipsum Lorem  ipsum Lorem
+            ipsum Lorem  ipsum Lorem  ipsum Lorem  ipsum Lorem  ipsum Lorem  ipsum Lorem  ipsum Lorem  ipsum Lorem  ipsum Lorem
           </p>
         </div>
       </div>

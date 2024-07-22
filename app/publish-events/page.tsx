@@ -88,32 +88,32 @@ const PublishEvent = (): JSX.Element => {
                   <div className="text-sm"style={{ fontWeight: 600 }}>Contact Us</div>
                   <div className="flex-center gap-4 mt-1">
                     <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
-                      <Image
-                        src="/icons/instagram.svg"
-                        alt=""
-                        height={14}
-                        width={14}
-                      />
-                    </div>
-                    <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
-                      <Image src="/icons/x.svg" alt="" height={14} width={14} />
-                    </div>
-                    <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
-                      <Image
-                        src="/icons/facebook.svg"
-                        alt=""
-                        height={10}
-                        width={10}
-                      />
-                    </div>
-                    <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
-                      <Image
-                        src="/icons/youtube.svg"
-                        alt=""
-                        height={16}
-                        width={16}
-                      />
-                    </div>
+                    <Image
+                      src="/icons/link.svg"
+                      alt=""
+                      height={14}
+                      width={14}
+                    />
+                  </div>
+                  <div className="bg-black w-6 h-6 rounded-full flex items-center justify-center">
+                    <Image src="/icons/x.svg" alt="" height={14} width={14} />
+                  </div>
+                  <div className="bg-black w-6 h-6 rounded-full flex items-center justify-center">
+                    <Image
+                      src="/icons/facebook.svg"
+                      alt=""
+                      height={10}
+                      width={10}
+                    />
+                  </div>
+                  <div className="bg-black w-6 h-6 rounded-full flex items-center justify-center">
+                    <Image
+                      src="/icons/instagram.svg"
+                      alt=""
+                      height={16}
+                      width={16}
+                    />
+                  </div>
                   </div>
                 </div>
               </div>
