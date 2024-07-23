@@ -24,7 +24,6 @@ import {
   FacebookFilled,
   InstagramFilled,
   LinkOutlined,
-  TwitterOutlined,
   UploadOutlined,
   XOutlined,
 } from "@ant-design/icons";
@@ -49,16 +48,14 @@ function Details(): JSX.Element {
   const { formState, setFormStage } = useFormContext();
   const [formStep, setFormStep] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [uploadedFile, setUploadedFile] = useState(null);
+  const [] = useState(null);
   const [userName, setUserName] = useState("Rose"); // default value
 
   const { Option } = Select;
 
   const {
-    register,
     handleSubmit,
     control,
-    formState: { errors },
     watch,
     trigger,
   } = useForm<IFormInput>({
@@ -69,7 +66,7 @@ function Details(): JSX.Element {
   const watchEventInfo = watch("eventInfo");
 
   useEffect(() => {
-    const subscription: any = watch((value, { name, type }) => {
+    const subscription: any = watch(() => {
       return;
     });
     return () => subscription.unsubscribe();
@@ -107,13 +104,6 @@ function Details(): JSX.Element {
     }
   };
 
-  const handleUploadChange = (info: {
-    file: { status: string; name: React.SetStateAction<null> };
-  }) => {
-    if (info.file.status === "done") {
-      setUploadedFile(info.file.name);
-    }
-  };
 
   return (
     <Fragment>
@@ -487,45 +477,48 @@ function Details(): JSX.Element {
                         size="large"
                         className="w-full"
                       >
-                        {/* Start Date & Time */}
-                        <div style={{ width: "353px", marginRight: "-77px" }}>
-                          <Label
-                            content="Start Date & Time"
-                            htmlFor="startDateAndTime"
-                          />
-                          <Controller
-                            name="startDateAndTime"
-                            control={control}
-                            render={({ field }) => (
-                              <DatePicker
-                                {...field}
-                                showTime
-                                format="YYYY-MM-DD HH:mm:ss"
-                                style={{ width: "80%", height: "33px" }}
-                              />
-                            )}
-                          />
-                        </div>
+                        <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '16px' }}>
+  {/* Start Date & Time */}
+  <div style={{ flex: '1 1 auto', minWidth: '150px' }}>
+    <Label
+      content="Start Date & Time"
+      htmlFor="startDateAndTime"
+    />
+    <Controller
+      name="startDateAndTime"
+      control={control}
+      render={({ field }) => (
+        <DatePicker
+          {...field}
+          showTime
+          format="YYYY-MM-DD HH:mm:ss"
+          style={{ width: "100%", height: "33px" }}
+        />
+      )}
+    />
+  </div>
 
-                        {/* End Date & Time */}
-                        <div style={{ width: "353px" }}>
-                          <Label
-                            content="End Date & Time"
-                            htmlFor="endDateAndTime"
-                          />
-                          <Controller
-                            name="endDateAndTime"
-                            control={control}
-                            render={({ field }) => (
-                              <DatePicker
-                                {...field}
-                                showTime
-                                format="YYYY-MM-DD HH:mm:ss"
-                                style={{ width: "80%", height: "33px" }}
-                              />
-                            )}
-                          />
-                        </div>
+  {/* End Date & Time */}
+  <div style={{ flex: '1 1 auto', minWidth: '150px' }}>
+    <Label
+      content="End Date & Time"
+      htmlFor="endDateAndTime"
+    />
+    <Controller
+      name="endDateAndTime"
+      control={control}
+      render={({ field }) => (
+        <DatePicker
+          {...field}
+          showTime
+          format="YYYY-MM-DD HH:mm:ss"
+          style={{ width: "100%", height: "33px" }}
+        />
+      )}
+    />
+  </div>
+</div>
+
                       </Space>
 
                       <Space
@@ -665,101 +658,102 @@ function Details(): JSX.Element {
                         className="w-full"
                       >
                         
-                        {/* Time Zone */}
-                        <div style={{ width: "300px", marginRight: "-25px" }}>
-                          <Label 
-                          content="Time Zone" 
-                          htmlFor="timeZone"
-                          />
-                          <Controller
-                            name="timeZone"
-                            control={control}
-                            render={({ field }) => (
-                              <Select
-                                placeholder="Select Time Zone"
-                                {...field}
-                                style={{ width: "94%", height: "33px" }}
-                              >
-                                {AFRICAN_TIME_ZONES.map((zone) => (
-                                  <Option value={zone.value} key={zone.value}>
-                                    {zone.label}
-                                  </Option>
-                                ))}
-                              </Select>
-                            )}
-                          />
-                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+  <div style={{ display: 'flex', gap: '16px' }}>
+    {/* Time Zone */}
+    <div style={{ flex: '1 1 300px', minWidth: '150px' }}>
+      <Label 
+        content="Time Zone" 
+        htmlFor="timeZone"
+      />
+      <Controller
+        name="timeZone"
+        control={control}
+        render={({ field }) => (
+          <Select
+            placeholder="Select Time Zone"
+            {...field}
+            style={{ width: "100%", height: "33px" }}
+          >
+            {AFRICAN_TIME_ZONES.map((zone) => (
+              <Option value={zone.value} key={zone.value}>
+                {zone.label}
+              </Option>
+            ))}
+          </Select>
+        )}
+      />
+    </div>
 
-                        {/* Frequency */}
-                        <div style={{ width: "300px" }}>
-                          <Label content="Frequency" htmlFor="eventFrequency" />
-                          <Controller
-                            name="eventFrequency"
-                            control={control}
-                            render={({ field }) => (
-                              <Select
-                                placeholder="Select Event Frequency"
-                                {...field}
-                                style={{ width: "94%", height: "33px" }}
-                              >
-                                {EVENT_FREQUENCIES.map((frequency) => (
-                                  <Option
-                                    value={frequency.value}
-                                    key={frequency.value}
-                                  >
-                                    {frequency.label}
-                                  </Option>
-                                ))}
-                              </Select>
-                            )}
-                          />
-                        </div>
-                      </Space>
+    {/* Frequency */}
+    <div style={{ flex: '1 1 300px', minWidth: '150px' }}>
+      <Label content="Frequency" htmlFor="eventFrequency" />
+      <Controller
+        name="eventFrequency"
+        control={control}
+        render={({ field }) => (
+          <Select
+            placeholder="Select Event Frequency"
+            {...field}
+            style={{ width: "100%", height: "33px" }}
+          >
+            {EVENT_FREQUENCIES.map((frequency) => (
+              <Option
+                value={frequency.value}
+                key={frequency.value}
+              >
+                {frequency.label}
+              </Option>
+            ))}
+          </Select>
+        )}
+      />
+    </div>
+  </div>
 
-                      <Space
-                        direction="horizontal"
-                        size="large"
-                        className="w-full"
-                      >
-                        {/* Start Date & Time */}
-                        <div style={{ width: "353px", marginRight: "-77px" }}>
-                          <Label
-                            content="Start Date & Time"
-                            htmlFor="startDateAndTime"
-                          />
-                          <Controller
-                            name="startDateAndTime"
-                            control={control}
-                            render={({ field }) => (
-                              <DatePicker
-                                {...field}
-                                showTime
-                                format="YYYY-MM-DD HH:mm:ss"
-                                style={{ width: "80%", height: "33px" }}
-                              />
-                            )}
-                          />
-                        </div>
+  <div style={{ display: 'flex', gap: '16px' }}>
+    {/* Start Date & Time */}
+    <div style={{ flex: '1 1 353px', minWidth: '150px' }}>
+      <Label
+        content="Start Date & Time"
+        htmlFor="startDateAndTime"
+      />
+      <Controller
+        name="startDateAndTime"
+        control={control}
+        render={({ field }) => (
+          <DatePicker
+            {...field}
+            showTime
+            format="YYYY-MM-DD HH:mm:ss"
+            style={{ width: "100%", height: "33px" }}
+          />
+        )}
+      />
+    </div>
 
-                        {/* End Date & Time */}
-                        <div style={{ width: "353px" }}>
-                          <Label
-                            content="End Date & Time"
-                            htmlFor="endDateAndTime"
-                          />
-                          <Controller
-                            name="endDateAndTime"
-                            control={control}
-                            render={({ field }) => (
-                              <DatePicker
-                                {...field}
-                                showTime
-                                format="YYYY-MM-DD HH:mm:ss"
-                                style={{ width: "80%", height: "33px" }}
-                              />
-                            )}
-                          />
-                        </div>
+    {/* End Date & Time */}
+    <div style={{ flex: '1 1 353px', minWidth: '150px' }}>
+      <Label
+        content="End Date & Time"
+        htmlFor="endDateAndTime"
+      />
+      <Controller
+        name="endDateAndTime"
+        control={control}
+        render={({ field }) => (
+          <DatePicker
+            {...field}
+            showTime
+            format="YYYY-MM-DD HH:mm:ss"
+            style={{ width: "100%", height: "33px" }}
+          />
+        )}
+      />
+    </div>
+  </div>
+</div>
+
                       </Space>
 
                       <Space
@@ -901,7 +895,7 @@ function Details(): JSX.Element {
                   <Controller
                     name="eventImage"
                     control={control}
-                    render={({ field }) => (
+                    render={() => (
                       <EventPageAppearance
                       />
                     )}
