@@ -308,28 +308,30 @@ const AboutEvent = () => {
                   </Select>
                 </Form.Item>
                 <Space direction="horizontal" size="large" className="w-full">
-                  {/* Start Date & Time */}
-                  <Form.Item style={{ width: "363px", marginRight: "-79px" }}>
-                    <Label
-                      content="Start Date & Time"
-                      htmlFor="startDateAndTime"
-                    />
-                    <DatePicker
-                      showTime
-                      format="YYYY-MM-DD HH:mm:ss"
-                      style={{ width: "80%", height: "33px" }}
-                    />
-                  </Form.Item>
+                <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '16px' }}>
+  {/* Start Date & Time */}
+  <Form.Item style={{ flex: '1 1 363px', minWidth: '150px' }}>
+    <Label
+      content="Start Date & Time"
+      htmlFor="startDateAndTime"
+    />
+    <DatePicker
+      showTime
+      format="YYYY-MM-DD HH:mm:ss"
+      style={{ width: "100%", height: "33px" }}
+    />
+  </Form.Item>
 
-                  {/* End Date & Time */}
-                  <Form.Item style={{ width: "363px" }}>
-                    <Label content="End Date & Time" htmlFor="endDateAndTime" />
-                    <DatePicker
-                      showTime
-                      format="YYYY-MM-DD HH:mm:ss"
-                      style={{ width: "80%", height: "33px" }}
-                    />
-                  </Form.Item>
+  {/* End Date & Time */}
+  <Form.Item style={{ flex: '1 1 363px', minWidth: '150px' }}>
+    <Label content="End Date & Time" htmlFor="endDateAndTime" />
+    <DatePicker
+      showTime
+      format="YYYY-MM-DD HH:mm:ss"
+      style={{ width: "100%", height: "33px" }}
+    />
+  </Form.Item>
+</div>
                 </Space>
 
                 <Space
@@ -424,63 +426,68 @@ const AboutEvent = () => {
             {watchEventInfo === EVENT_INFO.RECURRING_EVENT && (
               <Form.Item>
                 <Space direction="horizontal" size="large" className="w-full">
-                  {/* Time Zone */}
-                  <Form.Item style={{ width: "300px", marginRight: "-15px" }}>
-                    <Label content="Time Zone" htmlFor="timeZone" />
-                    <Select
-                      placeholder="Select Time Zone"
-                      style={{ width: "97%", height: "33px" }}
-                    >
-                      {AFRICAN_TIME_ZONES.map((zone) => (
-                        <Select.Option value={zone.value} key={zone.value}>
-                          {zone.label}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+  <div style={{ display: 'flex', gap: '16px' }}>
+    {/* Time Zone */}
+    <Form.Item style={{ flex: '1 1 300px', minWidth: '150px' }}>
+      <Label content="Time Zone" htmlFor="timeZone" />
+      <Select
+        placeholder="Select Time Zone"
+        style={{ width: "100%", height: "33px" }}
+      >
+        {AFRICAN_TIME_ZONES.map((zone) => (
+          <Select.Option value={zone.value} key={zone.value}>
+            {zone.label}
+          </Select.Option>
+        ))}
+      </Select>
+    </Form.Item>
 
-                  {/* Frequency */}
-                  <Form.Item style={{ width: "300px" }}>
-                    <Label content="Frequency" htmlFor="eventFrequency" />
-                    <Select
-                      placeholder="Select Event Frequency"
-                      style={{ width: "97%", height: "33px" }}
-                    >
-                      {EVENT_FREQUENCIES.map((frequency) => (
-                        <Select.Option
-                          value={frequency.value}
-                          key={frequency.value}
-                        >
-                          {frequency.label}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Space>
+    {/* Frequency */}
+    <Form.Item style={{ flex: '1 1 300px', minWidth: '150px' }}>
+      <Label content="Frequency" htmlFor="eventFrequency" />
+      <Select
+        placeholder="Select Event Frequency"
+        style={{ width: "100%", height: "33px" }}
+      >
+        {EVENT_FREQUENCIES.map((frequency) => (
+          <Select.Option
+            value={frequency.value}
+            key={frequency.value}
+          >
+            {frequency.label}
+          </Select.Option>
+        ))}
+      </Select>
+    </Form.Item>
+  </div>
 
-                <Space direction="horizontal" size="large" className="w-full">
-                  {/* Start Date & Time */}
-                  <Form.Item style={{ width: "363px", marginRight: "-79px" }}>
-                    <Label
-                      content="Start Date & Time"
-                      htmlFor="startDateAndTime"
-                    />
-                    <DatePicker
-                      showTime
-                      format="YYYY-MM-DD HH:mm:ss"
-                      style={{ width: "80%", height: "33px" }}
-                    />
-                  </Form.Item>
+  <div style={{ display: 'flex', gap: '16px' }}>
+    {/* Start Date & Time */}
+    <Form.Item style={{ flex: '1 1 363px', minWidth: '150px' }}>
+      <Label
+        content="Start Date & Time"
+        htmlFor="startDateAndTime"
+      />
+      <DatePicker
+        showTime
+        format="YYYY-MM-DD HH:mm:ss"
+        style={{ width: "100%", height: "33px" }}
+      />
+    </Form.Item>
 
-                  {/* End Date & Time */}
-                  <Form.Item style={{ width: "363px" }}>
-                    <Label content="End Date & Time" htmlFor="endDateAndTime" />
-                    <DatePicker
-                      showTime
-                      format="YYYY-MM-DD HH:mm:ss"
-                      style={{ width: "80%", height: "33px" }}
-                    />
-                  </Form.Item>
+    {/* End Date & Time */}
+    <Form.Item style={{ flex: '1 1 363px', minWidth: '150px' }}>
+      <Label content="End Date & Time" htmlFor="endDateAndTime" />
+      <DatePicker
+        showTime
+        format="YYYY-MM-DD HH:mm:ss"
+        style={{ width: "100%", height: "33px" }}
+      />
+    </Form.Item>
+  </div>
+</div>
+
                 </Space>
 
                 <Space
@@ -605,7 +612,7 @@ const AboutEvent = () => {
                 fontFamily: "BricolageGrotesqueMedium",
               }}
               onClick={() => {
-                setComponentDisabled(false);
+                setComponentDisabled(true);
               }}
             >
               Save Changes
