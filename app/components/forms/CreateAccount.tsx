@@ -16,7 +16,6 @@ import {
 } from "antd";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { global } from "styled-jsx/css";
 
 function CreateAccount(): JSX.Element {
   const router = useRouter();
@@ -52,7 +51,7 @@ function CreateAccount(): JSX.Element {
     >
       <Form.Item
         label="Choose an Account Type"
-        style={{ fontFamily: "BricolageGrotesqueRegular" }}
+        style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: '8px' }} // Reduced marginBottom
         className="font-BricolageGrotesqueRegular"
         help={
           !val ? null : (
@@ -89,12 +88,11 @@ function CreateAccount(): JSX.Element {
       {val === ACCOUNT_TYPE.ORGANISATION ? (
         <Form.Item
           label="Business Name"
-          style={{ fontFamily: "BricolageGrotesqueRegular" }}
-          className="font-BricolageGrotesqueRegular !mt-3"
+          style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: '8px' }} // Reduced marginBottom
+          className="font-BricolageGrotesqueRegular"
         >
           <Form.Item<IUser>
             name="businessName"
-            label="Business Name"
             noStyle
             rules={[
               {
@@ -111,16 +109,15 @@ function CreateAccount(): JSX.Element {
           </Form.Item>
         </Form.Item>
       ) : (
-        <Row gutter={8}>
+        <Row gutter={4}> {/* Reduced gutter size */}
           <Col span={12}>
             <Form.Item
               label="First Name"
-              style={{ fontFamily: "BricolageGrotesqueRegular" }}
+              style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: '8px' }} // Reduced marginBottom
               className="font-BricolageGrotesqueRegular"
             >
               <Form.Item<IUser>
                 name="firstName"
-                label="First Name"
                 noStyle
                 rules={[
                   {
@@ -130,7 +127,7 @@ function CreateAccount(): JSX.Element {
                 ]}
               >
                 <Input
-                  placeholder="Enter your first name "
+                  placeholder="Enter your first name"
                   className="placeholder:font-BricolageGrotesqueRegular"
                 />
               </Form.Item>
@@ -139,12 +136,11 @@ function CreateAccount(): JSX.Element {
           <Col span={12}>
             <Form.Item
               label="Last Name"
-              style={{ fontFamily: "BricolageGrotesqueRegular" }}
+              style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: '8px' }} // Reduced marginBottom
               className="font-BricolageGrotesqueRegular"
             >
               <Form.Item<IUser>
                 name="lastName"
-                label="Last Name"
                 noStyle
                 rules={[
                   {
@@ -165,7 +161,7 @@ function CreateAccount(): JSX.Element {
 
       <Form.Item
         label="Email Address"
-        style={{ fontFamily: "BricolageGrotesqueRegular" }}
+        style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: '8px' }} // Reduced marginBottom
         className="font-BricolageGrotesqueRegular"
       >
         <Form.Item<IUser>
@@ -181,7 +177,7 @@ function CreateAccount(): JSX.Element {
         </Form.Item>
       </Form.Item>
 
-      <Row gutter={8}>
+      <Row gutter={4}> {/* Reduced gutter size */}
         <Col span={12}>
           <Form.Item<IUser>
             label="Password"
@@ -225,22 +221,6 @@ function CreateAccount(): JSX.Element {
         </Col>
       </Row>
 
-      {/* <label htmlFor="terms" className="flex-center gap-2 cursor-pointer">
-        <div>
-          <input
-            type="checkbox"
-            name="terms"
-            id="terms"
-            className="cursor-pointer mt-0"
-          />
-        </div>
-        <span className="font-BricolageGrotesqueRegular font-normal text-OWANBE_LIGHT_DARK">
-          Accept our{" "}
-          <a href="" className="text-OWANBE_PRY underline">
-            terms and condition
-          </a>
-        </span>
-      </label> */}
       <Form.Item<IUser>
         name="terms_and_condition"
         valuePropName="checked"
@@ -268,7 +248,7 @@ function CreateAccount(): JSX.Element {
           className="font-BricolageGrotesqueLight text-base mt-5"
           style={{
             background: "#E20000",
-            borderRadius: "20px",
+            borderRadius: "25px",
             width: "100%",
             height: "51px",
           }}
@@ -277,15 +257,6 @@ function CreateAccount(): JSX.Element {
           Sign Up
         </Button>
       </Form.Item>
-
-      {/* <div className="mx-auto flex flex-col space-y-5 mt-4 mb-5">
-        <Small
-          content="or sign up with"
-          className="font-BricolageGrotesqueRegular text-sm text-center"
-        />
-
-        <Auth />
-      </div> */}
     </Form>
   );
 }

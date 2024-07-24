@@ -1,6 +1,7 @@
 'use client';
 
 import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
+import { Heading5 } from '@/app/components/typography/Typography';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -38,7 +39,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
             <div className="absolute inset-0 bg-image-card"></div>
           </div>
           <div className="py-8">
-            <h2 className="font-semibold text-2xl">About this event</h2>
+          <Heading5 className="text-2xl" content={"About this event"} />
             <div className="mt-14 flex flex-col gap-12">
               <div className="flex gap-3">
                 <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
@@ -51,7 +52,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                 </div>
                 <div>
                   <div className="text-sm"style={{ fontWeight: 600 }}>Date</div>
-                  <div>14 December, 2023</div>
+                  <div>14 December, 2023</div> 
                 </div>
               </div>
               <div className="flex gap-3">
@@ -74,7 +75,9 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                 </div>
                 <div>
                   <div className="text-sm"style={{ fontWeight: 600 }}>Location</div>
-                  <div>3, Eko Hotel, Lagos </div>
+                  <div>
+  <a href="https://www.google.com/maps/search/?api=1&query=Eko+Hotels+Suites" target="_blank">Eko Hotels & Suites</a>
+</div>
                 </div>
               </div>
               <div className="flex gap-3">
@@ -85,38 +88,38 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                   <div className="text-sm"style={{ fontWeight: 600 }}>Contact Us</div>
                   <div className="flex-center gap-4 mt-1">
                     <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
-                      <Image
-                        src="/icons/instagram.svg"
-                        alt=""
-                        height={14}
-                        width={14}
-                      />
-                    </div>
-                    <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
-                      <Image src="/icons/x.svg" alt="" height={14} width={14} />
-                    </div>
-                    <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
-                      <Image
-                        src="/icons/facebook.svg"
-                        alt=""
-                        height={10}
-                        width={10}
-                      />
-                    </div>
-                    <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
-                      <Image
-                        src="/icons/youtube.svg"
-                        alt=""
-                        height={16}
-                        width={16}
-                      />
-                    </div>
+                    <Image
+                      src="/icons/link.svg"
+                      alt=""
+                      height={14}
+                      width={14}
+                    />
+                  </div>
+                  <div className="bg-black w-6 h-6 rounded-full flex items-center justify-center">
+                    <Image src="/icons/x.svg" alt="" height={14} width={14} />
+                  </div>
+                  <div className="bg-black w-6 h-6 rounded-full flex items-center justify-center">
+                    <Image
+                      src="/icons/facebook.svg"
+                      alt=""
+                      height={10}
+                      width={10}
+                    />
+                  </div>
+                  <div className="bg-black w-6 h-6 rounded-full flex items-center justify-center">
+                    <Image
+                      src="/icons/instagram.svg"
+                      alt=""
+                      height={16}
+                      width={16}
+                    />
+                  </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="flex-1 h-fit my-auto border-l border-black px-6">
+          <div className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-6">
             <p>
             Join us for an unforgettable night of music and entertainment with Davido as he takes the stage at Eko Hotel and Suites. 
             Known for their electrifying performances and chart-topping hits, Davido will bring his unique music and energy to life 

@@ -7,6 +7,10 @@ import { ViewPasswordIcon, HidePasswordIcon } from "@/public/svgs";
 import Link from "next/link";
 import { useState } from "react";
 
+interface InputProps extends Partial<InputAttributes> {
+  disabled?: boolean;
+}
+
 const Input = ({
   name,
   label,
@@ -15,8 +19,9 @@ const Input = ({
   extraInfo,
   labelAngle,
   className,
+  disabled,
   ...rest
-}: Partial<InputAttributes>) => {
+}: InputProps) => {
   const [showPassword, setShowPassword] = useState(true);
 
   const handleShowPassword = () => setShowPassword((prev) => !prev);
@@ -49,6 +54,7 @@ const Input = ({
           }
           name={name}
           id={name}
+          disabled={disabled} // Apply disabled prop here
           {...rest}
         />
         {suffix ? (
@@ -80,3 +86,4 @@ const Input = ({
 };
 
 export default Input;
+

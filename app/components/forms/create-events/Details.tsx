@@ -1,5 +1,5 @@
 "use client";
-import Dropzone from "@/app/components/Dropzone/Dropzone";
+import EventPageAppearance from "@/app/components/forms/create-events/EventPageAppearance";
 import AddTicketModal from "@/app/components/OstivitiesModal/AddTicket";
 import EventTicketTable from "@/app/components/Tables/EventTicket";
 import {
@@ -9,7 +9,13 @@ import {
 } from "@/app/components/typography/Typography";
 import { useFormContext } from "@/app/contexts/form-context/FormContext";
 import "@/app/globals.css";
-import { EVENT_TYPES, STATES_IN_NIGERIA, stepOne } from "@/app/utils/data";
+import {
+  AFRICAN_TIME_ZONES,
+  EVENT_FREQUENCIES,
+  EVENT_TYPES,
+  STATES_IN_NIGERIA,
+  stepOne,
+} from "@/app/utils/data";
 import { EVENT_INFO } from "@/app/utils/enums";
 import { IFormInput } from "@/app/utils/interface";
 import Ticket from "@/public/Ticket.svg";
@@ -18,8 +24,8 @@ import {
   FacebookFilled,
   InstagramFilled,
   LinkOutlined,
-  TwitterOutlined,
   UploadOutlined,
+  XOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -42,29 +48,14 @@ function Details(): JSX.Element {
   const { formState, setFormStage } = useFormContext();
   const [formStep, setFormStep] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [uploadedFile, setUploadedFile] = useState(null);
+  const [] = useState(null);
   const [userName, setUserName] = useState("Rose"); // default value
-
-  const AFRICAN_TIME_ZONES = [
-    { label: "West Africa Time (WAT)", value: "WAT" },
-    { label: "Central Africa Time (CAT)", value: "CAT" },
-    { label: "South Africa Standard Time (SAST)", value: "SAST" },
-    { label: "East Africa Time (EAT)", value: "EAT" },
-  ];
-
-  const EVENT_FREQUENCIES = [
-    { label: "Daily", value: "daily" },
-    { label: "Weekly", value: "weekly" },
-    { label: "Monthly", value: "monthly" },
-  ];
 
   const { Option } = Select;
 
   const {
-    register,
     handleSubmit,
     control,
-    formState: { errors },
     watch,
     trigger,
   } = useForm<IFormInput>({
@@ -75,7 +66,7 @@ function Details(): JSX.Element {
   const watchEventInfo = watch("eventInfo");
 
   useEffect(() => {
-    const subscription: any = watch((value, { name, type }) => {
+    const subscription: any = watch(() => {
       return;
     });
     return () => subscription.unsubscribe();
@@ -113,13 +104,6 @@ function Details(): JSX.Element {
     }
   };
 
-  const handleUploadChange = (info: {
-    file: { status: string; name: React.SetStateAction<null> };
-  }) => {
-    if (info.file.status === "done") {
-      setUploadedFile(info.file.name);
-    }
-  };
 
   return (
     <Fragment>
@@ -136,18 +120,18 @@ function Details(): JSX.Element {
               formStep === 1
                 ? `Hello, ${userName}`
                 : formStep === 2
-                ? "Event Image/Appearance"
+                ? "Event Page Appearance"
                 : "Event Ticket"
             }
           />
           <Paragraph
-            className="text-OWANBE_PRY text-xl font-normal font-BricolageGrotesqueRegular"
+            className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
             content={
               formStep === 1
                 ? "Lets get you started by creating your event."
                 : formStep === 2
-                ? "Upload your event image here."
-                : "Ostivities is free for free events. For paid events, we charge a transaction fee."
+                ? "Upload your event image here by clicking the camera icon (File size should not be more than 10MB)."
+                : "For free events, Ostivities is free. For paid events, we charge a percentage-based transaction fee on ticket sales."
             }
             styles={{ fontWeight: "normal !important" }}
           />
@@ -169,14 +153,7 @@ function Details(): JSX.Element {
       </div>
       {formState.stage === 3 ? (
         <div className="w-full flex flex-col space-y-7">
-          <Button
-            type="primary"
-            htmlType="button"
-            size="large"
-            className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles float-right place-self-end"
-          >
-            Add ticket
-          </Button>
+          
           <EventTicketTable />
           <Space className="flex flex-row justify-center space-x-4">
             <Button
@@ -500,45 +477,48 @@ function Details(): JSX.Element {
                         size="large"
                         className="w-full"
                       >
-                        {/* Start Date & Time */}
-                        <div style={{ width: "300px", marginRight: "-63px" }}>
-                          <Label
-                            content="Start Date & Time"
-                            htmlFor="startDateAndTime"
-                          />
-                          <Controller
-                            name="startDateAndTime"
-                            control={control}
-                            render={({ field }) => (
-                              <DatePicker
-                                {...field}
-                                showTime
-                                format="YYYY-MM-DD HH:mm:ss"
-                                style={{ width: "80%", height: "33px" }}
-                              />
-                            )}
-                          />
-                        </div>
+                        <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '16px' }}>
+  {/* Start Date & Time */}
+  <div style={{ flex: '1 1 auto', minWidth: '150px' }}>
+    <Label
+      content="Start Date & Time"
+      htmlFor="startDateAndTime"
+    />
+    <Controller
+      name="startDateAndTime"
+      control={control}
+      render={({ field }) => (
+        <DatePicker
+          {...field}
+          showTime
+          format="YYYY-MM-DD HH:mm:ss"
+          style={{ width: "100%", height: "33px" }}
+        />
+      )}
+    />
+  </div>
 
-                        {/* End Date & Time */}
-                        <div style={{ width: "300px" }}>
-                          <Label
-                            content="End Date & Time"
-                            htmlFor="endDateAndTime"
-                          />
-                          <Controller
-                            name="endDateAndTime"
-                            control={control}
-                            render={({ field }) => (
-                              <DatePicker
-                                {...field}
-                                showTime
-                                format="YYYY-MM-DD HH:mm:ss"
-                                style={{ width: "80%", height: "33px" }}
-                              />
-                            )}
-                          />
-                        </div>
+  {/* End Date & Time */}
+  <div style={{ flex: '1 1 auto', minWidth: '150px' }}>
+    <Label
+      content="End Date & Time"
+      htmlFor="endDateAndTime"
+    />
+    <Controller
+      name="endDateAndTime"
+      control={control}
+      render={({ field }) => (
+        <DatePicker
+          {...field}
+          showTime
+          format="YYYY-MM-DD HH:mm:ss"
+          style={{ width: "100%", height: "33px" }}
+        />
+      )}
+    />
+  </div>
+</div>
+
                       </Space>
 
                       <Space
@@ -598,14 +578,14 @@ function Details(): JSX.Element {
                                   style={{ width: "100%" }}
                                 >
                                   <Input
-                                    prefix={<TwitterOutlined />}
+                                    prefix={<XOutlined />}
                                     style={{
                                       width: "100%",
                                       color: "#000000",
                                       marginTop: "8px", // Adjust spacing between label and field
                                     }}
                                     {...field}
-                                    placeholder="Enter your Twitter URL"
+                                    placeholder="Enter your Twitter/X URL"
                                   />
                                 </Space>
                               )}
@@ -677,98 +657,103 @@ function Details(): JSX.Element {
                         size="large"
                         className="w-full"
                       >
-                        {/* Time Zone */}
-                        <div style={{ width: "300px", marginRight: "-63px" }}>
-                          <Label content="Time Zone" htmlFor="timeZone" />
-                          <Controller
-                            name="timeZone"
-                            control={control}
-                            render={({ field }) => (
-                              <Select
-                                placeholder="Select Time Zone"
-                                {...field}
-                                style={{ width: "80%", height: "33px" }}
-                              >
-                                {AFRICAN_TIME_ZONES.map((zone) => (
-                                  <Option value={zone.value} key={zone.value}>
-                                    {zone.label}
-                                  </Option>
-                                ))}
-                              </Select>
-                            )}
-                          />
-                        </div>
+                        
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+  <div style={{ display: 'flex', gap: '16px' }}>
+    {/* Time Zone */}
+    <div style={{ flex: '1 1 300px', minWidth: '150px' }}>
+      <Label 
+        content="Time Zone" 
+        htmlFor="timeZone"
+      />
+      <Controller
+        name="timeZone"
+        control={control}
+        render={({ field }) => (
+          <Select
+            placeholder="Select Time Zone"
+            {...field}
+            style={{ width: "100%", height: "33px" }}
+          >
+            {AFRICAN_TIME_ZONES.map((zone) => (
+              <Option value={zone.value} key={zone.value}>
+                {zone.label}
+              </Option>
+            ))}
+          </Select>
+        )}
+      />
+    </div>
 
-                        {/* Frequency */}
-                        <div style={{ width: "300px" }}>
-                          <Label content="Frequency" htmlFor="eventFrequency" />
-                          <Controller
-                            name="eventFrequency"
-                            control={control}
-                            render={({ field }) => (
-                              <Select
-                                placeholder="Select Event Frequency"
-                                {...field}
-                                style={{ width: "80%", height: "33px" }}
-                              >
-                                {EVENT_FREQUENCIES.map((frequency) => (
-                                  <Option
-                                    value={frequency.value}
-                                    key={frequency.value}
-                                  >
-                                    {frequency.label}
-                                  </Option>
-                                ))}
-                              </Select>
-                            )}
-                          />
-                        </div>
-                      </Space>
+    {/* Frequency */}
+    <div style={{ flex: '1 1 300px', minWidth: '150px' }}>
+      <Label content="Frequency" htmlFor="eventFrequency" />
+      <Controller
+        name="eventFrequency"
+        control={control}
+        render={({ field }) => (
+          <Select
+            placeholder="Select Event Frequency"
+            {...field}
+            style={{ width: "100%", height: "33px" }}
+          >
+            {EVENT_FREQUENCIES.map((frequency) => (
+              <Option
+                value={frequency.value}
+                key={frequency.value}
+              >
+                {frequency.label}
+              </Option>
+            ))}
+          </Select>
+        )}
+      />
+    </div>
+  </div>
 
-                      <Space
-                        direction="horizontal"
-                        size="large"
-                        className="w-full"
-                      >
-                        {/* Start Date & Time */}
-                        <div style={{ width: "300px", marginRight: "-63px" }}>
-                          <Label
-                            content="Start Date & Time"
-                            htmlFor="startDateAndTime"
-                          />
-                          <Controller
-                            name="startDateAndTime"
-                            control={control}
-                            render={({ field }) => (
-                              <DatePicker
-                                {...field}
-                                showTime
-                                format="YYYY-MM-DD HH:mm:ss"
-                                style={{ width: "80%", height: "33px" }}
-                              />
-                            )}
-                          />
-                        </div>
+  <div style={{ display: 'flex', gap: '16px' }}>
+    {/* Start Date & Time */}
+    <div style={{ flex: '1 1 353px', minWidth: '150px' }}>
+      <Label
+        content="Start Date & Time"
+        htmlFor="startDateAndTime"
+      />
+      <Controller
+        name="startDateAndTime"
+        control={control}
+        render={({ field }) => (
+          <DatePicker
+            {...field}
+            showTime
+            format="YYYY-MM-DD HH:mm:ss"
+            style={{ width: "100%", height: "33px" }}
+          />
+        )}
+      />
+    </div>
 
-                        {/* End Date & Time */}
-                        <div style={{ width: "300px" }}>
-                          <Label
-                            content="End Date & Time"
-                            htmlFor="endDateAndTime"
-                          />
-                          <Controller
-                            name="endDateAndTime"
-                            control={control}
-                            render={({ field }) => (
-                              <DatePicker
-                                {...field}
-                                showTime
-                                format="YYYY-MM-DD HH:mm:ss"
-                                style={{ width: "80%", height: "33px" }}
-                              />
-                            )}
-                          />
-                        </div>
+    {/* End Date & Time */}
+    <div style={{ flex: '1 1 353px', minWidth: '150px' }}>
+      <Label
+        content="End Date & Time"
+        htmlFor="endDateAndTime"
+      />
+      <Controller
+        name="endDateAndTime"
+        control={control}
+        render={({ field }) => (
+          <DatePicker
+            {...field}
+            showTime
+            format="YYYY-MM-DD HH:mm:ss"
+            style={{ width: "100%", height: "33px" }}
+          />
+        )}
+      />
+    </div>
+  </div>
+</div>
+
                       </Space>
 
                       <Space
@@ -828,14 +813,14 @@ function Details(): JSX.Element {
                                   style={{ width: "100%" }}
                                 >
                                   <Input
-                                    prefix={<TwitterOutlined />}
+                                    prefix={<XOutlined />}
                                     style={{
                                       width: "100%",
                                       color: "#000000",
                                       marginTop: "8px", // Adjust spacing between label and field
                                     }}
                                     {...field}
-                                    placeholder="Enter your Twitter URL"
+                                    placeholder="Enter your Twitter/X URL"
                                   />
                                 </Space>
                               )}
@@ -906,14 +891,12 @@ function Details(): JSX.Element {
             {/* STEP 2 --> BODY 2 */}
             {formState.stage === 1 && (
               <div className="flex flex-row w-full">
-                <div className="w-11/12 mx-auto">
+                <div className="w-11/10 mx-auto">
                   <Controller
                     name="eventImage"
                     control={control}
-                    render={({ field }) => (
-                      <Dropzone
-                        className="w-full border-dashed border flex items-center rounded-lg cursor-pointer"
-                        {...field}
+                    render={() => (
+                      <EventPageAppearance
                       />
                     )}
                   />
@@ -950,7 +933,7 @@ function Details(): JSX.Element {
                     className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
                     onClick={() => setIsModalOpen(true)}
                   >
-                    Add ticket
+                    Add Tickets
                   </Button>
                 </div>
               </div>
@@ -987,7 +970,7 @@ function Details(): JSX.Element {
                 className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
                 onClick={nextStep}
               >
-                Save & continue
+                Skip & do this later 
               </Button>
               <Button
                 type="primary"
@@ -996,7 +979,7 @@ function Details(): JSX.Element {
                 className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
                 onClick={nextStep}
               >
-                Skip & do this later
+                Save & continue
               </Button>
             </Space>
           )}
@@ -1011,7 +994,7 @@ function Details(): JSX.Element {
                   router.push("/publish-events");
                 }}
               >
-                Save & continue
+                Skip & do this later
               </Button>
               <Button
                 type="primary"
@@ -1022,7 +1005,7 @@ function Details(): JSX.Element {
                   router.push("/publish-events");
                 }}
               >
-                Skip & do this later
+                Save & continue
               </Button>
             </Space>
           )}

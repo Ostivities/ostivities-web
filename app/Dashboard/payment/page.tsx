@@ -39,9 +39,9 @@ const Payment = () => {
     <DashboardLayout title={title} isLoggedIn>
       <section className="flex gap-12">
         <section className="flex-1">
-          <div className=" bg-OWANBE_NOTIFICATION px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem]">
+          <div className=" bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem]">
             We have reserved your tickets please complete checkout within{' '}
-            <span className=" text-OWANBE_PRY">{timer}</span>
+            <span className=" text-OWANBE_PRY text-s font-BricolageGrotesqueRegular">{timer}</span>
             to secure your tickets.
           </div>
           <div className="pr-full mt-20">
@@ -52,10 +52,10 @@ const Payment = () => {
                     <input type="checkbox" name="" id="" />
                   </div>
                   <div>
-                    <h2 className="text-lg text-OWANBE_PRY">
+                    <h2 className="text-lg font-BricolageGrotesqueRegular text-OWANBE_PRY">
                       Pay with Card
                     </h2>
-                    <span className="text-ss">
+                    <span className="text-s font-BricolageGrotesqueRegular">
                       Pay with a MasterCard, Visa, Verve Card or directly with
                       your bank.
                     </span>
@@ -74,10 +74,10 @@ const Payment = () => {
                     <input type="checkbox" name="" id="" />
                   </div>
                   <div>
-                    <h2 className="text-lg text-OWANBE_PRY">
+                    <h2 className="text-lg font-BricolageGrotesqueRegular text-OWANBE_PRY">
                       Pay with Bank Transfer
                     </h2>
-                    <span className="text-ss">
+                    <span className="text-s font-BricolageGrotesqueRegular">
                       Make payment by transferring to our dedicated account number.
                     </span>
                   </div>
@@ -90,10 +90,13 @@ const Payment = () => {
               </div>
 
               <p className="checkbox-label">
-                <input type="checkbox" name="" id="" /> I accept the 
-                <a href="#" className="policy-link">Terms and Conditions,</a> 
-                <a href="#" className="policy-link">Refund Policy</a> and 
-                <a href="#" className="policy-link">Privacy Policy</a>
+              <input type="checkbox" name="" id="" /> 
+              <h2 className="text-s font-BricolageGrotesqueRegular">
+              I accept the</h2>                      
+<a href="#" className="policy-link text-s font-BricolageGrotesqueRegular">Terms and Conditions,</a> 
+<a href="#" className="policy-link text-s font-BricolageGrotesqueRegular">Refund Policy</a> &
+<a href="#" className="policy-link text-s font-BricolageGrotesqueRegular">Privacy Policy</a>
+
               </p>
             </div>
           </div>

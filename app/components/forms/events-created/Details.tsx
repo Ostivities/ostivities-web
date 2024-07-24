@@ -1,18 +1,25 @@
 "use client";
 import { Label } from "@/app/components/typography/Typography";
+import "@/app/globals.css";
+import { generateRandomString } from "@/app/utils/helper";
 import { DataType } from "@/app/utils/interface";
+import {
+  DeleteOutlined,
+  FileExcelOutlined,
+  FilePdfOutlined,
+} from "@ant-design/icons";
 import { Button, Input, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import React, { useState } from "react";
-import "@/app/globals.css";
-import * as XLSX from "xlsx";
-import { DeleteOutlined, FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import * as XLSX from "xlsx";
 
 const { Search } = Input;
 
-const EventTicketTable: React.FC = () => {
+const EventsCreatedTable: React.FC = () => {
+  const router = useRouter();
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -24,9 +31,11 @@ const EventTicketTable: React.FC = () => {
     eventType: `Type ${index + 1}`,
     ticketSold: Math.floor(Math.random() * 100),
     dateCreated: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
-    status: ["Active", "Closed", "Pending"][
-      Math.floor(Math.random() * 3)
-    ] as 'Active' | 'Closed' | 'Pending',
+    status: ["Active", "Closed", "Pending"][Math.floor(Math.random() * 3)] as
+      | "Active"
+      | "Closed"
+      | "Pending",
+    id: generateRandomString(10),
   }));
 
   const columns: ColumnsType<DataType> = [
@@ -50,9 +59,9 @@ const EventTicketTable: React.FC = () => {
       dataIndex: "eventType",
       sorter: (a, b) => a.eventType.localeCompare(b.eventType),
       filters: [
-        { text: 'Type 1', value: 'Type 1' },
-        { text: 'Type 2', value: 'Type 2' },
-        { text: 'Type 3', value: 'Type 3' },
+        { text: "Type 1", value: "Type 1" },
+        { text: "Type 2", value: "Type 2" },
+        { text: "Type 3", value: "Type 3" },
         // Add more types as needed
       ],
       onFilter: (value, record) => record.eventType.includes(value as string),
@@ -60,7 +69,7 @@ const EventTicketTable: React.FC = () => {
     {
       title: (
         <Label
-          content="Ticket Sold"
+          content="Tickets Sold"
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
@@ -75,7 +84,7 @@ const EventTicketTable: React.FC = () => {
         />
       ),
       dataIndex: "dateCreated",
-      sorter: (a: any, b: any) => a.dateCreated - b.dateCreated,
+      sorter: (a: any, b: any) => new Date(a.dateCreated).getTime() - new Date(b.dateCreated).getTime(),
     },
     {
       title: (
@@ -86,9 +95,9 @@ const EventTicketTable: React.FC = () => {
       ),
       dataIndex: "status",
       filters: [
-        { text: 'Active', value: 'Active' },
-        { text: 'Closed', value: 'Closed' },
-        { text: 'Pending', value: 'Pending' },
+        { text: "Active", value: "Active" },
+        { text: "Closed", value: "Closed" },
+        { text: "Pending", value: "Pending" },
       ],
       onFilter: (value, record) => record.status.includes(value as string),
       render: (status) => {
@@ -107,11 +116,18 @@ const EventTicketTable: React.FC = () => {
         />
       ),
       dataIndex: "",
-      render: () => (
+      render: (text: any, record: DataType) => (
         <Button
           type="primary"
           shape="round"
-          style={{ borderRadius: "15px", backgroundColor: "#e20000", borderColor: "#e20000" }}
+          style={{
+            borderRadius: "15px",
+            backgroundColor: "#e20000",
+            borderColor: "#e20000",
+          }}
+          onClick={() =>
+            router.push(`/Dashboard/events-created/${record.id}/about`)
+          }
         >
           View
         </Button>
@@ -134,19 +150,25 @@ const EventTicketTable: React.FC = () => {
       ? data.filter((item) => selectedRowKeys.includes(item.key))
       : data;
 
+    // Prepare data for export without 'id' column
+    const dataToExport = exportData.map(({ id, ...rest }) => rest);
+
     if (format === "excel") {
-      const ws = XLSX.utils.json_to_sheet(exportData);
+      const ws = XLSX.utils.json_to_sheet(dataToExport);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Data");
       XLSX.writeFile(wb, "EventsCreated.xlsx");
     } else if (format === "pdf") {
       const doc = new jsPDF();
       (doc as any).autoTable({
-        head: [Object.keys(exportData[0])],
-        body: exportData.map((item) => Object.values(item)),
-        didDrawCell: (data: { column: { index: number; }; cell: { styles: { fillColor: string; }; }; }) => {
+        head: [Object.keys(dataToExport[0])],
+        body: dataToExport.map((item) => Object.values(item)),
+        didDrawCell: (data: {
+          column: { index: number };
+          cell: { styles: { fillColor: string } };
+        }) => {
           if (data.column.index === 0) {
-            data.cell.styles.fillColor = '#e20000';
+            data.cell.styles.fillColor = "#e20000";
           }
         },
       });
@@ -218,4 +240,4 @@ const EventTicketTable: React.FC = () => {
   );
 };
 
-export default EventTicketTable;
+export default EventsCreatedTable;

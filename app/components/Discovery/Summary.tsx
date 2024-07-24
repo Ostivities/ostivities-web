@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { global } from "styled-jsx/css";
 import "@/app/globals.css";
+import { Heading5 } from '../typography/Typography';
 
 interface SummaryProps {
   continueBtn?: boolean;
@@ -35,17 +36,17 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
 
   return (
     <section className="flex-1">
-      <h2 className="text-3xl text-center" style={{ fontWeight: 600, }}>Summary</h2>
+      <Heading5 className="text-3xl text-center" content={"Summary"} />
       <section className="mt-14 px-20 h-4/5 border-l border-[#525252]">
         <div>
-          <h3 className="text-OWANBE_PRY text-lg">Event name</h3>
-          <span className="text-OWANBE_FADE">Concert with Davido</span>
+          <h3 className="text-OWANBE_PRY text-lg font-BricolageGrotesqueRegular">Event name</h3>
+          <span className="text-OWANBE_FADE text-s font-BricolageGrotesqueRegular">Concert with Davido</span>
         </div>
         <div className="mt-3">
           {!showInput && (
             <div
               onClick={handleAddDiscountClick}
-              className="flex-center gap-2 text-OWANBE_PRY text-lg cursor-pointer"
+              className="flex-center gap-2 text-OWANBE_PRY text-lg font-BricolageGrotesqueRegular cursor-pointer"
             >
               <h3>Add discount code</h3>
             </div>
@@ -81,7 +82,7 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
                 )}
               </div>
               {discountApplied && (
-                <span className="text-OWANBE_PRY text-xs block mt-2">
+                <span className="text-OWANBE_PRY text-sm font-BricolageGrotesqueRegular">
                   Discount code has been applied to checkout!
                 </span>
               )}
@@ -90,8 +91,8 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
         </div>
         <div>
           <div className="mt-3 border-b border-[#525252] pb-10">
-            <h3 className="text-OWANBE_PRY text-xl">Payment details</h3>
-            <div className="flex flex-col gap-2 mt-2 text-OWANBE_FADE">
+            <h3 className="text-OWANBE_PRY text-lg font-BricolageGrotesqueRegular">Payment details</h3>
+            <div className="flex flex-col gap-2 mt-2 text-OWANBE_FADE text-s font-BricolageGrotesqueRegular">
               <div className="flex-center justify-between">
                 <div>Ticket fee x 2 - Early Bird</div>
                 <div>₦10,000.00</div>
@@ -112,7 +113,7 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
               </div>
             </div>
           </div>
-          <div className="flex-center justify-between font-semibold text-2xl text-OWANBE_PRY my-6">
+          <div className="flex-center justify-between font-BricolageGrotesqueMedium text-2xl text-OWANBE_PRY my-6">
             <div>Total</div>
             <div>₦10,200.00</div> {/* Adjust this based on your calculation */}
           </div>

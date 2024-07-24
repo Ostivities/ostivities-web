@@ -87,7 +87,7 @@ function LoginForm(): JSX.Element {
           className="font-BricolageGrotesqueLight text-base"
           style={{
             background: "#E20000",
-            borderRadius: "20px",
+            borderRadius: "25px",
             width: "100%",
             height: "51px",
           }}

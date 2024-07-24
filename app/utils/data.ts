@@ -1,6 +1,7 @@
 import Cube from "@/public/cube.svg";
 import Polygon from "@/public/polygon.svg";
 import Star from "@/public/star.svg";
+import { MenuProps } from "antd";
 import { IFeatures, INavLinks } from "./interface";
 
 export const NAV_LINKS: INavLinks[] = [
@@ -92,7 +93,7 @@ export const SUPPORT: INavLinks[] = [
 ];
 
 export const Questions: string[] = [
-  "How do I create an event on Ostivities?",
+  "What is Ostivities?",
   "How do I find events near me?",
   "How do I create an event on Ostivities?",
   "Is Ostivities secure, especially for payment transactions?",
@@ -101,9 +102,9 @@ export const Questions: string[] = [
 
 export const Answers: IFeatures[] = [
   {
-    title: "How do I create an event on Ostivities?",
+    title: "What is Ostivities?",
     content:
-      "Creating an event is simple — just navigate to the event section, fill in details, and share the joy with attendees.",
+      " Ostivities is an event management platform designed to help organizers create, promote, and manage events efficiently. Our platform offers tools for ticketing, guest management, and event analytics.",
   },
   {
     title: "How do I find events near me?",
@@ -113,7 +114,7 @@ export const Answers: IFeatures[] = [
   {
     title: "How do I create an event on Ostivities?",
     content:
-      "Creating an event on Ostivities is simple. Sign up for an account, click on Create Event and follow the prompts to enter event details, upload an invitation card, and set the date and time.",
+      "To create an event, log in to your Ostivities account, navigate to the 'Create Event' section, and fill out the required details such as event name, date, location, and ticket types. Once completed, you can publish your event and start promoting it.",
   },
   {
     title: "Is Ostivities secure, especially for payment transactions?",
@@ -1118,7 +1119,6 @@ export const STATES_IN_NIGERIA = [
     ],
   },
 ];
-
 
 export const Timezones = [
   {
@@ -2405,14 +2405,54 @@ export const stepOne = [
   "facebookUrl",
   "instagramUrl",
 ];
-export const EVENT_TYPES: {label: string; value: string}[] = [
-  { value: 'Wedding Party', label: 'Wedding Party' },
-                    { value: 'Birthday Party', label: 'Birthday Party' },
-                    { value: 'Concert', label: 'Concert' },
-                    { value: 'Event', label: 'Event' },
-                    { value: 'Paint & Sip', label: 'Paint & Sip' },
-                    { value: 'Hangouts', label: 'Hangouts' },
-                    { value: 'Webinar', label: 'Webinar' },
-                    { value: 'Conference', label: 'Conference' },
-                    { value: 'Others', label: 'Others' },
-]
+
+export const EVENT_TYPES: { label: string; value: string }[] = [
+  { value: "Wedding Party", label: "Wedding Party" },
+  { value: "Birthday Party", label: "Birthday Party" },
+  { value: "Concert", label: "Concert" },
+  { value: "Event", label: "Event" },
+  { value: "Paint & Sip", label: "Paint & Sip" },
+  { value: "Hangouts", label: "Hangouts" },
+  { value: "Webinar", label: "Webinar" },
+  { value: "Conference", label: "Conference" },
+  { value: "Others", label: "Others" },
+];
+
+export const AFRICAN_TIME_ZONES = [
+  { label: "West Africa Time (WAT)", value: "WAT" },
+  { label: "Central Africa Time (CAT)", value: "CAT" },
+  { label: "South Africa Standard Time (SAST)", value: "SAST" },
+  { label: "East Africa Time (EAT)", value: "EAT" },
+];
+
+export const EVENT_FREQUENCIES = [
+  { label: "Daily", value: "daily" },
+  { label: "Weekly", value: "weekly" },
+  { label: "Monthly", value: "monthly" },
+];
+
+export const NigerianBanks = [
+  { label: "Access Bank", value: "access-bank" },
+  { label: "Citibank Nigeria", value: "citibank-nigeria" },
+  { label: "Ecobank Nigeria", value: "ecobank-nigeria" },
+  { label: "Fidelity Bank", value: "fidelity-bank" },
+  { label: "First Bank of Nigeria", value: "first-bank-of-nigeria" },
+  { label: "First City Monument Bank (FCMB)", value: "fcmb" },
+  { label: "Guaranty Trust Bank (GTBank)", value: "gtbank" },
+  { label: "Heritage Bank", value: "heritage-bank" },
+  { label: "Keystone Bank", value: "keystone-bank" },
+  { label: "Polaris Bank", value: "polaris-bank" },
+  { label: "Providus Bank", value: "providus-bank" },
+  { label: "Stanbic IBTC Bank", value: "stanbic-ibtc-bank" },
+  {
+    label: "Standard Chartered Bank Nigeria",
+    value: "standard-chartered-bank-nigeria",
+  },
+  { label: "Sterling Bank", value: "sterling-bank" },
+  { label: "Suntrust Bank Nigeria", value: "suntrust-bank-nigeria" },
+  { label: "Union Bank of Nigeria", value: "union-bank-of-nigeria" },
+  { label: "United Bank for Africa (UBA)", value: "uba" },
+  { label: "Unity Bank", value: "unity-bank" },
+  { label: "Wema Bank", value: "wema-bank" },
+  { label: "Zenith Bank", value: "zenith-bank" },
+];

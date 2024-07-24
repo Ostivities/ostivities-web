@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Form, Input, Select, Row, Col } from 'antd';
 import { useState } from 'react';
 import "@/app/globals.css";
+import { Heading5 } from '@/app/components/typography/Typography';
 
 interface Inputs {
   firstName: string;
@@ -14,6 +15,9 @@ interface Inputs {
   email: string;
   confirmEmail: string;
   phoneNumber: string;
+  additionalField1: string;
+  additionalField2: string;
+  additionalField3: string;
 }
 
 const ContactForm = () => {
@@ -33,13 +37,12 @@ const ContactForm = () => {
   );
 
   const [form] = Form.useForm();
-  const [isFormValid, setIsFormValid] = useState(false); // State to track form validity
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const onFinish = (values: Inputs) => {
     console.log(values);
   };
 
-  // Function to validate form and update isFormValid state
   const validateForm = async () => {
     try {
       await form.validateFields();
@@ -53,7 +56,7 @@ const ContactForm = () => {
     <DashboardLayout title={title} isLoggedIn>
       <section className="flex gap-12">
         <section className="flex-1 pr-1">
-        <div className="flex-center justify-between">
+          <div className="flex-center justify-between">
             <div className="flex-center gap-3">
               <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
                 <Image
@@ -64,7 +67,7 @@ const ContactForm = () => {
                 />
               </div>
               <div>
-                <h3 className="text-xs">Date</h3>
+                <h3 className="text-sm"style={{ fontWeight: 600 }}>Date</h3> 
                 <span>14 December, 2023</span>
               </div>
             </div>
@@ -73,7 +76,7 @@ const ContactForm = () => {
                 <Image src="/icons/time.svg" alt="" height={25} width={25} />
               </div>
               <div>
-                <h3 className="text-xs">Time</h3>
+                <h3 className="text-sm"style={{ fontWeight: 600 }}>Time</h3>
                 <span>5:00PM - 10:00PM WAT</span>
               </div>
             </div>
@@ -84,7 +87,7 @@ const ContactForm = () => {
               onFinish={onFinish}
               layout="vertical"
               className="form-spacing"
-              onValuesChange={validateForm} // Validate form on any change
+              onValuesChange={validateForm}
             >
               <Row gutter={16}>
                 <Col span={12}>
@@ -120,7 +123,7 @@ const ContactForm = () => {
               >
                 <Input type="email" placeholder="Confirm Email Address" />
               </Form.Item>
-              <Form.Item
+              <Form.Item 
                 label="Phone Number"
                 name="phoneNumber"
                 rules={[{ required: true, message: 'Please provide your phone number' }]}
@@ -137,6 +140,23 @@ const ContactForm = () => {
                   }
                   placeholder="Enter Phone Number"
                 />
+              </Form.Item>
+
+              <Heading5 className="pt-10 pb-5" content={"Additional Informations"} />
+
+              <Form.Item
+                label="Info 1"
+                name="Info 1"
+                rules={[{ required: true, message: 'Please provide additional information' }]}
+              >
+                <Input placeholder="Enter Additional Information 1" />
+              </Form.Item>
+              <Form.Item
+                label="Info 2"
+                name="Info 2"
+                rules={[{ required: true, message: 'Please provide additional information' }]}
+              >
+                <Input placeholder="Enter Additional Information 2" />
               </Form.Item>
             </Form>
           </div>

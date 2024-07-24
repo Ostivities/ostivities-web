@@ -69,6 +69,8 @@ export interface IModal {
   open?: boolean;
   onCancel?: any;
   onOk?: any;
+  actionType?: "delete" | "warning";
+  data?: any;
 }
 
 export type FieldType = {
@@ -106,6 +108,43 @@ export interface DataType {
   name?: string; // Optional, since it's not used in the data generation
   age?: number | any; // Optional, since it's not used in the data generation
   address?: string; // Optional, since it's not used in the data generation
+  id?: string; // Optional, since it's not used in the data generation
+}
+
+export interface SalesDataType {
+  eventType: any;
+  dateCreated: any;
+  key: React.Key;
+  eventName: string;
+  ticketSold: number;
+  sold?: number; // Optional, since it's not used in the data generation
+  name?: string; // Optional, since it's not used in the data generation
+  age?: number | any; // Optional, since it's not used in the data generation
+  address?: string; // Optional, since it's not used in the data generation
+  id?: string; // Optional, since it's not used in the data generation
+  revenue?: number; // Optional, since it's not used in the data generation
+  fees?: number; // Optional, since it's not used in the data generation
+  sales?: number; // Optional, since it
+}
+
+export interface SummaryDataType {
+  key: string;
+  buyerName: string;
+  ticketName: string;
+  checkedInBy: string;
+  discountCode?: string;  // optional if they can be null or undefined
+  uses?: number;
+  dateEnding?: string;
+}
+
+
+export interface PaymentDataType {
+  key: string;
+  recipient: string;
+  bankAccount: string;
+  transferFee: number;
+  payout: number;
+  paymentDate: string;
 }
 
 export interface IUser {
@@ -127,4 +166,11 @@ export interface ILogin {
 export interface IResetToken {
   email: string;
   originUrl: string;
+}
+
+export interface DiscountDataType {
+  key: string;
+  discountCode: string;
+  uses: string;
+  dateEnding: string;
 }
