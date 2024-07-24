@@ -75,21 +75,21 @@ function Footer(): JSX.Element {
           </div>
           <div className="flex flex-row items-center justify-start md:justify-end lg:justify-end xl:justify-end">
             <Space direction="horizontal" size={24}>
-            <a href="https://www.instagram.com/ostivities?igsh=bHdmZHd5aHdtZXkw" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.instagram.com/ostivities" target="_blank" rel="noopener noreferrer">
   <Image
     src={Instagram}
     alt="Instagram"
     className="cursor-pointer"
   />
 </a>
-<a href="https://x.com/Ostivities?t=dTLnKVX6KPgqTk79FCqXzg&s=09" target="_blank" rel="noopener noreferrer">
+<a href="https://x.com/Ostivities" target="_blank" rel="noopener noreferrer">
   <Image
     src={Twitter}
     alt="Twitter"
     className="cursor-pointer"
   />
 </a>
-<a href="" target="" rel="noopener noreferrer">
+<a href="https://www.linkedin.com/company/ostivities" target="_blank" rel="noopener noreferrer">
   <Image
     src={Linkedln}
     alt="LinkedIn"
