@@ -81,8 +81,9 @@ export const ADVANTAGES_TWO: IFeatures[] = [
 ];
 
 export const LEGAL: INavLinks[] = [
-  { link: "/", name: "Terms of Use" },
+  { link: "/", name: "Terms & Condition" },
   { link: "/", name: "Privacy Policy" },
+  { link: "/", name: "Refund Policy" },
   { link: "/", name: "Cookie Policy" },
 ];
 
@@ -90,6 +91,10 @@ export const SUPPORT: INavLinks[] = [
   { link: "/", name: "Account" },
   { link: "/", name: "Support Center" },
   { link: "/", name: "Feedback" },
+];
+
+export const NEWSLETTER: INavLinks[] = [
+  { link: "https://ostivities.substack.com/subscribe", name: "Subscribe to our newsletter", target: "_blank", rel: "noopener noreferrer" },
 ];
 
 export const Questions: string[] = [
