@@ -43,9 +43,11 @@ function Footer(): JSX.Element {
               <Heading5 content="Legal" className="" />
               {LEGAL.map((item, index) => (
                 <Link
-                  key={item.name}
-                  href={item.link}
-                  className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+                key={index} // Changed to index for uniqueness
+                href={item.link}
+                target={item.target}
+                rel={item.rel}
+                className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
                 >
                   {item.name}
                 </Link>
@@ -56,9 +58,11 @@ function Footer(): JSX.Element {
               <Heading5 content="Support" className="" />
               {SUPPORT.map((item, index) => (
                 <Link
-                  key={item.name}
-                  href={item.link}
-                  className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+                key={index} // Changed to index for uniqueness
+                href={item.link}
+                target={item.target}
+                rel={item.rel}
+                className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
                 >
                   {item.name}
                 </Link>

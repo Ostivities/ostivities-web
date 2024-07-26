@@ -81,8 +81,9 @@ export const ADVANTAGES_TWO: IFeatures[] = [
 ];
 
 export const LEGAL: INavLinks[] = [
-  { link: "/", name: "Terms of Use" },
+  { link: "/", name: "Terms & Condition" },
   { link: "/", name: "Privacy Policy" },
+  { link: "/", name: "Refund Policy" },
   { link: "/", name: "Cookie Policy" },
 ];
 
