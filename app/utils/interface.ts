@@ -8,6 +8,8 @@ export enum ACCOUNT_TYPE {
 export interface INavLinks {
   link: string;
   name: string;
+  target?: string;
+  rel?: string;
 }
 
 export interface ITypography {

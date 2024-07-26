@@ -92,6 +92,10 @@ export const SUPPORT: INavLinks[] = [
   { link: "/", name: "Feedback" },
 ];
 
+export const NEWSLETTER: INavLinks[] = [
+  { link: "https://ostivities.substack.com/subscribe", name: "Subscribe to our newsletter", target: "_blank", rel: "noopener noreferrer" },
+];
+
 export const Questions: string[] = [
   "What is Ostivities?",
   "How do I find events near me?",
