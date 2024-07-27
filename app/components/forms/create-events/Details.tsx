@@ -306,8 +306,8 @@ function Details(): JSX.Element {
           open={popoverVisible}
         >
           <Button
-            type="default"
-            style={{ borderRadius: '5px', minWidth: '120px' }}
+            type="primary"
+            style={{ borderRadius: '20px', minWidth: '120px' }}
             onClick={() => setPopoverVisible(!popoverVisible)}
           >
             Select on Map

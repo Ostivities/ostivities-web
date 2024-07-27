@@ -1,4 +1,4 @@
-import { LEGAL, NEWSLETTER, SUPPORT } from "@/app/utils/data";
+import { LEGAL, SUPPORT } from "@/app/utils/data";
 import Instagram from "@/public/Instagram.svg";
 import Linkedln from "@/public/LinkedIn.svg";
 import Twitter from "@/public/X.svg";
@@ -11,7 +11,6 @@ import Link from "next/link";
 import React from "react";
 import NewsLetter from "../newsletter/NewsLetter";
 import { Heading5, Paragraph, Small } from "../typography/Typography";
-import Item from "antd/es/list/Item";
 
 function Footer(): JSX.Element {
   return (
@@ -43,11 +42,9 @@ function Footer(): JSX.Element {
               <Heading5 content="Legal" className="" />
               {LEGAL.map((item, index) => (
                 <Link
-                key={index} // Changed to index for uniqueness
-                href={item.link}
-                target={item.target}
-                rel={item.rel}
-                className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+                  key={item.name}
+                  href={item.link}
+                  className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
                 >
                   {item.name}
                 </Link>
@@ -58,11 +55,9 @@ function Footer(): JSX.Element {
               <Heading5 content="Support" className="" />
               {SUPPORT.map((item, index) => (
                 <Link
-                key={index} // Changed to index for uniqueness
-                href={item.link}
-                target={item.target}
-                rel={item.rel}
-                className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+                  key={item.name}
+                  href={item.link}
+                  className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
                 >
                   {item.name}
                 </Link>
@@ -70,21 +65,13 @@ function Footer(): JSX.Element {
             </div>
             {/* 4 */}
             <div className="flex flex-col space-y-3">
-      <Heading5 content="Newsletter" className="" />
-      {NEWSLETTER.map((item, index) => (
-        <Link
-          key={index} // Changed to index for uniqueness
-          href={item.link}
-          target={item.target}
-          rel={item.rel}
-          className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
-        >
-          {item.name}
-        </Link>
-      ))}
-    </div>
-             
-        
+              <Heading5 content="NewsLetter" className="" />
+              <Small
+                content={"Stay up to date"}
+                className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+              />
+              <NewsLetter />
+            </div>
           </div>
           <div className="flex flex-row items-center justify-start md:justify-end lg:justify-end xl:justify-end">
             <Space direction="horizontal" size={24}>
