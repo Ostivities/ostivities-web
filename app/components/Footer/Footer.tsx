@@ -9,9 +9,8 @@ import { Space } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import NewsLetter from "../newsletter/NewsLetter";
 import { Heading5, Paragraph, Small } from "../typography/Typography";
-import Item from "antd/es/list/Item";
+
 
 function Footer(): JSX.Element {
   return (
@@ -83,8 +82,6 @@ function Footer(): JSX.Element {
         </Link>
       ))}
     </div>
-             
-        
           </div>
           <div className="flex flex-row items-center justify-start md:justify-end lg:justify-end xl:justify-end">
             <Space direction="horizontal" size={24}>
