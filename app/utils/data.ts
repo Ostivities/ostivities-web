@@ -1,7 +1,5 @@
 import Cube from "@/public/cube.svg";
-import Polygon from "@/public/polygon.svg";
 import Star from "@/public/star.svg";
-import { MenuProps } from "antd";
 import { IFeatures, INavLinks } from "./interface";
 
 export const NAV_LINKS: INavLinks[] = [
