@@ -3,9 +3,21 @@ import Star from "@/public/star.svg";
 import { IFeatures, INavLinks } from "./interface";
 
 export const NAV_LINKS: INavLinks[] = [
-  { link: "/", name: "Home" },
-  { link: "/", name: "FAQs" },
-  { link: "/", name: "Contact" },
+  {
+    link: "/", name: "Home",
+    target: undefined,
+    rel: undefined
+  },
+  {
+    link: "/", name: "FAQs",
+    target: undefined,
+    rel: undefined
+  },
+  {
+    link: "/", name: "Contact",
+    target: undefined,
+    rel: undefined
+  },
 ];
 
 export const FEATURES: IFeatures[] = [
@@ -72,19 +84,47 @@ export const ADVANTAGES_TWO: IFeatures[] = [
 ];
 
 export const COMPANY: INavLinks[] = [
-  { link: "/", name: "FAQ's" },
-  { link: "/", name: "Blog" },
+  {
+    link: "/", name: "FAQ's",
+    target: undefined,
+    rel: undefined
+  },
+  {
+    link: "/", name: "Blog",
+    target: undefined,
+    rel: undefined
+  },
 ];
 
 export const LEGAL: INavLinks[] = [
-  { link: "/", name: "Terms of Use" },
-  { link: "/", name: "Privacy Policy" },
-  { link: "/", name: "Refund Policy" },
+  {
+    link: "/", name: "Terms & Condition",
+    target: undefined,
+    rel: undefined
+  },
+  {
+    link: "/", name: "Privacy Policy",
+    target: undefined,
+    rel: undefined
+  },
+  {
+    link: "/", name: "Refund Policy",
+    target: undefined,
+    rel: undefined
+  },
 ];
 
 export const SUPPORT: INavLinks[] = [
   { link: "https://ostivities.tawk.help", name: "Support Centre", target: "_blank", rel: "noopener noreferrer" },
-  { link: "/", name: "Feedback" },
+  {
+    link: "/", name: "Feedback",
+    target: undefined,
+    rel: undefined
+  },
+];
+
+export const NEWSLETTER: INavLinks[] = [
+  { link: "https://ostivities.substack.com/subscribe", name: "Subscribe to our newsletter", target: "_blank", rel: "noopener noreferrer" },
 ];
 
 export const Questions: string[] = [
