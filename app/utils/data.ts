@@ -9,6 +9,11 @@ export const NAV_LINKS: INavLinks[] = [
     rel: undefined
   },
   {
+    link: "/", name: "About us",
+    target: undefined,
+    rel: undefined
+  },
+  {
     link: "/", name: "FAQs",
     target: undefined,
     rel: undefined
