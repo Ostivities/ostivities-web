@@ -1,4 +1,4 @@
-import { LEGAL, SUPPORT } from "@/app/utils/data";
+import { LEGAL, NEWSLETTER, SUPPORT, COMPANY } from "@/app/utils/data";
 import Instagram from "@/public/Instagram.svg";
 import Linkedln from "@/public/LinkedIn.svg";
 import Twitter from "@/public/X.svg";
@@ -9,8 +9,8 @@ import { Space } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import NewsLetter from "../newsletter/NewsLetter";
 import { Heading5, Paragraph, Small } from "../typography/Typography";
+
 
 function Footer(): JSX.Element {
   return (
@@ -65,13 +65,19 @@ function Footer(): JSX.Element {
             </div>
             {/* 4 */}
             <div className="flex flex-col space-y-3">
-              <Heading5 content="NewsLetter" className="" />
-              <Small
-                content={"Stay up to date"}
-                className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
-              />
-              <NewsLetter />
-            </div>
+      <Heading5 content="Newsletter" className="" />
+      {NEWSLETTER.map((item, index) => (
+        <Link
+          key={index} // Changed to index for uniqueness
+          href={item.link}
+          target={item.target}
+          rel={item.rel}
+          className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+        >
+          {item.name}
+        </Link>
+      ))}
+    </div>
           </div>
           <div className="flex flex-row items-center justify-start md:justify-end lg:justify-end xl:justify-end">
             <Space direction="horizontal" size={24}>
@@ -103,7 +109,7 @@ function Footer(): JSX.Element {
         <div className="footer-bottom pt-5">
           <Paragraph
             className="text-center"
-            content="Copyright 2024 - Ostivities all rights reserved "
+            content="&copy; Ostivities 2024 - All rights reserved "
           />
         </div>
       </div>

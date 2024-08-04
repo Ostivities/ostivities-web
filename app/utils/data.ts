@@ -1,12 +1,9 @@
 import Cube from "@/public/cube.svg";
-import Polygon from "@/public/polygon.svg";
 import Star from "@/public/star.svg";
-import { MenuProps } from "antd";
 import { IFeatures, INavLinks } from "./interface";
 
 export const NAV_LINKS: INavLinks[] = [
   { link: "/", name: "Home" },
-  { link: "/", name: "Features" },
   { link: "/", name: "FAQs" },
   { link: "/", name: "Contact" },
 ];
@@ -14,9 +11,9 @@ export const NAV_LINKS: INavLinks[] = [
 export const FEATURES: IFeatures[] = [
   {
     icon: Star,
-    title: "Instant Invitation cards and Ticketing Made Easy",
+    title: "Instant Ticketing Made Easy",
     content:
-      "Be the architect of your celebration! Create invitation cards and Get event tickets effortlessly with our user-friendly event creation tools.",
+      "Be the architect of your celebration! Create event tickets effortlessly with our user-friendly event creation tools.",
   },
   {
     icon: Cube,
@@ -55,40 +52,38 @@ export const ADVANTAGES: IFeatures[] = [
 
 export const ADVANTAGES_TWO: IFeatures[] = [
   {
-    icon: Polygon,
+    icon: Star,
     title: "Connect with Attendees:",
     content:
       "Engage with attendees, share details and make your event truly unforgettable. Ostivities is your canvas to paint the perfect celebration.",
   },
   {
     icon: Cube,
-    title: "Localized Discovery:",
-    content:
-      "Filter events based on regions and states, bringing you closer to rich experiences right in your community.",
-  },
-  {
-    icon: Polygon,
     title: "User-Friendly Security:",
     content:
       "Our robust security phase ensures a safe environment, where your celebrations are enjoyed responsibly.",
   },
   {
-    icon: Cube,
+    icon: Star,
     title: "Admin Oversight:",
     content:
       "Rest easy knowing our vigilant administrators maintain a vibrant and respectful community, ensuring the highest standards.",
   },
 ];
 
+export const COMPANY: INavLinks[] = [
+  { link: "/", name: "FAQ's" },
+  { link: "/", name: "Blog" },
+];
+
 export const LEGAL: INavLinks[] = [
   { link: "/", name: "Terms of Use" },
   { link: "/", name: "Privacy Policy" },
-  { link: "/", name: "Cookie Policy" },
+  { link: "/", name: "Refund Policy" },
 ];
 
 export const SUPPORT: INavLinks[] = [
-  { link: "/", name: "Account" },
-  { link: "/", name: "Support Center" },
+  { link: "https://ostivities.tawk.help", name: "Support Centre", target: "_blank", rel: "noopener noreferrer" },
   { link: "/", name: "Feedback" },
 ];
 
