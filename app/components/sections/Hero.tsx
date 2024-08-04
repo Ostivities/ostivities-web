@@ -44,17 +44,18 @@ const STATE_BY_COUNTRYCODE = (stateCode: string): { label: string; value: string
           <div className="w-full md:w-full lg:w-1/2">
             <Image src={FeatureBg} alt="hero" className="ms-1" />
           </div>
-          <div className="border-[1px] rounded-3xl p-8 bg-white shadow-sm ">
+          </div>
+<div className="border-[1px] rounded-3xl p-8 bg-white shadow-sm ">
   <h3 className="font-BricolageGrotesqueSemiBold mb-3">
     Quickly find events happening around you.
   </h3>
   <div>
-    <form action="" className="flex flex-wrap gap-4">
-      <label htmlFor="name" className="w-full sm:w-1/2 lg:w-1/3">
+    <form action="" className="flex flex-wrap gap-4 [&>label]:flex-1">
+      <label htmlFor="name" className="w-full sm:w-1/3">
         <span className="text-OWANBE_PRY mb-1 block font-BricolageGrotesqueRegular">Event Name</span>
         <Input placeholder="Enter Event Name" className="w-full" />
       </label>
-      <label htmlFor="state" className="w-full sm:w-1/2 lg:w-1/3">
+      <label htmlFor="state" className="w-full sm:w-1/3">
         <span className="text-OWANBE_PRY mb-1 block font-BricolageGrotesqueRegular">Event State</span>
         <Select
           defaultValue="Select State"
@@ -64,7 +65,7 @@ const STATE_BY_COUNTRYCODE = (stateCode: string): { label: string; value: string
           ]}
         />
       </label>
-      <label htmlFor="type" className="w-full sm:w-1/2 lg:w-1/3">
+      <label htmlFor="type" className="w-full sm:w-1/3">
         <span className="text-OWANBE_PRY mb-1 block font-BricolageGrotesqueRegular">Event Type</span>
         <Select
           defaultValue="Select event type"
@@ -75,13 +76,12 @@ const STATE_BY_COUNTRYCODE = (stateCode: string): { label: string; value: string
         />
       </label>
       <div className="flex items-end w-full sm:w-auto">
-        <button className="w-full sm:w-36 h-fit bg-OWANBE_SECONDARY hover:bg-OWANBE_PRY transition-all duration-300 rounded-full text-white py-1.5 px-12">
+        <button className="w-full sm:w-36 bg-OWANBE_SECONDARY hover:bg-OWANBE_PRY transition-all duration-300 rounded-full text-white py-1.5 px-12">
           Search
         </button>
       </div>
     </form>
   </div>
-</div>
         </div>
       </div>
     </Section>
