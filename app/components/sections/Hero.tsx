@@ -1,14 +1,27 @@
-import LaptopHero from '@/public/laptop.png';
-import Z from '@/public/z.svg';
+'use client';
+
+import FeatureBg from "@/public/feature.svg";
 import { ArrowRightOutlined } from '@ant-design/icons';
 import Image from 'next/image';
 import React from 'react';
 import Section from './Section';
 import H3 from '@/app/ui/atoms/H3';
-import Button from '@/app/ui/atoms/Button';
 import Link from 'next/link';
+import { Input, Select } from 'antd';
+import { State } from "country-state-city";
+import { EVENT_TYPES } from '@/app/utils/data';
+import useFetch from '@/app/components/forms/create-events/auth';
 
 function Hero(): JSX.Element {
+  useFetch()
+const STATE_BY_COUNTRYCODE = (stateCode: string): { label: string; value: string }[] => {
+  const result: any = State.getStatesOfCountry(stateCode);
+  const stateJson: { label: string; value: string }[] = result.map((i: any) => {
+    return { label: i?.name, value: i?.name };
+  });
+  return stateJson;
+};
+
   return (
     <Section>
       <div className="flex flex-col space-y-3 pt-5 mt-3 md:pt-5 md:mt-3 lg:pt-0 lg:mt-0">
@@ -16,31 +29,65 @@ function Hero(): JSX.Element {
           <div className="flex flex-col w-full items-center space-y-5 mx-0 md:flex md:flex-col md:w-4/5 md:mx-auto lg:items-start lg:mx-0 lg:flex lg:flex-col lg:space-y-5 lg:w-1/2">
             <H3
               content="Celebrate, Connect and Create Memories"
-              className="w-full text-center lg:text-left md:w-full md:text-center lg:w-3/4"
+              className="w-full text-center lg:text-left md:w-full md:text-center lg:w-4/4"
             />
-
-            <p className="w-full md:w-full font-BricolageGrotesqueMedium text-center lg:text-left lg:w-[86%] text-OWANBE_ASH text-lg">
+            <p className="w-full md:w-full font-BricolageGrotesqueMedium text-center lg:text-left lg:w-[89%] text-OWANBE_ASH text-lg">
             Join Ostivities and make every celebration unforgettable! Connect, discover, 
             and create lasting memories with ease. Dive into a world of vibrant events today!
             </p>
             <Link
               href="/Dashboard"
-              className=" bg-OWANBE_SECONDARY hover:!bg-OWANBE_PRY transition-all duration-300 rounded-full hover:!text-white text-white px-8 py-2"
-            >
+              className=" bg-OWANBE_SECONDARY hover:!bg-OWANBE_PRY transition-all duration-300 rounded-full hover:!text-white text-white px-8 py-2">
               <span className=" pr-1">Explore Events</span> <ArrowRightOutlined />
             </Link>
           </div>
           <div className="w-full md:w-full lg:w-1/2">
-            <Image src={LaptopHero} alt="hero" className="ms-1" />
+            <Image src={FeatureBg} alt="hero" className="ms-1" />
           </div>
         </div>
-
-        <div className="hidden md:hidden lg:block lg:w-1/2 text-left pt-8 lg:pt-0">
-          <Image src={Z} alt="hero" className="ms-0 pt-8 md:pt-8 lg:pt-0" />
+        <div className="border-[1px] rounded-3xl p-8 bg-white shadow-sm ">
+          <h3 className="font-BricolageGrotesqueSemiBold mb-3">
+            Quickly find events happening around you.
+          </h3>
+          <div>
+            <form action="" className="flex gap-4 [&>lable]:flex-1">
+              <label htmlFor="name" className="w-full">
+                <span className=" text-OWANBE_PRY mb-1 block font-BricolageGrotesqueRegular">Event Name</span>
+                <Input placeholder="Enter Event Name" className="w-full" />
+              </label>
+              <label htmlFor="state" className="w-full">
+                <span className=" text-OWANBE_PRY mb-1 block font-BricolageGrotesqueRegular">Event State</span>
+                <Select
+                  defaultValue="Select State"
+                  className="w-full"
+                  // onChange={handleChange}
+                  options={[
+                    ...STATE_BY_COUNTRYCODE("NG")
+                  ]}
+                />
+              </label>
+              <label htmlFor="type" className="w-full">
+                <span className=" text-OWANBE_PRY mb-1 block font-BricolageGrotesqueRegular">Event Type</span>
+                <Select
+                  defaultValue="Select event type"
+                  className="w-full"
+                  // onChange={handleChange}
+                  options={[
+                    ...EVENT_TYPES
+                  ]}
+                />
+              </label>
+              <div className="flex items-end">
+                <button className=" place-items-end w-36 h-fit bg-OWANBE_SECONDARY hover:!bg-OWANBE_PRY transition-all duration-300 rounded-full hover:!text-white text-white py-1.5 px-12">
+                  Search
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </Section>
   );
 }
 
-export default Hero;
+export default Hero

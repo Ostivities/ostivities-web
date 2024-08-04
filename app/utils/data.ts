@@ -6,7 +6,6 @@ import { IFeatures, INavLinks } from "./interface";
 
 export const NAV_LINKS: INavLinks[] = [
   { link: "/", name: "Home" },
-  { link: "/", name: "Features" },
   { link: "/", name: "FAQs" },
   { link: "/", name: "Contact" },
 ];
@@ -74,15 +73,18 @@ export const ADVANTAGES_TWO: IFeatures[] = [
   },
 ];
 
+export const COMPANY: INavLinks[] = [
+  { link: "/", name: "FAQ's" },
+  { link: "/", name: "Blog" },
+];
+
 export const LEGAL: INavLinks[] = [
   { link: "/", name: "Terms & Condition" },
   { link: "/", name: "Privacy Policy" },
   { link: "/", name: "Refund Policy" },
-  { link: "/", name: "Cookie Policy" },
 ];
 
 export const SUPPORT: INavLinks[] = [
-  { link: "/", name: "Account" },
   { link: "https://ostivities.tawk.help", name: "Support Centre", target: "_blank", rel: "noopener noreferrer" },
   { link: "/", name: "Feedback" },
 ];

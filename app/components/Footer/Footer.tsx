@@ -1,4 +1,4 @@
-import { LEGAL, NEWSLETTER, SUPPORT } from "@/app/utils/data";
+import { LEGAL, NEWSLETTER, SUPPORT, COMPANY } from "@/app/utils/data";
 import Instagram from "@/public/Instagram.svg";
 import Linkedln from "@/public/LinkedIn.svg";
 import Twitter from "@/public/X.svg";
@@ -113,7 +113,7 @@ function Footer(): JSX.Element {
         <div className="footer-bottom pt-5">
           <Paragraph
             className="text-center"
-            content="Copyright 2024 - Ostivities all rights reserved "
+            content="&copy; Ostivities 2024 - All rights reserved "
           />
         </div>
       </div>
