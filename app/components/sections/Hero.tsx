@@ -1,5 +1,5 @@
 import LaptopHero from '@/public/laptop.png';
-import FeatureBg from "@/public/feature.png";
+import FeatureBg from "@/public/feature.svg";
 import Z from '@/public/z.svg';
 import comingsoon from '@/public/comingsoon.svg';
 import { ArrowRightOutlined } from '@ant-design/icons';
