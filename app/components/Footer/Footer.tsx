@@ -2,6 +2,7 @@ import { LEGAL, NEWSLETTER, SUPPORT, COMPANY } from "@/app/utils/data";
 import Instagram from "@/public/Instagram.svg";
 import Linkedln from "@/public/LinkedIn.svg";
 import Twitter from "@/public/X.svg";
+import Whatsapp from "@/public/WhatsApp.svg";
 import Mail from "@/public/envelope.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
 import Phone from "@/public/phone.svg";
@@ -19,12 +20,12 @@ function Footer(): JSX.Element {
         <div className="flex flex-col space-y-5 py-4 w-4/5 px-6 md:px-0 xl:px-0 lg:px-0 md:w-4/5 md:mx-auto lg:w-full xl:w-full">
           <div className="grid grid-cols-1 gap-12 md:gap-10 lg:gap-0 xl:gap-0 md:grid md:grid-cols-2 lg:grid lg:grid-cols-4 xl:grid xl:grid-cols-4 pb-3">
             {/* 1 */}
-            <div className="flex flex-col space-y-3">
+            <div className="flex flex-col space-y-4">
               <Image src={OwanbeLogo} alt="Owanbe Logo" />
               <div className="flex flex-row items-center space-x-5">
                 <Image src={Mail} alt="icon" />
                 <Small
-                  content={"Hello@Ostivities.com"}
+                  content={"hello@ostivities.com"}
                   className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
                 />
               </div>
@@ -32,7 +33,7 @@ function Footer(): JSX.Element {
               <div className="flex flex-row items-center space-x-3">
                 <Image src={Phone} alt="icon" />
                 <Small
-                  content={"+1 234 456 678 89"}
+                  content={"+234 810 1218 257"}
                   className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
                 />
               </div>
@@ -103,6 +104,13 @@ function Footer(): JSX.Element {
   <Image
     src={Linkedln}
     alt="LinkedIn"
+    className="cursor-pointer"
+  />
+</a>
+<a href="https://wa.me/2348101218257" target="_blank" rel="noopener noreferrer">
+  <Image
+    src={Whatsapp}
+    alt="Whatsapp"
     className="cursor-pointer"
   />
 </a>
