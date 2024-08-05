@@ -84,14 +84,24 @@ function DashboardLayout({
 
   const items: MenuProps["items"] = [
     {
-      label: <Label className="cursor-pointer" content="Help" />,
+      label: (
+        <a 
+          href="https://ostivities.tawk.help" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="cursor-pointer"
+        >
+          <Label content="Help" />
+        </a>
+      ),
       key: "help",
     },
     {
       label: <Label className="cursor-pointer" content="Sign out" />,
-      key: "sign-",
+      key: "sign-out",
       onClick: () => router.push("/login"),
     },
+  
   ];
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useLocalStorage<boolean>("sidebar", true);
