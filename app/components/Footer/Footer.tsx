@@ -25,7 +25,7 @@ function Footer(): JSX.Element {
               <div className="flex flex-row items-center space-x-5">
                 <Image src={Mail} alt="icon" />
                 <Small
-                  content={"hello@ostivities.com"}
+                  content={"support@ostivities.com"}
                   className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
                 />
               </div>
