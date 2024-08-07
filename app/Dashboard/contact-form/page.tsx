@@ -82,8 +82,8 @@ const ContactForm = () => {
             </div>
           </div>
           <div className="pr-full mt-16">
-          <h3 className="text-OWANBE_FADE text-lg font-BricolageGrotesqueRegular my-4">
-          Please complete the form with your details so we can send your ticket.</h3>
+          <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueRegular my-4">
+          Please fill out the form with your information so we can send you your ticket.</h3>
             <Form
               form={form}
               onFinish={onFinish}
