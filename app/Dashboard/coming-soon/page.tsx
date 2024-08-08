@@ -23,8 +23,8 @@ function ComingSoon(): JSX.Element {
     <DashboardLayout title={title} isLoggedIn>
       <div className="w-full mx-auto flex flex-row items-center justify-between space-y-5 py-6">
         <div className="w-1/2 flex flex-col gap-2 p-[8rem] justify-center">
-          <h2 className="w-full md:w-full font-BricolageGrotesqueMedium text-4xl font-bold mb-4">Stay Tuned....</h2>
-          <p className="w-full md:w-full font-BricolageGrotesqueMedium lg:text-lg mb-6">Exciting new features will be launched soon. Stay tuned for updates!</p>
+          <h2 className="w-full md:w-full font-BricolageGrotesqueMedium text-3xl font-bold mb-4">Stay Tuned....</h2>
+          <p className="w-full md:w-full font-BricolageGrotesqueMedium text-md mb-6">Exciting new features will be launched soon. Stay tuned for updates!</p>
           <button
             onClick={handleBackToDiscovery}
             className="primary-btn hover:none w-full text-center text-white py-2 px-6 rounded-full text-lg"
@@ -38,8 +38,8 @@ function ComingSoon(): JSX.Element {
             src={soon} 
             alt="Coming Soon" 
             className="ms-1" 
-            width={450} // Adjust the width as needed
-            height={450} // Adjust the height as needed
+            width={430} // Adjust the width as needed
+            height={430} // Adjust the height as needed
             style={{ objectFit: 'contain' }} // Maintain aspect ratio
           />
         </div>
