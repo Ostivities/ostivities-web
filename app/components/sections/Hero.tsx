@@ -1,13 +1,10 @@
-import LaptopHero from '@/public/laptop.png';
 import FeatureBg from "@/public/feature.svg";
 import Z from '@/public/z.svg';
-import comingsoon from '@/public/comingsoon.svg';
 import { ArrowRightOutlined } from '@ant-design/icons';
 import Image from 'next/image';
 import React from 'react';
 import Section from './Section';
 import H3 from '@/app/ui/atoms/H3';
-import Button from '@/app/ui/atoms/Button';
 import Link from 'next/link';
 
 function Hero(): JSX.Element {
@@ -18,7 +15,7 @@ function Hero(): JSX.Element {
           <div className="flex flex-col w-full items-center space-y-5 mx-0 md:flex md:flex-col md:w-4/5 md:mx-auto lg:items-start lg:mx-0 lg:flex lg:flex-col lg:space-y-5 lg:w-1/2">
             <H3
               content="Celebrate, Connect and Create Memories"
-              className="w-full text-center lg:text-left md:w-full md:text-center lg:w-4/4"
+              className="w-full text-center lg:text-left md:w-full md:text-center lg:w-3/4"
             />
 
             <p className="w-full md:w-full font-BricolageGrotesqueMedium text-center lg:text-left lg:w-[89%] text-OWANBE_ASH text-lg">

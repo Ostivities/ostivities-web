@@ -1,4 +1,4 @@
-import { LEGAL, NEWSLETTER, SUPPORT, COMPANY } from "@/app/utils/data";
+import { LEGAL, NEWSLETTER, SUPPORT } from "@/app/utils/data";
 import Instagram from "@/public/Instagram.svg";
 import Linkedln from "@/public/LinkedIn.svg";
 import Twitter from "@/public/X.svg";
