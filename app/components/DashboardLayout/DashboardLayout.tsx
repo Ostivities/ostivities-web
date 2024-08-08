@@ -10,7 +10,9 @@ import {
   BellFilled,
   CaretDownFilled,
   CompassOutlined,
+  FieldTimeOutlined,
   FileAddOutlined,
+  PlusCircleOutlined,
   QuestionCircleOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
@@ -37,12 +39,12 @@ const items1: MenuProps["items"] = [
 const items2: MenuProps["items"] = [
   { icon: CompassOutlined, title: "Discovery", link: "/Dashboard" },
   {
-    icon: FileAddOutlined,
+    icon: PlusCircleOutlined,
     title: "Create Event",
     link: "/Dashboard/create-events",
   },
   { icon: SettingOutlined, title: "Settings", link: "/Dashboard/settings" },
-  { icon: QuestionCircleOutlined, title: "Coming Soon", link: "/Dashboard/" },
+  { icon: FieldTimeOutlined, title: "Coming Soon", link: "/Dashboard/coming-soon" },
 ].map((item) => {
   const key = item.link;
   return {
