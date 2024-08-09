@@ -93,9 +93,9 @@ const Payment = () => {
               <input type="checkbox" name="" id="" /> 
               <h2 className="text-s font-BricolageGrotesqueRegular">
               I accept the</h2>                      
-<a href="#" className="policy-link text-s font-BricolageGrotesqueRegular">Terms and Conditions,</a> 
-<a href="#" className="policy-link text-s font-BricolageGrotesqueRegular">Refund Policy</a> &
-<a href="#" className="policy-link text-s font-BricolageGrotesqueRegular">Privacy Policy</a>
+<a href="/terms-and-condition" target="_blank" className="policy-link text-s font-BricolageGrotesqueRegular">Terms and Conditions,</a> 
+<a href="/refund-policy" target="_blank" className="policy-link text-s font-BricolageGrotesqueRegular">Refund Policy</a> &
+<a href="/privacy-policy" target="_blank" className="policy-link text-s font-BricolageGrotesqueRegular">Privacy Policy</a>
 
               </p>
             </div>

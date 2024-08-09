@@ -86,7 +86,7 @@ export const ADVANTAGES_TWO: IFeatures[] = [
 
 export const LEGAL: INavLinks[] = [
   {
-    link: "/terms-and-condition", name: "Terms & Condition",
+    link: "/terms-and-condition", name: "Terms & Conditions",
     target: undefined,
     rel: undefined
   },

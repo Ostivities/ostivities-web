@@ -231,7 +231,7 @@ function CreateAccount(): JSX.Element {
         <Checkbox>
           I accept the{" "}
           <a
-            href="/terms-and-conditions"
+            href="/terms-and-condition"
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: "#e20000", textDecoration: "none" }}
