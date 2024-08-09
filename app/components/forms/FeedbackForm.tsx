@@ -178,7 +178,7 @@ function Feedback(): JSX.Element {
           style={{
             background: "#E20000",
             borderRadius: "25px",
-            width: "40%",
+            width: "50%",
             height: "51px",
           }}
         >
