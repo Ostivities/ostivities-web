@@ -177,7 +177,7 @@ function Feedback(): JSX.Element {
           className="font-BricolageGrotesqueLight text-base mt-5"
           style={{
             background: "#E20000",
-            borderRadius: "20px",
+            borderRadius: "25px",
             width: "60%",
             height: "51px",
           }}
