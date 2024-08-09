@@ -83,7 +83,7 @@ function Feedback(): JSX.Element {
             label="Email Address"
             name="email"
             rules={[
-              { required: true, message: "Please input your email" },
+              { required: true, message: "Please input your email address" },
             ]}
           >
             <Input
