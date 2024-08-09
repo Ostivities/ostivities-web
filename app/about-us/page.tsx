@@ -11,7 +11,7 @@ function AboutUs(): JSX.Element {
           alt="About us"
           style={{ width: "100%", height: "auto", marginTop: "60px" }}
         />
-        <div className="md:container md:mx-auto lg:container lg:mx-auto xl:container xl:mx-auto px-5 relative pt-6">
+        <div className="md:container md:mx-auto lg:container lg:mx-auto xl:container xl:mx-auto xxl:container xxl:mx-auto px-5 relative pt-6">
           <div
             style={{
               marginTop: "40px",
@@ -160,6 +160,8 @@ function AboutUs(): JSX.Element {
               Thank you for being a part of Ostivities. Let&apos;s make every
               event an opportunity for greatness.
             </p>
+            <br />
+              <br />
           </div>
         </div>
       </section>

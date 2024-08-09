@@ -14,7 +14,7 @@ export const NAV_LINKS: INavLinks[] = [
     rel: undefined
   },
   {
-    link: "/", name: "FAQs",
+    link: "/faqs", name: "FAQs",
     target: undefined,
     rel: undefined
   },
@@ -84,32 +84,19 @@ export const ADVANTAGES_TWO: IFeatures[] = [
   },
 ];
 
-export const COMPANY: INavLinks[] = [
-  {
-    link: "/", name: "FAQ's",
-    target: undefined,
-    rel: undefined
-  },
-  {
-    link: "/", name: "Blog",
-    target: undefined,
-    rel: undefined
-  },
-];
-
 export const LEGAL: INavLinks[] = [
   {
-    link: "/", name: "Terms & Condition",
+    link: "/terms-and-condition", name: "Terms & Condition",
     target: undefined,
     rel: undefined
   },
   {
-    link: "/", name: "Privacy Policy",
+    link: "/privacy-policy", name: "Privacy Policy",
     target: undefined,
     rel: undefined
   },
   {
-    link: "/", name: "Refund Policy",
+    link: "/refund-policy", name: "Refund Policy",
     target: undefined,
     rel: undefined
   },
