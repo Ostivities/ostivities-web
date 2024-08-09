@@ -158,6 +158,8 @@ export interface IUser {
   confirmPassword: string;
   terms_and_condition: boolean;
   businessName: string;
+  phonenumber: string;
+  feedback: string;
 }
 
 export interface ILogin {
