@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { global } from "styled-jsx/css";
 import "@/app/globals.css";
 
-const Tickets = () => {
+const TicketsSelection = () => {
   const router = useRouter();
   const title = (
     <div className="flex-center gap-2">
@@ -66,7 +66,13 @@ const Tickets = () => {
               </div>
             </div>
           </div>
-          <div className="mt-20 flex flex-col gap-6">
+
+          <div className="pr-full mt-16">
+          <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueMedium my-4 custom-font-size">
+          Choose one or more tickets and prepare for an extraordinary experience!</h3>
+          <div className="mt-10 flex flex-col gap-6">
+          </div>
+
             {remainingTickets.map((remaining, index) => (
               <div key={index} className="card-shadow flex justify-between items-center">
                 <div>
@@ -109,5 +115,5 @@ const Tickets = () => {
   );
 };
 
-export default Tickets;
+export default TicketsSelection;
 

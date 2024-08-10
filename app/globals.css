@@ -1255,3 +1255,6 @@ form .ant-form-item-explain, /* For Ant Design form validation messages */
 form .error-message {
     font-family: 'Bricolage GrotesqueRegular', sans-serif;
 }
+.custom-font-size {
+  font-size: 16px;
+}
