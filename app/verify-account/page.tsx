@@ -11,7 +11,7 @@ function VerifyAccount() {
         <Space direction="vertical" size={'small'} className="w-5/6">
           <Heading3 content={'Account Verification'} className="" />
           <Paragraph
-            content="Enter the verification code sent to your registered Email."
+            content="Please enter the verification code sent to your registered email along with a welcome message."
             className=""
           />
         </Space>

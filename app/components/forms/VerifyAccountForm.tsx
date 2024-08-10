@@ -36,13 +36,7 @@ function VerificationCodeForm(): JSX.Element {
             formatter={(str) => str.toUpperCase()}
             className="placeholder:font-BricolageGrotesqueRegular flex-1"
           />
-          <button
-            type="button"
-            onClick={resendCode}
-            className="text-OWANBE_PRY text-s font-semibold"
-          >
-            Re-send code
-          </button>
+          
         </div>
       </Form.Item>
       <br />
