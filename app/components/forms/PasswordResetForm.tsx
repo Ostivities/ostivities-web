@@ -1,6 +1,8 @@
 'use client';
-import { Button, Form, Input, message, notification } from 'antd';
+import { Button, Form, Input, message, Typography } from 'antd';
 import React from 'react';
+
+const { Title } = Typography;
 
 function PasswordResetForm(): JSX.Element {
   const [form] = Form.useForm();
@@ -23,48 +25,45 @@ function PasswordResetForm(): JSX.Element {
       className="w-full font-BricolageGrotesqueRegular flex flex-col"
       style={{ fontFamily: 'BricolageGrotesqueRegular' }}
     >
-      <Form.Item
-        label="Enter reset code"
-        style={{ fontFamily: 'BricolageGrotesqueRegular' }}
-        className="font-BricolageGrotesqueRegular"
-      >
-        <Form.Item
-          name="resetcode"
-          label="Reset Code"
-          noStyle
-          rules={[{ required: true, message: 'Please input reset code' }]}
-        >
-          <div className="flex items-center gap-3">
-            <Input
-              placeholder="Enter your code"
-              className="placeholder:font-BricolageGrotesqueRegular flex-1"
-            />
-            <button
-              type="button"
-              onClick={resendCode}
-              className="text-OWANBE_PRY text-xs font-semibold"
-            >
-              Re-send code
-            </button>
-          </div>
-        </Form.Item>
-      </Form.Item>
+      <Title level={5} style={{ fontFamily: 'Bricolage Grotesque, sans-serif' }}>
+  Enter Reset Code
+</Title>
 
       <Form.Item
-        label="New Password"
+        name="resetcode"
+        noStyle
+        rules={[{ required: true, message: 'Please input reset code' }]}
+      >
+        <div className="flex items-center gap-5">
+          <Input.OTP
+            formatter={(str) => str.toUpperCase()}
+            className="placeholder:font-BricolageGrotesqueRegular flex-1"
+          />
+          <button
+            type="button"
+            onClick={resendCode}
+            className="text-OWANBE_PRY text-s font-semibold"
+          >
+            Re-send code
+          </button>
+        </div>
+      </Form.Item>
+      <br />
+      <Form.Item
+        label="Enter your New Password"
         name="password"
         hasFeedback
-        rules={[{ required: true, message: 'Please input your password' }]}
+        rules={[{ required: true, message: 'Please input your new password' }]}
       >
         <Input.Password
-          placeholder="Enter your password"
+          placeholder="Enter your New password"
           className="placeholder:font-BricolageGrotesqueRegular"
         />
       </Form.Item>
 
       <Form.Item
         name="confirm"
-        label="Re-enter Password"
+        label="Confirm your New Password"
         dependencies={['password']}
         hasFeedback
         rules={[
@@ -89,7 +88,7 @@ function PasswordResetForm(): JSX.Element {
           className="placeholder:font-BricolageGrotesqueRegular"
         />
       </Form.Item>
-
+      <br />
       <Form.Item>
         <Button
           type="primary"

@@ -6,7 +6,7 @@ import { Button, Form, FormProps, Input } from "antd";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-function ForgotPasswordForm(): JSX.Element {
+function ForgotPasswordForm(): JSX.Element { 
   const router = useRouter();
   const [form] = Form.useForm();
   const [email, setEmail] = useState("");
@@ -60,7 +60,7 @@ function ForgotPasswordForm(): JSX.Element {
           <ArrowLeftOutlined /> <span>I remember my password</span>
         </div>
       </div>
-
+      <br />
       <Form.Item style={{ marginTop: "20px" }}>
         <Button
           type="primary"

@@ -11,7 +11,7 @@ function PasswordReset() {
         <Space direction="vertical" size={"small"} className="w-5/6">
           <Heading3 content={"Password Reset"} className="" />
           <Paragraph
-            content="A code has been sent to your email."
+            content="A reset code has been sent to your registered email."
             className=""
           />
         </Space>
