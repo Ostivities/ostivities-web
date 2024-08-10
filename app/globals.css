@@ -1231,3 +1231,27 @@ button {
   width: fit-content; /* Ensure the container size fits the image */
   height: fit-content; /* Ensure the container size fits the image */
 }
+/* In your global CSS file, or within a CSS module */
+.info-card {
+  font-family: 'Bricolage Grotesque', sans-serif;
+}
+
+.info-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: bold; /* Adjust as needed */
+}
+
+.info-about,
+.info-status {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: normal; /* Adjust as needed */
+}
+
+form label,
+form input,
+form select,
+form textarea,
+form .ant-form-item-explain, /* For Ant Design form validation messages */
+form .error-message {
+    font-family: 'Bricolage GrotesqueRegular', sans-serif;
+}

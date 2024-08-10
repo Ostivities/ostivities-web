@@ -59,7 +59,7 @@ const SingleTicket = (): JSX.Element => {
       </Form.Item>
 
       <Form.Item<FieldType>
-        label="Ticket stock"
+        label="Ticket stock" 
         name="ticketStock"
         rules={[{ required: true, message: "Please input your ticket stock!" }]}
         style={{ marginBottom: '8px' }}
@@ -116,66 +116,7 @@ const SingleTicket = (): JSX.Element => {
         <Checkbox>Transfer charge fees to guest</Checkbox>
       </Form.Item>
 
-      <div>
-        <p style={{ marginBottom: '16px' }}>Would you like to gather more information?</p>
-        <Form.List name="items">
-          {(fields, { add, remove }) => (
-            <>
-              {fields.map((field, index) => (
-                <div key={field.key} style={{ marginBottom: '16px' }}>
-                  <Form.Item
-                    label="Custom Question"
-                    required={false}
-                    style={{ marginBottom: '8px' }}
-                  >
-                    <Form.Item
-                      {...field}
-                      validateTrigger={["onChange", "onBlur"]}
-                      rules={[
-                        {
-                          required: false,
-                          whitespace: true,
-                          message: "Please input question.",
-                        },
-                      ]}
-                      noStyle
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <Input
-                          placeholder="e.g would you be willing to attend this event?"
-                          style={{ flex: 1, marginRight: 8 }}
-                        />
-                        <CloseOutlined
-                          className="dynamic-delete-button"
-                          onClick={() => remove(field.name)}
-                          style={{ color: '#e20000', fontSize: '16px' }}
-                        />
-                      </div>
-                    </Form.Item>
-                    <Form.Item
-                      name={[field.name, 'compulsory']}
-                      valuePropName="checked"
-                      noStyle
-                    >
-                      <Checkbox>Make this question compulsory</Checkbox>
-                    </Form.Item>
-                  </Form.Item>
-                </div>
-              ))}
-              <Form.Item>
-                <Button
-                  type="link"
-                  onClick={() => add()}
-                  style={{ color: '#e20000', padding: 0 }}
-                  icon={<PlusOutlined style={{ color: '#e20000', fontSize: '16px' }} />}
-                >
-                  Add question
-                </Button>
-              </Form.Item>
-            </>
-          )}
-        </Form.List>
-      </div>
+      
     </Form>
   );
 };

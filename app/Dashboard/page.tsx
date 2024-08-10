@@ -10,6 +10,8 @@ import { useRouter } from 'next/navigation';
 import { Country, State } from "country-state-city";
 import { EVENT_TYPES } from '../utils/data';
 import useFetch from '../components/forms/create-events/auth';
+import PaidEvents from '../components/DashboardLayout/PaidEvents';
+import FreeEvents from '../components/DashboardLayout/FreeEvents';
 
 function Dashboard(): JSX.Element {
   const route = useRouter();
@@ -83,6 +85,8 @@ const STATE_BY_COUNTRYCODE = (stateCode: string): { label: string; value: string
           </div>
         </div>
         <PopularEvents />
+        <PaidEvents />
+        <FreeEvents />
       </div>
     </DashboardLayout>
   );

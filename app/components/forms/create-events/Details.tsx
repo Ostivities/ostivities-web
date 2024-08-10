@@ -160,7 +160,7 @@ function Details(): JSX.Element {
             className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
             content={
               formStep === 1
-                ? "Lets get you started by creating your event."
+                ? "Lets get you started by creating your event." 
                 : formStep === 2
                 ? "Upload your event image here by clicking the camera icon (File size should not be more than 10MB)."
                 : "For free events, Ostivities is free. For paid events, we charge a percentage-based transaction fee on ticket sales."
@@ -229,7 +229,7 @@ function Details(): JSX.Element {
                           className=""
                           htmlFor="eventName"
                         />
-                        <Input {...field} placeholder="Enter Event Name" />
+                        <Input {...field} placeholder="Enter Event Name" /> 
                       </Space>
                     )}
                   />
@@ -319,7 +319,6 @@ function Details(): JSX.Element {
 />
 
     </div>
-
                 <div className="flex flex-col space-y-4 pl-6">
                   <Controller
                     name="customURL"
@@ -996,8 +995,9 @@ function Details(): JSX.Element {
                 type="default"
                 size={"large"}
                 className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
+                onClick={() => router.push("/Dashboard")}
               >
-                Cancel
+                Cancel 
               </Button>
               <Button
                 type="primary"

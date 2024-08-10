@@ -1,19 +1,21 @@
+import { ForwardOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 
 interface PropsI {
   title: string;
   uri?: string;
   children: React.ReactNode;
+  titleClass?: string;  // Add the optional titleClass prop
 }
 
-const EventSection = ({ title, uri, children }: PropsI) => {
+const EventSection: React.FC<PropsI> = ({ title, uri, children, titleClass = 'font-bricolage-grotesque font-semibold text-2xl mb-6' }) => {
   return (
     <section>
       <div className="flex-center justify-between">
-        <h2 className="font-semibold text-3xl mb-7">{title}</h2>
+        <h2 className={titleClass}>{title}</h2>
         {uri && (
-          <Link href={uri} className="font-semibold text-OWANBE_PRY">
-            See More {'>'}
+          <Link href={uri} className="font-bricolage-grotesque font-semibold text-OWANBE_PRY">
+            See More {<ForwardOutlined />}
           </Link>
         )}
       </div>
@@ -23,5 +25,3 @@ const EventSection = ({ title, uri, children }: PropsI) => {
 };
 
 export default EventSection;
-{
-}
