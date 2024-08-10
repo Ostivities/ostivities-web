@@ -1,6 +1,9 @@
 import OwanbeWebLayout from "@/app/components/WebLayout/OwanbeWebLayout";
 import soon from "@/public/aboutus.svg";
+import ceo from "@/public/CEO.svg";
+import empty from "@/public/empty.svg";
 import Image from "next/image";
+
 
 function AboutUs(): JSX.Element {
   return (
@@ -161,7 +164,86 @@ function AboutUs(): JSX.Element {
               event an opportunity for greatness.
             </p>
             <br />
-              <br />
+            <br />
+
+            <h1
+              style={{
+                fontSize: "40px",
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+            >
+              Meet our team
+            </h1>
+            <p
+              style={{
+                fontSize: "18px",
+                marginBottom: "24px",
+                maxWidth: "950px",
+                margin: "0 auto",
+                textAlign: "center", 
+              }}
+            >
+              Were a collaborative and adaptable team, dedicated to learning and continuous improvement. 
+              Each member is keenly attentive, observing your every gesture and listening to your every word.
+            </p>
+            <br />
+            <br />
+
+            <div className="flex flex-wrap -mx-2">
+              <div className="w-full sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
+              <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-4">
+                  <Image src={ceo} alt="John" className="w-full h-auto" />
+                  <div className="p-6">
+                    <h2 className="text-md font-bold">Ayatullah Olowu</h2>
+                    <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Co-Founder & CEO</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
+              <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-4">
+                  <Image src={empty} alt="John" className="w-full h-auto" />
+                  <div className="p-6">
+                    <h2 className="text-md font-bold">Idris Bankole</h2>
+                    <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Co-Founder & CTO</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
+              <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-4">
+                  <Image src={empty} alt="John" className="w-full h-auto" />
+                  <div className="p-6">
+                    <h2 className="text-md font-bold">------</h2>
+                    <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Product Manager</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
+              <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-4">
+                  <Image src={empty} alt="John" className="w-full h-auto" />
+                  <div className="p-6">
+                    <h2 className="text-md font-bold">-----</h2>
+                    <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Finance</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
+                <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-4">
+                  <Image src={empty} alt="John" className="w-full h-auto" />
+                  <div className="p-6">
+                    <h2 className="text-md font-bold">-----</h2>
+                    <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Growth</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <br />
+            <br />
           </div>
         </div>
       </section>
