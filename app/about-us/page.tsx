@@ -184,7 +184,7 @@ function AboutUs(): JSX.Element {
                 textAlign: "center", 
               }}
             >
-              Were a collaborative and adaptable team, dedicated to learning and continuous improvement. 
+              We&apos;re a collaborative and adaptable team, dedicated to learning and continuous improvement. 
               Each member is keenly attentive, observing your every gesture and listening to your every word.
             </p>
             <br />
