@@ -8,6 +8,7 @@ const SingleTicket = (): JSX.Element => {
   const { TextArea } = Input;
   const { Option } = Select;
 
+  const [ticketType, setTicketType] = useState<string>("paid");
   const [ticketStockValue, setTicketStockValue] = useState<string>("");
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
@@ -22,6 +23,10 @@ const SingleTicket = (): JSX.Element => {
     setTicketStockValue(value);
   };
 
+  const handleTicketTypeChange = (value: string) => {
+    setTicketType(value);
+  };
+
   const prefixSelector = (
     <Select defaultValue="unlimited" onChange={handleStockChange}>
       <Option value="limited">Limited</Option>
@@ -32,6 +37,7 @@ const SingleTicket = (): JSX.Element => {
   return (
     <Form<FieldType>
       name="basic"
+      initialValues={{ remember: true }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
@@ -43,7 +49,7 @@ const SingleTicket = (): JSX.Element => {
         rules={[{ required: true, message: "Please select your ticket type!" }]}
         style={{ marginBottom: '8px' }}
       >
-        <Select placeholder="Select ticket type">
+        <Select placeholder="Select ticket type" onChange={handleTicketTypeChange}>
           <Option value="free">Free</Option>
           <Option value="paid">Paid</Option>
         </Select>
@@ -74,7 +80,7 @@ const SingleTicket = (): JSX.Element => {
       <Form.Item<FieldType>
         label="Ticket price"
         name="ticketPrice"
-        rules={[{ required: true, message: "Please input your ticket price!" }]}
+        rules={[{ required: ticketType === "paid", message: "Please input your ticket price!" }]}
         style={{ marginBottom: '8px' }}
       >
         <InputNumber
@@ -83,6 +89,7 @@ const SingleTicket = (): JSX.Element => {
           min={0}
           formatter={value => `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
           parser={value => value?.replace(/\₦\s?|(,*)/g, '') as any}
+          disabled={ticketType === "free"}
         />
       </Form.Item>
 
@@ -115,8 +122,6 @@ const SingleTicket = (): JSX.Element => {
       <Form.Item<FieldType> name="remember" valuePropName="checked" style={{ marginBottom: '24px' }}>
         <Checkbox>Transfer charge fees to guest</Checkbox>
       </Form.Item>
-
-      
     </Form>
   );
 };

@@ -13,6 +13,10 @@ const CollectiveTicket = (): JSX.Element => {
   const [pricePerTicket, setPricePerTicket] = useState<number | null>(null);
   const [ticketStockValue, setTicketStockValue] = useState<string>("limited"); // Default to "limited"
 
+  const [form] = Form.useForm(); // Initialize form instance
+
+  const ticketType = Form.useWatch("ticketType", form); // Watch ticketType changes
+
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     console.log("Success:", values);
   };
@@ -50,7 +54,9 @@ const CollectiveTicket = (): JSX.Element => {
 
   return (
     <Form<FieldType>
+      form={form} // Bind form instance
       name="basic"
+      initialValues={{ remember: true }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
@@ -101,6 +107,7 @@ const CollectiveTicket = (): JSX.Element => {
           style={{ width: '100%' }}
           min={0}
           onChange={handleGroupPriceChange}
+          disabled={ticketType === "free"} // Disable if ticket type is "Free"
           formatter={value => `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
           parser={value => value?.replace(/\₦\s?|(,*)/g, '') as any}
         />
@@ -128,7 +135,7 @@ const CollectiveTicket = (): JSX.Element => {
           value={pricePerTicket !== null ? pricePerTicket : undefined}
           disabled
           style={{ width: '100%' }}
-          formatter={value => `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+          formatter={value => `₦ ${value}`.replace(/\B(?=(\d{3})+(?!d))/g, ',')}
         />
       </Form.Item>
 
@@ -148,12 +155,9 @@ const CollectiveTicket = (): JSX.Element => {
           }}
         />
       </Form.Item>
-
       <Form.Item<FieldType> name="remember" valuePropName="checked" style={{ marginBottom: '24px' }}>
         <Checkbox>Transfer charge fees to guest</Checkbox>
       </Form.Item>
-
-      
     </Form>
   );
 };
