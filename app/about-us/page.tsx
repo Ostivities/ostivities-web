@@ -96,11 +96,6 @@ function AboutUs(): JSX.Element {
                 audience, with real-time analytics to optimize campaigns.
               </li>
               <li style={{ marginBottom: "10px" }}>
-                &#x2022; <strong>Engagement And Interaction:</strong> Features
-                like live polls and networking opportunities enhance attendee
-                participation.
-              </li>
-              <li style={{ marginBottom: "10px" }}>
                 &#x2022; <strong>Post-Event Analytics:</strong> Detailed reports
                 and feedback tools help organizers improve future events.
               </li>
