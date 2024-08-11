@@ -1,6 +1,7 @@
 import OwanbeWebLayout from "@/app/components/WebLayout/OwanbeWebLayout";
 import soon from "@/public/aboutus.svg";
 import ceo from "@/public/CEO.svg";
+import cto from "@/public/CTO.svg";
 import empty from "@/public/empty.svg";
 import Image from "next/image";
 
@@ -198,7 +199,7 @@ function AboutUs(): JSX.Element {
 
               <div className="w-full sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
               <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-4">
-                  <Image src={empty} alt="John" className="w-full h-auto" />
+                  <Image src={cto} alt="John" className="w-full h-auto" />
                   <div className="p-6">
                     <h2 className="text-md font-bold">Idris Bankole</h2>
                     <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Co-Founder & CTO</p>
