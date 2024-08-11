@@ -94,7 +94,7 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
             <h3 className="text-OWANBE_PRY text-lg font-BricolageGrotesqueRegular">Payment details</h3>
             <div className="flex flex-col gap-2 mt-2 text-OWANBE_FADE text-s font-BricolageGrotesqueRegular">
               <div className="flex-center justify-between">
-                <div>Ticket fee x 2 - Early Bird</div>
+                <div>Early Bird x 2</div>
                 <div>₦10,000.00</div>
               </div>
               <div className="flex-center justify-between">
