@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { global } from "styled-jsx/css";
 import "@/app/globals.css";
 import { Heading5 } from '../typography/Typography';
+import { ForwardOutlined, PlusCircleOutlined, PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
 
 interface SummaryProps {
   continueBtn?: boolean;
@@ -48,7 +49,7 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
               onClick={handleAddDiscountClick}
               className="flex-center gap-2 text-OWANBE_PRY text-lg font-BricolageGrotesqueRegular cursor-pointer"
             >
-              <h3>Add discount code</h3>
+              <h3>Add discount code</h3> {<PlusSquareOutlined />}
             </div>
           )}
           {showInput && (
