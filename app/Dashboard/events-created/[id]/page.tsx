@@ -2,14 +2,15 @@
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import type { MenuProps } from "antd";
-import { Button, Dropdown, Space, Switch } from "antd";
+import { Button, Dropdown, message, Space, Switch } from "antd";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { HiMiniArrowLongLeft } from "react-icons/hi2";
 import { IoChevronDown } from "react-icons/io5";
 import { LiaExternalLinkAltSolid } from "react-icons/lia";
 import Image from 'next/image';
+
 
 export default function Page(): JSX.Element {
   const pathname = usePathname();
@@ -230,6 +231,9 @@ export default function Page(): JSX.Element {
             style={{
               borderRadius: "16px",
               fontFamily: "BricolageGrotesqueMedium",
+            }}
+            onClick={() => {
+              message.success('Event unpublished successfully'); // Success message
             }}
           >
             Publish Event

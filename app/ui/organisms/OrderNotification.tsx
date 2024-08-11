@@ -24,7 +24,7 @@ const OrderNotification = () => {
           <ToggleSwitch
             label="instantOrder"
             description="Instantly, for each order as it comes in."
-            isActive={activeToggle === "instantOrder"}
+            isActive={activeToggle === "instantOrder"} 
             onToggle={() => handleToggle("instantOrder")}
           />
 

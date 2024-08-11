@@ -8,6 +8,8 @@ import {
   InputNumber,
   Select,
   Space,
+  message,
+  notification,
 } from "antd";
 import React, { useState } from "react";
 import { Heading5, Label } from "../typography/Typography"; // Ensure Label component is correctly imported
@@ -36,6 +38,13 @@ const DiscountCode = (): JSX.Element => {
 
   const handleDiscountTypeChange = (value: string) => {
     setDiscountType(value);
+  };
+
+  const handleAddDiscount = () => {
+    message.success('Your discount code has been successfully created');
+    
+    // Proceed with the discount creation logic, e.g., saving the discount and moving to the next page
+    toggleDiscount("Discount_Record");
   };
 
   return (
@@ -242,9 +251,9 @@ const DiscountCode = (): JSX.Element => {
             htmlType="button"
             size="large"
             className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
-            onClick={() => toggleDiscount("Discount_Record")}
+            onClick={handleAddDiscount}
           >
-            Create
+            Add Discount
           </Button>
         </Form.Item>
       </Space>

@@ -5,7 +5,7 @@ import TicketDoubleDark from "@/public/ticket-double-dark.svg";
 import TicketDoubleRed from "@/public/ticket-double-red.svg";
 import TicketSingleRed from "@/public/Ticket-redsvg.svg";
 import Ticket from "@/public/Ticket-Slant.svg";
-import { Button, Modal, Space } from "antd";
+import { Button, message, Modal, Space } from "antd";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -84,6 +84,7 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
                     setShow(false);
                     setActive("");
                     setFormStage(formState.stage + 1);
+                    message.success('Ticket created successfully'); // Success message 
                   }}
                 >
                   Add Ticket

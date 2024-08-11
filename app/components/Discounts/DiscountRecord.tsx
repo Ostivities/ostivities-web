@@ -165,13 +165,13 @@ const DiscountRecord = (): JSX.Element => {
         <Space direction="vertical" size={"large"} className="w-full">
           <div className="flex flex-row items-center justify-end">
             <Button
-              type="primary"
+              type="default"
               size={"large"}
               htmlType="submit"
-              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles place-self-end"
+              className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
               onClick={() => toggleDiscount("Discount_Code")}
             >
-              Create
+              Create Discount
             </Button>
           </div>
 

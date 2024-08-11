@@ -2,7 +2,7 @@
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import useModal from "@/app/hooks/useModal";
 import type { MenuProps } from "antd";
-import { Button, Card, Dropdown, Space, Switch } from "antd";
+import { Button, Card, Dropdown, message, Space, Switch } from "antd";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -11,6 +11,7 @@ import { IoChevronDown } from "react-icons/io5";
 import { LiaExternalLinkAltSolid } from "react-icons/lia";
 import PaymentDetails from "../OstivitiesModal/PaymentDetails";
 import Image from 'next/image';
+
 
 export default function EventDetailsComponent({
   children,
@@ -24,6 +25,27 @@ export default function EventDetailsComponent({
   const onChange = (checked: boolean) => {
     console.log(`switch to ${checked}`);
   };
+
+  const [isPublished, setIsPublished] = useState(false); // State to track publish status
+
+  const handleButtonClick = () => {
+    setIsPublished(!isPublished);
+    if (isPublished) {
+      message.success('Event published successfully');
+    } else {
+      message.success('Event unpublished successfully');
+    }
+  };
+
+
+    const handleSwitchChange = (checked: any) => {
+      if (checked) {
+        message.success('Event added to discovery');
+      } else {
+        message.success('Event removed from discovery');
+      }
+    };
+
 
   const ExtraTab = (): JSX.Element => {
     const handleMenuClick: MenuProps["onClick"] = (e) => {
@@ -345,42 +367,48 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
       </div>
 
       <div className="flex flex-row items-center space-x-4">
-        <div className="flex flex-row items-center space-x-1">
-          <Switch onChange={onChange} className="" size="small" />
-          <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
-            Add to discovery page
-          </span>
+      <div className="flex flex-row items-center space-x-1">
+        <Switch onChange={handleSwitchChange} className="" size="default" />
+        <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
+          Add to discovery page
+        </span>
         </div>
-        <div>
-          <Button
-            type="primary"
-            size={"middle"}
-            className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl"
-            style={{
-              borderRadius: "20px",
-              fontFamily: "BricolageGrotesqueMedium",
-            }}
-          >
-            UnPublish Event
-          </Button>
         </div>
-        <div className="flex flex-row items-center space-x-1">
-          <LiaExternalLinkAltSolid
-            color="#E20000"
-            width={14}
-            height={14}
-            className="cursor-pointer text-lg"
-          />
-          <Link
-            href={""}
-            target="_self"
-            className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK cursor-pointer"
-          >
-            Copy Link
-          </Link>
-        </div>
-      </div>
+       
+  <Button
+    type="primary"
+    size={"middle"}
+    className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl"
+    style={{
+      borderRadius: "20px",
+      fontFamily: "BricolageGrotesqueMedium",
+    }}
+    onClick={handleButtonClick}
+  >
+    {isPublished ? 'Publish Event' : 'Unpublish Event'}
+  </Button>
+
+  {!isPublished && (
+    <div className="flex flex-row items-center space-x-1">
+      <LiaExternalLinkAltSolid
+        color="#E20000"
+        width={14}
+        height={14}
+        className="cursor-pointer text-lg"
+      />
+      <Button
+        type="text"
+        target="_self"
+        className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK cursor-pointer"
+      onClick={() => {
+        message.success('Event link copied'); // Success message
+      }}
+      >
+        Copy Link
+      </Button>
     </div>
+  )}
+</div>
   );
 
   return (

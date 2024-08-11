@@ -1,19 +1,27 @@
 import ShieldIcon from "@/app/components/Icons/ShieldIcon";
 import WarningIcon from "@/app/components/Icons/WarningIcon";
 import { IModal } from "@/app/utils/interface";
-import { Button, Modal, Space } from "antd";
+import { Button, message, Modal, Space } from "antd";
 import React from "react";
 import { Paragraph } from "../typography/Typography";
 
 const DeleteTicket = ({ open, onCancel, onOk, actionType }: IModal) => {
+  const handleDeleteClick = () => {
+    message.success('Entry deleted successfully'); // Success message for delete
+    onCancel(); // Close the modal
+  };
+
+  const handleDuplicateClick = () => {
+    message.success('Entry duplicated successfully'); // Success message for duplicate
+    onCancel(); // Close the modal
+  };
+
   return (
     <Modal
       title={null}
       open={open}
       onOk={onOk}
-      onCancel={() => {
-        onCancel();
-      }}
+      onCancel={onCancel}
       className="py-8"
       footer={
         <Space
@@ -22,19 +30,33 @@ const DeleteTicket = ({ open, onCancel, onOk, actionType }: IModal) => {
           style={{ margin: "auto", width: "100%" }}
           className="pb-7 mx-auto text-center"
         >
-          <Button
-            type={"primary"}
-            size="large"
-            className={`font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold rounded-2xl mx-auto place-self-center w-2/3`}
-            style={{
-              borderRadius: "25px",
-              fontFamily: "BricolageGrotesqueMedium",
-            }}
-            onClick={onCancel}
-          >
-            Yes, {actionType === "delete" && "delete"}{" "}
-            {actionType === "warning" && "duplicate"}
-          </Button>
+          {actionType === "delete" ? (
+            <Button
+              type={"primary"}
+              size="large"
+              className={`font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold rounded-2xl mx-auto place-self-center w-2/3`}
+              style={{
+                borderRadius: "25px",
+                fontFamily: "BricolageGrotesqueMedium",
+              }}
+              onClick={handleDeleteClick}
+            >
+              Yes, delete
+            </Button>
+          ) : actionType === "warning" ? (
+            <Button
+              type={"primary"}
+              size="large"
+              className={`font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold rounded-2xl mx-auto place-self-center w-2/3`}
+              style={{
+                borderRadius: "25px",
+                fontFamily: "BricolageGrotesqueMedium",
+              }}
+              onClick={handleDuplicateClick}
+            >
+              Yes, duplicate
+            </Button>
+          ) : null}
           <Button
             type={"default"}
             size={"large"}
