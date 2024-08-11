@@ -42,7 +42,7 @@ const Payment = () => {
           <div className=" bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem]">
             We have reserved your tickets please complete checkout within{' '}
             <span className=" text-OWANBE_PRY text-s font-BricolageGrotesqueRegular">{timer}</span>
-            to secure your tickets.
+            minutes to secure your tickets.
           </div>
           <div className="pr-full mt-20">
             <div className="flex flex-col gap-8">
