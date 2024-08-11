@@ -69,6 +69,7 @@ export interface IFormInput {
 
 export interface IModal {
   open?: boolean;
+  onClose?: any;
   onCancel?: any;
   onOk?: any;
   actionType?: "delete" | "warning";

@@ -27,7 +27,7 @@ const DeleteTicket = ({ open, onCancel, onOk, actionType }: IModal) => {
             size="large"
             className={`font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold rounded-2xl mx-auto place-self-center w-2/3`}
             style={{
-              borderRadius: "20px",
+              borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
             }}
             onClick={onCancel}
@@ -40,7 +40,7 @@ const DeleteTicket = ({ open, onCancel, onOk, actionType }: IModal) => {
             size={"large"}
             className={`font-BricolageGrotesqueSemiBold  cursor-pointer font-bold  rounded-2xl mx-auto place-self-center w-2/3`}
             style={{
-              borderRadius: "20px",
+              borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
             }}
             onClick={onCancel}
@@ -62,7 +62,7 @@ const DeleteTicket = ({ open, onCancel, onOk, actionType }: IModal) => {
           {actionType === "warning" && <WarningIcon />}
         </div>
         <Paragraph
-          className="text-OWANBE_DARK_SHADE text-sm font-normal font-BricolageGrotesqueRegular text-center mx-auto"
+          className="text-OWANBE_DARK_SHADE text-sm font-normal font-BricolageGrotesqueRegular text-center mx-auto mt-5"
           content={
             actionType === "delete"
               ? `Are you sure you want to delete this entry?`

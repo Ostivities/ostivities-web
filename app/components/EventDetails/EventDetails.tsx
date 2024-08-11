@@ -112,7 +112,7 @@ export default function EventDetailsComponent({
           <Button
             type={pathname.includes("about") ? "primary" : "text"}
             size={"large"}
-            className={`font-BricolageGrotesqueSemiBold ${
+            className={`font-BricolageGrotesqueRegular ${
               pathname.includes("about") ? "sign-up" : ""
             } cursor-pointer font-bold w-32 rounded-2xl`}
             style={{
@@ -133,7 +133,7 @@ export default function EventDetailsComponent({
           >
             <Button
               type={pathname.includes("tickets") ? "primary" : "text"}
-              className={`font-BricolageGrotesqueSemiBold cursor-pointer font-bold w-32 rounded-2xl ${
+              className={`font-BricolageGrotesqueRegular cursor-pointer font-bold w-32 rounded-2xl ${
                 pathname.includes("tickets") ? "sign-up" : ""
               }`}
               style={{
@@ -156,7 +156,7 @@ export default function EventDetailsComponent({
           <Button
             type={pathname.includes("event_page_view") ? "primary" : "text"}
             size="large"
-            className={`font-BricolageGrotesqueSemiBold ${
+            className={`font-BricolageGrotesqueRegular ${
               pathname.includes("event_page_view") ? "sign-up" : ""
             } cursor-pointer font-bold w-40 rounded-2xl`}
             style={{
@@ -175,7 +175,7 @@ export default function EventDetailsComponent({
           <Dropdown menu={{ items: GuestItems, onClick: handleMenuClick }}>
             <Button
               type={pathname.includes("guestlist") ? "primary" : "text"}
-              className="font-BricolageGrotesqueSemiBold cursor-pointer font-bold w-32 rounded-2xl"
+              className="font-BricolageGrotesqueRegular cursor-pointer font-bold w-32 rounded-2xl"
               style={{
                 borderRadius: "25px",
                 fontFamily: "BricolageGrotesqueMedium",
@@ -192,7 +192,7 @@ export default function EventDetailsComponent({
           <Button
             type={pathname.includes("sales") ? "primary" : "text"}
             size="large"
-            className={`font-BricolageGrotesqueSemiBold ${
+            className={`font-BricolageGrotesqueRegular ${
               pathname.includes("sales") ? "sign-up" : ""
             } cursor-pointer font-bold w-32 rounded-2xl`}
             style={{
