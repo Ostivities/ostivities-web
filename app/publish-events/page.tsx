@@ -4,6 +4,8 @@ import { Button } from 'antd';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Heading5 } from '../components/typography/Typography';
+import CantPublish from '@/app/components/OstivitiesModal/CantPublishModal';
+import PublishSuccess from '@/app/components/OstivitiesModal/PublishSuccessModal';
 
 const PublishEvent = (): JSX.Element => {
   const router = useRouter();

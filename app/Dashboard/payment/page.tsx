@@ -61,12 +61,8 @@ const Payment = () => {
                     </span>
                   </div>
                 </div>
-                <Image
-                  src="/images/MasterCard.svg"
-                  alt="mastercard"
-                  height={25}
-                  width={80}
-                />
+                
+                
               </div>
               <div className="card-shadow flex justify-between">
                 <div className="flex gap-3 items-start">
