@@ -44,7 +44,7 @@ const Payment = () => {
             <span className=" text-OWANBE_PRY text-s font-BricolageGrotesqueRegular">{timer}</span>
             minutes to secure your tickets.
           </div>
-          <div className="pr-full mt-20">
+          <div className="pr-full mt-16">
             <div className="flex flex-col gap-8">
               <div className="card-shadow flex justify-between">
                 <div className="flex gap-3 items-start">
