@@ -367,7 +367,7 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
       </div>
 
       <div className="flex flex-row items-center space-x-4">
-      <div className="flex flex-row items-center space-x-1">
+      <div className="flex flex-row items-center space-x-2">
         <Switch onChange={handleSwitchChange} className="" size="default" />
         <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
           Add to discovery page
@@ -390,12 +390,7 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
 
   {!isPublished && (
     <div className="flex flex-row items-center space-x-1">
-      <LiaExternalLinkAltSolid
-        color="#E20000"
-        width={14}
-        height={14}
-        className="cursor-pointer text-lg"
-      />
+     
       <Button
         type="text"
         target="_self"
@@ -404,7 +399,12 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
         message.success('Event link copied'); // Success message
       }}
       >
-        Copy Link
+         <LiaExternalLinkAltSolid
+        color="#E20000"
+        width={14}
+        height={14}
+        className="cursor-pointer text-lg"
+      />Copy Link 
       </Button>
     </div>
   )}
