@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { Heading5 } from '../components/typography/Typography';
 import PublishSuccess from '@/app/components/OstivitiesModal/PublishSuccessModal';
+import CantPublish from '@/app/components/OstivitiesModal/CantPublishModal';
 import { useState } from 'react';
 import React from 'react';
 
