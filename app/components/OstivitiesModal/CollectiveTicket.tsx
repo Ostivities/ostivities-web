@@ -127,7 +127,7 @@ const CollectiveTicket = (): JSX.Element => {
       </Form.Item>
 
       <Form.Item<FieldType>
-        label="Price per ticket"
+        label="Price per ticket" 
         name="pricePerTicket"
         style={{ marginBottom: '8px' }}
       >
@@ -137,6 +137,15 @@ const CollectiveTicket = (): JSX.Element => {
           style={{ width: '100%' }}
           formatter={value => `₦ ${value}`.replace(/\B(?=(\d{3})+(?!d))/g, ',')}
         />
+      </Form.Item>
+
+      <Form.Item<FieldType> 
+        label="Purchase limit"
+        name="purchaseLimit"
+        rules={[{ required: true, message: "Please input your purchase limit!" }]}
+        style={{ marginBottom: '8px' }}
+      >
+        <InputNumber placeholder="Enter purchase limit" style={{ width: '100%' }} min={0} />
       </Form.Item>
 
       <Form.Item<FieldType>

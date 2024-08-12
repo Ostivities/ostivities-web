@@ -153,11 +153,18 @@ export default function PublishEvent(): JSX.Element {
                         />
                       </div>
                     </div>
-                  </div>
+                  </div> 
                 </div>
               </div>
             </div>
-            <div className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-6">
+            <div className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-6"> 
+            <div className="py-8">
+  <div className="border rounded-lg p-4 bg-white card-shadow flex justify-between">
+    <h2 className="text-2xl font-BricolageGrotesqueMedium">
+      Concert with Davido
+    </h2>
+  </div>
+</div>
               <p>
                 Join us for an unforgettable night of music and entertainment
                 with Davido as he takes the stage at Eko Hotel and Suites.

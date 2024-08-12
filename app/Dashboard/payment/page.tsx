@@ -61,8 +61,6 @@ const Payment = () => {
                     </span>
                   </div>
                 </div>
-                
-                
               </div>
               <div className="card-shadow flex justify-between">
                 <div className="flex gap-3 items-start">
