@@ -1,6 +1,7 @@
 "use client";
 
 import React, { SetStateAction } from "react";
+import Link from 'next/link';
 
 import {
   Avatar,
@@ -15,7 +16,7 @@ import {
 
 import OwanbeLogo from "@/public/owanbe.svg";
 
-import Hamburger from "@/public/hamburger.svg";
+import Hamburger from "@/public/hamburger.svg"; 
 
 import {
   BellFilled,
@@ -52,12 +53,14 @@ const Navbar = ({ setCollapsed }: { setCollapsed: () => void }) => {
         }}
       >
         <div className="demo-logo flex flex-row items-center space-x-12">
+        <Link href="/" passHref>
           <Image
             src={OwanbeLogo}
             alt="Owanbe Logo"
             style={{ height: "40px" }}
             className="w-[110px] cursor-pointer"
           />
+          </Link>
 
           <Image
             src={Hamburger}

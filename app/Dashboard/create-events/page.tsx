@@ -3,53 +3,13 @@ import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import Steppers from "@/app/components/Steppper/Steppers";
 import Details from "@/app/components/forms/create-events/Details";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
 
-function Events(): JSX.Element {
-  const router = useRouter();
-  const [activeTab, setActiveTab] = useState("createEvent");
-
-  useEffect(() => {
-    if (activeTab === "createEvent") {
-      router.push("/Dashboard/create-events");
-    } else {
-      router.push("/Dashboard/events-created");
-    }
-  }, [activeTab, router]);
+function CreateEvents(): JSX.Element {
 
   const title = (
     <div className="flex justify-between items-center w-full relative pb-2">
-      <h1 style={{ fontSize: "24px" }}>
-        {activeTab === "createEvent" ? "Create Event" : " Events Created"}
-      </h1>
+      <h1 style={{ fontSize: '24px' }}>Create Event</h1>
       <div className="flex space-x-4">
-        <span
-          className={`font-medium cursor-pointer relative ${
-            activeTab === "createEvent" ? "text-black" : "text-gray-400"
-          }`}
-          style={{ fontSize: "15px" }}
-          onClick={() => {
-            setActiveTab("createEvent");
-            router.push("/Dashboard/create-events");
-          }}
-        >
-          Create Event
-          {activeTab === "createEvent" && (
-            <div className="absolute left-0 bottom-[-16px] w-full h-1 bg-red-600 rounded-full"></div>
-          )}
-        </span>
-        <span
-          className={`font-medium cursor-pointer relative ${
-            activeTab === "eventsCreated" ? "text-black" : "text-gray-400"
-          }`}
-          style={{ fontSize: "15px" }}
-          onClick={() => setActiveTab("eventsCreated")}
-        >
-          Events Created
-          {activeTab === "eventsCreated" && (
-            <div className="absolute left-0 bottom-[-16px] w-full h-1 bg-red-600 rounded-full"></div>
-          )}
-        </span>
       </div>
     </div>
   );
@@ -63,4 +23,4 @@ function Events(): JSX.Element {
   );
 }
 
-export default Events;
+export default CreateEvents;

@@ -2,7 +2,8 @@
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import EmailEditor from "@/app/components/QuillEditor/EmailEditor";
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
-import { Button, Input, Space } from "antd";
+import { Button, Input, message, Space } from "antd";
+import router from "next/router";
 import React, { useState } from "react";
 
 const EventTicketsEmail = () => {
@@ -55,7 +56,7 @@ const EventTicketsEmail = () => {
                   borderRadius: "16px",
                   fontFamily: "BricolageGrotesqueMedium",
                 }}
-                onClick={() => {}}
+                onClick={() => message.success('Test email has been sent successfully')}
               >
                 Send test
               </Button>
@@ -68,6 +69,7 @@ const EventTicketsEmail = () => {
     size="large"
     htmlType="button"
     className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
+    onClick={() => message.success('Ticket email has been initiated successfully')}
   >
     Initiate
   </Button>

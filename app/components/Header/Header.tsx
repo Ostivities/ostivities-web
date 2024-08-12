@@ -15,7 +15,7 @@ import React, { useState } from 'react';
 function Header(): JSX.Element {
   const router = useRouter();
   const pathname = usePathname();
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false); 
 
   const pathCheck =
     pathname.split('/').includes('password-reset') ||

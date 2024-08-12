@@ -236,7 +236,7 @@ export default function Page(): JSX.Element {
               message.success('Event unpublished successfully'); // Success message
             }}
           >
-            Publish Event
+            Publish Event 
           </Button>
         </div>
       </div>

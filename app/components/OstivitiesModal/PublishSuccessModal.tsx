@@ -32,7 +32,7 @@ const PublishSuccessModal = ({ open, onCancel, onClose, onOk }: IModal): JSX.Ele
           </p>
           <div className="flex justify-center">
             <button
-              onClick={() => router.push("/Dashboard/events-created")} 
+              onClick={() => router.push("/Dashboard/events-created/${params?.id}/about")} 
               className="block primary-btn font-normal text-base mt-10 px-32"
             >
               Manage Event

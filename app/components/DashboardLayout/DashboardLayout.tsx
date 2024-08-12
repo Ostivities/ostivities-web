@@ -5,13 +5,14 @@ import Button from "@/app/ui/atoms/Button";
 import { NAV_LINKS } from "@/app/utils/data";
 import { IDashboard, INavLinks } from "@/app/utils/interface";
 import Hamburger from "@/public/hamburger.svg";
-import OwanbeLogo from "@/public/owanbe.svg";
+import OwanbeLogo from "@/public/owanbe.svg"; 
 import {
   BellFilled,
   CaretDownFilled,
   CompassOutlined,
   FieldTimeOutlined,
   FileAddOutlined,
+  FileSearchOutlined,
   PlusCircleOutlined,
   QuestionCircleOutlined,
   SettingOutlined,
@@ -38,11 +39,8 @@ const items1: MenuProps["items"] = [
 
 const items2: MenuProps["items"] = [
   { icon: CompassOutlined, title: "Discovery", link: "/Dashboard" },
-  {
-    icon: PlusCircleOutlined,
-    title: "Create Event",
-    link: "/Dashboard/create-events",
-  },
+  { icon: PlusCircleOutlined, title: 'Create Event', link: '/Dashboard/create-events' },
+  { icon: FileSearchOutlined, title: 'Events Created', link: '/Dashboard/events-created' },
   { icon: SettingOutlined, title: "Settings", link: "/Dashboard/settings" },
   { icon: FieldTimeOutlined, title: "Coming Soon", link: "/Dashboard/coming-soon" },
 ].map((item) => {

@@ -2,8 +2,8 @@
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import EmailEditor from "@/app/components/QuillEditor/EmailEditor";
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
-import { Button, Form, FormProps, Input, Select, Space, Upload, UploadFile } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { Button, Form, FormProps, Input, message, Select, Space, Upload, UploadFile } from "antd";
+import { UploadOutlined, DeleteOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 
 interface FieldType {}
@@ -24,9 +24,7 @@ const EventsGuestListEmail = () => {
     return values;
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-    errorInfo
-  ) => {
+  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
     return errorInfo;
   };
 
@@ -53,6 +51,17 @@ const EventsGuestListEmail = () => {
 
   const handleFileChange = ({ fileList: newFileList }: { fileList: UploadFile[] }) => {
     setFileList(newFileList);
+
+    // Check if a file was added
+    const lastFile = newFileList[newFileList.length - 1];
+    if (lastFile && lastFile.status === 'done') {
+      message.success('File uploaded successfully!', 2); // 2 seconds duration
+    }
+
+    // Check if a file was removed
+    if (newFileList.length < fileList.length) {
+      message.success('File removed successfully.', 2); // 2 seconds duration
+    }
   };
 
   return (
@@ -185,6 +194,12 @@ const EventsGuestListEmail = () => {
               fileList={fileList}
               onChange={handleFileChange}
               beforeUpload={() => false} // Prevent automatic upload
+              itemRender={(originNode) => (
+                <div className="ant-upload-list-item" 
+                style={{ display: 'flex', alignItems: '' }}>
+                  {originNode}
+                </div>
+              )}
             >
               <Button icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
@@ -219,7 +234,7 @@ const EventsGuestListEmail = () => {
                   borderRadius: "16px",
                   fontFamily: "BricolageGrotesqueMedium",
                 }}
-                onClick={() => {}}
+                onClick={() => message.success('Test email has been sent successfully')}
               >
                 Send test
               </Button>
@@ -232,6 +247,7 @@ const EventsGuestListEmail = () => {
               size={"large"}
               htmlType="button"
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
+              onClick={() => message.success('Guestlist email has been initiated successfully')}
             >
               Send Email
             </Button>

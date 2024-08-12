@@ -32,8 +32,8 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
             <Image
               src="/images/placeholder-6.png"
               alt=""
-              height={600}
-              width={464}
+              height={520} 
+              width={440}
               className=""
             />
             <div className="absolute inset-0 bg-image-card"></div>
@@ -137,7 +137,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
           </div>
           <div className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-6">
           <div className="py-8">
-  <div className="border rounded-lg p-4 bg-white card-shadow flex justify-between">
+  <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between">
     <h2 className="text-2xl font-BricolageGrotesqueMedium">
       Concert with Davido
     </h2>
@@ -152,6 +152,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
             now and be part of a night to remember!
             </p>
             <div className="flex justify-center mt-12">
+              
             <button
   onClick={() => router.push('/Dashboard/tickets')}
   className="w-full rounded-full bg-OWANBE_PRY px-24 py-3 text-white text-xl font-bold"
