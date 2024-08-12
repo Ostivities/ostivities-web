@@ -195,14 +195,14 @@ const EventTickets = () => {
             <Button
               type="primary"
               size="large"
-              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-32 rounded-2xl float-end"
+              className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button float-end"
               style={{
                 borderRadius: "20px",
-                fontFamily: "BricolageGrotesqueMedium",
+                fontFamily: "BricolageGrotesqueMedium", 
               }}
               onClick={() => setIsModalOpen(true)}
             >
-              Add Tickets
+              Add Tickets 
             </Button>
             <Input.Search
               placeholder="Search tickets"
