@@ -5,10 +5,16 @@ import { Button, message, Modal, Space } from "antd";
 import React from "react";
 import { Paragraph } from "../typography/Typography";
 
-const DeleteTicket = ({ open, onCancel, onOk, actionType }: IModal) => {
+const DeleteEvent = ({ open, onCancel, onOk, actionType, selectedRowKeys }: IModal) => {
   const handleDeleteClick = () => {
-    message.success('Entry deleted successfully'); // Success message for delete
-    onCancel(); // Close the modal
+    // Handle delete logic here
+    console.log("Delete selected:", selectedRowKeys);
+
+    // Success message for delete
+    message.success('Event deleted successfully');
+
+    // Close the modal
+    onCancel();
   };
 
   const handleDuplicateClick = () => {
@@ -43,19 +49,6 @@ const DeleteTicket = ({ open, onCancel, onOk, actionType }: IModal) => {
             >
               Yes, delete
             </Button>
-          ) : actionType === "warning" ? (
-            <Button
-              type={"primary"}
-              size="large"
-              className={`font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold rounded-2xl mx-auto place-self-center w-2/3`}
-              style={{
-                borderRadius: "25px",
-                fontFamily: "BricolageGrotesqueMedium",
-              }}
-              onClick={handleDuplicateClick}
-            >
-              Yes, duplicate
-            </Button>
           ) : null}
           <Button
             type={"default"}
@@ -80,21 +73,22 @@ const DeleteTicket = ({ open, onCancel, onOk, actionType }: IModal) => {
         className="pb-7 pt-8"
       >
         <div className="mx-auto text-center flex flex-row w-full justify-center items-center">
-          {actionType === "delete" && <ShieldIcon />}
-          {actionType === "warning" && <WarningIcon />}
+          {actionType === "delete" && <WarningIcon />}
         </div>
         <Paragraph
-          className="text-OWANBE_DARK_SHADE text-sm font-normal font-BricolageGrotesqueRegular text-center mx-auto mt-5"
-          content={
-            actionType === "delete"
-              ? `Are you sure you want to delete this entry?`
-              : `Are you sure you want to duplicate this entry?`
-          }
-          styles={{ fontWeight: "normal !important" }}
-        />
+  className="text-OWANBE_DARK_SHADE text-sm font-normal font-BricolageGrotesqueRegular text-center mx-auto mt-5"
+  content={
+    <>
+      Are you sure you want to delete this event(s)?
+      <br />
+      This action is irreversible
+    </>
+  }
+  styles={{ fontWeight: "normal !important" }}
+/>
       </Space>
     </Modal>
   );
 };
 
-export default DeleteTicket;
+export default DeleteEvent;

@@ -74,6 +74,7 @@ export interface IModal {
   onOk?: any;
   actionType?: "delete" | "warning";
   data?: any;
+  selectedRowKeys?: string | number; 
 }
 
 export type FieldType = {

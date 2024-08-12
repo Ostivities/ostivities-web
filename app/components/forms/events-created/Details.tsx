@@ -3,6 +3,7 @@ import { Label } from "@/app/components/typography/Typography";
 import "@/app/globals.css";
 import { generateRandomString } from "@/app/utils/helper";
 import { DataType } from "@/app/utils/interface";
+import DeleteTicket from "@/app/components/OstivitiesModal/DeleteEvent";
 import {
   DeleteOutlined,
   FileExcelOutlined,
@@ -24,6 +25,8 @@ const EventsCreatedTable: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [isShown, setIsShown] = useState(false);
+  const [actionType, setActionType] = useState<"delete" | "warning">();
 
   const data: DataType[] = Array.from({ length: 50 }, (_, index) => ({
     key: `${index + 1}`,
@@ -177,6 +180,13 @@ const EventsCreatedTable: React.FC = () => {
   };
 
   return (
+    <React.Fragment>
+      <DeleteTicket
+        open={isShown}
+        onCancel={() => setIsShown(false)}
+        onOk={() => setIsShown(false)}
+        actionType={actionType}
+      />
     <div className="w-full flex flex-col space-y-6">
       <div className="flex justify-between items-center mb-4">
         <Search
@@ -192,8 +202,8 @@ const EventsCreatedTable: React.FC = () => {
               danger
               style={{ borderRadius: 15, marginRight: 8 }}
               onClick={() => {
-                // Handle delete logic here
-                console.log("Delete selected:", selectedRowKeys);
+                setIsShown(true);
+                setActionType("delete");
               }}
             >
               <DeleteOutlined />
@@ -237,6 +247,7 @@ const EventsCreatedTable: React.FC = () => {
         scroll={{ x: "max-content" }}
       />
     </div>
+    </React.Fragment>
   );
 };
 

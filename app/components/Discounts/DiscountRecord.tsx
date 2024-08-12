@@ -67,7 +67,7 @@ const DiscountRecord = (): JSX.Element => {
             setActionType("delete");
           }}
         >
-          Delete
+          Delete 
         </Button>
       ),
       key: "3",
