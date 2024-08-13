@@ -28,40 +28,6 @@ const DiscountRecord = (): JSX.Element => {
             color: "#000000",
             fontFamily: "BricolageGrotesqueRegular",
           }}
-        >
-          Edit
-        </Button>
-      ),
-      key: "1",
-    },
-    {
-      label: (
-        <Button
-          type="link"
-          className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
-          style={{
-            color: "#000000",
-            fontFamily: "BricolageGrotesqueRegular",
-          }}
-          onClick={() => {
-            setIsShown(true);
-            setActionType("warning");
-          }}
-        >
-          Duplicate
-        </Button>
-      ),
-      key: "2",
-    },
-    {
-      label: (
-        <Button
-          type="link"
-          className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
-          style={{
-            color: "#000000",
-            fontFamily: "BricolageGrotesqueRegular",
-          }}
           onClick={() => {
             setIsShown(true);
             setActionType("delete");

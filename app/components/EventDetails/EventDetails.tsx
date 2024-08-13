@@ -236,7 +236,7 @@ export default function EventDetailsComponent({
               className={`font-BricolageGrotesqueSemiBold  cursor-pointer font-bold w-48 rounded-2xl place-self-end float-right`}
               style={{
                 borderRadius: "25px",
-                fontFamily: "BricolageGrotesqueMedium",
+                fontFamily: "BricolageGrotesqueRegular",
                 float: "right",
               }}
               onClick={() => setIsModalOpen(true)}

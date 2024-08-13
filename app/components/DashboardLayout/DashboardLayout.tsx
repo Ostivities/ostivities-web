@@ -22,9 +22,11 @@ import { Avatar, Badge, Dropdown, Layout, Menu, Space, theme } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import React, { isValidElement, useState } from "react";
+import React, { isValidElement, useEffect, useRef, useState } from "react";
 import useLocalStorage from "use-local-storage";
 import useFetch from "../forms/create-events/auth";
+import { relative } from "path";
+
 
 const items1: MenuProps["items"] = [
   {
@@ -135,6 +137,20 @@ function DashboardLayout({
   };
 
   const [toggleNotifications, setToggleNotifications] = useState(false);
+  const notificationRef = useRef<HTMLDivElement>(null);
+
+  const handleClickOutside = (event: any) => {
+    if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
+      setToggleNotifications(false);  
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <FormProvider>
@@ -157,15 +173,16 @@ function DashboardLayout({
               alt="Owanbe Logo"
               style={{ height: "40px" }}
               className="w-[110px] cursor-pointer"
+            onClick={() => {
+              router.push(`/`);
+            }}
             />
 
-            <Image
-              src={Hamburger}
-              alt="Owanbe Logo"
-              style={{ width: "40px", height: "35px", borderRadius: "10px" }}
-              className="cursor-pointer"
-              onClick={toggleSidebar}
-            />
+            
+
+
+
+            
           </div>
           {!isLoggedIn && (
             <>
@@ -215,6 +232,7 @@ function DashboardLayout({
                     />
                   </Badge>
                   <div
+                   ref={notificationRef}
                     className={`fixed top-16 right-0 min-w-[30rem] w-[30rem] transition-all z-50 ${
                       toggleNotifications
                         ? " translate-y-0"
@@ -298,13 +316,14 @@ function DashboardLayout({
           )}
         </Header>
         <Layout>
+          
           <Sider
             width={200}
             style={{
               background: colorBgContainer,
               // overflowY: 'scroll',
               fontFamily: "BricolageGrotesqueMedium !important",
-              paddingTop: "60px",
+              paddingTop: "1px",
             }}
             breakpoint="lg"
             trigger={null}
@@ -318,6 +337,13 @@ function DashboardLayout({
               // console.log(broken, 'broken');
             }}
           >
+             <Image
+              src={Hamburger}
+              alt="Owanbe Logo"
+              style={{ width: "40px", height: "35px", borderRadius: "10px", margin:"1rem" }}
+              className="cursor-pointer"
+              onClick={toggleSidebar}
+            />
             <Menu
               mode="inline"
               defaultSelectedKeys={["1"]}
