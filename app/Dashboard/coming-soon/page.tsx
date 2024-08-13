@@ -2,7 +2,7 @@
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import React from "react";
 import { useRouter } from "next/navigation";
-import soon from '@/public/comigsoon.svg';
+import soon from '@/public/comingsoonpage.svg';
 import Image from 'next/image';
 
 function ComingSoon(): JSX.Element {
