@@ -15,9 +15,9 @@ const OrderNotification = () => {
       <div className="self-start">
         <>
           <H4 content="Order Notifications" />
-          <p className="text-OWANBE_PRY mt-3">
-            How frequently should we send you order notifications?
-          </p>
+          <p style={{ fontFamily: 'Bricolage Grotesque, sans-serif', fontWeight: '400' }} className="text-OWANBE_PRY mt-3">
+    How frequently should we send you order notifications?
+</p>
         </>
 
         <div className="flex flex-col gap-y-8 mt-11">

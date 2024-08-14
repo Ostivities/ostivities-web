@@ -15,7 +15,7 @@ const PaymentSetting = () => {
       <div className="self-start">
         <>
           <H4 content="Payment Setting" />
-          <p className="text-OWANBE_PRY mt-3">
+          <p style={{ fontFamily: 'Bricolage Grotesque, sans-serif', fontWeight: '400' }} className="text-OWANBE_PRY mt-3">
             When would you like to receive payouts of your event ticket sales?
           </p>
         </>

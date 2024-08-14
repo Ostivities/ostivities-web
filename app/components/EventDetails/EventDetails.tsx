@@ -11,6 +11,7 @@ import { IoChevronDown } from "react-icons/io5";
 import { LiaExternalLinkAltSolid } from "react-icons/lia";
 import PaymentDetails from "../OstivitiesModal/PaymentDetails";
 import Image from 'next/image';
+import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
 
 
 export default function EventDetailsComponent({
@@ -22,8 +23,8 @@ export default function EventDetailsComponent({
   const pathname = usePathname();
   const params = useParams();
   const router = useRouter();
-  const onChange = (checked: boolean) => {
-    console.log(`switch to ${checked}`);
+  const onToggle = (checked: boolean) => {
+    console.log(`Switch to ${checked}`);
   };
 
   const [isPublished, setIsPublished] = useState(false); // State to track publish status
@@ -37,14 +38,21 @@ export default function EventDetailsComponent({
     }
   };
 
-
-    const handleSwitchChange = (checked: any) => {
-      if (checked) {
-        message.success('Event added to discovery');
-      } else {
-        message.success('Event removed from discovery');
-      }
-    };
+  const [activeToggle, setActiveToggle] = useState<string | null>(null);
+  const [isActive, setIsActive] = useState<boolean>(false);
+  
+  const handleSwitchChange = (checked: boolean) => {
+    if (checked) {
+      message.success('Event added to discovery');
+    } else {
+      message.success('Event removed from discovery');
+    }
+  };
+  
+  const handleToggle = (label: string) => {
+    setActiveToggle((prev: string | null) => (prev === label ? null : label));
+    setIsActive(!isActive);
+  };
 
 
   const ExtraTab = (): JSX.Element => {
@@ -136,7 +144,7 @@ export default function EventDetailsComponent({
             size={"large"}
             className={`font-BricolageGrotesqueRegular ${
               pathname.includes("about") ? "sign-up" : ""
-            } cursor-pointer font-bold w-32 rounded-2xl`}
+            } cursor-pointer font-medium w-32 rounded-2xl`}
             style={{
               borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
@@ -155,7 +163,7 @@ export default function EventDetailsComponent({
           >
             <Button
               type={pathname.includes("tickets") ? "primary" : "text"}
-              className={`font-BricolageGrotesqueRegular cursor-pointer font-bold w-32 rounded-2xl ${
+              className={`font-BricolageGrotesqueRegular cursor-pointer font-medium w-32 rounded-2xl ${
                 pathname.includes("tickets") ? "sign-up" : ""
               }`}
               style={{
@@ -180,7 +188,7 @@ export default function EventDetailsComponent({
             size="large"
             className={`font-BricolageGrotesqueRegular ${
               pathname.includes("event_page_view") ? "sign-up" : ""
-            } cursor-pointer font-bold w-40 rounded-2xl`}
+            } cursor-pointer font-medium w-40 rounded-2xl`}
             style={{
               borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
@@ -197,7 +205,7 @@ export default function EventDetailsComponent({
           <Dropdown menu={{ items: GuestItems, onClick: handleMenuClick }}>
             <Button
               type={pathname.includes("guestlist") ? "primary" : "text"}
-              className="font-BricolageGrotesqueRegular cursor-pointer font-bold w-32 rounded-2xl"
+              className="font-BricolageGrotesqueRegular cursor-pointer font-medium w-32 rounded-2xl"
               style={{
                 borderRadius: "25px",
                 fontFamily: "BricolageGrotesqueMedium",
@@ -216,7 +224,7 @@ export default function EventDetailsComponent({
             size="large"
             className={`font-BricolageGrotesqueRegular ${
               pathname.includes("sales") ? "sign-up" : ""
-            } cursor-pointer font-bold w-32 rounded-2xl`}
+            } cursor-pointer font-medium w-32 rounded-2xl`}
             style={{
               borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
@@ -368,11 +376,18 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
 
       <div className="flex flex-row items-center space-x-4">
       <div className="flex flex-row items-center space-x-2">
-        <Switch onChange={handleSwitchChange} className="" size="default" />
-        <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
-          Add to discovery page
-        </span>
-        </div>
+  <ToggleSwitch
+    isActive={isActive}
+    onToggle={(checked: boolean) => {
+      handleSwitchChange(checked);
+      handleToggle('someLabel'); // Replace 'someLabel' with the actual label you want to toggle
+    }}
+    label="Add to discovery page"
+  />
+  <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
+    Add to discovery page
+  </span>
+</div>
         </div>
        
   <Button

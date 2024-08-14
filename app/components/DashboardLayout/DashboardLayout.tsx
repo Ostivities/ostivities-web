@@ -50,16 +50,11 @@ const items2: MenuProps["items"] = [
   return {
     key: `${key}`,
     icon: React.createElement(item.icon),
-    label: item.title,
-
-    // HANDLES SUB MENU ON SIDE BAR
-    // children: new Array(4).fill(null).map((_, j) => {
-    //   const subKey = index * 4 + j + 1;
-    //   return {
-    //     key: subKey,
-    //     label: `option${subKey}`,
-    //   };
-    // }),
+    label: (
+      <span style={{ fontFamily: 'bricolagegrotesqueRegular' }}>
+        {item.title}
+      </span>
+    ),
   };
 });
 

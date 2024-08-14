@@ -46,10 +46,12 @@ export interface H3Attributes extends HTMLAttributes<HTMLHeadingElement> {
   content: string;
 }
 
-export interface ToggleSwitchAttributes
-  extends HTMLAttributes<HTMLInputElement> {
-  description: string;
+// components.ts
+export interface ToggleSwitchAttributes {
+  description?: string; // Make it optional if not always provided
   label: string;
   isActive: boolean;
-  onToggle: () => void;
+  onToggle: (checked: boolean) => void; // Custom handler for toggle switch
 }
+
+
