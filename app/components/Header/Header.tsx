@@ -110,7 +110,7 @@ function Header(): JSX.Element {
             <Image
               src={CloseIcon}
               alt="Owanbe Logo"
-              style={{ width: '40px', height: '35px' }}
+              style={{ width: '80px', height: '40px' }}
               onClick={onClose}
             />
           }
