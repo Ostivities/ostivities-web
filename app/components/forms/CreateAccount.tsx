@@ -229,16 +229,19 @@ function CreateAccount(): JSX.Element {
         ]}
       >
         <Checkbox>
-          I accept the{" "}
-          <a
-            href="/terms-and-condition"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: "#e20000", textDecoration: "none" }}
-          >
-            Terms and Conditions
-          </a>
-        </Checkbox>
+  <span style={{ fontFamily: 'Bricolage Grotesque, sans-serif' }}>
+    I accept the{" "}
+    <a
+      href="/terms-and-condition"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ color: "#e20000", textDecoration: "none", fontFamily: 'Bricolage Grotesque, sans-serif' }}
+    >
+      Terms and Conditions
+    </a>
+  </span>
+</Checkbox>
+
       </Form.Item>
 
       <Form.Item>

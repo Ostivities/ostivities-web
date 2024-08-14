@@ -15,11 +15,18 @@ import React, { useState } from 'react';
 function Header(): JSX.Element {
   const router = useRouter();
   const pathname = usePathname();
-  const [open, setOpen] = useState<boolean>(false); 
+  const [open, setOpen] = useState<boolean>(false);
 
   const pathCheck =
-    pathname.split('/').includes('password-reset') ||
-    pathname.split('/').includes('forgot-password');
+    pathname.includes('password-reset') ||
+    pathname.includes('forgot-password') ||
+    pathname === '/login' ||
+    pathname === '/signup';
+
+  // Check if NAV_LINKS should be displayed
+  const showNavLinks = !pathCheck && pathname !== '/Dashboard'; // Add other pages as needed
+
+  const isNotLoggedIn = !['/login', '/signup'].includes(pathname);
 
   const showDrawer = () => {
     setOpen(true);
@@ -28,8 +35,6 @@ function Header(): JSX.Element {
   const onClose = () => {
     setOpen(false);
   };
-
-  const isNotLoggedIn = ['/login', '/signup'].includes(pathname);
 
   return (
     <ConfigProvider
@@ -50,21 +55,24 @@ function Header(): JSX.Element {
               />
             </Link>
           </div>
-          <div className="flex flex-row items-center space-x-8">
-            {NAV_LINKS.map((link: INavLinks) => (
-              <Link
-                href={link.link}
-                key={link.link + link.name}
-                className="font-BricolageGrotesqueMedium font-medium text-base text-black hover:text-OWANBE_PRY"
-              >
-                {link.name}
-              </Link>
-            ))}
-          </div>
-
+          {/* Conditionally render NAV_LINKS */}
+          {showNavLinks && (
+            <div className="flex flex-row items-center space-x-8">
+              {NAV_LINKS.map((link: INavLinks) => (
+                <Link
+                  href={link.link}
+                  key={link.link + link.name}
+                  className="font-BricolageGrotesqueMedium font-medium text-base text-black hover:text-OWANBE_PRY"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+          )}
+          {/* Conditional Buttons Rendering */}
           {!pathCheck && (
             <div className="flex flex-row items-end justify-end space-x-3">
-              {isNotLoggedIn ? null : (
+              {isNotLoggedIn ? (
                 <>
                   <Button
                     variant="outline"
@@ -76,6 +84,11 @@ function Header(): JSX.Element {
                     onClick={() => router.push('/signup')}
                   />
                 </>
+              ) : (
+                <Button
+                  label="My Account"
+                  onClick={() => router.push('/Dashboard')}
+                />
               )}
             </div>
           )}
@@ -115,32 +128,49 @@ function Header(): JSX.Element {
             />
           }
           placement="right"
-          // onClose={onClose}
           open={open}
           style={{ borderBottom: '0px solid !important', width: '100%' }}
         >
-          {NAV_LINKS.map((link: INavLinks) => (
-            <p
-              key={link.link + link.name}
-              className="font-BricolageGrotesqueMedium py-3 text-center"
-            >
-              <Link href={link.link} onClick={onClose}>
-                {link.name}
-              </Link>
-            </p>
-          ))}
+          {showNavLinks && (
+            <>
+              {NAV_LINKS.map((link: INavLinks) => (
+                <p
+                  key={link.link + link.name}
+                  className="font-BricolageGrotesqueMedium py-3 text-center"
+                >
+                  <Link href={link.link} onClick={onClose}>
+                    {link.name}
+                  </Link>
+                </p>
+              ))}
+            </>
+          )}
           <div className="flex flex-col items-center justify-center space-y-4 mt-7 mx-auto w-3/5 md:w-1/5">
-            <Button
-              variant="outline"
-              label="Sign in"
-              className="max-w-full"
-              onClick={() => onClose()}
-            />
-            <Button
-              label="Sign Up"
-              className="max-w-full"
-              onClick={() => onClose()}
-            />
+            {!pathCheck && (
+              <>
+                {isNotLoggedIn ? (
+                  <>
+                    <Button
+                      variant="outline"
+                      label="Sign in"
+                      className="max-w-full"
+                      onClick={() => router.push('/login')}
+                    />
+                    <Button
+                      label="Sign Up"
+                      className="max-w-full"
+                      onClick={() => router.push('/signup')}
+                    />
+                  </>
+                ) : (
+                  <Button
+                    label="My Account"
+                    className="max-w-full"
+                    onClick={() => router.push('/Dashboard')}
+                  />
+                )}
+              </>
+            )}
           </div>
         </Drawer>
       </header>

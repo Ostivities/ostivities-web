@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import "@/app/globals.css";
+import { Checkbox } from 'antd';
 
 const Payment = () => {
   const router = useRouter();
@@ -83,15 +84,38 @@ const Payment = () => {
                 
               </div>
 
-              <p className="checkbox-label">
-              <input type="checkbox" name="" id="" /> 
-              <h2 className="text-s font-BricolageGrotesqueRegular">
-              I accept the</h2>                      
-<a href="/terms-and-condition" target="_blank" className="policy-link text-s font-BricolageGrotesqueRegular">Terms and Conditions,</a> 
-<a href="/refund-policy" target="_blank" className="policy-link text-s font-BricolageGrotesqueRegular">Refund Policy</a> &
-<a href="/privacy-policy" target="_blank" className="policy-link text-s font-BricolageGrotesqueRegular">Privacy Policy</a>
+              <Checkbox>
+  <span style={{ fontFamily: 'Bricolage Grotesque, sans-serif' }}>
+    I accept the{" "}
+    <a
+      href="/terms-and-condition"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ color: "#e20000", textDecoration: "none", fontFamily: 'Bricolage Grotesque, sans-serif' }}
+    >
+      Terms and Conditions
+    </a>
+    {", "}
+    <a
+      href="/privacy-policy"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ color: "#e20000", textDecoration: "none", fontFamily: 'Bricolage Grotesque, sans-serif' }}
+    >
+      Privacy Policy
+    </a>
+    {" and "}
+    <a
+      href="/refund-policy"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ color: "#e20000", textDecoration: "none", fontFamily: 'Bricolage Grotesque, sans-serif' }}
+    >
+      Refund Policy
+    </a>.
+  </span>
+</Checkbox>
 
-              </p>
             </div>
           </div>
         </section>

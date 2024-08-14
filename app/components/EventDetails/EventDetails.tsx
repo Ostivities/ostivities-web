@@ -362,69 +362,72 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
   const title = (
     <div className="flex items-center w-full relative pb-2 space-x-8">
       <div className="flex flex-row items-center space-x-2 cursor-pointer">
-      <Image
-        src="/icons/back-arrow.svg"
-        alt=""
-        height={25}
-        width={25}
+        <Image
+          src="/icons/back-arrow.svg"
+          alt=""
+          height={25}
+          width={25}
           onClick={() => {
             router.push(`/Dashboard/events-created`);
           }}
         />
-        <h1 style={{ fontSize: "24px" }}>Events Details</h1>
+        <h1 style={{ fontSize: "24px" }}>Event Details</h1>
       </div>
-
+  
       <div className="flex flex-row items-center space-x-4">
-      <div className="flex flex-row items-center space-x-2">
-  <ToggleSwitch
-    isActive={isActive}
-    onToggle={(checked: boolean) => {
-      handleSwitchChange(checked);
-      handleToggle('someLabel'); // Replace 'someLabel' with the actual label you want to toggle
-    }}
-    label="Add to discovery page"
-  />
-  <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
-    Add to discovery page
-  </span>
-</div>
-        </div>
-       
-  <Button
-    type="primary"
-    size={"middle"}
-    className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl"
-    style={{
-      borderRadius: "20px",
-      fontFamily: "BricolageGrotesqueMedium",
-    }}
-    onClick={handleButtonClick}
-  >
-    {isPublished ? 'Publish Event' : 'Unpublish Event'}
-  </Button>
-
-  {!isPublished && (
-    <div className="flex flex-row items-center space-x-1">
-     
+        {!isPublished && (
+          <div className="flex flex-row items-center space-x-2">
+            <ToggleSwitch
+              isActive={isActive}
+              onToggle={(checked: boolean) => {
+                handleSwitchChange(checked);
+                handleToggle('someLabel'); // Replace 'someLabel' with the actual label you want to toggle
+              }}
+              label="Add to discovery page"
+            />
+            <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
+              Add to discovery page
+            </span>
+          </div>
+        )}
+      </div>
+  
       <Button
-        type="text"
-        target="_self"
-        className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK cursor-pointer"
-      onClick={() => {
-        message.success('Event link copied'); // Success message
-      }}
+        type="primary"
+        size={"middle"}
+        className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl"
+        style={{
+          borderRadius: "20px",
+          fontFamily: "BricolageGrotesqueMedium",
+        }}
+        onClick={handleButtonClick}
       >
-         <LiaExternalLinkAltSolid
-        color="#E20000"
-        width={14}
-        height={14}
-        className="cursor-pointer text-lg"
-      />Copy Link 
+        {isPublished ? 'Publish Event' : 'Unpublish Event'}
       </Button>
+  
+      {!isPublished && (
+        <div className="flex flex-row items-center space-x-1">
+          <Button
+            type="text"
+            target="_self"
+            className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK cursor-pointer"
+            onClick={() => {
+              message.success('Event link copied'); // Success message
+            }}
+          >
+            <LiaExternalLinkAltSolid
+              color="#E20000"
+              width={14}
+              height={14}
+              className="cursor-pointer text-lg"
+            />
+            Copy Link
+          </Button>
+        </div>
+      )}
     </div>
-  )}
-</div>
   );
+  
 
   return (
     <React.Fragment>
