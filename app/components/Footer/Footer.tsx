@@ -92,7 +92,7 @@ function Footer(): JSX.Element {
     target="_blank" 
     rel="noopener noreferrer"
   >
-    <Image 
+    <img 
       src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=480097&theme=light" 
       alt="Ostivities - Revolutionizing Event Management | Product Hunt" 
       style={{ width: '250px', height: '54px' }} 
