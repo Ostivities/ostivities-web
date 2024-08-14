@@ -116,14 +116,14 @@ function Header(): JSX.Element {
             <Image
               src={OwanbeLogo}
               alt="Owanbe Logo"
-              style={{ width: '70px' }}
+              style={{ width: '80px', height: '40px' }}
             />
           }
           extra={
             <Image
               src={CloseIcon}
               alt="Owanbe Logo"
-              style={{ width: '80px', height: '40px' }}
+              style={{ width: '40px', height: '35px' }}
               onClick={onClose}
             />
           }
