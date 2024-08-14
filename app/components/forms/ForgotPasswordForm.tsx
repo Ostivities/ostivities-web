@@ -55,7 +55,7 @@ function ForgotPasswordForm(): JSX.Element {
       <div className="flex flex-row items-center justify-between">
         <div
           onClick={() => router.back()}
-          className="flex-center gap-2 cursor-pointer font-BricolageGrotesqueRegular font-normal text-OWANBE_LIGHT_DARK"
+          className="flex-center gap-2 cursor-pointer text-OWANBE_PRY underline hover:text-OWANBE_PRY font-BricolageGrotesqueSemiBold font-semibold"
         >
           <ArrowLeftOutlined /> <span>I remember my password</span>
         </div>
