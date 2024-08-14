@@ -118,6 +118,16 @@ function Footer(): JSX.Element {
     alt="Whatsapp"
     className="cursor-pointer"
   />
+  </a>
+  <a href="https://www.producthunt.com/posts/ostivities?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-ostivities" 
+   target="_blank">
+  <img 
+    src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=480097&theme=light" 
+    alt="Ostivities - Revolutionizing Event Management | Product Hunt" 
+    style={{ width: '250px', height: '54px' }} 
+    width="250" 
+    height="54" 
+  />
 </a>
             </Space>
           </div>
