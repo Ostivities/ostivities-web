@@ -150,15 +150,16 @@ function AboutUs(): JSX.Element {
               Join Us: Be Part Of The Ostivities Journey
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
-              The journey of Ostivities is just beginning, and we invite you to
-              join us. Whether you&apos;re an event organizer looking for a
-              better way to manage your events or an attendee seeking memorable
-              experiences, we&apos;re here to support you.
-              <br />
-              <br />
-              Thank you for being a part of Ostivities. Let&apos;s make every
-              event an opportunity for greatness.
-            </p>
+  The journey of Ostivities is just beginning, and we invite you to join us.
+  Whether you&apos;re an event organizer looking for a better way to manage
+  your events or an attendee seeking memorable experiences, we&apos;re here to
+  support you.
+  <br />
+  <br />
+  Thank you for being a part of Ostivities. Let&apos;s make every event an
+  opportunity for greatness.
+</p>
+
             <br />
             <br />
 

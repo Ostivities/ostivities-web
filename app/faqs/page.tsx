@@ -24,7 +24,7 @@ function Faqs(): JSX.Element {
             Welcome to Ostivities Frequently Asked Questions (FAQs) section. 
             Here, you&apos;ll find answers to common questions about our services, policies, and 
             how to make the most of your experience with us. If you have a question that isn&apos;t answered here, 
-            please feel free to contact us at <a href="mailto:support@ostivities.com">support@ostivities.com</a>.
+            please feel free to contact us at <a href="mailto:support@ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support@ostivities.com</a>.
             </p>
 
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
@@ -346,7 +346,7 @@ function Faqs(): JSX.Element {
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
             Yes, protecting your personal information is a priority for us. 
-            Please refer to our <a href="/privacy-policy">Privacy Policy</a>. to learn more about how we collect, use, and safeguard your data.
+            Please refer to our <a href="/privacy-policy"style={{ color: "#e20000", textDecoration: "none" }}>Privacy Policy</a>. to learn more about how we collect, use, and safeguard your data.
             </p>
 
             <h2

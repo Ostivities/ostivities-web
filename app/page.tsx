@@ -28,7 +28,7 @@ export default function Home() {
         <AdvantagesTwo />
         <Faqs />
         <ComingSoon />
-        <br /><br /><br /><br /><br />
+        <br /><br /><br />
       </ConfigProvider>
     </OwanbeWebLayout>
   );
