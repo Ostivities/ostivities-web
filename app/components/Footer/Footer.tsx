@@ -25,9 +25,14 @@ function Footer(): JSX.Element {
               <div className="flex flex-row items-center space-x-5">
                 <Image src={Mail} alt="icon" />
                 <Small
-                  content={"support@ostivities.com"}
-                  className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
-                />
+  content={
+    <a href="mailto:support@ostivities.com" style={{ color: "#383A47", textDecoration: "none" }}>
+      support@ostivities.com
+    </a>
+  }
+  className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+/>
+
               </div>
 
               <div className="flex flex-row items-center space-x-3">
