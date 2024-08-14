@@ -75,18 +75,31 @@ function Footer(): JSX.Element {
             </div>
             {/* 4 */}
             <div className="flex flex-col space-y-3">
-      <Heading5 content="Newsletter" className="" />
-      {NEWSLETTER.map((item, index) => (
-        <Link
-          key={index} // Changed to index for uniqueness
-          href={item.link}
-          target={item.target}
-          rel={item.rel}
-          className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
-        >
-          {item.name}
-        </Link>
-      ))}
+  <Heading5 content="Newsletter" className="" />
+  {NEWSLETTER.map((item, index) => (
+    <Link
+      key={index}
+      href={item.link}
+      target={item.target}
+      rel={item.rel}
+      className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+    >
+      {item.name}
+    </Link>
+  ))}
+  <a 
+    href="https://www.producthunt.com/posts/ostivities?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-ostivities" 
+    target="_blank" 
+    rel="noopener noreferrer"
+  >
+    <img 
+      src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=480097&theme=light" 
+      alt="Ostivities - Revolutionizing Event Management | Product Hunt" 
+      style={{ width: '250px', height: '54px' }} 
+      width="250" 
+      height="54" 
+    />
+  </a>
     </div>
           </div>
           <div className="flex flex-row items-center justify-start md:justify-end lg:justify-end xl:justify-end">
@@ -118,16 +131,7 @@ function Footer(): JSX.Element {
     alt="Whatsapp"
     className="cursor-pointer"
   />
-  </a>
-  <a href="https://www.producthunt.com/posts/ostivities?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-ostivities" 
-   target="_blank">
-  <img 
-    src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=480097&theme=light" 
-    alt="Ostivities - Revolutionizing Event Management | Product Hunt" 
-    style={{ width: '250px', height: '54px' }} 
-    width="250" 
-    height="54" 
-  />
+ 
 </a>
             </Space>
           </div>
