@@ -141,7 +141,7 @@ const Accordion: React.FC = () => {
   return (
     <Fragment>
       <div className="relative py-8 hidden md:hidden lg:block xl:block">
-        <div className="w-1/2 py-5">
+        <div className="absolute top-9 w-1/2 py-5 z-10">
           <>
             <List
               dataSource={data}
@@ -201,7 +201,7 @@ const Accordion: React.FC = () => {
             />
           </>
         </div>
-        <div className="w-3/5 card-div">
+        <div className="w-3/5 card-div ">
           <Card
             style={{
               width: "85%",
@@ -239,7 +239,7 @@ const Accordion: React.FC = () => {
           defaultActiveKey={["1"]}
           onChange={(key: any) => console.log(key)}
           style={{
-            zIndex: 1000,
+            zIndex: 1001,
             boxShadow: "0px 8px 24px 0px #00000014",
             background: "#FFFFFF",
             border: "1px solid #FFFFFF",

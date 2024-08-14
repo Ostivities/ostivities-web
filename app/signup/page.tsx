@@ -7,26 +7,28 @@ import React from "react";
 function Signup(): JSX.Element {
   return (
     <AuthLayout>
-      <div className="flex flex-col space-y-8">
-        <Small
-          content={
-            <span className="text-sm font-BricolageGrotesqueRegular">
-              Existing user?{" "}
-              <Link
-                href={"/login"}
-                className="text-OWANBE_PRY underline cursor-pointer hover:text-OWANBE_PRY hover:underline"
-              >
-                Sign in
-              </Link>
-            </span>
-          }
-          className="float-right place-self-end"
-        />
+      <div className="mt-2"> {/* Add margin-top to create space from AuthLayout */}
+        <div className="flex flex-col space-y-8">
+          <Small
+            content={
+              <span className="text-sm font-BricolageGrotesqueRegular">
+                Existing user?{" "}
+                <Link
+                  href={"/login"}
+                  className="text-OWANBE_PRY underline cursor-pointer hover:text-OWANBE_PRY hover:underline"
+                >
+                  Sign in
+                </Link>
+              </span>
+            }
+            className="float-right place-self-end"
+          />
 
-        <div className="w-4/5 mx-auto flex flex-col space-y-8">
-          <Heading5 className="" content="Create Your Account" />
+          <div className="w-4/5 mx-auto flex flex-col space-y-8">
+            <Heading5 className="" content="Create Your Account" />
 
-          <CreateAccount />
+            <CreateAccount />
+          </div>
         </div>
       </div>
     </AuthLayout>

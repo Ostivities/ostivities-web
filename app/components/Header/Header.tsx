@@ -42,9 +42,9 @@ function Header(): JSX.Element {
         ...theme,
       }}
     >
-      <header className="overflow-hidden">
+      <header>
         {/* LG && XL SCREENS */}
-        <nav className="container mx-auto relative hidden md:hidden lg:grid lg:grid-cols-3 py-5 px-0 md:px-5 lg:px-0">
+        <nav className="bg-white shadow-sm fixed top-0 left-0 w-full z-50 px-8 py-5 hidden md:hidden lg:grid lg:grid-cols-3 lg:items-center">
           <div>
             <Link href="/" className="" shallow>
               <Image

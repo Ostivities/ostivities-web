@@ -7,6 +7,7 @@ import React from "react";
 function Login() {
   return (
     <AuthLayout>
+      <div className="mt-2"> {/* Add margin-top to create space from AuthLayout */}
       <div className="flex flex-col space-y-16">
         <Small
           content={
@@ -27,6 +28,7 @@ function Login() {
           <Heading5 className="" content="Sign into your account" />
           <LoginForm />
         </div>
+      </div>
       </div>
     </AuthLayout>
   );
