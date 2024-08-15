@@ -1,13 +1,40 @@
+"use client";
 import FeatureBg from "@/public/feature.svg";
-import Z from '@/public/z.svg';
 import { ArrowRightOutlined } from '@ant-design/icons';
 import Image from 'next/image';
 import React from 'react';
 import Section from './Section';
 import H3 from '@/app/ui/atoms/H3';
 import Link from 'next/link';
+import dynamic from "next/dynamic";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
+
+// Dynamic import of react-slick
+const Slider = dynamic(() => import("react-slick"), { ssr: false });
 
 function Hero(): JSX.Element {
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 3300,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 0,
+    cssEase: 'linear',
+  };
+
+  const slides = [
+    "/events.svg",
+    "/Conferences.svg",
+    "/Weddings.svg",
+    "/concerts.svg",
+    "/Hangouts.svg",
+    "/Seminar.svg",
+    "/Birthdays.svg",
+  ];
+
   return (
     <Section>
       <div className="flex flex-col space-y-3 pt-5 mt-3 md:pt-5 md:mt-3 lg:pt-0 lg:mt-0">
@@ -19,8 +46,8 @@ function Hero(): JSX.Element {
             />
 
             <p className="w-full md:w-full font-BricolageGrotesqueMedium text-center lg:text-left lg:w-[89%] text-OWANBE_ASH text-lg">
-            Join Ostivities and make every celebration unforgettable! Connect, discover, 
-            and create lasting memories with ease. Dive into a world of vibrant events today!
+              Join Ostivities and make every celebration unforgettable! Connect, discover, 
+              and create lasting memories with ease. Dive into a world of vibrant events today!
             </p>
             <Link
               href="/Dashboard"
@@ -34,7 +61,13 @@ function Hero(): JSX.Element {
           </div>
         </div>
         <div className="hidden md:hidden lg:block lg:w-2/2 text-left pt-8 lg:pt-0">
-        <Image src={Z} alt="hero" className="ms-0 pt-8 md:pt-8 lg:pt-0" />
+          <Slider {...settings}>
+            {slides.map((img, index) => (
+              <div key={index} className="slide">
+                <Image src={img} alt={`Slide ${index + 1}`} className="rounded-lg" />
+              </div>
+            ))}
+          </Slider>
         </div>
       </div>
     </Section>
