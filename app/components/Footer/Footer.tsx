@@ -15,7 +15,7 @@ import { Heading5, Paragraph, Small } from "../typography/Typography";
 
 function Footer(): JSX.Element {
   return (
-    <footer className="overflow-hidden mt-3">
+    <footer className="overflow-hidden mt-3"> 
       <div className="container mx-auto py-6">
         <div className="flex flex-col space-y-5 py-4 w-4/5 px-6 md:px-0 xl:px-0 lg:px-0 md:w-4/5 md:mx-auto lg:w-full xl:w-full">
           <div className="grid grid-cols-1 gap-12 md:gap-10 lg:gap-0 xl:gap-0 md:grid md:grid-cols-2 lg:grid lg:grid-cols-4 xl:grid xl:grid-cols-4 pb-3">

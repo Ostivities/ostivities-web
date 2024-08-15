@@ -8,7 +8,7 @@ import Hero from '@/app/components/sections/Hero';
 import theme from '@/app/theme/theme.config';
 import { ConfigProvider } from 'antd';
 
-export default function Home() {
+export default function Home() { 
   return (
     <OwanbeWebLayout>
       <ConfigProvider

@@ -1,3 +1,4 @@
+import Script from 'next/script'
 import type { Metadata } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
 import "react-alice-carousel/lib/alice-carousel.css";
@@ -32,6 +33,11 @@ export default function RootLayout({
         <Providers>
           <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
         </Providers>
+        {/* <NextScript /> */}
+        <Script
+          src="https://embed.tawk.to/66aa1bcd32dca6db2cb7f021/1i447p70n"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
