@@ -197,8 +197,8 @@ body {
 .coming-soon {
   background-image: url("/comingsoon.svg");
   background-repeat: no-repeat;
-  height: 600px;
-  width: 1138px !important;
+  height: 100px;
+  width: 1600px !important;
   background-size: initial;
   background-position: center center;
 }
