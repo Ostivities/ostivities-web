@@ -64,7 +64,7 @@ function Hero(): JSX.Element {
           <Slider {...settings}>
             {slides.map((img, index) => (
               <div key={index} className="slide">
-                <Image src={img} alt={`Slide ${index + 1}`} className="rounded-lg" />
+                <img src={img} alt={`Slide ${index + 1}`} className="rounded-lg" />
               </div>
             ))}
           </Slider>
