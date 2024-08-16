@@ -87,7 +87,7 @@ const EventsCreatedTable: React.FC = () => {
         />
       ),
       dataIndex: "dateCreated",
-      sorter: (a: any, b: any) => new Date(a.dateCreated).getTime() - new Date(b.dateCreated).getTime(),
+      sorter: (a, b) => new Date(a.dateCreated).getTime() - new Date(b.dateCreated).getTime(),
     },
     {
       title: (
@@ -104,11 +104,45 @@ const EventsCreatedTable: React.FC = () => {
       ],
       onFilter: (value, record) => record.status.includes(value as string),
       render: (status) => {
-        let color;
-        if (status === "Active") color = "green";
-        else if (status === "Closed") color = "red";
-        else if (status === "Pending") color = "orange";
-        return <span style={{ color }}>{status}</span>;
+        let style = {};
+        let dotColor = "";
+    
+        if (status === "Active") {
+          style = { color: "#009A44", backgroundColor: "#E6F5ED" }; // Green
+          dotColor = "#009A44";
+        } else if (status === "Closed") {
+          style = { color: "#D30000", backgroundColor: "#FFD3D3" }; // Red
+          dotColor = "#D30000";
+        } else if (status === "Pending") {
+          style = { color: "#F68D2E", backgroundColor: "#FDE8D5" }; // Orange
+          dotColor = "#F68D2E";
+        }
+    
+        return (
+          <span
+            style={{
+              ...style,
+              padding: "2px 10px",
+              borderRadius: "25px",
+              fontWeight: "500", // Adjusted to "500" for medium weight
+              display: "inline-block",
+              minWidth: "80px",
+              textAlign: "center",
+            }}
+          >
+            <span
+              style={{
+                width: "10px",
+                height: "10px",
+                backgroundColor: dotColor,
+                borderRadius: "50%",
+                display: "inline-block",
+                marginRight: "8px",
+              }}
+            ></span>
+            {status}
+          </span>
+        );
       },
     },
     {
@@ -124,9 +158,11 @@ const EventsCreatedTable: React.FC = () => {
           type="primary"
           shape="round"
           style={{
-            borderRadius: "15px",
+            borderRadius: "25px",
             backgroundColor: "#e20000",
             borderColor: "#e20000",
+            minWidth: "70px",
+            padding: "4px",
           }}
           onClick={() =>
             router.push(`/Dashboard/events-created/${record.id}/about`)
@@ -137,6 +173,7 @@ const EventsCreatedTable: React.FC = () => {
       ),
     },
   ];
+  
 
   const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
