@@ -72,9 +72,9 @@ export const ADVANTAGES_TWO: IFeatures[] = [
   },
   {
     icon: Cube,
-    title: "User-Friendly Security:",
+    title: "User-Friendly Interface:",
     content:
-      "Our robust security phase ensures a safe environment, where your celebrations are enjoyed responsibly.",
+      "Our easy-to-use and intuitive interface makes navigating and managing your events effortless and enjoyable.",
   },
   {
     icon: Star,
