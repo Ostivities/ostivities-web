@@ -1,5 +1,6 @@
 "use client";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
+import LocationSearch from "@/app/components/LocationSearch";
 import { Heading5, Label } from "@/app/components/typography/Typography";
 import useComponentDisabled from "@/app/hooks/utils/utils.hooks";
 import {
@@ -24,13 +25,14 @@ import {
   Form,
   FormProps,
   Input,
+  Popover,
   Radio,
   Row,
   Select,
   Space,
   Upload,
 } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface FieldType {}
 
@@ -48,6 +50,34 @@ const AboutEvent = () => {
   ) => {
     return errorInfo;
   };
+
+
+  const [popoverVisible, setPopoverVisible] = useState(false);
+  const popoverRef = useRef<HTMLDivElement>(null);
+
+  const handleSelectLocation = (address: string) => {
+    setValue("eventAddress", address); // Update the form field value
+    setPopoverVisible(false); // Close the popover
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (popoverRef.current && !popoverRef.current.contains(event.target as Node)) {
+      setPopoverVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const content = (
+    <div style={{ padding: 10 }} ref={popoverRef}>
+      <LocationSearch onSelectLocation={handleSelectLocation} />
+    </div>
+  );
 
   return (
     <EventDetailsComponent>
@@ -89,17 +119,17 @@ const AboutEvent = () => {
             </Form.Item>
 
             <Form.Item
-              name={"eventName"}
+              name={"eventDetails"}
               label={
                 <>
                   <Label
                     content="Event Details"
                     className=""
-                    htmlFor="eventName"
+                    htmlFor="eventDetails"
                   />
                 </>
               }
-              rules={[{ required: false, message: "Please input your email" }]}
+              rules={[{ required: false, message: "Please enter your evet details" }]}
               className="pr-6"
             >
               <Input.TextArea
@@ -114,17 +144,17 @@ const AboutEvent = () => {
             </Form.Item>
 
             <Form.Item
-              name={"eventName"}
+              name={"eventState"}
               label={
                 <>
                   <Label
                     content="Event State"
                     className=""
-                    htmlFor="eventName"
+                    htmlFor="eventState"
                   />
                 </>
               }
-              rules={[{ required: false, message: "Please input your email" }]}
+              rules={[{ required: false, message: "Please ente your email" }]}
               className="pr-6"
             >
               <Select placeholder="Select State" style={{ width: "100%" }}>
@@ -137,21 +167,44 @@ const AboutEvent = () => {
             </Form.Item>
 
             <Form.Item
-              name={"eventName"}
-              label={
-                <>
-                  <Label
-                    content="Event Address"
-                    className=""
-                    htmlFor="eventName"
-                  />
-                </>
-              }
-              rules={[{ required: false, message: "Please input your email" }]}
-              className="pr-6"
-            >
-              <Input placeholder="Enter Address" />
-            </Form.Item>
+  name={"eventAddress"}
+  label={
+    <>
+      <Label
+        content="Event Address"
+        className=""
+        htmlFor="eventAddress"
+      />
+    </>
+  }
+  rules={[{ required: false, message: "Please input your email" }]}
+  className="pr-6"
+>
+  <Space direction="vertical" size={"small"} style={{ width: '100%' }}>
+    
+    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+      <Input 
+        placeholder="Enter Address" 
+        style={{ flex: 1, minWidth: '200px', maxWidth: 'calc(100% - 128px)' }} 
+      />
+      <Popover
+        content={content} // Replace 'content' with your actual Popover content
+        title="Search for a Location"
+        trigger="click"
+        open={popoverVisible} // Ensure you manage 'popoverVisible' state
+      >
+        <Button
+          type="default"
+          style={{ borderRadius: '5px', minWidth: '120px' }}
+          onClick={() => setPopoverVisible(!popoverVisible)}
+        >
+          Select on Map
+        </Button>
+      </Popover>
+    </div>
+  </Space>
+</Form.Item>
+
           </Space>
 
           <Space direction="vertical" size={"small"}>
@@ -162,7 +215,7 @@ const AboutEvent = () => {
                   <Label
                     content="Custom URL"
                     className=""
-                    htmlFor="eventName"
+                    htmlFor="CustomURL"
                   />
                 </>
               }
@@ -193,7 +246,7 @@ const AboutEvent = () => {
             </Form.Item>
 
             <Form.Item
-              name={"eventName"}
+              name={"document"}
               label={
                 <>
                   <Label
@@ -203,7 +256,7 @@ const AboutEvent = () => {
                         <span className="optional-text">(optional)</span>
                       </span>
                     }
-                    htmlFor="eventName"
+                    htmlFor="document"
                   />
                 </>
               }
@@ -246,7 +299,7 @@ const AboutEvent = () => {
             </Form.Item>
 
             <Form.Item
-              name={"CustomURL"}
+              name={"eventType"}
               label={
                 <>
                   <Label
@@ -271,7 +324,7 @@ const AboutEvent = () => {
             <Form.Item
               name={"eventInfo"}
               label={
-                <Label content="Event Info" className="" htmlFor="eventType" />
+                <Label content="Event Info" className="" htmlFor="eventInfo" />
               }
               rules={[{ required: false, message: "Please input your email" }]}
               className="pr-6"
@@ -593,6 +646,7 @@ const AboutEvent = () => {
               style={{
                 borderRadius: "20px",
                 fontFamily: "BricolageGrotesqueMedium",
+                marginTop: "40px", // Add top margin to the button
               }}
               onClick={() => {
                 setComponentDisabled(false);
@@ -610,6 +664,7 @@ const AboutEvent = () => {
               style={{
                 borderRadius: "20px",
                 fontFamily: "BricolageGrotesqueMedium",
+                marginTop: "40px", // Add top margin to the button
               }}
               onClick={() => {
                 setComponentDisabled(true);
@@ -625,3 +680,7 @@ const AboutEvent = () => {
 };
 
 export default AboutEvent;
+function setValue(arg0: string, address: string) {
+  throw new Error("Function not implemented.");
+}
+

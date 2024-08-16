@@ -270,7 +270,7 @@ function Details(): JSX.Element {
                         <Label
                           content="Event State"
                           className=""
-                          htmlFor="eventName"
+                          htmlFor="eventState"
                         />
                         <Select
                           placeholder="Select State"
@@ -328,7 +328,7 @@ function Details(): JSX.Element {
                         <Label
                           content="Custom URL"
                           className=""
-                          htmlFor="eventName"
+                          htmlFor="customURL"
                         />
 
                         <Space.Compact className="w-full">
@@ -372,7 +372,7 @@ function Details(): JSX.Element {
                                 </span>
                               </span>
                             }
-                            htmlFor="eventName"
+                            htmlFor="document"
                           />
 
                           <Space.Compact className="w-full h-8">
@@ -467,7 +467,7 @@ function Details(): JSX.Element {
                         <Label
                           content="Event Info"
                           className=""
-                          htmlFor="eventType"
+                          htmlFor="eventInfo"
                         />
                         <Radio.Group
                           {...field}
