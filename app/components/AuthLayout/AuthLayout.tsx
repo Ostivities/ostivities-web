@@ -1,4 +1,4 @@
-import Header from '@/app/components/Header/Header';
+import Header from '@/app/components/Header2/Header2';
 import { Heading3 } from '@/app/components/typography/Heading3'; 
 import { IAuthLayout } from '@/app/utils/interface';
 import { Card } from 'antd';
