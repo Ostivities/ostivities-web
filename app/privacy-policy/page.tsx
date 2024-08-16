@@ -287,7 +287,7 @@ function PrivacyPolicy(): JSX.Element {
               </li>
             </ul>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
-            To exercise any of these rights, please contact us at <a href="mailto:support@ostivities.com">support@ostivities.com</a>
+            To exercise any of these rights, please contact us at <a href="mailto:support@ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support@ostivities.com</a>
                   <br />
                 </p>
 
