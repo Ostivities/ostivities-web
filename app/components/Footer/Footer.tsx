@@ -88,13 +88,13 @@ function Footer(): JSX.Element {
     </Link>
   ))}
   <a 
-    href="https://www.producthunt.com/posts/ostivities?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-ostivities" 
+    href="https://www.producthunt.com/products/ostivities/reviews?utm_source=badge-product_review&utm_medium=badge&utm_souce=badge-ostivities" 
     target="_blank" 
     rel="noopener noreferrer"
   >
     <img 
-      src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=480097&theme=light" 
-      alt="Ostivities - Revolutionizing Event Management | Product Hunt" 
+      src="https://api.producthunt.com/widgets/embed-image/v1/product_review.svg?product_id=599681&theme=light" 
+      alt="Ostivities - Revolutionizing&#0032;Social&#0032;Event&#0032;Management&#0032; | Product Hunt" 
       style={{ width: '250px', height: '54px' }} 
       width="250" 
       height="54" 
