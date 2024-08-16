@@ -646,7 +646,7 @@ const AboutEvent = () => {
               style={{
                 borderRadius: "20px",
                 fontFamily: "BricolageGrotesqueMedium",
-                marginTop: "40px", // Add top margin to the button
+                marginTop: "30px", // Add top margin to the button
               }}
               onClick={() => {
                 setComponentDisabled(false);
@@ -664,7 +664,7 @@ const AboutEvent = () => {
               style={{
                 borderRadius: "20px",
                 fontFamily: "BricolageGrotesqueMedium",
-                marginTop: "40px", // Add top margin to the button
+                marginTop: "30px", // Add top margin to the button
               }}
               onClick={() => {
                 setComponentDisabled(true);
