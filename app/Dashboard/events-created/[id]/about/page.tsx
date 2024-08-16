@@ -10,6 +10,7 @@ import {
   STATES_IN_NIGERIA,
 } from "@/app/utils/data";
 import { EVENT_INFO } from "@/app/utils/enums";
+import { IFormInput } from "@/app/utils/interface";
 import {
   FacebookFilled,
   InstagramFilled,
@@ -32,15 +33,18 @@ import {
   Space,
   Upload,
 } from "antd";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 interface FieldType {}
 
 const AboutEvent = () => {
+  const router = useRouter();
   const [form] = Form.useForm();
   const watchEventInfo = Form.useWatch("eventInfo", form);
   const [componentDisabled, setComponentDisabled] = useComponentDisabled();
-
+  const { Option } = Select;
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     return values;
   };
@@ -51,7 +55,22 @@ const AboutEvent = () => {
     return errorInfo;
   };
 
+  const {
+    handleSubmit,
+    control,
+    setValue,
+    watch,
+    trigger,
+  } = useForm<IFormInput>({
+    progressive: true,
+    mode: "all",
+  });
 
+  const onSubmit: SubmitHandler<IFormInput> = (data: any) => {
+    console.log(data, "data");
+  };
+
+  
   const [popoverVisible, setPopoverVisible] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
 
@@ -680,7 +699,4 @@ const AboutEvent = () => {
 };
 
 export default AboutEvent;
-function setValue(arg0: string, address: string) {
-  throw new Error("Function not implemented.");
-}
 
