@@ -1,5 +1,5 @@
 "use client";
-import FeatureBg from "@/public/feature.svg";
+import FeatureBg from "@/public/features.gif";
 import { ArrowRightOutlined } from '@ant-design/icons';
 import Image from 'next/image';
 import React from 'react';
@@ -57,7 +57,7 @@ function Hero(): JSX.Element {
             </Link>
           </div>
           <div className="w-full md:w-full lg:w-1/2">
-            <Image src={FeatureBg} alt="hero" className="ms-1" />
+            <Image src={FeatureBg} alt="hero" className="ms-1" unoptimized/>
           </div>
         </div>
         <div className="hidden md:hidden lg:block lg:w-2/2 text-left pt-8 lg:pt-0">
