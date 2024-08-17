@@ -13,7 +13,10 @@ import React from "react";
 import { Heading5, Paragraph, Small } from "../typography/Typography";
 
 
+
 function Footer(): JSX.Element {
+    const currentYear = new Date().getFullYear();
+    
   return (
     <footer className="overflow-hidden mt-3"> 
       <div className="container mx-auto py-6">
@@ -140,7 +143,7 @@ function Footer(): JSX.Element {
         <div className="footer-bottom pt-5">
           <Paragraph
             className="text-center"
-            content="Copyright © 2024. Ostivities Technology Limited. All rights reserved. "
+            content={`Copyright © ${currentYear}. Ostivities Technology Limited. All rights reserved.`}
           />
         </div>
       </div>
