@@ -177,6 +177,8 @@ function CreateAccount(): JSX.Element {
         </Form.Item>
       </Form.Item>
 
+      <Row gutter={4}> {/* Reduced gutter size */}
+        <Col span={12}>
           <Form.Item<IUser>
             label="Password"
             name="password"
@@ -185,10 +187,12 @@ function CreateAccount(): JSX.Element {
           >
             <Input.Password
               placeholder="Enter your password"
-              style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: '0px' }} // Reduced marginBottom
+              className="placeholder:font-BricolageGrotesqueRegular"
             />
           </Form.Item>
-       
+        </Col>
+
+        <Col span={12}>
           <Form.Item<IUser>
             name="confirmPassword"
             label="Confirm Password"
@@ -208,13 +212,14 @@ function CreateAccount(): JSX.Element {
                 },
               }),
             ]}
-            style={{ marginTop: '-16px' }}
           >
             <Input.Password
               placeholder="Re-enter your password"
               className="placeholder:font-BricolageGrotesqueRegular"
             />
           </Form.Item>
+        </Col>
+      </Row>
 
       <Form.Item<IUser>
         name="terms_and_condition"
@@ -222,10 +227,9 @@ function CreateAccount(): JSX.Element {
         rules={[
           { required: true, message: "Please accept the Terms and Conditions" },
         ]}
-        style={{ marginTop: '-14px' }}
       >
         <Checkbox>
-  <span style={{ fontFamily: 'Bricolage Grotesque, sans-serif'  }}>
+  <span style={{ fontFamily: 'Bricolage Grotesque, sans-serif' }}>
     I accept the{" "}
     <a
       href="/terms-and-condition"
@@ -244,7 +248,7 @@ function CreateAccount(): JSX.Element {
         <Button
           type="primary"
           htmlType="submit"
-          className="font-BricolageGrotesqueLight text-base mt-1"
+          className="font-BricolageGrotesqueLight text-base mt-5"
           style={{
             background: "#E20000",
             borderRadius: "25px",

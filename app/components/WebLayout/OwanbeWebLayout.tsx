@@ -29,7 +29,7 @@ function OwanbeWebLayout({
       </main>
 
       {/* Full-width footer background container */}
-      <div style={{ backgroundColor: "#FADEDE" }} className="w-full">
+      <div style={{ backgroundColor: "#FFF2F2" }} className="w-full">
         <div className="px-1 sm:px-16 mx-auto max-w-screen-xl">
           <Footer />
         </div>
