@@ -1,19 +1,33 @@
 'use client';
-import { Button, Form, Input, message, notification, Typography } from 'antd';
-import React from 'react';
+import { useLogin } from "@/app/hooks/auth/auth.hook";
+import { ILogin } from "@/app/utils/interface";
+import { IUser } from "@/app/utils/interface";
+import { Button, Form, Input, message, notification, Select, FormProps, Typography } from 'antd';
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+
 
 const { Title } = Typography;
 
 function VerificationCodeForm(): JSX.Element {
+  const { loginUser } = useLogin();
   const [form] = Form.useForm();
+  const router = useRouter();
 
-  const onFinish = (value: object) => { 
-    console.log(value);
+  const onFinish: FormProps<ILogin>["onFinish"] = async (value) => {
+    if (value) {
+      const response = await loginUser.mutateAsync(value);
+      if (response.status === 200) {
+        form.resetFields();
+        router.push("/login");
+       message.success('Account verification successful');
+      }
+    }
   };
-
-  const resendCode = () => {
-    message.success('Verification code has been re-sent to your email');
+  const onFinishFailed: FormProps<IUser>["onFinishFailed"] = (errorInfo) => {
+    return errorInfo;
   };
+  
 
   return (
     <Form
@@ -25,18 +39,20 @@ function VerificationCodeForm(): JSX.Element {
       className="w-full font-BricolageGrotesqueRegular flex flex-col"
       style={{ fontFamily: 'BricolageGrotesqueRegular' }}
     >
-      <Title level={5}></Title>
+      <Title level={5} style={{ fontFamily: 'BricolageGrotesqueLight' }}>
+  Enter Verification Code
+</Title>
       <Form.Item
-        name="verificationcode"
+        name={"verificationcode"}
         noStyle
         rules={[{ required: true, message: 'Please input verification code' }]}
       >
         <div className="flex items-center gap-5">
           <Input.OTP
             formatter={(str) => str.toUpperCase()}
-            className="placeholder:font-BricolageGrotesqueRegular flex-1"
+            className="placeholder:font-BricolageGrotesqueRegular flex-1" 
           />
-          
+           
         </div>
       </Form.Item>
       <br />
@@ -52,6 +68,7 @@ function VerificationCodeForm(): JSX.Element {
             width: '100%',
             height: '51px',
           }}
+          loading={loginUser.isPending}
         >
           Verify Account
         </Button>

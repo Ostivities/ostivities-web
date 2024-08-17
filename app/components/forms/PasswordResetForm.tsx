@@ -25,7 +25,7 @@ function PasswordResetForm(): JSX.Element {
       className="w-full font-BricolageGrotesqueRegular flex flex-col"
       style={{ fontFamily: 'BricolageGrotesqueRegular' }}
     >
-      <Title level={5} style={{ fontFamily: 'Bricolage Grotesque, sans-serif' }}>
+      <Title level={5} style={{ fontFamily: 'BricolageGrotesqueLight' }}>
   Enter Reset Code
 </Title>
 

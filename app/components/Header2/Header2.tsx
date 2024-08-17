@@ -21,7 +21,8 @@ function Header2(): JSX.Element {
     pathname.includes('password-reset') ||
     pathname.includes('forgot-password') ||
     pathname === '/login' ||
-    pathname === '/signup';
+    pathname === '/signup' ||
+    pathname === '/verify-account';
 
   // Check if NAV_LINKS should be displayed
   const showNavLinks = !pathCheck && pathname !== '/Dashboard'; // Add other pages as needed

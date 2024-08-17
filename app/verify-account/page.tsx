@@ -1,7 +1,7 @@
 import AuthLayout from '@/app/components/AuthLayout/AuthLayout';
 import VerifyAccountForm from '@/app/components/forms/VerifyAccountForm';
-import { Heading3, Paragraph } from '@/app/components/typography/Typography';
-import { Space } from 'antd';
+import { Heading3, Paragraph } from "@/app/components/typography/Typography";
+import { Space } from "antd";
 import React from 'react';
 
 function VerifyAccount() {
@@ -16,6 +16,7 @@ function VerifyAccount() {
           />
         </Space>
         <VerifyAccountForm/>
+        <br/><br/><br/><br/>
       </div>
     </AuthLayout>
   );

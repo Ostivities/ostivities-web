@@ -215,7 +215,7 @@ function DashboardLayout({
                 align="center"
                 size={"small"}
               >
-                <div className="mt-5 relative">
+                {/* <div className="mt-5 relative">
                   <Badge count={2}>
                     <BellFilled
                       className="cursor-pointer"
@@ -282,7 +282,7 @@ function DashboardLayout({
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <Dropdown menu={{ items }} trigger={["click", "hover"]}>
                   <div className="flex-center gap-4 cursor-pointer">
                     <Avatar
