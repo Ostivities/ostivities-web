@@ -150,7 +150,7 @@ function DashboardLayout({
   return (
     <FormProvider>
       <Layout
-        style={{ height: "100vh", fontFamily: "BricolageGrotesqueMedium" }}
+         style={{ height: "100vh", fontFamily: "BricolageGrotesqueMedium", overflow: "hidden" }}
       >
         <Header
           style={{
@@ -392,8 +392,8 @@ function DashboardLayout({
 
             <Layout
               style={{
-                padding: "0 30px",
-                overflowY: "scroll",
+                padding: "0 20px",
+                overflowY: "auto",
               }}
             >
               <Content className="flex flex-col space-y-8 py-8">
