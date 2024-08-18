@@ -152,6 +152,7 @@ export const Answers: IFeatures[] = [
 ];
 
 export const STATES_IN_NIGERIA = [
+  { value: "All", label: "All" },
   {
     state: "Abia",
     alias: "abia",
@@ -2430,6 +2431,7 @@ export const stepOne = [
 ];
 
 export const EVENT_TYPES: { label: string; value: string }[] = [
+  { value: "All", label: "All" },
   { value: "Wedding Party", label: "Wedding Party" },
   { value: "Birthday Party", label: "Birthday Party" },
   { value: "Concert", label: "Concert" },

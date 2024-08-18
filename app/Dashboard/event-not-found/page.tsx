@@ -10,7 +10,7 @@ function EventNotFound(): JSX.Element {
 
   const handleBackToDiscovery = () => {
     // Add the route you want to navigate to
-    router.push("/Dashboard");
+    router.push("/Dashboard"); 
   };
 
   const title = (
@@ -23,9 +23,9 @@ function EventNotFound(): JSX.Element {
     <DashboardLayout title={title} isLoggedIn>
       <div className="w-full mx-auto flex flex-row items-center justify-between space-y-5 py-6">
         <div className="w-1/2 flex flex-col gap-2 p-[8rem] justify-center">
-          <h2 className="w-full md:w-full font-BricolageGrotesqueMedium text-3xl font-bold mb-4">Oops.... event not found!</h2>
+          <h2 className="w-full md:w-full font-BricolageGrotesqueMedium text-3xl font-bold mb-4">Oops.... page not found!</h2>
           <p className="w-full md:w-full font-BricolageGrotesqueMedium text-md mb-6">This Event Page doesn`t exist or was removed!
-          We suggest you confirm if the url is correct and try again.</p>
+          We suggest you confirm the search parameters or if the url is correct and try again.</p>
           <button
             onClick={handleBackToDiscovery}
             className="primary-btn hover:none w-100 text-center text-white py-2 px-6 rounded-full text-lg"
@@ -39,8 +39,8 @@ function EventNotFound(): JSX.Element {
             src={notfound} 
             alt="Event not found" 
             className="ms-1" 
-            width={430} // Adjust the width as needed
-            height={430} // Adjust the height as needed
+            width={530} // Adjust the width as needed
+            height={530} // Adjust the height as needed
             style={{ objectFit: 'contain' }} // Maintain aspect ratio
           />
         </div>
