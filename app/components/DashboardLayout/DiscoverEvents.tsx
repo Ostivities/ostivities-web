@@ -16,10 +16,10 @@ const DiscoverEvents = () => {
         statusClass="font-bricolage-grotesque font-medium"
       />
       <InfoCard
-        title="Muslim Tech Expo"
-        about="Event"
+        title="Agbaya Linkup"
+        about="Hangout"
         status="sold out"
-        image="/images/placeholder-2.png"
+        image="/images/placeholder-5.png"
         url="/Dashboard/discovery/1"
         titleClass="font-bricolage-grotesque font-medium"
         aboutClass="font-bricolage-grotesque"

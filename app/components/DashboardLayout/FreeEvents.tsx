@@ -3,7 +3,7 @@ import InfoCard from './InfoCard';
 
 const FreeEvents = () => {
   return (
-    <EventSection title="Free Events" uri="/Dashboard/paid">
+    <EventSection title="Free Events" uri="/Dashboard/free">
       <InfoCard
         title="Concert with Davido"
         about="Concert"
