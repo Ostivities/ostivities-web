@@ -183,7 +183,7 @@ export default function PublishEvent(): JSX.Element {
                 <Button
                   type="primary"
                   size={"large"}
-                  className="w-full rounded-full bg-OWANBE_PRY px-24 py-3 text-white text-xl font-bold"
+                   className="w-full rounded-full bg-OWANBE_PRY px-24 py-3 text-white text-l font-bold"
                   style={{
                     borderRadius: '25px',
                     fontFamily: 'BricolageGrotesqueMedium',
