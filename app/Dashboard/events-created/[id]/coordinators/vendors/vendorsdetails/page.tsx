@@ -3,10 +3,11 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Upload, message, Modal, Row, Col, Space } from 'antd';
 import Image from 'next/image';
 import "@/app/globals.css";
-import { LinkOutlined, XOutlined, FacebookFilled, InstagramFilled } from '@ant-design/icons';
+import { LinkOutlined, XOutlined, FacebookFilled, InstagramFilled, TwitterOutlined } from '@ant-design/icons';
 import { Controller, useForm } from 'react-hook-form';
 import { IFormInput } from '@/app/utils/interface';
 import { useRouter } from 'next/navigation';
+import { Label } from '@/app/components/typography/Typography';
 
 const VendorsDetails = () => {
   const [profileImage, setProfileImage] = useState<string>("/images/emptyimage.png");
@@ -118,135 +119,160 @@ const VendorsDetails = () => {
       </div>
 
       <div style={{ maxWidth: '1300px', marginLeft: '-20px' }}>
-        <Form
-          layout="vertical"
-          className="w-full space-y-6 px-8 py-5"
-          style={{ marginBottom: '20px' }}
-        >
-          <div className="grid grid-cols-2 gap-x-14">
-            {/* First Row */}
-            <Form.Item label="Vendor's Name" name="vendorName" style={{
+  <Form
+    layout="vertical"
+    className="w-full space-y-6 px-8 py-5"
+    style={{ marginBottom: '20px' }}
+  >
+    <div className="grid grid-cols-2 gap-x-14">
+      {/* First Row */}
+      <Form.Item label="Vendor's Name" name="vendorName" style={{
+        fontSize: "14.5px",
+        fontFamily: "BricolageGrotesqueregular",
+      }}>
+        <Input placeholder="Name" disabled style={{ width: '100%' }} />
+      </Form.Item>
+
+      <Form.Item label="Vendor's Email Address" name="vendorEmailAddress" style={{
+        fontSize: "14.5px",
+        fontFamily: "BricolageGrotesqueregular",
+      }}>
+        <Input placeholder="Email" disabled style={{ width: '100%' }} />
+      </Form.Item>
+
+      {/* Second Row */}
+      <Form.Item label="Vendor's Phone Number" name="vendorPhoneNumber" style={{
+        fontSize: "14.5px",
+        fontFamily: "BricolageGrotesqueregular",
+      }}>
+        <Input placeholder="Phone Number" disabled style={{ width: '100%' }} />
+      </Form.Item>
+
+      <Form.Item label="Vendor's Address" name="vendorAddress" style={{
+        fontSize: "14.5px",
+        fontFamily: "BricolageGrotesqueregular",
+      }}>
+        <Input placeholder="Address" disabled style={{ width: '100%' }} />
+      </Form.Item>
+
+      {/* Third Row */}
+      <Form.Item label="Vendor's Specialties" name="specialties" style={{
+        fontSize: "14.5px",
+        fontFamily: "BricolageGrotesqueregular",
+      }}>
+        <Input placeholder="Specialties" disabled style={{ width: '100%' }} />
+      </Form.Item>
+
+      <Form.Item label="Status" name="status" style={{
+        fontSize: "14.5px",
+        fontFamily: "BricolageGrotesqueregular",
+      }}>
+        <Input placeholder="Pending Approval" disabled style={{ width: '100%' }} />
+      </Form.Item>
+
+      {/* Fourth Row */}
+      <div className="col-span-2 grid grid-cols-2 gap-x-14">
+        {/* Social Media Details */}
+        <div>
+          <label
+            htmlFor="socialdetails"
+            style={{
+              marginBottom: "4px",
               fontSize: "14.5px",
               fontFamily: "BricolageGrotesqueregular",
-            }}>
-              <Input placeholder="Name" disabled style={{ width: '100%' }} />
-            </Form.Item>
+            }}
+          >
+            Social Media Details
+          </label>
+          <Row gutter={[16, 8]}>
+            <Col xs={24} sm={12}>
+              <Controller
+                name="websiteUrl"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    prefix={<LinkOutlined />}
+                    style={{ width: "100%", marginTop: "8px" }}
+                    {...field}
+                    placeholder="Website" disabled />
+                )}
+              />
+            </Col>
+            <Col xs={24} sm={12}>
+              <Controller
+                name="twitterUrl"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    prefix={<TwitterOutlined />}
+                    style={{ width: "100%", marginTop: "8px" }}
+                    {...field}
+                    placeholder="Twitter" disabled />
+                )}
+              />
+            </Col>
+            <Col xs={24} sm={12}>
+              <Controller
+                name="facebookUrl"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    prefix={<FacebookFilled />}
+                    style={{ width: "100%", marginTop: "8px" }}
+                    {...field}
+                    placeholder="Facebook" disabled />
+                )}
+              />
+            </Col>
+            <Col xs={24} sm={12}>
+              <Controller
+                name="instagramUrl"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    prefix={<InstagramFilled />}
+                    style={{ width: "100%", marginTop: "8px" }}
+                    {...field}
+                    placeholder="Instagram" disabled />
+                )}
+              />
+            </Col>
+          </Row>
+        </div>
 
-            <Form.Item label="Vendor's Email Address" name="vendorEmailAddress" style={{
+        {/* Extra Details */}
+        <div>
+          <label
+            htmlFor="extradetails"
+            style={{
               fontSize: "14.5px",
               fontFamily: "BricolageGrotesqueregular",
-            }}>
-              <Input placeholder="Email" disabled style={{ width: '100%' }} />
-            </Form.Item>
-
-            {/* Second Row */}
-            <Form.Item label="Vendor's Phone Number" name="vendorPhoneNumber" style={{
-              fontSize: "14.5px",
-              fontFamily: "BricolageGrotesqueregular",
-            }}>
-              <Input placeholder="Phone Number" disabled style={{ width: '100%' }} />
-            </Form.Item>
-
-            <Form.Item label="Vendor's Address" name="vendorAddress" style={{
-              fontSize: "14.5px",
-              fontFamily: "BricolageGrotesqueregular",
-            }}>
-              <Input placeholder="Address" disabled style={{ width: '100%' }} />
-            </Form.Item>
-
-            {/* Third Row */}
-            <Form.Item label="Vendor's Specialties" name="specialties" style={{
-              fontSize: "14.5px",
-              fontFamily: "BricolageGrotesqueregular",
-            }}>
-              <Input placeholder="Specialties" disabled style={{ width: '100%' }} />
-            </Form.Item>
-
-            <Form.Item label="Status" name="status" style={{
-              fontSize: "14.5px",
-              fontFamily: "BricolageGrotesqueregular",
-            }}>
-              <Input placeholder="Pending Approval" disabled style={{ width: '100%' }} />
-            </Form.Item>
-
-            {/* Fourth Row */}
-            <div className="grid gap-y-1">
-              <Space
-                direction="vertical"
-                size="small"
-                style={{ marginBottom: "4px" }}
-              >
-                <label
-                  htmlFor="socialdetails"
-                  style={{
-                    marginBottom: "4px",
-                    fontSize: "14.5px",
-                    fontFamily: "BricolageGrotesqueregular",
-                  }}
-                >
-                  Social Media Details{" "}
-                </label>
-                <Row gutter={[16, 8]}>
-                  <Col xs={24} sm={12}>
-                    <Controller
-                      name="websiteUrl"
-                      control={control}
-                      render={({ field }) => (
-                        <Input
-                          prefix={<LinkOutlined />}
-                          style={{ width: "100%", marginTop: "8px" }}
-                          {...field}
-                          placeholder="Name" disabled />
-                      )}
-                    />
-                  </Col>
-
-                  <Col xs={24} sm={12}>
-                    <Controller
-                      name="twitterUrl"
-                      control={control}
-                      render={({ field }) => (
-                        <Input
-                          prefix={<XOutlined />}
-                          style={{ width: "100%", marginTop: "8px" }}
-                          {...field}
-                          placeholder="Name" disabled />
-                      )}
-                    />
-                  </Col>
-
-                  <Col xs={24} sm={12}>
-                    <Controller
-                      name="facebookUrl"
-                      control={control}
-                      render={({ field }) => (
-                        <Input
-                          prefix={<FacebookFilled />}
-                          style={{ width: "100%", marginTop: "8px" }}
-                          {...field}
-                          placeholder="Name" disabled />
-                      )}
-                    />
-                  </Col>
-
-                  <Col xs={24} sm={12}>
-                    <Controller
-                      name="instagramUrl"
-                      control={control}
-                      render={({ field }) => (
-                        <Input
-                          prefix={<InstagramFilled />}
-                          style={{ width: "100%", marginTop: "8px" }}
-                          {...field}
-                          placeholder="Name" disabled />
-                      )}
-                    />
-                  </Col>
-                </Row>
-              </Space>
-            </div>
-          </div>
-
+              marginBottom: "10px",
+            }}
+          >
+            Extra Details
+          </label>
+          <Controller
+            name="eventDetails"
+            control={control}
+            render={({ field }) => (
+              <Input.TextArea
+                {...field}
+                placeholder="Details" disabled 
+                style={{
+                  minHeight: "150px",
+                  maxHeight: "150px",
+                  width: "100%",
+                  paddingTop: "10px",
+                }}
+                className="py-3"
+              />
+            )}
+          />
+        </div>
+      </div>
+      </div>
+    
           <div style={{ textAlign: 'center', marginTop: '60px' }}>
 
           <Button
