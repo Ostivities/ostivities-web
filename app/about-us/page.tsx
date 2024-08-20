@@ -5,7 +5,6 @@ import cto from "@/public/CTO.svg";
 import empty from "@/public/empty.svg";
 import Image from "next/image";
 
-
 function AboutUs(): JSX.Element {
   return (
     
