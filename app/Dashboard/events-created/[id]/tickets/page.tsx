@@ -169,7 +169,7 @@ const EventTickets = () => {
         onCancel={() => setIsModalOpen(false)}
         onOk={() => setIsModalOpen(false)}
       />
-      <UpdateTicket
+      <UpdateTicket 
         open={isOpen}
         onCancel={() => setIsOpen(false)}
         onOk={() => setIsOpen(false)}

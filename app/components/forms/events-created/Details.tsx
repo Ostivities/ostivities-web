@@ -98,7 +98,7 @@ const EventsCreatedTable: React.FC = () => {
       ),
       dataIndex: "status",
       filters: [
-        { text: "Active", value: "Active" },
+        { text: "Active", value: "Active" }, 
         { text: "Closed", value: "Closed" },
         { text: "Pending", value: "Pending" },
       ],

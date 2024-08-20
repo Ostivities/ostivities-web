@@ -120,7 +120,7 @@ const SingleTicket = (): JSX.Element => {
       </Form.Item>
 
       <Form.Item<FieldType> name="remember" valuePropName="checked" style={{ marginBottom: '24px' }}>
-        <Checkbox>Transfer charge fees to guest</Checkbox>
+        <Checkbox>Transfer charge fees to guest</Checkbox> 
       </Form.Item>
     </Form>
   );

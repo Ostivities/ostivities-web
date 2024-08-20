@@ -65,6 +65,7 @@ export interface IFormInput {
   twitterUrl?: string;
   facebookUrl?: string;
   instagramUrl?: string;
+  vendorregistration: boolean;
 }
 
 export interface IModal {
@@ -130,6 +131,21 @@ export interface SalesDataType {
   fees?: number; // Optional, since it's not used in the data generation
   sales?: number; // Optional, since it
 }
+
+
+export interface VendorDataType {
+  key: string;
+  vendorName: string;
+  category: string;
+  dateApplied: any;
+  status: "Approved" | "Declined" | "Pending Approval";
+  id: string;
+  websiteUrl?: string;
+  twitterUrl?: string;
+  facebookUrl?: string;
+  instagramUrl?: string;
+}
+
 
 export interface SummaryDataType {
   key: string;

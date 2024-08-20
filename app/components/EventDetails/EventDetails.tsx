@@ -6,7 +6,7 @@ import { Button, Card, Dropdown, message, Space, Switch } from "antd";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { HiMiniArrowLongLeft } from "react-icons/hi2";
+import { HiMiniArrowLongLeft } from "react-icons/hi2"; 
 import { IoChevronDown } from "react-icons/io5";
 import { LiaExternalLinkAltSolid } from "react-icons/lia";
 import PaymentDetails from "../OstivitiesModal/PaymentDetails";
@@ -136,6 +136,31 @@ export default function EventDetailsComponent({
       },
     ];
 
+    const CoordinatorsItems: MenuProps["items"] = [
+      {
+        label: (
+          <Link
+            href={`/Dashboard/events-created/${params?.id}/coordinators`}
+            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          >
+            Coordinators
+          </Link>
+        ),
+        key: "1",
+      },
+      {
+        label: (
+          <Link
+            href={`/Dashboard/events-created/${params?.id}/coordinators/vendors`}
+            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          >
+            Vendors Management
+          </Link>
+        ),
+        key: "2",
+      },
+    ];
+
     return (
       <div className={`flex flex-row items-center justify-between`}>
         <div className="flex flex-row items-center space-x-4">
@@ -214,6 +239,23 @@ export default function EventDetailsComponent({
             >
               <Space>
                 Guest List
+                <IoChevronDown />
+              </Space>
+            </Button>
+          </Dropdown>
+
+          <Dropdown menu={{ items: CoordinatorsItems, onClick: handleMenuClick }}>
+            <Button
+              type={pathname.includes("coordinators") ? "primary" : "text"}
+              className="font-BricolageGrotesqueRegular cursor-pointer font-medium w-40 rounded-2xl"
+              style={{
+                borderRadius: "25px",
+                fontFamily: "BricolageGrotesqueMedium",
+              }}
+              size="large"
+            >
+              <Space>
+                Coordinators
                 <IoChevronDown />
               </Space>
             </Button>

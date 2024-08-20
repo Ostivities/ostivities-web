@@ -78,7 +78,7 @@ const OrganizationProfile = () => {
     alt="Profile Picture"
     width={96} // Equivalent to w-24
     height={96} // Equivalent to h-24
-    className="object-cover w-24 h-24 rounded-full"
+    className="object-cover w-24 h-24 rounded-full" 
           />
         </div>
         
@@ -114,7 +114,7 @@ const OrganizationProfile = () => {
           </Button>
         )}
       </div>
-
+      <div style={{ maxWidth: '1100px', marginLeft: '-10px' }}>
       <Form
         layout="vertical"
         className="w-full space-y-6 px-8 py-5"
@@ -200,6 +200,7 @@ const OrganizationProfile = () => {
           </Button>
         </div>
       </Form>
+    </div>
     </div>
   );
 };

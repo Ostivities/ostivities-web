@@ -16,6 +16,7 @@ import {
   PlusCircleOutlined,
   QuestionCircleOutlined,
   SettingOutlined,
+  UsergroupAddOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Avatar, Badge, Dropdown, Layout, Menu, Space, theme } from "antd";
@@ -43,6 +44,7 @@ const items2: MenuProps["items"] = [
   { icon: CompassOutlined, title: "Discovery", link: "/Dashboard" },
   { icon: PlusCircleOutlined, title: 'Create Event', link: '/Dashboard/create-events' },
   { icon: FileSearchOutlined, title: 'Events Created', link: '/Dashboard/events-created' },
+  // { icon: UsergroupAddOutlined, title: 'Vendors Management', link: '/Dashboard/vendors-management' },
   { icon: SettingOutlined, title: "Settings", link: "/Dashboard/settings" },
   { icon: FieldTimeOutlined, title: "Coming Soon", link: "/Dashboard/coming-soon" },
 ].map((item) => {
