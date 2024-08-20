@@ -6,7 +6,6 @@ import { FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
-import { useNavigate } from "react-router-dom";
 import { useRouter } from "next/navigation";
 import GuestDetail from "@/app/components/OstivitiesModal/GuestDetail";
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
@@ -19,17 +18,12 @@ import {
 } from "@/app/utils/helper";
 import { VendorDataType } from "@/app/utils/interface";
 import VendorsDetails from "@/app/Dashboard/events-created/[id]/coordinators/vendors/vendorsdetails/page";
-
+import NewVendorsDetails from "@/app/Dashboard/events-created/[id]/coordinators/vendors/newvendorsdetails/page";
 
 const { Search } = Input;
 
 const VendorsList = () => {
   const router = useRouter(); // Initialize useRouter
-
-  const handleAction = (record: VendorDataType) => {
-    // Navigate to the Vendorsdetails page with record ID
-    router.push(`/Dashboard/events-created\[id]/coordinators/vendors/vendorsdetails/${record.id}/page`);
-  };
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,8 +31,8 @@ const VendorsList = () => {
   const [searchText, setSearchText] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalData, setModalData] = useState<any>({});
-
   const [showVendorDetails, setShowVendorDetails] = useState<boolean>(false);
+  const [showNewVendorDetails, setShowNewVendorDetails] = useState<boolean>(false);
 
   const data: VendorDataType[] = Array.from({ length: 50 }, (_, index) => ({
     key: `${index + 1}`,
@@ -50,8 +44,6 @@ const VendorsList = () => {
     ] as "Approved" | "Declined" | "Pending Approval",
     id: generateRandomString(10),
   }));
-
-
 
   const handleSearch = (value: string) => {
     setSearchText(value.toLowerCase());
@@ -103,7 +95,7 @@ const VendorsList = () => {
       render: (status: string) => {
         let style = {};
         let dotColor = "";
-  
+
         if (status === "Approved") {
           style = { color: "#009A44", backgroundColor: "#E6F5ED" }; // Green
           dotColor = "#009A44";
@@ -155,7 +147,7 @@ const VendorsList = () => {
       ),
     },
   ];
-  
+
   const handleExport = (format: string) => {
     const exportData = selectedRowKeys.length
       ? data.filter((item) => selectedRowKeys.includes(item.key))
@@ -185,31 +177,31 @@ const VendorsList = () => {
 
   return (
     <React.Fragment>
-    {
-      !showVendorDetails && (
-        <>
-          <GuestDetail
-            open={isModalOpen}
-            onCancel={() => setIsModalOpen(false)}
-            data={modalData}
-          />
-          <Space direction="vertical" size={"large"}>
-            <Space direction="vertical" size={"middle"} style={{ width: "100%" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
-                <Heading5 className="" content={"Vendors"} />
-                <Button
-                  type="primary"
-                  size="large"
-                  className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-32 rounded-2xl float-end"
-                  style={{
-                    borderRadius: "20px",
-                    fontFamily: "BricolageGrotesqueMedium",
-                  }}
-                  onClick={() => router.push('/path-to-add-vendor')}
-                >
-                  Add Vendor
-                </Button>
-              </div>
+      {
+        !showVendorDetails && !showNewVendorDetails && (
+          <>
+            <GuestDetail
+              open={isModalOpen}
+              onCancel={() => setIsModalOpen(false)}
+              data={modalData}
+            />
+            <Space direction="vertical" size={"large"}>
+              <Space direction="vertical" size={"middle"} style={{ width: "100%" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+                  <Heading5 className="" content={"Vendors"} />
+                  <Button
+                    type="primary"
+                    size="large"
+                    className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-32 rounded-2xl float-end"
+                    style={{
+                      borderRadius: "20px",
+                      fontFamily: "BricolageGrotesqueMedium",
+                    }}
+                    onClick={() => setShowNewVendorDetails(true)}
+                  >
+                    Add Vendor
+                  </Button>
+                </div>
                 <Paragraph
                   className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
                   content={"Add and manage vendors for your event."}
@@ -282,13 +274,15 @@ const VendorsList = () => {
         )
       }
       {
-        showVendorDetails && (
-          <>
-            <VendorsDetails />
-          </>
+        showNewVendorDetails && (
+          <NewVendorsDetails />
         )
       }
-
+      {
+        showVendorDetails && (
+          <VendorsDetails />
+        )
+      }
     </React.Fragment>
   );
 };
