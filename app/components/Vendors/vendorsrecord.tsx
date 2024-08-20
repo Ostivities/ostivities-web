@@ -185,17 +185,31 @@ const VendorsList = () => {
 
   return (
     <React.Fragment>
-      {
-        !showVendorDetails && (
-          <>
-            <GuestDetail
-              open={isModalOpen}
-              onCancel={() => setIsModalOpen(false)}
-              data={modalData}
-            />
-            <Space direction="vertical" size={"large"}>
-              <Space direction="vertical" size={"middle"} style={{ width: "100%" }}>
+    {
+      !showVendorDetails && (
+        <>
+          <GuestDetail
+            open={isModalOpen}
+            onCancel={() => setIsModalOpen(false)}
+            data={modalData}
+          />
+          <Space direction="vertical" size={"large"}>
+            <Space direction="vertical" size={"middle"} style={{ width: "100%" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
                 <Heading5 className="" content={"Vendors"} />
+                <Button
+                  type="primary"
+                  size="large"
+                  className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-32 rounded-2xl float-end"
+                  style={{
+                    borderRadius: "20px",
+                    fontFamily: "BricolageGrotesqueMedium",
+                  }}
+                  onClick={() => router.push('/path-to-add-vendor')}
+                >
+                  Add Vendor
+                </Button>
+              </div>
                 <Paragraph
                   className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
                   content={"Add and manage vendors for your event."}

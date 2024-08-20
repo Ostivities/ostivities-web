@@ -21,6 +21,7 @@ import {
 } from "@ant-design/icons";
 import {
   Button,
+  Checkbox,
   Col,
   DatePicker,
   Form,
@@ -35,7 +36,7 @@ import {
 } from "antd";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 interface FieldType {}
 
@@ -161,6 +162,31 @@ const AboutEvent = () => {
                 className="py-3"
               />
             </Form.Item>
+
+            <Controller
+  name="vendorregistration"
+  control={control}
+  render={({ field }) => (
+    <Form.Item
+      style={{ marginBottom: '1px' }}
+    >
+      <Space align="center">
+        <Checkbox
+          {...field}
+          checked={field.value}
+          onChange={(e) => field.onChange(e.target.checked)}
+        >
+                              <span>
+                              Allow vendors registration{" "} 
+                                <span className="optional-text">
+                                  (this will allow users to register as vendors for your event)
+                                </span>
+                              </span>
+        </Checkbox>
+      </Space>
+    </Form.Item>
+  )}
+/>
 
             <Form.Item
               name={"eventState"}

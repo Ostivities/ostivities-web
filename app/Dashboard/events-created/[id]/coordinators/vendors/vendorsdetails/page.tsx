@@ -95,12 +95,13 @@ const VendorsDetails = () => {
     <div style={{ maxWidth: '1700px', marginLeft: '50px' }}>
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px' }}>
         <Button
-          type="default"
-          className="back-button"
-          style={{ borderRadius: '25px', width: '120px' }}
+           type="default"
+           size={"large"}
+           className={`font-BricolageGrotesqueSemiBold button-style sign-in cursor-pointer font-bold`}
+           style={{ width: "150px" }} 
           onClick={handleBack}
         >
-          Back
+          Back 
         </Button>
       </div>
 
