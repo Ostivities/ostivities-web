@@ -14,7 +14,7 @@ const AddEventCoordinatorModal: React.FC<AddEventCoordinatorModalProps> = ({ ope
   const { TextArea } = Input;
   const { Option } = Select;
 
-  const [ticketType, setTicketType] = useState<string>("paid");
+  const [ticketType, setTicketType] = useState<string>("");
   const [ticketStockValue, setTicketStockValue] = useState<string>("");
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {

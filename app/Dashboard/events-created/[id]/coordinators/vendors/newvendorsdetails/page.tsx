@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import { Form, Input, Button, Upload, message, Modal, Row, Col, Space } from 'antd';
+import { Form, Input, Button, Upload, message, Modal, Row, Col, Space, Select } from 'antd';
 import Image from 'next/image';
 import "@/app/globals.css";
 import { LinkOutlined, XOutlined, FacebookFilled, InstagramFilled, TwitterOutlined } from '@ant-design/icons';
@@ -78,32 +78,33 @@ const NewVendorsDetails = () => {
     setUploadButton("Update");
     setIsImageUploaded(false);
   };
-  const handleApprove = () => {
-    console.log("Vendor approved");
-  };
-
-  const handleDecline = () => {
-    console.log("Vendor declined");
-  };
-  
+ 
   const handleBack = () => {
     router.back();
   };
 
-  
+  const [specialtyType, setspecialtyType] = useState<string>("");
+  const [status, setstatus] = useState<string>("");
+  const { Option } = Select;
+
+  const handlespecialtyTypeChange = (value: string) => {
+    setspecialtyType(value);
+  };
+
+  const handlestatusChange = (value: string) => {
+    setstatus(value);
+  };
+
+  const handleAddVendors = () => {
+    message.success('Vendor added successfully');
+    
+    // Navigate to the previous page
+    router.back();
+};
 
   return (
     <div style={{ maxWidth: '1700px', marginLeft: '50px' }}>
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px' }}>
-        <Button
-           type="default"
-           size={"large"}
-           className={`font-BricolageGrotesqueSemiBold button-style sign-in cursor-pointer font-bold`}
-           style={{ width: "150px" }} 
-          onClick={handleBack}
-        >
-          Back 
-        </Button>
       </div>
 
       <div className="flex items-center space-x-6 mb-6">
@@ -158,14 +159,14 @@ const NewVendorsDetails = () => {
   >
     <div className="grid grid-cols-2 gap-x-14">
       {/* First Row */}
-      <Form.Item label="Vendor's Name" name="vendorName" style={{
+      <Form.Item label="Vendor's Name" name="vendorName" rules={[{ required: true, message: "Please input vendors name!" }]} style={{
         fontSize: "14.5px",
         fontFamily: "BricolageGrotesqueregular",
       }}>
         <Input placeholder="Enter vendors name" style={{ width: '100%' }} />
       </Form.Item>
 
-      <Form.Item label="Vendor's Email Address" name="vendorEmailAddress" style={{
+      <Form.Item label="Vendor's Email Address" name="vendorEmailAddress" rules={[{ required: true, message: "Please input vendors email!" }]} style={{
         fontSize: "14.5px",
         fontFamily: "BricolageGrotesqueregular",
       }}>
@@ -173,14 +174,14 @@ const NewVendorsDetails = () => {
       </Form.Item>
 
       {/* Second Row */}
-      <Form.Item label="Vendor's Phone Number" name="vendorPhoneNumber" style={{
+      <Form.Item label="Vendor's Phone Number" name="vendorPhoneNumber" rules={[{ required: true, message: "Please input vendors phone number!" }]} style={{
         fontSize: "14.5px",
         fontFamily: "BricolageGrotesqueregular",
       }}>
         <Input placeholder="Enters phone number"  style={{ width: '100%' }} />
       </Form.Item>
 
-      <Form.Item label="Vendor's Address" name="vendorAddress" style={{
+      <Form.Item label="Vendor's Address" name="vendorAddress" rules={[{ required: true, message: "Please input vendors address!" }]} style={{
         fontSize: "14.5px",
         fontFamily: "BricolageGrotesqueregular",
       }}>
@@ -188,18 +189,29 @@ const NewVendorsDetails = () => {
       </Form.Item>
 
       {/* Third Row */}
-      <Form.Item label="Vendor's Specialties" name="specialties" style={{
-        fontSize: "14.5px",
-        fontFamily: "BricolageGrotesqueregular",
-      }}>
-        <Input placeholder="select Specialties" style={{ width: '100%' }} />
+      <Form.Item label="Vendors Specialties"
+          name="VendorsSpecialties"
+          rules={[{ required: true, message: "Please select specialty type!" }]}
+          style={{ marginBottom: '8px' }}
+        >
+          <Select placeholder="Select specialty type" onChange={handlespecialtyTypeChange}>
+            <Option value="Caterer">Caterer</Option>
+            <Option value="EventDecorator">Event Decorator</Option>
+            <Option value="EventPhotographer">Event Photographer</Option>
+            <Option value="Othersr">Others</Option>
+          </Select>
       </Form.Item>
 
-      <Form.Item label="Status" name="status" style={{
-        fontSize: "14.5px",
-        fontFamily: "BricolageGrotesqueregular",
-      }}>
-        <Input placeholder="Pending Approval"  style={{ width: '100%' }} />
+      <Form.Item label="Status"
+          name="status"
+          rules={[{ required: true, message: "Please select status type!" }]}
+          style={{ marginBottom: '35px' }}
+        >
+          <Select placeholder="Select status" onChange={handlestatusChange}>
+            <Option value="Approved">Approved</Option>
+            <Option value="Declined">Declined</Option>
+            <Option value="PendingApproval">Pending Approval</Option>
+          </Select>
       </Form.Item>
 
       {/* Fourth Row */}
@@ -280,18 +292,18 @@ const NewVendorsDetails = () => {
             style={{
               fontSize: "14.5px",
               fontFamily: "BricolageGrotesqueregular",
-              marginBottom: "10px",
+              marginBottom: "10px", 
             }}
           >
             Extra Details
           </label>
           <Controller
-            name="eventDetails"
+            name="eventDetails" 
             control={control}
             render={({ field }) => (
               <Input.TextArea
                 {...field}
-                placeholder="Enter extra details"
+                placeholder="Enter extra details" 
                 style={{
                   minHeight: "150px",
                   maxHeight: "150px",
@@ -308,12 +320,22 @@ const NewVendorsDetails = () => {
     
           <div style={{ textAlign: 'center', marginTop: '60px' }}>
 
+          <Button
+              type="default"
+              size="large"
+              className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold equal-width-button"
+              style={{ marginBottom: '20px', marginRight: '10px' }}
+              onClick={handleBack}
+            >
+              Cancel
+            </Button>
+
             <Button
               type="primary"
               size="large"
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
               style={{ marginBottom: '20px' }}
-              onClick={handleApprove}
+              onClick={handleAddVendors}
             >
               Add Vendor
             </Button>
@@ -325,3 +347,7 @@ const NewVendorsDetails = () => {
 };
 
 export default NewVendorsDetails;
+function togglevendorsrecord(arg0: string) {
+  throw new Error('Function not implemented.');
+}
+
