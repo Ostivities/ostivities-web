@@ -46,7 +46,7 @@ const items2: MenuProps["items"] = [
   { icon: FileSearchOutlined, title: 'Events Created', link: '/Dashboard/events-created' },
   // { icon: UsergroupAddOutlined, title: 'Vendors Management', link: '/Dashboard/vendors-management' },
   { icon: SettingOutlined, title: "Settings", link: "/Dashboard/settings" },
-  { icon: FieldTimeOutlined, title: "Coming Soon", link: "/Dashboard/coming-soon" },
+  // { icon: FieldTimeOutlined, title: "Coming Soon", link: "/Dashboard/coming-soon" },
 ].map((item) => {
   const key = item.link;
   return {
