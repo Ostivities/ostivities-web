@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import { Form, Input, Button, Upload, message, Modal, Row, Col, Space, Select } from 'antd';
+import { Form, Input, Button, Upload, message, Modal, Row, Col, Space, Select, Checkbox } from 'antd';
 import Image from 'next/image';
 import "@/app/globals.css";
 import { LinkOutlined, XOutlined, FacebookFilled, InstagramFilled, TwitterOutlined } from '@ant-design/icons';
@@ -210,13 +210,45 @@ const NewVendorsDetails = () => {
           <Select placeholder="Select status" onChange={handlestatusChange}>
             <Option value="Approved">Approved</Option>
             <Option value="Declined">Declined</Option>
-            <Option value="PendingApproval">Pending Approval</Option>
+            <Option value="PendingApproval">Pending</Option>
           </Select>
       </Form.Item>
 
-      {/* Fourth Row */}
-      <div className="col-span-2 grid grid-cols-2 gap-x-14">
-        {/* Social Media Details */}
+
+   {/* Forth Row */}
+   <div className="col-span-2 grid grid-cols-2 gap-x-14">
+        {/* Extra Details */}
+        <div>
+          <label
+            htmlFor="extradetails"
+            style={{
+              fontSize: "14.5px",
+              fontFamily: "BricolageGrotesqueregular",
+              marginBottom: "10px", 
+            }}
+          >
+            Extra Details
+          </label>
+          <Controller
+            name="eventDetails" 
+            control={control}
+            render={({ field }) => (
+              <Input.TextArea
+                {...field}
+                placeholder="Enter extra details" 
+                style={{
+                  minHeight: "150px",
+                  maxHeight: "150px",
+                  width: "100%",
+                  paddingTop: "10px",
+                }}
+                className="py-3"
+              />
+            )}
+          />
+        
+        </div>
+          {/* Social Media Details */}
         <div>
           <label
             htmlFor="socialdetails"
@@ -285,39 +317,37 @@ const NewVendorsDetails = () => {
           </Row>
         </div>
 
-        {/* Extra Details */}
+      {/* Fifth Row */}
+
+      <div className="col-span-2 grid grid-cols-2 gap-x-14">
+        {/* checkbox */}
         <div>
-          <label
-            htmlFor="extradetails"
-            style={{
-              fontSize: "14.5px",
-              fontFamily: "BricolageGrotesqueregular",
-              marginBottom: "10px", 
-            }}
-          >
-            Extra Details
-          </label>
-          <Controller
-            name="eventDetails" 
-            control={control}
-            render={({ field }) => (
-              <Input.TextArea
-                {...field}
-                placeholder="Enter extra details" 
-                style={{
-                  minHeight: "150px",
-                  maxHeight: "150px",
-                  width: "100%",
-                  paddingTop: "10px",
-                }}
-                className="py-3"
-              />
-            )}
-          />
+            <Controller
+  name="exhibitionspace"
+  control={control}
+  render={({ field }) => (
+    <Form.Item
+      style={{  marginTop: '20px', marginBottom: '1px' }}
+    >
+      <Space align="center">
+        <Checkbox
+          {...field}
+          checked={field.value}
+          onChange={(e) => field.onChange(e.target.checked)}
+        >
+                              <span style={{ fontFamily: 'Bricolage Grotesque Light' }}>
+                              Tick if you are interested in booking an exhibition space{" "} 
+                              </span>
+        </Checkbox>
+      </Space>
+    </Form.Item>
+  )}
+/>
         </div>
       </div>
       </div>
-    
+      </div>
+
           <div style={{ textAlign: 'center', marginTop: '60px' }}>
 
           <Button
@@ -343,6 +373,7 @@ const NewVendorsDetails = () => {
         </Form>
       </div>
     </div>
+    
   );
 };
 

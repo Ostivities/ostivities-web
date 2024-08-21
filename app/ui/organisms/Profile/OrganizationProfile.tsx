@@ -69,8 +69,7 @@ const OrganizationProfile = () => {
 
   return (
     <div style={{ maxWidth: '1100px', marginLeft: '50px' }}>
-      <H4 content="Profile" className="mb-10 self-start" />
-
+      
       <div className="flex items-center space-x-6 mb-6"> {/* Flex container for profile picture and buttons */}
         <div className="relative profile-image-container">
         <Image

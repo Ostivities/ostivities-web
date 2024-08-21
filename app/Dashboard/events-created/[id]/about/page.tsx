@@ -49,6 +49,7 @@ const AboutEvent = () => {
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     return values;
   };
+  const [showRadio, setShowRadio] = useState(false);
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
     errorInfo
@@ -176,10 +177,10 @@ const AboutEvent = () => {
           checked={field.value}
           onChange={(e) => field.onChange(e.target.checked)}
         >
-                              <span>
-                              Allow vendors registration{" "} 
+                              <span style={{ fontFamily: 'Bricolage Grotesque Light' }}>
+                              Vendors registration{" "} 
                                 <span className="optional-text">
-                                  (this will allow users to register as vendors for your event)
+                                  (allows users to register as vendors for your event)
                                 </span>
                               </span>
         </Checkbox>
@@ -187,6 +188,69 @@ const AboutEvent = () => {
     </Form.Item>
   )}
 />
+
+<Controller
+  name="exhibitionspace"
+  control={control}
+  render={({ field }) => (
+    <Checkbox
+      {...field}
+      checked={field.value as boolean} // Ensure exhibitionspace is boolean
+      onChange={(e) => {
+        field.onChange(e.target.checked);
+        setShowRadio(e.target.checked); // Toggle radio buttons visibility
+      }}
+    >
+      <span style={{ fontFamily: 'Bricolage Grotesque Light' }}>
+            Exhibition Space Booking{" "} 
+            <span className="optional-text">
+              (allows vendors to book exhibition space at your event)
+            </span>
+          </span>
+        </Checkbox>
+  )}
+/>
+
+{showRadio && (
+  <Controller
+    name="spaceType"
+    control={control}
+    render={({ field }) => (
+      <Radio.Group
+        {...field}
+        onChange={(e) => field.onChange(e.target.value as string)} // Ensure value is string
+        value={field.value}
+      >
+        <Radio value="paid">Paid Space</Radio>
+        <Radio value="free">Free Space</Radio>
+      </Radio.Group>
+    )}
+  />
+)}
+
+{showRadio && watch('spaceType') === 'paid' && (
+  <Space direction="horizontal" size="large">
+    <Form.Item label="Space Available">
+      <Controller
+        name="spaceAvailable"
+        control={control}
+        render={({ field }) => (
+          <Input {...field} placeholder="Enter number of spaces" type="number" />
+        )}
+      />
+    </Form.Item>
+    <Form.Item label="Space Fee">
+      <Controller
+        name="spaceFee"
+        control={control}
+        render={({ field }) => (
+          <Input {...field} placeholder="Enter fee in Naira" />
+        )}
+      />
+    </Form.Item>
+  </Space>
+)}
+
 
             <Form.Item
               name={"eventState"}

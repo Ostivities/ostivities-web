@@ -24,7 +24,6 @@ const UserProfile = () => {
   return (
     <div style={{ maxWidth: '1100px', marginLeft: '50px' }}>
       <form className="w-full flex flex-col space-y-6 px-8 py-5" onSubmit={handleSubmit(onSubmit)}>
-        <H4 content="Profile" className="mb-10 self-start" />
 
         <div className="grid grid-cols-2 gap-x-14 w-full">
           <div className="grid gap-y-6">

@@ -55,6 +55,9 @@ function Details(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [] = useState(null);
   const [userName, setUserName] = useState("Rose"); // default value
+  const [showRadio, setShowRadio] = useState(false);
+
+
 
   const { Option } = Select;
 
@@ -65,9 +68,15 @@ function Details(): JSX.Element {
     watch,
     trigger,
   } = useForm<IFormInput>({
-    progressive: true,
-    mode: "all",
+    mode: "all",  // Use your preferred validation mode
+    defaultValues: {
+      exhibitionspace: false,
+      spaceType: '',  // Initializing as an empty string
+      spaceAvailable: undefined,
+      spaceFee: undefined,
+    },
   });
+  
 
   const watchEventInfo = watch("eventInfo");
 
@@ -138,6 +147,7 @@ function Details(): JSX.Element {
         <LocationSearch onSelectLocation={handleSelectLocation} />
       </div>
     );
+
 
   return (
     <Fragment>
@@ -273,10 +283,10 @@ function Details(): JSX.Element {
           checked={field.value}
           onChange={(e) => field.onChange(e.target.checked)}
         >
-                              <span>
-                              Allow vendors registration{" "} 
+                              <span style={{ fontFamily: 'Bricolage Grotesque Light' }}>
+                              Vendors registration{" "} 
                                 <span className="optional-text">
-                                  (this will allow users to register as vendors for your event)
+                                  (allows users to register as vendors for your event)
                                 </span>
                               </span>
         </Checkbox>
@@ -285,34 +295,99 @@ function Details(): JSX.Element {
   )}
 />
 
-                  <Controller
-                    name="eventState"
-                    control={control}
-                    render={({ field }) => (
-                      <Space
-                        direction="vertical"
-                        size={"small"}
-                        className="w-full"
-                      >
-                        <Label
-                          content="Event State"
-                          className=""
-                          htmlFor="eventState"
-                        />
-                        <Select
-                          placeholder="Select State"
-                          {...field}
-                          style={{ width: "100%" }}
-                        >
-                          {STATES_IN_NIGERIA.map((_i) => (
-                            <Option value={_i.state} key={_i.state}>
-                              {_i.state}
-                            </Option>
-                          ))}
-                        </Select>
-                      </Space>
-                    )}
-                  />
+<Controller
+  name="exhibitionspace"
+  control={control}
+  render={({ field }) => (
+    <Checkbox
+      {...field}
+      checked={field.value as boolean} // Ensure exhibitionspace is boolean
+      onChange={(e) => {
+        field.onChange(e.target.checked);
+        setShowRadio(e.target.checked); // Toggle radio buttons visibility
+      }}
+    >
+      <span style={{ fontFamily: 'Bricolage Grotesque Light' }}>
+            Exhibition Space Booking{" "} 
+            <span className="optional-text">
+              (allows vendors to book exhibition space at your event)
+            </span>
+          </span>
+        </Checkbox>
+  )}
+/>
+
+{showRadio && (
+  <Controller
+    name="spaceType"
+    control={control}
+    render={({ field }) => (
+      <Radio.Group
+        {...field}
+        onChange={(e) => field.onChange(e.target.value as string)} // Ensure value is string
+        value={field.value}
+      >
+        <Radio value="paid">Paid Space</Radio>
+        <Radio value="free">Free Space</Radio>
+      </Radio.Group>
+    )}
+  />
+)}
+
+{showRadio && watch('spaceType') === 'paid' && (
+  <Space direction="horizontal" size="large">
+    <Form.Item label="Space Available">
+      <Controller
+        name="spaceAvailable"
+        control={control}
+        render={({ field }) => (
+          <Input {...field} placeholder="Enter number of spaces" type="number" />
+        )}
+      />
+    </Form.Item>
+    <Form.Item label="Space Fee">
+      <Controller
+        name="spaceFee"
+        control={control}
+        render={({ field }) => (
+          <Input {...field} placeholder="Enter fee in Naira" />
+        )}
+      />
+    </Form.Item>
+  </Space>
+)}
+
+
+<Controller
+  name="eventState"
+  control={control}
+  render={({ field }) => (
+    <Space
+      direction="vertical"
+      size={"small"}
+      className="w-full"
+      style={{ marginTop: '16px' }} // Adjust the value as needed
+    >
+      <Label
+        content="Event State"
+        className=""
+        htmlFor="eventState"
+      />
+      <Select
+        placeholder="Select State"
+        {...field}
+        style={{ width: "100%" }}
+      >
+        {STATES_IN_NIGERIA.map((_i) => (
+          <Option value={_i.state} key={_i.state}>
+            {_i.state}
+          </Option>
+        ))}
+      </Select>
+    </Space>
+  )}
+/>
+
 
 <Controller
   name="eventAddress"

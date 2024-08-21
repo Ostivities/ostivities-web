@@ -2,11 +2,18 @@
 
 import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
 import { Heading5 } from '@/app/components/typography/Typography';
+import { Button, Dropdown, MenuProps, Space } from 'antd';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useParams, usePathname, useRouter } from "next/navigation";
+import { IoChevronDown } from 'react-icons/io5';
 
 const EventDetail = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const handleMenuClick: MenuProps["onClick"] = (e) => {
+    return e;
+  };
 
   const title = (
     <div className="flex-center gap-2">
@@ -23,6 +30,33 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
 
     </div>
   );
+
+
+  const RegistrationTypes: MenuProps["items"] = [
+    {
+      label: (
+        <Link
+          href={`/Dashboard/tickets`}
+          className="font-BricolageGrotesqueRegular font-normal text-md text-OWANBE_DARK"
+        >
+          Register as a guest
+        </Link>
+      ),
+      key: "1",
+    },
+    {
+      label: (
+        <Link
+          href={`/Dashboard/vendorsregistration`}
+          className="font-BricolageGrotesqueRegular font-normal text-md text-OWANBE_DARK"
+        >
+          Register as a vendor
+        </Link>
+      ),
+      key: "2",
+    },
+  ];
+
 
   return (
     <DashboardLayout title={title} isLoggedIn>
@@ -153,12 +187,27 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
             </p>
             <div className="flex justify-center mt-12">
               
-            <button
-  onClick={() => router.push('/Dashboard/tickets')}
-  className="w-full rounded-full bg-OWANBE_PRY px-24 py-3 text-white text-xl font-bold"
->
-  Register
-</button>
+            <Dropdown menu={{ items: RegistrationTypes, onClick: handleMenuClick }}>
+  <Button
+    type={pathname.includes("register") ? "primary" : "text"}
+    className="primary-btn w-full"
+    style={{
+      borderRadius: "25px",
+      fontFamily: "BricolageGrotesqueMedium",
+      backgroundColor: "#e20000", // Button color
+      color: "white", // Text color
+      height: "50px", // Adjust height as needed
+      fontSize: "16px", // Increase text size
+      border: "none", // Remove border if needed
+    }}
+  >
+    <Space>
+      Register
+      <IoChevronDown />
+    </Space>
+  </Button>
+</Dropdown>
+
             </div>
           </div>
         </div>

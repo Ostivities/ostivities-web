@@ -1,34 +1,31 @@
-import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, FormProps, Input, InputNumber, Select, Modal, Space } from "antd";
+import { Button, Form, FormProps, Input, Select, Modal, Space } from "antd";
 import React, { useState } from "react";
 
+// Define the props expected by the modal component
 interface AddEventCoordinatorModalProps {
   open: boolean;
   onCancel: () => void;
   onOk: () => void;
 }
 
-interface FieldType {}
+// Define the field types for the form
+interface FieldType {
+  coordinatorsName: string;
+  coordinatorsEmail: string;
+  coordinatorsRole: string;
+}
 
 const AddEventCoordinatorModal: React.FC<AddEventCoordinatorModalProps> = ({ open, onCancel, onOk }) => {
-  const { TextArea } = Input;
   const { Option } = Select;
-
-  const [ticketType, setTicketType] = useState<string>("");
-  const [ticketStockValue, setTicketStockValue] = useState<string>("");
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     // handle form submission
-    onOk(); // Close the modal on successful submission
     console.log('Form Values:', values);
+    onOk(); // Close the modal on successful submission
   };
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
     console.log('Failed:', errorInfo);
-  };
-
-  const handleRoleTypeChange = (value: string) => {
-    setTicketType(value);
   };
 
   return (
@@ -75,37 +72,34 @@ const AddEventCoordinatorModal: React.FC<AddEventCoordinatorModalProps> = ({ ope
         layout="vertical"
       >
         <Form.Item<FieldType>
-          label="Coordinators name"
+          label="Coordinator's Name"
           name="coordinatorsName"
-          rules={[{ required: true, message: "Please input coordinators name!" }]}
+          rules={[{ required: true, message: "Please input coordinator's name!" }]}
           style={{ marginBottom: '8px' }}
         >
-          <Input placeholder="Enter coordinators name" />
+          <Input placeholder="Enter coordinator's name" />
         </Form.Item>
 
         <Form.Item<FieldType>
-          label="Coordinators email"
+          label="Coordinator's Email"
           name="coordinatorsEmail"
-          rules={[{ required: true, message: "Please input Coordinators email!" }]}
+          rules={[{ required: true, message: "Please input coordinator's email!" }]}
           style={{ marginBottom: '8px' }}
         >
-          <Input placeholder="Enter Coordinators email" />
+          <Input placeholder="Enter coordinator's email" />
         </Form.Item>
 
         <Form.Item<FieldType>
-          label="Coordinators role"
+          label="Coordinator's Role"
           name="coordinatorsRole"
-          rules={[{ required: true, message: "Please select your permission type!" }]}
+          rules={[{ required: true, message: "Please select coordinator's role!" }]}
           style={{ marginBottom: '8px' }}
         >
-          <Select placeholder="Select role type" onChange={handleRoleTypeChange}>
+          <Select placeholder="Select role type">
             <Option value="Ticketing Agent">Ticketing Agent</Option>
             <Option value="Auditor">Auditor</Option>
             <Option value="Usher">Usher</Option>
           </Select>
-        </Form.Item>
-
-        <Form.Item<FieldType> name="remember" valuePropName="checked" style={{ marginBottom: '24px' }}>
         </Form.Item>
       </Form>
     </Modal>

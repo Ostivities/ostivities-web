@@ -66,6 +66,10 @@ export interface IFormInput {
   facebookUrl?: string;
   instagramUrl?: string;
   vendorregistration: boolean;
+  exhibitionspace: boolean;
+  spaceType: string;
+  spaceAvailable?: number;
+  spaceFee?: string;      
 }
 
 export interface IModal {
@@ -138,12 +142,22 @@ export interface VendorDataType {
   vendorName: string;
   category: string;
   dateApplied: any;
-  status: "Approved" | "Declined" | "Pending Approval";
+  status: "Approved" | "Declined" | "Pending";
   id: string;
   websiteUrl?: string;
   twitterUrl?: string;
   facebookUrl?: string;
   instagramUrl?: string;
+}
+
+
+export interface CoordinatorsDataType {
+  key: string;
+  id: string; // Unique identifier for the coordinator
+  coordinatorsName: string;
+  coordinatorsEmail: string;
+  coordinatorsRole: string;
+  dateAdded: string;
 }
 
 

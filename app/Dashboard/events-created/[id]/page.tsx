@@ -176,7 +176,7 @@ export default function Page(): JSX.Element {
           >
             <Space>
               Guest List
-              <IoChevronDown />
+              <IoChevronDown /> 
             </Space>
           </Button>
         </Dropdown>

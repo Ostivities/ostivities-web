@@ -39,9 +39,9 @@ const VendorsList = () => {
     vendorName: getRandomName(),
     category: getRandomEventName(),
     dateApplied: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
-    status: ["Approved", "Declined", "Pending Approval"][
+    status: ["Approved", "Declined", "Pending"][
       Math.floor(Math.random() * 3)
-    ] as "Approved" | "Declined" | "Pending Approval",
+    ] as "Approved" | "Declined" | "Pending",
     id: generateRandomString(10),
   }));
 
@@ -87,7 +87,7 @@ const VendorsList = () => {
       filters: [
         { text: "Approved", value: "Approved" },
         { text: "Declined", value: "Declined" },
-        { text: "Pending Approval", value: "Pending Approval" },
+        { text: "Pending", value: "Pending" },
       ],
       onFilter: (value, record) => record.status.includes(value as string),
       sorter: (a: VendorDataType, b: VendorDataType) =>
@@ -102,7 +102,7 @@ const VendorsList = () => {
         } else if (status === "Declined") {
           style = { color: "#D30000", backgroundColor: "#FFD3D3" }; // Red
           dotColor = "#D30000";
-        } else if (status === "Pending Approval") {
+        } else if (status === "Pending") {
           style = { color: "#F68D2E", backgroundColor: "#FDE8D5" }; // Orange
           dotColor = "#F68D2E";
         }
