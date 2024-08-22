@@ -24,7 +24,19 @@ const eventNames = [
 
 // Function to get a random event name from the array
 export const getRandomEventName = () =>
-  eventNames[Math.floor(Math.random() * eventNames.length)];
+  eventNames[Math.floor(Math.random() * eventNames.length)]; 
+
+export const getRandomNigerianPhoneNumber = (): string => {
+  const prefixes = ['070', '080', '081', '090', '091'];
+  const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+  
+  const getRandomDigit = () => Math.floor(Math.random() * 10);
+
+  const lineNumber = `${getRandomDigit()}${getRandomDigit()}${getRandomDigit()}${getRandomDigit()}${getRandomDigit()}${getRandomDigit()}${getRandomDigit()}`;
+
+  return `${randomPrefix}${lineNumber}`;
+}
+
 
 export const getRandomName = (): string => {
   const firstNames: string[] = [

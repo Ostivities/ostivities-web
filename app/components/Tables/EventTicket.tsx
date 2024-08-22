@@ -1,7 +1,7 @@
 import { Label } from "@/app/components/typography/Typography";
 import { DataType } from "@/app/utils/interface";
 import AddTicketModal from "@/app/components/OstivitiesModal/AddTicket";
-import DeleteTicket from "@/app/components/OstivitiesModal/DeleteTicket";
+import DeleteTicket from "@/app/components/OstivitiesModal/DeleteTicket"; 
 import UpdateTicket from "@/app/components/OstivitiesModal/UpdateTicket";
 
 import { generateRandomString, getRandomEventName } from "@/app/utils/helper";

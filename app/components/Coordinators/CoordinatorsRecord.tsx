@@ -7,12 +7,12 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
 import { useRouter } from "next/navigation";
-
 import { Heading5, Label, Paragraph } from "@/app/components/typography/Typography";
 import { ColumnsType } from "antd/es/table";
 import {
-  getRandomName,
+  getRandomName, getRandomNigerianPhoneNumber,
 } from "@/app/utils/helper";
+import CoordinatorsDetail from "@/app/components/OstivitiesModal/CoordinatorsDetail";
 import { CoordinatorsDataType } from "@/app/utils/interface";
 import { MenuItemType } from "antd/es/menu/interface";
 import Dropdown from "antd/es/dropdown/dropdown";
@@ -29,8 +29,11 @@ const CoordinatorsList = () => {
   const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [actionType, setActionType] = useState<"delete" | "warning">();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isShown, setIsShown] = useState(false);
+  const [actionType, setActionType] = useState<"delete" | "warning" | "detail">();
   const [showNewVendorDetails, setShowNewVendorDetails] = useState<boolean>(false);
+  const [modalData, setModalData] = useState<any>({});
 
   const roles = ["Ticketing Agent", "Auditor", "Usher"]; // Define the roles
 
@@ -39,13 +42,25 @@ const CoordinatorsList = () => {
     key: `${index + 1}`, // Add a key if used in the Table component
     coordinatorsName: getRandomName(),
     coordinatorsEmail: getRandomName(), // Use the correct field name
+    coordinatorsphoneNumber:getRandomNigerianPhoneNumber(),
     coordinatorsRole: roles[Math.floor(Math.random() * roles.length)],
     dateAdded: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
   }));
 
+
+  const coordinatorsPhoneNumber = getRandomNigerianPhoneNumber();
+  console.log(coordinatorsPhoneNumber);
+
   const handleSearch = (value: string) => {
     setSearchText(value.toLowerCase());
   };
+
+
+  const handleAction = (record: CoordinatorsDataType) => {
+    setIsModalOpen(true);
+    setModalData(record);
+  };
+
 
   const filteredData = data.filter(
     (item) =>
@@ -55,7 +70,7 @@ const CoordinatorsList = () => {
 
   const columns: ColumnsType<CoordinatorsDataType> = [
     {
-      title: "Coordinator Name", // Correct title if needed
+      title: "Coordinator's Name", // Correct title if needed
       dataIndex: "coordinatorsName", // Ensure dataIndex matches
       sorter: (a, b) => a.coordinatorsName.localeCompare(b.coordinatorsName),
     },
@@ -84,7 +99,7 @@ const CoordinatorsList = () => {
       ),
       dataIndex: "action",
       key: "action",
-      render: (text, record) => (
+      render: (text: any, record: CoordinatorsDataType) => (
         <Space direction="vertical" size="small">
           <Dropdown
             menu={{
@@ -100,6 +115,23 @@ const CoordinatorsList = () => {
   ];
 
   const GuestItems: MenuItemType[] = [
+    {
+    label: (
+      <Button
+        type="link"
+        className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+        style={{ color: "#000000", fontFamily: "BricolageGrotesqueRegular" }}
+        onClick={() => {
+          setIsModalOpen(true);
+          setActionType("detail");
+        }}
+      >
+        View
+      </Button>
+    ),
+    key: "1",
+  },
+
     {
       label: (
         <Button
@@ -118,6 +150,8 @@ const CoordinatorsList = () => {
         </Button>
       ),
       key: "3",
+
+      
     },
   ];
 
@@ -129,6 +163,7 @@ const CoordinatorsList = () => {
     const formattedExportData = exportData.map((item) => ({
       "Coordinator Name": item.coordinatorsName, // Corrected property name
       "Coordinator Email": item.coordinatorsEmail, // Corrected property name
+      "Coordinator Phone Number": item.coordinatorsphoneNumber, // Corrected property name
       "Date Added": item.dateAdded,
       "Role": item.coordinatorsRole, // Corrected property name
     }));
@@ -150,6 +185,13 @@ const CoordinatorsList = () => {
 
   return (
     <React.Fragment>
+        {isModalOpen && actionType === "detail" && (
+        <CoordinatorsDetail
+          open={isModalOpen}
+          onCancel={() => setIsModalOpen(false)}
+          data={modalData}
+        />
+      )}
       {/* Render the DeleteEntryModal based on the isModalOpen state */}
       {isModalOpen && actionType === "delete" && (
         <DeleteEntry
@@ -220,29 +262,21 @@ const CoordinatorsList = () => {
             {selectedRowKeys.length > 0 && (
               <Space>
                 <Button
-                  type="default"
-                  className="font-BricolageGrotesqueSemiBold text-sm text-OWANBE_DARK"
-                  style={{
-                    borderColor: "#FAAD14",
-                    color: "#FAAD14",
-                  }}
-                  icon={<FileExcelOutlined />}
-                  onClick={() => handleExport("excel")}
-                >
-                  Export to Excel
-                </Button>
-                <Button
-                  type="default"
-                  className="font-BricolageGrotesqueSemiBold text-sm text-OWANBE_DARK"
-                  style={{
-                    borderColor: "#D32029",
-                    color: "#D32029",
-                  }}
-                  icon={<FilePdfOutlined />}
-                  onClick={() => handleExport("pdf")}
-                >
-                  Export to PDF
-                </Button>
+                    type="default"
+                    className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                    style={{ borderRadius: 15, marginRight: 8 }}
+                    onClick={() => handleExport("excel")}
+                  >
+                    <FileExcelOutlined />
+                  </Button>
+                  <Button
+                    type="default"
+                    className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                    style={{ borderRadius: 15 }}
+                    onClick={() => handleExport("pdf")}
+                  >
+                    <FilePdfOutlined />
+                  </Button>
               </Space>
             )}
           </Space>

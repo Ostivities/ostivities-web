@@ -77,7 +77,7 @@ export interface IModal {
   onClose?: any;
   onCancel?: any;
   onOk?: any;
-  actionType?: "delete" | "warning";
+  actionType?: "delete" | "warning" | "detail";
   data?: any;
   selectedRowKeys?: string | number; 
 }
@@ -157,7 +157,15 @@ export interface CoordinatorsDataType {
   coordinatorsName: string;
   coordinatorsEmail: string;
   coordinatorsRole: string;
+  coordinatorsphoneNumber: string;
   dateAdded: string;
+  sold?: number; // Optional, since it's not used in the data generation
+  name?: string; // Optional, since it's not used in the data generation
+  age?: number | any; // Optional, since it's not used in the data generation
+  address?: string; // Optional, since it's not used in the data generation
+  revenue?: number; // Optional, since it's not used in the data generation
+  fees?: number; // Optional, since it's not used in the data generation
+  sales?: number; // Optional, since it
 }
 
 

@@ -12,6 +12,7 @@ interface AddEventCoordinatorModalProps {
 interface FieldType {
   coordinatorsName: string;
   coordinatorsEmail: string;
+  coordinatorsphoneNumber: string;
   coordinatorsRole: string;
 }
 
@@ -87,6 +88,15 @@ const AddEventCoordinatorModal: React.FC<AddEventCoordinatorModalProps> = ({ ope
           style={{ marginBottom: '8px' }}
         >
           <Input placeholder="Enter coordinator's email" />
+        </Form.Item>
+
+        <Form.Item<FieldType>
+          label="Coordinator's Phone Number"
+          name="coordinatorsphoneNumber"
+          rules={[{ required: true, message: "Please input coordinator's phone number!" }]}
+          style={{ marginBottom: '8px' }}
+        >
+          <Input placeholder="Enter coordinator's phone number" />
         </Form.Item>
 
         <Form.Item<FieldType>

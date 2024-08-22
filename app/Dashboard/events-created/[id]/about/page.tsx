@@ -15,6 +15,7 @@ import {
   FacebookFilled,
   InstagramFilled,
   LinkOutlined,
+  QuestionCircleOutlined,
   TwitterOutlined,
   UploadOutlined,
   XOutlined,
@@ -181,7 +182,16 @@ const AboutEvent = () => {
                               Vendors registration{" "} 
                                 <span className="optional-text">
                                   (allows users to register as vendors for your event)
-                                </span>
+                                  {" "}
+      <a 
+        href="https://ostivities.tawk.help/article/how-vendor-management-works" // Replace with your actual URL
+        target="_blank" 
+        rel="noopener noreferrer" 
+        style={{ marginLeft: '8px' }}
+      >
+        <QuestionCircleOutlined style={{ fontSize: '16px', color: '#858990' }} />
+      </a>
+    </span>
                               </span>
         </Checkbox>
       </Space>
@@ -205,7 +215,16 @@ const AboutEvent = () => {
             Exhibition Space Booking{" "} 
             <span className="optional-text">
               (allows vendors to book exhibition space at your event)
-            </span>
+              </span>
+      {" "}
+      <a 
+        href="https://ostivities.tawk.help/article/how-exhibition-space-booking-works" // Replace with your actual URL
+        target="_blank" 
+        rel="noopener noreferrer" 
+        style={{ marginLeft: '8px' }}
+      >
+        <QuestionCircleOutlined style={{ fontSize: '16px', color: '#858990' }} />
+      </a>
           </span>
         </Checkbox>
   )}
