@@ -188,8 +188,8 @@ const NewVendorsDetails = () => {
         <Input placeholder="Enter vendors address" style={{ width: '100%' }} />
       </Form.Item>
 
-      {/* Third Row */}
-      <Form.Item label="Vendors Specialties"
+       {/* Third Row */}
+       <Form.Item label="Vendors Specialties"
           name="VendorsSpecialties"
           rules={[{ required: true, message: "Please select specialty type!" }]}
           style={{ marginBottom: '8px' }}
@@ -202,54 +202,8 @@ const NewVendorsDetails = () => {
           </Select>
       </Form.Item>
 
-      <Form.Item label="Status"
-          name="status"
-          rules={[{ required: true, message: "Please select status type!" }]}
-          style={{ marginBottom: '35px' }}
-        >
-          <Select placeholder="Select status" onChange={handlestatusChange}>
-            <Option value="Approved">Approved</Option>
-            <Option value="Declined">Declined</Option>
-            <Option value="PendingApproval">Pending</Option>
-          </Select>
-      </Form.Item>
-
-
-   {/* Forth Row */}
-   <div className="col-span-2 grid grid-cols-2 gap-x-14">
-        {/* Extra Details */}
-        <div>
-          <label
-            htmlFor="extradetails"
-            style={{
-              fontSize: "14.5px",
-              fontFamily: "BricolageGrotesqueregular",
-              marginBottom: "10px", 
-            }}
-          >
-            Extra Details
-          </label>
-          <Controller
-            name="eventDetails" 
-            control={control}
-            render={({ field }) => (
-              <Input.TextArea
-                {...field}
-                placeholder="Enter extra details" 
-                style={{
-                  minHeight: "150px",
-                  maxHeight: "150px",
-                  width: "100%",
-                  paddingTop: "10px",
-                }}
-                className="py-3"
-              />
-            )}
-          />
-        
-        </div>
-          {/* Social Media Details */}
-        <div>
+      {/* Social Media Details */}
+      <div>
           <label
             htmlFor="socialdetails"
             style={{
@@ -317,10 +271,41 @@ const NewVendorsDetails = () => {
           </Row>
         </div>
 
-      {/* Fifth Row */}
 
-      <div className="col-span-2 grid grid-cols-2 gap-x-14">
-        {/* checkbox */}
+   {/* Forth Row */}
+   <div className="col-span-2 grid grid-cols-2 gap-x-14">
+        {/* Extra Details */}
+        <div>
+          <label
+            htmlFor="extradetails"
+            style={{
+              fontSize: "14.5px",
+              fontFamily: "BricolageGrotesqueregular",
+              marginBottom: "10px", 
+            }}
+          >
+            Extra Details
+          </label>
+          <Controller
+            name="eventDetails" 
+            control={control}
+            render={({ field }) => (
+              <Input.TextArea
+                {...field}
+                placeholder="Enter extra details" 
+                style={{
+                  minHeight: "150px",
+                  maxHeight: "150px",
+                  width: "100%",
+                  paddingTop: "10px",
+                }}
+                className="py-3"
+              />
+            )}
+          />
+        
+        </div>
+          {/* checkbox */}
         <div>
             <Controller
   name="exhibitionspace"
@@ -343,7 +328,6 @@ const NewVendorsDetails = () => {
     </Form.Item>
   )}
 />
-        </div>
       </div>
       </div>
       </div>
