@@ -12,6 +12,7 @@ import {
 import { EVENT_INFO } from "@/app/utils/enums";
 import { IFormInput } from "@/app/utils/interface";
 import {
+  DeleteOutlined,
   FacebookFilled,
   InstagramFilled,
   LinkOutlined,
@@ -375,81 +376,102 @@ const AboutEvent = () => {
               </Space.Compact>
             </Form.Item>
 
-            <Form.Item
-              name={"document"}
-              label={
-                <>
-                  <Label
-                    content={
-                      <span>
-                        Supporting Doc{" "}
-                        <span className="optional-text">(optional)</span>
-                      </span>
-                    }
-                    htmlFor="document"
-                  />
-                </>
-              }
-              rules={[{ required: false, message: "Please input your email" }]}
-              className="pr-6"
-            >
-              <Space direction="vertical" size="small">
-                <Space.Compact className="w-full h-8">
-                  <Input
-                    style={{
-                      width: "90%",
-                      borderTopRightRadius: "0px !important",
-                      borderBottomRightRadius: "0px !important",
-                    }}
-                    placeholder="Enter file name (optional)"
-                  />
-                  <Upload
-                    showUploadList={false}
-                    beforeUpload={() => false}
-                    className="upload-button"
-                    onChange={(info) => {
-                      const file = info.fileList[0];
-                      return file;
-                    }}
-                  >
-                    <Button
-                      icon={<UploadOutlined />}
-                      className="custom-upload-button"
-                    >
-                      Click to Upload
-                    </Button>
-                  </Upload>
-                </Space.Compact>
-                <span className="font-BricolageGrotesqueLight text-OWANBE_PRY text-xs font-light">
-                  *Supporting doc can be Wedding Card, Birthday Card among many
-                  others. *Only JPEG, PNG & PDF Allowed and file size should not
-                  be more than 10MB.
-                </span>
-              </Space>
-            </Form.Item>
+            <Controller
+                      name="document"
+                      control={control}
+                      render={({ field }) => (
+                        <Space direction="vertical" size="small">
+                          <Label
+                            content={
+                              <span>
+                                Upload Supporting Doc{" "} 
+                                <span className="optional-text">
+                                  (optional)
+                                </span>
+                              </span>
+                            }
+                            htmlFor="document"
+                          />
 
-            <Form.Item
-              name={"eventType"}
-              label={
-                <>
-                  <Label
-                    content="Event Type"
-                    className=""
-                    htmlFor="eventType"
-                  />
-                </>
-              }
-              rules={[{ required: false, message: "Please input your email" }]}
-              className="pr-6"
-            >
-              <Select placeholder="Select Event Type" style={{ width: "100%" }}>
-                {EVENT_TYPES.map((_i) => (
-                  <Select.Option value={_i.value} key={_i.label}>
-                    {_i.label}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
+                          <Space.Compact className="w-full h-8">
+                            <Input
+                              style={{
+                                width: "75%",
+                                borderTopRightRadius: "0px !important",
+                                borderBottomRightRadius: "0px !important",
+                              }}
+                              placeholder="Enter file name (optional)"
+                            />
+                            <Upload
+                              showUploadList={false}
+                              beforeUpload={() => false}
+                              className="upload-button"
+                              onChange={(info) => {
+                                const file = info.fileList[0]; // Only take the first file
+                                field.onChange(file ? [file] : []); // Override with the new file or empty array
+                              }}
+                            >
+                              <Button
+                                icon={<UploadOutlined />}
+                                className="custom-upload-button"
+                              >
+                                Click to Upload
+                              </Button>
+                            </Upload>
+                          </Space.Compact>
+                          <span className="font-BricolageGrotesqueLight text-OWANBE_PRY text-xs font-light">
+                            *Supporting doc can be Wedding Card, Birthday Card
+                            among many others. *Only JPEG, PNG & PDF Allowed and
+                            file size should not be more than 10MB.
+                          </span>
+                          {Array.isArray(field.value) &&
+                            field.value.length > 0 && (
+                              <div className="font-BricolageGrotesqueLight text-xs text-gray-400">
+                                Uploaded File:
+                                <Space>
+                                  <span>{field.value[0].name}</span>
+                                  <DeleteOutlined
+                                    style={{
+                                      color: "#e20000",
+                                      cursor: "pointer",
+                                    }}
+                                    onClick={() => field.onChange([])} // Clear the uploaded file
+                                  />
+                                </Space>
+                              </div>
+                            )}
+                        </Space>
+                      )}
+                    />
+
+                     <Controller
+                      name="eventType"
+                      control={control}
+                      render={({ field }) => (
+                        <Space
+                          direction="vertical"
+                          size={"small"}
+                          className="w-full"
+                        >
+                          <Label
+                            content="Event Type"
+                            className=""
+                            htmlFor="eventType"
+                          />
+                          <Select
+                            placeholder="Select Event Type"
+                            {...field}
+                            style={{ width: "100%" }}
+                          >
+                            {EVENT_TYPES.map((_i) => (
+                              <Option value={_i.value} key={_i.label}>
+                                {_i.label}
+                              </Option>
+                            ))}
+                          </Select>
+                        </Space>
+                      )}
+                    />
 
             <Form.Item
               name={"eventInfo"}

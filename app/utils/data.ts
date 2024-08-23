@@ -158,7 +158,6 @@ export const Answers: IFeatures[] = [
 ];
 
 export const STATES_IN_NIGERIA = [
-  { value: "All", label: "All" },
   {
     state: "Abia",
     alias: "abia",
