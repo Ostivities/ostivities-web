@@ -8,7 +8,7 @@ const options = [
     main: "Events",
   },
   {
-    background: "url(https://res.cloudinary.com/ddgehpmnq/image/upload/v1724390155/placdeholder_dkbvjw.png)",
+    background: "url(https://res.cloudinary.com/ddgehpmnq/image/upload/v1724391169/placeholder_mr99ha.png)",
     main: "Weddings",
   },
   {
