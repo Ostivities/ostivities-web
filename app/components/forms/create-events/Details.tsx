@@ -35,6 +35,7 @@ import {
   Col,
   DatePicker,
   Input,
+  InputNumber,
   Radio,
   Row,
   Select,
@@ -355,7 +356,8 @@ function Details(): JSX.Element {
 
 {showRadio && watch('spaceType') === 'paid' && (
   <Space direction="horizontal" size="large">
-    <Form.Item label="Space Available">
+    <Form.Item  label={<span style={{ fontFamily: 'Bricolage Grotesque Light' }}>Space Available</span>}
+    >
       <Controller
         name="spaceAvailable"
         control={control}
@@ -364,12 +366,20 @@ function Details(): JSX.Element {
         )}
       />
     </Form.Item>
-    <Form.Item label="Space Fee">
+    <Form.Item  label={<span style={{ fontFamily: 'Bricolage Grotesque Light' }}>Space Fee</span>}
+    >
       <Controller
         name="spaceFee"
         control={control}
         render={({ field }) => (
-          <Input {...field} placeholder="Enter fee in Naira" />
+          <InputNumber 
+          {...field} 
+          placeholder="Enter space fee" 
+          style={{ width: '80%' }}
+          min={0}
+          formatter={value => `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+          parser={value => value?.replace(/\₦\s?|(,*)/g, '') as any}
+          />
         )}
       />
     </Form.Item>

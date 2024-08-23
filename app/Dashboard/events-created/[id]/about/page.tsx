@@ -28,6 +28,7 @@ import {
   Form,
   FormProps,
   Input,
+  InputNumber,
   Popover,
   Radio,
   Row,
@@ -249,7 +250,8 @@ const AboutEvent = () => {
 
 {showRadio && watch('spaceType') === 'paid' && (
   <Space direction="horizontal" size="large">
-    <Form.Item label="Space Available">
+    <Form.Item  label={<span style={{ fontFamily: 'Bricolage Grotesque Light' }}>Space Available</span>}
+    >
       <Controller
         name="spaceAvailable"
         control={control}
@@ -258,12 +260,20 @@ const AboutEvent = () => {
         )}
       />
     </Form.Item>
-    <Form.Item label="Space Fee">
+    <Form.Item  label={<span style={{ fontFamily: 'Bricolage Grotesque Light' }}>Space Fee</span>}
+    >
       <Controller
         name="spaceFee"
         control={control}
         render={({ field }) => (
-          <Input {...field} placeholder="Enter fee in Naira" />
+          <InputNumber 
+          {...field} 
+          placeholder="Enter space fee" 
+          style={{ width: '80%' }}
+          min={0}
+          formatter={value => `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+          parser={value => value?.replace(/\₦\s?|(,*)/g, '') as any}
+          />
         )}
       />
     </Form.Item>
@@ -294,44 +304,36 @@ const AboutEvent = () => {
               </Select>
             </Form.Item>
 
-            <Form.Item
-  name={"eventAddress"}
-  label={
-    <>
-      <Label
-        content="Event Address"
-        className=""
-        htmlFor="eventAddress"
-      />
-    </>
-  }
-  rules={[{ required: false, message: "Please input your email" }]}
-  className="pr-6"
->
-  <Space direction="vertical" size={"small"} style={{ width: '100%' }}>
-    
-    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-      <Input 
-        placeholder="Enter Address" 
-        style={{ flex: 1, minWidth: '200px', maxWidth: 'calc(100% - 128px)' }} 
-      />
-      <Popover
-        content={content} // Replace 'content' with your actual Popover content
-        title="Search for a Location"
-        trigger="click"
-        open={popoverVisible} // Ensure you manage 'popoverVisible' state
-      >
-        <Button
-          type="default"
-          style={{ borderRadius: '5px', minWidth: '120px' }}
-          onClick={() => setPopoverVisible(!popoverVisible)}
+            <Controller
+  name="eventAddress"
+  control={control}
+  render={({ field }) => (
+    <Space direction="vertical" size={"small"} style={{ width: '100%' }}>
+      <label htmlFor="eventAddress">Event Address</label>
+      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+        <Input 
+          {...field} 
+          placeholder="Enter Address" 
+          style={{ flex: 1, minWidth: '200px', maxWidth: 'calc(100% - 128px)' }} 
+        />
+        <Popover
+          content={content}
+          title="Search for a Location"
+          trigger="click"
+          open={popoverVisible}
         >
-          Select on Map
-        </Button>
-      </Popover>
-    </div>
-  </Space>
-</Form.Item>
+          <Button
+            type="default"
+            style={{ borderRadius: '5px', minWidth: '120px' }}
+            onClick={() => setPopoverVisible(!popoverVisible)}
+          >
+            Select on Map
+          </Button>
+        </Popover>
+      </div>
+    </Space>
+  )}
+/>
 
           </Space>
 
@@ -774,7 +776,7 @@ const AboutEvent = () => {
               style={{
                 borderRadius: "20px",
                 fontFamily: "BricolageGrotesqueMedium",
-                marginTop: "30px", // Add top margin to the button
+                marginTop: "60px", // Add top margin to the button
               }}
               onClick={() => {
                 setComponentDisabled(false);
@@ -792,7 +794,7 @@ const AboutEvent = () => {
               style={{
                 borderRadius: "20px",
                 fontFamily: "BricolageGrotesqueMedium",
-                marginTop: "30px", // Add top margin to the button
+                marginTop: "60px", // Add top margin to the button
               }}
               onClick={() => {
                 setComponentDisabled(true);

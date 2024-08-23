@@ -41,7 +41,7 @@ const options = [
   },
   {
     background: "url(https://res.cloudinary.com/ddgehpmnq/image/upload/v1724391178/Rectangle_34624136_fcu8pz.png)",
-    main: "Others",
+    main: "Other Events",
   },
 ];
 

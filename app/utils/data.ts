@@ -2437,16 +2437,19 @@ export const stepOne = [
 ];
 
 export const EVENT_TYPES: { label: string; value: string }[] = [
-  { value: "All", label: "All" },
-  { value: "Wedding Party", label: "Wedding Party" },
+  { value: "All Events", label: "All Events" },
+  { value: "Wedding Event", label: "Wedding Event" },
   { value: "Birthday Party", label: "Birthday Party" },
   { value: "Concert", label: "Concert" },
-  { value: "Event", label: "Event" },
   { value: "Paint & Sip", label: "Paint & Sip" },
   { value: "Hangouts", label: "Hangouts" },
   { value: "Webinar", label: "Webinar" },
+  { value: "Seminar", label: "Seminar" },
   { value: "Conference", label: "Conference" },
-  { value: "Others", label: "Others" },
+  { value: "Theater Performance", label: "Theater Performance" },
+  { value: "Hackathon", label: "Hackathon" },
+  { value: "Sporting Event", label: "Sporting Event" },
+  { value: "Other Events", label: "Other Events" },
 ];
 
 export const AFRICAN_TIME_ZONES = [
