@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "@/app/comingsooncard.css";
 
 const options = [
@@ -45,8 +45,24 @@ const options = [
   },
 ];
 
-function ComingSoon(): JSX.Element {
+function ComingSoon(): JSX.Element | null {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
+  const [isDesktop, setIsDesktop] = useState<boolean>(false);
+
+  useEffect(() => {
+    const updateMedia = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+
+    updateMedia();
+    window.addEventListener("resize", updateMedia);
+
+    return () => window.removeEventListener("resize", updateMedia);
+  }, []);
+
+  if (!isDesktop) {
+    return null;
+  }
 
   return (
     <div className="flex justify-center items-center h-screen">
