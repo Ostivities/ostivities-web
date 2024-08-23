@@ -65,6 +65,12 @@ export const ADVANTAGES: IFeatures[] = [
 
 export const ADVANTAGES_TWO: IFeatures[] = [
   {
+    icon: Cube,
+    title: "Streamline Your Vendor Management:",
+    content:
+      "Effortlessly manage vendors, coordinate logistics, and ensure a seamless event experience. With Ostivities, vendor management becomes a breeze, letting you focus on creating memorable moments.",
+  },
+  {
     icon: Star,
     title: "Connect with Attendees:",
     content:
