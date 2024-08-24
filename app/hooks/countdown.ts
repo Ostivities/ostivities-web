@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
 export const useTimer = () => {
-  const [seconds, setSeconds] = useState(600)
+  const [seconds, setSeconds] = useState(300)
   
   useEffect(() => {
     if (seconds <= 0) {
