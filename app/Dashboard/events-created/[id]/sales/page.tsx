@@ -75,7 +75,7 @@ const EventSales = () => {
     {
       title: (
         <Label
-          content="Total Ticket Sold"
+          content="Ticket Sold"
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
@@ -85,7 +85,7 @@ const EventSales = () => {
     {
       title: (
         <Label
-          content="Total Sales Revenue"
+          content="Sales Revenue"
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
@@ -121,7 +121,7 @@ const EventSales = () => {
     {
       title: (
         <Label
-          content="Total Space Booked"
+          content="Space Booked"
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
@@ -131,7 +131,7 @@ const EventSales = () => {
     {
       title: (
         <Label
-          content="Total Sales Revenue"
+          content="Sales Revenue"
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),

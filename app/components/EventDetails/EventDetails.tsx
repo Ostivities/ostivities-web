@@ -362,7 +362,7 @@ export default function EventDetailsComponent({
       gap: '4px', // Adjust the spacing between title and value (you can customize this)
     };
 
-    const salesRevenue = 2000;
+    const salesRevenue = 250000;
 
 const formattedRevenue = new Intl.NumberFormat('en-NG', {
   style: 'currency',
@@ -372,17 +372,25 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
 }).format(salesRevenue);
   
     return (
-      <div className="grid grid-cols-3 gap-x-8">
+      <div className="grid grid-cols-4 gap-x-6">
         <CardMetrics
-          title="Tickets Sold"
-          value={20}
+          title="Total Tickets Sold"
+          value={250}
           cardStyle={cardStyle}
           titleStyle={titleStyle}
           valueStyle={valueStyle}
           containerStyle={containerStyle}
         />
         <CardMetrics
-  title="Sales Revenue"
+          title="Total Space Booked"
+          value={10}
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+        <CardMetrics
+  title="Total Sales Revenue"
   value={formattedRevenue}
   cardStyle={cardStyle}
   titleStyle={titleStyle}
