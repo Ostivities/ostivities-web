@@ -2,7 +2,7 @@
 
 import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
 import Summary from '@/app/components/Discovery/VendorsSummary';
-import TimerModal from '@/app/components/OstivitiesModal/TimerModal';
+import TimerModal from '@/app/components/OstivitiesModal/VendorsTimerModal';
 import { useTimer } from '@/app/hooks/countdown';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -41,9 +41,9 @@ const Payment = () => {
       <section className="flex gap-12">
         <section className="flex-1">
           <div className=" bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem]">
-            We have reserved your tickets please complete checkout within{' '}
+            We have reserved your booked space please complete checkout within{' '}
             <span className=" text-OWANBE_PRY text-s font-BricolageGrotesqueRegular">{timer}</span>
-            minutes to secure your tickets.
+            minutes to secure your space.
           </div>
           <div className="pr-full mt-16">
             <div className="flex flex-col gap-8">
