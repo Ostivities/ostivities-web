@@ -24,6 +24,11 @@ const EventSales = () => {
   const [currentPaymentPage, setCurrentPaymentPage] = useState(1);
   const [paymentPageSize, setPaymentPageSize] = useState(10);
 
+  const [spaceSearchText, setSpaceSearchText] = useState("");
+  const [selectedSpaceRowKeys, setSelectedSpaceRowKeys] = useState<React.Key[]>([]);
+  const [currentSpacePage, setCurrentSpacePage] = useState(1);
+  const [spacePageSize, setSpacePageSize] = useState(10);
+
   const data: SalesDataType[] = Array.from({ length: 50 }, (_, index) => ({
     key: `${index + 1}`,
     eventName: getRandomEventName(),
@@ -52,6 +57,7 @@ const EventSales = () => {
 
   const exhibitionData: ExhibitionDataType[] = Array.from({ length: 50 }, (_, index) => ({
     key: `${index + 1}`,
+    eventName: getRandomEventName(),
     spaceBooked: Math.floor(Math.random() * 100),
     sales: Math.floor(Math.random() * 100),
     revenue: Math.floor(Math.random() * 10000),
@@ -259,6 +265,7 @@ const EventSales = () => {
     setSearchText(e.target.value);
   };
 
+
   const handlePaymentSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPaymentSearchText(e.target.value);
   };
@@ -267,6 +274,9 @@ const EventSales = () => {
     item.eventName.toLowerCase().includes(searchText.toLowerCase())
   );
   
+  const filteredspaceData = exhibitionData.filter(item =>
+    item.eventName.toLowerCase().includes(spaceSearchText.toLowerCase())
+  );
 
   const filteredPaymentData = paymentData.filter(item =>
     item.recipient.toLowerCase().includes(paymentSearchText.toLowerCase())
@@ -323,28 +333,30 @@ const EventSales = () => {
           }}
           scroll={{ x: "max-content" }}
         />
+        
          <Heading5 className="pb-5" content={"Exhibition Space Booked Sales"} />
         <Space className="w-full justify-between">
         </Space>
         <Table
           rowSelection={{
-            selectedRowKeys,
-            onChange: (keys) => setSelectedRowKeys(keys),
+            selectedRowKeys: selectedSpaceRowKeys,
+            onChange: (keys) => setSelectedSpaceRowKeys(keys),
           }}
-          columns={spacecolumns} // Use spacecolumns for the exhibition table
-          dataSource={exhibitionData} // Use exhibitionData directly or apply filtering if needed
+          columns={spacecolumns}
+          dataSource={exhibitionData}
           className="font-BricolageGrotesqueRegular w-full"
           pagination={{
-            current: currentPage,
-            pageSize: pageSize,
-            total: exhibitionData.length, // Ensure pagination total is correct
+            current: currentSpacePage,
+            pageSize: spacePageSize,
+            total: filteredspaceData.length,
             onChange: (page, size) => {
-              setCurrentPage(page);
-              setPageSize(size);
+              setCurrentSpacePage(page);
+              setSpacePageSize(size);
             },
           }}
           scroll={{ x: "max-content" }}
-        />
+         />
+
         <Heading5 className="pt-10 pb-5" content={"Payment History"} />
         <Space className="w-full justify-between">
           <Search

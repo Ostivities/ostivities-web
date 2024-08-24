@@ -139,6 +139,7 @@ export interface SalesDataType {
 export interface ExhibitionDataType {
   dateCreated: any;
   key: React.Key;
+  eventName: string;
   spaceBooked: number;
   sold?: number; // Optional, since it's not used in the data generation
   name?: string; // Optional, since it's not used in the data generation
