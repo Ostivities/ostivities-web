@@ -29,8 +29,8 @@ function Footer(): JSX.Element {
                 <Image src={Mail} alt="icon" />
                 <Small
   content={
-    <a href="mailto:support@ostivities.com" style={{ color: "#383A47", textDecoration: "none" }}>
-      support@ostivities.com
+    <a href="mailto:hello@ostivities.com" style={{ color: "#383A47", textDecoration: "none" }}>
+      hello@ostivities.com
     </a>
   }
   className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"

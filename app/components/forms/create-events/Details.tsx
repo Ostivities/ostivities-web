@@ -171,10 +171,10 @@ function Details(): JSX.Element {
             }
           />
           <Paragraph
-            className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
+            className="text-OWANBE_PRY text-md font-normal font-BricolageGrotesqueMedium"
             content={
               formStep === 1
-                ? "Lets get you started by creating your event." 
+                ? "Welcome! Ready to create your next event?" 
                 : formStep === 2
                 ? "Upload your event image here by clicking the camera icon (File size should not be more than 10MB)."
                 : "For free events, Ostivities is free. For paid events, we charge a percentage-based transaction fee on ticket sales."
@@ -183,14 +183,18 @@ function Details(): JSX.Element {
           />
         </Space>
         {formState.stage > 0 && (
-          <Button
+            <Button
             type="default"
             size={"large"}
-            className={`font-BricolageGrotesqueSemiBold button-style sign-in cursor-pointer font-bold`}
+            className="font-BricolageGrotesqueSemiBold button-style sign-in cursor-pointer font-bold"
             style={{ width: "150px" }}
             onClick={() => {
-              setFormStep(1);
-              setFormStage(formState.stage - 1);
+              if (formState.stage === 3) {
+                setFormStage(2); // Navigate back to the previous step before event ticket
+              } else if (formStep > 0) {
+                setFormStep(formStep - 1);
+                setFormStage(formState.stage - 1);
+              }
             }}
           >
             Back

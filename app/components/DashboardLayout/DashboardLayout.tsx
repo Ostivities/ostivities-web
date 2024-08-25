@@ -35,8 +35,8 @@ const items1: MenuProps["items"] = [
     key: "create-event",
   },
   {
-    label: "Event created",
-    key: "event-create",
+    label: "Events created",
+    key: "events-created",
   },
 ];
 
@@ -44,7 +44,6 @@ const items2: MenuProps["items"] = [
   { icon: CompassOutlined, title: "Discovery", link: "/Dashboard" },
   { icon: PlusCircleOutlined, title: 'Create Event', link: '/Dashboard/create-events' },
   { icon: FileSearchOutlined, title: 'Events Created', link: '/Dashboard/events-created' },
-  // { icon: UsergroupAddOutlined, title: 'Vendors Management', link: '/Dashboard/vendors-management' },
   { icon: SettingOutlined, title: "Settings", link: "/Dashboard/settings" },
   // { icon: FieldTimeOutlined, title: "Coming Soon", link: "/Dashboard/coming-soon" },
 ].map((item) => {
@@ -109,7 +108,7 @@ function DashboardLayout({
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const endpoints = ["create-events", "settings"];
+  const endpoints = ["create-events", "events-created", "coming-soon", "settings"];
 
   const index = pathname.split("/")[2];
 
@@ -126,6 +125,8 @@ function DashboardLayout({
 
   const pathCheck =
     pathname.split("/").includes("settings") ||
+    pathname.split("/").includes("events-created") ||
+    pathname.split("/").includes("coming-soon") ||
     pathname.split("/").includes("create-events");
 
   const toggleSidebar = () => {
