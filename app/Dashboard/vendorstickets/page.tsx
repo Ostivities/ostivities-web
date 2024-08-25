@@ -25,16 +25,21 @@ const SpaceSelection = () => {
     </div>
   );
 
-  const remainingSpace = [8, 5]; // Example remaining Space for each type
-
   // State to manage selected space counts
-  const [selectedSpace, setSelectedSpace] = useState(Array.from({ length: remainingSpace.length }, () => 0));
+  const [selectedSpace, setSelectedSpace] = useState([0, 0]);
 
-  // Function to handle change in space selection
-  const handleSlotChange = (index: number, value: number) => {
-    const newSelectedSpace = [...selectedSpace];
-    newSelectedSpace[index] = value;
-    setSelectedSpace(newSelectedSpace);
+  // Function to handle space increment
+  const handleIncrement = (index: number) => {
+    setSelectedSpace((prevSpace) =>
+      prevSpace.map((count, i) => (i === index ? count + 1 : count))
+    );
+  };
+
+  // Function to handle space decrement
+  const handleDecrement = (index: number) => {
+    setSelectedSpace((prevSpace) =>
+      prevSpace.map((count, i) => (i === index && count > 0 ? count - 1 : count))
+    );
   };
 
   return (
@@ -73,7 +78,7 @@ const SpaceSelection = () => {
           </div>
           
           <div className="mt-10 flex flex-col gap-6">
-            {remainingSpace.map((remaining, index) => (
+            {selectedSpace.map((_, index) => (
               <div key={index} className="card-shadow flex justify-between items-center">
                 <div>
                   <h2 className="text-lg font-BricolageGrotesqueMedium" style={{ fontWeight: 500, fontSize: '18px' }}>Exhibition Space</h2>
@@ -83,25 +88,23 @@ const SpaceSelection = () => {
                   </h3>
                   
                 </div>
-                <div className="flex items-center">
-                  <select
-                    name={`amount-${index}`}
-                    id={`amount-${index}`}
-                    className="px-2 py-0.5 border-[0.5px] border-[#525252] rounded-md w-16 bg-white text-lg"
-                    value={selectedSpace[index]}
-                    onChange={(e) => handleSlotChange(index, parseInt(e.target.value))}
-                    required
+                <div className="flex items-center gap-2">
+                  <button
+                    className="w-8 h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
+                    onClick={() => handleDecrement(index)}
+                    disabled={selectedSpace[index] === 0}
+                    style={{ backgroundColor: '#FADEDE' }}
                   >
-                    <option value="0">0</option>
-                    {Array.from({ length: remaining }, (_, optionIndex) => (
-                      <option key={optionIndex + 1} value={optionIndex + 1}>
-                        {optionIndex + 1}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="ml-2" style={{ fontSize: '12px', color: 'grey' }}>
-                    {remaining} remaining
-                  </span>
+                    -
+                  </button>
+                  <span className="text-lg mx-2">{selectedSpace[index]}</span>
+                  <button
+                    className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
+                    onClick={() => handleIncrement(index)}
+                    style={{color: '#e20000', backgroundColor: '#FADEDE' }}
+                  >
+                    +
+                  </button>
                 </div>
               </div>
             ))}
