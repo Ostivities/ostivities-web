@@ -1,12 +1,10 @@
 'use client';
 
-import { useState } from 'react'; // Import useState hook
+import { useState } from 'react';
 import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
 import Summary from '@/app/components/Discovery/Summary';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { global } from "styled-jsx/css";
 import "@/app/globals.css";
 
 const TicketsSelection = () => {
@@ -25,16 +23,21 @@ const TicketsSelection = () => {
     </div>
   );
 
-  const remainingTickets = [8, 5]; // Example remaining tickets for each type
-
   // State to manage selected ticket counts
-  const [selectedTickets, setSelectedTickets] = useState(Array.from({ length: remainingTickets.length }, () => 0));
+  const [selectedTickets, setSelectedTickets] = useState([0, 0]);
 
-  // Function to handle change in ticket selection
-  const handleTicketChange = (index: number, value: number) => {
-    const newSelectedTickets = [...selectedTickets];
-    newSelectedTickets[index] = value;
-    setSelectedTickets(newSelectedTickets);
+  // Function to handle ticket increment
+  const handleIncrement = (index: number) => {
+    setSelectedTickets((prevTickets) =>
+      prevTickets.map((count, i) => (i === index ? count + 1 : count))
+    );
+  };
+
+  // Function to handle ticket decrement
+  const handleDecrement = (index: number) => {
+    setSelectedTickets((prevTickets) =>
+      prevTickets.map((count, i) => (i === index && count > 0 ? count - 1 : count))
+    );
   };
 
   return (
@@ -68,42 +71,41 @@ const TicketsSelection = () => {
           </div>
 
           <div className="pr-full mt-16">
-          <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueMedium my-4 custom-font-size">
-          Choose one or more tickets and prepare for an extraordinary experience!</h3>
+            <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueMedium my-4 custom-font-size">
+              Choose one or more tickets and prepare for an extraordinary experience!
+            </h3>
           </div>
           
           <div className="mt-10 flex flex-col gap-6">
-            {remainingTickets.map((remaining, index) => (
+            {selectedTickets.map((_, index) => (
               <div key={index} className="card-shadow flex justify-between items-center">
                 <div>
                   <h2 className="text-lg font-BricolageGrotesqueMedium" style={{ fontWeight: 500, fontSize: '18px' }}>Early Bird</h2>
                   <h3>
                     <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>₦5,000</span>{' '}
-                    <span className="text-s font-BricolageGrotesqueRegular"style={{ fontWeight: 400, fontSize: '12px' }}>Including ₦300 fee</span>
+                    <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including ₦300 fee</span>
                   </h3>
                   <p className="text-s font-BricolageGrotesqueRegular" style={{ fontSize: '12px', color: 'black', marginTop: '17px' }}>
                     Your pass to sweet music and ambiance
                   </p>
                 </div>
-                <div className="flex items-center">
-                  <select
-                    name={`amount-${index}`}
-                    id={`amount-${index}`}
-                    className="px-2 py-0.5 border-[0.5px] border-[#525252] rounded-md w-16 bg-white text-lg"
-                    value={selectedTickets[index]}
-                    onChange={(e) => handleTicketChange(index, parseInt(e.target.value))}
-                    required
+                <div className="flex items-center gap-2">
+                  <button
+                    className="w-8 h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
+                    onClick={() => handleDecrement(index)}
+                    disabled={selectedTickets[index] === 0}
+                    style={{ backgroundColor: '#FADEDE' }}
                   >
-                    <option value="0">0</option>
-                    {Array.from({ length: remaining }, (_, optionIndex) => (
-                      <option key={optionIndex + 1} value={optionIndex + 1}>
-                        {optionIndex + 1}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="ml-2" style={{ fontSize: '12px', color: 'grey' }}>
-                    {remaining} remaining
-                  </span>
+                    -
+                  </button>
+                  <span className="text-lg mx-2">{selectedTickets[index]}</span>
+                  <button
+                    className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
+                    onClick={() => handleIncrement(index)}
+                    style={{color: '#e20000', backgroundColor: '#FADEDE' }}
+                  >
+                    +
+                  </button>
                 </div>
               </div>
             ))}
@@ -116,4 +118,3 @@ const TicketsSelection = () => {
 };
 
 export default TicketsSelection;
-
