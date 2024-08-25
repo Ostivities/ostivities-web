@@ -69,7 +69,7 @@ export interface IFormInput {
   exhibitionspace: boolean;
   spaceType: string;
   spaceAvailable?: number;
-  spaceFee?: string;      
+  spaceFee?: string;
 }
 
 export interface IModal {
@@ -79,7 +79,7 @@ export interface IModal {
   onOk?: any;
   actionType?: "delete" | "warning" | "detail";
   data?: any;
-  selectedRowKeys?: string | number; 
+  selectedRowKeys?: string | number;
 }
 
 export type FieldType = {
@@ -136,7 +136,6 @@ export interface SalesDataType {
   sales?: number; // Optional, since it
 }
 
-
 export interface VendorDataType {
   key: string;
   vendorName: string;
@@ -149,7 +148,6 @@ export interface VendorDataType {
   facebookUrl?: string;
   instagramUrl?: string;
 }
-
 
 export interface CoordinatorsDataType {
   key: string;
@@ -168,17 +166,15 @@ export interface CoordinatorsDataType {
   sales?: number; // Optional, since it
 }
 
-
 export interface SummaryDataType {
   key: string;
   buyerName: string;
   ticketName: string;
   checkedInBy: string;
-  discountCode?: string;  // optional if they can be null or undefined
+  discountCode?: string; // optional if they can be null or undefined
   uses?: number;
   dateEnding?: string;
 }
-
 
 export interface PaymentDataType {
   key: string;
@@ -217,4 +213,9 @@ export interface DiscountDataType {
   discountCode: string;
   uses: string;
   dateEnding: string;
+}
+
+export interface IVerifyToken {
+  email: string;
+  otp: number;
 }

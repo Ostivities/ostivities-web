@@ -1,3 +1,6 @@
+import { message } from "antd";
+import { AxiosError, AxiosResponse } from "axios";
+
 export const generateRandomString = (length: number): string => {
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -24,19 +27,18 @@ const eventNames = [
 
 // Function to get a random event name from the array
 export const getRandomEventName = () =>
-  eventNames[Math.floor(Math.random() * eventNames.length)]; 
+  eventNames[Math.floor(Math.random() * eventNames.length)];
 
 export const getRandomNigerianPhoneNumber = (): string => {
-  const prefixes = ['070', '080', '081', '090', '091'];
+  const prefixes = ["070", "080", "081", "090", "091"];
   const randomPrefix = prefixes[Math.floor(Math.random() * prefixes.length)];
-  
+
   const getRandomDigit = () => Math.floor(Math.random() * 10);
 
   const lineNumber = `${getRandomDigit()}${getRandomDigit()}${getRandomDigit()}${getRandomDigit()}${getRandomDigit()}${getRandomDigit()}${getRandomDigit()}`;
 
   return `${randomPrefix}${lineNumber}`;
-}
-
+};
 
 export const getRandomName = (): string => {
   const firstNames: string[] = [
@@ -114,4 +116,15 @@ export const getRandomName = (): string => {
     lastNames[Math.floor(Math.random() * lastNames.length)];
 
   return `${randomFirstName} ${randomLastName}`;
+};
+
+export const successFormatter = (data: AxiosResponse) => {
+  message.success(data?.data?.message);
+};
+
+export const errorFormatter = (error: AxiosError | any) => {
+  const errorMessage = error?.response?.data?.message;
+  typeof errorMessage === "string"
+    ? message.error(error?.response?.data?.message)
+    : message.error(error?.response?.data?.message?.[0]);
 };
