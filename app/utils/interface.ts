@@ -233,3 +233,10 @@ export interface DiscountDataType {
   uses: string;
   dateEnding: string;
 }
+
+export interface TabProps {
+  tabs: string[];
+  currentTab: string;
+  handleCurrentTab: (tab: string) => void;
+  style?: React.CSSProperties;  // Add this line to include the style prop
+}
