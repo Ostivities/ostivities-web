@@ -52,10 +52,11 @@ const OrderNotification = () => {
       </div>
 
       <Button
-        label="Save"
-        size="lg"
-        className="mt-16 max-w-xs font-BricolageGrotesqueBold"
-      />
+            label="Save changes"
+            size="lg"
+            className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
+            style={{ marginBottom: '20px' }}
+           />
     </form>
   );
 };

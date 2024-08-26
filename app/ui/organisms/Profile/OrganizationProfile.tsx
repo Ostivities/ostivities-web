@@ -124,14 +124,13 @@ const OrganizationProfile = () => {
             <Form.Item
               label="Account Type"
               name="accountType"
-              rules={[{ required: true, message: "Please input the account type!" }]}
             >
               <Input placeholder="Organization" disabled style={{ width: '100%' }} />
             </Form.Item>
             <Form.Item
               label="Business Name"
               name="businessName"
-              rules={[{ required: true, message: "Please input the business name!" }]}
+              rules={[{ required: true, message: "Please input your business name!" }]}
             >
               <Input placeholder="Enter business name" style={{ width: '100%' }} />
             </Form.Item>
@@ -148,7 +147,7 @@ const OrganizationProfile = () => {
             <Form.Item
               label="Phone Number"
               name="phoneNumber"
-              rules={[{ required: true, message: "Please input the phone number!" }]}
+              rules={[{ required: true, message: "Please input your phone number!" }]}
             >
               <Input placeholder="Enter phone number" style={{ width: '100%' }} />
             </Form.Item>
@@ -156,37 +155,37 @@ const OrganizationProfile = () => {
         </div>
 
         <H4
-          content="Update Password"
-          className="text-base text-OWANBE_PRY font-BricolageGrotesqueRegular mt-10 mb-8 self-start"
-        />
+          className="pt-10 pb-5" content={"Update Password"} />
 
-        <div className="grid grid-cols-2 gap-x-14">
-          <div className="grid gap-y-6">
-            <Form.Item
-              label="Old Password"
-              name="oldPassword"
-              rules={[{ required: true, message: "Please input the old password!" }]}
-            >
-              <Input.Password placeholder="Enter old password" style={{ width: '100%' }} />
-            </Form.Item>
-            <Form.Item
-              label="New Password"
-              name="newPassword"
-              rules={[{ required: true, message: "Please input the new password!" }]}
-            >
-              <Input.Password placeholder="Enter new password" style={{ width: '100%' }} />
-            </Form.Item>
-          </div>
+<div className="grid grid-cols-2 gap-x-14">
+  <div className="grid gap-y-6">
+    <Form.Item
+      label="Old Password"
+      name="oldPassword"
+      rules={[{ required: true, message: "Please input the old password!" }]}
+    >
+      <Input.Password placeholder="Enter old password" style={{ width: '100%' }} />
+    </Form.Item>
+  </div>
 
-          <Form.Item
-            label="Confirm Password"
-            name="confirmPassword"
-            rules={[{ required: true, message: "Please confirm the new password!" }]}
-          >
-            <Input.Password placeholder="Confirm new password" style={{ width: '100%' }} />
-          </Form.Item>
-        </div>
+  <div className="grid grid-cols-2 gap-x-6">
+    <Form.Item
+      label="New Password"
+      name="newPassword"
+      rules={[{ required: true, message: "Please input the new password!" }]}
+    >
+      <Input.Password placeholder="Enter new password" style={{ width: '100%' }} />
+    </Form.Item>
 
+    <Form.Item
+      label="Confirm Password"
+      name="confirmPassword"
+      rules={[{ required: true, message: "Please confirm the new password!" }]}
+    >
+      <Input.Password placeholder="Confirm new password" style={{ width: '100%' }} />
+    </Form.Item>
+  </div>
+</div>
         <div style={{ textAlign: 'center', marginTop: '60px' }}>
           <Button
             type="default"
