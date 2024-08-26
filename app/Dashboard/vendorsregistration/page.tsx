@@ -78,12 +78,13 @@ const Vendorsregistration = () => {
   // Function to handle image removal
   const handleRemoveImage = () => {
     Modal.confirm({
-      title: 'Are you sure you want to remove your profile picture?',
+      title: 'Are you sure you want to remove your image?',
+      icon: null,
       onOk() {
         setProfileImage("/images/emptyimage.png");
         setUploadButton("Update");
         setIsImageUploaded(false);
-        message.success('Profile picture removed successfully');
+        message.success('Image removed successfully');
       },
     });
   };
@@ -145,7 +146,7 @@ const Vendorsregistration = () => {
                 fontFamily: "BricolageGrotesqueMedium",
               }}
             >
-              Update
+              Upload Image
             </Button>
           </Upload>
         ) : (

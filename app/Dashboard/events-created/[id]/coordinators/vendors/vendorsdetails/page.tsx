@@ -63,6 +63,7 @@ const VendorsDetails = () => {
   const handleRemoveImage = () => {
     Modal.confirm({
       title: 'Are you sure you want to remove your profile picture?',
+      icon: null,
       onOk() {
         setProfileImage("/images/emptyimage.png");
         setUploadButton("Update");
