@@ -3,10 +3,13 @@ import AuthLayout from "@/app/components/AuthLayout/AuthLayout";
 import VerifyAccountForm from "@/app/components/forms/VerifyAccountForm";
 import { Heading3, Paragraph } from "@/app/components/typography/Typography";
 import { Space } from "antd";
+import { useSearchParams } from "next/navigation";
+// import { useRouter } from "next/";
 import React from "react";
 
 function VerifyAccount() {
-  const email = localStorage.getItem("email") as string | any;
+  const searchParams = useSearchParams();
+  const email = searchParams.get("email");
   return (
     <AuthLayout>
       <div className="w-4/5 mx-auto flex flex-col space-y-8 pt-48">
