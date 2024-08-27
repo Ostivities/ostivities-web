@@ -14,23 +14,25 @@ import {
   Select,
   Space,
 } from "antd";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 function CreateAccount(): JSX.Element {
   const router = useRouter();
   const { registerUser } = useRegister();
+  const linkRef = useRef<HTMLAnchorElement>(null);
   const [form] = Form.useForm();
   const { Option } = Select;
   const [val, setval] = useState<string>("");
 
   const onFinish: FormProps<IUser>["onFinish"] = async (values) => {
-    localStorage.setItem("email", values.email);
     if (values) {
       const response = await registerUser.mutateAsync(values);
       if (response.status === 201) {
         form.resetFields();
-        router.push("/verify-account");
+        linkRef.current?.click();
+        // router.push("/verify-account");
       }
     }
   };
@@ -275,6 +277,21 @@ function CreateAccount(): JSX.Element {
         >
           Sign Up
         </Button>
+        <Link
+          href={{
+            pathname: "/verify-account",
+            query: { email: form.getFieldValue("email") },
+          }}
+          style={{ display: "none" }}
+          ref={linkRef}
+          passHref
+          legacyBehavior
+          className="hidden"
+        >
+          <a ref={linkRef} style={{ display: "none" }}>
+            Verify Account
+          </a>
+        </Link>
       </Form.Item>
     </Form>
   );
