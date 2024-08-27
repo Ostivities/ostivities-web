@@ -3,7 +3,13 @@ import {
   REGISTER_USER,
   RESET_PASSWORD_TOKEN,
 } from "@/app/utils/constants";
-import { ILogin, IResetToken, IUser } from "@/app/utils/interface";
+import { errorFormatter, successFormatter } from "@/app/utils/helper";
+import {
+  ILogin,
+  IResetToken,
+  IUser,
+  IVerifyToken,
+} from "@/app/utils/interface";
 import { API_SERVICE } from "@/app/utils/service";
 import { useMutation } from "@tanstack/react-query";
 import { message } from "antd";
@@ -16,13 +22,10 @@ export const useRegister = () => {
     },
     mutationKey: [REGISTER_USER],
     onSuccess: (data: AxiosResponse) => {
-      message.success(data?.data?.message);
+      successFormatter(data);
     },
     onError: (error: AxiosError | any) => {
-      const errorMessage = error?.response?.data?.message;
-      typeof errorMessage === "string"
-        ? message.error(error?.response?.data?.message)
-        : message.error(error?.response?.data?.message?.[0]);
+      errorFormatter(error);
     },
   });
   return { registerUser };
@@ -35,18 +38,33 @@ export const useLogin = () => {
     },
     mutationKey: [LOGIN_USER],
     onSuccess: (data: AxiosResponse) => {
-      const accessToken = data?.data?.data?.accessToken;
-      sessionStorage.setItem("token", accessToken);
-      message.success(data?.data?.message);
+      if (data) {
+        const accessToken = data?.data?.data?.accessToken;
+        sessionStorage.setItem("token", accessToken);
+        successFormatter(data);
+      }
     },
     onError: (error: AxiosError | any) => {
-      const errorMessage = error?.response?.data?.message;
-      typeof errorMessage === "string"
-        ? message.error(error?.response?.data?.message)
-        : message.error(error?.response?.data?.message?.[0]);
+      errorFormatter(error);
     },
   });
   return { loginUser };
+};
+
+export const useVerifyOtp = () => {
+  const verifyOtp = useMutation({
+    mutationFn: (data: IVerifyToken) => {
+      return API_SERVICE._verifyToken(data);
+    },
+    mutationKey: [LOGIN_USER],
+    onSuccess: (data: AxiosResponse) => {
+      successFormatter(data);
+    },
+    onError: (error: AxiosError | any) => {
+      errorFormatter(error);
+    },
+  });
+  return { verifyOtp };
 };
 
 export const useRsetToken = () => {
@@ -56,15 +74,10 @@ export const useRsetToken = () => {
     },
     mutationKey: [RESET_PASSWORD_TOKEN],
     onSuccess: (data: AxiosResponse) => {
-      const accessToken = data?.data?.data?.accessToken;
-      sessionStorage.setItem("token", accessToken);
-      message.success(data?.data?.message);
+      successFormatter(data);
     },
     onError: (error: AxiosError | any) => {
-      const errorMessage = error?.response?.data?.message;
-      typeof errorMessage === "string"
-        ? message.error(error?.response?.data?.message)
-        : message.error(error?.response?.data?.message?.[0]);
+      errorFormatter(error);
     },
   });
   return { loginUser };

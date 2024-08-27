@@ -25,6 +25,7 @@ function CreateAccount(): JSX.Element {
   const [val, setval] = useState<string>("");
 
   const onFinish: FormProps<IUser>["onFinish"] = async (values) => {
+    localStorage.setItem("email", values.email);
     if (values) {
       const response = await registerUser.mutateAsync(values);
       if (response.status === 201) {
@@ -51,7 +52,7 @@ function CreateAccount(): JSX.Element {
     >
       <Form.Item
         label="Choose an Account Type"
-        style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: '8px' }} // Reduced marginBottom
+        style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: "8px" }} // Reduced marginBottom
         className="font-BricolageGrotesqueRegular"
         help={
           !val ? null : (
@@ -88,7 +89,10 @@ function CreateAccount(): JSX.Element {
       {val === ACCOUNT_TYPE.ORGANISATION ? (
         <Form.Item
           label="Business Name"
-          style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: '8px' }} // Reduced marginBottom
+          style={{
+            fontFamily: "BricolageGrotesqueRegular",
+            marginBottom: "8px",
+          }} // Reduced marginBottom
           className="font-BricolageGrotesqueRegular"
         >
           <Form.Item<IUser>
@@ -109,11 +113,16 @@ function CreateAccount(): JSX.Element {
           </Form.Item>
         </Form.Item>
       ) : (
-        <Row gutter={4}> {/* Reduced gutter size */}
+        <Row gutter={4}>
+          {" "}
+          {/* Reduced gutter size */}
           <Col span={12}>
             <Form.Item
               label="First Name"
-              style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: '8px' }} // Reduced marginBottom
+              style={{
+                fontFamily: "BricolageGrotesqueRegular",
+                marginBottom: "8px",
+              }} // Reduced marginBottom
               className="font-BricolageGrotesqueRegular"
             >
               <Form.Item<IUser>
@@ -136,7 +145,10 @@ function CreateAccount(): JSX.Element {
           <Col span={12}>
             <Form.Item
               label="Last Name"
-              style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: '8px' }} // Reduced marginBottom
+              style={{
+                fontFamily: "BricolageGrotesqueRegular",
+                marginBottom: "8px",
+              }} // Reduced marginBottom
               className="font-BricolageGrotesqueRegular"
             >
               <Form.Item<IUser>
@@ -161,7 +173,7 @@ function CreateAccount(): JSX.Element {
 
       <Form.Item
         label="Email Address"
-        style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: '8px' }} // Reduced marginBottom
+        style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: "8px" }} // Reduced marginBottom
         className="font-BricolageGrotesqueRegular"
       >
         <Form.Item<IUser>
@@ -177,7 +189,9 @@ function CreateAccount(): JSX.Element {
         </Form.Item>
       </Form.Item>
 
-      <Row gutter={4}> {/* Reduced gutter size */}
+      <Row gutter={4}>
+        {" "}
+        {/* Reduced gutter size */}
         <Col span={12}>
           <Form.Item<IUser>
             label="Password"
@@ -191,7 +205,6 @@ function CreateAccount(): JSX.Element {
             />
           </Form.Item>
         </Col>
-
         <Col span={12}>
           <Form.Item<IUser>
             name="confirmPassword"
@@ -229,19 +242,22 @@ function CreateAccount(): JSX.Element {
         ]}
       >
         <Checkbox>
-  <span style={{ fontFamily: 'Bricolage Grotesque, sans-serif' }}>
-    I accept the{" "}
-    <a
-      href="/terms-and-condition"
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{ color: "#e20000", textDecoration: "none", fontFamily: 'Bricolage Grotesque, sans-serif' }}
-    >
-      Terms and Conditions
-    </a>
-  </span>
-</Checkbox>
-
+          <span style={{ fontFamily: "Bricolage Grotesque, sans-serif" }}>
+            I accept the{" "}
+            <a
+              href="/terms-and-condition"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: "#e20000",
+                textDecoration: "none",
+                fontFamily: "Bricolage Grotesque, sans-serif",
+              }}
+            >
+              Terms and Conditions
+            </a>
+          </span>
+        </Checkbox>
       </Form.Item>
 
       <Form.Item>
