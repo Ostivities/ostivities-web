@@ -14,12 +14,14 @@ import {
   Select,
   Space,
 } from "antd";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 function CreateAccount(): JSX.Element {
   const router = useRouter();
   const { registerUser } = useRegister();
+  const linkRef = useRef<HTMLAnchorElement>(null);
   const [form] = Form.useForm();
   const { Option } = Select;
   const [val, setval] = useState<string>("");
@@ -29,7 +31,8 @@ function CreateAccount(): JSX.Element {
       const response = await registerUser.mutateAsync(values);
       if (response.status === 201) {
         form.resetFields();
-        router.push("/login");
+        linkRef.current?.click();
+        // router.push("/verify-account");
       }
     }
   };
@@ -51,7 +54,7 @@ function CreateAccount(): JSX.Element {
     >
       <Form.Item
         label="Choose an Account Type"
-        style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: '8px' }} // Reduced marginBottom
+        style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: "8px" }} // Reduced marginBottom
         className="font-BricolageGrotesqueRegular"
         help={
           !val ? null : (
@@ -88,7 +91,10 @@ function CreateAccount(): JSX.Element {
       {val === ACCOUNT_TYPE.ORGANISATION ? (
         <Form.Item
           label="Business Name"
-          style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: '8px' }} // Reduced marginBottom
+          style={{
+            fontFamily: "BricolageGrotesqueRegular",
+            marginBottom: "8px",
+          }} // Reduced marginBottom
           className="font-BricolageGrotesqueRegular"
         >
           <Form.Item<IUser>
@@ -109,11 +115,16 @@ function CreateAccount(): JSX.Element {
           </Form.Item>
         </Form.Item>
       ) : (
-        <Row gutter={4}> {/* Reduced gutter size */}
+        <Row gutter={4}>
+          {" "}
+          {/* Reduced gutter size */}
           <Col span={12}>
             <Form.Item
               label="First Name"
-              style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: '8px' }} // Reduced marginBottom
+              style={{
+                fontFamily: "BricolageGrotesqueRegular",
+                marginBottom: "8px",
+              }} // Reduced marginBottom
               className="font-BricolageGrotesqueRegular"
             >
               <Form.Item<IUser>
@@ -136,7 +147,10 @@ function CreateAccount(): JSX.Element {
           <Col span={12}>
             <Form.Item
               label="Last Name"
-              style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: '8px' }} // Reduced marginBottom
+              style={{
+                fontFamily: "BricolageGrotesqueRegular",
+                marginBottom: "8px",
+              }} // Reduced marginBottom
               className="font-BricolageGrotesqueRegular"
             >
               <Form.Item<IUser>
@@ -161,7 +175,7 @@ function CreateAccount(): JSX.Element {
 
       <Form.Item
         label="Email Address"
-        style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: '8px' }} // Reduced marginBottom
+        style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: "8px" }} // Reduced marginBottom
         className="font-BricolageGrotesqueRegular"
       >
         <Form.Item<IUser>
@@ -177,7 +191,9 @@ function CreateAccount(): JSX.Element {
         </Form.Item>
       </Form.Item>
 
-      <Row gutter={4}> {/* Reduced gutter size */}
+      <Row gutter={4}>
+        {" "}
+        {/* Reduced gutter size */}
         <Col span={12}>
           <Form.Item<IUser>
             label="Password"
@@ -191,7 +207,6 @@ function CreateAccount(): JSX.Element {
             />
           </Form.Item>
         </Col>
-
         <Col span={12}>
           <Form.Item<IUser>
             name="confirmPassword"
@@ -229,19 +244,22 @@ function CreateAccount(): JSX.Element {
         ]}
       >
         <Checkbox>
-  <span style={{ fontFamily: 'Bricolage Grotesque, sans-serif' }}>
-    I accept the{" "}
-    <a
-      href="/terms-and-condition"
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{ color: "#e20000", textDecoration: "none", fontFamily: 'Bricolage Grotesque, sans-serif' }}
-    >
-      Terms and Conditions
-    </a>
-  </span>
-</Checkbox>
-
+          <span style={{ fontFamily: "Bricolage Grotesque, sans-serif" }}>
+            I accept the{" "}
+            <a
+              href="/terms-and-condition"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: "#e20000",
+                textDecoration: "none",
+                fontFamily: "Bricolage Grotesque, sans-serif",
+              }}
+            >
+              Terms and Conditions
+            </a>
+          </span>
+        </Checkbox>
       </Form.Item>
 
       <Form.Item>
@@ -259,6 +277,21 @@ function CreateAccount(): JSX.Element {
         >
           Sign Up
         </Button>
+        <Link
+          href={{
+            pathname: "/verify-account",
+            query: { email: form.getFieldValue("email") },
+          }}
+          style={{ display: "none" }}
+          ref={linkRef}
+          passHref
+          legacyBehavior
+          className="hidden"
+        >
+          <a ref={linkRef} style={{ display: "none" }}>
+            Verify Account
+          </a>
+        </Link>
       </Form.Item>
     </Form>
   );
