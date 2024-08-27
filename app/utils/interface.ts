@@ -219,3 +219,10 @@ export interface IVerifyToken {
   email: string;
   otp: number;
 }
+
+export interface TabProps {
+  tabs: string[];
+  currentTab: string;
+  handleCurrentTab: (tab: string) => void;
+  style?: React.CSSProperties; // Add this line to include the style prop
+}

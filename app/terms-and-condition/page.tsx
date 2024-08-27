@@ -23,10 +23,10 @@ function TermsAndCondition(): JSX.Element {
                 
 
                 <p style={{ fontSize: "16px", marginBottom: "15px" }}>
-                <strong>Effective Date:</strong>
+                <strong>Effective Date:</strong> November 5, 2024  
                 </p>
                 <p style={{ fontSize: "16px", marginBottom: "24px" }}>
-                <strong>Last Updated:</strong>   
+                <strong>Last Updated:</strong> November 5, 2024     
                 </p>
 
                 <p style={{ fontSize: "16px", marginBottom: "24px" }}>
