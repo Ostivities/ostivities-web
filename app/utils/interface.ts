@@ -69,7 +69,7 @@ export interface IFormInput {
   exhibitionspace: boolean;
   spaceType: string;
   spaceAvailable?: number;
-  spaceFee?: string;      
+  spaceFee?: string;
 }
 
 export interface IModal {
@@ -79,7 +79,7 @@ export interface IModal {
   onOk?: any;
   actionType?: "delete" | "warning" | "detail";
   data?: any;
-  selectedRowKeys?: string | number; 
+  selectedRowKeys?: string | number;
 }
 
 export type FieldType = {
@@ -165,7 +165,6 @@ export interface VendorDataType {
   instagramUrl?: string;
 }
 
-
 export interface CoordinatorsDataType {
   key: string;
   id: string; // Unique identifier for the coordinator
@@ -183,17 +182,15 @@ export interface CoordinatorsDataType {
   sales?: number; // Optional, since it
 }
 
-
 export interface SummaryDataType {
   key: string;
   buyerName: string;
   ticketName: string;
   checkedInBy: string;
-  discountCode?: string;  // optional if they can be null or undefined
+  discountCode?: string; // optional if they can be null or undefined
   uses?: number;
   dateEnding?: string;
 }
-
 
 export interface PaymentDataType {
   key: string;
@@ -234,9 +231,14 @@ export interface DiscountDataType {
   dateEnding: string;
 }
 
+export interface IVerifyToken {
+  email: string;
+  otp: number;
+}
+
 export interface TabProps {
   tabs: string[];
   currentTab: string;
   handleCurrentTab: (tab: string) => void;
-  style?: React.CSSProperties;  // Add this line to include the style prop
+  style?: React.CSSProperties; // Add this line to include the style prop
 }

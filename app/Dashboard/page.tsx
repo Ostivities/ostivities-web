@@ -16,7 +16,7 @@ import useFetch from '../components/forms/create-events/auth';
 function Dashboard(): JSX.Element {
   const route = useRouter();
   const { isLoggedIn } = useFetch();
-  const [activeTab, setActiveTab] = useState('popular');
+  const [activeTab, setActiveTab] = useState('free');
   const [searchResults, setSearchResults] = useState<any[]>([]);
 
   const COUNTRY_JSON: any = Country.getAllCountries().map((i: any) => {
@@ -100,7 +100,7 @@ function Dashboard(): JSX.Element {
 
         {/* Tab Navigation */}
         <div className="flex space-x-8 mb-1">
-          <button
+          {/* <button
             className={`relative font-semibold pb-2 ${
               activeTab === 'popular' ? 'text-red-600' : 'text-gray-500'
             }`}
@@ -110,7 +110,7 @@ function Dashboard(): JSX.Element {
             {activeTab === 'popular' && (
               <div className="absolute left-0 bottom-[-2px] w-full h-[4px] bg-red-600 rounded-full" style={{ borderRadius: '25px' }} />
             )}
-          </button>
+          </button> */}
           <button
             className={`relative font-semibold pb-2 ${
               activeTab === 'free' ? 'text-red-600' : 'text-gray-500'
