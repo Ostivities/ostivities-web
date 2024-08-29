@@ -1,18 +1,8 @@
 "use client";
-import { useLogin, useVerifyOtp } from "@/app/hooks/auth/auth.hook";
-import { ILogin, IUser } from "@/app/utils/interface";
+import { useVerifyOtp } from "@/app/hooks/auth/auth.hook";
 import type { GetProps } from "antd";
-import {
-  Button,
-  Form,
-  FormProps,
-  Input,
-  message,
-  notification,
-  Select,
-  Typography,
-} from "antd";
-import { useParams, useRouter } from "next/navigation";
+import { Button, Form, FormProps, Input, message, Typography } from "antd";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 
 const { Title } = Typography;
@@ -21,17 +11,18 @@ type OTPProps = GetProps<typeof Input.OTP>;
 
 function VerificationCodeForm(): JSX.Element {
   const { verifyOtp } = useVerifyOtp();
+  const searchParams = useSearchParams();
   const [form] = Form.useForm();
   const router = useRouter();
 
+  const email = searchParams?.get("email") as string;
+
   const onChange: OTPProps["onChange"] = async (text) => {
-    console.log("onChange:", text);
     if (text.length === 6) {
-      const email = localStorage.getItem("email") as string;
       try {
         const response = await verifyOtp.mutateAsync({
           email: email,
-          otp: parseInt(text),
+          otp: text,
         });
         if (response.status === 200) {
           form.resetFields();
@@ -46,15 +37,6 @@ function VerificationCodeForm(): JSX.Element {
 
   const sharedProps: OTPProps = {
     onChange,
-  };
-
-  const onFinish: FormProps<ILogin>["onFinish"] = async (value) => {
-    console.log(value);
-    if (value) {
-    }
-  };
-  const onFinishFailed: FormProps<IUser>["onFinishFailed"] = (errorInfo) => {
-    return errorInfo;
   };
 
   return (
@@ -101,4 +83,12 @@ function VerificationCodeForm(): JSX.Element {
   );
 }
 
-export default VerificationCodeForm;
+function VerificationCodeSuspense(): JSX.Element {
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <VerificationCodeForm />
+    </React.Suspense>
+  );
+}
+
+export default VerificationCodeSuspense;

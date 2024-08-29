@@ -4,6 +4,7 @@ import { IAuthLayout } from '@/app/utils/interface';
 import { Card } from 'antd';
 import React from 'react';
 
+
 function AuthLayout({ children }: IAuthLayout): JSX.Element {
   return (
     <main className="overflow-hidden min-h-screen flex flex-col">
