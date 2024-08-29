@@ -1,6 +1,6 @@
 "use client";
 import AuthLayout from "@/app/components/AuthLayout/AuthLayout";
-import VerifyAccountForm from "@/app/components/forms/VerifyAccountForm";
+import VerificationCodeSuspense from "@/app/components/forms/VerifyAccountForm";
 import { Heading3, Paragraph } from "@/app/components/typography/Typography";
 import { Space } from "antd";
 import { useSearchParams } from "next/navigation";
@@ -20,7 +20,7 @@ function VerifyAccount() {
             className=""
           />
         </Space>
-        <VerifyAccountForm />
+        <VerificationCodeSuspense />
         <br />
         <br />
         <br />

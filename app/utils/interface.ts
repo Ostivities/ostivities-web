@@ -217,7 +217,7 @@ export interface DiscountDataType {
 
 export interface IVerifyToken {
   email: string;
-  otp: number;
+  otp: number | string;
 }
 
 export interface TabProps {
