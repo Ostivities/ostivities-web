@@ -136,6 +136,22 @@ export interface SalesDataType {
   sales?: number; // Optional, since it
 }
 
+export interface ExhibitionDataType {
+  dateCreated: any;
+  key: React.Key;
+  eventName: string;
+  spaceBooked: number;
+  sold?: number; // Optional, since it's not used in the data generation
+  name?: string; // Optional, since it's not used in the data generation
+  age?: number | any; // Optional, since it's not used in the data generation
+  address?: string; // Optional, since it's not used in the data generation
+  id?: string; // Optional, since it's not used in the data generation
+  revenue?: number; // Optional, since it's not used in the data generation
+  fees?: number; // Optional, since it's not used in the data generation
+  sales?: number; // Optional, since it
+}
+
+
 export interface VendorDataType {
   key: string;
   vendorName: string;
