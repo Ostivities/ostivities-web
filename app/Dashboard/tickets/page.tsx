@@ -6,6 +6,7 @@ import Summary from '@/app/components/Discovery/Summary';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import "@/app/globals.css";
+import "@/app/scroll.css";
 
 const TicketsSelection = () => {
   const router = useRouter();
@@ -23,8 +24,15 @@ const TicketsSelection = () => {
     </div>
   );
 
+  // Define ticket types and their details
+  const ticketTypes = [
+    { name: "Early Bird", price: "₦5,000", fee: "₦300", description: "Your pass to sweet music and ambiance" },
+    { name: "VIP Access", price: "₦15,000", fee: "₦500", description: "Enjoy premium benefits and services" },
+    { name: "Group Of 5- Regular", price: "₦22,000", fee: "", description: "Regular price for group of 5 tickets" },
+  ];
+
   // State to manage selected ticket counts
-  const [selectedTickets, setSelectedTickets] = useState([0, 0]);
+  const [selectedTickets, setSelectedTickets] = useState([0, 0, 0]);
 
   // Function to handle ticket increment
   const handleIncrement = (index: number) => {
@@ -75,37 +83,61 @@ const TicketsSelection = () => {
               Choose one or more tickets and prepare for an extraordinary experience!
             </h3>
           </div>
+          {/* Add Single Ticket Button before the first ticket */}
+          {/* <div className="mb-4">
+            <button
+              className="bg-OWANBE_PRY text-white px-3 py-2 rounded-md text-sm font-BricolageGrotesqueMedium"
+              style={{ borderRadius: '20px', fontSize: '12px' }} // Adjusted text size
+            >
+              Single Ticket
+            </button>
+          </div> */}
           
           <div className="mt-10 flex flex-col gap-6">
-            {selectedTickets.map((_, index) => (
-              <div key={index} className="card-shadow flex justify-between items-center">
-                <div>
-                  <h2 className="text-lg font-BricolageGrotesqueMedium" style={{ fontWeight: 500, fontSize: '18px' }}>Early Bird</h2>
-                  <h3>
-                    <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>₦5,000</span>{' '}
-                    <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including ₦300 fee</span>
-                  </h3>
-                  <p className="text-s font-BricolageGrotesqueRegular" style={{ fontSize: '12px', color: 'black', marginTop: '17px' }}>
-                    Your pass to sweet music and ambiance
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    className="w-8 h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
-                    onClick={() => handleDecrement(index)}
-                    disabled={selectedTickets[index] === 0}
-                    style={{ backgroundColor: '#FADEDE' }}
-                  >
-                    -
-                  </button>
-                  <span className="text-lg mx-2">{selectedTickets[index]}</span>
-                  <button
-                    className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
-                    onClick={() => handleIncrement(index)}
-                    style={{color: '#e20000', backgroundColor: '#FADEDE' }}
-                  >
-                    +
-                  </button>
+            {ticketTypes.map((ticket, index) => (
+              <div key={index}>
+                {/* Add Group Ticket Header Button before the third ticket */}
+                {index === 2 && (
+                  <div className="mb-4">
+                    <button
+                      className="bg-OWANBE_PRY text-white px-3 py-1 rounded-md text-sm font-BricolageGrotesqueMedium"
+                      style={{ borderRadius: '20px', fontSize: '12px' }} // Adjusted text size
+                    >
+                      Collective Ticket
+                    </button>
+                  </div>
+                )}
+                <div className="card-shadow flex justify-between items-center">
+                  <div>
+                    <h2 className="text-lg font-BricolageGrotesqueMedium" style={{ fontWeight: 500, fontSize: '18px' }}>{ticket.name}</h2>
+                    <h3>
+                      <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>{ticket.price}</span>{' '}
+                      {ticket.fee && (
+                        <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including {ticket.fee} fee</span>
+                      )}
+                    </h3>
+                    <p className="text-s font-BricolageGrotesqueRegular" style={{ fontSize: '12px', color: 'black', marginTop: '17px' }}>
+                      {ticket.description}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      className="w-8 h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
+                      onClick={() => handleDecrement(index)}
+                      disabled={selectedTickets[index] === 0}
+                      style={{ backgroundColor: '#FADEDE' }}
+                    >
+                      -
+                    </button>
+                    <span className="text-lg mx-2">{selectedTickets[index]}</span>
+                    <button
+                      className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
+                      onClick={() => handleIncrement(index)}
+                      style={{ color: '#e20000', backgroundColor: '#FADEDE' }}
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

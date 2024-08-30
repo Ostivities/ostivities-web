@@ -1,22 +1,34 @@
-import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, FormProps, Input, InputNumber, Select } from "antd";
+import { CloseOutlined, CloseSquareOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Checkbox, Form, Input, InputNumber, Select } from "antd";
 import React, { useState } from "react";
 
-interface FieldType {}
+const { TextArea } = Input;
+const { Option } = Select;
+
+interface FieldType {
+  ticketType?: string;
+  ticketName?: string;
+  ticketStock?: string;
+  ticketPrice?: number;
+  purchaseLimit?: number;
+  ticketDescription?: string;
+  remember?: boolean;
+  additionalInfo?: { info: string; compulsory: boolean }[];
+}
 
 const SingleTicket = (): JSX.Element => {
-  const { TextArea } = Input;
-  const { Option } = Select;
-
   const [ticketType, setTicketType] = useState<string>("paid");
   const [ticketStockValue, setTicketStockValue] = useState<string>("");
+  const [additionalFields, setAdditionalFields] = useState<{ id: number; compulsory: boolean }[]>([]);
+  const [showAdditionalField, setShowAdditionalField] = useState<boolean>(false);
+  const [counter, setCounter] = useState<number>(0); // Counter for unique keys
 
-  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    return values;
+  const onFinish = (values: FieldType) => {
+    console.log('Success:', values);
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
-    return errorInfo;
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
   };
 
   const handleStockChange = (value: string) => {
@@ -25,6 +37,21 @@ const SingleTicket = (): JSX.Element => {
 
   const handleTicketTypeChange = (value: string) => {
     setTicketType(value);
+  };
+
+  const addAdditionalField = () => {
+    setAdditionalFields([...additionalFields, { id: counter, compulsory: false }]);
+    setCounter(counter + 1); // Increment the counter for the next key
+  };
+
+  const removeAdditionalField = (id: number) => {
+    setAdditionalFields(additionalFields.filter(field => field.id !== id));
+  };
+
+  const handleCompulsoryChange = (id: number, checked: boolean) => {
+    setAdditionalFields(additionalFields.map(field =>
+      field.id === id ? { ...field, compulsory: checked } : field
+    ));
   };
 
   const prefixSelector = (
@@ -65,7 +92,7 @@ const SingleTicket = (): JSX.Element => {
       </Form.Item>
 
       <Form.Item<FieldType>
-        label="Ticket stock" 
+        label="Ticket stock"
         name="ticketStock"
         rules={[{ required: true, message: "Please input your ticket stock!" }]}
         style={{ marginBottom: '8px' }}
@@ -112,16 +139,76 @@ const SingleTicket = (): JSX.Element => {
           rows={4}
           placeholder="Enter ticket description"
           style={{
-            height: "100px", // Fixed height
+            height: "100px",
             minHeight: "100px",
             maxHeight: "100px",
           }}
         />
       </Form.Item>
 
-      <Form.Item<FieldType> name="remember" valuePropName="checked" style={{ marginBottom: '24px' }}>
-        <Checkbox>Transfer charge fees to guest</Checkbox> 
+      <Form.Item<FieldType>
+        name="remember"
+        valuePropName="checked"
+        style={{ marginBottom: '24px', display: 'flex', alignItems: 'center' }}
+      >
+        <Checkbox defaultChecked style={{ marginRight: '20px' }}>Transfer charge fees to guest</Checkbox>
+        <Checkbox
+          onChange={(e) => setShowAdditionalField(e.target.checked)}
+        >
+          Enable additional information
+        </Checkbox>
       </Form.Item>
+
+      {showAdditionalField && (
+        <Form.Item style={{ marginBottom: '24px' }}>
+          <Form.List name="additionalInfo">
+            {(fields, { add }) => (
+              <>
+                {additionalFields.map(({ id, compulsory }) => (
+                  <div key={id} style={{ marginBottom: '16px' }}>
+                    <Form.Item
+                      name={[id, 'info']}
+                      fieldKey={[id, 'info']}
+                      rules={[{ required: compulsory, message: 'Please enter additional information' }]}
+                      style={{ marginBottom: '8px' }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Input placeholder="Enter additional information" style={{ flex: 1 }} />
+                        <Button
+                          type="link"
+                          icon={<CloseSquareOutlined />}
+                          onClick={() => removeAdditionalField(id)}
+                          style={{
+                            color: '#e20000',
+                            marginLeft: '8px', // Adjust margin to position icon beside input field
+                          }}
+                        />
+                      </div>
+                    </Form.Item>
+                    <Form.Item style={{ marginBottom: '8px' }}>
+                      <Checkbox
+                        checked={compulsory}
+                        onChange={(e) => handleCompulsoryChange(id, e.target.checked)}
+                      >
+                        Make compulsory
+                      </Checkbox>
+                    </Form.Item>
+                  </div>
+                ))}
+                <Form.Item>
+                  <Button
+                    type="dashed"
+                    onClick={addAdditionalField}
+                    icon={<PlusOutlined />}
+                  >
+                    Add question
+                  </Button>
+                </Form.Item>
+              </>
+            )}
+          </Form.List>
+        </Form.Item>
+      )}
     </Form>
   );
 };

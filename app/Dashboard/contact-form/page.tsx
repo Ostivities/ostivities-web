@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Form, Input, Select, Row, Col } from 'antd';
 import { useState } from 'react';
 import "@/app/globals.css";
+import "@/app/scroll.css";
 import { Heading5 } from '@/app/components/typography/Typography';
 
 interface Inputs {
@@ -55,7 +56,8 @@ const ContactForm = () => {
   return (
     <DashboardLayout title={title} isLoggedIn>
       <section className="flex gap-12">
-        <section className="flex-1 pr-1">
+        {/* Scrollable content container */}
+        <section className="flex-1 pr-1 scrollable-content">
           <div className="flex-center justify-between">
             <div className="flex-center gap-3">
               <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
@@ -67,7 +69,7 @@ const ContactForm = () => {
                 />
               </div>
               <div>
-                <h3 className="text-sm"style={{ fontWeight: 600 }}>Date</h3> 
+                <h3 className="text-sm" style={{ fontWeight: 600 }}>Date</h3> 
                 <span>14 December, 2023</span>
               </div>
             </div>
@@ -76,14 +78,15 @@ const ContactForm = () => {
                 <Image src="/icons/time.svg" alt="" height={25} width={25} />
               </div>
               <div>
-                <h3 className="text-sm"style={{ fontWeight: 600 }}>Time</h3>
+                <h3 className="text-sm" style={{ fontWeight: 600 }}>Time</h3>
                 <span>5:00PM - 10:00PM WAT</span>
               </div>
             </div>
           </div>
           <div className="pr-full mt-16">
-          <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueMedium my-4 custom-font-size">
-          Please fill out the form below with your information so we can send you your ticket.</h3> 
+            <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueMedium my-4 custom-font-size">
+              Please fill out the form below with your information so we can send you your ticket.
+            </h3> 
             <Form
               form={form}
               onFinish={onFinish}
@@ -145,6 +148,118 @@ const ContactForm = () => {
               </Form.Item>
 
              
+              <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-4 custom-font-size">
+              Additional Information.
+              </h3> 
+              <Form.Item
+                  label="Information 1"
+                  name="name"
+                  rules={[{ required: true, message: 'Please provide answers' }]}
+                >
+                  <Input type="name" placeholder="Enter" />
+                </Form.Item>
+                <Form.Item
+                  label="Information 2"
+                  name="name"
+                  rules={[{ required: true, message: 'Please provide answers' }]}
+                >
+                  <Input type="name" placeholder="Enter" />
+                </Form.Item>
+
+              <br/>
+              <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size">
+              Ticket 1 - Group of 5- Regular.
+              </h3> 
+              <Form
+                form={form}
+                onFinish={onFinish}
+                layout="vertical"
+                className="form-spacing"
+                onValuesChange={validateForm}
+              >
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item
+                      label="Attendee First Name"
+                      name="AttendeefirstName"
+                      rules={[{ required: true, message: 'Please provide attendee first name' }]}
+                    >
+                      <Input placeholder="Enter Attendee First Name" />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item
+                      label="Attendee Last Name"
+                      name="AttendeelastName"
+                      rules={[{ required: true, message: 'Please provide attendee last name' }]}
+                    >
+                      <Input placeholder="Enter Attendee Last Name" />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Form.Item
+                  label="Attendee Email Address"
+                  name="Attendeeemail"
+                  rules={[{ required: true, message: 'Please provide attendee email' }]}
+                >
+                  <Input type="email" placeholder="Enter Attendee Email Address" />
+                </Form.Item>
+                <Form.Item
+                  label="Confirm Attendee Email"
+                  name="confirmAttendeeEmail"
+                  rules={[{ required: true, message: 'Please confirm provide attendee email' }]}
+                >
+                  <Input type="email" placeholder="Confirm Attendee Email Address" />
+                </Form.Item>
+
+                <br/>
+              <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size">
+              Ticket 2 - Group of 5- Regular.
+              </h3> 
+              <Form
+                form={form}
+                onFinish={onFinish}
+                layout="vertical"
+                className="form-spacing"
+                onValuesChange={validateForm}
+              >
+                <Row gutter={16}>
+                  <Col span={12}>
+                    <Form.Item
+                      label="Attendee First Name"
+                      name="AttendeeFirstName"
+                      rules={[{ required: true, message: 'Please provide attendee first name' }]}
+                    >
+                      <Input placeholder="Enter Attendee First Name" />
+                    </Form.Item>
+                  </Col>
+                  <Col span={12}>
+                    <Form.Item
+                      label="Attendee Last Name"
+                      name="AttendeeLastName"
+                      rules={[{ required: true, message: 'Please provide attendee last name' }]}
+                    >
+                      <Input placeholder="Enter Attendee Last Name" />
+                    </Form.Item>
+                  </Col>
+                </Row>
+                <Form.Item
+                  label="Attendee Email Address"
+                  name="AttendeEmail"
+                  rules={[{ required: true, message: 'Please provide attendee email' }]}
+                >
+                  <Input type="email" placeholder="Enter Attendee Email Address" />
+                </Form.Item>
+                <Form.Item
+                  label="Confirm Attendee Email"
+                  name="ConfirmAttendeeEmail"
+                  rules={[{ required: true, message: 'Please confirm provide attendee email' }]}
+                >
+                  <Input type="email" placeholder="Confirm Attendee Email Address" />
+                </Form.Item>
+
+              </Form>
+              </Form>
             </Form>
           </div>
         </section>
