@@ -1,7 +1,8 @@
 "use client";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import LocationSearch from "@/app/components/LocationSearch";
-import { Heading5, Label } from "@/app/components/typography/Typography";
+import EmailEditor from "@/app/components/QuillEditor/EmailEditor";
+import { Heading5, Label,Paragraph } from "@/app/components/typography/Typography";
 import useComponentDisabled from "@/app/hooks/utils/utils.hooks";
 import {
   AFRICAN_TIME_ZONES,
@@ -52,6 +53,12 @@ const AboutEvent = () => {
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     return values;
   };
+
+  const [editorContent, setEditorContent] = useState("");
+  const handleEditorChange = (content: React.SetStateAction<string>) => {
+    setEditorContent(content);
+  };
+
   const [showRadio, setShowRadio] = useState(false);
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
@@ -142,30 +149,17 @@ const AboutEvent = () => {
               />
             </Form.Item>
 
-            <Form.Item
-              name={"eventDetails"}
-              label={
-                <>
-                  <Label
-                    content="Event Details"
-                    className=""
-                    htmlFor="eventDetails"
-                  />
-                </>
-              }
-              rules={[{ required: false, message: "Please enter your evet details" }]}
-              className="pr-6"
-            >
-              <Input.TextArea
-                placeholder="Enter Event Details"
-                style={{
-                  minHeight: "220px",
-                  maxHeight: "220px",
-                  paddingTop: "10px",
-                }}
-                className="py-3"
-              />
-            </Form.Item>
+            <Paragraph
+            className="text-OWANBE_DARK text-sm font-normal font-BricolageGrotesqueRegular"
+            content={"Event Details"}
+            styles={{ fontWeight: "bold !important" }}
+          />
+     <div className="mb-9 pb-16 w-full" style={{ marginBottom: "35px" }}>
+            <EmailEditor
+              initialValue="<p>Enter event details!</p>"
+              onChange={handleEditorChange}
+             />
+          </div>
 
             <Controller
   name="vendorregistration"

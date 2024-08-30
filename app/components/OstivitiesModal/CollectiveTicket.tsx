@@ -1,6 +1,8 @@
 import { CloseSquareOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, FormProps, Input, InputNumber, Select } from "antd";
 import React, { useState, useEffect } from "react";
+import { Heading5, Paragraph } from "@/app/components/typography/Typography";
+import EmailEditor from "../QuillEditor/EmailEditor";
 
 interface FieldType {}
 
@@ -15,7 +17,11 @@ const CollectiveTicket = (): JSX.Element => {
   const [showAdditionalField, setShowAdditionalField] = useState<boolean>(false);
   const [counter, setCounter] = useState<number>(0); // Counter for unique keys
   const [form] = Form.useForm(); // Initialize form instance
-
+  const [editorContent, setEditorContent] = useState("");
+  const handleEditorChange = (content: React.SetStateAction<string>) => {
+    setEditorContent(content);
+  };
+  
   const ticketType = Form.useWatch("ticketType", form); // Watch ticketType changes
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
@@ -166,27 +172,23 @@ const CollectiveTicket = (): JSX.Element => {
         label="Purchase limit"
         name="purchaseLimit"
         rules={[{ required: true, message: "Please input your purchase limit!" }]}
-        style={{ marginBottom: '8px' }}
+        style={{ marginBottom: '15px' }}
       >
         <InputNumber placeholder="Enter purchase limit" style={{ width: '100%' }} min={0} />
       </Form.Item>
 
-      <Form.Item<FieldType>
-        label="Ticket description"
-        name="ticketDescription"
-        rules={[{ required: true, message: "Please input your ticket description!" }]}
-        style={{ marginBottom: '8px' }}
-      >
-        <TextArea
-          rows={4}
-          placeholder="Enter ticket description"
-          style={{
-            height: "100px", // Fixed height
-            minHeight: "100px",
-            maxHeight: "100px",
-          }}
-        />
-      </Form.Item>
+      <Paragraph
+            className="text-OWANBE_DARK text-sm font-normal font-BricolageGrotesqueRegular"
+            content={"Ticket description"}
+            styles={{ fontWeight: "bold !important" }}
+          />
+      <div className="mb-3 pb-16 w-full mt-3">
+            <EmailEditor
+              initialValue="<p>Enter ticket description!</p>"
+              onChange={handleEditorChange}
+             />
+          </div>
+
       <Form.Item<FieldType>
         name="remember"
         valuePropName="checked"

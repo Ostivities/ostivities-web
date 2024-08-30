@@ -1,9 +1,12 @@
 import { CloseOutlined, CloseSquareOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, InputNumber, Select } from "antd";
 import React, { useState } from "react";
+import EmailEditor from "../QuillEditor/EmailEditor";
+import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 
 const { TextArea } = Input;
 const { Option } = Select;
+
 
 interface FieldType {
   ticketType?: string;
@@ -22,6 +25,10 @@ const SingleTicket = (): JSX.Element => {
   const [additionalFields, setAdditionalFields] = useState<{ id: number; compulsory: boolean }[]>([]);
   const [showAdditionalField, setShowAdditionalField] = useState<boolean>(false);
   const [counter, setCounter] = useState<number>(0); // Counter for unique keys
+  const [editorContent, setEditorContent] = useState("");
+  const handleEditorChange = (content: React.SetStateAction<string>) => {
+    setEditorContent(content);
+  };
 
   const onFinish = (values: FieldType) => {
     console.log('Success:', values);
@@ -124,27 +131,23 @@ const SingleTicket = (): JSX.Element => {
         label="Purchase limit"
         name="purchaseLimit"
         rules={[{ required: true, message: "Please input your purchase limit!" }]}
-        style={{ marginBottom: '8px' }}
+        style={{ marginBottom: '15px' }}
       >
         <InputNumber placeholder="Enter purchase limit" style={{ width: '100%' }} min={0} />
       </Form.Item>
 
-      <Form.Item<FieldType>
-        label="Ticket description"
-        name="ticketDescription"
-        rules={[{ required: true, message: "Please input your ticket description!" }]}
-        style={{ marginBottom: '8px' }}
-      >
-        <TextArea
-          rows={4}
-          placeholder="Enter ticket description"
-          style={{
-            height: "100px",
-            minHeight: "100px",
-            maxHeight: "100px",
-          }}
-        />
-      </Form.Item>
+     
+          <Paragraph
+            className="text-OWANBE_DARK text-sm font-normal font-BricolageGrotesqueRegular"
+            content={"Ticket description"}
+            styles={{ fontWeight: "bold !important" }}
+          />
+      <div className="mb-3 pb-16 w-full mt-3">
+            <EmailEditor
+              initialValue="<p>Enter ticket description!</p>"
+              onChange={handleEditorChange}
+             />
+          </div>
 
       <Form.Item<FieldType>
         name="remember"
