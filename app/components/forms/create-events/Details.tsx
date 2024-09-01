@@ -495,7 +495,7 @@ function Details(): JSX.Element {
                           <Label
                             content={
                               <span>
-                                Upload Supporting Doc{" "} 
+                                Upload Supporting Doc{" "}
                                 <span className="optional-text">
                                   (optional)
                                 </span>

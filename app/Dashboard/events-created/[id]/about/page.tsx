@@ -47,9 +47,9 @@ interface FieldType {}
 const AboutEvent = () => {
   const router = useRouter();
   const [form] = Form.useForm();
-  const watchEventInfo = Form.useWatch("eventInfo", form);
   const [componentDisabled, setComponentDisabled] = useComponentDisabled();
   const { Option } = Select;
+  const [showRadio, setShowRadio] = useState(false);
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     return values;
   };
@@ -59,7 +59,6 @@ const AboutEvent = () => {
     setEditorContent(content);
   };
 
-  const [showRadio, setShowRadio] = useState(false);
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
     errorInfo
@@ -74,9 +73,24 @@ const AboutEvent = () => {
     watch,
     trigger,
   } = useForm<IFormInput>({
-    progressive: true,
-    mode: "all",
+    mode: "all",  // Use your preferred validation mode
+    defaultValues: {
+      exhibitionspace: false,
+      spaceType: '',  // Initializing as an empty string
+      spaceAvailable: undefined,
+      spaceFee: undefined,
+    },
   });
+
+  const watchEventInfo = watch("eventInfo");
+
+  useEffect(() => {
+    const subscription: any = watch(() => {
+      return;
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
 
   const onSubmit: SubmitHandler<IFormInput> = (data: any) => {
     console.log(data, "data");
@@ -109,6 +123,7 @@ const AboutEvent = () => {
       <LocationSearch onSelectLocation={handleSelectLocation} />
     </div>
   );
+  
 
   return (
     <EventDetailsComponent>
@@ -125,43 +140,37 @@ const AboutEvent = () => {
           <Heading5 className="pb-8" content={"Event Details"} />
         </Space>
 
-        <div className="grid grid-cols-2 gap-x-8">
-          <Space direction="vertical" size={"small"}>
-            <Form.Item
-              name={"eventName"}
-              label={
-                <>
-                  <Label
-                    content="Event Name"
-                    className=""
-                    htmlFor="eventName"
-                  />
-                </>
-              }
-              rules={[{ required: false, message: "Please input your email" }]}
-              className="pr-6"
-            >
-              <Input
-                type="text"
-                placeholder="Enter your event name"
-                className="placeholder:font-BricolageGrotesqueRegular"
-                autoComplete="off"
-              />
-            </Form.Item>
+        <div className="grid grid-cols-2 gap-x-4">
+        <div className="flex flex-col space-y-4 pr-6">
 
-            <Paragraph
+            <Controller
+                    name="eventName"
+                    control={control}
+                    render={({ field }) => (
+                      <Space direction="vertical" size={"small"}>
+                        <Label
+                          content="Event Name"
+                          className=""
+                          htmlFor="eventName"
+                        />
+                        <Input {...field} placeholder="Enter Event Name" /> 
+                      </Space>
+                    )}
+                  />
+
+        <Paragraph
             className="text-OWANBE_DARK text-sm font-normal font-BricolageGrotesqueRegular"
             content={"Event Details"}
             styles={{ fontWeight: "bold !important" }}
           />
-     <div className="mb-9 pb-16 w-full" style={{ marginBottom: "35px" }}>
+     <div className="mb-9 pb-16 w-full" style={{ marginBottom: "20px" }}>
             <EmailEditor
               initialValue="<p>Enter event details!</p>"
               onChange={handleEditorChange}
              />
           </div>
 
-            <Controller
+<Controller
   name="vendorregistration"
   control={control}
   render={({ field }) => (
@@ -208,10 +217,10 @@ const AboutEvent = () => {
       }}
     >
       <span style={{ fontFamily: 'Bricolage Grotesque Light' }}>
-            Exhibition Space Booking{" "} 
-            <span className="optional-text">
-              (allows vendors to book exhibition space at your event)
-              </span>
+      Exhibition Space Booking{" "}
+      <span className="optional-text">
+        (allows vendors to book exhibition space at your event)
+      </span>
       {" "}
       <a 
         href="https://ostivities.tawk.help/article/how-exhibition-space-booking-works" // Replace with your actual URL
@@ -221,7 +230,7 @@ const AboutEvent = () => {
       >
         <QuestionCircleOutlined style={{ fontSize: '16px', color: '#858990' }} />
       </a>
-          </span>
+    </span>
         </Checkbox>
   )}
 />
@@ -276,30 +285,38 @@ const AboutEvent = () => {
 )}
 
 
-            <Form.Item
-              name={"eventState"}
-              label={
-                <>
-                  <Label
-                    content="Event State"
-                    className=""
-                    htmlFor="eventState"
-                  />
-                </>
-              }
-              rules={[{ required: false, message: "Please ente your email" }]}
-              className="pr-6"
-            >
-              <Select placeholder="Select State" style={{ width: "100%" }}>
-                {STATES_IN_NIGERIA.map((_i) => (
-                  <Select.Option value={_i.state} key={_i.state}>
-                    {_i.state}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
+<Controller
+  name="eventState"
+  control={control}
+  render={({ field }) => (
+    <Space
+      direction="vertical"
+      size={"small"}
+      className="w-full"
+      style={{ marginTop: '16px' }} // Adjust the value as needed
+    >
+      <Label
+        content="Event State"
+        className=""
+        htmlFor="eventState"
+      />
+      <Select
+        placeholder="Select State"
+        {...field}
+        style={{ width: "100%" }}
+      >
+        {STATES_IN_NIGERIA.map((_i) => (
+          <Option value={_i.state} key={_i.state}>
+            {_i.state}
+          </Option>
+        ))}
+      </Select>
+    </Space>
+  )}
+/>
 
-            <Controller
+
+<Controller
   name="eventAddress"
   control={control}
   render={({ field }) => (
@@ -330,47 +347,47 @@ const AboutEvent = () => {
   )}
 />
 
-          </Space>
+    </div>
+                <div className="flex flex-col space-y-4 pl-6">
+                  <Controller
+                    name="customURL"
+                    control={control}
+                    render={({ field }) => (
+                      <Space direction="vertical" size="small">
+                        <Label
+                          content="Custom URL"
+                          className=""
+                          htmlFor="customURL"
+                        />
 
-          <Space direction="vertical" size={"small"}>
-            <Form.Item
-              name={"CustomURL"}
-              label={
-                <>
-                  <Label
-                    content="Custom URL"
-                    className=""
-                    htmlFor="CustomURL"
+                        <Space.Compact className="w-full">
+                          <Input
+                            style={{
+                              width: "48%",
+                              borderTopRightRadius: "0px !important",
+                              borderBottomRightRadius: "0px !important",
+                              color: "#000000",
+                            }}
+                            defaultValue="https://ostivities.com/discover/"
+                            value="https://ostivities.com/discover/"
+                            disabled
+                          />
+                          <Input
+                            style={{
+                              width: "52%",
+                              borderTopLeftRadius: "0px !important",
+                              borderBottomLeftRadius: "0px !important",
+                            }}
+                            {...field}
+                            placeholder="Enter your desired name"
+                          />
+                        </Space.Compact>
+                      </Space>
+                    )}
                   />
-                </>
-              }
-              rules={[{ required: false, message: "Please input your email" }]}
-              className="pr-6"
-            >
-              <Space.Compact className="w-full">
-                <Input
-                  style={{
-                    width: "48%",
-                    borderTopRightRadius: "0px !important",
-                    borderBottomRightRadius: "0px !important",
-                    color: "#000000",
-                  }}
-                  defaultValue="https://ostivities.com/discover/"
-                  value="https://ostivities.com/discover/"
-                  disabled
-                />
-                <Input
-                  style={{
-                    width: "100%",
-                    borderTopLeftRadius: "0px !important",
-                    borderBottomLeftRadius: "0px !important",
-                  }}
-                  placeholder="Enter your desired url name"
-                />
-              </Space.Compact>
-            </Form.Item>
 
-            <Controller
+                  <Space direction="vertical" size="small">
+                    <Controller
                       name="document"
                       control={control}
                       render={({ field }) => (
@@ -378,7 +395,7 @@ const AboutEvent = () => {
                           <Label
                             content={
                               <span>
-                                Upload Supporting Doc{" "} 
+                                Upload Supporting Doc{" "}
                                 <span className="optional-text">
                                   (optional)
                                 </span>
@@ -437,8 +454,7 @@ const AboutEvent = () => {
                         </Space>
                       )}
                     />
-
-                     <Controller
+                    <Controller
                       name="eventType"
                       control={control}
                       render={({ field }) => (
@@ -466,315 +482,487 @@ const AboutEvent = () => {
                         </Space>
                       )}
                     />
+                  </Space>
 
-            <Form.Item
-              name={"eventInfo"}
-              label={
-                <Label content="Event Info" className="" htmlFor="eventInfo" />
-              }
-              rules={[{ required: false, message: "Please input your email" }]}
-              className="pr-6"
-            >
-              <Radio.Group className="w-full font-BricolageGrotesqueRegular">
-                <Radio
-                  value={EVENT_INFO.SINGLE_EVENT}
-                  className="w-1/2 font-BricolageGrotesqueRegular"
-                >
-                  Single Event
-                </Radio>
-                <Radio
-                  value={EVENT_INFO.RECURRING_EVENT}
-                  className="font-BricolageGrotesqueRegular"
-                >
-                  Recurring Event
-                </Radio>
-              </Radio.Group>
-            </Form.Item>
+                  <Controller
+                    name="eventInfo"
+                    control={control}
+                    render={({ field }) => (
+                      <Space
+                        direction="vertical"
+                        size={"small"}
+                        className="w-full"
+                      >
+                        <Label
+                          content="Event Info"
+                          className=""
+                          htmlFor="eventInfo"
+                        />
+                        <Radio.Group
+                          {...field}
+                          className="w-full font-BricolageGrotesqueRegular"
+                        >
+                          <Radio
+                            value={EVENT_INFO.SINGLE_EVENT}
+                            className="w-1/2 font-BricolageGrotesqueRegular"
+                          >
+                            Single Event
+                          </Radio>
+                          <Radio
+                            value={EVENT_INFO.RECURRING_EVENT}
+                            className="font-BricolageGrotesqueRegular"
+                          >
+                            Recurring Event
+                          </Radio>
+                        </Radio.Group>
+                      </Space>
+                    )}
+                  />
 
-            {watchEventInfo === EVENT_INFO.SINGLE_EVENT && (
-              <Form.Item>
-                <Form.Item className="w-full">
-                  <Label content="Time Zone" className="" htmlFor="timeZone" />
-                  <Select
-                    placeholder="Select Time Zone"
-                    style={{ width: "100%" }}
-                  >
-                    {AFRICAN_TIME_ZONES.map((zone) => (
-                      <Select.Option value={zone.value} key={zone.value}>
-                        {zone.label}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-                <Space direction="horizontal" size="large" className="w-full">
-                <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '16px' }}>
+                  {watchEventInfo === EVENT_INFO.SINGLE_EVENT && (
+                    <>
+                      <Controller
+                        name="timeZone"
+                        control={control}
+                        render={({ field }) => (
+                          <Space
+                            direction="vertical"
+                            size={"small"}
+                            className="w-full"
+                          >
+                            <Label
+                              content="Time Zone"
+                              className=""
+                              htmlFor="timeZone"
+                            />
+                            <Select
+                              placeholder="Select Time Zone"
+                              {...field}
+                              style={{ width: "100%" }}
+                            >
+                              {AFRICAN_TIME_ZONES.map((zone) => (
+                                <Option value={zone.value} key={zone.value}>
+                                  {zone.label}
+                                </Option>
+                              ))}
+                            </Select>
+                          </Space>
+                        )}
+                      />
+                      <Space
+                        direction="horizontal"
+                        size="large"
+                        className="w-full"
+                      >
+                        <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '16px' }}>
   {/* Start Date & Time */}
-  <Form.Item style={{ flex: '1 1 363px', minWidth: '150px' }}>
+  <div style={{ flex: '1 1 auto', minWidth: '150px' }}>
     <Label
       content="Start Date & Time"
       htmlFor="startDateAndTime"
     />
-    <DatePicker
-      showTime
-      format="YYYY-MM-DD HH:mm:ss"
-      style={{ width: "100%", height: "33px" }}
+    <Controller
+      name="startDateAndTime"
+      control={control}
+      render={({ field }) => (
+        <DatePicker
+          {...field}
+          showTime
+          format="YYYY-MM-DD HH:mm:ss"
+          style={{ width: "100%", height: "33px" }}
+        />
+      )}
     />
-  </Form.Item>
+  </div>
 
   {/* End Date & Time */}
-  <Form.Item style={{ flex: '1 1 363px', minWidth: '150px' }}>
-    <Label content="End Date & Time" htmlFor="endDateAndTime" />
-    <DatePicker
-      showTime
-      format="YYYY-MM-DD HH:mm:ss"
-      style={{ width: "100%", height: "33px" }}
+  <div style={{ flex: '1 1 auto', minWidth: '150px' }}>
+    <Label
+      content="End Date & Time"
+      htmlFor="endDateAndTime"
     />
-  </Form.Item>
+    <Controller
+      name="endDateAndTime"
+      control={control}
+      render={({ field }) => (
+        <DatePicker
+          {...field}
+          showTime
+          format="YYYY-MM-DD HH:mm:ss"
+          style={{ width: "100%", height: "33px" }}
+        />
+      )}
+    />
+  </div>
 </div>
-                </Space>
 
-                <Space
-                  direction="vertical"
-                  size="small"
-                  style={{ marginBottom: "4px" }}
-                >
-                  <label
-                    htmlFor="socialdetails"
-                    className=""
-                    style={{
-                      marginBottom: "4px",
-                      fontSize: "14.5px",
-                      fontFamily: "BricolageGrotesqueregular",
-                    }}
-                  >
-                    Social Media Details{" "}
-                    <span style={{ color: "#e20000" }}>(optional)</span>
-                  </label>
+                      </Space>
 
-                  <Row gutter={[16, 8]}>
-                    {/* Website Link Field */}
-                    <Col xs={24} sm={12}>
                       <Space
                         direction="vertical"
                         size="small"
-                        style={{ width: "100%" }}
+                        style={{ marginBottom: "4px" }}
                       >
-                        <Input
-                          prefix={<LinkOutlined />}
+                        <label
+                          htmlFor="socialdetails"
+                          className=""
                           style={{
-                            width: "100%",
-                            color: "#000000",
-                            marginTop: "8px", // Adjust spacing between label and field
+                            marginBottom: "4px",
+                            fontSize: "14.5px",
+                            fontFamily: "BricolageGrotesqueregular",
                           }}
-                          placeholder="Enter your website URL"
-                        />
+                        >
+                          Social Media Details{" "}
+                          <span style={{ color: "#e20000" }}>(optional)</span>
+                        </label>
+
+                        <Row gutter={[16, 8]}>
+                          {/* Website Link Field */}
+                          <Col xs={24} sm={12}>
+                            <Controller
+                              name="websiteUrl" // Use a descriptive name (e.g., websiteUrl)
+                              control={control}
+                              render={({ field }) => (
+                                <Space
+                                  direction="vertical"
+                                  size="small"
+                                  style={{ width: "100%" }}
+                                >
+                                  <Input
+                                    prefix={<LinkOutlined />}
+                                    style={{
+                                      width: "100%",
+                                      color: "#000000",
+                                      marginTop: "8px", // Adjust spacing between label and field
+                                    }}
+                                    {...field}
+                                    placeholder="Enter your website URL"
+                                  />
+                                </Space>
+                              )}
+                            />
+                          </Col>
+
+                          {/* Twitter Field */}
+                          <Col xs={24} sm={12}>
+                            <Controller
+                              name="twitterUrl" // Use a descriptive name (e.g., twitterUrl)
+                              control={control}
+                              render={({ field }) => (
+                                <Space
+                                  direction="vertical"
+                                  size="small"
+                                  style={{ width: "100%" }}
+                                >
+                                  <Input
+                                    prefix={<XOutlined />}
+                                    style={{
+                                      width: "100%",
+                                      color: "#000000",
+                                      marginTop: "8px", // Adjust spacing between label and field
+                                    }}
+                                    {...field}
+                                    placeholder="Enter your Twitter/X URL"
+                                  />
+                                </Space>
+                              )}
+                            />
+                          </Col>
+
+                          {/* Facebook Field */}
+                          <Col xs={24} sm={12}>
+                            <Controller
+                              name="facebookUrl" // Use a descriptive name (e.g., facebookUrl)
+                              control={control}
+                              render={({ field }) => (
+                                <Space
+                                  direction="vertical"
+                                  size="small"
+                                  style={{ width: "100%" }}
+                                >
+                                  <Input
+                                    prefix={<FacebookFilled />}
+                                    style={{
+                                      width: "100%",
+                                      color: "#000000",
+                                      marginTop: "8px", // Adjust spacing between label and field
+                                    }}
+                                    {...field}
+                                    placeholder="Enter your Facebook URL"
+                                  />
+                                </Space>
+                              )}
+                            />
+                          </Col>
+
+                          {/* Instagram Field */}
+                          <Col xs={24} sm={12}>
+                            <Controller
+                              name="instagramUrl" // Use a descriptive name (e.g., instagramUrl)
+                              control={control}
+                              render={({ field }) => (
+                                <Space
+                                  direction="vertical"
+                                  size="small"
+                                  style={{ width: "100%" }}
+                                >
+                                  <Input
+                                    prefix={<InstagramFilled />}
+                                    style={{
+                                      width: "100%",
+                                      color: "#000000",
+                                      marginTop: "8px", // Adjust spacing between label and field
+                                    }}
+                                    {...field}
+                                    placeholder="Enter your Instagram URL"
+                                  />
+                                </Space>
+                              )}
+                            />
+                          </Col>
+
+                          {/* ... Add similar Controllers for other social media fields ... */}
+                        </Row>
                       </Space>
-                    </Col>
+                    </>
+                  )}
 
-                    {/* Twitter Field */}
-                    <Col xs={24} sm={12}>
-                      <Form.Item style={{ width: "100%" }}>
-                        <Input
-                          prefix={<XOutlined />}
-                          style={{
-                            width: "100%",
-                            color: "#000000",
-                            marginTop: "8px", // Adjust spacing between label and field
-                          }}
-                          placeholder="Enter your Twitter/X URL"
-                        />
-                      </Form.Item>
-                    </Col>
-
-                    {/* Facebook Field */}
-                    <Col xs={24} sm={12}>
-                      <Form.Item style={{ width: "100%" }}>
-                        <Input
-                          prefix={<FacebookFilled />}
-                          style={{
-                            width: "100%",
-                            color: "#000000",
-                            marginTop: "8px", // Adjust spacing between label and field
-                          }}
-                          placeholder="Enter your Facebook URL"
-                        />
-                      </Form.Item>
-                    </Col>
-
-                    {/* Instagram Field */}
-                    <Col xs={24} sm={12}>
-                      <Form.Item style={{ width: "100%" }}>
-                        <Input
-                          prefix={<InstagramFilled />}
-                          style={{
-                            width: "100%",
-                            color: "#000000",
-                            marginTop: "8px", // Adjust spacing between label and field
-                          }}
-                          placeholder="Enter your Instagram URL"
-                        />
-                      </Form.Item>
-                    </Col>
-
-                    {/* ... Add similar Controllers for other social media fields ... */}
-                  </Row>
-                </Space>
-              </Form.Item>
-            )}
-
-            {watchEventInfo === EVENT_INFO.RECURRING_EVENT && (
-              <Form.Item>
-                <Space direction="horizontal" size="large" className="w-full">
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {watchEventInfo === EVENT_INFO.RECURRING_EVENT && (
+                    <>
+                      <Space
+                        direction="horizontal"
+                        size="large"
+                        className="w-full"
+                      >
+                        
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
   <div style={{ display: 'flex', gap: '16px' }}>
     {/* Time Zone */}
-    <Form.Item style={{ flex: '1 1 300px', minWidth: '150px' }}>
-      <Label content="Time Zone" htmlFor="timeZone" />
-      <Select
-        placeholder="Select Time Zone"
-        style={{ width: "100%", height: "33px" }}
-      >
-        {AFRICAN_TIME_ZONES.map((zone) => (
-          <Select.Option value={zone.value} key={zone.value}>
-            {zone.label}
-          </Select.Option>
-        ))}
-      </Select>
-    </Form.Item>
+    <div style={{ flex: '1 1 300px', minWidth: '150px' }}>
+      <Label 
+        content="Time Zone" 
+        htmlFor="timeZone"
+      />
+      <Controller
+        name="timeZone"
+        control={control}
+        render={({ field }) => (
+          <Select
+            placeholder="Select Time Zone"
+            {...field}
+            style={{ width: "100%", height: "33px" }}
+          >
+            {AFRICAN_TIME_ZONES.map((zone) => (
+              <Option value={zone.value} key={zone.value}>
+                {zone.label}
+              </Option>
+            ))}
+          </Select>
+        )}
+      />
+    </div>
 
     {/* Frequency */}
-    <Form.Item style={{ flex: '1 1 300px', minWidth: '150px' }}>
+    <div style={{ flex: '1 1 300px', minWidth: '150px' }}>
       <Label content="Frequency" htmlFor="eventFrequency" />
-      <Select
-        placeholder="Select Event Frequency"
-        style={{ width: "100%", height: "33px" }}
-      >
-        {EVENT_FREQUENCIES.map((frequency) => (
-          <Select.Option
-            value={frequency.value}
-            key={frequency.value}
+      <Controller
+        name="eventFrequency"
+        control={control}
+        render={({ field }) => (
+          <Select
+            placeholder="Select Event Frequency"
+            {...field}
+            style={{ width: "100%", height: "33px" }}
           >
-            {frequency.label}
-          </Select.Option>
-        ))}
-      </Select>
-    </Form.Item>
+            {EVENT_FREQUENCIES.map((frequency) => (
+              <Option
+                value={frequency.value}
+                key={frequency.value}
+              >
+                {frequency.label}
+              </Option>
+            ))}
+          </Select>
+        )}
+      />
+    </div>
   </div>
 
   <div style={{ display: 'flex', gap: '16px' }}>
     {/* Start Date & Time */}
-    <Form.Item style={{ flex: '1 1 363px', minWidth: '150px' }}>
+    <div style={{ flex: '1 1 353px', minWidth: '150px' }}>
       <Label
         content="Start Date & Time"
         htmlFor="startDateAndTime"
       />
-      <DatePicker
-        showTime
-        format="YYYY-MM-DD HH:mm:ss"
-        style={{ width: "100%", height: "33px" }}
+      <Controller
+        name="startDateAndTime"
+        control={control}
+        render={({ field }) => (
+          <DatePicker
+            {...field}
+            showTime
+            format="YYYY-MM-DD HH:mm:ss"
+            style={{ width: "100%", height: "33px" }}
+          />
+        )}
       />
-    </Form.Item>
+    </div>
 
     {/* End Date & Time */}
-    <Form.Item style={{ flex: '1 1 363px', minWidth: '150px' }}>
-      <Label content="End Date & Time" htmlFor="endDateAndTime" />
-      <DatePicker
-        showTime
-        format="YYYY-MM-DD HH:mm:ss"
-        style={{ width: "100%", height: "33px" }}
+    <div style={{ flex: '1 1 353px', minWidth: '150px' }}>
+      <Label
+        content="End Date & Time"
+        htmlFor="endDateAndTime"
       />
-    </Form.Item>
+      <Controller
+        name="endDateAndTime"
+        control={control}
+        render={({ field }) => (
+          <DatePicker
+            {...field}
+            showTime
+            format="YYYY-MM-DD HH:mm:ss"
+            style={{ width: "100%", height: "33px" }}
+          />
+        )}
+      />
+    </div>
   </div>
 </div>
 
-                </Space>
+                      </Space>
 
-                <Space
-                  direction="vertical"
-                  size="small"
-                  style={{ marginBottom: "4px" }}
-                >
-                  <label
-                    htmlFor="socialdetails"
-                    className=""
-                    style={{
-                      marginBottom: "4px",
-                      fontSize: "14.5px",
-                      fontFamily: "BricolageGrotesqueregular",
-                    }}
-                  >
-                    Social Media Details{" "}
-                    <span style={{ color: "#e20000" }}>(optional)</span>
-                  </label>
-
-                  <Row gutter={[16, 8]}>
-                    {/* Website Link Field */}
-                    <Col xs={24} sm={12}>
-                      <Form.Item style={{ width: "100%" }}>
-                        <Input
-                          prefix={<LinkOutlined />}
+                      <Space
+                        direction="vertical"
+                        size="small"
+                        style={{ marginBottom: "4px" }}
+                      >
+                        <label
+                          htmlFor="socialdetails"
+                          className=""
                           style={{
-                            width: "100%",
-                            color: "#000000",
-                            marginTop: "8px", // Adjust spacing between label and field
+                            marginBottom: "4px",
+                            fontSize: "14.5px",
+                            fontFamily: "BricolageGrotesqueregular",
                           }}
-                          placeholder="Enter your website URL"
-                        />
-                      </Form.Item>
-                    </Col>
+                        >
+                          Social Media Details{" "}
+                          <span style={{ color: "#e20000" }}>(optional)</span>
+                        </label>
 
-                    {/* Twitter Field */}
-                    <Col xs={24} sm={12}>
-                      <Form.Item style={{ width: "100%" }}>
-                        <Input
-                          prefix={<XOutlined />}
-                          style={{
-                            width: "100%",
-                            color: "#000000",
-                            marginTop: "8px", // Adjust spacing between label and field
-                          }}
-                          placeholder="Enter your Twitter/X URL"
-                        />
-                      </Form.Item>
-                    </Col>
+                        <Row gutter={[16, 8]}>
+                          {/* Website Link Field */}
+                          <Col xs={24} sm={12}>
+                            <Controller
+                              name="websiteUrl" // Use a descriptive name (e.g., websiteUrl)
+                              control={control}
+                              render={({ field }) => (
+                                <Space
+                                  direction="vertical"
+                                  size="small"
+                                  style={{ width: "100%" }}
+                                >
+                                  <Input
+                                    prefix={<LinkOutlined />}
+                                    style={{
+                                      width: "100%",
+                                      color: "#000000",
+                                      marginTop: "8px", // Adjust spacing between label and field
+                                    }}
+                                    {...field}
+                                    placeholder="Enter your website URL"
+                                  />
+                                </Space>
+                              )}
+                            />
+                          </Col>
 
-                    {/* Facebook Field */}
-                    <Col xs={24} sm={12}>
-                      <Form.Item style={{ width: "100%" }}>
-                        <Input
-                          prefix={<FacebookFilled />}
-                          style={{
-                            width: "100%",
-                            color: "#000000",
-                            marginTop: "8px", // Adjust spacing between label and field
-                          }}
-                          placeholder="Enter your Facebook URL"
-                        />
-                      </Form.Item>
-                    </Col>
+                          {/* Twitter Field */}
+                          <Col xs={24} sm={12}>
+                            <Controller
+                              name="twitterUrl" // Use a descriptive name (e.g., twitterUrl)
+                              control={control}
+                              render={({ field }) => (
+                                <Space
+                                  direction="vertical"
+                                  size="small"
+                                  style={{ width: "100%" }}
+                                >
+                                  <Input
+                                    prefix={<XOutlined />}
+                                    style={{
+                                      width: "100%",
+                                      color: "#000000",
+                                      marginTop: "8px", // Adjust spacing between label and field
+                                    }}
+                                    {...field}
+                                    placeholder="Enter your Twitter/X URL"
+                                  />
+                                </Space>
+                              )}
+                            />
+                          </Col>
 
-                    {/* Instagram Field */}
-                    <Col xs={24} sm={12}>
-                      <Form.Item style={{ width: "100%" }}>
-                        <Input
-                          prefix={<InstagramFilled />}
-                          style={{
-                            width: "100%",
-                            color: "#000000",
-                            marginTop: "8px", // Adjust spacing between label and field
-                          }}
-                          placeholder="Enter your Instagram URL"
-                        />
-                      </Form.Item>
-                    </Col>
+                          {/* Facebook Field */}
+                          <Col xs={24} sm={12}>
+                            <Controller
+                              name="facebookUrl" // Use a descriptive name (e.g., facebookUrl)
+                              control={control}
+                              render={({ field }) => (
+                                <Space
+                                  direction="vertical"
+                                  size="small"
+                                  style={{ width: "100%" }}
+                                >
+                                  <Input
+                                    prefix={<FacebookFilled />}
+                                    style={{
+                                      width: "100%",
+                                      color: "#000000",
+                                      marginTop: "8px", // Adjust spacing between label and field
+                                    }}
+                                    {...field}
+                                    placeholder="Enter your Facebook URL"
+                                  />
+                                </Space>
+                              )}
+                            />
+                          </Col>
 
-                    {/* ... Add similar Controllers for other social media fields ... */}
-                  </Row>
-                </Space>
-              </Form.Item>
-            )}
-          </Space>
-        </div>
+                          {/* Instagram Field */}
+                          <Col xs={24} sm={12}>
+                            <Controller
+                              name="instagramUrl" // Use a descriptive name (e.g., instagramUrl)
+                              control={control}
+                              render={({ field }) => (
+                                <Space
+                                  direction="vertical"
+                                  size="small"
+                                  style={{ width: "100%" }}
+                                >
+                                  <Input
+                                    prefix={<InstagramFilled />}
+                                    style={{
+                                      width: "100%",
+                                      color: "#000000",
+                                      marginTop: "8px", // Adjust spacing between label and field
+                                    }}
+                                    {...field}
+                                    placeholder="Enter your Instagram URL"
+                                  />
+                                </Space>
+                              )}
+                            />
+                          </Col>
+
+                          {/* ... Add similar Controllers for other social media fields ... */}
+                        </Row>
+                      </Space>
+                    </>
+                  )}
+                </div>
+                </div>
 
         <Space
           direction="horizontal"
