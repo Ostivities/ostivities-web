@@ -163,7 +163,7 @@ const AboutEvent = () => {
             content={"Event Details"}
             styles={{ fontWeight: "bold !important" }}
           />
-     <div className="mb-9 pb-16 w-full" style={{ marginBottom: "20px" }}>
+     <div className="mb-9 pb-16 w-full" style={{ marginBottom: "20px", marginTop: "10px" }}>
             <EmailEditor
               initialValue="<p>Enter event details!</p>"
               onChange={handleEditorChange}
@@ -1014,3 +1014,4 @@ const AboutEvent = () => {
 };
 
 export default AboutEvent;
+

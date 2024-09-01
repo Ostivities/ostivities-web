@@ -49,6 +49,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import EmailEditor from "../../QuillEditor/EmailEditor";
 
 function Details(): JSX.Element {
   const router = useRouter();
@@ -58,6 +59,10 @@ function Details(): JSX.Element {
   const [] = useState(null);
   const [userName, setUserName] = useState("Rose"); // default value
   const [showRadio, setShowRadio] = useState(false);
+  const [editorContent, setEditorContent] = useState("");
+  const handleEditorChange = (content: React.SetStateAction<string>) => {
+    setEditorContent(content);
+  };
 
 
 
@@ -253,29 +258,17 @@ function Details(): JSX.Element {
                     )}
                   />
 
-                  <Controller
-                    name="eventDetails"
-                    control={control}
-                    render={({ field }) => (
-                      <Space direction="vertical" size={"small"}>
-                        <Label
-                          content="Event Details"
-                          className=""
-                          htmlFor="eventName"
-                        />
-                        <Input.TextArea
-                          {...field}
-                          placeholder="Enter Event Details"
-                          style={{
-                            minHeight: "220px",
-                            maxHeight: "220px",
-                            paddingTop: "10px",
-                          }}
-                          className="py-3"
-                        />
-                      </Space>
-                    )}
-                  />
+        <Paragraph
+            className="text-OWANBE_DARK text-sm font-normal font-BricolageGrotesqueRegular"
+            content={"Event Details"}
+            styles={{ fontWeight: "bold !important" }}
+          />
+      <div className="mb-9 pb-16 w-full" style={{ marginBottom: "20px", marginTop: "10px" }}>
+            <EmailEditor
+              initialValue="<p>Enter event details!</p>"
+              onChange={handleEditorChange}
+             />
+          </div>
 
 <Controller
   name="vendorregistration"
@@ -502,7 +495,7 @@ function Details(): JSX.Element {
                           <Label
                             content={
                               <span>
-                                Upload Supporting Doc{" "} 
+                                Upload Supporting Doc{" "}
                                 <span className="optional-text">
                                   (optional)
                                 </span>
