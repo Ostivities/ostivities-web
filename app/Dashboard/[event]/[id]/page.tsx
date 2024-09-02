@@ -110,7 +110,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                 <div>
                   <div className="text-sm"style={{ fontWeight: 600 }}>Location</div>
                   <div>
-  <a href="https://www.google.com/maps/search/?api=1&query=Eko+Hotels+Suites" target="_blank">Eko Hotels & Suites</a>
+  <a href="https://www.google.com/maps/search/?api=1&query=Eko+Hotels+Suites"style={{ color: "#e20000", textDecoration: "none" }} target="_blank">Eko Hotels & Suites</a>
 </div>
                 </div>
               </div>

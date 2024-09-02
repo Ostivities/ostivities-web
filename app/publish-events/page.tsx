@@ -89,7 +89,7 @@ export default function PublishEvent(): JSX.Element {
                     </div>
                     <div>
                       <a
-                        href="https://www.google.com/maps/search/?api=1&query=Eko+Hotels+Suites"
+                        href="https://www.google.com/maps/search/?api=1&query=Eko+Hotels+Suites"style={{ color: "#e20000", textDecoration: "none" }}
                         target="_blank"
                       >
                         Eko Hotels & Suites
