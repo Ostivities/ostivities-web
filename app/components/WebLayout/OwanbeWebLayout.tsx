@@ -2,6 +2,7 @@ import RootLayout from "@/app/layout";
 import React from "react";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
+import ScrollToTopButton from "@/app/ScrollToTopButton";
 
 function OwanbeWebLayout({
   children,
@@ -27,6 +28,9 @@ function OwanbeWebLayout({
       >
         {children}
       </main>
+
+      {/* Scroll to Top Button */}
+      <ScrollToTopButton />
 
       {/* Full-width footer background container */}
       <div style={{ backgroundColor: "#FFF2F2" }} className="w-full">
