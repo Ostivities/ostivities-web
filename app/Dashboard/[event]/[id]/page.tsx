@@ -80,8 +80,8 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                   <Image
                     src="/icons/calendar.svg"
                     alt=""
-                    height={30}
-                    width={30}
+                    height={25}
+                    width={25}
                   />
                 </div>
                 <div>
@@ -91,7 +91,8 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
               </div>
               <div className="flex gap-3">
                 <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
-                  <Image src="/icons/time.svg" alt="" height={30} width={30} />
+                  <Image src="/icons/time.svg" alt="" height={25}
+                      width={25} />
                 </div>
                 <div>
                   <div className="text-sm"style={{ fontWeight: 600 }}>Time</div>
@@ -103,14 +104,20 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                   <Image
                     src="/icons/location.svg"
                     alt=""
-                    height={30}
-                    width={30}
+                    height={25}
+                    width={25}
                   />
                 </div>
                 <div>
-                  <div className="text-sm"style={{ fontWeight: 600 }}>Location</div>
-                  <div>
-  <a href="https://www.google.com/maps/search/?api=1&query=Eko+Hotels+Suites"style={{ color: "#e20000", textDecoration: "none" }} target="_blank">Eko Hotels & Suites</a>
+                <div className="text-sm" style={{ fontWeight: 600 }}>Location</div>
+<div style={{ width: '170px', whiteSpace: 'normal', wordWrap: 'break-word' }}>
+  <a 
+    href="https://maps.app.goo.gl/jBmgQ5EFxngj2ffS6" 
+    style={{ color: "#e20000", textDecoration: "none" }} 
+    target="_blank"
+  >
+    Muri Okunola Park, Victoria Island, Lagos State, Nigeria
+  </a>
 </div>
                 </div>
               </div>
@@ -119,8 +126,8 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                   <Image
                     src="/icons/host.svg"
                     alt=""
-                    height={30}
-                    width={30}
+                    height={25}
+                      width={25}
                   />
                 </div>
                 <div>
@@ -132,37 +139,47 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
               </div>
               <div className="flex gap-3">
                 <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
-                  <Image src="/icons/phone.svg" alt="" height={30} width={30} />
+                  <Image src="/icons/phone.svg" alt="" height={25}
+                      width={25} />
                 </div>
                 <div>
                   <div className="text-sm"style={{ fontWeight: 600 }}>Contact Us</div>
                   <div className="flex-center gap-4 mt-1">
                     <div className="bg-black w-6 h-6 rounded-full flex-center justify-center">
+                    <a href="https://example.com" target="_blank" rel="noopener noreferrer" className="bg-black w-6 h-6 rounded-full flex-center justify-center">
                     <Image
                       src="/icons/link.svg"
                       alt=""
                       height={14}
                       width={14}
-                    />
+                    /></a>
                   </div>
                   <div className="bg-black w-6 h-6 rounded-full flex items-center justify-center">
-                    <Image src="/icons/x.svg" alt="" height={14} width={14} />
+                  <a href="https://example.com" target="_blank" rel="noopener noreferrer" className="bg-black w-6 h-6 rounded-full flex-center justify-center">
+                    <Image 
+                    src="/icons/x.svg" 
+                    alt="" 
+                    height={14} 
+                    width={14} 
+                    /></a>
                   </div>
                   <div className="bg-black w-6 h-6 rounded-full flex items-center justify-center">
+                  <a href="https://example.com" target="_blank" rel="noopener noreferrer" className="bg-black w-6 h-6 rounded-full flex-center justify-center">
                     <Image
                       src="/icons/facebook.svg"
                       alt=""
                       height={10}
                       width={10}
-                    />
+                    /></a>
                   </div>
                   <div className="bg-black w-6 h-6 rounded-full flex items-center justify-center">
+                  <a href="https://example.com" target="_blank" rel="noopener noreferrer" className="bg-black w-6 h-6 rounded-full flex-center justify-center">
                     <Image
                       src="/icons/instagram.svg"
                       alt=""
                       height={16}
                       width={16}
-                    />
+                    /></a>
                   </div>
                   </div>
                 </div>
