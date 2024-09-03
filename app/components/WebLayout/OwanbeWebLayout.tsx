@@ -1,7 +1,9 @@
 import RootLayout from "@/app/layout";
+import Script from 'next/script'
 import React from "react";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
+import ScrollToTopButton from "@/app/ScrollToTopButton";
 
 function OwanbeWebLayout({
   children,
@@ -27,6 +29,15 @@ function OwanbeWebLayout({
       >
         {children}
       </main>
+
+      {/* Scroll to Top Button */}
+      <ScrollToTopButton />
+
+      {/* <NextScript /> */}
+        <Script
+          src="https://embed.tawk.to/66aa1bcd32dca6db2cb7f021/1i447p70n"
+          strategy="afterInteractive"
+        />
 
       {/* Full-width footer background container */}
       <div style={{ backgroundColor: "#FFF2F2" }} className="w-full">

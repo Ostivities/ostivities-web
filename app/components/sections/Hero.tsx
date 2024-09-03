@@ -53,11 +53,11 @@ function Hero(): JSX.Element {
             and create lasting memories with ease. Dive into a world of vibrant events today!
           </p>
           <Link
-            href="/Dashboard"
-            className="bg-OWANBE_SECONDARY hover:bg-OWANBE_PRY transition-all duration-300 rounded-full text-white px-8 py-2 flex items-center justify-center"
-          >
-            <span className="pr-1">Explore Events</span> <ArrowRightOutlined />
-          </Link>
+              href="/Dashboard"
+              className=" bg-OWANBE_SECONDARY hover:!bg-OWANBE_PRY transition-all duration-300 rounded-full hover:!text-white text-white px-8 py-2"
+            >
+              <span className=" pr-1">Explore Events</span> <ArrowRightOutlined />
+            </Link>
         </div>
         <br /><br /><br />
         <div className="w-full md:w-full lg:w-1/2 flex justify-center">
