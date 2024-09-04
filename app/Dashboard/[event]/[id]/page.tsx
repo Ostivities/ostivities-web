@@ -67,14 +67,14 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
               src="/images/placeholder-6.png"
               alt=""
               height={520} 
-              width={440}
+              width={390}
               className=""
             />
             <div className="absolute inset-0 bg-image-card"></div>
           </div>
           <div className="py-8">
           <Heading5 className="text-2xl" content={"About this event"} />
-            <div className="mt-14 flex flex-col gap-12">
+            <div className="mt-14 flex flex-col gap-8">
               <div className="flex gap-3">
                 <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
                   <Image
@@ -110,7 +110,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                 </div>
                 <div>
                 <div className="text-sm" style={{ fontWeight: 600 }}>Location</div>
-<div style={{ width: '170px', whiteSpace: 'normal', wordWrap: 'break-word' }}>
+<div style={{ width: '190px', whiteSpace: 'normal', wordWrap: 'break-word' }}>
   <a 
     href="https://maps.app.goo.gl/jBmgQ5EFxngj2ffS6" 
     style={{ color: "#e20000", textDecoration: "none" }} 

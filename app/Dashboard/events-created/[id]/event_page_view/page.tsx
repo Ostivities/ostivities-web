@@ -56,7 +56,7 @@ const EventPageView = () => {
           />
         </Space>
         <div className="flex gap-12">
-          <div className="relative w-[464px] h-[600px] rounded-[3.125rem] overflow-hidden">
+          <div className="relative w-[390px] h-[520px] rounded-[3.125rem] overflow-hidden">
             <Image
               src={imageUrl}
               alt="Event Image"
@@ -67,8 +67,8 @@ const EventPageView = () => {
             <div className="absolute inset-0 bg-image-card"></div>
           </div>
           <div className="py-8">
-            <Heading5 className="text-2xl" content={"About this event"} />
-            <div className="mt-12 flex flex-col gap-12">
+            <Heading5 className="text-2xl" content={"About this event"} /> 
+            <div className="mt-12 flex flex-col gap-8">
               {/* Date */}
               <div className="flex gap-3 items-center">
                 <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
@@ -109,7 +109,7 @@ const EventPageView = () => {
                   </div>
                   <div>
                   <div className="text-sm" style={{ fontWeight: 600 }}>Location</div>
-<div style={{ width: '180px', whiteSpace: 'normal', wordWrap: 'break-word' }}>
+<div style={{ width: '190px', whiteSpace: 'normal', wordWrap: 'break-word' }}>
   <a 
     href="https://maps.app.goo.gl/jBmgQ5EFxngj2ffS6" 
     style={{ color: "#e20000", textDecoration: "none" }} 
@@ -225,11 +225,11 @@ const EventPageView = () => {
               onChange={handleImageUpload}
             >
               <Button
-                type="default"
+                type="primary"
                 htmlType="button"
                 size={"large"}
                 disabled={false}
-                className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-60 rounded-2xl"
+                className="primary-btn w-60"
                 style={{
                   borderRadius: "20px",
                   fontFamily: "BricolageGrotesqueMedium",
@@ -240,11 +240,11 @@ const EventPageView = () => {
             </Upload>
           ) : (
             <Button
-              type="default"
+              type="primary"
               htmlType="button"
               size={"large"}
               onClick={handleSaveChanges}
-              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
+              className="primary-btn w-60"
               style={{
                 borderRadius: "20px",
                 fontFamily: "BricolageGrotesqueMedium",

@@ -46,7 +46,7 @@ const EventPageAppearance: React.FC = () => {
     <Space direction="vertical" size={"large"}>
       <Space direction="vertical" size={"small"}></Space>
       <div className="flex gap-12">
-        <div className="relative w-[424px] h-[580px] rounded-[3.125rem] overflow-hidden">
+        <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
           <Image
             src={imageUrl}
             alt="Event Image"
@@ -66,8 +66,8 @@ const EventPageAppearance: React.FC = () => {
           </Upload>
         </div>
         <div className="py-8">
-          <Heading5 className="text-2xl" content={"About this event"} />
-          <div className="mt-12 flex flex-col gap-12">
+          <Heading5 className="text-2xl" content={"About this event"} /> 
+          <div className="mt-12 flex flex-col gap-8">
             <div className="flex gap-3 items-center">
               <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
                 <Image
