@@ -244,7 +244,7 @@ function Faqs(): JSX.Element {
               7. Can I get a refund if I can&apos;t attend an event?
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
-            Refunds are handled according to our <a href="/refund-policy">Refund Policy</a>. 
+            Refunds are handled according to our <a href="/refund-policy"style={{ color: "#e20000", textDecoration: "none" }}>Refund Policy</a>. 
             If you are unable to attend an event and need a refund, please contact us as soon as 
             possible. Refund eligibility depends on factors such as the event&apos;s refund policy, 
             the time of your request, and whether the event has been canceled or rescheduled.
@@ -273,7 +273,7 @@ function Faqs(): JSX.Element {
               }}
             >
               <li style={{ marginBottom: "10px" }}>
-                1. Email: <a href="mailto:support@ostivities.com">support@ostivities.com</a>.
+                1. Email: <a href="mailto:support@ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support@ostivities.com</a>.
               </li>
               <li style={{ marginBottom: "10px" }}>
                 2. Chat with us via our social platforms.
@@ -394,7 +394,7 @@ function Faqs(): JSX.Element {
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
             If you encounter a problem with an event or another user, 
-            please report it to us immediately by contacting <a href="mailto:support@ostivities.com">support@ostivities.com</a>. and 
+            please report it to us immediately by contacting <a href="mailto:support@ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support@ostivities.com</a>. and 
             provide as much detail as possible so we can investigate and take appropriate action.
             </p>
             

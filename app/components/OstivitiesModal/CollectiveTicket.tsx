@@ -1,20 +1,27 @@
-import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
+import { CloseSquareOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, FormProps, Input, InputNumber, Select } from "antd";
 import React, { useState, useEffect } from "react";
+import { Heading5, Paragraph } from "@/app/components/typography/Typography";
+import EmailEditor from "../QuillEditor/EmailEditor";
 
 interface FieldType {}
 
 const CollectiveTicket = (): JSX.Element => {
   const { TextArea } = Input;
   const { Option } = Select;
-
   const [groupPrice, setGroupPrice] = useState<number | null>(null);
   const [groupSize, setGroupSize] = useState<number | null>(null);
   const [pricePerTicket, setPricePerTicket] = useState<number | null>(null);
   const [ticketStockValue, setTicketStockValue] = useState<string>("limited"); // Default to "limited"
-
+  const [additionalFields, setAdditionalFields] = useState<{ id: number; compulsory: boolean }[]>([]);
+  const [showAdditionalField, setShowAdditionalField] = useState<boolean>(false);
+  const [counter, setCounter] = useState<number>(0); // Counter for unique keys
   const [form] = Form.useForm(); // Initialize form instance
-
+  const [editorContent, setEditorContent] = useState("");
+  const handleEditorChange = (content: React.SetStateAction<string>) => {
+    setEditorContent(content);
+  };
+  
   const ticketType = Form.useWatch("ticketType", form); // Watch ticketType changes
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
@@ -51,6 +58,21 @@ const CollectiveTicket = (): JSX.Element => {
       <Option value="unlimited">Unlimited</Option>
     </Select>
   );
+
+  const addAdditionalField = () => {
+    setAdditionalFields([...additionalFields, { id: counter, compulsory: false }]);
+    setCounter(counter + 1); // Increment the counter for the next key
+  };
+
+  const removeAdditionalField = (id: number) => {
+    setAdditionalFields(additionalFields.filter(field => field.id !== id));
+  };
+
+  const handleCompulsoryChange = (id: number, checked: boolean) => {
+    setAdditionalFields(additionalFields.map(field =>
+      field.id === id ? { ...field, compulsory: checked } : field
+    ));
+  };
 
   return (
     <Form<FieldType>
@@ -120,9 +142,16 @@ const CollectiveTicket = (): JSX.Element => {
         style={{ marginBottom: '8px' }}
       >
         <Select placeholder="Select group size" onChange={handleGroupSizeChange}>
-          <Option value={2}>Couple</Option>
-          <Option value={3}>Trio</Option>
-          <Option value={4}>Quads</Option>
+          <Option value={1}>1</Option>
+          <Option value={2}>2</Option>
+          <Option value={3}>3</Option>
+          <Option value={4}>4</Option>
+          <Option value={5}>5</Option>
+          <Option value={6}>6</Option>
+          <Option value={7}>7</Option>
+          <Option value={8}>8</Option>
+          <Option value={9}>9</Option>
+          <Option value={10}>10</Option>
         </Select>
       </Form.Item>
 
@@ -143,32 +172,88 @@ const CollectiveTicket = (): JSX.Element => {
         label="Purchase limit"
         name="purchaseLimit"
         rules={[{ required: true, message: "Please input your purchase limit!" }]}
-        style={{ marginBottom: '8px' }}
+        style={{ marginBottom: '15px' }}
       >
         <InputNumber placeholder="Enter purchase limit" style={{ width: '100%' }} min={0} />
       </Form.Item>
 
+      <Paragraph
+            className="text-OWANBE_DARK text-sm font-normal font-BricolageGrotesqueRegular"
+            content={"Ticket description"}
+            styles={{ fontWeight: "bold !important" }}
+          />
+      <div className="mb-3 pb-16 w-full mt-3">
+            <EmailEditor
+              initialValue="<p>Enter ticket description!</p>"
+              onChange={handleEditorChange}
+             />
+          </div>
+
       <Form.Item<FieldType>
-        label="Ticket description"
-        name="ticketDescription"
-        rules={[{ required: true, message: "Please input your ticket description!" }]}
-        style={{ marginBottom: '8px' }}
+        name="remember"
+        valuePropName="checked"
+        style={{ marginBottom: '24px', display: 'flex', alignItems: 'center' }}
       >
-        <TextArea
-          rows={4}
-          placeholder="Enter ticket description"
-          style={{
-            height: "100px", // Fixed height
-            minHeight: "100px",
-            maxHeight: "100px",
-          }}
-        />
+        <Checkbox defaultChecked style={{ marginRight: '20px' }}>Transfer charge fees to guest</Checkbox>
+        <Checkbox
+          onChange={(e) => setShowAdditionalField(e.target.checked)}
+        >
+          Enable additional information
+        </Checkbox>
       </Form.Item>
-      <Form.Item<FieldType> name="remember" valuePropName="checked" style={{ marginBottom: '24px' }}>
-        <Checkbox>Transfer charge fees to guest</Checkbox>
-      </Form.Item>
+
+      {showAdditionalField && (
+        <Form.Item style={{ marginBottom: '24px' }}>
+          <Form.List name="additionalInfo">
+            {(fields, { add }) => (
+              <>
+                {additionalFields.map(({ id, compulsory }) => (
+                  <div key={id} style={{ marginBottom: '16px' }}>
+                    <Form.Item
+                      name={[id, 'info']}
+                      fieldKey={[id, 'info']}
+                      rules={[{ required: compulsory, message: 'Please enter additional information' }]}
+                      style={{ marginBottom: '8px' }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Input placeholder="Enter additional information" style={{ flex: 1 }} />
+                        <Button
+                          type="link"
+                          icon={<CloseSquareOutlined />}
+                          onClick={() => removeAdditionalField(id)}
+                          style={{
+                            color: '#e20000',
+                            marginLeft: '8px', // Adjust margin to position icon beside input field
+                          }}
+                        />
+                      </div>
+                    </Form.Item>
+                    <Form.Item style={{ marginBottom: '8px' }}>
+                      <Checkbox
+                        checked={compulsory}
+                        onChange={(e) => handleCompulsoryChange(id, e.target.checked)}
+                      >
+                        Make compulsory
+                      </Checkbox>
+                    </Form.Item>
+                  </div>
+                ))}
+                <Form.Item>
+                  <Button
+                    type="dashed"
+                    onClick={addAdditionalField}
+                    icon={<PlusOutlined />}
+                  >
+                    Add question
+                  </Button>
+                </Form.Item>
+              </>
+            )}
+          </Form.List>
+        </Form.Item>
+      )}
     </Form>
   );
 };
 
-export default CollectiveTicket;
+export default CollectiveTicket; 

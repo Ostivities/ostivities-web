@@ -69,7 +69,7 @@ export interface IFormInput {
   exhibitionspace: boolean;
   spaceType: string;
   spaceAvailable?: number;
-  spaceFee?: string;      
+  spaceFee?: string;
 }
 
 export interface IModal {
@@ -79,7 +79,7 @@ export interface IModal {
   onOk?: any;
   actionType?: "delete" | "warning" | "detail";
   data?: any;
-  selectedRowKeys?: string | number; 
+  selectedRowKeys?: string | number;
 }
 
 export type FieldType = {
@@ -136,6 +136,21 @@ export interface SalesDataType {
   sales?: number; // Optional, since it
 }
 
+export interface ExhibitionDataType {
+  dateCreated: any;
+  key: React.Key;
+  eventName: string;
+  spaceBooked: number;
+  sold?: number; // Optional, since it's not used in the data generation
+  name?: string; // Optional, since it's not used in the data generation
+  age?: number | any; // Optional, since it's not used in the data generation
+  address?: string; // Optional, since it's not used in the data generation
+  id?: string; // Optional, since it's not used in the data generation
+  revenue?: number; // Optional, since it's not used in the data generation
+  fees?: number; // Optional, since it's not used in the data generation
+  sales?: number; // Optional, since it
+}
+
 
 export interface VendorDataType {
   key: string;
@@ -149,7 +164,6 @@ export interface VendorDataType {
   facebookUrl?: string;
   instagramUrl?: string;
 }
-
 
 export interface CoordinatorsDataType {
   key: string;
@@ -168,17 +182,15 @@ export interface CoordinatorsDataType {
   sales?: number; // Optional, since it
 }
 
-
 export interface SummaryDataType {
   key: string;
   buyerName: string;
   ticketName: string;
   checkedInBy: string;
-  discountCode?: string;  // optional if they can be null or undefined
+  discountCode?: string; // optional if they can be null or undefined
   uses?: number;
   dateEnding?: string;
 }
-
 
 export interface PaymentDataType {
   key: string;
@@ -219,9 +231,14 @@ export interface DiscountDataType {
   dateEnding: string;
 }
 
+export interface IVerifyToken {
+  email: string;
+  otp: number | string;
+}
+
 export interface TabProps {
   tabs: string[];
   currentTab: string;
   handleCurrentTab: (tab: string) => void;
-  style?: React.CSSProperties;  // Add this line to include the style prop
+  style?: React.CSSProperties; // Add this line to include the style prop
 }
