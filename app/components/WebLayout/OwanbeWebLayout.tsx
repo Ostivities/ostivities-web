@@ -39,6 +39,10 @@ function OwanbeWebLayout({
           strategy="afterInteractive"
         />
 
+         <Script 
+         src="https://ostivities.statuspage.io/embed/script.js"
+         />
+
       {/* Full-width footer background container */}
       <div style={{ backgroundColor: "#FFF2F2" }} className="w-full">
         <div className="px-4 sm:px-6 lg:px-8 mx-auto max-w-full sm:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl">
