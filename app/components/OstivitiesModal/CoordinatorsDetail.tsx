@@ -1,17 +1,21 @@
 import { IModal } from "@/app/utils/interface";
 import { Button, Input, Modal, Space } from "antd";
 import React from "react";
-import { Label, Paragraph } from "../typography/Typography";
+import { Heading5, Label, Paragraph } from "../typography/Typography";
 
 const CoordinatorsDetail = ({ open, onCancel, onOk, data }: IModal) => {
   console.log(data, "modal data");
   return (
     <Modal
-      title={
-        <Space direction="vertical" size={"large"}>
-          <Paragraph content={data?.eventType} className="pb-5 text-2xl" />
-        </Space>
-      }
+    title={
+      <>
+        <Heading5
+          content={"Coordinator's Details"} 
+          className=""
+          styles={{ fontSize: "16px" }} // Adjust font size here
+        /><br />
+      </>
+    }
       open={open}
       onOk={onOk}
       onCancel={() => {
