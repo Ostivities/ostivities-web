@@ -1,16 +1,35 @@
-import React, { useState } from 'react';
-import { Form, Input, Button, Upload, message, Modal } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Form, Input, Button, Upload, message, Modal, FormProps } from 'antd';
 import H4 from "../../atoms/H4";
 import Image from 'next/image';
 import "@/app/globals.css"; // Assuming this is where your global styles are imported
+import { useProfile, useUpdateProfile } from "../../../hooks/auth/auth.hook";
+import { IUpdateUser } from '@/app/utils/interface';
 
 const OrganizationProfile = () => {
   const [profileImage, setProfileImage] = useState<string>("/images/emptyimage.png"); // State for profile image URL
   const [uploadButton, setUploadButton] = useState<string>("Update"); // State for button text
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false); // State to track if image is uploaded
+  const { profile } = useProfile();
+  const { updateProfile } = useUpdateProfile();
+  console.log(profile?.data?.data?.data)
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (profile) {
+      form.setFieldsValue({
+        accountType: profile?.data?.data?.data?.accountType,
+        businessName: profile?.data?.data?.data?.businessName,
+        emailAddress: profile?.data?.data?.data?.email,
+        phoneNumber: profile?.data?.data?.data?.phoneNumber,
+      });
+    }
+  }, [profile])
+
 
   // Function to handle file upload
   const handleImageUpload = (options: any) => {
+
     const { file, onSuccess, onError } = options;
 
     // Check file format and size
@@ -59,12 +78,27 @@ const OrganizationProfile = () => {
   };
 
   // Function to save changes
-  const handleSaveChanges = () => {
-    // Implement the logic to save the image
-    console.log("Image saved:", profileImage);
-    // After saving, you can reset the button text if needed
-    setUploadButton("Update");
-    setIsImageUploaded(false);
+  // const handleSaveChanges = () => {
+  //   // Implement the logic to save the image
+  //   console.log("Image saved:", profileImage);
+  //   // After saving, you can reset the button text if needed
+  //   setUploadButton("Update");
+  //   setIsImageUploaded(false);
+
+
+
+  // };
+
+  const onFinish: FormProps<IUpdateUser>["onFinish"] = async (value) => {
+    console.log(value)
+    // const { id, ...rest } = value
+    // if (value) {
+    //   const response = await updateProfile.mutateAsync({...rest});
+    //   if (response.status === 200) {
+       
+    //     form.resetFields();
+    //   }
+    // }
   };
 
   return (
@@ -119,6 +153,8 @@ const OrganizationProfile = () => {
         layout="vertical"
         className="w-full space-y-6 px-8 py-5"
         style={{ marginBottom: '20px' }} // Margin bottom for form container
+        form={form}
+        onFinish={onFinish}
       >
         <div className="grid grid-cols-2 gap-x-14">
           <div className="grid gap-y-6">
@@ -193,7 +229,7 @@ const OrganizationProfile = () => {
             size="large"
             className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
             style={{ marginBottom: '20px' }}
-            onClick={handleSaveChanges} // Save changes action
+           htmlType='submit'
           >
             Save changes
           </Button>

@@ -1,14 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Button, Upload, message, Modal } from 'antd';
 import H4 from "../../atoms/H4";
 import Image from 'next/image';
+import { useProfile, useUpdateProfile } from "../../../hooks/auth/auth.hook";
 import "@/app/globals.css"; // Assuming this is where your global styles are imported
 
 const PersonalProfile = () => {
   const [profileImage, setProfileImage] = useState<string>("/images/emptyimage.png"); // State for profile image URL
   const [uploadButton, setUploadButton] = useState<string>("Update"); // State for button text
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false); // State to track if image is uploaded
+  const [form] = Form.useForm();
+  const { profile } = useProfile();
 
+
+  useEffect(() => {
+    if (profile) {
+      form.setFieldsValue({
+        accountType: profile?.data?.data?.data?.accountType,
+        firstName: profile?.data?.data?.data?.firstName,
+        lastName: profile?.data?.data?.data?.lastName,
+        emailAddress: profile?.data?.data?.data?.email,
+        phoneNumber: profile?.data?.data?.data?.phoneNumber,
+      });
+    }
+  }, [profile])
   // Function to handle file upload
   const handleImageUpload = (options: any) => {
     const { file, onSuccess, onError } = options;
@@ -119,6 +134,7 @@ const PersonalProfile = () => {
         layout="vertical"
         className="w-full space-y-6 px-8 py-5"
         style={{ marginBottom: '20px' }} // Margin bottom for form container
+        form={form}
       >
         <div className="grid grid-cols-2 gap-x-14">
           <div className="grid gap-y-6">
@@ -133,7 +149,7 @@ const PersonalProfile = () => {
               name="firstName"
               rules={[{ required: true, message: "Please input your first name!" }]}
             >
-              <Input placeholder="Enter your first name" style={{ width: '100%' }} />
+              <Input placeholder="Enter your first name" disabled style={{ width: '100%' }} />
             </Form.Item>
           </div>
           
@@ -144,14 +160,14 @@ const PersonalProfile = () => {
               name="emailAddress"
               rules={[{ required: true, message: "Please input the email address!" }]}
             >
-              <Input placeholder="Enter email address" style={{ width: '100%' }} />
+              <Input placeholder="Enter email address" disabled style={{ width: '100%' }} />
             </Form.Item>
             <Form.Item
               label="Last Name"
               name="lastName"
               rules={[{ required: true, message: "Please input your last name!" }]}
             >
-              <Input placeholder="Enter your last name" style={{ width: '100%' }} />
+              <Input placeholder="Enter your last name" disabled style={{ width: '100%' }} />
             </Form.Item>
           </div>
           <Form.Item

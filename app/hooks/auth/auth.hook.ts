@@ -4,6 +4,7 @@ import {
   RESET_PASSWORD_TOKEN,
   USER_PROFILE,
   VERIFY_OTP,
+  UPDATE_PROFILE,
 } from "@/app/utils/constants";
 import { errorFormatter, successFormatter } from "@/app/utils/helper";
 import {
@@ -12,6 +13,7 @@ import {
   IUser,
   IVerifyToken,
   IResetPassword,
+  IUpdateUser,
 } from "@/app/utils/interface";
 import { API_SERVICE } from "@/app/utils/service";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -111,4 +113,20 @@ export const useProfile = () => {
     },
   });
   return { profile };
+}
+
+export const useUpdateProfile = () => {
+  const updateProfile = useMutation({
+    mutationFn: (data: IUpdateUser) => {
+      return API_SERVICE._updateProfile(data);
+    },
+    mutationKey: [UPDATE_PROFILE],
+    onSuccess: (data: AxiosResponse) => {
+      successFormatter(data);
+    },
+    onError: (error: AxiosError | any) => {
+      errorFormatter(error);
+    },
+  });
+  return { updateProfile };
 }

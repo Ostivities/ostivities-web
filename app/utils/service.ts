@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import { HttpMethod } from "./enums";
 import { instance } from "./instance";
-import { ILogin, IResetToken, IUser, IVerifyToken, IResetPassword } from "./interface";
+import { ILogin, IResetToken, IUser, IVerifyToken, IResetPassword, IUpdateUser } from "./interface";
 
 export class API_SERVICE {
   static async _registerUser(data: IUser) {
@@ -50,6 +50,15 @@ export class API_SERVICE {
       url: `/auth/reset_password`,
       method: HttpMethod.POST,
       data: { ...rest },
+    });
+  }
+
+  static async _updateProfile(data: IUpdateUser): Promise<AxiosResponse> {
+    const { id, ...rest } = data;
+    return await instance({
+      url: `/auth/user/${id}`,
+      method: HttpMethod.POST,
+      data,
     });
   }
 }
