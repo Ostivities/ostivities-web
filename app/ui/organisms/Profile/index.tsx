@@ -1,13 +1,13 @@
 import React from "react";
 import OrganizationProfile from "./OrganizationProfile";
-import UserProfile from "./UserProfile";
+import PersonalProfile from "./PersonalProfile";
 
 const Profile = () => {
   const userType = "organization";
   return userType === "organization" ? (
     <OrganizationProfile />
   ) : (
-    <UserProfile />
+    <OrganizationProfile />
   );
 };
 

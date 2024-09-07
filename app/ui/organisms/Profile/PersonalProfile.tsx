@@ -4,7 +4,7 @@ import H4 from "../../atoms/H4";
 import Image from 'next/image';
 import "@/app/globals.css"; // Assuming this is where your global styles are imported
 
-const OrganizationProfile = () => {
+const PersonalProfile = () => {
   const [profileImage, setProfileImage] = useState<string>("/images/emptyimage.png"); // State for profile image URL
   const [uploadButton, setUploadButton] = useState<string>("Update"); // State for button text
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false); // State to track if image is uploaded
@@ -126,16 +126,17 @@ const OrganizationProfile = () => {
               label="Account Type"
               name="accountType"
             >
-              <Input placeholder="Organization" disabled style={{ width: '100%' }} />
+              <Input placeholder="Personal" disabled style={{ width: '100%' }} />
             </Form.Item>
             <Form.Item
-              label="Business Name"
-              name="businessName"
-              rules={[{ required: true, message: "Please input your business name!" }]}
+              label="First Name"
+              name="firstName"
+              rules={[{ required: true, message: "Please input your first name!" }]}
             >
-              <Input placeholder="Enter business name" disabled style={{ width: '100%' }} />
+              <Input placeholder="Enter your first name" style={{ width: '100%' }} />
             </Form.Item>
           </div>
+          
 
           <div className="grid gap-y-6">
             <Form.Item
@@ -143,16 +144,24 @@ const OrganizationProfile = () => {
               name="emailAddress"
               rules={[{ required: true, message: "Please input the email address!" }]}
             >
-              <Input placeholder="Enter email address" disabled style={{ width: '100%' }} />
+              <Input placeholder="Enter email address" style={{ width: '100%' }} />
             </Form.Item>
             <Form.Item
+              label="Last Name"
+              name="lastName"
+              rules={[{ required: true, message: "Please input your last name!" }]}
+            >
+              <Input placeholder="Enter your last name" style={{ width: '100%' }} />
+            </Form.Item>
+          </div>
+          <Form.Item
               label="Phone Number"
               name="phoneNumber"
               rules={[{ required: true, message: "Please input your phone number!" }]}
             >
               <Input placeholder="Enter phone number" style={{ width: '100%' }} />
             </Form.Item>
-          </div>
+
         </div>
 
         {/* <H4
@@ -204,4 +213,4 @@ const OrganizationProfile = () => {
   );
 };
 
-export default OrganizationProfile;
+export default PersonalProfile;
