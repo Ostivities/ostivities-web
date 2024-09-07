@@ -127,6 +127,7 @@ function PasswordResetForm(): JSX.Element {
             width: '100%',
             height: '51px',
           }}
+          loading={resetPassword.isPending}
         >
           Reset Password
         </Button>

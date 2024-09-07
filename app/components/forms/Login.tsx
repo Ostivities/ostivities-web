@@ -16,8 +16,7 @@ function LoginForm(): JSX.Element {
   const [cookies, setCookie] = useCookies(["is_registered","user_email", "user_password"])
 
   const onFinish: FormProps<ILogin>["onFinish"] = async (value) => {
-    const {remember, ...rest} = value
-    console.log(value)
+    const { remember, ...rest } = value
     if (value) {
       const response = await loginUser.mutateAsync({...rest});
       if (response.status === 200) {
@@ -44,6 +43,10 @@ function LoginForm(): JSX.Element {
       onFinishFailed={onFinishFailed}
       autoComplete="off"
       form={form}
+      initialValues={{
+        email: cookies?.user_email || "",
+        password: cookies?.user_password || "",
+      }}
       className="w-full font-BricolageGrotesqueRegular flex flex-col"
       style={{ fontFamily: "BricolageGrotesqueRegular" }}
     >
