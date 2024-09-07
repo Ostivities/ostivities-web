@@ -7,16 +7,25 @@ import { Button, Checkbox, Form, FormProps, Input, Space } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { useCookies } from "react-cookie"
 
 function LoginForm(): JSX.Element {
   const { loginUser } = useLogin();
   const [form] = Form.useForm();
   const router = useRouter();
+  const [cookies, setCookie] = useCookies(["is_registered","user_email", "user_password"])
 
   const onFinish: FormProps<ILogin>["onFinish"] = async (value) => {
+    const {remember, ...rest} = value
+    console.log(value)
     if (value) {
-      const response = await loginUser.mutateAsync(value);
+      const response = await loginUser.mutateAsync({...rest});
       if (response.status === 200) {
+        if (remember) {
+          setCookie('user_email', value.email);
+          setCookie('user_password', value.password);
+        }
+        setCookie('is_registered', 'registered');
         form.resetFields();
         router.push("/Dashboard");
       }
@@ -53,6 +62,7 @@ function LoginForm(): JSX.Element {
             placeholder="Enter your email"
             className="placeholder:font-BricolageGrotesqueRegular"
             autoComplete="off"
+            defaultValue={cookies?.user_email}
           />
         </Form.Item>
       </Form.Item>
@@ -60,16 +70,21 @@ function LoginForm(): JSX.Element {
       <Form.Item
         label="Password"
         name="password"
+        
         hasFeedback
         rules={[{ required: true, message: "Please input your password" }]}
       >
         <Input.Password
+          defaultValue={cookies?.user_password}
           placeholder="Enter your password"
           className="placeholder:font-BricolageGrotesqueRegular"
         />
       </Form.Item>
 
-      <Form.Item>
+      <Form.Item
+        name="remember"
+        valuePropName="checked"
+      >
         <div className="flex items-center justify-between">
           <Checkbox className="font-BricolageGrotesqueSemiBold font-regular">
             Remember me

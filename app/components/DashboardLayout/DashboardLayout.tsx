@@ -22,11 +22,13 @@ import type { MenuProps } from "antd";
 import { Avatar, Badge, Dropdown, Layout, Menu, Space, theme } from "antd";
 import Image from "next/image";
 import Link from "next/link";
+import { useProfile } from "../../hooks/auth/auth.hook";
 import { usePathname, useRouter } from "next/navigation";
 import React, { isValidElement, useEffect, useRef, useState } from "react";
 import useLocalStorage from "use-local-storage";
 import useFetch from "../forms/create-events/auth";
 import { relative } from "path";
+import { useCookies } from "react-cookie"
 
 
 const items1: MenuProps["items"] = [
@@ -80,6 +82,10 @@ function DashboardLayout({
   const router = useRouter();
   const pathname = usePathname();
 
+
+  const { profile } = useProfile();
+  const [cookies, setCookie, removeCookie] = useCookies(['forgot_email']);
+
   const items: MenuProps["items"] = [
     {
       label: (
@@ -97,13 +103,19 @@ function DashboardLayout({
     {
       label: <Label className="cursor-pointer" content="Sign out" />,
       key: "sign-out",
-      onClick: () => router.push("/login"),
+      onClick: () => {
+        sessionStorage.removeItem("token");
+        removeCookie("forgot_email")
+        router.push("/login")
+      },
     },
   
   ];
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useLocalStorage<boolean>("sidebar", true);
   const { isLoggedIn } = useFetch();
+  const userProfile = isLoggedIn ? profile : null;  
+  console.log(userProfile);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -301,7 +313,7 @@ function DashboardLayout({
                     <div className="h-fit flex gap-4">
                       <div className="flex flex-col justify-start">
                         <h3 className=" text-sm text-OWANBE_TABLE_CELL">
-                          Onome Rose
+                          {userProfile?.data?.data?.data?.firstName} {" "} {userProfile?.data?.data?.data?.lastName}
                         </h3>
                         <span className="text-xs text-[#8C95A1]">User</span>
                       </div>

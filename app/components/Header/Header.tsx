@@ -11,11 +11,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { useCookies } from "react-cookie"
 
 function Header(): JSX.Element {
   const router = useRouter();
   const pathname = usePathname();
   const [open, setOpen] = useState<boolean>(false);
+  const [cookies, setCookie] = useCookies(["is_registered","user_email", "user_password"])
+
+  const isRegistered = cookies?.is_registered === 'registered';
 
   const pathCheck =
     pathname.includes('password-reset') ||
@@ -27,6 +31,8 @@ function Header(): JSX.Element {
   const showNavLinks = !pathCheck && pathname !== '/Dashboard'; // Add other pages as needed
 
   const isNotLoggedIn = !['/login', '/signup'].includes(pathname);
+
+  // const isNotLoggedIn = cookies?.is_registered === 'registered';
 
   const showDrawer = () => {
     setOpen(true);
@@ -72,6 +78,12 @@ function Header(): JSX.Element {
           {/* Conditional Buttons Rendering */}
           {!pathCheck && (
             <div className="flex flex-row items-end justify-end space-x-3">
+                {isRegistered && 
+                  <Button
+                    variant="outline"
+                    label="Sign in"
+                    onClick={() => router.push('/login')}
+                  />}
               {isNotLoggedIn ? (
                 <>
                   <Button
@@ -79,6 +91,7 @@ function Header(): JSX.Element {
                     label="Sign in"
                     onClick={() => router.push('/login')}
                   />
+                  
                   <Button
                     label="Sign Up"
                     onClick={() => router.push('/signup')}

@@ -1,18 +1,45 @@
 'use client';
-import { Button, Form, Input, message, Typography } from 'antd';
-import React from 'react';
+import { Button, Form, FormProps, GetProps, Input, message, Typography } from 'antd';
+import React, {useState} from 'react';
+import { useVerifyOtp, useResetPassword } from '@/app/hooks/auth/auth.hook';
+import { IResetPassword, IResetToken } from '@/app/utils/interface';
+import { useRouter } from 'next/navigation';
+import { useCookies } from "react-cookie"
 
 const { Title } = Typography;
 
-function PasswordResetForm(): JSX.Element {
-  const [form] = Form.useForm();
+type OTPProps = GetProps<typeof Input.OTP>;
 
-  const onFinish = (value: object) => {
-    console.log(value);
+function PasswordResetForm(): JSX.Element {
+  const { resetPassword } = useResetPassword();
+  const [form] = Form.useForm();
+  const router = useRouter();
+  const [token, setToken] = useState("")
+  const [cookies, setCookie] = useCookies(['forgot_email']);
+  const email = cookies?.forgot_email
+
+  const onChange: OTPProps["onChange"] = async (text) => {
+    if (text.length === 6){
+      setToken(text)
+    }}
+    
+
+  const onFinish: FormProps<IResetPassword>["onFinish"] = async (value) => {
+    if (value && token.length === 6) {
+      const response = await resetPassword.mutateAsync({...value, token, email});
+      if (response.status === 200) {
+        form.resetFields();
+        router.push("/login");
+      }
+    }
   };
 
   const resendCode = () => {
     message.success('Reset code has been re-sent to your email');
+  };
+
+  const sharedProps: OTPProps = {
+    onChange,
   };
 
   return (
@@ -30,13 +57,13 @@ function PasswordResetForm(): JSX.Element {
 </Title>
 
       <Form.Item
-        name="resetcode"
+        name="token"
         noStyle
-        rules={[{ required: true, message: 'Please input reset code' }]}
+        rules={[{ required: true, message: 'Please input your OTP' }]}
       >
         <div className="flex items-center gap-5">
           <Input.OTP
-            formatter={(str) => str.toUpperCase()}
+            {...sharedProps}
             className="placeholder:font-BricolageGrotesqueRegular flex-1"
           />
           <button
@@ -62,7 +89,7 @@ function PasswordResetForm(): JSX.Element {
       </Form.Item>
 
       <Form.Item
-        name="confirm"
+        name="confirmPassword"
         label="Confirm your New Password"
         dependencies={['password']}
         hasFeedback

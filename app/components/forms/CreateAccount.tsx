@@ -29,6 +29,7 @@ function CreateAccount(): JSX.Element {
   const onFinish: FormProps<IUser>["onFinish"] = async (values) => {
     if (values) {
       const response = await registerUser.mutateAsync(values);
+      console.log(response)
       if (response.status === 201) {
         form.resetFields();
         linkRef.current?.click();

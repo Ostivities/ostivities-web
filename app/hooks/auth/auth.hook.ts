@@ -2,6 +2,8 @@ import {
   LOGIN_USER,
   REGISTER_USER,
   RESET_PASSWORD_TOKEN,
+  USER_PROFILE,
+  VERIFY_OTP,
 } from "@/app/utils/constants";
 import { errorFormatter, successFormatter } from "@/app/utils/helper";
 import {
@@ -9,9 +11,10 @@ import {
   IResetToken,
   IUser,
   IVerifyToken,
+  IResetPassword,
 } from "@/app/utils/interface";
 import { API_SERVICE } from "@/app/utils/service";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { message } from "antd";
 import { AxiosError, AxiosResponse } from "axios";
 
@@ -67,10 +70,26 @@ export const useVerifyOtp = () => {
   return { verifyOtp };
 };
 
-export const useRsetToken = () => {
-  const loginUser = useMutation({
+export const useResetToken = () => {
+  const resetToken = useMutation({
     mutationFn: (data: IResetToken) => {
       return API_SERVICE._resetToken(data);
+    },
+    mutationKey: [VERIFY_OTP],
+    onSuccess: (data: AxiosResponse) => {
+      successFormatter(data);
+    },
+    onError: (error: AxiosError | any) => {
+      errorFormatter(error);
+    },
+  });
+  return { resetToken };
+};
+
+export const useResetPassword = () => {
+  const resetPassword = useMutation({
+    mutationFn: (data: IResetPassword) => {
+      return API_SERVICE._resetPassword(data);
     },
     mutationKey: [RESET_PASSWORD_TOKEN],
     onSuccess: (data: AxiosResponse) => {
@@ -80,5 +99,16 @@ export const useRsetToken = () => {
       errorFormatter(error);
     },
   });
-  return { loginUser };
+  return { resetPassword };
 };
+
+
+export const useProfile = () => {
+  const profile = useQuery<AxiosResponse, AxiosError>({
+    queryKey: [USER_PROFILE],
+    queryFn: () => {
+      return API_SERVICE._userProfile();
+    },
+  });
+  return { profile };
+}

@@ -217,11 +217,11 @@ export interface IUser {
 export interface ILogin {
   email: string;
   password: string;
+  remember?: boolean;
 }
 
 export interface IResetToken {
   email: string;
-  originUrl: string;
 }
 
 export interface DiscountDataType {
@@ -234,6 +234,13 @@ export interface DiscountDataType {
 export interface IVerifyToken {
   email: string;
   otp: number | string;
+}
+
+export interface IResetPassword {
+  email: string;
+  password: string;
+  confirmPassword: string
+  token: string | number;
 }
 
 export interface TabProps {

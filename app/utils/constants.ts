@@ -1,4 +1,6 @@
 export const REGISTER_USER = "REGISTER_USER";
 export const LOGIN_USER = "LOGIN_USER";
+export const USER_PROFILE = "USER_PROFILE";
 export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
 export const RESET_PASSWORD_TOKEN = "RESET_PASSWORD_TOKEN";
+export const VERIFY_OTP = "VERIFY_OTP";
