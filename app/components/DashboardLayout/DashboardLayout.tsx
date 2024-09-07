@@ -5,7 +5,7 @@ import Button from "@/app/ui/atoms/Button";
 import { NAV_LINKS } from "@/app/utils/data";
 import { IDashboard, INavLinks } from "@/app/utils/interface";
 import Hamburger from "@/public/hamburger.svg";
-import OwanbeLogo from "@/public/owanbe.svg"; 
+import OwanbeLogo from "@/public/owanbe.svg";
 import {
   BellFilled,
   CaretDownFilled,
@@ -28,8 +28,7 @@ import React, { isValidElement, useEffect, useRef, useState } from "react";
 import useLocalStorage from "use-local-storage";
 import useFetch from "../forms/create-events/auth";
 import { relative } from "path";
-import { useCookies } from "react-cookie"
-
+import { useCookies } from "react-cookie";
 
 const items1: MenuProps["items"] = [
   {
@@ -44,8 +43,16 @@ const items1: MenuProps["items"] = [
 
 const items2: MenuProps["items"] = [
   { icon: CompassOutlined, title: "Discovery", link: "/Dashboard" },
-  { icon: PlusCircleOutlined, title: 'Create Event', link: '/Dashboard/create-events' },
-  { icon: FileSearchOutlined, title: 'Events Created', link: '/Dashboard/events-created' },
+  {
+    icon: PlusCircleOutlined,
+    title: "Create Event",
+    link: "/Dashboard/create-events",
+  },
+  {
+    icon: FileSearchOutlined,
+    title: "Events Created",
+    link: "/Dashboard/events-created",
+  },
   { icon: SettingOutlined, title: "Settings", link: "/Dashboard/settings" },
   // { icon: FieldTimeOutlined, title: "Coming Soon", link: "/Dashboard/coming-soon" },
 ].map((item) => {
@@ -54,7 +61,7 @@ const items2: MenuProps["items"] = [
     key: `${key}`,
     icon: React.createElement(item.icon),
     label: (
-      <span style={{ fontFamily: 'bricolagegrotesqueRegular' }}>
+      <span style={{ fontFamily: "bricolagegrotesqueRegular" }}>
         {item.title}
       </span>
     ),
@@ -82,16 +89,19 @@ function DashboardLayout({
   const router = useRouter();
   const pathname = usePathname();
 
-
   const { profile } = useProfile();
-  const [cookies, setCookie, removeCookie] = useCookies(['forgot_email']);
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "forgot_email",
+    "is_registered",
+  ]);
 
+  const isRegistered = cookies?.is_registered === "registered";
   const items: MenuProps["items"] = [
     {
       label: (
-        <a 
-          href="https://ostivities.tawk.help" 
-          target="_blank" 
+        <a
+          href="https://ostivities.tawk.help"
+          target="_blank"
           rel="noopener noreferrer"
           className="cursor-pointer"
         >
@@ -105,22 +115,26 @@ function DashboardLayout({
       key: "sign-out",
       onClick: () => {
         sessionStorage.removeItem("token");
-        removeCookie("forgot_email")
-        router.push("/login")
+        removeCookie("forgot_email");
+        router.push("/login");
       },
     },
-  
   ];
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useLocalStorage<boolean>("sidebar", true);
   const { isLoggedIn } = useFetch();
-  const userProfile = isLoggedIn ? profile : null;  
-  console.log(userProfile);
+  const userProfile = isLoggedIn ? profile : null;
+  const accountType = userProfile?.data?.data?.data?.accountType;
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const endpoints = ["create-events", "events-created", "coming-soon", "settings"];
+  const endpoints = [
+    "create-events",
+    "events-created",
+    "coming-soon",
+    "settings",
+  ];
 
   const index = pathname.split("/")[2];
 
@@ -150,8 +164,11 @@ function DashboardLayout({
   const notificationRef = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = (event: any) => {
-    if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
-      setToggleNotifications(false);  
+    if (
+      notificationRef.current &&
+      !notificationRef.current.contains(event.target as Node)
+    ) {
+      setToggleNotifications(false);
     }
   };
 
@@ -165,7 +182,11 @@ function DashboardLayout({
   return (
     <FormProvider>
       <Layout
-         style={{ height: "100vh", fontFamily: "BricolageGrotesqueMedium", overflow: "hidden" }}
+        style={{
+          height: "100vh",
+          fontFamily: "BricolageGrotesqueMedium",
+          overflow: "hidden",
+        }}
       >
         <Header
           style={{
@@ -183,19 +204,14 @@ function DashboardLayout({
               alt="Owanbe Logo"
               style={{ height: "40px" }}
               className="w-[110px] cursor-pointer"
-            onClick={() => {
-              router.push(`/`);
-            }}
+              onClick={() => {
+                router.push(`/`);
+              }}
             />
-
-            
-
-
-
-            
           </div>
           {!isLoggedIn && (
             <>
+              {/* Show NAV_LINKS when user is not logged in */}
               <div className="flex flex-row items-center space-x-8">
                 {NAV_LINKS.map((link: INavLinks) => (
                   <Link
@@ -207,21 +223,34 @@ function DashboardLayout({
                   </Link>
                 ))}
               </div>
+
+              {/* Show buttons based on isRegistered status */}
               <div className="flex flex-row items-end justify-end space-x-3">
-                <>
+                {isRegistered ? (
+                  // If user is registered but not logged in, show only Sign In button
                   <Button
                     variant="outline"
                     label="Sign in"
                     onClick={() => router.push("/login")}
                   />
-                  <Button
-                    label="Sign Up"
-                    onClick={() => router.push("/signup")}
-                  />
-                </>
+                ) : (
+                  // If user is not registered, show both Sign In and Sign Up buttons
+                  <>
+                    <Button
+                      variant="outline"
+                      label="Sign in"
+                      onClick={() => router.push("/login")}
+                    />
+                    <Button
+                      label="Sign Up"
+                      onClick={() => router.push("/signup")}
+                    />
+                  </>
+                )}
               </div>
             </>
           )}
+
           {isLoggedIn && (
             <>
               <Space
@@ -308,14 +337,24 @@ function DashboardLayout({
                         cursor: "pointer",
                       }}
                     >
-                      OR
+                     {accountType === "PERSONAL" ? (
+                          `${userProfile?.data?.data?.data?.firstName?.charAt(0)}${userProfile?.data?.data?.data?.lastName?.charAt(0)}`
+                        ) : (
+                          `${userProfile?.data?.data?.data?.businessName?.charAt(0)}${userProfile?.data?.data?.data?.businessName?.charAt(1)}`
+                        )
+                      }
                     </Avatar>
                     <div className="h-fit flex gap-4">
                       <div className="flex flex-col justify-start">
                         <h3 className=" text-sm text-OWANBE_TABLE_CELL">
-                          {userProfile?.data?.data?.data?.firstName} {" "} {userProfile?.data?.data?.data?.lastName}
+                          {accountType === "PERSONAL" ? (
+                            `${userProfile?.data?.data?.data?.firstName} ${userProfile?.data?.data?.data?.lastName}`
+                          ) : (
+                            `${userProfile?.data?.data?.data?.businessName}`
+                          )}
                         </h3>
-                        <span className="text-xs text-[#8C95A1]">User</span>
+                        <span className="text-xs text-[#8C95A1]">{accountType === "PERSONAL" ? ("User") : ("Organisation")}
+                        </span>
                       </div>
                       <CaretDownFilled />
                     </div>
@@ -326,7 +365,6 @@ function DashboardLayout({
           )}
         </Header>
         <Layout>
-          
           <Sider
             width={200}
             style={{
@@ -347,10 +385,15 @@ function DashboardLayout({
               // console.log(broken, 'broken');
             }}
           >
-             <Image
+            <Image
               src={Hamburger}
               alt="Owanbe Logo"
-              style={{ width: "40px", height: "35px", borderRadius: "10px", margin:"1rem" }}
+              style={{
+                width: "40px",
+                height: "35px",
+                borderRadius: "10px",
+                margin: "1rem",
+              }}
               className="cursor-pointer"
               onClick={toggleSidebar}
             />
@@ -421,9 +464,7 @@ function DashboardLayout({
                     {steppers}
                   </div>
                 )}
-                {extraComponents && (
-                  <div className="">{extraComponents}</div>
-                )}
+                {extraComponents && <div className="">{extraComponents}</div>}
                 <div
                   style={{
                     borderRadius: "30px",

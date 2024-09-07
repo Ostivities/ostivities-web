@@ -249,3 +249,9 @@ export interface TabProps {
   handleCurrentTab: (tab: string) => void;
   style?: React.CSSProperties; // Add this line to include the style prop
 }
+
+export interface IUpdateUser {
+  id?: string;
+  phoneNumber?: string;
+  image?: string;
+}
