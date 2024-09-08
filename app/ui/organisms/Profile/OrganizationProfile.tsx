@@ -77,6 +77,25 @@ const OrganizationProfile = () => {
     });
   };
 
+  const handleSaveChanges = async () => {
+    try {
+      await form.validateFields(); // Validate all required fields except the phone number
+      const phoneNumber = form.getFieldValue('phoneNumber');
+
+      if (!phoneNumber) {
+        message.warning('Phone number is optional, but it is currently empty.');
+      }
+
+      message.success('Profile updated successfully');
+      // Implement the logic to save the profile
+      console.log("Profile saved:", form.getFieldsValue());
+      setUploadButton("Update");
+      setIsImageUploaded(false);
+    } catch (error) {
+      message.error('Please fill in the required fields.');
+    }
+  };
+
   // Function to save changes
   // const handleSaveChanges = () => {
   //   // Implement the logic to save the image
@@ -230,6 +249,7 @@ const OrganizationProfile = () => {
             className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
             style={{ marginBottom: '20px' }}
            htmlType='submit'
+           onClick={handleSaveChanges}
           >
             Save changes
           </Button>
