@@ -122,7 +122,7 @@ export const useUpdateProfile = () => {
     },
     mutationKey: [UPDATE_PROFILE],
     onSuccess: (data: AxiosResponse) => {
-      successFormatter(data);
+      // successFormatter(data);
     },
     onError: (error: AxiosError | any) => {
       errorFormatter(error);

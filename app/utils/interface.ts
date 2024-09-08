@@ -252,6 +252,6 @@ export interface TabProps {
 
 export interface IUpdateUser {
   id?: string;
-  phoneNumber?: string;
+  phone_number?: string;
   image?: string;
 }

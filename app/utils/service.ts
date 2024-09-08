@@ -57,8 +57,8 @@ export class API_SERVICE {
     const { id, ...rest } = data;
     return await instance({
       url: `/auth/user/${id}`,
-      method: HttpMethod.POST,
-      data,
+      method: HttpMethod.PUT,
+      data: { ...rest },
     });
   }
 }

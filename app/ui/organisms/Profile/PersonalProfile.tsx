@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Upload, message, Modal } from 'antd';
+import { Form, Input, Button, Upload, message, Modal, FormProps } from 'antd';
 import H4 from "../../atoms/H4";
 import Image from 'next/image';
 import { useProfile, useUpdateProfile } from "../../../hooks/auth/auth.hook";
 import "@/app/globals.css"; // Assuming this is where your global styles are imported
+import axios from "axios";
+import { IUpdateUser } from '@/app/utils/interface';
+import { successFormatter } from "@/app/utils/helper";
+
+
+const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
+const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+const cloud_api: any = process.env.NEXT_PUBLIC_CLOUDINARY_API_URL;
+
 
 const PersonalProfile = () => {
   const [profileImage, setProfileImage] = useState<string>("/images/emptyimage.png"); // State for profile image URL
@@ -11,6 +20,9 @@ const PersonalProfile = () => {
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false); // State to track if image is uploaded
   const [form] = Form.useForm();
   const { profile } = useProfile();
+  const { updateProfile } = useUpdateProfile();
+  const [loader, setLoader] = useState(false)
+  const [saveLoader, setSaveLoader] = useState(false)
 
 
   useEffect(() => {
@@ -25,37 +37,30 @@ const PersonalProfile = () => {
     }
   }, [profile])
   // Function to handle file upload
-  const handleImageUpload = (options: any) => {
-    const { file, onSuccess, onError } = options;
-
-    // Check file format and size
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    const isLt10M = file.size / 1024 / 1024 < 10;
-  
-    if (!isJpgOrPng) {
-      message.error('You can only upload JPEG or PNG files!');
-      onError(new Error('You can only upload JPEG or PNG files!'));
-      return;
-    }
-    if (!isLt10M) {
-      message.error('Image must be smaller than 10MB!');
-      onError(new Error('Image must be smaller than 10MB!'));
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      setProfileImage(reader.result as string);
-      setUploadButton("Remove");
-      setIsImageUploaded(true);
-      message.success(`${file.name} file uploaded successfully`);
-      onSuccess('ok');
-    };
-    reader.onerror = () => {
-      message.error('Image upload failed!');
-      onError(new Error('Image upload failed!'));
-    };
-    reader.readAsDataURL(file);
+  const handleFileInputChange = async (
+    file: any
+  ) => {
+    setLoader(true)
+    const formData = new FormData();
+    console.log(file?.originFileObj)
+    formData.append("file", file?.originFileObj);
+    formData.append("upload_preset", preset);
+    await axios
+      .post(`${cloud_api}/${cloud_name}/auto/upload`, formData)
+      .then( async (response: any) => {
+        const urlString: string | any =
+          response?.data?.secure_url || response?.data?.url;
+        const res = await updateProfile.mutateAsync({image: urlString, id: profile?.data?.data?.data?.id});
+        if (res.status === 200) {
+          setLoader(false)
+          profile.refetch()
+        }
+        // setFields(urlString);
+        console.log(response)
+      })
+      .catch((error) => {
+        return error?.response;
+      });
   };
 
   // Function to handle image removal
@@ -93,6 +98,20 @@ const PersonalProfile = () => {
     }
   };
 
+
+  const onFinish: FormProps<IUpdateUser>["onFinish"] = async (value) => {
+    setSaveLoader(true)
+    console.log(value);
+    const { phone_number, ...rest } = value
+    if (value) {
+      const response = await updateProfile.mutateAsync({phone_number, });
+      if (response.status === 200) {
+        successFormatter(response);
+        setSaveLoader(false)
+        form.resetFields();
+      }
+    }
+  };
   return (
     <div style={{ maxWidth: '1100px', marginLeft: '50px' }}>
       
@@ -112,7 +131,7 @@ const PersonalProfile = () => {
           <Upload
             name="avatar"
             showUploadList={false} // Hide the file list after upload
-            customRequest={handleImageUpload} // Handle upload action
+            onChange={((info) => handleFileInputChange(info.file))}  // Handle upload action
           >
             <Button
               type="default"
@@ -146,6 +165,7 @@ const PersonalProfile = () => {
         className="w-full space-y-6 px-8 py-5"
         style={{ marginBottom: '20px' }} // Margin bottom for form container
         form={form}
+        onFinish={onFinish}
       >
         <div className="grid grid-cols-2 gap-x-14">
           <div className="grid gap-y-6">
