@@ -340,7 +340,7 @@ function DashboardLayout({
                      {accountType === "PERSONAL" ? (
                           `${userProfile?.data?.data?.data?.firstName?.charAt(0)}${userProfile?.data?.data?.data?.lastName?.charAt(0)}`
                         ) : (
-                          `${userProfile?.data?.data?.data?.businessName?.charAt(0)}${userProfile?.data?.data?.data?.businessName?.charAt(1)}`
+                          `${userProfile?.data?.data?.data?.businessName?.charAt(0).toUpperCase()}${userProfile?.data?.data?.data?.businessName?.charAt(1).toUpperCase()}`
                         )
                       }
                     </Avatar>
