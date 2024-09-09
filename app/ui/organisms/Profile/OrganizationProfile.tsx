@@ -14,14 +14,16 @@ const cloud_api: any = process.env.NEXT_PUBLIC_CLOUDINARY_API_URL;
 
 const OrganizationProfile = () => {
   const [fields, setFields] = useState<any>();
-  const [profileImage, setProfileImage] = useState<string>("/images/emptyimage.png"); // State for profile image URL
+  const [profileImage, setProfileImage] = useState<string>(
+    "/images/emptyimage.png"
+  ); // State for profile image URL
   const [uploadButton, setUploadButton] = useState<string>("Update"); // State for button text
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false); // State to track if image is uploaded
-  const { profile, } = useProfile();
+  const { profile } = useProfile();
   const { updateProfile } = useUpdateProfile();
-  const [loader, setLoader] = useState(false)
-  const [saveLoader, setSaveLoader] = useState(false)
-  // console.log(profile?.data?.data?.data);
+  const [loader, setLoader] = useState(false);
+  const [saveLoader, setSaveLoader] = useState(false);
+  console.log(profile?.data?.data?.data);
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -30,28 +32,29 @@ const OrganizationProfile = () => {
         accountType: profile?.data?.data?.data?.accountType,
         businessName: profile?.data?.data?.data?.businessName,
         emailAddress: profile?.data?.data?.data?.email,
-        phoneNumber: profile?.data?.data?.data?.phoneNumber,
+        phone_number: profile?.data?.data?.data?.phone_number,
       });
     }
   }, [profile]);
 
-  const handleFileInputChange = async (
-    file: any
-  ) => {
-    setLoader(true)
+  const handleFileInputChange = async (file: any) => {
+    setLoader(true);
     const formData = new FormData();
-    console.log(file?.originFileObj)
+    console.log(file?.originFileObj);
     formData.append("file", file?.originFileObj);
     formData.append("upload_preset", preset);
     await axios
       .post(`${cloud_api}/${cloud_name}/auto/upload`, formData)
-      .then( async (response: any) => {
+      .then(async (response: any) => {
         const urlString: string | any =
           response?.data?.secure_url || response?.data?.url;
-        const res = await updateProfile.mutateAsync({image: urlString, id: profile?.data?.data?.data?.id});
+        const res = await updateProfile.mutateAsync({
+          image: urlString,
+          id: profile?.data?.data?.data?.id,
+        });
         if (res.status === 200) {
-          setLoader(false)
-          profile.refetch()
+          setLoader(false);
+          profile.refetch();
         }
         setFields(urlString);
       })
@@ -83,9 +86,9 @@ const OrganizationProfile = () => {
         message.warning("Phone number is optional, but it is currently empty.");
       }
 
-      message.success("Profile updated successfully");
+      // message.success("Profile updated successfully");
       // Implement the logic to save the profile
-      console.log("Profile saved:", form.getFieldsValue());
+      // console.log("Profile saved:", form.getFieldsValue());
       setUploadButton("Update");
       setIsImageUploaded(false);
     } catch (error) {
@@ -94,15 +97,18 @@ const OrganizationProfile = () => {
   };
 
   const onFinish: FormProps<IUpdateUser>["onFinish"] = async (value) => {
-    setSaveLoader(true)
+    setSaveLoader(true);
     console.log(value);
-    const { phone_number, ...rest } = value
+    const { phone_number, ...rest } = value;
     if (value) {
-      const response = await updateProfile.mutateAsync({phone_number, id: profile?.data?.data?.data?.id});
+      const response = await updateProfile.mutateAsync({
+        phone_number,
+        id: profile?.data?.data?.data?.id,
+      });
       if (response.status === 200) {
         successFormatter(response);
-        setSaveLoader(false)
-        profile.refetch()
+        setSaveLoader(false);
+        profile.refetch();
       }
     }
   };
@@ -126,7 +132,7 @@ const OrganizationProfile = () => {
           <Upload
             name="avatar"
             showUploadList={false} // Hide the file list after upload
-            onChange={((info) => handleFileInputChange(info.file))} // Handle upload action
+            onChange={(info) => handleFileInputChange(info.file)} // Handle upload action
           >
             <Button
               type="default"
