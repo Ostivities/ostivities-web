@@ -6,10 +6,12 @@ import { Space } from "antd";
 import { useSearchParams } from "next/navigation";
 // import { useRouter } from "next/";
 import React from "react";
+import { useCookies } from "react-cookie";
 
 function VerifyAccount() {
+  const [cookies, setCookie] = useCookies(["is_registered", "user_email", "user_password","user_inactive_email"])
   const searchParams = useSearchParams();
-  const email = searchParams.get("email");
+  const email = searchParams.get("email")||cookies.user_inactive_email;
   return (
     <AuthLayout>
       <div className="w-4/5 mx-auto flex flex-col space-y-8 pt-48">

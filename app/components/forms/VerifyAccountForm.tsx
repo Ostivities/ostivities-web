@@ -4,6 +4,7 @@ import type { GetProps } from "antd";
 import { Button, Form, FormProps, Input, message, Typography } from "antd";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
+import { useCookies } from "react-cookie";
 
 const { Title } = Typography;
 
@@ -14,9 +15,9 @@ function VerificationCodeForm(): JSX.Element {
   const searchParams = useSearchParams();
   const [form] = Form.useForm();
   const router = useRouter();
-
-  const email = searchParams?.get("email") as string;
-
+  const [cookies, setCookie] = useCookies(["is_registered", "user_email", "user_password","user_inactive_email"])
+  
+  const email = searchParams.get("email")||cookies.user_inactive_email;
   const onChange: OTPProps["onChange"] = async (text) => {
     if (text.length === 6) {
       try {
@@ -24,11 +25,17 @@ function VerificationCodeForm(): JSX.Element {
           email: email,
           otp: text,
         });
-        if (response.status === 200) {
-          form.resetFields();
-          router.push("/login");
-          message.success("Account verification successful");
-        }
+        console.log(response)
+        console.log(response.data.status)
+if (response.data.status === 400){
+  message.error(response?.data?.message)
+}else{
+  
+    form.resetFields();
+    router.push("/login");
+    message.success("Account verification successful");
+  }
+        
       } catch (error) {
         return error;
       }

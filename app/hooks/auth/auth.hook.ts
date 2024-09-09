@@ -46,7 +46,7 @@ export const useLogin = () => {
       if (data) {
         const accessToken = data?.data?.data?.accessToken;
         sessionStorage.setItem("token", accessToken);
-        successFormatter(data);
+       
       }
     },
     onError: (error: AxiosError | any) => {
@@ -63,7 +63,7 @@ export const useVerifyOtp = () => {
     },
     mutationKey: [LOGIN_USER],
     onSuccess: (data: AxiosResponse) => {
-      successFormatter(data);
+      // successFormatter(data);
     },
     onError: (error: AxiosError | any) => {
       errorFormatter(error);

@@ -2,8 +2,9 @@
 import { Small } from "@/app/components/typography/Typography";
 import { useLogin } from "@/app/hooks/auth/auth.hook";
 import Auth from "@/app/utils/Auth";
+import { successFormatter } from "@/app/utils/helper";
 import { ILogin } from "@/app/utils/interface";
-import { Button, Checkbox, Form, FormProps, Input, Space } from "antd";
+import { Button, Checkbox, Form, FormProps, Input, message, Space } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -13,21 +14,28 @@ function LoginForm(): JSX.Element {
   const { loginUser } = useLogin();
   const [form] = Form.useForm();
   const router = useRouter();
-  const [cookies, setCookie] = useCookies(["is_registered","user_email", "user_password"])
+  const [cookies, setCookie] = useCookies(["is_registered", "user_email", "user_password","user_inactive_email"])
 
   const onFinish: FormProps<ILogin>["onFinish"] = async (value) => {
     const { remember, ...rest } = value
     if (value) {
-      const response = await loginUser.mutateAsync({...rest});
-      if (response.status === 200) {
+      const response = await loginUser.mutateAsync({ ...rest });
+      console.log(response)
+      if (response?.data?.data?.is_active === false) {
+        setCookie('user_inactive_email', value.email);
+        message.info(response?.data?.data?.message)
+        router.push("/verify-account");
+      } else {
         if (remember) {
           setCookie('user_email', value.email);
           setCookie('user_password', value.password);
         }
         setCookie('is_registered', 'registered');
+        successFormatter(response);
         form.resetFields();
         router.push("/Dashboard");
       }
+
     }
   };
 
@@ -73,7 +81,7 @@ function LoginForm(): JSX.Element {
       <Form.Item
         label="Password"
         name="password"
-        
+
         hasFeedback
         rules={[{ required: true, message: "Please input your password" }]}
       >
