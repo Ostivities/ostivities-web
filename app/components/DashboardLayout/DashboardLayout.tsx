@@ -337,23 +337,27 @@ function DashboardLayout({
                         cursor: "pointer",
                       }}
                     >
-                     {accountType === "PERSONAL" ? (
-                          `${userProfile?.data?.data?.data?.firstName?.charAt(0)}${userProfile?.data?.data?.data?.lastName?.charAt(0)}`
-                        ) : (
-                          `${userProfile?.data?.data?.data?.businessName?.charAt(0).toUpperCase()}${userProfile?.data?.data?.data?.businessName?.charAt(1).toUpperCase()}`
-                        )
-                      }
+                      {accountType === "PERSONAL"
+                        ? `${userProfile?.data?.data?.data?.firstName?.charAt(
+                            0
+                          )}${userProfile?.data?.data?.data?.lastName?.charAt(
+                            0
+                          )}`
+                        : `${userProfile?.data?.data?.data?.businessName
+                            ?.charAt(0)
+                            .toUpperCase()}${userProfile?.data?.data?.data?.businessName
+                            ?.charAt(1)
+                            .toUpperCase()}`}
                     </Avatar>
                     <div className="h-fit flex gap-4">
                       <div className="flex flex-col justify-start">
                         <h3 className=" text-sm text-OWANBE_TABLE_CELL">
-                          {accountType === "PERSONAL" ? (
-                            `${userProfile?.data?.data?.data?.firstName} ${userProfile?.data?.data?.data?.lastName}`
-                          ) : (
-                            `${userProfile?.data?.data?.data?.businessName}`
-                          )}
+                          {accountType === "PERSONAL"
+                            ? `${userProfile?.data?.data?.data?.firstName} ${userProfile?.data?.data?.data?.lastName}`
+                            : `${userProfile?.data?.data?.data?.businessName}`}
                         </h3>
-                        <span className="text-xs text-[#8C95A1]">{accountType === "PERSONAL" ? ("User") : ("Organisation")}
+                        <span className="text-xs text-[#8C95A1]">
+                          {accountType === "PERSONAL" ? "User" : "Organisation"}
                         </span>
                       </div>
                       <CaretDownFilled />

@@ -20,7 +20,7 @@ const PersonalProfile = () => {
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false); // State to track if image is uploaded
   const [form] = Form.useForm();
   const { profile } = useProfile();
-  console.log(profile?.data?.data?.data);
+  // console.log(profile?.data?.data?.data);
   const { updateProfile } = useUpdateProfile();
   const [loader, setLoader] = useState(false);
   const [saveLoader, setSaveLoader] = useState(false);
@@ -40,7 +40,6 @@ const PersonalProfile = () => {
   const handleFileInputChange = async (file: any) => {
     setLoader(true);
     const formData = new FormData();
-    console.log(file?.originFileObj);
     formData.append("file", file?.originFileObj);
     formData.append("upload_preset", preset);
     await axios
@@ -56,8 +55,6 @@ const PersonalProfile = () => {
           setLoader(false);
           profile.refetch();
         }
-        // setFields(urlString);
-        // console.log(response)
       })
       .catch((error) => {
         return error?.response;
@@ -88,10 +85,7 @@ const PersonalProfile = () => {
       if (!phoneNumber) {
         message.warning("Phone number is optional, but it is currently empty.");
       }
-
-      // message.success('Profile updated successfully');
       // Implement the logic to save the profile
-      // console.log("Profile saved:", form.getFieldsValue());
       setUploadButton("Update");
       setIsImageUploaded(false);
     } catch (error) {
@@ -101,7 +95,6 @@ const PersonalProfile = () => {
 
   const onFinish: FormProps<IUpdateUser>["onFinish"] = async (value) => {
     setSaveLoader(true);
-    // console.log(value);
     const { phone_number, ...rest } = value;
     if (value) {
       const response = await updateProfile.mutateAsync({

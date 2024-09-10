@@ -8,34 +8,37 @@ import { Button, Checkbox, Form, FormProps, Input, message, Space } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { useCookies } from "react-cookie"
+import { useCookies } from "react-cookie";
 
 function LoginForm(): JSX.Element {
   const { loginUser } = useLogin();
   const [form] = Form.useForm();
   const router = useRouter();
-  const [cookies, setCookie] = useCookies(["is_registered", "user_email", "user_password","user_inactive_email"])
+  const [cookies, setCookie] = useCookies([
+    "is_registered",
+    "user_email",
+    "user_password",
+    "user_inactive_email",
+  ]);
 
   const onFinish: FormProps<ILogin>["onFinish"] = async (value) => {
-    const { remember, ...rest } = value
+    const { remember, ...rest } = value;
     if (value) {
       const response = await loginUser.mutateAsync({ ...rest });
-      console.log(response)
       if (response?.data?.data?.is_active === false) {
-        setCookie('user_inactive_email', value.email);
-        message.info(response?.data?.data?.message)
+        setCookie("user_inactive_email", value.email);
+        message.info(response?.data?.data?.message);
         router.push("/verify-account");
       } else {
         if (remember) {
-          setCookie('user_email', value.email);
-          setCookie('user_password', value.password);
+          setCookie("user_email", value.email);
+          setCookie("user_password", value.password);
         }
-        setCookie('is_registered', 'registered');
+        setCookie("is_registered", "registered");
         successFormatter(response);
         form.resetFields();
         router.push("/Dashboard");
       }
-
     }
   };
 
@@ -81,7 +84,6 @@ function LoginForm(): JSX.Element {
       <Form.Item
         label="Password"
         name="password"
-
         hasFeedback
         rules={[{ required: true, message: "Please input your password" }]}
       >
@@ -92,10 +94,7 @@ function LoginForm(): JSX.Element {
         />
       </Form.Item>
 
-      <Form.Item
-        name="remember"
-        valuePropName="checked"
-      >
+      <Form.Item name="remember" valuePropName="checked">
         <div className="flex items-center justify-between">
           <Checkbox className="font-BricolageGrotesqueSemiBold font-regular">
             Remember me
