@@ -183,6 +183,7 @@ function Details(): JSX.Element {
         console.log(response);
         setCookie("event_id", response?.data?.data?.id);
         reset();
+        router.push(`/Dashboard/create-events/${response?.data?.data?.id}`);
       }
     } catch (error) {
       console.log(error, "error");
