@@ -1,8 +1,8 @@
 "use client";
 import EventPageAppearance from "@/app/components/forms/create-events/EventPageAppearance";
+import LocationSearch from "@/app/components/LocationSearch";
 import AddTicketModal from "@/app/components/OstivitiesModal/AddTicket";
 import EventTicketTable from "@/app/components/Tables/EventTicket";
-import LocationSearch from "@/app/components/LocationSearch";
 import {
   Heading5,
   Label,
@@ -31,30 +31,30 @@ import {
 } from "@ant-design/icons";
 import {
   Button,
-  Modal,
+  Checkbox,
   Col,
   DatePicker,
+  Form,
   Input,
   InputNumber,
+  Modal,
+  Popover,
   Radio,
   Row,
   Select,
   Space,
   Upload,
-  Popover,
-  Form,
-  Checkbox,
   UploadProps,
 } from "antd";
+import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useRef, useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import EmailEditor from "../../QuillEditor/EmailEditor";
-import { useCreateEvent } from "../../../hooks/event/event.hook";
-import { useProfile } from "../../../hooks/auth/auth.hook";
-import axios from "axios";
 import { useCookies } from "react-cookie";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useProfile } from "../../../hooks/auth/auth.hook";
+import { useCreateEvent } from "../../../hooks/event/event.hook";
+import EmailEditor from "../../QuillEditor/EmailEditor";
 
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
 const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
