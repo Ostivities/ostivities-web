@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Space, Upload, message } from "antd";
+import { Button, Space, Upload, message } from "antd";
 import { CameraFilled } from "@ant-design/icons";
 import Image from "next/image";
 import type { RcFile, UploadProps } from "antd/es/upload/interface";
@@ -10,6 +10,8 @@ import { useCookies } from "react-cookie";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
 import { useProfile, useUpdateProfile } from "@/app/hooks/auth/auth.hook";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
 const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
@@ -18,11 +20,17 @@ const event_appearance_image: any =
   process.env.NEXT_PUBLIC_OSTIVITIES_EVENT_APPEARANCE_IMAGES;
 
 const EventPageAppearance: React.FC = () => {
+  const router = useRouter();
   const [imageUrl, setImageUrl] = useState<string>("/images/emptyimage2.png");
   const [loader, setLoader] = useState(false);
-  const [cookies, setCookie, removeCookie] = useCookies(["event_id"]);
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "event_id",
+    "form_stage",
+  ]);
   const { getUserEvent } = useGetUserEvent(cookies.event_id);
   const { updateEvent } = useUpdateEvent();
+  const params = useParams<{ id: string }>();
+  console.log(params);
   const { profile } = useProfile();
   const userFullName =
     profile?.data?.data?.data?.firstName +
@@ -96,7 +104,19 @@ const EventPageAppearance: React.FC = () => {
 
   return (
     <Space direction="vertical" size={"large"}>
-      <Space direction="vertical" size={"small"}></Space>
+      <Space direction="vertical" size={"small"}>
+        <Button
+          type="default"
+          size={"large"}
+          className="font-BricolageGrotesqueSemiBold button-style sign-in cursor-pointer font-bold"
+          style={{ width: "150px" }}
+          onClick={() => {
+            router.back();
+          }}
+        >
+          Back
+        </Button>
+      </Space>
       <div className="flex gap-12">
         <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
           <Image
@@ -151,7 +171,7 @@ const EventPageAppearance: React.FC = () => {
                 </div>
                 <div>
                   {timeFormat(eventDetails?.startDate)} -{" "}
-                  {timeFormat(eventDetails?.startDate)}
+                  {timeFormat(eventDetails?.endDate)}
                 </div>
               </div>
             </div>
@@ -266,6 +286,27 @@ const EventPageAppearance: React.FC = () => {
           }}
         ></div>
       </div>
+      <Space className="flex flex-row justify-center space-x-4">
+        <Button
+          type="default"
+          size={"large"}
+          className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
+          onClick={() => {
+            router.push("/create-events");
+          }}
+        >
+          Skip & do this later
+        </Button>
+        <Button
+          type="default"
+          htmlType="button"
+          size="large"
+          className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
+          onClick={() => router.push("/publish-events")}
+        >
+          Continue
+        </Button>
+      </Space>
     </Space>
   );
 };

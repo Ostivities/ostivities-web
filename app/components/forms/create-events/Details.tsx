@@ -71,7 +71,7 @@ function Details(): JSX.Element {
   const [loader, setLoader] = useState(false);
   const { profile } = useProfile();
   const { createEvent } = useCreateEvent();
-  const [cookies, setCookie] = useCookies(["event_id"]);
+  const [cookies, setCookie] = useCookies(["event_id", "form_stage"]);
   const [showRadio, setShowRadio] = useState(false);
   const [editorContent, setEditorContent] = useState("");
   const handleEditorChange = (content: React.SetStateAction<string>) => {
@@ -183,6 +183,7 @@ function Details(): JSX.Element {
         console.log(response);
         setCookie("event_id", response?.data?.data?.id);
         reset();
+        setCookie("form_stage", 2)
         router.push(`/Dashboard/create-events/${response?.data?.data?.id}`);
       }
     } catch (error) {
@@ -195,11 +196,11 @@ function Details(): JSX.Element {
     const output = await trigger([...stepOne], { shouldFocus: true });
     if (!output) return;
 
-    if (formStep === 1 || formStep === 2) {
       await handleSubmit(onSubmit)();
-      setFormStep((step) => step + 1);
-      setFormStage(formState.stage + 1);
-    }
+    // if (formStep === 1 || formStep === 2) {
+    //   setFormStep((step) => step + 1);
+    //   setFormStage(formState.stage + 1);
+    // }
   };
 
   const [popoverVisible, setPopoverVisible] = useState(false);
@@ -263,7 +264,7 @@ function Details(): JSX.Element {
             styles={{ fontWeight: "normal !important" }}
           />
         </Space>
-        {formState.stage > 0 && (
+        {/* {formState.stage > 0 && (
           <Button
             type="default"
             size={"large"}
@@ -280,7 +281,7 @@ function Details(): JSX.Element {
           >
             Back
           </Button>
-        )}
+        )} */}
       </div>
       {formState.stage === 3 ? (
         <div className="w-full flex flex-col space-y-7">

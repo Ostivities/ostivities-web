@@ -29,6 +29,7 @@ import useLocalStorage from "use-local-storage";
 import useFetch from "../forms/create-events/auth";
 import { relative } from "path";
 import { useCookies } from "react-cookie";
+import { ACCOUNT_TYPE } from "@/app/utils/enums";
 
 const items1: MenuProps["items"] = [
   {
@@ -95,6 +96,10 @@ function DashboardLayout({
     "is_registered",
   ]);
 
+  // const accountType = profile?.data?.data?.data?.accountType
+
+ 
+
   const isRegistered = cookies?.is_registered === "registered";
   const items: MenuProps["items"] = [
     {
@@ -136,6 +141,17 @@ function DashboardLayout({
     "settings",
   ];
 
+  const userName = accountType === ACCOUNT_TYPE.PERSONAL
+    ? userProfile?.data?.data?.data?.firstName + " " + userProfile?.data?.data?.data?.lastName
+    : userProfile?.data?.data?.data?.businessName || "";
+
+  const avatarName = accountType === ACCOUNT_TYPE.PERSONAL
+    ? userProfile?.data?.data?.data?.firstName?.charAt(0) + userProfile?.data?.data?.data?.lastName?.charAt(0)
+    : userProfile?.data?.data?.data?.businessName?.charAt(0).toUpperCase() + userProfile?.data?.data?.data?.businessName?.charAt(1).toUpperCase() || "";
+
+  const account_type = accountType === ACCOUNT_TYPE.PERSONAL 
+    ? "User" 
+    : "Organisation" || "";
   const index = pathname.split("/")[2];
 
   const confirmIndex = endpoints.includes(index);
@@ -337,27 +353,15 @@ function DashboardLayout({
                         cursor: "pointer",
                       }}
                     >
-                      {accountType === "PERSONAL"
-                        ? `${userProfile?.data?.data?.data?.firstName?.charAt(
-                            0
-                          )}${userProfile?.data?.data?.data?.lastName?.charAt(
-                            0
-                          )}`
-                        : `${userProfile?.data?.data?.data?.businessName
-                            ?.charAt(0)
-                            .toUpperCase()}${userProfile?.data?.data?.data?.businessName
-                            ?.charAt(1)
-                            .toUpperCase()}`}
+                      {avatarName}
                     </Avatar>
                     <div className="h-fit flex gap-4">
                       <div className="flex flex-col justify-start">
                         <h3 className=" text-sm text-OWANBE_TABLE_CELL">
-                          {accountType === "PERSONAL"
-                            ? `${userProfile?.data?.data?.data?.firstName} ${userProfile?.data?.data?.data?.lastName}`
-                            : `${userProfile?.data?.data?.data?.businessName}`}
+                          {userName}
                         </h3>
                         <span className="text-xs text-[#8C95A1]">
-                          {accountType === "PERSONAL" ? "User" : "Organisation"}
+                          {account_type}
                         </span>
                       </div>
                       <CaretDownFilled />
