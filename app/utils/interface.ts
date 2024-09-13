@@ -50,27 +50,40 @@ export interface IFormProps {
 export interface IFormInput {
   eventName: string;
   eventDetails: string;
-  eventState: string;
-  eventAddress: string;
-  customURL: string;
-  document: string;
+  state: string;
+  address: string;
+  eventURL: string;
+  eventDocument: string;
+  eventDocumentName?: string;
   eventType: string;
   eventInfo: string;
   timeZone: string;
-  startDateAndTime: any;
-  endDateAndTime: any;
-  eventFrequency?: string;
+  startDate: any;
+  endDate: any;
+  frequency?: string;
   eventImage?: string;
   websiteUrl?: string;
   twitterUrl?: string;
   facebookUrl?: string;
   instagramUrl?: string;
-  vendorregistration: boolean;
-  exhibitionspace: boolean;
-  spaceType: string;
+  vendorregistration?: boolean;
+  exhibitionspace?: boolean;
+  spaceType?: string;
   spaceAvailable?: number;
   spaceFee?: string;
 }
+
+export interface ICreateEvent extends Omit<IFormInput, "eventDocument" | "eventDocumentName" | "twitterUrl" | "facebookUrl" | "instagramUrl" | "websiteUrl"> {
+  socials?: Array<{
+    name: string;
+    url?: string; // `url` can be undefined so you can use the optional chaining symbol `?`
+  }>;
+  supportingDocument: {
+    fileName: string;
+    fileUrl: string;
+  };
+}
+
 
 export interface IModal {
   open?: boolean;
@@ -255,3 +268,9 @@ export interface IUpdateUser {
   phone_number?: string;
   image?: string;
 }
+
+export interface IUpdateEvent{
+  id?: string;
+  eventImage?: string; 
+}
+

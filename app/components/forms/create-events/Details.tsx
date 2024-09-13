@@ -17,7 +17,7 @@ import {
   STATES_IN_NIGERIA,
   stepOne,
 } from "@/app/utils/data";
-import { EVENT_INFO } from "@/app/utils/enums";
+import { ACCOUNT_TYPE, EVENT_INFO } from "@/app/utils/enums";
 import { IFormInput } from "@/app/utils/interface";
 import Ticket from "@/public/Ticket.svg";
 import {
@@ -44,46 +44,59 @@ import {
   Popover,
   Form,
   Checkbox,
+  UploadProps,
 } from "antd";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import EmailEditor from "../../QuillEditor/EmailEditor";
+import { useCreateEvent } from "../../../hooks/event/event.hook";
+import { useProfile } from "../../../hooks/auth/auth.hook";
+import axios from "axios";
+import { useCookies } from "react-cookie";
+
+const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
+const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+const cloud_api: any = process.env.NEXT_PUBLIC_CLOUDINARY_API_URL;
+const discovery_url: any = process.env.NEXT_PUBLIC_EVENT_DISCOVERY_URL;
+const event_supporting_docs: any =
+  process.env.NEXT_PUBLIC_OSTIVITIES_EVENT_SUPPORTING_DOCS;
 
 function Details(): JSX.Element {
   const router = useRouter();
   const { formState, setFormStage } = useFormContext();
   const [formStep, setFormStep] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [] = useState(null);
-  const [userName, setUserName] = useState("Rose"); // default value
+  const [loader, setLoader] = useState(false);
+  const { profile } = useProfile();
+  const { createEvent } = useCreateEvent();
+  const [cookies, setCookie] = useCookies(["event_id"]);
   const [showRadio, setShowRadio] = useState(false);
   const [editorContent, setEditorContent] = useState("");
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
 
-
+  const accountType = profile?.data?.data?.data?.accountType;
 
   const { Option } = Select;
 
-  const {
-    handleSubmit,
-    control,
-    setValue,
-    watch,
-    trigger,
-  } = useForm<IFormInput>({
-    mode: "all",  // Use your preferred validation mode
-    defaultValues: {
-      exhibitionspace: false,
-      spaceType: '',  // Initializing as an empty string
-      spaceAvailable: undefined,
-      spaceFee: undefined,
-    },
-  });
-  
+  const userName =
+    accountType === ACCOUNT_TYPE.PERSONAL
+      ? profile?.data?.data?.data?.firstName
+      : profile?.data?.data?.data?.businessName || "";
+
+  const { handleSubmit, control, setValue, watch, trigger, reset } =
+    useForm<IFormInput>({
+      mode: "all", // Use your preferred validation mode
+      defaultValues: {
+        exhibitionspace: false,
+        spaceType: "", // Initializing as an empty string
+        spaceAvailable: undefined,
+        spaceFee: undefined,
+      },
+    });
 
   const watchEventInfo = watch("eventInfo");
 
@@ -94,24 +107,86 @@ function Details(): JSX.Element {
     return () => subscription.unsubscribe();
   }, [watch]);
 
-  useEffect(() => {
-    // Simulate fetching user data
-    const fetchUserData = async () => {
-      // Fetch user data here, e.g., from an API or context
-      const user = {
-        firstName: "Rose",
-        businessName: "Ostivities",
-      };
+  const props: UploadProps = {
+    name: "image",
+    maxCount: 1,
+    action: `${cloud_api}/${cloud_name}/auto/upload`,
+    beforeUpload: (file, fileList) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", event_supporting_docs);
+      formData.append("upload_preset", preset);
+    },
+    async customRequest({ file, onSuccess, onError }) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", event_supporting_docs);
+      formData.append("upload_preset", preset);
+      setLoader(true);
+      try {
+        const response = await axios.post(
+          `${cloud_api}/${cloud_name}/auto/upload`,
+          formData
+        );
+        if (response.status === 201) {
+          const urlString: string | any =
+            response?.data?.secure_url || response?.data?.url;
+          setValue("eventDocument", urlString);
+        }
+        setLoader(false);
+      } catch (error) {}
+    },
+    async onChange(info) {
+      if (info.file.status !== "uploading") {
+      }
+      if (info.file.status === "done") {
+      } else if (info.file.status === "error") {
+      }
+    },
+    showUploadList: false,
+  };
 
-      const name = user.firstName || user.businessName || "User";
-      setUserName(name);
-    };
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    const {
+      exhibitionspace,
+      twitterUrl,
+      eventDocumentName,
+      instagramUrl,
+      facebookUrl,
+      websiteUrl,
+      spaceType,
+      vendorregistration,
+      eventDocument,
+      eventURL,
+      spaceAvailable,
+      spaceFee,
+      ...rest
+    } = data;
+    try {
+      const response = await createEvent.mutateAsync({
+        ...rest,
+        supportingDocument: {
+          fileName: "supportingDocument",
+          fileUrl: data.eventDocument,
+        },
+        eventURL: `${discovery_url}${eventURL}`,
+        eventDetails: editorContent,
+        socials: [
+          { name: "twitter", url: twitterUrl },
+          { name: "facebook", url: facebookUrl },
+          { name: "instagram", url: instagramUrl },
+          { name: "website", url: websiteUrl },
+        ],
+      });
 
-    fetchUserData();
-  }, []);
-
-  const onSubmit: SubmitHandler<IFormInput> = (data: any) => {
-    console.log(data, "data");
+      if (response.status === 201) {
+        console.log(response);
+        setCookie("event_id", response?.data?.data?.id);
+        reset();
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
   };
 
   const nextStep = async () => {
@@ -126,35 +201,35 @@ function Details(): JSX.Element {
     }
   };
 
-  
+  const [popoverVisible, setPopoverVisible] = useState(false);
+  const popoverRef = useRef<HTMLDivElement>(null);
 
-    const [popoverVisible, setPopoverVisible] = useState(false);
-    const popoverRef = useRef<HTMLDivElement>(null);
-  
-    const handleSelectLocation = (address: string) => {
-      setValue("eventAddress", address); // Update the form field value
-      setPopoverVisible(false); // Close the popover
-    };
-  
-    const handleClickOutside = (event: MouseEvent) => {
-      if (popoverRef.current && !popoverRef.current.contains(event.target as Node)) {
-        setPopoverVisible(false);
-      }
-    };
-  
-    useEffect(() => {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }, []);
-  
-    const content = (
-      <div style={{ padding: 10 }} ref={popoverRef}>
-        <LocationSearch onSelectLocation={handleSelectLocation} />
-      </div>
-    );
+  const handleSelectLocation = (address: string) => {
+    setValue("address", address); // Update the form field value
+    setPopoverVisible(false); // Close the popover
+  };
 
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      popoverRef.current &&
+      !popoverRef.current.contains(event.target as Node)
+    ) {
+      setPopoverVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const content = (
+    <div style={{ padding: 10 }} ref={popoverRef}>
+      <LocationSearch onSelectLocation={handleSelectLocation} />
+    </div>
+  );
 
   return (
     <Fragment>
@@ -179,7 +254,7 @@ function Details(): JSX.Element {
             className="text-OWANBE_PRY text-md font-normal font-BricolageGrotesqueMedium"
             content={
               formStep === 1
-                ? "Welcome! Ready to create your next event?" 
+                ? "Welcome! Ready to create your next event?"
                 : formStep === 2
                 ? "Upload your event image here by clicking the camera icon (File size should not be more than 10MB)."
                 : "For free events, Ostivities is free. For paid events, we charge a percentage-based transaction fee on ticket sales."
@@ -188,7 +263,7 @@ function Details(): JSX.Element {
           />
         </Space>
         {formState.stage > 0 && (
-            <Button
+          <Button
             type="default"
             size={"large"}
             className="font-BricolageGrotesqueSemiBold button-style sign-in cursor-pointer font-bold"
@@ -208,7 +283,6 @@ function Details(): JSX.Element {
       </div>
       {formState.stage === 3 ? (
         <div className="w-full flex flex-col space-y-7">
-          
           <EventTicketTable />
           <Space className="flex flex-row justify-center space-x-4">
             <Button
@@ -242,7 +316,6 @@ function Details(): JSX.Element {
             {formState.stage === 0 && (
               <div className="grid grid-cols-2 gap-x-4">
                 <div className="flex flex-col space-y-4 pr-6">
-                 
                   <Controller
                     name="eventName"
                     control={control}
@@ -253,211 +326,263 @@ function Details(): JSX.Element {
                           className=""
                           htmlFor="eventName"
                         />
-                        <Input {...field} placeholder="Enter Event Name" /> 
+                        <Input {...field} placeholder="Enter Event Name" />
                       </Space>
                     )}
                   />
 
-        <Paragraph
-            className="text-OWANBE_DARK text-sm font-normal font-BricolageGrotesqueRegular"
-            content={"Event Details"}
-            styles={{ fontWeight: "bold !important" }}
-          />
-      <div className="mb-9 pb-16 w-full" style={{ marginBottom: "20px", marginTop: "10px" }}>
-            <EmailEditor
-              initialValue="<p>Enter event details!</p>"
-              onChange={handleEditorChange}
-             />
-          </div>
+                  <Paragraph
+                    className="text-OWANBE_DARK text-sm font-normal font-BricolageGrotesqueRegular"
+                    content={"Event Details"}
+                    styles={{ fontWeight: "bold !important" }}
+                  />
+                  <div
+                    className="mb-9 pb-16 w-full"
+                    style={{ marginBottom: "20px", marginTop: "10px" }}
+                  >
+                    <EmailEditor
+                      initialValue="<p>Enter event details!</p>"
+                      onChange={handleEditorChange}
+                    />
+                  </div>
 
-<Controller
-  name="vendorregistration"
-  control={control}
-  render={({ field }) => (
-    <Form.Item
-      style={{ marginBottom: '1px' }}
-    >
-      <Space align="center">
-        <Checkbox
-          {...field}
-          checked={field.value}
-          onChange={(e) => field.onChange(e.target.checked)}
-        >
-                              <span style={{ fontFamily: 'Bricolage Grotesque Light' }}>
-                              Vendors registration{" "} 
-                                <span className="optional-text">
-                                  (allows users to register as vendors for your event)
-                                  {" "}
-      <a 
-        href="https://ostivities.tawk.help/article/how-vendor-management-works" // Replace with your actual URL
-        target="_blank" 
-        rel="noopener noreferrer" 
-        style={{ marginLeft: '8px' }}
-      >
-        <QuestionCircleOutlined style={{ fontSize: '16px', color: '#858990' }} />
-      </a>
-    </span>
+                  <Controller
+                    name="vendorregistration"
+                    control={control}
+                    render={({ field }) => (
+                      <Form.Item style={{ marginBottom: "1px" }}>
+                        <Space align="center">
+                          <Checkbox
+                            {...field}
+                            checked={field.value}
+                            onChange={(e) => field.onChange(e.target.checked)}
+                          >
+                            <span
+                              style={{
+                                fontFamily: "Bricolage Grotesque Light",
+                              }}
+                            >
+                              Vendors registration{" "}
+                              <span className="optional-text">
+                                (allows users to register as vendors for your
+                                event){" "}
+                                <a
+                                  href="https://ostivities.tawk.help/article/how-vendor-management-works" // Replace with your actual URL
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  style={{ marginLeft: "8px" }}
+                                >
+                                  <QuestionCircleOutlined
+                                    style={{
+                                      fontSize: "16px",
+                                      color: "#858990",
+                                    }}
+                                  />
+                                </a>
                               </span>
-        </Checkbox>
-      </Space>
-    </Form.Item>
-  )}
-/>
+                            </span>
+                          </Checkbox>
+                        </Space>
+                      </Form.Item>
+                    )}
+                  />
 
-<Controller
-  name="exhibitionspace"
-  control={control}
-  render={({ field }) => (
-    <Checkbox
-      {...field}
-      checked={field.value as boolean} // Ensure exhibitionspace is boolean
-      onChange={(e) => {
-        field.onChange(e.target.checked);
-        setShowRadio(e.target.checked); // Toggle radio buttons visibility
-      }}
-    >
-      <span style={{ fontFamily: 'Bricolage Grotesque Light' }}>
-      Exhibition Space Booking{" "}
-      <span className="optional-text">
-        (allows vendors to book exhibition space at your event)
-      </span>
-      {" "}
-      <a 
-        href="https://ostivities.tawk.help/article/how-exhibition-space-booking-works" // Replace with your actual URL
-        target="_blank" 
-        rel="noopener noreferrer" 
-        style={{ marginLeft: '8px' }}
-      >
-        <QuestionCircleOutlined style={{ fontSize: '16px', color: '#858990' }} />
-      </a>
-    </span>
-        </Checkbox>
-  )}
-/>
+                  <Controller
+                    name="exhibitionspace"
+                    control={control}
+                    render={({ field }) => (
+                      <Checkbox
+                        {...field}
+                        checked={field.value as boolean} // Ensure exhibitionspace is boolean
+                        onChange={(e) => {
+                          field.onChange(e.target.checked);
+                          setShowRadio(e.target.checked); // Toggle radio buttons visibility
+                        }}
+                      >
+                        <span
+                          style={{ fontFamily: "Bricolage Grotesque Light" }}
+                        >
+                          Exhibition Space Booking{" "}
+                          <span className="optional-text">
+                            (allows vendors to book exhibition space at your
+                            event)
+                          </span>{" "}
+                          <a
+                            href="https://ostivities.tawk.help/article/how-exhibition-space-booking-works" // Replace with your actual URL
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ marginLeft: "8px" }}
+                          >
+                            <QuestionCircleOutlined
+                              style={{ fontSize: "16px", color: "#858990" }}
+                            />
+                          </a>
+                        </span>
+                      </Checkbox>
+                    )}
+                  />
 
-{showRadio && (
-  <Controller
-    name="spaceType"
-    control={control}
-    render={({ field }) => (
-      <Radio.Group
-        {...field}
-        onChange={(e) => field.onChange(e.target.value as string)} // Ensure value is string
-        value={field.value}
-      >
-        <Radio value="paid">Paid Space</Radio>
-        <Radio value="free">Free Space</Radio>
-      </Radio.Group>
-    )}
-  />
-)}
+                  {showRadio && (
+                    <Controller
+                      name="spaceType"
+                      control={control}
+                      render={({ field }) => (
+                        <Radio.Group
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(e.target.value as string)
+                          } // Ensure value is string
+                          value={field.value}
+                        >
+                          <Radio value="paid">Paid Space</Radio>
+                          <Radio value="free">Free Space</Radio>
+                        </Radio.Group>
+                      )}
+                    />
+                  )}
 
-{showRadio && watch('spaceType') === 'paid' && (
-  <Space direction="horizontal" size="large">
-    <Form.Item  label={<span style={{ fontFamily: 'Bricolage Grotesque Light' }}>Space Available</span>}
-    >
-      <Controller
-        name="spaceAvailable"
-        control={control}
-        render={({ field }) => (
-          <Input {...field} placeholder="Enter number of spaces" type="number" />
-        )}
-      />
-    </Form.Item>
-    <Form.Item  label={<span style={{ fontFamily: 'Bricolage Grotesque Light' }}>Space Fee</span>}
-    >
-      <Controller
-        name="spaceFee"
-        control={control}
-        render={({ field }) => (
-          <InputNumber 
-          {...field} 
-          placeholder="Enter space fee" 
-          style={{ width: '80%' }}
-          min={0}
-          formatter={value => `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-          parser={value => value?.replace(/\₦\s?|(,*)/g, '') as any}
-          />
-        )}
-      />
-    </Form.Item>
-  </Space>
-)}
+                  {showRadio && watch("spaceType") === "paid" && (
+                    <Space direction="horizontal" size="large">
+                      <Form.Item
+                        label={
+                          <span
+                            style={{ fontFamily: "Bricolage Grotesque Light" }}
+                          >
+                            Space Available
+                          </span>
+                        }
+                      >
+                        <Controller
+                          name="spaceAvailable"
+                          control={control}
+                          render={({ field }) => (
+                            <Input
+                              {...field}
+                              placeholder="Enter number of spaces"
+                              type="number"
+                            />
+                          )}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        label={
+                          <span
+                            style={{ fontFamily: "Bricolage Grotesque Light" }}
+                          >
+                            Space Fee
+                          </span>
+                        }
+                      >
+                        <Controller
+                          name="spaceFee"
+                          control={control}
+                          render={({ field }) => (
+                            <InputNumber
+                              {...field}
+                              placeholder="Enter space fee"
+                              style={{ width: "80%" }}
+                              min={0}
+                              formatter={(value) =>
+                                `₦ ${value}`.replace(
+                                  /\B(?=(\d{3})+(?!\d))/g,
+                                  ","
+                                )
+                              }
+                              parser={(value) =>
+                                value?.replace(/\₦\s?|(,*)/g, "") as any
+                              }
+                            />
+                          )}
+                        />
+                      </Form.Item>
+                    </Space>
+                  )}
 
+                  <Controller
+                    name="state"
+                    control={control}
+                    render={({ field }) => (
+                      <Space
+                        direction="vertical"
+                        size={"small"}
+                        className="w-full"
+                        style={{ marginTop: "16px" }} // Adjust the value as needed
+                      >
+                        <Label
+                          content="Event State"
+                          className=""
+                          htmlFor="state"
+                        />
+                        <Select
+                          placeholder="Select State"
+                          {...field}
+                          style={{ width: "100%" }}
+                        >
+                          {STATES_IN_NIGERIA.map((_i) => (
+                            <Option value={_i.state} key={_i.state}>
+                              {_i.state}
+                            </Option>
+                          ))}
+                        </Select>
+                      </Space>
+                    )}
+                  />
 
-<Controller
-  name="eventState"
-  control={control}
-  render={({ field }) => (
-    <Space
-      direction="vertical"
-      size={"small"}
-      className="w-full"
-      style={{ marginTop: '16px' }} // Adjust the value as needed
-    >
-      <Label
-        content="Event State"
-        className=""
-        htmlFor="eventState"
-      />
-      <Select
-        placeholder="Select State"
-        {...field}
-        style={{ width: "100%" }}
-      >
-        {STATES_IN_NIGERIA.map((_i) => (
-          <Option value={_i.state} key={_i.state}>
-            {_i.state}
-          </Option>
-        ))}
-      </Select>
-    </Space>
-  )}
-/>
-
-
-<Controller
-  name="eventAddress"
-  control={control}
-  render={({ field }) => (
-    <Space direction="vertical" size={"small"} style={{ width: '100%' }}>
-      <label htmlFor="eventAddress">Event Address</label>
-      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-        <Input 
-          {...field} 
-          placeholder="Enter Address" 
-          style={{ flex: 1, minWidth: '200px', maxWidth: 'calc(100% - 128px)' }} 
-        />
-        <Popover
-          content={content}
-          title="Search for a Location"
-          trigger="click"
-          open={popoverVisible}
-        >
-          <Button
-            type="default"
-            style={{ borderRadius: '5px', minWidth: '120px' }}
-            onClick={() => setPopoverVisible(!popoverVisible)}
-          >
-            Select on Map
-          </Button>
-        </Popover>
-      </div>
-    </Space>
-  )}
-/>
-
-    </div>
+                  <Controller
+                    name="address"
+                    control={control}
+                    render={({ field }) => (
+                      <Space
+                        direction="vertical"
+                        size={"small"}
+                        style={{ width: "100%" }}
+                      >
+                        <label htmlFor="address">Event Address</label>
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "8px",
+                            flexWrap: "wrap",
+                          }}
+                        >
+                          <Input
+                            {...field}
+                            placeholder="Enter Address"
+                            style={{
+                              flex: 1,
+                              minWidth: "200px",
+                              maxWidth: "calc(100% - 128px)",
+                            }}
+                          />
+                          <Popover
+                            content={content}
+                            title="Search for a Location"
+                            trigger="click"
+                            open={popoverVisible}
+                          >
+                            <Button
+                              type="default"
+                              style={{ borderRadius: "5px", minWidth: "120px" }}
+                              onClick={() => setPopoverVisible(!popoverVisible)}
+                            >
+                              Select on Map
+                            </Button>
+                          </Popover>
+                        </div>
+                      </Space>
+                    )}
+                  />
+                </div>
                 <div className="flex flex-col space-y-4 pl-6">
                   <Controller
-                    name="customURL"
+                    name="eventURL"
                     control={control}
                     render={({ field }) => (
                       <Space direction="vertical" size="small">
                         <Label
-                          content="Custom URL"
+                          content="Event URL"
                           className=""
-                          htmlFor="customURL"
+                          htmlFor="eventURL"
                         />
 
                         <Space.Compact className="w-full">
@@ -468,8 +593,8 @@ function Details(): JSX.Element {
                               borderBottomRightRadius: "0px !important",
                               color: "#000000",
                             }}
-                            defaultValue="https://ostivities.com/discover/"
-                            value="https://ostivities.com/discover/"
+                            defaultValue={discovery_url}
+                            value={discovery_url}
                             disabled
                           />
                           <Input
@@ -488,7 +613,7 @@ function Details(): JSX.Element {
 
                   <Space direction="vertical" size="small">
                     <Controller
-                      name="document"
+                      name="eventDocument"
                       control={control}
                       render={({ field }) => (
                         <Space direction="vertical" size="small">
@@ -501,11 +626,12 @@ function Details(): JSX.Element {
                                 </span>
                               </span>
                             }
-                            htmlFor="document"
+                            htmlFor="supportingDocument"
                           />
 
                           <Space.Compact className="w-full h-8">
                             <Input
+                              name="eventDocumentName"
                               style={{
                                 width: "75%",
                                 borderTopRightRadius: "0px !important",
@@ -513,18 +639,11 @@ function Details(): JSX.Element {
                               }}
                               placeholder="Enter file name (optional)"
                             />
-                            <Upload
-                              showUploadList={false}
-                              beforeUpload={() => false}
-                              className="upload-button"
-                              onChange={(info) => {
-                                const file = info.fileList[0]; // Only take the first file
-                                field.onChange(file ? [file] : []); // Override with the new file or empty array
-                              }}
-                            >
+                            <Upload className="upload-button" {...props}>
                               <Button
                                 icon={<UploadOutlined />}
                                 className="custom-upload-button"
+                                loading={loader}
                               >
                                 Click to Upload
                               </Button>
@@ -654,48 +773,53 @@ function Details(): JSX.Element {
                         size="large"
                         className="w-full"
                       >
-                        <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '16px' }}>
-  {/* Start Date & Time */}
-  <div style={{ flex: '1 1 auto', minWidth: '150px' }}>
-    <Label
-      content="Start Date & Time"
-      htmlFor="startDateAndTime"
-    />
-    <Controller
-      name="startDateAndTime"
-      control={control}
-      render={({ field }) => (
-        <DatePicker
-          {...field}
-          showTime
-          format="YYYY-MM-DD HH:mm:ss"
-          style={{ width: "100%", height: "33px" }}
-        />
-      )}
-    />
-  </div>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexWrap: "nowrap",
+                            gap: "16px",
+                          }}
+                        >
+                          {/* Start Date & Time */}
+                          <div style={{ flex: "1 1 auto", minWidth: "150px" }}>
+                            <Label
+                              content="Start Date & Time"
+                              htmlFor="startDate"
+                            />
+                            <Controller
+                              name="startDate"
+                              control={control}
+                              render={({ field }) => (
+                                <DatePicker
+                                  {...field}
+                                  showTime
+                                  format="YYYY-MM-DD HH:mm:ss"
+                                  style={{ width: "100%", height: "33px" }}
+                                />
+                              )}
+                            />
+                          </div>
 
-  {/* End Date & Time */}
-  <div style={{ flex: '1 1 auto', minWidth: '150px' }}>
-    <Label
-      content="End Date & Time"
-      htmlFor="endDateAndTime"
-    />
-    <Controller
-      name="endDateAndTime"
-      control={control}
-      render={({ field }) => (
-        <DatePicker
-          {...field}
-          showTime
-          format="YYYY-MM-DD HH:mm:ss"
-          style={{ width: "100%", height: "33px" }}
-        />
-      )}
-    />
-  </div>
-</div>
-
+                          {/* End Date & Time */}
+                          <div style={{ flex: "1 1 auto", minWidth: "150px" }}>
+                            <Label
+                              content="End Date & Time"
+                              htmlFor="endDate"
+                            />
+                            <Controller
+                              name="endDate"
+                              control={control}
+                              render={({ field }) => (
+                                <DatePicker
+                                  {...field}
+                                  showTime
+                                  format="YYYY-MM-DD HH:mm:ss"
+                                  style={{ width: "100%", height: "33px" }}
+                                />
+                              )}
+                            />
+                          </div>
+                        </div>
                       </Space>
 
                       <Space
@@ -834,103 +958,115 @@ function Details(): JSX.Element {
                         size="large"
                         className="w-full"
                       >
-                        
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-  <div style={{ display: 'flex', gap: '16px' }}>
-    {/* Time Zone */}
-    <div style={{ flex: '1 1 300px', minWidth: '150px' }}>
-      <Label 
-        content="Time Zone" 
-        htmlFor="timeZone"
-      />
-      <Controller
-        name="timeZone"
-        control={control}
-        render={({ field }) => (
-          <Select
-            placeholder="Select Time Zone"
-            {...field}
-            style={{ width: "100%", height: "33px" }}
-          >
-            {AFRICAN_TIME_ZONES.map((zone) => (
-              <Option value={zone.value} key={zone.value}>
-                {zone.label}
-              </Option>
-            ))}
-          </Select>
-        )}
-      />
-    </div>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "16px",
+                          }}
+                        >
+                          <div style={{ display: "flex", gap: "16px" }}>
+                            {/* Time Zone */}
+                            <div
+                              style={{ flex: "1 1 300px", minWidth: "150px" }}
+                            >
+                              <Label content="Time Zone" htmlFor="timeZone" />
+                              <Controller
+                                name="timeZone"
+                                control={control}
+                                render={({ field }) => (
+                                  <Select
+                                    placeholder="Select Time Zone"
+                                    {...field}
+                                    style={{ width: "100%", height: "33px" }}
+                                  >
+                                    {AFRICAN_TIME_ZONES.map((zone) => (
+                                      <Option
+                                        value={zone.value}
+                                        key={zone.value}
+                                      >
+                                        {zone.label}
+                                      </Option>
+                                    ))}
+                                  </Select>
+                                )}
+                              />
+                            </div>
 
-    {/* Frequency */}
-    <div style={{ flex: '1 1 300px', minWidth: '150px' }}>
-      <Label content="Frequency" htmlFor="eventFrequency" />
-      <Controller
-        name="eventFrequency"
-        control={control}
-        render={({ field }) => (
-          <Select
-            placeholder="Select Event Frequency"
-            {...field}
-            style={{ width: "100%", height: "33px" }}
-          >
-            {EVENT_FREQUENCIES.map((frequency) => (
-              <Option
-                value={frequency.value}
-                key={frequency.value}
-              >
-                {frequency.label}
-              </Option>
-            ))}
-          </Select>
-        )}
-      />
-    </div>
-  </div>
+                            {/* Frequency */}
+                            <div
+                              style={{ flex: "1 1 300px", minWidth: "150px" }}
+                            >
+                              <Label content="Frequency" htmlFor="frequency" />
+                              <Controller
+                                name="frequency"
+                                control={control}
+                                render={({ field }) => (
+                                  <Select
+                                    placeholder="Select Event Frequency"
+                                    {...field}
+                                    style={{ width: "100%", height: "33px" }}
+                                  >
+                                    {EVENT_FREQUENCIES.map((frequency) => (
+                                      <Option
+                                        value={frequency.value}
+                                        key={frequency.value}
+                                      >
+                                        {frequency.label}
+                                      </Option>
+                                    ))}
+                                  </Select>
+                                )}
+                              />
+                            </div>
+                          </div>
 
-  <div style={{ display: 'flex', gap: '16px' }}>
-    {/* Start Date & Time */}
-    <div style={{ flex: '1 1 353px', minWidth: '150px' }}>
-      <Label
-        content="Start Date & Time"
-        htmlFor="startDateAndTime"
-      />
-      <Controller
-        name="startDateAndTime"
-        control={control}
-        render={({ field }) => (
-          <DatePicker
-            {...field}
-            showTime
-            format="YYYY-MM-DD HH:mm:ss"
-            style={{ width: "100%", height: "33px" }}
-          />
-        )}
-      />
-    </div>
+                          <div style={{ display: "flex", gap: "16px" }}>
+                            {/* Start Date & Time */}
+                            <div
+                              style={{ flex: "1 1 353px", minWidth: "150px" }}
+                            >
+                              <Label
+                                content="Start Date & Time"
+                                htmlFor="startDate"
+                              />
+                              <Controller
+                                name="startDate"
+                                control={control}
+                                render={({ field }) => (
+                                  <DatePicker
+                                    {...field}
+                                    showTime
+                                    format="YYYY-MM-DD HH:mm:ss"
+                                    style={{ width: "100%", height: "33px" }}
+                                  />
+                                )}
+                              />
+                            </div>
 
-    {/* End Date & Time */}
-    <div style={{ flex: '1 1 353px', minWidth: '150px' }}>
-      <Label
-        content="End Date & Time"
-        htmlFor="endDateAndTime"
-      />
-      <Controller
-        name="endDateAndTime"
-        control={control}
-        render={({ field }) => (
-          <DatePicker
-            {...field}
-            showTime
-            format="YYYY-MM-DD HH:mm:ss"
-            style={{ width: "100%", height: "33px" }}
-          />
-        )}
-      />
-    </div>
-  </div>
-</div>
-
+                            {/* End Date & Time */}
+                            <div
+                              style={{ flex: "1 1 353px", minWidth: "150px" }}
+                            >
+                              <Label
+                                content="End Date & Time"
+                                htmlFor="endDate"
+                              />
+                              <Controller
+                                name="endDate"
+                                control={control}
+                                render={({ field }) => (
+                                  <DatePicker
+                                    {...field}
+                                    showTime
+                                    format="YYYY-MM-DD HH:mm:ss"
+                                    style={{ width: "100%", height: "33px" }}
+                                  />
+                                )}
+                              />
+                            </div>
+                          </div>
+                        </div>
                       </Space>
 
                       <Space
@@ -1072,10 +1208,7 @@ function Details(): JSX.Element {
                   <Controller
                     name="eventImage"
                     control={control}
-                    render={() => (
-                      <EventPageAppearance
-                      />
-                    )}
+                    render={() => <EventPageAppearance />}
                   />
                 </div>
               </div>
@@ -1126,7 +1259,7 @@ function Details(): JSX.Element {
                 className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
                 onClick={() => router.push("/Dashboard")}
               >
-                Cancel 
+                Cancel
               </Button>
               <Button
                 type="primary"
@@ -1134,6 +1267,7 @@ function Details(): JSX.Element {
                 size="large"
                 className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
                 onClick={nextStep}
+                loading={createEvent.isPending}
               >
                 Save & Continue
               </Button>
@@ -1148,7 +1282,7 @@ function Details(): JSX.Element {
                 className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
                 onClick={nextStep}
               >
-                Skip & do this later 
+                Skip & do this later
               </Button>
               <Button
                 type="primary"
