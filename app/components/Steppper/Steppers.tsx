@@ -5,9 +5,11 @@ import { MdOutlineEdit } from 'react-icons/md';
 import { IoImageOutline, IoTicketOutline } from 'react-icons/io5';
 import { useFormContext } from '@/app/contexts/form-context/FormContext';
 import { Label } from '../typography/Typography';
+import { useCookies } from "react-cookie"
 
 function Steppers(): JSX.Element {
   const { formState } = useFormContext();
+  const [cookies, setCookie] = useCookies(["form_stage"]);
 
   const stepsCount = formState?.stages?.length || 3; // Handle potential missing stages
 
@@ -35,7 +37,7 @@ function Steppers(): JSX.Element {
       </style>
       <Steps
         responsive
-        current={formState?.stage}
+        current={2}
         direction="horizontal"
         labelPlacement="vertical"
         className="mx-auto"
