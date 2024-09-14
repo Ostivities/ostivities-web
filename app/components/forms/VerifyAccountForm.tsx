@@ -15,9 +15,14 @@ function VerificationCodeForm(): JSX.Element {
   const searchParams = useSearchParams();
   const [form] = Form.useForm();
   const router = useRouter();
-  const [cookies, setCookie] = useCookies(["is_registered", "user_email", "user_password","user_inactive_email"])
-  
-  const email = searchParams.get("email")||cookies.user_inactive_email;
+  const [cookies, setCookie] = useCookies([
+    "is_registered",
+    "user_email",
+    "user_password",
+    "user_inactive_email",
+  ]);
+
+  const email = searchParams.get("email") || cookies.user_inactive_email;
   const onChange: OTPProps["onChange"] = async (text) => {
     if (text.length === 6) {
       try {
@@ -25,17 +30,13 @@ function VerificationCodeForm(): JSX.Element {
           email: email,
           otp: text,
         });
-        console.log(response)
-        console.log(response.data.status)
-if (response.data.status === 400){
-  message.error(response?.data?.message)
-}else{
-  
-    form.resetFields();
-    router.push("/login");
-    message.success("Account verification successful");
-  }
-        
+        if (response.data.status === 400) {
+          message.error(response?.data?.message);
+        } else {
+          form.resetFields();
+          router.push("/login");
+          message.success("Account verification successful");
+        }
       } catch (error) {
         return error;
       }

@@ -1,8 +1,8 @@
+import AddTicketModal from "@/app/components/OstivitiesModal/AddTicket";
+import DeleteTicket from "@/app/components/OstivitiesModal/DeleteTicket";
+import UpdateTicket from "@/app/components/OstivitiesModal/UpdateTicket";
 import { Label } from "@/app/components/typography/Typography";
 import { DataType } from "@/app/utils/interface";
-import AddTicketModal from "@/app/components/OstivitiesModal/AddTicket";
-import DeleteTicket from "@/app/components/OstivitiesModal/DeleteTicket"; 
-import UpdateTicket from "@/app/components/OstivitiesModal/UpdateTicket";
 
 import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
 import { SalesDataType } from "@/app/utils/interface";
@@ -105,23 +105,43 @@ const EventTicketTable = () => {
 
   const columns: ColumnsType<SalesDataType> = [
     {
-      title: <Label content="Ticket Name" className="font-semibold text-OWANBE_TABLE_TITLE" />,
+      title: (
+        <Label
+          content="Ticket Name"
+          className="font-semibold text-OWANBE_TABLE_TITLE"
+        />
+      ),
       dataIndex: "eventName",
       sorter: (a, b) => a.eventName.localeCompare(b.eventName),
     },
     {
-      title: <Label content="Ticket Quantity" className="font-semibold text-OWANBE_TABLE_TITLE" />,
+      title: (
+        <Label
+          content="Ticket Quantity"
+          className="font-semibold text-OWANBE_TABLE_TITLE"
+        />
+      ),
       dataIndex: "ticketSold",
       sorter: (a, b) => a.eventName.localeCompare(b.eventName),
     },
     {
-      title: <Label content="Ticket Price" className="font-semibold text-OWANBE_TABLE_TITLE" />,
+      title: (
+        <Label
+          content="Ticket Price"
+          className="font-semibold text-OWANBE_TABLE_TITLE"
+        />
+      ),
       dataIndex: "revenue",
       sorter: (a, b) => a.eventName.localeCompare(b.eventName),
       render: (revenue: number) => <span>{formatCurrency(revenue)}</span>,
     },
     {
-      title: <Label content="Action" className="font-semibold text-OWANBE_TABLE_TITLE" />,
+      title: (
+        <Label
+          content="Action"
+          className="font-semibold text-OWANBE_TABLE_TITLE"
+        />
+      ),
       dataIndex: "action",
       key: "action",
       render: (text: any, record: SalesDataType) => (
@@ -162,39 +182,39 @@ const EventTicketTable = () => {
         actionType={actionType}
       />
 
-          <Space direction="vertical" size="large" style={{ width: "100%" }}>
-            <Button
-              type="primary"
-              size="large"
-              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-32 rounded-2xl float-end"
-              style={{
-                borderRadius: "20px",
-                fontFamily: "BricolageGrotesqueMedium",
-              }}
-              onClick={() => setIsModalOpen(true)}
-            >
-              Add Tickets
-            </Button>
-            <Table
-              rowSelection={{
-                selectedRowKeys,
-                onChange: (keys) => setSelectedRowKeys(keys),
-              }}
-              columns={columns}
-              dataSource={data}
-              className="font-BricolageGrotesqueRegular w-full"
-              pagination={{
-                current: currentPage,
-                pageSize: pageSize,
-                total: data.length,
-                onChange: (page, size) => {
-                  setCurrentPage(page);
-                  setPageSize(size);
-                },
-              }}
-              scroll={{ x: "max-content" }}
-            />
-          </Space>
+      <Space direction="vertical" size="large" style={{ width: "100%" }}>
+        <Button
+          type="primary"
+          size="large"
+          className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-32 rounded-2xl float-end"
+          style={{
+            borderRadius: "20px",
+            fontFamily: "BricolageGrotesqueMedium",
+          }}
+          onClick={() => setIsModalOpen(true)}
+        >
+          Add Tickets
+        </Button>
+        <Table
+          rowSelection={{
+            selectedRowKeys,
+            onChange: (keys) => setSelectedRowKeys(keys),
+          }}
+          columns={columns}
+          dataSource={data}
+          className="font-BricolageGrotesqueRegular w-full"
+          pagination={{
+            current: currentPage,
+            pageSize: pageSize,
+            total: data.length,
+            onChange: (page, size) => {
+              setCurrentPage(page);
+              setPageSize(size);
+            },
+          }}
+          scroll={{ x: "max-content" }}
+        />
+      </Space>
     </React.Fragment>
   );
 };

@@ -2437,8 +2437,8 @@ export const stepOne = [
 
 export const EVENT_TYPES: { label: string; value: string }[] = [
   { value: "All Events", label: "All Events" },
-  { value: "Wedding Event", label: "Wedding Event" },
-  { value: "Birthday Party", label: "Birthday Party" },
+  { value: "Wedding", label: "Wedding Event" },
+  { value: "Birthday party", label: "Birthday Party" },
   { value: "Concert", label: "Concert" },
   { value: "Paint & Sip", label: "Paint & Sip" },
   { value: "Hangouts", label: "Hangouts" },

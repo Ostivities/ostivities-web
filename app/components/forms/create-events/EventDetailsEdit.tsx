@@ -18,7 +18,8 @@ import {
   stepOne,
 } from "@/app/utils/data";
 import { ACCOUNT_TYPE, EVENT_INFO } from "@/app/utils/enums";
-import { IFormInput } from "@/app/utils/interface";
+import { getUsernameFromUrl } from "@/app/utils/helper";
+import { IEventDetails, IFormInput } from "@/app/utils/interface";
 import Ticket from "@/public/Ticket.svg";
 import {
   DeleteOutlined,
@@ -47,13 +48,17 @@ import {
   UploadProps,
 } from "antd";
 import axios from "axios";
+import dayjs from "dayjs";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useProfile } from "../../../hooks/auth/auth.hook";
-import { useCreateEvent } from "../../../hooks/event/event.hook";
+import {
+  useCreateEvent,
+  useGetUserEvent,
+} from "../../../hooks/event/event.hook";
 import EmailEditor from "../../QuillEditor/EmailEditor";
 
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
@@ -63,7 +68,7 @@ const discovery_url: any = process.env.NEXT_PUBLIC_EVENT_DISCOVERY_URL;
 const event_supporting_docs: any =
   process.env.NEXT_PUBLIC_OSTIVITIES_EVENT_SUPPORTING_DOCS;
 
-function Details(): JSX.Element {
+function EventDetailsEdit(): JSX.Element {
   const router = useRouter();
   const [formStep, setFormStep] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -77,13 +82,17 @@ function Details(): JSX.Element {
     "stage_two",
     "stage_three",
   ]);
+  const params = useParams<{ id: string }>();
   const [showRadio, setShowRadio] = useState(false);
   const [editorContent, setEditorContent] = useState("");
   const handleEditorChange = (content: React.SetStateAction<string>) => {
-    setEditorContent(content);
+    setEditorContent((prev: any) => ({ ...prev, content }));
   };
 
   const accountType = profile?.data?.data?.data?.accountType;
+
+  const { getUserEvent } = useGetUserEvent(params?.id || cookies.event_id);
+  const eventDetails: IEventDetails = getUserEvent?.data?.data?.data;
 
   const { Option } = Select;
 
@@ -92,7 +101,7 @@ function Details(): JSX.Element {
       ? profile?.data?.data?.data?.firstName
       : profile?.data?.data?.data?.businessName || "";
 
-  const { handleSubmit, control, setValue, watch, trigger, reset } =
+  const { handleSubmit, control, setValue, watch, trigger, reset, getValues } =
     useForm<IFormInput>({
       mode: "all", // Use your preferred validation mode
       defaultValues: {
@@ -111,6 +120,45 @@ function Details(): JSX.Element {
     });
     return () => subscription.unsubscribe();
   }, [watch]);
+
+  useEffect(() => {
+    const socialLinks = eventDetails?.socials;
+    const twitterLink = socialLinks?.find(
+      (link: any) => link?.name.toLowerCase() === "twitter"
+    );
+    const instagramLink = socialLinks?.find(
+      (link: any) => link?.name.toLowerCase() === "instagram"
+    );
+    const websiteLink = socialLinks?.find(
+      (link: any) => link?.name.toLowerCase() === "website"
+    );
+    const facebookLink = socialLinks?.find(
+      (link: any) => link?.name.toLowerCase() === "facebook"
+    );
+    if (eventDetails) {
+      setValue("eventName", eventDetails?.eventName);
+      setValue("state", eventDetails?.state);
+      setValue("address", eventDetails?.address);
+      setValue("eventURL", getUsernameFromUrl(eventDetails?.eventURL));
+      setValue("eventDocumentName", eventDetails?.supportingDocument?.fileName);
+      setValue("eventType", eventDetails?.eventType);
+      setValue("eventInfo", eventDetails?.eventInfo);
+      setValue("timeZone", eventDetails?.timeZone);
+      setValue("websiteUrl", websiteLink?.url);
+      setValue("twitterUrl", twitterLink?.url);
+      setValue("facebookUrl", facebookLink?.url);
+      setValue("instagramUrl", instagramLink?.url);
+      setValue("startDate", dayjs(eventDetails?.startDate));
+      setValue("endDate", dayjs(eventDetails?.endDate));
+      setValue("frequency", eventDetails?.frequency);
+    }
+  }, [eventDetails, setValue]);
+
+  useEffect(() => {
+    if (eventDetails) {
+      setEditorContent(eventDetails?.eventDetails);
+    }
+  }, []);
 
   const props: UploadProps = {
     name: "image",
@@ -280,7 +328,11 @@ function Details(): JSX.Element {
                     className=""
                     htmlFor="eventName"
                   />
-                  <Input {...field} placeholder="Enter Event Name" />
+                  <Input
+                    {...field}
+                    placeholder="Enter Event Name"
+                    name="eventName"
+                  />
                 </Space>
               )}
             />
@@ -295,8 +347,9 @@ function Details(): JSX.Element {
               style={{ marginBottom: "20px", marginTop: "10px" }}
             >
               <EmailEditor
-                initialValue="<p>Enter event details!</p>"
+                initialValue={eventDetails?.eventDetails}
                 onChange={handleEditorChange}
+                defaultValue={eventDetails?.eventDetails}
               />
             </div>
 
@@ -529,6 +582,7 @@ function Details(): JSX.Element {
                       defaultValue={discovery_url}
                       value={discovery_url}
                       disabled
+                      readOnly
                     />
                     <Input
                       style={{
@@ -569,6 +623,9 @@ function Details(): JSX.Element {
                           borderBottomRightRadius: "0px !important",
                         }}
                         placeholder="Enter file name (optional)"
+                        defaultValue={
+                          eventDetails?.supportingDocument?.fileName
+                        }
                       />
                       <Upload className="upload-button" {...props}>
                         <Button
@@ -1117,4 +1174,4 @@ function Details(): JSX.Element {
   );
 }
 
-export default Details;
+export default EventDetailsEdit;

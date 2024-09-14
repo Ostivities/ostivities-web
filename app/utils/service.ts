@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import { HttpMethod } from "./enums";
 import { instance } from "./instance";
-import { ILogin, IResetToken, IUser, IVerifyToken, IResetPassword, IUpdateUser } from "./interface";
+import { ILogin, IResetToken, IUser, IVerifyToken, IResetPassword, IUpdateUser, ICreateEvent, IFormInput, IUpdateEvent } from "./interface";
 
 export class API_SERVICE {
   static async _registerUser(data: IUser) {
@@ -59,6 +59,30 @@ export class API_SERVICE {
       url: `/auth/user/${id}`,
       method: HttpMethod.PUT,
       data: { ...rest },
+    });
+  }
+
+  static async _createEvent(data: ICreateEvent): Promise<AxiosResponse> {
+    return await instance({
+      url: `/events/create`,
+      method: HttpMethod.POST,
+      data,
+    });
+  }
+
+  static async _getUserEvent(id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/events/get_user_event/${id}`,
+      method: HttpMethod.GET,
+    });
+  }
+
+  static async _updateEvent(data: IUpdateEvent): Promise<AxiosResponse> {
+    const { id, ...rest } = data; 
+    return await instance({
+      url: `/events/update_event/${id}`,
+      method: HttpMethod.PUT,
+      data: {...rest},
     });
   }
 }

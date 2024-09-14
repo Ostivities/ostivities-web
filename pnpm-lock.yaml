@@ -35,6 +35,9 @@ importers:
       country-state-city:
         specifier: ^3.2.1
         version: 3.2.1
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
       icons:
         specifier: ^1.0.0
         version: 1.0.0

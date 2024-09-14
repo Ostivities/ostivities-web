@@ -101,7 +101,7 @@ const AboutEvent = () => {
   const popoverRef = useRef<HTMLDivElement>(null);
 
   const handleSelectLocation = (address: string) => {
-    setValue("eventAddress", address); // Update the form field value
+    setValue("state", address); // Update the form field value
     setPopoverVisible(false); // Close the popover
   };
 
@@ -286,7 +286,7 @@ const AboutEvent = () => {
 
 
 <Controller
-  name="eventState"
+  name="state"
   control={control}
   render={({ field }) => (
     <Space
@@ -298,7 +298,7 @@ const AboutEvent = () => {
       <Label
         content="Event State"
         className=""
-        htmlFor="eventState"
+        htmlFor="state"
       />
       <Select
         placeholder="Select State"
@@ -317,11 +317,11 @@ const AboutEvent = () => {
 
 
 <Controller
-  name="eventAddress"
+  name="address"
   control={control}
   render={({ field }) => (
     <Space direction="vertical" size={"small"} style={{ width: '100%' }}>
-      <label htmlFor="eventAddress">Event Address</label>
+      <label htmlFor="address">Event Address</label>
       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
         <Input 
           {...field} 
@@ -350,14 +350,14 @@ const AboutEvent = () => {
     </div>
                 <div className="flex flex-col space-y-4 pl-6">
                   <Controller
-                    name="customURL"
+                    name="eventURL"
                     control={control}
                     render={({ field }) => (
                       <Space direction="vertical" size="small">
                         <Label
                           content="Custom URL"
                           className=""
-                          htmlFor="customURL"
+                          htmlFor="eventURL"
                         />
 
                         <Space.Compact className="w-full">
@@ -388,7 +388,7 @@ const AboutEvent = () => {
 
                   <Space direction="vertical" size="small">
                     <Controller
-                      name="document"
+                      name="eventDocument"
                       control={control}
                       render={({ field }) => (
                         <Space direction="vertical" size="small">
@@ -559,10 +559,10 @@ const AboutEvent = () => {
   <div style={{ flex: '1 1 auto', minWidth: '150px' }}>
     <Label
       content="Start Date & Time"
-      htmlFor="startDateAndTime"
+      htmlFor="startDate"
     />
     <Controller
-      name="startDateAndTime"
+      name="startDate"
       control={control}
       render={({ field }) => (
         <DatePicker
@@ -579,10 +579,10 @@ const AboutEvent = () => {
   <div style={{ flex: '1 1 auto', minWidth: '150px' }}>
     <Label
       content="End Date & Time"
-      htmlFor="endDateAndTime"
+      htmlFor="endDate"
     />
     <Controller
-      name="endDateAndTime"
+      name="endDate"
       control={control}
       render={({ field }) => (
         <DatePicker
@@ -766,7 +766,7 @@ const AboutEvent = () => {
     <div style={{ flex: '1 1 300px', minWidth: '150px' }}>
       <Label content="Frequency" htmlFor="eventFrequency" />
       <Controller
-        name="eventFrequency"
+        name="frequency"
         control={control}
         render={({ field }) => (
           <Select
@@ -793,10 +793,10 @@ const AboutEvent = () => {
     <div style={{ flex: '1 1 353px', minWidth: '150px' }}>
       <Label
         content="Start Date & Time"
-        htmlFor="startDateAndTime"
+        htmlFor="startDate"
       />
       <Controller
-        name="startDateAndTime"
+        name="startDate"
         control={control}
         render={({ field }) => (
           <DatePicker
@@ -813,10 +813,10 @@ const AboutEvent = () => {
     <div style={{ flex: '1 1 353px', minWidth: '150px' }}>
       <Label
         content="End Date & Time"
-        htmlFor="endDateAndTime"
+        htmlFor="endDate"
       />
       <Controller
-        name="endDateAndTime"
+        name="endDate"
         control={control}
         render={({ field }) => (
           <DatePicker

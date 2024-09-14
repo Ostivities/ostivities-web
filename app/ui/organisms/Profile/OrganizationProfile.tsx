@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Upload, message, Modal, FormProps } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  Upload,
+  message,
+  Modal,
+  FormProps,
+  UploadProps,
+} from "antd";
 import H4 from "../../atoms/H4";
 import Image from "next/image";
 import "@/app/globals.css"; // Assuming this is where your global styles are imported
@@ -11,6 +20,7 @@ import { successFormatter } from "@/app/utils/helper";
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
 const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const cloud_api: any = process.env.NEXT_PUBLIC_CLOUDINARY_API_URL;
+const profile_pictures: any = process.env.NEXT_PUBLIC_OSTIVITIES_USER_PROFILE_PICTURE
 
 const OrganizationProfile = () => {
   const [fields, setFields] = useState<any>();
@@ -23,7 +33,6 @@ const OrganizationProfile = () => {
   const { updateProfile } = useUpdateProfile();
   const [loader, setLoader] = useState(false);
   const [saveLoader, setSaveLoader] = useState(false);
-  console.log(profile?.data?.data?.data);
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -37,30 +46,50 @@ const OrganizationProfile = () => {
     }
   }, [profile]);
 
-  const handleFileInputChange = async (file: any) => {
-    setLoader(true);
-    const formData = new FormData();
-    console.log(file?.originFileObj);
-    formData.append("file", file?.originFileObj);
-    formData.append("upload_preset", preset);
-    await axios
-      .post(`${cloud_api}/${cloud_name}/auto/upload`, formData)
-      .then(async (response: any) => {
-        const urlString: string | any =
-          response?.data?.secure_url || response?.data?.url;
-        const res = await updateProfile.mutateAsync({
-          image: urlString,
-          id: profile?.data?.data?.data?.id,
-        });
-        if (res.status === 200) {
-          setLoader(false);
-          profile.refetch();
+  const props: UploadProps = {
+    name: "image",
+    maxCount: 1,
+    action: `${cloud_api}/${cloud_name}/auto/upload`,
+    beforeUpload: (file, fileList) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", profile_pictures);
+      formData.append("upload_preset", preset);
+    },
+    async customRequest({ file, onSuccess, onError }) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", profile_pictures);
+      formData.append("upload_preset", preset);
+      setLoader(true)
+      try {
+        const response = await axios.post(
+          `${cloud_api}/${cloud_name}/auto/upload`,
+          formData
+        );
+        if (response.status === 200) {
+          const urlString: string | any =
+            response?.data?.secure_url || response?.data?.url;
+          const res = await updateProfile.mutateAsync({
+            image: urlString,
+            id: profile?.data?.data?.data?.id,
+          });
+          if (res.status === 200) {
+            setLoader(false);
+            profile.refetch();
+            setFields(urlString);
+          }
         }
-        setFields(urlString);
-      })
-      .catch((error) => {
-        return error?.response;
-      });
+      } catch (error) {}
+    },
+    async onChange(info) {
+      if (info.file.status !== "uploading") {
+      }
+      if (info.file.status === "done") {
+      } else if (info.file.status === "error") {
+      }
+    },
+    showUploadList: false,
   };
 
   const handleRemoveImage = () => {
@@ -85,10 +114,7 @@ const OrganizationProfile = () => {
       if (!phoneNumber) {
         message.warning("Phone number is optional, but it is currently empty.");
       }
-
-      // message.success("Profile updated successfully");
       // Implement the logic to save the profile
-      // console.log("Profile saved:", form.getFieldsValue());
       setUploadButton("Update");
       setIsImageUploaded(false);
     } catch (error) {
@@ -98,7 +124,6 @@ const OrganizationProfile = () => {
 
   const onFinish: FormProps<IUpdateUser>["onFinish"] = async (value) => {
     setSaveLoader(true);
-    console.log(value);
     const { phone_number, ...rest } = value;
     if (value) {
       const response = await updateProfile.mutateAsync({
@@ -132,7 +157,7 @@ const OrganizationProfile = () => {
           <Upload
             name="avatar"
             showUploadList={false} // Hide the file list after upload
-            onChange={(info) => handleFileInputChange(info.file)} // Handle upload action
+            {...props}
           >
             <Button
               type="default"
