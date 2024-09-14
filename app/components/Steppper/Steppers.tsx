@@ -1,21 +1,28 @@
 "use client";
-import React from 'react';
-import { Steps } from 'antd';
-import { MdOutlineEdit } from 'react-icons/md';
-import { IoImageOutline, IoTicketOutline } from 'react-icons/io5';
-import { useFormContext } from '@/app/contexts/form-context/FormContext';
-import { Label } from '../typography/Typography';
-import { useCookies } from "react-cookie"
+import { useFormContext } from "@/app/contexts/form-context/FormContext";
+import { Steps } from "antd";
+import React from "react";
+import { useCookies } from "react-cookie";
+import { IoImageOutline, IoTicketOutline } from "react-icons/io5";
+import { MdOutlineEdit } from "react-icons/md";
+import { Label } from "../typography/Typography";
 
 function Steppers(): JSX.Element {
   const { formState } = useFormContext();
-  const [cookies, setCookie] = useCookies(["form_stage"]);
+  const [cookies, setCookie] = useCookies([
+    "form_stage",
+    "stage_one",
+    "stage_two",
+    "stage_three",
+  ]);
 
   const stepsCount = formState?.stages?.length || 3; // Handle potential missing stages
+  console.log(cookies?.form_stage, "form stage");
+  console.log(cookies?.stage_one, "stage_one");
 
   return (
     <>
-       <style>
+      <style>
         {`
           /* Change color for lines after finished and processing steps */
           .ant-steps-item-finish .ant-steps-item-tail::after,
@@ -37,86 +44,85 @@ function Steppers(): JSX.Element {
       </style>
       <Steps
         responsive
-        current={2}
+        current={cookies?.form_stage}
         direction="horizontal"
         labelPlacement="vertical"
         className="mx-auto"
-        style={{ width: '500px' }}
+        style={{ width: "500px" }}
         items={[
           {
             title: <Label content="Event Details" />,
-            description: '',
-            className: 'font-BricolageGrotesqueRegular',
+            description: "",
+            className: "font-BricolageGrotesqueRegular",
             icon: (
               <div
                 style={{
-                  width: '33px',
-                  height: '33px',
-                  background: '#E20000', // Fixed color for the first step icon
-                  borderRadius: '100%',
-                  padding: '7px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  width: "33px",
+                  height: "33px",
+                  background: "#E20000",
+                  borderRadius: "100%",
+                  padding: "7px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                <MdOutlineEdit
-                  size={19}
-                  color="#fff" // Fixed color for the first step icon
-                />
+                <MdOutlineEdit size={19} color="#fff" />
               </div>
             ),
-            status: 'process', // Always set status to 'process' for the first step
+            status: "process",
           },
           {
             title: <Label content="Event Page" />,
-            description: '',
-            className: 'font-BricolageGrotesqueRegular',
+            description: "",
+            className: "font-BricolageGrotesqueRegular",
             icon: (
               <div
                 style={{
-                  width: '33px',
-                  height: '33px',
-                  background: formState?.stage >= 1 ? '#E20000' : '#fff', // Background color based on stage
-                  borderRadius: '100%',
-                  padding: '7px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  width: "33px",
+                  height: "33px",
+                  background:
+                    cookies?.stage_two === "finish" ? "#E20000" : "#fff", // Background color based on stage
+                  borderRadius: "100%",
+                  padding: "7px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <IoImageOutline
                   size={19}
-                  color={formState?.stage >= 1 ? '#fff' : '#000'} // Icon color based on stage
+                  color={cookies?.stage_two === "finish" ? "#fff" : "#000"} // Icon color based on stage
                 />
               </div>
             ),
-            status: formState?.stage === 1 ? 'process' : formState?.stage > 1 ? 'finish' : 'wait',
+            status: cookies.stage_two,
           },
           {
             title: <Label content="Tickets Creation" />,
-            description: '',
-            className: 'font-BricolageGrotesqueRegular',
+            description: "",
+            className: "font-BricolageGrotesqueRegular",
             icon: (
               <div
                 style={{
-                  width: '33px',
-                  height: '33px',
-                  background: formState?.stage >= 2 ? '#E20000' : '#fff', // Background color based on stage
-                  borderRadius: '100%',
-                  padding: '7px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  width: "33px",
+                  height: "33px",
+                  background:
+                    cookies.stage_three === "finish" ? "#E20000" : "#fff", // Background color based on stage
+                  borderRadius: "100%",
+                  padding: "7px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <IoTicketOutline
                   size={19}
-                  color={formState?.stage >= 2 ? '#fff' : '#000'} // Icon color based on stage
+                  color={cookies.stage_three === "finish" ? "#fff" : "#000"} // Icon color based on stage
                 />
               </div>
             ),
-            status: formState?.stage === 2 ? 'process' : formState?.stage > 2 ? 'finish' : 'wait',
+            status: cookies.stage_three,
           },
         ]}
         size="default"
@@ -126,4 +132,3 @@ function Steppers(): JSX.Element {
 }
 
 export default Steppers;
-

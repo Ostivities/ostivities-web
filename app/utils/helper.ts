@@ -130,7 +130,6 @@ export const errorFormatter = (error: AxiosError | any) => {
     : message.error(error?.response?.data?.message?.[0]);
 };
 
-
 export const dateFormat = (text: string): string => {
   return dayjs(text).format("YYYY-MM-DD") as string;
 };
@@ -139,7 +138,9 @@ export const dateTimeFormat = (text: string): string => {
   return dayjs(text).format("YYYY-MM-DD H:mm:ss") as string;
 };
 
-
 export const timeFormat = (text: string): string => {
-  return dayjs(text).format('h:mm:ss A');
-}
+  return dayjs(text).format("h:mm:ss A");
+};
+
+export const getUsernameFromUrl = (url: string): string =>
+  url.split("/").pop() || "";

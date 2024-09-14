@@ -1,10 +1,10 @@
 "use client";
 
-import EventPageAppearance from "@/app/components/forms/create-events/EventPageAppearance";
-import React from "react";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
+import EventPageAppearance from "@/app/components/forms/create-events/EventPageAppearance";
 import Steppers from "@/app/components/Steppper/Steppers";
 import { useParams } from "next/navigation";
+import React from "react";
 
 function Page() {
   const { id } = useParams();
@@ -16,13 +16,13 @@ function Page() {
     </div>
   );
 
-  console.log(id);
   return (
     <>
       <DashboardLayout title={title} steppers={<Steppers />} isLoggedIn>
         <div className="w-full mx-auto flex flex-col space-y-5 py-6">
           <EventPageAppearance />
         </div>
+        <br />
       </DashboardLayout>
     </>
   );

@@ -3,6 +3,7 @@ import { Label } from "@/app/components/typography/Typography";
 import FormProvider from "@/app/contexts/form-context/FormContext";
 import Button from "@/app/ui/atoms/Button";
 import { NAV_LINKS } from "@/app/utils/data";
+import { ACCOUNT_TYPE } from "@/app/utils/enums";
 import { IDashboard, INavLinks } from "@/app/utils/interface";
 import Hamburger from "@/public/hamburger.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
@@ -22,14 +23,13 @@ import type { MenuProps } from "antd";
 import { Avatar, Badge, Dropdown, Layout, Menu, Space, theme } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import { useProfile } from "../../hooks/auth/auth.hook";
 import { usePathname, useRouter } from "next/navigation";
-import React, { isValidElement, useEffect, useRef, useState } from "react";
-import useLocalStorage from "use-local-storage";
-import useFetch from "../forms/create-events/auth";
 import { relative } from "path";
+import React, { isValidElement, useEffect, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
-import { ACCOUNT_TYPE } from "@/app/utils/enums";
+import useLocalStorage from "use-local-storage";
+import { useProfile } from "../../hooks/auth/auth.hook";
+import useFetch from "../forms/create-events/auth";
 
 const items1: MenuProps["items"] = [
   {
@@ -94,11 +94,14 @@ function DashboardLayout({
   const [cookies, setCookie, removeCookie] = useCookies([
     "forgot_email",
     "is_registered",
+    "event_id",
+    "form_stage",
+    "stage_one",
+    "stage_two",
+    "stage_three",
   ]);
 
   // const accountType = profile?.data?.data?.data?.accountType
-
- 
 
   const isRegistered = cookies?.is_registered === "registered";
   const items: MenuProps["items"] = [
@@ -121,6 +124,11 @@ function DashboardLayout({
       onClick: () => {
         sessionStorage.removeItem("token");
         removeCookie("forgot_email");
+        removeCookie("event_id");
+        removeCookie("form_stage");
+        removeCookie("stage_one");
+        removeCookie("stage_two");
+        removeCookie("stage_three");
         router.push("/login");
       },
     },
@@ -141,17 +149,24 @@ function DashboardLayout({
     "settings",
   ];
 
-  const userName = accountType === ACCOUNT_TYPE.PERSONAL
-    ? userProfile?.data?.data?.data?.firstName + " " + userProfile?.data?.data?.data?.lastName
-    : userProfile?.data?.data?.data?.businessName || "";
+  const userName =
+    accountType === ACCOUNT_TYPE.PERSONAL
+      ? userProfile?.data?.data?.data?.firstName +
+        " " +
+        userProfile?.data?.data?.data?.lastName
+      : userProfile?.data?.data?.data?.businessName || "";
 
-  const avatarName = accountType === ACCOUNT_TYPE.PERSONAL
-    ? userProfile?.data?.data?.data?.firstName?.charAt(0) + userProfile?.data?.data?.data?.lastName?.charAt(0)
-    : userProfile?.data?.data?.data?.businessName?.charAt(0).toUpperCase() + userProfile?.data?.data?.data?.businessName?.charAt(1).toUpperCase() || "";
+  const avatarName =
+    accountType === ACCOUNT_TYPE.PERSONAL
+      ? userProfile?.data?.data?.data?.firstName?.charAt(0) +
+        userProfile?.data?.data?.data?.lastName?.charAt(0)
+      : userProfile?.data?.data?.data?.businessName?.charAt(0).toUpperCase() +
+          userProfile?.data?.data?.data?.businessName
+            ?.charAt(1)
+            .toUpperCase() || "";
 
-  const account_type = accountType === ACCOUNT_TYPE.PERSONAL 
-    ? "User" 
-    : "Organisation" || "";
+  const account_type =
+    accountType === ACCOUNT_TYPE.PERSONAL ? "User" : "Organisation" || "";
   const index = pathname.split("/")[2];
 
   const confirmIndex = endpoints.includes(index);
@@ -480,7 +495,7 @@ function DashboardLayout({
                     boxShadow: "0px 8px 24px 0px #00000014",
                     background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
                   }}
-                  className="px-12 py-16"
+                  className="px-12 py-6"
                 >
                   <div>{children}</div>
                 </div>

@@ -76,13 +76,48 @@ export interface IFormInput {
 export interface ICreateEvent extends Omit<IFormInput, "eventDocument" | "eventDocumentName" | "twitterUrl" | "facebookUrl" | "instagramUrl" | "websiteUrl"> {
   socials?: Array<{
     name: string;
-    url?: string; // `url` can be undefined so you can use the optional chaining symbol `?`
+    url?: string; 
   }>;
   supportingDocument: {
     fileName: string;
     fileUrl: string;
   };
 }
+
+export interface IEventDetails {
+  _id: string;
+  eventName: string;
+  eventDetails: string;
+  state: string;
+  address: string;
+  eventURL: string;
+  supportingDocument: {
+    fileName: string;
+    _id: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+  eventType: string;
+  timeZone: string;
+  frequency: string;
+  startDate: string;
+  endDate: string;
+  socials: {
+    name: string;
+    url: string;
+    _id: string;
+    createdAt: string;
+    updatedAt: string;
+  }[];
+  user: string;
+  ticketSold: number;
+  eventInfo: string;
+  discover: boolean;
+  createdAt: string;
+  updatedAt: string;
+  eventImage: string;
+}
+
 
 
 export interface IModal {

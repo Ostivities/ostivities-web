@@ -1,17 +1,16 @@
-import React, { useState } from "react";
-import { Button, Space, Upload, message } from "antd";
-import { CameraFilled } from "@ant-design/icons";
-import Image from "next/image";
-import type { RcFile, UploadProps } from "antd/es/upload/interface";
-import { Heading5 } from "../../typography/Typography";
-import axios from "axios";
-import { useGetUserEvent, useUpdateEvent } from "@/app/hooks/event/event.hook";
-import { useCookies } from "react-cookie";
-import { dateFormat, timeFormat } from "@/app/utils/helper";
 import { useProfile, useUpdateProfile } from "@/app/hooks/auth/auth.hook";
+import { useGetUserEvent, useUpdateEvent } from "@/app/hooks/event/event.hook";
+import { dateFormat, timeFormat } from "@/app/utils/helper";
+import { CameraFilled } from "@ant-design/icons";
+import { Button, Flex, Space, Upload, message } from "antd";
+import type { RcFile, UploadProps } from "antd/es/upload/interface";
+import axios from "axios";
+import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { useCookies } from "react-cookie";
+import { Heading5, Paragraph } from "../../typography/Typography";
 
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
 const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
@@ -26,20 +25,23 @@ const EventPageAppearance: React.FC = () => {
   const [cookies, setCookie, removeCookie] = useCookies([
     "event_id",
     "form_stage",
+    "stage_one",
+    "stage_two",
+    "stage_three",
   ]);
   const { getUserEvent } = useGetUserEvent(cookies.event_id);
   const { updateEvent } = useUpdateEvent();
   const params = useParams<{ id: string }>();
-  console.log(params);
+
   const { profile } = useProfile();
   const userFullName =
     profile?.data?.data?.data?.firstName +
     " " +
     profile?.data?.data?.data?.lastName;
-  console.log(getUserEvent);
+ 
 
   const eventDetails = getUserEvent?.data?.data?.data;
-  console.log(eventDetails?.socials);
+
 
   const props: UploadProps = {
     name: "image",
@@ -103,20 +105,42 @@ const EventPageAppearance: React.FC = () => {
   );
 
   return (
-    <Space direction="vertical" size={"large"}>
-      <Space direction="vertical" size={"small"}>
+    <Flex vertical gap={48} style={{ width: "100%" }}>
+      <Flex
+        align="flex-start"
+        justify="space-between"
+        style={{ width: "100%" }}
+      >
+        <div className="flex flex-row justify-between">
+          <Space direction="vertical">
+            <Heading5 className="" content={"Event Page Appearance"} />
+            <Paragraph
+              className="text-OWANBE_PRY text-md font-normal font-BricolageGrotesqueMedium"
+              content={
+                "Upload your event image here by clicking the camera icon (File size should not be more than 10MB)."
+              }
+              styles={{ fontWeight: "normal !important" }}
+            />
+          </Space>
+        </div>
         <Button
           type="default"
           size={"large"}
-          className="font-BricolageGrotesqueSemiBold button-style sign-in cursor-pointer font-bold"
+          className="font-BricolageGrotesqueSemiBold button-style sign-in cursor-pointer font-bold float-end place-self-end"
           style={{ width: "150px" }}
           onClick={() => {
-            router.back();
+            setCookie("form_stage", 1);
+            setCookie("stage_one", "process");
+            setCookie("stage_two", "wait");
+            setCookie("stage_three", "wait");
+            router.push(
+              `/Dashboard/create-events/${cookies.event_id}/event_details`
+            );
           }}
         >
           Back
         </Button>
-      </Space>
+      </Flex>
       <div className="flex gap-12">
         <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
           <Image
@@ -223,6 +247,8 @@ const EventPageAppearance: React.FC = () => {
                         <Link
                           href={websiteLink?.url}
                           className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                          target="_blank"
+                          rel="noreferrer"
                         >
                           <Image
                             src="/icons/link.svg"
@@ -236,6 +262,8 @@ const EventPageAppearance: React.FC = () => {
                         <Link
                           href={twitterLink?.url}
                           className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                          target="_blank"
+                          rel="noreferrer"
                         >
                           <Image
                             src="/icons/x.svg"
@@ -249,6 +277,8 @@ const EventPageAppearance: React.FC = () => {
                         <Link
                           href={facebookLink?.url}
                           className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                          target="_blank"
+                          rel="noreferrer"
                         >
                           <Image
                             src="/icons/facebook.svg"
@@ -262,6 +292,8 @@ const EventPageAppearance: React.FC = () => {
                         <Link
                           href={instagramLink?.url}
                           className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                          target="_blank"
+                          rel="noreferrer"
                         >
                           <Image
                             src="/icons/instagram.svg"
@@ -286,7 +318,11 @@ const EventPageAppearance: React.FC = () => {
           }}
         ></div>
       </div>
-      <Space className="flex flex-row justify-center space-x-4">
+
+      <Space
+        className="flex flex-row justify-center space-x-4 mt-8"
+        style={{ width: "100%" }}
+      >
         <Button
           type="default"
           size={"large"}
@@ -302,12 +338,20 @@ const EventPageAppearance: React.FC = () => {
           htmlType="button"
           size="large"
           className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
-          onClick={() => router.push("/publish-events")}
+          onClick={() => {
+            setCookie("form_stage", 3);
+            setCookie("stage_one", "finish");
+            setCookie("stage_two", "finish");
+            setCookie("stage_three", "process");
+            router.push(
+              `/Dashboard/create-events/${cookies.event_id}/event_tickets`
+            );
+          }}
         >
-          Continue
+          Save & Continue
         </Button>
       </Space>
-    </Space>
+    </Flex>
   );
 };
 
