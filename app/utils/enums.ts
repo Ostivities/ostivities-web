@@ -17,7 +17,7 @@ export enum TICKET_TYPE {
 }
 
 export enum TICKET_STOCK {
-  UNLIMITED = "UNLIMITED",
+  UNLIMITED = "UN_LIMITED",
   LIMITED = "LIMITED",
 }
 

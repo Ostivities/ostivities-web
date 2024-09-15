@@ -12,10 +12,13 @@ import {
 } from "antd";
 import React, { useEffect, useState } from "react";
 import EmailEditor from "../QuillEditor/EmailEditor";
-import { ITicketData } from "@/app/utils/interface";
+import { ITicketCreate, ITicketData } from "@/app/utils/interface";
 import { useParams } from "next/navigation";
+import { useProfile } from "@/app/hooks/auth/auth.hook";
+import { TICKET_STOCK } from "@/app/utils/enums";
 
 
+const { Option } = Select;
 
 const CollectiveTicket = ({
   onCancel,
@@ -23,8 +26,9 @@ const CollectiveTicket = ({
   onCancel?: () => void;
 }): JSX.Element => {
   const { createTicket } = useCreateTicket();
+  const { profile } = useProfile();
+  const params = useParams<{ id: string }>();
   const { TextArea } = Input;
-  const { Option } = Select;
   const [groupPrice, setGroupPrice] = useState<number | null>(null);
   const [groupSize, setGroupSize] = useState<number | null>(null);
   const [pricePerTicket, setPricePerTicket] = useState<number | null>(null);
@@ -41,10 +45,62 @@ const CollectiveTicket = ({
     setEditorContent(content);
   };
 
-  const ticketType = Form.useWatch("ticketType", form); // Watch ticketType changes
+  const ticketStock: string = Form.useWatch("ticketStock", form);
+  const ticketType: string = Form.useWatch("ticketType", form); // Watch ticketType changes
 
-  const onFinish: FormProps<ITicketData>["onFinish"] = (values) => {
-    console.log("Success:", values);
+  const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
+    const { ticketQuestions, ...rest } = values;
+
+    if (
+      // @ts-ignore
+      ticketQuestions?.length > 0 &&
+      additionalFields?.length > 0 &&
+      ticketQuestions?.length === additionalFields.length &&
+      showAdditionalField === true
+    ) {
+      const questionsArray = ticketQuestions;
+      const combinedArray: {
+        question: string;
+        isCompulsory: boolean;
+      }[] = questionsArray?.map(
+        (
+          questionObj: {
+            question: string;
+            isCompulsory: boolean;
+          },
+          index
+        ) => {
+          const { id, compulsory, ...rest } = additionalFields[index];
+          return {
+            ...questionObj,
+            isCompulsory: compulsory,
+            ...rest,
+          };
+        }
+      );
+
+      const payload: ITicketCreate = {
+        ...rest,
+        ticketQuestions: combinedArray,
+        ticketDescription: editorContent,
+        event: params?.id,
+        ticketEntity: "SINGLE",
+        user: profile?.data?.data?.data?.id,
+      };
+      console.log(payload, "kk");
+
+      // make api call here
+
+      if (payload) {
+        const response = await createTicket.mutateAsync(payload);
+        if (response.status === 201) {
+          console.log(response);
+          form.resetFields();
+          // linkRef.current?.click();
+          // router.push("/verify-account");
+        }
+      }
+    }
   };
 
   const onFinishFailed: FormProps<ITicketData>["onFinishFailed"] = (
@@ -52,6 +108,26 @@ const CollectiveTicket = ({
   ) => {
     console.log("Failed:", errorInfo);
   };
+  
+  const addAdditionalField = () => {
+    setAdditionalFields([
+      ...additionalFields,
+      { id: counter, compulsory: false },
+    ]);
+    setCounter(counter + 1); // Increment the counter for the next key
+  };
+  
+  const removeAdditionalField = (id: number) => {
+    setAdditionalFields(additionalFields.filter((field) => field.id !== id));
+  };
+  
+  const handleCompulsoryChange = (id: number, checked: boolean) => {
+    setAdditionalFields(
+      additionalFields.map((field) =>
+        field.id === id ? { ...field, compulsory: checked } : field
+    )
+  );
+};
 
   useEffect(() => {
     if (groupPrice !== null && groupSize !== null) {
@@ -70,35 +146,16 @@ const CollectiveTicket = ({
   };
 
   const prefixSelector = (
-    <Select
-      defaultValue="limited"
-      style={{ width: 120 }}
-      onChange={(value: string) => setTicketStockValue(value)}
-    >
-      <Option value="limited">Limited</Option>
-      <Option value="unlimited">Unlimited</Option>
-    </Select>
+    <Form.Item name="ticketStock" noStyle>
+      <Select defaultValue={TICKET_STOCK.UNLIMITED}>
+        <Option value={TICKET_STOCK.LIMITED}>Limited</Option>
+        <Option value={TICKET_STOCK.UNLIMITED}>Unlimited</Option>
+      </Select>
+    </Form.Item>
   );
 
-  const addAdditionalField = () => {
-    setAdditionalFields([
-      ...additionalFields,
-      { id: counter, compulsory: false },
-    ]);
-    setCounter(counter + 1); // Increment the counter for the next key
-  };
 
-  const removeAdditionalField = (id: number) => {
-    setAdditionalFields(additionalFields.filter((field) => field.id !== id));
-  };
 
-  const handleCompulsoryChange = (id: number, checked: boolean) => {
-    setAdditionalFields(
-      additionalFields.map((field) =>
-        field.id === id ? { ...field, compulsory: checked } : field
-      )
-    );
-  };
 
   return (
     <Form<ITicketData>

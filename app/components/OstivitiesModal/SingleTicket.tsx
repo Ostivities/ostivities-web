@@ -87,15 +87,15 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
 
       // make api call here
 
-      // if (payload) {
-      //   const response = await createTicket.mutateAsync(payload);
-      //   if (response.status === 201) {
-      //     console.log(response);
-      //     form.resetFields();
-      //     linkRef.current?.click();
-      //     router.push("/verify-account");
-      //   }
-      // }
+      if (payload) {
+        const response = await createTicket.mutateAsync(payload);
+        if (response.status === 201) {
+          console.log(response);
+          form.resetFields();
+          // linkRef.current?.click();
+          // router.push("/verify-account");
+        }
+      }
     }
   };
 
