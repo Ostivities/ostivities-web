@@ -12,8 +12,10 @@ import {
 } from "antd";
 import React, { useEffect, useState } from "react";
 import EmailEditor from "../QuillEditor/EmailEditor";
+import { ITicketData } from "@/app/utils/interface";
+import { useParams } from "next/navigation";
 
-interface FieldType {}
+
 
 const CollectiveTicket = ({
   onCancel,
@@ -41,11 +43,11 @@ const CollectiveTicket = ({
 
   const ticketType = Form.useWatch("ticketType", form); // Watch ticketType changes
 
-  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+  const onFinish: FormProps<ITicketData>["onFinish"] = (values) => {
     console.log("Success:", values);
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
+  const onFinishFailed: FormProps<ITicketData>["onFinishFailed"] = (
     errorInfo
   ) => {
     console.log("Failed:", errorInfo);
@@ -99,7 +101,7 @@ const CollectiveTicket = ({
   };
 
   return (
-    <Form<FieldType>
+    <Form<ITicketData>
       form={form} // Bind form instance
       name="basic"
       initialValues={{ remember: true }}
@@ -108,7 +110,7 @@ const CollectiveTicket = ({
       autoComplete="off"
       layout="vertical"
     >
-      <Form.Item<FieldType>
+      <Form.Item<ITicketData>
         label="Ticket type"
         name="ticketType"
         rules={[{ required: true, message: "Please select your ticket type!" }]}
@@ -120,7 +122,7 @@ const CollectiveTicket = ({
         </Select>
       </Form.Item>
 
-      <Form.Item<FieldType>
+      <Form.Item<ITicketData>
         label="Ticket name"
         name="ticketName"
         rules={[{ required: true, message: "Please input your ticket name!" }]}
@@ -129,7 +131,7 @@ const CollectiveTicket = ({
         <Input placeholder="Enter ticket name" />
       </Form.Item>
 
-      <Form.Item<FieldType>
+      <Form.Item<ITicketData>
         label="Ticket stock"
         name="ticketStock"
         rules={[{ required: true, message: "Please input your ticket stock!" }]}
@@ -144,7 +146,7 @@ const CollectiveTicket = ({
         />
       </Form.Item>
 
-      <Form.Item<FieldType>
+      <Form.Item<ITicketData>
         label="Group price"
         name="groupPrice"
         rules={[{ required: true, message: "Please input your group price!" }]}
@@ -163,7 +165,7 @@ const CollectiveTicket = ({
         />
       </Form.Item>
 
-      <Form.Item<FieldType>
+      <Form.Item<ITicketData>
         label="Group size"
         name="groupSize"
         rules={[{ required: true, message: "Please select your group size!" }]}
@@ -186,9 +188,9 @@ const CollectiveTicket = ({
         </Select>
       </Form.Item>
 
-      <Form.Item<FieldType>
+      <Form.Item<ITicketData>
         label="Price per ticket"
-        name="pricePerTicket"
+        name="ticketPrice"
         style={{ marginBottom: "8px" }}
       >
         <InputNumber
@@ -201,7 +203,7 @@ const CollectiveTicket = ({
         />
       </Form.Item>
 
-      <Form.Item<FieldType>
+      <Form.Item<ITicketData>
         label="Purchase limit"
         name="purchaseLimit"
         rules={[
@@ -228,8 +230,8 @@ const CollectiveTicket = ({
         />
       </div>
 
-      <Form.Item<FieldType>
-        name="remember"
+      <Form.Item<ITicketData>
+        name="guestAsChargeBearer"
         valuePropName="checked"
         style={{ marginBottom: "24px", display: "flex", alignItems: "center" }}
       >

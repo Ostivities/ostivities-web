@@ -1,5 +1,5 @@
 import React, { HTMLAttributeAnchorTarget } from "react";
-
+import { TICKET_STOCK } from "./enums";
 export enum ACCOUNT_TYPE {
   PERSONAL = "PERSONAL",
   ORGANISATION = "ORGANISATION",
@@ -316,17 +316,18 @@ export interface IUpdateEvent extends Partial<ICreateEvent> {
 }
 
 export interface ITicketData {
-  event: string;
+  user: string;
+  event: string | number;
   ticketEntity: string | number;
   ticketType: string;
   ticketName: string;
-  ticketStock: string;
+  ticketStock: TICKET_STOCK;
   ticketQty: number | string;
   ticketPrice: number | string;
   ticketDescription: string;
   purchaseLimit: number | string;
-  groupPrice: number | string;
-  groupSize: number | string;
+  groupPrice?: number | string;
+  groupSize?: number | string;
   guestAsChargeBearer: boolean;
   ticketQuestions?: {
     question: string;
@@ -334,6 +335,9 @@ export interface ITicketData {
   }[];
 }
 
+export interface ITicketCreate extends Partial<ITicketData> {
+  user: string;
+}
 export interface ITicketUpdate extends Partial<ITicketData> {
   id: string;
 }
