@@ -5,6 +5,7 @@ import {
   CloseSquareOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
+
 import {
   Button,
   Checkbox,
@@ -16,6 +17,8 @@ import {
 } from "antd";
 import React, { useState } from "react";
 import EmailEditor from "../QuillEditor/EmailEditor";
+import { ITicketData } from "@/app/utils/interface";
+import { useParams } from "next/navigation";
 
 const { Option } = Select;
 
@@ -32,6 +35,7 @@ interface FieldType {
 
 const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
   const { createTicket } = useCreateTicket();
+  const params = useParams<{ id: string }>();
   const [ticketType, setTicketType] = useState<string>("paid");
   const [ticketStockValue, setTicketStockValue] = useState<string>("");
   const [additionalFields, setAdditionalFields] = useState<
@@ -45,13 +49,24 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
     setEditorContent(content);
   };
 
-  const onFinish: FormProps<FieldType>["onFinish"] = (values: FieldType) => {
+  const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
+
+    const { ticketQuestions, ...rest } = values;
+    console.log(ticketQuestions)
     console.log("Success:", values);
+
+    // if (values) {
+    //   const response = await createTicket.mutateAsync(values, { ticketDescription: editorContent, event: params?.id });
+    //   if(response.status === 200) {
+    //     // Do something
+    //   }
+    // }
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-    errorInfo: any
+  const onFinishFailed: FormProps<ITicketData>["onFinishFailed"] = (
+    errorInfo
   ) => {
+    console.log(errorInfo)
     return errorInfo;
   };
 
@@ -74,6 +89,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
       )
     );
   };
+  console.log(additionalFields);
 
   const prefixSelector = (
     <Select defaultValue="unlimited">
@@ -83,7 +99,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
   );
 
   return (
-    <Form<FieldType>
+    <Form<ITicketData>
       name="basic"
       initialValues={{ remember: true }}
       onFinish={onFinish}
@@ -91,7 +107,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
       autoComplete="off"
       layout="vertical"
     >
-      <Form.Item<FieldType>
+      <Form.Item<ITicketData>
         label="Ticket type"
         name="ticketType"
         rules={[{ required: true, message: "Please select your ticket type!" }]}
@@ -103,7 +119,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
         </Select>
       </Form.Item>
 
-      <Form.Item<FieldType>
+      <Form.Item<ITicketData>
         label="Ticket name"
         name="ticketName"
         rules={[{ required: true, message: "Please input your ticket name!" }]}
@@ -112,7 +128,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
         <Input placeholder="Enter ticket name" />
       </Form.Item>
 
-      <Form.Item<FieldType>
+      <Form.Item<ITicketData>
         label="Ticket stock"
         name="ticketStock"
         rules={[{ required: true, message: "Please input your ticket stock!" }]}
@@ -127,7 +143,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
         />
       </Form.Item>
 
-      <Form.Item<FieldType>
+      <Form.Item<ITicketData>
         label="Ticket price"
         name="ticketPrice"
         rules={[
@@ -150,7 +166,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
         />
       </Form.Item>
 
-      <Form.Item<FieldType>
+      <Form.Item<ITicketData>
         label="Purchase limit"
         name="purchaseLimit"
         rules={[
@@ -170,15 +186,15 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
         content={"Ticket description"}
         styles={{ fontWeight: "bold !important" }}
       />
-      <div className="mb-3 pb-16 w-full mt-3">
+      <Form.Item className="mb-3 pb-16 w-full mt-3">
         <EmailEditor
           initialValue="<p>Enter ticket description!</p>"
           onChange={handleEditorChange}
         />
-      </div>
+      </Form.Item>
 
-      <Form.Item<FieldType>
-        name="remember"
+      <Form.Item<ITicketData>
+        name="guestAsChargeBearer"
         valuePropName="checked"
         style={{ marginBottom: "24px", display: "flex", alignItems: "center" }}
       >
@@ -191,14 +207,14 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
       </Form.Item>
 
       {showAdditionalField && (
-        <Form.Item style={{ marginBottom: "24px" }}>
-          <Form.List name="additionalInfo">
+        <Form.Item<ITicketData> style={{ marginBottom: "24px" }}>
+          <Form.List name="ticketQuestions">
             {(fields, { add }) => (
               <>
                 {additionalFields.map(({ id, compulsory }) => (
                   <div key={id} style={{ marginBottom: "16px" }}>
                     <Form.Item
-                      name={[id, "info"]}
+                      name={[id, "question"]}
                       fieldKey={[id, "info"]}
                       rules={[
                         {
@@ -224,7 +240,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
                         />
                       </div>
                     </Form.Item>
-                    <Form.Item style={{ marginBottom: "8px" }}>
+                    <Form.Item name="isCompulsory" style={{ marginBottom: "8px" }}>
                       <Checkbox
                         checked={compulsory}
                         onChange={(e) =>
