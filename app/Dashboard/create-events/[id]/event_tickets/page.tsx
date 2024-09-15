@@ -7,12 +7,13 @@ import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 import Ticket from "@/public/Ticket.svg";
 import { Button, Flex, Space } from "antd";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 
 function CreateTicketPage(): JSX.Element {
   const router = useRouter();
+  const params = useParams<{ id: string }>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies([
     "event_id",
@@ -62,7 +63,9 @@ function CreateTicketPage(): JSX.Element {
               setCookie("stage_one", "process");
               setCookie("stage_two", "process");
               setCookie("stage_three", "wait");
-              router.back();
+              router.push(
+                `/Dashboard/create-events/${params?.id}/event_appearance`
+              );
             }}
           >
             Back

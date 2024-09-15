@@ -8,3 +8,6 @@ export const UPDATE_PROFILE = "UPDATE_PROFILE";
 export const CREATE_EVENT = "CREATE_EVENT";
 export const UPDATE_EVENT = "UPDATE_EVENT";
 export const GET_EVENT = "GET_EVENT";
+export const DELETE_EVENT = "DELETE_EVENT";
+export const CREATE_TICKET = "CREATE_TICKET";
+export const UPDATE_TICKET = "UPDATE_TICKET";

@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import { HttpMethod } from "./enums";
 import { instance } from "./instance";
-import { ILogin, IResetToken, IUser, IVerifyToken, IResetPassword, IUpdateUser, ICreateEvent, IFormInput, IUpdateEvent } from "./interface";
+import { ILogin, IResetToken, IUser, IVerifyToken, IResetPassword, IUpdateUser, ICreateEvent, IFormInput, IUpdateEvent, ITicketData, ITicketUpdate } from "./interface";
 
 export class API_SERVICE {
   static async _registerUser(data: IUser) {
@@ -85,7 +85,25 @@ export class API_SERVICE {
       data: {...rest},
     });
   }
+
+  static async _createTicket(data: ITicketData): Promise<AxiosResponse> {
+    return await instance({
+      url: `/ticket/create_ticket`,
+      method: HttpMethod.POST,
+      data,
+    });
+  }
+
+  static async _updateTicket(data: ITicketUpdate): Promise<AxiosResponse> {
+    const { id, ...rest } = data;
+    return await instance({
+      url: `/ticket/update_ticket`,
+      method: HttpMethod.PUT,
+      data: {...rest},
+    });
+  }
 }
+
 
 
 
