@@ -16,6 +16,10 @@ export enum TICKET_TYPE {
   FREE = "FREE",
 }
 
+export enum TICKET_STOCK {
+  UNLIMITED = "UNLIMITED",
+  LIMITED = "LIMITED",
+}
 
 export enum HttpMethod {
   GET = "GET",

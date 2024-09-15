@@ -1,5 +1,6 @@
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 import { useCreateTicket } from "@/app/hooks/ticket/ticket.hook";
+import { useProfile } from "@/app/hooks/auth/auth.hook";
 import {
   CloseOutlined,
   CloseSquareOutlined,
@@ -19,6 +20,7 @@ import {
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
 import EmailEditor from "../QuillEditor/EmailEditor";
+import { TICKET_TYPE, TICKET_STOCK } from "@/app/utils/enums";
 
 const { Option } = Select;
 
@@ -35,6 +37,7 @@ interface FieldType {
 
 const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
   const { createTicket } = useCreateTicket();
+  const { profile } = useProfile();
   const params = useParams<{ id: string }>();
   const [ticketType, setTicketType] = useState<string>("paid");
   const [ticketStockValue, setTicketStockValue] = useState<string>("");
@@ -49,17 +52,48 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
     setEditorContent(content);
   };
 
+  // const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
+  //   const { ticketQuestions, ...rest } = values;
+  //   if (
+  //     // @ts-ignore
+  //     ticketQuestions?.length > 0 &&
+  //     additionalFields?.length > 0 &&
+  //     ticketQuestions?.length === additionalFields?.length
+  //   ) {
+  //     console.log(ticketQuestions);
+  //     const questionsArray = ticketQuestions;
+  //     const combinedArray = questionsArray?.map((questionObj, index) => {
+  //       const { id, ...rest } = additionalFields[index];
+  //       return {
+  //         ...questionObj,
+  //         ...rest,
+  //       };
+  //     });
+  //     const payload = 
+  //     console.log(combinedArray);
+  //     console.log(values)
+
+
+  //     // make api call here
+  //   }
+  // };
+
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ...rest } = values;
 
     if (
+      // @ts-ignore
       ticketQuestions.length > 0 &&
       additionalFields.length > 0 &&
-      ticketQuestions.length === additionalFields.length
+      ticketQuestions?.length === additionalFields.length
     ) {
       console.log(ticketQuestions);
       const questionsArray = ticketQuestions;
-      const combinedArray = questionsArray.map((questionObj, index) => {
+      const combinedArray: {
+        compulsory: boolean;
+        question: string;
+        isCompulsory: boolean;
+      }[] = questionsArray?.map((questionObj, index) => {
         const { id, ...rest } = additionalFields[index];
         return {
           ...questionObj,
@@ -67,7 +101,28 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
         };
       });
 
+      const payload: ITicketData = {
+        ...rest,
+        ticketQuestions: combinedArray,
+        ticketDescription: editorContent,
+        event: params?.id,
+        ticketEntity: "SINGLE",
+        user: profile?.data?.data?.data?.id
+      };
+
+      console.log(payload);
+
       // make api call here
+
+      if(payload) {
+        const response = await createTicket.mutateAsync(payload);
+        if (response.status === 201) {
+          console.log(response);
+          // form.resetFields();
+          // linkRef.current?.click();
+          // router.push("/verify-account");
+        }
+      }
     }
   };
 
@@ -97,12 +152,12 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
       )
     );
   };
-  console.log(additionalFields);
+  console.log(params?.id);
 
   const prefixSelector = (
-    <Select defaultValue="unlimited">
-      <Option value="limited">Limited</Option>
-      <Option value="unlimited">Unlimited</Option>
+    <Select name="ticketStock" defaultValue={TICKET_STOCK.UNLIMITED}>
+      <Option value={TICKET_STOCK.LIMITED}>Limited</Option>
+      <Option value={TICKET_STOCK.UNLIMITED}>Unlimited</Option>
     </Select>
   );
 
@@ -122,8 +177,8 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
         style={{ marginBottom: "8px" }}
       >
         <Select placeholder="Select ticket type">
-          <Option value="free">Free</Option>
-          <Option value="paid">Paid</Option>
+          <Option value={TICKET_TYPE.FREE}>Free</Option>
+          <Option value={TICKET_TYPE.PAID}>Paid</Option>
         </Select>
       </Form.Item>
 
@@ -138,12 +193,13 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
 
       <Form.Item<ITicketData>
         label="Ticket stock"
-        name="ticketStock"
+        name="ticketQty"
         rules={[{ required: true, message: "Please input your ticket stock!" }]}
         style={{ marginBottom: "8px" }}
       >
         <Input
           addonBefore={prefixSelector}
+
           placeholder={
             ticketStockValue === "unlimited" ? "∞" : "Enter ticket stock"
           }
@@ -202,16 +258,19 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
       </Form.Item>
 
       <Form.Item<ITicketData>
-        name="guestAsChargeBearer"
         valuePropName="checked"
         style={{ marginBottom: "24px", display: "flex", alignItems: "center" }}
       >
-        <Checkbox defaultChecked style={{ marginRight: "20px" }}>
-          Transfer charge fees to guest
-        </Checkbox>
-        <Checkbox onChange={(e) => setShowAdditionalField(e.target.checked)}>
-          Enable additional information
-        </Checkbox>
+        <Form.Item name= "guestAsChargeBearer">
+          <Checkbox defaultChecked style={{ marginRight: "20px" }}>
+            Transfer charge fees to guest
+          </Checkbox>
+        </Form.Item>
+        <Form.Item>
+          <Checkbox onChange={(e) => setShowAdditionalField(e.target.checked)}>
+            Enable additional information
+          </Checkbox>
+        </Form.Item>
       </Form.Item>
 
       {showAdditionalField && (
