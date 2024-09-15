@@ -1,15 +1,22 @@
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
+import { useCreateTicket } from "@/app/hooks/ticket/ticket.hook";
 import {
   CloseOutlined,
   CloseSquareOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, InputNumber, Select } from "antd";
+import {
+  Button,
+  Checkbox,
+  Form,
+  FormProps,
+  Input,
+  InputNumber,
+  Select,
+} from "antd";
 import React, { useState } from "react";
 import EmailEditor from "../QuillEditor/EmailEditor";
-import { useCreateTicket } from "@/app/hooks/ticket/ticket.hook";
 
-const { TextArea } = Input;
 const { Option } = Select;
 
 interface FieldType {
@@ -38,20 +45,14 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
     setEditorContent(content);
   };
 
-  const onFinish = (values: FieldType) => {
+  const onFinish: FormProps<FieldType>["onFinish"] = (values: FieldType) => {
     console.log("Success:", values);
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
-
-  const handleStockChange = (value: string) => {
-    setTicketStockValue(value);
-  };
-
-  const handleTicketTypeChange = (value: string) => {
-    setTicketType(value);
+  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
+    errorInfo: any
+  ) => {
+    return errorInfo;
   };
 
   const addAdditionalField = () => {
@@ -75,7 +76,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
   };
 
   const prefixSelector = (
-    <Select defaultValue="unlimited" onChange={handleStockChange}>
+    <Select defaultValue="unlimited">
       <Option value="limited">Limited</Option>
       <Option value="unlimited">Unlimited</Option>
     </Select>
@@ -96,10 +97,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
         rules={[{ required: true, message: "Please select your ticket type!" }]}
         style={{ marginBottom: "8px" }}
       >
-        <Select
-          placeholder="Select ticket type"
-          onChange={handleTicketTypeChange}
-        >
+        <Select placeholder="Select ticket type">
           <Option value="free">Free</Option>
           <Option value="paid">Paid</Option>
         </Select>
