@@ -18,6 +18,7 @@ const EmailEditor = ({
 }: EditoProps): JSX.Element => {
   const [isClient, setIsClient] = useState(false);
   const [value, setValue] = useState(initialValue);
+  // "image", "video"
 
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"],
