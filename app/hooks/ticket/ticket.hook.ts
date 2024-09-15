@@ -1,16 +1,14 @@
 import { CREATE_TICKET, UPDATE_TICKET } from "@/app/utils/constants";
 import { errorFormatter, successFormatter } from "@/app/utils/helper";
+import { ITicketCreate, ITicketUpdate } from "@/app/utils/interface";
 import { API_SERVICE } from "@/app/utils/service";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { message } from "antd";
 import { AxiosError, AxiosResponse } from "axios";
-import { ITicketData, ITicketUpdate } from "@/app/utils/interface";
-
-
 
 export const useCreateTicket = () => {
   const createTicket = useMutation({
-    mutationFn: (data: ITicketData) => {
+    mutationFn: (data: ITicketCreate) => {
       return API_SERVICE._createTicket(data);
     },
     mutationKey: [CREATE_TICKET],
@@ -23,7 +21,6 @@ export const useCreateTicket = () => {
   });
   return { createTicket };
 };
-
 
 export const useUpdateTicket = () => {
   const updateTicket = useMutation({

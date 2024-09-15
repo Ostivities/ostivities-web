@@ -1,13 +1,14 @@
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
-import { useCreateTicket } from "@/app/hooks/ticket/ticket.hook";
 import { useProfile } from "@/app/hooks/auth/auth.hook";
+import { useCreateTicket } from "@/app/hooks/ticket/ticket.hook";
 import {
   CloseOutlined,
   CloseSquareOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
 
-import { ITicketData } from "@/app/utils/interface";
+import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
+import { ITicketCreate, ITicketData } from "@/app/utils/interface";
 import {
   Button,
   Checkbox,
@@ -20,27 +21,15 @@ import {
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
 import EmailEditor from "../QuillEditor/EmailEditor";
-import { TICKET_TYPE, TICKET_STOCK } from "@/app/utils/enums";
 
 const { Option } = Select;
 
-interface FieldType {
-  ticketType?: string;
-  ticketName?: string;
-  ticketStock?: string;
-  ticketPrice?: number;
-  purchaseLimit?: number;
-  ticketDescription?: string;
-  remember?: boolean;
-  additionalInfo?: { info: string; compulsory: boolean }[];
-}
-
 const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
+  const [form] = Form.useForm();
   const { createTicket } = useCreateTicket();
   const { profile } = useProfile();
   const params = useParams<{ id: string }>();
-  const [ticketType, setTicketType] = useState<string>("paid");
-  const [ticketStockValue, setTicketStockValue] = useState<string>("");
+
   const [additionalFields, setAdditionalFields] = useState<
     { id: number; compulsory: boolean }[]
   >([]);
@@ -52,77 +41,61 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
     setEditorContent(content);
   };
 
-  // const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
-  //   const { ticketQuestions, ...rest } = values;
-  //   if (
-  //     // @ts-ignore
-  //     ticketQuestions?.length > 0 &&
-  //     additionalFields?.length > 0 &&
-  //     ticketQuestions?.length === additionalFields?.length
-  //   ) {
-  //     console.log(ticketQuestions);
-  //     const questionsArray = ticketQuestions;
-  //     const combinedArray = questionsArray?.map((questionObj, index) => {
-  //       const { id, ...rest } = additionalFields[index];
-  //       return {
-  //         ...questionObj,
-  //         ...rest,
-  //       };
-  //     });
-  //     const payload = 
-  //     console.log(combinedArray);
-  //     console.log(values)
-
-
-  //     // make api call here
-  //   }
-  // };
+  const ticketStock: string = Form.useWatch("ticketStock", form);
+  const ticketType: string = Form.useWatch("ticketType", form);
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ...rest } = values;
 
     if (
       // @ts-ignore
-      ticketQuestions.length > 0 &&
-      additionalFields.length > 0 &&
-      ticketQuestions?.length === additionalFields.length
+      ticketQuestions?.length > 0 &&
+      additionalFields?.length > 0 &&
+      ticketQuestions?.length === additionalFields.length &&
+      showAdditionalField === true
     ) {
-      console.log(ticketQuestions);
       const questionsArray = ticketQuestions;
       const combinedArray: {
-        compulsory: boolean;
         question: string;
         isCompulsory: boolean;
-      }[] = questionsArray?.map((questionObj, index) => {
-        const { id, ...rest } = additionalFields[index];
-        return {
-          ...questionObj,
-          ...rest,
-        };
-      });
+      }[] = questionsArray?.map(
+        (
+          questionObj: {
+            question: string;
+            isCompulsory: boolean;
+          },
+          index
+        ) => {
+          const { id, compulsory, ...rest } = additionalFields[index];
+          return {
+            ...questionObj,
+            isCompulsory: compulsory,
+            ...rest,
+          };
+        }
+      );
 
-      const payload: ITicketData = {
+      const payload: ITicketCreate = {
         ...rest,
         ticketQuestions: combinedArray,
         ticketDescription: editorContent,
         event: params?.id,
         ticketEntity: "SINGLE",
-        user: profile?.data?.data?.data?.id
+        user: profile?.data?.data?.data?.id,
       };
-
-      console.log(payload);
+      console.log(payload, "kk");
 
       // make api call here
 
-      if(payload) {
-        const response = await createTicket.mutateAsync(payload);
-        if (response.status === 201) {
-          console.log(response);
-          // form.resetFields();
-          // linkRef.current?.click();
-          // router.push("/verify-account");
-        }
-      }
+      // if (payload) {
+      //   const response = await createTicket.mutateAsync(payload);
+      //   if (response.status === 201) {
+      //     console.log(response);
+      //     form.resetFields();
+      //     linkRef.current?.click();
+      //     router.push("/verify-account");
+      //   }
+      // }
     }
   };
 
@@ -152,14 +125,17 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
       )
     );
   };
-  console.log(params?.id);
 
   const prefixSelector = (
-    <Select name="ticketStock" defaultValue={TICKET_STOCK.UNLIMITED}>
-      <Option value={TICKET_STOCK.LIMITED}>Limited</Option>
-      <Option value={TICKET_STOCK.UNLIMITED}>Unlimited</Option>
-    </Select>
+    <Form.Item name="ticketStock" noStyle>
+      <Select defaultValue={TICKET_STOCK.UNLIMITED}>
+        <Option value={TICKET_STOCK.LIMITED}>Limited</Option>
+        <Option value={TICKET_STOCK.UNLIMITED}>Unlimited</Option>
+      </Select>
+    </Form.Item>
   );
+
+  console.log(ticketStock, "ticketStock");
 
   return (
     <Form<ITicketData>
@@ -169,6 +145,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
       onFinishFailed={onFinishFailed}
       autoComplete="off"
       layout="vertical"
+      form={form}
     >
       <Form.Item<ITicketData>
         label="Ticket type"
@@ -185,7 +162,12 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
       <Form.Item<ITicketData>
         label="Ticket name"
         name="ticketName"
-        rules={[{ required: true, message: "Please input your ticket name!" }]}
+        rules={[
+          {
+            required: true,
+            message: "Please input your ticket name!",
+          },
+        ]}
         style={{ marginBottom: "8px" }}
       >
         <Input placeholder="Enter ticket name" />
@@ -194,16 +176,20 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
       <Form.Item<ITicketData>
         label="Ticket stock"
         name="ticketQty"
-        rules={[{ required: true, message: "Please input your ticket stock!" }]}
+        rules={[
+          {
+            required: ticketStock === TICKET_STOCK.LIMITED,
+            message: "Please input your ticket stock",
+          },
+        ]}
         style={{ marginBottom: "8px" }}
       >
         <Input
           addonBefore={prefixSelector}
-
           placeholder={
-            ticketStockValue === "unlimited" ? "∞" : "Enter ticket stock"
+            ticketStock === TICKET_STOCK.UNLIMITED ? "∞" : "Enter ticket stock"
           }
-          disabled={ticketStockValue === "unlimited"}
+          disabled={ticketStock === TICKET_STOCK.UNLIMITED}
         />
       </Form.Item>
 
@@ -234,7 +220,10 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
         label="Purchase limit"
         name="purchaseLimit"
         rules={[
-          { required: true, message: "Please input your purchase limit!" },
+          {
+            required: ticketStock === TICKET_STOCK.LIMITED,
+            message: "Please input your purchase limit",
+          },
         ]}
         style={{ marginBottom: "15px" }}
       >
@@ -257,12 +246,15 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
         />
       </Form.Item>
 
-      <Form.Item<ITicketData>
-        valuePropName="checked"
+      <Form.Item
         style={{ marginBottom: "24px", display: "flex", alignItems: "center" }}
       >
-        <Form.Item name= "guestAsChargeBearer">
-          <Checkbox defaultChecked style={{ marginRight: "20px" }}>
+        <Form.Item<ITicketData>
+          name="guestAsChargeBearer"
+          valuePropName="checked"
+          noStyle
+        >
+          <Checkbox style={{ marginRight: "20px" }}>
             Transfer charge fees to guest
           </Checkbox>
         </Form.Item>
@@ -274,8 +266,15 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
       </Form.Item>
 
       {showAdditionalField && (
-        <Form.Item<ITicketData> style={{ marginBottom: "24px" }}>
-          <Form.List name="ticketQuestions">
+        <Form.Item<ITicketData>
+          style={{ marginBottom: "24px" }}
+          rules={[
+            {
+              required: showAdditionalField === true,
+            },
+          ]}
+        >
+          <Form.List name="ticketQuestions" rules={[]}>
             {(fields, { add }) => (
               <>
                 {additionalFields.map(({ id, compulsory }) => (
