@@ -29,8 +29,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
   const { createTicket } = useCreateTicket();
   const { profile } = useProfile();
   const params = useParams<{ id: string }>();
-  const [ticketType, setTicketType] = useState<string>("paid");
-  const [ticketStockValue, setTicketStockValue] = useState<string>("");
+
   const [additionalFields, setAdditionalFields] = useState<
     { id: number; compulsory: boolean }[]
   >([]);
@@ -43,6 +42,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
   };
 
   const ticketStock: string = Form.useWatch("ticketStock", form);
+  const ticketType: string = Form.useWatch("ticketType", form);
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ...rest } = values;
@@ -162,7 +162,12 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
       <Form.Item<ITicketData>
         label="Ticket name"
         name="ticketName"
-        rules={[{ required: true, message: "Please input your ticket name!" }]}
+        rules={[
+          {
+            required: true,
+            message: "Please input your ticket name!",
+          },
+        ]}
         style={{ marginBottom: "8px" }}
       >
         <Input placeholder="Enter ticket name" />
