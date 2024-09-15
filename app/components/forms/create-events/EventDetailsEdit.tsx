@@ -368,9 +368,10 @@ function EventDetailsEdit(): JSX.Element {
                         style={{
                           fontFamily: "Bricolage Grotesque Light",
                         }}
+                        className="font-BricolageGrotesqueRegular"
                       >
                         Vendors registration{" "}
-                        <span className="optional-text">
+                        <span className="optional-text font-BricolageGrotesqueLight">
                           (allows users to register as vendors for your event){" "}
                           <a
                             href="https://ostivities.tawk.help/article/how-vendor-management-works" // Replace with your actual URL
@@ -405,9 +406,12 @@ function EventDetailsEdit(): JSX.Element {
                     setShowRadio(e.target.checked); // Toggle radio buttons visibility
                   }}
                 >
-                  <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
+                  <span
+                    style={{ fontFamily: "Bricolage Grotesque Light" }}
+                    className="font-BricolageGrotesqueRegular"
+                  >
                     Exhibition Space Booking{" "}
-                    <span className="optional-text">
+                    <span className="optional-text font-BricolageGrotesqueLight">
                       (allows vendors to book exhibition space at your event)
                     </span>{" "}
                     <a

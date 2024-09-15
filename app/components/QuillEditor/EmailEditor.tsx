@@ -19,7 +19,7 @@ const EmailEditor = ({
   defaultValue,
 }: EditoProps): JSX.Element => {
   const [isClient, setIsClient] = useState(false);
-  // const [value, setValue] = useState(initialValue);
+  const [value, setValue] = useState(initialValue);
 
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"],
@@ -64,7 +64,6 @@ const EmailEditor = ({
       {isClient && (
         <ReactQuill
           theme="snow"
-          value={initialValue}
           onChange={onChange}
           className="rounded-br-lg rounded-bl-lg h-60"
           style={{
