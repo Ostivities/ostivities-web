@@ -304,8 +304,34 @@ export interface IUpdateUser {
   image?: string;
 }
 
-export interface IUpdateEvent{
+export interface IUpdateEvent extends Partial<ICreateEvent>{
   id?: string;
   eventImage?: string; 
 }
 
+
+export interface ITicketData{
+  event: string,
+  ticketEntity: string | number,
+  ticketType: string,
+  ticketName: string,
+  ticketStock: string,
+  ticketQty: number | string,
+  ticketPrice: number | string,
+  ticketDescription: string,
+  purchaseLimit: number | string,
+  groupPrice: number | string,
+  groupSize: number | string,
+  guestAsChargeBearer: boolean,
+  ticketQuestions: [
+    {
+      question: string,
+      isCompulsory: boolean
+    }
+  ]
+}
+
+export interface ITicketUpdate extends Partial<ITicketData>{
+  id: string,
+
+}
