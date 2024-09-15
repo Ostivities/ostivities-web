@@ -18,11 +18,12 @@ const EmailEditor = ({
 }: EditoProps): JSX.Element => {
   const [isClient, setIsClient] = useState(false);
   const [value, setValue] = useState(initialValue);
+  // "image", "video"
 
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"],
     ["blockquote", "code-block"],
-    ["link", "image", "video", "formula"],
+    ["link", "formula"],
 
     [{ header: 1 }, { header: 2 }],
     [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
