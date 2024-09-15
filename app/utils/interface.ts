@@ -320,10 +320,10 @@ export interface ITicketData{
   ticketPrice: number | string,
   ticketDescription: string,
   purchaseLimit: number | string,
-  groupPrice: number | string,
-  groupSize: number | string,
+  groupPrice?: number | string,
+  groupSize?: number | string,
   guestAsChargeBearer: boolean,
-  ticketQuestions: [
+  ticketQuestions?: [
     {
       question: string,
       isCompulsory: boolean
