@@ -185,7 +185,6 @@ function Details(): JSX.Element {
       });
 
       if (response.status === 201) {
-        console.log(response);
         setCookie("event_id", response?.data?.data?.id);
         reset();
         setCookie("form_stage", 2);
@@ -197,7 +196,7 @@ function Details(): JSX.Element {
         );
       }
     } catch (error) {
-      console.log(error, "error");
+      return error;
     }
   };
 

@@ -86,7 +86,7 @@ function EventDetailsEdit(): JSX.Element {
   const [showRadio, setShowRadio] = useState(false);
   const [editorContent, setEditorContent] = useState("");
   const handleEditorChange = (content: React.SetStateAction<string>) => {
-    setEditorContent((prev: any) => ({ ...prev, content }));
+    setEditorContent(content);
   };
 
   const accountType = profile?.data?.data?.data?.accountType;
@@ -103,10 +103,10 @@ function EventDetailsEdit(): JSX.Element {
 
   const { handleSubmit, control, setValue, watch, trigger, reset, getValues } =
     useForm<IFormInput>({
-      mode: "all", // Use your preferred validation mode
+      mode: "all",
       defaultValues: {
         exhibitionspace: false,
-        spaceType: "", // Initializing as an empty string
+        spaceType: "",
         spaceAvailable: undefined,
         spaceFee: undefined,
       },
@@ -158,7 +158,7 @@ function EventDetailsEdit(): JSX.Element {
     if (eventDetails) {
       setEditorContent(eventDetails?.eventDetails);
     }
-  }, []);
+  }, [eventDetails]);
 
   const props: UploadProps = {
     name: "image",
@@ -233,7 +233,6 @@ function EventDetailsEdit(): JSX.Element {
       });
 
       if (response.status === 201) {
-        console.log(response);
         setCookie("event_id", response?.data?.data?.id);
         reset();
         setCookie("form_stage", 2);
@@ -245,7 +244,7 @@ function EventDetailsEdit(): JSX.Element {
         );
       }
     } catch (error) {
-      console.log(error, "error");
+      return error;
     }
   };
 
@@ -346,11 +345,12 @@ function EventDetailsEdit(): JSX.Element {
               className="mb-9 pb-16 w-full"
               style={{ marginBottom: "20px", marginTop: "10px" }}
             >
-              <EmailEditor
-                initialValue={eventDetails?.eventDetails}
-                onChange={handleEditorChange}
-                defaultValue={eventDetails?.eventDetails}
-              />
+              {getUserEvent.isSuccess === true && (
+                <EmailEditor
+                  initialValue={`${eventDetails?.eventDetails}`}
+                  onChange={handleEditorChange}
+                />
+              )}
             </div>
 
             <Controller
@@ -368,9 +368,10 @@ function EventDetailsEdit(): JSX.Element {
                         style={{
                           fontFamily: "Bricolage Grotesque Light",
                         }}
+                        className="font-BricolageGrotesqueRegular"
                       >
                         Vendors registration{" "}
-                        <span className="optional-text">
+                        <span className="optional-text font-BricolageGrotesqueLight">
                           (allows users to register as vendors for your event){" "}
                           <a
                             href="https://ostivities.tawk.help/article/how-vendor-management-works" // Replace with your actual URL
@@ -405,9 +406,12 @@ function EventDetailsEdit(): JSX.Element {
                     setShowRadio(e.target.checked); // Toggle radio buttons visibility
                   }}
                 >
-                  <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
+                  <span
+                    style={{ fontFamily: "Bricolage Grotesque Light" }}
+                    className="font-BricolageGrotesqueRegular"
+                  >
                     Exhibition Space Booking{" "}
-                    <span className="optional-text">
+                    <span className="optional-text font-BricolageGrotesqueLight">
                       (allows vendors to book exhibition space at your event)
                     </span>{" "}
                     <a

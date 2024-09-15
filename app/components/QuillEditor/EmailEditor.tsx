@@ -6,7 +6,6 @@ import "react-quill/dist/quill.snow.css";
 interface EditoProps {
   initialValue: string;
   onChange: any;
-  defaultValue?: string;
 }
 
 const ReactQuill = dynamic(() => import("react-quill"), {
@@ -16,10 +15,9 @@ const ReactQuill = dynamic(() => import("react-quill"), {
 const EmailEditor = ({
   initialValue = "",
   onChange,
-  defaultValue,
 }: EditoProps): JSX.Element => {
   const [isClient, setIsClient] = useState(false);
-  // const [value, setValue] = useState(initialValue);
+  const [value, setValue] = useState(initialValue);
 
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"],
@@ -52,27 +50,26 @@ const EmailEditor = ({
     },
   };
 
-  // const handleChange = (content: React.SetStateAction<string>) => {
-  //   setValue(content);
-  //   if (onChange) {
-  //     onChange(content);
-  //   }
-  // };
+  const handleChange = (content: React.SetStateAction<string>) => {
+    setValue(content);
+    if (onChange) {
+      onChange(content);
+    }
+  };
 
   return (
     <React.Fragment>
       {isClient && (
         <ReactQuill
           theme="snow"
-          value={initialValue}
-          onChange={onChange}
+          value={value}
+          onChange={handleChange}
           className="rounded-br-lg rounded-bl-lg h-60"
           style={{
             borderBottomLeftRadius: "15px",
             borderBottomRightRadius: "15px",
           }}
           modules={modules}
-          defaultValue={defaultValue}
         />
       )}
     </React.Fragment>
