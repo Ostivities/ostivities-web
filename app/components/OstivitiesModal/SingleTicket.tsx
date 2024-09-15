@@ -59,13 +59,22 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
     ) {
       console.log(ticketQuestions);
       const questionsArray = ticketQuestions;
-      const combinedArray = questionsArray.map((questionObj, index) => {
+      const combinedArray: {
+        compulsory: boolean;
+        question: string;
+        isCompulsory: boolean;
+      }[] = questionsArray.map((questionObj, index) => {
         const { id, ...rest } = additionalFields[index];
         return {
           ...questionObj,
           ...rest,
         };
       });
+
+      const payload: ITicketData = {
+        ...rest,
+        ticketQuestions: combinedArray,
+      };
 
       // make api call here
     }

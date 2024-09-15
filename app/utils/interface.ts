@@ -73,10 +73,19 @@ export interface IFormInput {
   spaceFee?: string;
 }
 
-export interface ICreateEvent extends Omit<IFormInput, "eventDocument" | "eventDocumentName" | "twitterUrl" | "facebookUrl" | "instagramUrl" | "websiteUrl"> {
+export interface ICreateEvent
+  extends Omit<
+    IFormInput,
+    | "eventDocument"
+    | "eventDocumentName"
+    | "twitterUrl"
+    | "facebookUrl"
+    | "instagramUrl"
+    | "websiteUrl"
+  > {
   socials?: Array<{
     name: string;
-    url?: string; 
+    url?: string;
   }>;
   supportingDocument: {
     fileName: string;
@@ -117,8 +126,6 @@ export interface IEventDetails {
   updatedAt: string;
   eventImage: string;
 }
-
-
 
 export interface IModal {
   open?: boolean;
@@ -198,7 +205,6 @@ export interface ExhibitionDataType {
   fees?: number; // Optional, since it's not used in the data generation
   sales?: number; // Optional, since it
 }
-
 
 export interface VendorDataType {
   key: string;
@@ -287,7 +293,7 @@ export interface IVerifyToken {
 export interface IResetPassword {
   email: string;
   password: string;
-  confirmPassword: string
+  confirmPassword: string;
   token: string | number;
 }
 
@@ -304,34 +310,30 @@ export interface IUpdateUser {
   image?: string;
 }
 
-export interface IUpdateEvent extends Partial<ICreateEvent>{
+export interface IUpdateEvent extends Partial<ICreateEvent> {
   id?: string;
-  eventImage?: string; 
+  eventImage?: string;
 }
 
-
-export interface ITicketData{
-  event: string,
-  ticketEntity: string | number,
-  ticketType: string,
-  ticketName: string,
-  ticketStock: string,
-  ticketQty: number | string,
-  ticketPrice: number | string,
-  ticketDescription: string,
-  purchaseLimit: number | string,
-  groupPrice: number | string,
-  groupSize: number | string,
-  guestAsChargeBearer: boolean,
-  ticketQuestions: [
-    {
-      question: string,
-      isCompulsory: boolean
-    }
-  ]
+export interface ITicketData {
+  event: string;
+  ticketEntity: string | number;
+  ticketType: string;
+  ticketName: string;
+  ticketStock: string;
+  ticketQty: number | string;
+  ticketPrice: number | string;
+  ticketDescription: string;
+  purchaseLimit: number | string;
+  groupPrice: number | string;
+  groupSize: number | string;
+  guestAsChargeBearer: boolean;
+  ticketQuestions?: {
+    question: string;
+    isCompulsory: boolean;
+  }[];
 }
 
-export interface ITicketUpdate extends Partial<ITicketData>{
-  id: string,
-
+export interface ITicketUpdate extends Partial<ITicketData> {
+  id: string;
 }
