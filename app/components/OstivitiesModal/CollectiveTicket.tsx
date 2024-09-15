@@ -1,4 +1,5 @@
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
+import { useCreateTicket } from "@/app/hooks/ticket/ticket.hook";
 import { CloseSquareOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -19,6 +20,7 @@ const CollectiveTicket = ({
 }: {
   onCancel?: () => void;
 }): JSX.Element => {
+  const { createTicket } = useCreateTicket();
   const { TextArea } = Input;
   const { Option } = Select;
   const [groupPrice, setGroupPrice] = useState<number | null>(null);

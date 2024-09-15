@@ -7,6 +7,7 @@ import {
 import { Button, Checkbox, Form, Input, InputNumber, Select } from "antd";
 import React, { useState } from "react";
 import EmailEditor from "../QuillEditor/EmailEditor";
+import { useCreateTicket } from "@/app/hooks/ticket/ticket.hook";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -23,6 +24,7 @@ interface FieldType {
 }
 
 const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
+  const { createTicket } = useCreateTicket();
   const [ticketType, setTicketType] = useState<string>("paid");
   const [ticketStockValue, setTicketStockValue] = useState<string>("");
   const [additionalFields, setAdditionalFields] = useState<

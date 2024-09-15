@@ -1,15 +1,6 @@
 import { Heading5 } from "@/app/components/typography/Typography";
 import { useFormContext } from "@/app/contexts/form-context/FormContext";
-import {
-  useCreateTicket,
-  useUpdateTicket,
-} from "@/app/hooks/ticket/ticket.hook";
-import {
-  FieldType,
-  IModal,
-  ITicketData,
-  ITicketUpdate,
-} from "@/app/utils/interface";
+import { IModal } from "@/app/utils/interface";
 import TicketDoubleDark from "@/public/ticket-double-dark.svg";
 import TicketDoubleRed from "@/public/ticket-double-red.svg";
 import TicketSingleRed from "@/public/Ticket-redsvg.svg";
@@ -17,7 +8,7 @@ import Ticket from "@/public/Ticket-Slant.svg";
 import { Button, message, Modal, Space } from "antd";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+
 import CollectiveTicket from "./CollectiveTicket";
 import SingleTicket from "./SingleTicket";
 
@@ -26,36 +17,10 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
   const [activeItem, setActive] = useState<string>("");
   const [tracker, setTracker] = useState<string>("showTracker");
   const [show, setShow] = useState<boolean>(false);
-  const { createTicket } = useCreateTicket();
 
   useEffect(() => {
     setActive("Single Ticket");
   }, []);
-
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-    watch,
-    trigger,
-  } = useForm<FieldType>({
-    // resolver: yupResolver(schema),
-    progressive: true,
-    mode: "all",
-  });
-
-  const onSubmit: SubmitHandler<ITicketData> = async (data) => {
-    const response = await createTicket.mutateAsync(data);
-    if (response.status === 200) {
-      message.success("Ticket created successfully"); // Success message
-      console.log(response, "response");
-    }
-
-    console.log(data, "data");
-  };
-
-  console.log(activeItem, "active");
 
   return (
     <>
