@@ -6,6 +6,7 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 
+import { ITicketData } from "@/app/utils/interface";
 import {
   Button,
   Checkbox,
@@ -15,10 +16,9 @@ import {
   InputNumber,
   Select,
 } from "antd";
+import { useParams } from "next/navigation";
 import React, { useState } from "react";
 import EmailEditor from "../QuillEditor/EmailEditor";
-import { ITicketData } from "@/app/utils/interface";
-import { useParams } from "next/navigation";
 
 const { Option } = Select;
 
@@ -50,23 +50,31 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
   };
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
-
     const { ticketQuestions, ...rest } = values;
-    console.log(ticketQuestions)
-    console.log("Success:", values);
 
-    // if (values) {
-    //   const response = await createTicket.mutateAsync(values, { ticketDescription: editorContent, event: params?.id });
-    //   if(response.status === 200) {
-    //     // Do something
-    //   }
-    // }
+    if (
+      ticketQuestions.length > 0 &&
+      additionalFields.length > 0 &&
+      ticketQuestions.length === additionalFields.length
+    ) {
+      console.log(ticketQuestions);
+      const questionsArray = ticketQuestions;
+      const combinedArray = questionsArray.map((questionObj, index) => {
+        const { id, ...rest } = additionalFields[index];
+        return {
+          ...questionObj,
+          ...rest,
+        };
+      });
+
+      // make api call here
+    }
   };
 
   const onFinishFailed: FormProps<ITicketData>["onFinishFailed"] = (
     errorInfo
   ) => {
-    console.log(errorInfo)
+    console.log(errorInfo);
     return errorInfo;
   };
 
@@ -240,7 +248,10 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
                         />
                       </div>
                     </Form.Item>
-                    <Form.Item name="isCompulsory" style={{ marginBottom: "8px" }}>
+                    <Form.Item
+                      name="isCompulsory"
+                      style={{ marginBottom: "8px" }}
+                    >
                       <Checkbox
                         checked={compulsory}
                         onChange={(e) =>
