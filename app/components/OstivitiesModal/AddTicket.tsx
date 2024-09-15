@@ -11,11 +11,16 @@ import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import CollectiveTicket from "./CollectiveTicket";
 import SingleTicket from "./SingleTicket";
+import { useCreateTicket, useUpdateTicket } from "@/app/hooks/ticket/ticket.hook";
+import { ITicketData, ITicketUpdate } from "@/app/utils/interface";
+
 
 function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
   const { formState, setFormStage } = useFormContext();
   const [activeItem, setActive] = useState<string>("");
   const [show, setShow] = useState<boolean>(false);
+  const { createTicket } = useCreateTicket();
+
 
   useEffect(() => {
     setActive("Single Ticket");
@@ -34,7 +39,13 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
     mode: "all",
   });
 
-  const onSubmit: SubmitHandler<FieldType> = (data: any) => {
+  const onSubmit: SubmitHandler<ITicketData> = async (data) => {
+    const response = await createTicket.mutateAsync(data);
+    if(response.status === 200){
+      message.success('Ticket created successfully'); // Success message
+      console.log(response, "response");
+    }
+
     console.log(data, "data");
   };
 
@@ -80,10 +91,11 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
                   htmlType="submit"
                   className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
                   onClick={() => {
-                    onCancel();
+                    // onSubmit()
+                    // onCancel();
                     setShow(false);
                     setActive("");
-                    setFormStage(formState.stage + 1);
+                    // setFormStage(formState.stage + 1);
                     message.success('Ticket created successfully'); // Success message 
                   }}
                 >

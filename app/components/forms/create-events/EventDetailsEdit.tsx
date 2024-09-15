@@ -58,6 +58,7 @@ import { useProfile } from "../../../hooks/auth/auth.hook";
 import {
   useCreateEvent,
   useGetUserEvent,
+  useUpdateEvent,
 } from "../../../hooks/event/event.hook";
 import EmailEditor from "../../QuillEditor/EmailEditor";
 
@@ -73,6 +74,7 @@ function EventDetailsEdit(): JSX.Element {
   const [formStep, setFormStep] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loader, setLoader] = useState(false);
+  const { updateEvent } = useUpdateEvent();
   const { profile } = useProfile();
   const { createEvent } = useCreateEvent();
   const [cookies, setCookie] = useCookies([
@@ -216,7 +218,8 @@ function EventDetailsEdit(): JSX.Element {
       ...rest
     } = data;
     try {
-      const response = await createEvent.mutateAsync({
+      const response = await updateEvent.mutateAsync({
+        id: params?.id || cookies.event_id,
         ...rest,
         supportingDocument: {
           fileName: "supportingDocument",
@@ -232,7 +235,7 @@ function EventDetailsEdit(): JSX.Element {
         ],
       });
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         setCookie("event_id", response?.data?.data?.id);
         reset();
         setCookie("form_stage", 2);
@@ -240,7 +243,7 @@ function EventDetailsEdit(): JSX.Element {
         setCookie("stage_two", "process");
         setCookie("stage_three", "wait");
         router.push(
-          `/Dashboard/create-events/${response?.data?.data?.id}/event_appearance`
+          `/Dashboard/create-events/${params?.id}/event_appearance`
         );
       }
     } catch (error) {

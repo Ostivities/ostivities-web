@@ -2,7 +2,6 @@
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import Steppers from "@/app/components/Steppper/Steppers";
 import EventDetailsEdit from "@/app/components/forms/create-events/EventDetailsEdit";
-import { useRouter } from "next/navigation";
 
 function CreateEvents(): JSX.Element {
   const title = (
