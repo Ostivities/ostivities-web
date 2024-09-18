@@ -1091,7 +1091,7 @@ function Details(): JSX.Element {
           </div>
         </div>
 
-        <Space className="flex flex-row justify-center space-x-4">
+        <Space className="flex flex-row justify-center space-x-4"> 
           <Button
             type="default"
             size={"large"}

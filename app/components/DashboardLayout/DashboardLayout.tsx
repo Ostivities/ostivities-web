@@ -495,7 +495,7 @@ function DashboardLayout({
                     boxShadow: "0px 8px 24px 0px #00000014",
                     background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
                   }}
-                  className="px-12 py-6"
+                  className="px-12 py-16"
                 >
                   <div>{children}</div>
                 </div>
