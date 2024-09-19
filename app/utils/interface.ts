@@ -325,7 +325,7 @@ export interface ITicketData {
   ticketQty: number | string;
   ticketPrice: number | string;
   ticketDescription: string;
-  purchaseLimit: number | string;
+  purchaseLimit?: number | string;
   groupPrice?: number | string;
   groupSize?: number | string;
   guestAsChargeBearer: boolean;

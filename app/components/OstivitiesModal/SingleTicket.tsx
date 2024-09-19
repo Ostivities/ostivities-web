@@ -46,6 +46,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ...rest } = values;
+    // return console.log(values)
 
     if (
       // @ts-ignore
@@ -87,15 +88,15 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
 
       // make api call here
 
-      // if (payload) {
-      //   const response = await createTicket.mutateAsync(payload);
-      //   if (response.status === 201) {
-      //     console.log(response);
-      //     form.resetFields();
-      //     linkRef.current?.click();
-      //     router.push("/verify-account");
-      //   }
-      // }
+      if (payload) {
+        const response = await createTicket.mutateAsync(payload);
+        if (response.status === 201) {
+          console.log(response);
+          form.resetFields();
+          // linkRef.current?.click();
+          // router.push("/verify-account");
+        }
+      }
     }
   };
 
@@ -198,7 +199,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
         name="ticketPrice"
         rules={[
           {
-            required: ticketType === "paid",
+            required: ticketType === TICKET_TYPE.PAID,
             message: "Please input your ticket price!",
           },
         ]}
@@ -212,7 +213,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
             `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
           }
           parser={(value) => value?.replace(/\₦\s?|(,*)/g, "") as any}
-          disabled={ticketType === "free"}
+          disabled={ticketType === TICKET_TYPE.FREE}
         />
       </Form.Item>
 
@@ -254,7 +255,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
           valuePropName="checked"
           noStyle
         >
-          <Checkbox style={{ marginRight: "20px" }}>
+          <Checkbox defaultChecked={true} style={{ marginRight: "20px" }}>
             Transfer charge fees to guest
           </Checkbox>
         </Form.Item>
