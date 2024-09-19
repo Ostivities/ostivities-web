@@ -38,11 +38,8 @@ const EventPageAppearance: React.FC = () => {
     profile?.data?.data?.data?.firstName +
     " " +
     profile?.data?.data?.data?.lastName;
- 
 
   const eventDetails = getUserEvent?.data?.data?.data;
-
-
   const props: UploadProps = {
     name: "image",
     maxCount: 1,
@@ -144,7 +141,7 @@ const EventPageAppearance: React.FC = () => {
       <div className="flex gap-12">
         <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
           <Image
-            src={imageUrl}
+            src={eventDetails?.eventImage || imageUrl}
             alt="Event Image"
             fill
             style={{ objectFit: "cover" }}
@@ -152,7 +149,10 @@ const EventPageAppearance: React.FC = () => {
           />
           <div className="absolute inset-0 bg-image-card"></div>
           <Upload className="absolute top-2 right-2 z-10" {...props}>
-            <button className="bg-white p-4 rounded-full shadow flex items-center justify-center">
+            <Button
+              loading={loader}
+              className="bg-white p-4 rounded-full shadow flex items-center justify-center"
+            >
               <CameraFilled
                 style={{
                   fontSize: "24px",
@@ -160,7 +160,7 @@ const EventPageAppearance: React.FC = () => {
                   background: "none",
                 }}
               />
-            </button>
+            </Button>
           </Upload>
         </div>
         <div className="py-8">

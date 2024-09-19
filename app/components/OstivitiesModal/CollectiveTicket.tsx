@@ -15,8 +15,7 @@ import EmailEditor from "../QuillEditor/EmailEditor";
 import { ITicketCreate, ITicketData } from "@/app/utils/interface";
 import { useParams } from "next/navigation";
 import { useProfile } from "@/app/hooks/auth/auth.hook";
-import { TICKET_STOCK } from "@/app/utils/enums";
-
+import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
 
 const { Option } = Select;
 
@@ -50,7 +49,7 @@ const CollectiveTicket = ({
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ...rest } = values;
-
+    // return console.log(values)
     if (
       // @ts-ignore
       ticketQuestions?.length > 0 &&
@@ -78,13 +77,14 @@ const CollectiveTicket = ({
           };
         }
       );
+      console.log("here");
 
       const payload: ITicketCreate = {
         ...rest,
         ticketQuestions: combinedArray,
         ticketDescription: editorContent,
         event: params?.id,
-        ticketEntity: "SINGLE",
+        ticketEntity: "COLLECTIVE",
         user: profile?.data?.data?.data?.id,
       };
       console.log(payload, "kk");
@@ -107,8 +107,9 @@ const CollectiveTicket = ({
     errorInfo
   ) => {
     console.log("Failed:", errorInfo);
+    return errorInfo;
   };
-  
+
   const addAdditionalField = () => {
     setAdditionalFields([
       ...additionalFields,
@@ -116,26 +117,26 @@ const CollectiveTicket = ({
     ]);
     setCounter(counter + 1); // Increment the counter for the next key
   };
-  
+
   const removeAdditionalField = (id: number) => {
     setAdditionalFields(additionalFields.filter((field) => field.id !== id));
   };
-  
+
   const handleCompulsoryChange = (id: number, checked: boolean) => {
     setAdditionalFields(
       additionalFields.map((field) =>
         field.id === id ? { ...field, compulsory: checked } : field
-    )
-  );
-};
+      )
+    );
+  };
 
-  useEffect(() => {
-    if (groupPrice !== null && groupSize !== null) {
-      setPricePerTicket(groupPrice / groupSize);
-    } else {
-      setPricePerTicket(null);
-    }
-  }, [groupPrice, groupSize]);
+  // useEffect(() => {
+  //   if (groupPrice !== null && groupSize !== null) {
+  //     setPricePerTicket(groupPrice / groupSize);
+  //   } else {
+  //     setPricePerTicket(null);
+  //   }
+  // }, [groupPrice, groupSize]);
 
   const handleGroupPriceChange = (value: number | null) => {
     setGroupPrice(value);
@@ -154,9 +155,6 @@ const CollectiveTicket = ({
     </Form.Item>
   );
 
-
-
-
   return (
     <Form<ITicketData>
       form={form} // Bind form instance
@@ -174,8 +172,8 @@ const CollectiveTicket = ({
         style={{ marginBottom: "8px" }}
       >
         <Select placeholder="Select ticket type">
-          <Option value="free">Free</Option>
-          <Option value="paid">Paid</Option>
+          <Option value={TICKET_TYPE.FREE}>Free</Option>
+          <Option value={TICKET_TYPE.PAID}>Paid</Option>
         </Select>
       </Form.Item>
 
@@ -190,31 +188,35 @@ const CollectiveTicket = ({
 
       <Form.Item<ITicketData>
         label="Ticket stock"
-        name="ticketStock"
-        rules={[{ required: true, message: "Please input your ticket stock!" }]}
+        name="ticketQty"
+        rules={[
+          {
+            required: ticketStock === TICKET_STOCK.LIMITED,
+            message: "Please input your ticket stock",
+          },
+        ]}
         style={{ marginBottom: "8px" }}
       >
         <Input
           addonBefore={prefixSelector}
           placeholder={
-            ticketStockValue === "unlimited" ? "∞" : "Enter ticket stock"
+            ticketStock === TICKET_STOCK.UNLIMITED ? "∞" : "Enter ticket stock"
           }
-          disabled={ticketStockValue === "unlimited"}
+          disabled={ticketStock === TICKET_STOCK.UNLIMITED}
         />
       </Form.Item>
 
       <Form.Item<ITicketData>
         label="Group price"
         name="groupPrice"
-        rules={[{ required: true, message: "Please input your group price!" }]}
         style={{ marginBottom: "8px" }}
       >
         <InputNumber
           placeholder="Enter group price"
           style={{ width: "100%" }}
           min={0}
+          disabled={ticketType === TICKET_TYPE.FREE}
           onChange={handleGroupPriceChange}
-          disabled={ticketType === "free"} // Disable if ticket type is "Free"
           formatter={(value) =>
             `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
           }
@@ -252,11 +254,13 @@ const CollectiveTicket = ({
       >
         <InputNumber
           value={pricePerTicket !== null ? pricePerTicket : undefined}
-          disabled
           style={{ width: "100%" }}
+          min={0}
           formatter={(value) =>
             `₦ ${value}`.replace(/\B(?=(\d{3})+(?!d))/g, ",")
           }
+          parser={(value) => value?.replace(/\₦\s?|(,*)/g, "") as any}
+          disabled={ticketType === TICKET_TYPE.FREE}
         />
       </Form.Item>
 
@@ -264,7 +268,10 @@ const CollectiveTicket = ({
         label="Purchase limit"
         name="purchaseLimit"
         rules={[
-          { required: true, message: "Please input your purchase limit!" },
+          {
+            required: ticketStock === TICKET_STOCK.LIMITED,
+            message: "Please input your purchase limit",
+          },
         ]}
         style={{ marginBottom: "15px" }}
       >
@@ -287,28 +294,42 @@ const CollectiveTicket = ({
         />
       </div>
 
-      <Form.Item<ITicketData>
-        name="guestAsChargeBearer"
-        valuePropName="checked"
+      <Form.Item
+      
         style={{ marginBottom: "24px", display: "flex", alignItems: "center" }}
       >
-        <Checkbox defaultChecked style={{ marginRight: "20px" }}>
-          Transfer charge fees to guest
-        </Checkbox>
-        <Checkbox onChange={(e) => setShowAdditionalField(e.target.checked)}>
-          Enable additional information
-        </Checkbox>
+        <Form.Item<ITicketData>
+          name="guestAsChargeBearer"
+          valuePropName="checked"
+          noStyle
+        >
+          <Checkbox defaultChecked={true} style={{ marginRight: "20px" }}>
+            Transfer charge fees to guest
+          </Checkbox>
+        </Form.Item>
+        <Form.Item>
+          <Checkbox onChange={(e) => setShowAdditionalField(e.target.checked)}>
+            Enable additional information
+          </Checkbox>
+        </Form.Item>
       </Form.Item>
 
       {showAdditionalField && (
-        <Form.Item style={{ marginBottom: "24px" }}>
-          <Form.List name="additionalInfo">
+        <Form.Item<ITicketData>
+          style={{ marginBottom: "24px" }}
+          rules={[
+            {
+              required: showAdditionalField === true,
+            },
+          ]}
+        >
+          <Form.List name="ticketQuestions" rules={[]}>
             {(fields, { add }) => (
               <>
                 {additionalFields.map(({ id, compulsory }) => (
                   <div key={id} style={{ marginBottom: "16px" }}>
                     <Form.Item
-                      name={[id, "info"]}
+                      name={[id, "question"]}
                       fieldKey={[id, "info"]}
                       rules={[
                         {

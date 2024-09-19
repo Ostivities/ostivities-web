@@ -95,7 +95,7 @@ function EventDetailsEdit(): JSX.Element {
 
   const { getUserEvent } = useGetUserEvent(params?.id || cookies.event_id);
   const eventDetails: IEventDetails = getUserEvent?.data?.data?.data;
-
+  console.log(eventDetails)
   const { Option } = Select;
 
   const userName =
