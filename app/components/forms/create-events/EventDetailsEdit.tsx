@@ -316,7 +316,7 @@ function EventDetailsEdit(): JSX.Element {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col space-y-8 pb-5"
+        className="flex flex-col space-y-16 pb-5"
       >
         <div className="grid grid-cols-2 gap-x-4">
           <div className="flex flex-col space-y-4 pr-6">

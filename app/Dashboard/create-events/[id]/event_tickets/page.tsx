@@ -73,7 +73,7 @@ function CreateTicketPage(): JSX.Element {
         </Flex>
         <div className="w-full mx-auto flex flex-col space-y-5 py-6">
           <div
-            className="w-11/12 mx-auto text-center rounded-lg mt-4 flex items-center justify-center"
+            className="w-11/12 mx-auto text-center rounded-lg mt-14 mb-10 flex items-center justify-center"
             style={{
               height: "400px",
               border: "1px solid #00000040",
