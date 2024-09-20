@@ -101,6 +101,22 @@ const EventPageAppearance: React.FC = () => {
     (link: any) => link?.name.toLowerCase() === "facebook"
   );
 
+  const validateFile = (file: { type: string; size: number; }) => {
+    const isAllowedFormat = ['image/png', 'image/jpeg', 'image/gif'].includes(file.type);
+    const isBelowSizeLimit = file.size / 1024 / 1024 < 10; // Convert file size to MB
+  
+    if (!isAllowedFormat) {
+      message.error('Only PNG, JPEG, and GIF files are allowed.');
+    }
+  
+    if (!isBelowSizeLimit) {
+      message.error('File must be smaller than 10MB.');
+    }
+  
+    return isAllowedFormat && isBelowSizeLimit;
+  };
+  
+  
   return (
     <Flex vertical gap={48} style={{ width: "100%" }}>
       <Flex
@@ -148,15 +164,17 @@ const EventPageAppearance: React.FC = () => {
             className=""
           />
           <div className="absolute inset-0 bg-image-card"></div>
-<Upload className="absolute top-2 right-2 z-10" {...props}>
-  <button
-    className="bg-white p-4 rounded-full shadow flex items-center justify-center relative"
-    disabled={loader} // Optionally disable the button when loading
+  <Upload
+    className="absolute top-2 right-2 z-10"
+    {...props}
+    beforeUpload={(file) => validateFile(file)} // Add validation check here
   >
-    {loader ? (
-      // Replace this with your loader component or spinner
-      <span className="loader-icon" style={{ fontSize: "24px", color: "#e20000" }}>
-        {/* Example loader, replace with your actual spinner */}
+    <button
+      className="bg-white p-4 rounded-full shadow flex items-center justify-center relative"
+      disabled={loader}
+    >
+      {loader ? (
+        // Replace this with your actual loader component
         <svg
           className="animate-spin h-6 w-6 text-red-600"
           xmlns="http://www.w3.org/2000/svg"
@@ -177,18 +195,17 @@ const EventPageAppearance: React.FC = () => {
             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.964 7.964 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
           ></path>
         </svg>
-      </span>
-    ) : (
-      <CameraFilled
-        style={{
-          fontSize: "24px",
-          color: "#e20000",
-          background: "none",
-        }}
-      />
-    )}
-  </button>
-</Upload>
+      ) : (
+        <CameraFilled
+          style={{
+            fontSize: '24px',
+            color: '#e20000',
+            background: 'none',
+          }}
+        />
+      )}
+    </button>
+  </Upload>
 
         </div>
         <div className="py-8">
