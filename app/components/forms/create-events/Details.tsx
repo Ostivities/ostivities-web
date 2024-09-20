@@ -167,11 +167,12 @@ function Details(): JSX.Element {
       spaceFee,
       ...rest
     } = data;
+    console.log(data?.eventDocument)
     try {
       const response = await createEvent.mutateAsync({
         ...rest,
         supportingDocument: {
-          fileName: "supportingDocument",
+          fileName: data.eventDocumentName || "supportingDocument",
           fileUrl: data.eventDocument,
         },
         eventURL: `${discovery_url}${eventURL}`,
@@ -184,6 +185,7 @@ function Details(): JSX.Element {
         ],
       });
 
+      // return console.log(response)
       if (response.status === 201) {
         setCookie("event_id", response?.data?.data?.id);
         reset();
@@ -566,7 +568,7 @@ function Details(): JSX.Element {
                           width: "75%",
                           borderTopRightRadius: "0px !important",
                           borderBottomRightRadius: "0px !important",
-                        }}
+                        }}                       
                         placeholder="Enter file name (optional)"
                       />
                       <Upload className="upload-button" {...props}>
