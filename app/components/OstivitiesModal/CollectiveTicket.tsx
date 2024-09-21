@@ -28,8 +28,8 @@ const CollectiveTicket = ({
   const { profile } = useProfile();
   const params = useParams<{ id: string }>();
   const { TextArea } = Input;
-  const [groupPrice, setGroupPrice] = useState<number | null>(null);
-  const [groupSize, setGroupSize] = useState<number | null>(null);
+  // const [groupPrice, setGroupPrice] = useState<number | null>(null);
+  // const [groupSize, setGroupSize] = useState<number | null>(null);
   const [pricePerTicket, setPricePerTicket] = useState<number | null>(null);
   const [ticketStockValue, setTicketStockValue] = useState<string>("limited"); // Default to "limited"
   const [additionalFields, setAdditionalFields] = useState<
@@ -46,6 +46,10 @@ const CollectiveTicket = ({
 
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form); // Watch ticketType changes
+  const groupPrice: number = Form.useWatch("groupPrice", form);
+  const groupSize: number = Form.useWatch("groupSize", form);
+
+  console.log(groupPrice, groupSize);
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ...rest } = values;
@@ -130,21 +134,32 @@ const CollectiveTicket = ({
     );
   };
 
-  // useEffect(() => {
-  //   if (groupPrice !== null && groupSize !== null) {
-  //     setPricePerTicket(groupPrice / groupSize);
-  //   } else {
-  //     setPricePerTicket(null);
-  //   }
-  // }, [groupPrice, groupSize]);
+  useEffect(() => {
+    if (groupPrice !== null && groupSize !== null) {
+      setPricePerTicket(groupPrice / groupSize);
+      const price_per_ticket = pricePerTicket
+      if(price_per_ticket) {
+        form.setFieldValue("ticketPrice", price_per_ticket)
+      }
+      console.log(pricePerTicket)
+    } else if( groupPrice === 0 && groupPrice === null) {
+      form.setFieldValue('ticketPrice', "")
+    }
+    else {
+      setPricePerTicket(null);
+      form.setFieldValue('ticketPrice', "")
+    }
+  }, [groupPrice, groupSize, pricePerTicket]);
 
-  const handleGroupPriceChange = (value: number | null) => {
-    setGroupPrice(value);
-  };
 
-  const handleGroupSizeChange = (value: number) => {
-    setGroupSize(value);
-  };
+
+  // const handleGroupPriceChange = (value: number | null) => {
+  //   setGroupPrice(value);
+  // };
+
+  // const handleGroupSizeChange = (value: number) => {
+  //   setGroupSize(value);
+  // };
 
   const prefixSelector = (
     <Form.Item name="ticketStock" noStyle>
@@ -216,7 +231,7 @@ const CollectiveTicket = ({
           style={{ width: "100%" }}
           min={0}
           disabled={ticketType === TICKET_TYPE.FREE}
-          onChange={handleGroupPriceChange}
+          // onChange={handleGroupPriceChange}
           formatter={(value) =>
             `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
           }
@@ -232,7 +247,7 @@ const CollectiveTicket = ({
       >
         <Select
           placeholder="Select group size"
-          onChange={handleGroupSizeChange}
+          // onChange={handleGroupSizeChange}
         >
           <Option value={1}>1</Option>
           <Option value={2}>2</Option>
@@ -253,7 +268,7 @@ const CollectiveTicket = ({
         style={{ marginBottom: "8px" }}
       >
         <InputNumber
-          value={pricePerTicket !== null ? pricePerTicket : undefined}
+          value={pricePerTicket}
           style={{ width: "100%" }}
           min={0}
           formatter={(value) =>
@@ -261,6 +276,7 @@ const CollectiveTicket = ({
           }
           parser={(value) => value?.replace(/\₦\s?|(,*)/g, "") as any}
           disabled={ticketType === TICKET_TYPE.FREE}
+          readOnly={true}
         />
       </Form.Item>
 

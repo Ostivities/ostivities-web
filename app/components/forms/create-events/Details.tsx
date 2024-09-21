@@ -172,7 +172,7 @@ function Details(): JSX.Element {
       const response = await createEvent.mutateAsync({
         ...rest,
         supportingDocument: {
-          fileName: data.eventDocumentName || "supportingDocument",
+          fileName: data.eventDocumentName || "",
           fileUrl: data.eventDocument,
         },
         eventURL: `${discovery_url}${eventURL}`,

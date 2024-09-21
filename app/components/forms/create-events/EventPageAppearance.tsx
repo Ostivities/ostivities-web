@@ -225,12 +225,12 @@ const EventPageAppearance: React.FC = () => {
                   Date
                 </div>
                 <div>
-                  {dateFormat(eventDetails?.startDate)},{" "}
+                  {dateFormat(eventDetails?.startDate)}{" "}-{" "}
                   {dateFormat(eventDetails?.endDate)}
                 </div>
               </div>
             </div>
-            <div className="flex gap-3">
+            <div className="flex gap-3 items-center">
               <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
                 <Image src="/icons/time.svg" alt="" height={30} width={30} />
               </div>
@@ -274,6 +274,78 @@ const EventPageAppearance: React.FC = () => {
                 <div>{userFullName}</div>
               </div>
             </div>
+            <div className="flex gap-3 items-center">
+              <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
+                <Image src="/icons/phone.svg" alt="" height={30} width={30} />
+              </div>
+              <div>
+                <div className="text-sm" style={{ fontWeight: 600 }}>
+                  Contact Us
+                </div>
+                <div className="flex flex-wrap items-center space-x-2 mt-1">
+                {websiteLink && websiteLink?.url && (
+                        <Link
+                          href={websiteLink?.url}
+                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <Image
+                            src="/icons/link.svg"
+                            alt=""
+                            height={14}
+                            width={14}
+                          />
+                        </Link>
+                      )}
+                      {twitterLink && twitterLink?.url && (
+                        <Link
+                          href={twitterLink?.url}
+                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <Image
+                            src="/icons/x.svg"
+                            alt=""
+                            height={14}
+                            width={14}
+                          />
+                        </Link>
+                      )}
+                      {facebookLink && facebookLink?.url && (
+                        <Link
+                          href={facebookLink?.url}
+                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <Image
+                            src="/icons/facebook.svg"
+                            alt=""
+                            height={10}
+                            width={10}
+                          />
+                        </Link>
+                      )}
+                      {instagramLink && instagramLink?.url && (
+                        <Link
+                          href={instagramLink?.url}
+                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <Image
+                            src="/icons/instagram.svg"
+                            alt=""
+                            height={16}
+                            width={16}
+                          />
+                        </Link>
+                      )}
+                </div>
+              </div>
+            </div>
             {twitterLink?.url ||
             instagramLink?.url ||
             websiteLink?.url ||
@@ -287,7 +359,7 @@ const EventPageAppearance: React.FC = () => {
                     Contact Us
                   </div>
                   <div className="flex items-center gap-4 mt-1">
-                    <div className="flex items-center gap-4 mt-1">
+                    <div className="flex items-center mt-1" style={{ gap: 6 }}>
                       {websiteLink && websiteLink?.url && (
                         <Link
                           href={websiteLink?.url}

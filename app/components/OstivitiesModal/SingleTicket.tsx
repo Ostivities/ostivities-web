@@ -18,7 +18,7 @@ import {
   InputNumber,
   Select,
 } from "antd";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import EmailEditor from "../QuillEditor/EmailEditor";
 
@@ -29,7 +29,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
   const { createTicket } = useCreateTicket();
   const { profile } = useProfile();
   const params = useParams<{ id: string }>();
-
+  const router = useRouter();
   const [additionalFields, setAdditionalFields] = useState<
     { id: number; compulsory: boolean }[]
   >([]);
@@ -43,6 +43,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
 
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form);
+   
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ...rest } = values;
@@ -94,7 +95,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
           console.log(response);
           form.resetFields();
           // linkRef.current?.click();
-          // router.push("/verify-account");
+          router.push("/publish-events");
         }
       }
     }
