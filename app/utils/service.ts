@@ -115,4 +115,11 @@ export class API_SERVICE {
       data: { ...rest },
     });
   }
+
+  static async _getAllEventTickets(id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/ticket/get_event_ticket/${id}`,
+      method: HttpMethod.GET,
+    });
+  }
 }

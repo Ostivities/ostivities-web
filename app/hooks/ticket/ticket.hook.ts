@@ -1,4 +1,4 @@
-import { CREATE_TICKET, UPDATE_TICKET } from "@/app/utils/constants";
+import { CREATE_TICKET, GET_EVENT_TICKETS, UPDATE_TICKET } from "@/app/utils/constants";
 import { errorFormatter, successFormatter } from "@/app/utils/helper";
 import { ITicketCreate, ITicketUpdate } from "@/app/utils/interface";
 import { API_SERVICE } from "@/app/utils/service";
@@ -37,3 +37,11 @@ export const useUpdateTicket = () => {
   });
   return { updateTicket };
 };
+
+export const useGetEventTickets = (id: string) => {
+  const getTickets = useQuery({
+    queryKey: [GET_EVENT_TICKETS, id],
+    queryFn: () => API_SERVICE._getAllEventTickets(id),
+  });
+  return { getTickets };
+}

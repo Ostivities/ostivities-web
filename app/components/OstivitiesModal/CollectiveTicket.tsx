@@ -13,7 +13,7 @@ import {
 import React, { useEffect, useState } from "react";
 import EmailEditor from "../QuillEditor/EmailEditor";
 import { ITicketCreate, ITicketData } from "@/app/utils/interface";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useProfile } from "@/app/hooks/auth/auth.hook";
 import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
 
@@ -28,6 +28,7 @@ const CollectiveTicket = ({
   const { profile } = useProfile();
   const params = useParams<{ id: string }>();
   const { TextArea } = Input;
+  const router = useRouter();
   // const [groupPrice, setGroupPrice] = useState<number | null>(null);
   // const [groupSize, setGroupSize] = useState<number | null>(null);
   const [pricePerTicket, setPricePerTicket] = useState<number | null>(null);
@@ -101,7 +102,7 @@ const CollectiveTicket = ({
           console.log(response);
           form.resetFields();
           // linkRef.current?.click();
-          // router.push("/verify-account");
+          router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
         }
       }
     }

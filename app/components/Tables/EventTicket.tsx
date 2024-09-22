@@ -2,7 +2,7 @@ import AddTicketModal from "@/app/components/OstivitiesModal/AddTicket";
 import DeleteTicket from "@/app/components/OstivitiesModal/DeleteTicket";
 import UpdateTicket from "@/app/components/OstivitiesModal/UpdateTicket";
 import { Label } from "@/app/components/typography/Typography";
-import { DataType } from "@/app/utils/interface";
+import { DataType, ITicketDetails } from "@/app/utils/interface";
 
 import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
 import { SalesDataType } from "@/app/utils/interface";
@@ -11,6 +11,9 @@ import { Button, Dropdown, Menu, MenuProps, Space, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import React, { useState } from "react";
 import EventDetailsComponent from "../EventDetails/EventDetails";
+import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
+import { useCookies } from "react-cookie";
+import { useParams, useRouter } from "next/navigation";
 
 // Currency formatter for Naira (₦)
 const formatCurrency = (amount: number) => {
@@ -22,6 +25,7 @@ const formatCurrency = (amount: number) => {
   return formatter.format(amount);
 };
 
+
 const EventTicketTable = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,6 +34,13 @@ const EventTicketTable = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isShown, setIsShown] = useState(false);
   const [actionType, setActionType] = useState<"delete" | "warning">();
+  const [cookies, setCookie, removeCookie] = useCookies(["ticket_id",]);
+  const params = useParams<{ id: string }>();
+
+  const { getTickets } = useGetEventTickets(params?.id);
+  const ticketData = getTickets?.data?.data?.data;
+  console.log(ticketData)
+  console.log(ticketData?.event?.eventName,)
 
   interface MenuItemType {
     label: React.ReactNode;
@@ -84,26 +95,13 @@ const EventTicketTable = () => {
     },
   ];
 
-  const data: SalesDataType[] = Array.from({ length: 50 }, (_, index) => ({
-    key: `${index + 1}`,
-    eventName: getRandomEventName(),
-    eventType: `Type ${index + 1}`,
-    ticketSold: Math.floor(Math.random() * 100),
-    revenue: Math.floor(Math.random() * 10000),
-    dateCreated: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
-    status: ["Active", "Closed", "Pending"][Math.floor(Math.random() * 3)] as
-      | "Active"
-      | "Closed"
-      | "Pending",
-    id: generateRandomString(10),
-  }));
 
   const handleMenuClick = (key: string) => {
     // Handle menu item clicks
     console.log("Clicked on:", key);
   };
 
-  const columns: ColumnsType<SalesDataType> = [
+  const columns: ColumnsType<ITicketDetails> = [
     {
       title: (
         <Label
@@ -112,7 +110,7 @@ const EventTicketTable = () => {
         />
       ),
       dataIndex: "eventName",
-      sorter: (a, b) => a.eventName.localeCompare(b.eventName),
+      sorter: (a, b) => (a.event?.eventName ?? "").localeCompare(b.event?.eventName ?? ""),
     },
     {
       title: (
@@ -122,7 +120,7 @@ const EventTicketTable = () => {
         />
       ),
       dataIndex: "ticketSold",
-      sorter: (a, b) => a.eventName.localeCompare(b.eventName),
+      sorter: (a, b) => a.ticketQty - b.ticketQty,
     },
     {
       title: (
@@ -132,7 +130,7 @@ const EventTicketTable = () => {
         />
       ),
       dataIndex: "revenue",
-      sorter: (a, b) => a.eventName.localeCompare(b.eventName),
+      sorter: (a, b) => (a.ticketPrice ?? 0) - (b.ticketPrice ?? 0),
       render: (revenue: number) => <span>{formatCurrency(revenue)}</span>,
     },
     {
@@ -144,7 +142,7 @@ const EventTicketTable = () => {
       ),
       dataIndex: "action",
       key: "action",
-      render: (text: any, record: SalesDataType) => (
+      render: (text: any, record: ITicketDetails) => (
         <Space direction="vertical" size="small">
           <Dropdown
             overlay={
@@ -162,6 +160,18 @@ const EventTicketTable = () => {
       ),
     },
   ];
+
+  const data: ITicketDetails[] = ticketData?.map((item: any) => {
+    return {
+      key: item?.id,
+      eventName: item?.ticketName,
+      ticketSold: item?.ticketQuantity,
+      revenue: item?.ticketPrice,
+      event: item?.event,
+    };
+  });
+
+  console.log(data)
 
   return (
     <React.Fragment>
@@ -206,7 +216,7 @@ const EventTicketTable = () => {
           pagination={{
             current: currentPage,
             pageSize: pageSize,
-            total: data.length,
+            total: data?.length,
             onChange: (page, size) => {
               setCurrentPage(page);
               setPageSize(size);

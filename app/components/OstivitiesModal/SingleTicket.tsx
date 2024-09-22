@@ -95,7 +95,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
           console.log(response);
           form.resetFields();
           // linkRef.current?.click();
-          router.push("/publish-events");
+          router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
         }
       }
     }

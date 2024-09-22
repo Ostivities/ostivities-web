@@ -11,3 +11,5 @@ export const GET_EVENT = "GET_EVENT";
 export const DELETE_EVENT = "DELETE_EVENT";
 export const CREATE_TICKET = "CREATE_TICKET";
 export const UPDATE_TICKET = "UPDATE_TICKET";
+export const DELETE_TICKET = "DELETE_TICKET";
+export const GET_EVENT_TICKETS = "GET_EVENT_TICKETS";

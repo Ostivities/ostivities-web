@@ -341,3 +341,62 @@ export interface ITicketCreate extends Partial<ITicketData> {
 export interface ITicketUpdate extends Partial<ITicketData> {
   id: string;
 }
+
+export interface ITicketDetails {
+  id: string;
+  purchaseLimit: number
+  ticketDescription: string
+  ticketEntity: string
+  ticketName: string
+  ticketQty: number
+  ticketPrice?: number
+  ticketStock: string
+  ticketType: string
+  createdAt: string
+  ticketQuestions?: {
+    question?: string;
+    isCompulsory?: boolean;
+  }[];
+  user?: {
+    accountType: string
+    createdAt: string
+    email: string
+    firstName: string
+    hash: string
+    id: string
+    image: string
+    is_active: true
+    lastName: string
+    phone_number: string
+    terms_and_condition: boolean
+    total_number_of_events: number
+    total_number_of_tickets: number
+  }
+  event?: {
+    address: string
+    createdAt: string
+    discover: boolean
+    endDate: string
+    eventDetails: string
+    eventImage: string
+    eventInfo: string
+    eventMode: string
+    eventName: string
+    eventType: string
+    eventURL: string
+    id: string;
+    socials?: Array<{
+      name: string;
+      url?: string;
+    }>;
+    startDate: string
+    state: string;
+    supportingDocument: {
+      fileName: string;
+      fileUrl: string;
+    };
+    ticketSold: number;
+    timeZone: string;
+    user: string;
+  }
+}
