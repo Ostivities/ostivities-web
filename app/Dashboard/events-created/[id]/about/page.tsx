@@ -38,17 +38,23 @@ import {
   Space,
   Upload,
 } from "antd";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useGetUserEvent } from "@/app/hooks/event/event.hook";
+import { getUsernameFromUrl } from "@/app/utils/helper";
+import dayjs from "dayjs";
+
 
 interface FieldType {}
 
 const AboutEvent = () => {
+  const params = useParams<{ id: string }>();
   const router = useRouter();
   const [form] = Form.useForm();
   const [componentDisabled, setComponentDisabled] = useComponentDisabled();
   const { Option } = Select;
+  const { getUserEvent } = useGetUserEvent(params?.id);
   const [showRadio, setShowRadio] = useState(false);
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     return values;
@@ -65,6 +71,7 @@ const AboutEvent = () => {
   ) => {
     return errorInfo;
   };
+  const eventDetails = getUserEvent?.data?.data?.data;
 
   const {
     handleSubmit,
@@ -90,6 +97,45 @@ const AboutEvent = () => {
     });
     return () => subscription.unsubscribe();
   }, [watch]);
+
+  useEffect(() => {
+    const socialLinks = eventDetails?.socials;
+    const twitterLink = socialLinks?.find(
+      (link: any) => link?.name.toLowerCase() === "twitter"
+    );
+    const instagramLink = socialLinks?.find(
+      (link: any) => link?.name.toLowerCase() === "instagram"
+    );
+    const websiteLink = socialLinks?.find(
+      (link: any) => link?.name.toLowerCase() === "website"
+    );
+    const facebookLink = socialLinks?.find(
+      (link: any) => link?.name.toLowerCase() === "facebook"
+    );
+    if (eventDetails) {
+      setValue("eventName", eventDetails?.eventName);
+      setValue("state", eventDetails?.state);
+      setValue("address", eventDetails?.address);
+      setValue("eventURL", getUsernameFromUrl(eventDetails?.eventURL));
+      setValue("eventDocumentName", eventDetails?.supportingDocument?.fileName);
+      setValue("eventType", eventDetails?.eventType);
+      setValue("eventInfo", eventDetails?.eventInfo);
+      setValue("timeZone", eventDetails?.timeZone);
+      setValue("websiteUrl", websiteLink?.url);
+      setValue("twitterUrl", twitterLink?.url);
+      setValue("facebookUrl", facebookLink?.url);
+      setValue("instagramUrl", instagramLink?.url);
+      setValue("startDate", dayjs(eventDetails?.startDate));
+      setValue("endDate", dayjs(eventDetails?.endDate));
+      setValue("frequency", eventDetails?.frequency);
+    }
+  }, [eventDetails, setValue]);
+
+  useEffect(() => {
+    if (eventDetails) {
+      setEditorContent(eventDetails?.eventDetails);
+    }
+  }, [eventDetails]);
 
 
   const onSubmit: SubmitHandler<IFormInput> = (data: any) => {

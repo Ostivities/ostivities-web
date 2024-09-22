@@ -47,7 +47,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ...rest } = values;
-    // return console.log(values)
+    console.log(values)
 
     if (
       // @ts-ignore
@@ -76,6 +76,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
           };
         }
       );
+      console.log("values")
 
       const payload: ITicketCreate = {
         ...rest,
@@ -186,7 +187,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
         ]}
         style={{ marginBottom: "8px" }}
       >
-        <Input
+        <InputNumber
           addonBefore={prefixSelector}
           placeholder={
             ticketStock === TICKET_STOCK.UNLIMITED ? "∞" : "Enter ticket stock"
@@ -249,6 +250,7 @@ const SingleTicket = ({ onCancel }: { onCancel?: () => void }): JSX.Element => {
       </Form.Item>
 
       <Form.Item
+      
         style={{ marginBottom: "24px", display: "flex", alignItems: "center" }}
       >
         <Form.Item<ITicketData>

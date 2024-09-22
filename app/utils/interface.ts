@@ -322,12 +322,12 @@ export interface ITicketData {
   ticketType: string;
   ticketName: string;
   ticketStock: TICKET_STOCK;
-  ticketQty: number | string;
-  ticketPrice: number | string;
+  ticketQty: number;
+  ticketPrice: number;
   ticketDescription: string;
-  purchaseLimit?: number | string;
-  groupPrice?: number | string;
-  groupSize?: number | string;
+  purchaseLimit?: number;
+  groupPrice?: number;
+  groupSize?: number ;
   guestAsChargeBearer: boolean;
   ticketQuestions?: {
     question: string;

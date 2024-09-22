@@ -45,6 +45,7 @@ import {
   Space,
   Upload,
   UploadProps,
+  UploadFile,
 } from "antd";
 import axios from "axios";
 import Image from "next/image";
@@ -68,6 +69,7 @@ function Details(): JSX.Element {
   const [formStep, setFormStep] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
   const { profile } = useProfile();
   const { createEvent } = useCreateEvent();
   const [cookies, setCookie] = useCookies([
@@ -112,6 +114,8 @@ function Details(): JSX.Element {
     return () => subscription.unsubscribe();
   }, [watch]);
 
+  // const handleUploadChange =
+
   const props: UploadProps = {
     name: "image",
     maxCount: 1,
@@ -137,19 +141,26 @@ function Details(): JSX.Element {
           const urlString: string | any =
             response?.data?.secure_url || response?.data?.url;
           setValue("eventDocument", urlString);
+          console.log(response);
         }
         setLoader(false);
       } catch (error) {}
     },
     async onChange(info) {
+      setFileList(info.fileList);
       if (info.file.status !== "uploading") {
       }
       if (info.file.status === "done") {
+        const urlString =
+          info.file.response?.secure_url || info.file.response?.url;
+        setValue("eventDocument", urlString);
       } else if (info.file.status === "error") {
       }
     },
     showUploadList: false,
+    fileList,
   };
+  console.log(fileList);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     const {
@@ -167,7 +178,7 @@ function Details(): JSX.Element {
       spaceFee,
       ...rest
     } = data;
-    console.log(data?.eventDocument)
+    console.log(data?.eventDocument);
     try {
       const response = await createEvent.mutateAsync({
         ...rest,
@@ -568,7 +579,7 @@ function Details(): JSX.Element {
                           width: "75%",
                           borderTopRightRadius: "0px !important",
                           borderBottomRightRadius: "0px !important",
-                        }}                       
+                        }}
                         placeholder="Enter file name (optional)"
                       />
                       <Upload className="upload-button" {...props}>
@@ -586,18 +597,30 @@ function Details(): JSX.Element {
                       many others. *Only JPEG, PNG & PDF Allowed and file size
                       should not be more than 10MB.
                     </span>
-                    {Array.isArray(field.value) && field.value.length > 0 && (
+                    {fileList.length > 0 && (
                       <div className="font-BricolageGrotesqueLight text-xs text-gray-400">
-                        Uploaded File:
+                        Uploaded Files: {" "}
                         <Space>
-                          <span>{field.value[0].name}</span>
-                          <DeleteOutlined
-                            style={{
-                              color: "#e20000",
-                              cursor: "pointer",
-                            }}
-                            onClick={() => field.onChange([])} // Clear the uploaded file
-                          />
+                          {fileList.map((file) => (
+                            <Space key={file.uid}>
+                              <span>{file.name}</span>
+                              <DeleteOutlined
+                                style={{
+                                  color: "#e20000",
+                                  cursor: "pointer",
+                                  marginLeft: "8px",
+                                }}
+                                onClick={() => {
+                                  setFileList(
+                                    fileList.filter(
+                                      (item) => item.uid !== file.uid
+                                    )
+                                  );
+                                  setValue("eventDocument", ""); // Clear the field value
+                                }}
+                              />
+                            </Space>
+                          ))}
                         </Space>
                       </div>
                     )}
@@ -1093,7 +1116,7 @@ function Details(): JSX.Element {
           </div>
         </div>
 
-        <Space className="flex flex-row justify-center space-x-4"> 
+        <Space className="flex flex-row justify-center space-x-4">
           <Button
             type="default"
             size={"large"}

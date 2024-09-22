@@ -165,9 +165,9 @@ const EventTicketTable = () => {
     return {
       key: item?.id,
       eventName: item?.ticketName,
-      ticketSold: item?.ticketQuantity,
+      ticketSold: item?.ticketQty,
       revenue: item?.ticketPrice,
-      event: item?.event,
+      event: item?.event?.eventName,
     };
   });
 

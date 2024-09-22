@@ -49,6 +49,7 @@ const CollectiveTicket = ({
   const ticketType: string = Form.useWatch("ticketType", form); // Watch ticketType changes
   const groupPrice: number = Form.useWatch("groupPrice", form);
   const groupSize: number = Form.useWatch("groupSize", form);
+  const guestAsChargeBearer = Form.useWatch("guestAsChargeBearer", form);
 
   console.log(groupPrice, groupSize);
 
@@ -102,7 +103,7 @@ const CollectiveTicket = ({
           console.log(response);
           form.resetFields();
           // linkRef.current?.click();
-          router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+          // router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
         }
       }
     }
@@ -152,6 +153,11 @@ const CollectiveTicket = ({
     }
   }, [groupPrice, groupSize, pricePerTicket]);
 
+  useEffect(() => {
+    if (guestAsChargeBearer === true) {
+      form.setFieldsValue({ guestAsChargeBearer: true });
+    }
+  }, [guestAsChargeBearer]);
 
 
   // const handleGroupPriceChange = (value: number | null) => {
@@ -213,7 +219,7 @@ const CollectiveTicket = ({
         ]}
         style={{ marginBottom: "8px" }}
       >
-        <Input
+        <InputNumber
           addonBefore={prefixSelector}
           placeholder={
             ticketStock === TICKET_STOCK.UNLIMITED ? "∞" : "Enter ticket stock"
