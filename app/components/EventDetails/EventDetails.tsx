@@ -12,7 +12,7 @@ import { LiaExternalLinkAltSolid } from "react-icons/lia";
 import PaymentDetails from "../OstivitiesModal/PaymentDetails";
 import Image from 'next/image';
 import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
-import { useGetUserEvent, useUpdateEvent, } from "@/app/hooks/event/event.hook";
+import { useGetUserEvent, useUpdateEvent, useAddEventToDiscovery } from "@/app/hooks/event/event.hook";
 
 
 export default function EventDetailsComponent({
@@ -26,13 +26,13 @@ export default function EventDetailsComponent({
   const router = useRouter();
   const { getUserEvent } = useGetUserEvent(params?.id);
   const { updateEvent } = useUpdateEvent();
+  const { addEventToDiscovery } = useAddEventToDiscovery();
   const onToggle = (checked: boolean) => {
     console.log(`Switch to ${checked}`);
   };
 
   const [isPublished, setIsPublished] = useState(false); // State to track publish status
   const eventDetails = getUserEvent?.data?.data?.data;
-  console.log(eventDetails?.discover)
 
   const handleButtonClick = () => {
     setIsPublished(!isPublished);
@@ -48,12 +48,10 @@ export default function EventDetailsComponent({
   
   const handleSwitchChange = async (checked: boolean) => {
     try {
-      const res = await updateEvent.mutateAsync({
-        discover: checked,
-        id: params?.id // Replace with actual user ID from cookies or state
-      });
+      const res = await addEventToDiscovery.mutateAsync(params?.id) 
       if (res.status === 200) {
-        setIsActive(checked);
+        console.log(res)
+        // setIsActive(checked);
         message.success(checked ? 'Event added to discovery' : 'Event removed from discovery');
       } else {
         message.error('Failed to update discovery status');

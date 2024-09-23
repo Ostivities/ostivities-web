@@ -15,7 +15,8 @@ const DeleteTicket = ({ open, onCancel, onOk, actionType, id }: IModal) => {
   const handleDeleteClick = () => {
     const response = deleteTicket.mutateAsync(id);
     // console.log(response)
-    onOk(); // Close the modal
+    setInterval(() => onOk(), 3000)
+     // Close the modal
     // if (response[Symbol] === "success") {
     // message.success('Entry deleted successfully'); // Success message for delete
     // }

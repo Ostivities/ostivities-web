@@ -178,7 +178,7 @@ function Details(): JSX.Element {
       spaceFee,
       ...rest
     } = data;
-    console.log(data?.eventDocument);
+    // console.log(data?.eventDocument);
     try {
       const response = await createEvent.mutateAsync({
         ...rest,

@@ -62,3 +62,18 @@ export const usePublishEvent = () => {
   });
   return { publishEvent };
 };
+
+export const useAddEventToDiscovery = () => {
+  const addEventToDiscovery = useMutation({
+    mutationFn: (id: string) => {
+      return API_SERVICE._addEventToDiscovery(id);
+    },
+    onSuccess: (data: AxiosResponse) => {
+      successFormatter(data);
+    },
+    onError: (error: AxiosError | any) => {
+      errorFormatter(error);
+    },
+  });
+  return { addEventToDiscovery };
+}

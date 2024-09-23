@@ -37,16 +37,21 @@ const EventTicketTable = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["ticket_id",]);
   const params = useParams<{ id: string }>();
   const [selectedTicket, setSelectedTicket] = useState<string | undefined>("");
+  const [selectedTicketEntity, setSelectedTicketEntity] = useState<string | undefined>("");
 
   const { getTickets } = useGetEventTickets(params?.id);
   const ticketData = getTickets?.data?.data?.data;
-  // console.log(ticketData)
-  // console.log(ticketData?.event?.eventName,)
+  console.log(ticketData)
 
   interface MenuItemType {
     label: React.ReactNode;
     key: string;
   }
+
+  const handleActionSuccess = () => {
+    // Refetch the tickets after an action (delete, edit, duplicate)
+    getTickets.refetch();
+  };
 
   const GuestItems: MenuItemType[] = [
     {
@@ -101,11 +106,6 @@ const EventTicketTable = () => {
   ];
 
 
-  const handleMenuClick = (key: string) => {
-    // Handle menu item clicks
-    // console.log("Clicked on:", key);
-  };
-
   const columns: ColumnsType<ITicketDetails> = [
     {
       title: (
@@ -151,7 +151,7 @@ const EventTicketTable = () => {
         <Space direction="vertical" size="small">
           <Dropdown
             overlay={
-              <Menu onClick={({ key }) => handleMenuClick(key.toString())}>
+              <Menu>
                 {GuestItems.map((item) => (
                   <Menu.Item key={item.key}>{item.label}</Menu.Item>
                 ))}
@@ -173,6 +173,7 @@ const EventTicketTable = () => {
       ticketSold: item?.ticketQty,
       revenue: item?.ticketPrice,
       event: item?.event?.eventName,
+      ticketEntity: item?.ticketEntity,
     };
   });
 
@@ -183,18 +184,28 @@ const EventTicketTable = () => {
       <AddTicketModal
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
-        onOk={() => setIsModalOpen(false)}
+        onOk={() => {
+          setIsModalOpen(false)
+          handleActionSuccess();
+        }}
       />
       <UpdateTicket
         open={isOpen}
         onCancel={() => setIsOpen(false)}
-        onOk={() => setIsOpen(false)}
-        id={selectedTicket} 
+        onOk={() => {
+          setIsOpen(false)
+          handleActionSuccess();
+        }}
+        id={selectedTicket}
+        ticketEntity={selectedTicketEntity} 
       />
       <DeleteTicket
         open={isShown}
         onCancel={() => setIsShown(false)}
-        onOk={() => setIsShown(false)}
+        onOk={() => {
+          setIsShown(false)
+          handleActionSuccess();
+        }}
         actionType={actionType}
         id={selectedTicket} 
       />
@@ -220,9 +231,9 @@ const EventTicketTable = () => {
           onRow={(record, rowIndex) => {
             return {
               onClick: () => {
-                // console.log(record)
                 setSelectedTicket(record?.key)
-              }, // click row
+                setSelectedTicketEntity(record?.ticketEntity)
+              },
             };
           }}
           columns={columns}

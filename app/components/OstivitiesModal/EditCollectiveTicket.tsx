@@ -1,14 +1,6 @@
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
-import { useProfile } from "@/app/hooks/auth/auth.hook";
-import { useCreateTicket } from "@/app/hooks/ticket/ticket.hook";
-import {
-  CloseOutlined,
-  CloseSquareOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
-
-import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
-import { ITicketCreate, ITicketData } from "@/app/utils/interface";
+import { useUpdateTicket, useGetSingleTicket } from "@/app/hooks/ticket/ticket.hook";
+import { CloseSquareOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   Button,
   Checkbox,
@@ -18,66 +10,73 @@ import {
   InputNumber,
   Select,
 } from "antd";
-import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import EmailEditor from "../QuillEditor/EmailEditor";
-import { usePathname } from 'next/navigation'
-import { useCookies } from "react-cookie";
+import { ITicketCreate, ITicketData, ITicketUpdate } from "@/app/utils/interface";
+import { useParams, usePathname, useRouter } from "next/navigation";
+import { useProfile } from "@/app/hooks/auth/auth.hook";
+import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
 
 const { Option } = Select;
-
-interface SingleTicketProps {
+interface CollectiveTicketProps {
   onCancel?: () => void;  // Optional function with no parameters and no return value
-  onOk?: () => void;      // Optional function with no parameters and no return value
+  onOk?: () => void;  
+  id: string    
 }
 
-const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {  
-  const [form] = Form.useForm();
-  const { createTicket } = useCreateTicket();
+const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, id }) => {  
+  const { updateTicket } = useUpdateTicket();
   const { profile } = useProfile();
   const params = useParams<{ id: string }>();
+  const { TextArea } = Input;
   const router = useRouter();
+  // const [groupPrice, setGroupPrice] = useState<number | null>(null);
+  // const [groupSize, setGroupSize] = useState<number | null>(null);
+  const [pricePerTicket, setPricePerTicket] = useState<number | null>(null);
+  const [ticketStockValue, setTicketStockValue] = useState<string>("limited"); // Default to "limited"
   const [additionalFields, setAdditionalFields] = useState<
     { id: number; compulsory: boolean }[]
   >([]);
   const [showAdditionalField, setShowAdditionalField] =
     useState<boolean>(false);
   const [counter, setCounter] = useState<number>(0); // Counter for unique keys
+  const [form] = Form.useForm(); // Initialize form instance
   const [editorContent, setEditorContent] = useState("");
+  const { getSingleTicket } = useGetSingleTicket(id);
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
-  const [cookies, setCookies] = useCookies(["ticket_id",]);
-
+  // const pathname = usePathname()
+  // console.log(pathname)
   const ticketStock: string = Form.useWatch("ticketStock", form);
-  const ticketType: string = Form.useWatch("ticketType", form);
+  const ticketType: string = Form.useWatch("ticketType", form); // Watch ticketType changes
+  const groupPrice: number = Form.useWatch("groupPrice", form);
+  const groupSize: number = Form.useWatch("groupSize", form);
   const guestAsChargeBearer = Form.useWatch("guestAsChargeBearer", form);
-  // console.log(guestAsChargeBearer, "guestAsChargeBearer")
-   
-  useEffect(() => {
-    if (ticketStock === TICKET_STOCK.UNLIMITED) {
-      form.setFieldsValue({ ticketStock: TICKET_STOCK.UNLIMITED });
-    } else {
-      form.setFieldsValue({ ticketStock: TICKET_STOCK.LIMITED });
-    }
-  }, [ticketStock]);
 
-  // useEffect(() => {
-  //   if(ticketType === TICKET_TYPE.FREE) {
-  //     form.setFieldsValue({ ticketPrice: "Free" });
-  //   }
-  // }, [ticketType]);
+  // console.log(groupPrice, groupSize);
 
+
+  const ticketDetails = getSingleTicket?.data?.data?.data;
+  console.log(ticketDetails?.ticketDescription);
   useEffect(() => {
-    if (guestAsChargeBearer === true) {
-      form.setFieldsValue({ guestAsChargeBearer: true });
+    if (ticketDetails){
+      form.setFieldsValue({
+        ticketType: ticketDetails?.ticketType,
+        ticketName: ticketDetails?.ticketName,
+        ticketQty: ticketDetails?.ticketQty,
+        groupPrice: ticketDetails?.groupPrice,
+        groupSize: ticketDetails?.groupSize,
+        ticketPrice: ticketDetails?.ticketPrice,
+        purchaseLimit: ticketDetails?.purchaseLimit,
+        guestAsChargeBearer: ticketDetails?.guestAsChargeBearer,
+      });
     }
-  }, [guestAsChargeBearer]);
+  }, [ticketDetails]);
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ...rest } = values;
-    console.log(values)
-
+    // return console.log(values)
     if (
       // @ts-ignore
       ticketQuestions?.length > 0 &&
@@ -105,58 +104,59 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
           };
         }
       );
-      console.log("values")
 
-      const payload: ITicketCreate = {
+      const payload: ITicketUpdate = {
+        id: ticketDetails?.id,
         ...rest,
         ticketQuestions: combinedArray,
         ticketDescription: editorContent,
         event: params?.id,
-        ticketEntity: "SINGLE",
+        ticketEntity: "COLLECTIVE",
         user: profile?.data?.data?.data?.id,
       };
-      console.log(payload, "kk");
+      // console.log(payload, "kk");
 
       // make api call here
 
       if (payload) {
-        const response = await createTicket.mutateAsync(payload);
+        const response = await updateTicket.mutateAsync(payload);
         if (response.status === 201) {
           console.log(response);
           form.resetFields();
           // linkRef.current?.click();
-          // onOk && onOk()
           router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
-        }
-      }
-    } else {
-
-      const payload: ITicketCreate = {
-        ...rest,
-        ticketDescription: editorContent,
-        event: params?.id,
-        ticketEntity: "SINGLE",
-        user: profile?.data?.data?.data?.id,
-      };
-      if (payload) {
-        const response = await createTicket.mutateAsync(payload);
-        if (response.status === 201) {
-          console.log(response);
-          form.resetFields();
-          // linkRef.current?.click();
-          // onOk && onOk()
-          router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+          setInterval(() => {
+            onOk && onOk();
+          }, 3000)
         }
       }
     }
-
-
+    const payload: ITicketUpdate = {
+      id: ticketDetails?.id,
+      ...rest,
+      ticketDescription: editorContent,
+      event: params?.id,
+      ticketEntity: "COLLECTIVE",
+      user: profile?.data?.data?.data?.id,
+    };
+    if (payload) {
+      const response = await updateTicket.mutateAsync(payload);
+      if (response.status === 201) {
+        console.log(response);
+        form.resetFields();
+        // linkRef.current?.click();
+        router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+        setInterval(() => {
+          onOk && onOk();
+        }, 3000)
+      }
+    }
   };
 
   const onFinishFailed: FormProps<ITicketData>["onFinishFailed"] = (
     errorInfo
   ) => {
-    console.log(errorInfo);
+    console.log("Failed:", errorInfo);
     return errorInfo;
   };
 
@@ -180,6 +180,48 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
     );
   };
 
+  useEffect(() => {
+    if (groupPrice !== null && groupSize !== null) {
+      const price = (groupPrice / groupSize).toFixed(2);
+      setPricePerTicket(parseFloat(price));
+      const price_per_ticket = pricePerTicket
+      if(price_per_ticket) {
+        form.setFieldValue("ticketPrice", price_per_ticket)
+      }
+      // console.log(pricePerTicket)
+    } else if( groupPrice === 0 && groupPrice === null) {
+      form.setFieldValue('ticketPrice', "")
+    }
+    else {
+      setPricePerTicket(null);
+      form.setFieldValue('ticketPrice', "")
+    }
+  }, [groupPrice, groupSize, pricePerTicket]);
+
+  useEffect(() => {
+    if (guestAsChargeBearer === true) {
+      form.setFieldsValue({ guestAsChargeBearer: true });
+    }
+  }, [guestAsChargeBearer]);
+
+  useEffect(() => {
+    if (ticketStock === TICKET_STOCK.UNLIMITED) {
+      form.setFieldsValue({ ticketStock: TICKET_STOCK.UNLIMITED });
+    } else {
+      form.setFieldsValue({ ticketStock: TICKET_STOCK.LIMITED });
+    }
+  }, [ticketStock]);
+
+  // const handleGroupPriceChange = (value: number | null) => {
+  //   setGroupPrice(value);
+  // };
+
+  // const handleGroupSizeChange = (value: number) => {
+  //   setGroupSize(value);
+  // };
+
+
+
   const prefixSelector = (
     <Form.Item name="ticketStock" noStyle>
       <Select defaultValue={TICKET_STOCK.UNLIMITED}>
@@ -189,17 +231,15 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
     </Form.Item>
   );
 
-  // console.log(ticketStock, "ticketStock");
-
   return (
     <Form<ITicketData>
+      form={form} // Bind form instance
       name="basic"
       initialValues={{ remember: true, guestAsChargeBearer: true }}
-      // onFinish={onFinish}
+      onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
       layout="vertical"
-      form={form}
     >
       <Form.Item<ITicketData>
         label="Ticket type"
@@ -216,12 +256,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
       <Form.Item<ITicketData>
         label="Ticket name"
         name="ticketName"
-        rules={[
-          {
-            required: true,
-            message: "Please input your ticket name!",
-          },
-        ]}
+        rules={[{ required: true, message: "Please input your ticket name!" }]}
         style={{ marginBottom: "8px" }}
       >
         <Input placeholder="Enter ticket name" />
@@ -249,25 +284,63 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
       </Form.Item>
 
       <Form.Item<ITicketData>
-        label="Ticket price"
-        name="ticketPrice"
-        rules={[
-          {
-            required: ticketType === TICKET_TYPE.PAID,
-            message: "Please input your ticket price!",
-          },
-        ]}
+        label="Group price"
+        name="groupPrice"
         style={{ marginBottom: "8px" }}
       >
         <InputNumber
-          placeholder="Enter ticket price"
+          placeholder="Enter group price"
           style={{ width: "100%" }}
           min={0}
+          disabled={ticketType === TICKET_TYPE.FREE}
+          // onChange={handleGroupPriceChange}
+          formatter={(value) =>
+            `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          }
+          parser={(value) => value?.replace(/\₦\s?|(,*)/g, "") as any}
+        />
+      </Form.Item>
+
+      <Form.Item<ITicketData>
+        label="Group size"
+        name="groupSize"
+        rules={[{ required: true, message: "Please select your group size!" }]}
+        style={{ marginBottom: "8px" }}
+      >
+        <Select
+          placeholder="Select group size"
+          // onChange={handleGroupSizeChange}
+        >
+          <Option value={1}>1</Option>
+          <Option value={2}>2</Option>
+          <Option value={3}>3</Option>
+          <Option value={4}>4</Option>
+          <Option value={5}>5</Option>
+          <Option value={6}>6</Option>
+          <Option value={7}>7</Option>
+          <Option value={8}>8</Option>
+          <Option value={9}>9</Option>
+          <Option value={10}>10</Option>
+        </Select>
+      </Form.Item>
+
+      <Form.Item<ITicketData>
+        label="Price per ticket"
+        name="ticketPrice"
+        style={{ marginBottom: "8px" }}
+      >
+        <InputNumber
+          value={pricePerTicket}
+          style={{ width: "100%" }}
+          min={0}
+          precision={2}
+          step={0.01}
           formatter={(value) =>
             `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
           }
           parser={(value) => value?.replace(/\₦\s?|(,*)/g, "") as any}
           disabled={ticketType === TICKET_TYPE.FREE}
+          readOnly={true}
         />
       </Form.Item>
 
@@ -294,12 +367,12 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
         content={"Ticket description"}
         styles={{ fontWeight: "bold !important" }}
       />
-      <Form.Item className="mb-3 pb-16 w-full mt-3">
+      <div className="mb-3 pb-16 w-full mt-3">
         <EmailEditor
-          initialValue="<p>Enter ticket description!</p>"
+          initialValue={ticketDetails?.ticketDescription}
           onChange={handleEditorChange}
         />
-      </Form.Item>
+      </div>
 
       <Form.Item
       
@@ -362,10 +435,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
                         />
                       </div>
                     </Form.Item>
-                    <Form.Item
-                      name="isCompulsory"
-                      style={{ marginBottom: "8px" }}
-                    >
+                    <Form.Item style={{ marginBottom: "8px" }}>
                       <Checkbox
                         checked={compulsory}
                         onChange={(e) =>
@@ -405,16 +475,6 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
           type="primary"
           size={"large"}
           htmlType="submit"
-          onClick={() => {
-            form.validateFields().then(values => {
-              onFinish(values);
-              setInterval(() => {
-                onOk && onOk();
-              }, 2000)
-            }).catch(errorInfo => {
-              onFinishFailed(errorInfo);
-            });
-          }}
           className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
         >
           Add Ticket
@@ -424,4 +484,4 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
   );
 };
 
-export default SingleTicket;
+export default EditCollectiveTicket;

@@ -4,24 +4,27 @@ import React from "react";
 import { Heading5 } from "../typography/Typography";
 import SingleTicket from "./SingleTicket";
 import EditSingleTicket from "./EditSingleTicket";
+import EditCollectiveTicket from "./EditCollectiveTicket";
 
-const UpdateTicket = ({ open, onCancel, onOk, id }: IModal): JSX.Element => {
-
+const UpdateTicket = ({
+  open,
+  onCancel,
+  onOk,
+  id,
+  ticketEntity,
+}: IModal): JSX.Element => {
   // console.log(id)
   // const { id } = data;
- 
+
   // Function to handle the update button click
   const handleUpdate = () => {
-
-    message.success('Ticket updated successfully'); // Success message
+    // message.success('Ticket updated successfully'); // Success message
     onOk(); // Call onOk to perform any additional actions
   };
 
   return (
     <Modal
-      title={
-        <Heading5 content={"Update Ticket"} className="" />
-      }
+      title={<Heading5 content={"Update Ticket"} className="" />}
       open={open}
       onCancel={onCancel}
       // footer={
@@ -46,7 +49,11 @@ const UpdateTicket = ({ open, onCancel, onOk, id }: IModal): JSX.Element => {
       //   </div>
       // }
     >
-      <EditSingleTicket onCancel={onCancel} id={id} />
+      {ticketEntity === "SINGLE" ? (
+        <EditSingleTicket onCancel={onCancel} id={id} />
+      ) : (
+        <EditCollectiveTicket onCancel={onCancel} id={id} />
+      )}
     </Modal>
   );
 };

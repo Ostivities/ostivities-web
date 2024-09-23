@@ -106,6 +106,13 @@ export class API_SERVICE {
     });
   }
 
+  static async _addEventToDiscovery(id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/events/add_to_discovery/${id}`,
+      method: HttpMethod.PUT,
+    });
+  }
+
   static async _createTicket(data: ITicketCreate): Promise<AxiosResponse> {
     return await instance({
       url: `/ticket/create_ticket`,

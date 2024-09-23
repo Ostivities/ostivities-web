@@ -32,7 +32,7 @@ interface SingleTicketProps {
   id: string ;     // Optional object with properties of type ITicketData
 }
 
-const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, id }) => {  
+const EditSingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, id }) => {  
   const [form] = Form.useForm();
   const [cookies, setCookie, removeCookie] = useCookies(["ticket_id"]);
   const { updateTicket } = useUpdateTicket();
@@ -310,7 +310,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, id }) => {
       />
       <Form.Item className="mb-3 pb-16 w-full mt-3">
         <EmailEditor
-          initialValue="<p>Enter ticket description!</p>"
+          initialValue={ticketDetails?.ticketDescription}
           onChange={handleEditorChange}
         />
       </Form.Item>
@@ -428,4 +428,4 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, id }) => {
   );
 };
 
-export default SingleTicket;
+export default EditSingleTicket;

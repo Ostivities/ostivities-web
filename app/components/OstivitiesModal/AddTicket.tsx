@@ -78,6 +78,9 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
                   setActive("Single Ticket");
                   setShow(false);
                 }}
+                onOk={() => {
+                  onOk();
+                }}
               />
             ) : (
               <CollectiveTicket
@@ -85,6 +88,9 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
                   setTracker("showTracker");
                   setActive("Collective Ticket");
                   setShow(false);
+                }}
+                onOk={() => {
+                  onOk();
                 }}
               />
             )}

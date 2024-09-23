@@ -18,12 +18,12 @@ import { useProfile } from "@/app/hooks/auth/auth.hook";
 import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
 
 const { Option } = Select;
+interface CollectiveTicketProps {
+  onCancel?: () => void;  // Optional function with no parameters and no return value
+  onOk?: () => void;      // Optional function with no parameters and no return value
+}
 
-const CollectiveTicket = ({
-  onCancel,
-}: {
-  onCancel?: () => void;
-}): JSX.Element => {
+const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) => {  
   const { createTicket } = useCreateTicket();
   const { profile } = useProfile();
   const params = useParams<{ id: string }>();
@@ -44,15 +44,15 @@ const CollectiveTicket = ({
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
-  const pathname = usePathname()
-  console.log(pathname)
+  // const pathname = usePathname()
+  // console.log(pathname)
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form); // Watch ticketType changes
   const groupPrice: number = Form.useWatch("groupPrice", form);
   const groupSize: number = Form.useWatch("groupSize", form);
   const guestAsChargeBearer = Form.useWatch("guestAsChargeBearer", form);
 
-  console.log(groupPrice, groupSize);
+  // console.log(groupPrice, groupSize);
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ...rest } = values;
@@ -84,7 +84,6 @@ const CollectiveTicket = ({
           };
         }
       );
-      console.log("here");
 
       const payload: ITicketCreate = {
         ...rest,
@@ -94,7 +93,7 @@ const CollectiveTicket = ({
         ticketEntity: "COLLECTIVE",
         user: profile?.data?.data?.data?.id,
       };
-      console.log(payload, "kk");
+      // console.log(payload, "kk");
 
       // make api call here
 
@@ -105,7 +104,9 @@ const CollectiveTicket = ({
           form.resetFields();
           // linkRef.current?.click();
           router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
-          onCancel
+          setInterval(() => {
+            onOk && onOk();
+          }, 3000)
         }
       }
     }
@@ -113,7 +114,7 @@ const CollectiveTicket = ({
       ...rest,
       ticketDescription: editorContent,
       event: params?.id,
-      ticketEntity: "SINGLE",
+      ticketEntity: "COLLECTIVE",
       user: profile?.data?.data?.data?.id,
     };
     if (payload) {
@@ -123,7 +124,9 @@ const CollectiveTicket = ({
         form.resetFields();
         // linkRef.current?.click();
         router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
-        onCancel
+        setInterval(() => {
+          onOk && onOk();
+        }, 3000)
       }
     }
   };
@@ -157,12 +160,13 @@ const CollectiveTicket = ({
 
   useEffect(() => {
     if (groupPrice !== null && groupSize !== null) {
-      setPricePerTicket(groupPrice / groupSize);
+      const price = (groupPrice / groupSize).toFixed(2);
+      setPricePerTicket(parseFloat(price));
       const price_per_ticket = pricePerTicket
       if(price_per_ticket) {
         form.setFieldValue("ticketPrice", price_per_ticket)
       }
-      console.log(pricePerTicket)
+      // console.log(pricePerTicket)
     } else if( groupPrice === 0 && groupPrice === null) {
       form.setFieldValue('ticketPrice', "")
     }
@@ -207,7 +211,7 @@ const CollectiveTicket = ({
     <Form<ITicketData>
       form={form} // Bind form instance
       name="basic"
-      initialValues={{ remember: true }}
+      initialValues={{ remember: true, guestAsChargeBearer: true }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
@@ -305,8 +309,10 @@ const CollectiveTicket = ({
           value={pricePerTicket}
           style={{ width: "100%" }}
           min={0}
+          precision={2}
+          step={0.01}
           formatter={(value) =>
-            `₦ ${value}`.replace(/\B(?=(\d{3})+(?!d))/g, ",")
+            `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
           }
           parser={(value) => value?.replace(/\₦\s?|(,*)/g, "") as any}
           disabled={ticketType === TICKET_TYPE.FREE}
@@ -353,7 +359,7 @@ const CollectiveTicket = ({
           valuePropName="checked"
           noStyle
         >
-          <Checkbox defaultChecked={true} style={{ marginRight: "20px" }}>
+          <Checkbox style={{ marginRight: "20px" }}>
             Transfer charge fees to guest
           </Checkbox>
         </Form.Item>
