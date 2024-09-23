@@ -4,27 +4,28 @@ import { IModal } from "@/app/utils/interface";
 import { Button, message, Modal, Space } from "antd";
 import React from "react";
 import { Paragraph } from "../typography/Typography";
-import { useDeleteTicket, useGetSingleTicket } from "@/app/hooks/ticket/ticket.hook";
+import { useDeleteTicket, useGetSingleTicket, useCreateTicket } from "@/app/hooks/ticket/ticket.hook";
 import { useCookies } from "react-cookie";
 
-const DeleteTicket = ({ open, onCancel, onOk, actionType, id }: IModal) => {
+const DeleteTicket = ({ open, onCancel, onOk, actionType, id, data }: IModal) => {
   const [cookies, setCookie] = useCookies(["ticket_id"]);
   const { deleteTicket } = useDeleteTicket();
+  const { createTicket } = useCreateTicket();
   // console.log(id)
 
-  const handleDeleteClick = () => {
-    const response = deleteTicket.mutateAsync(id);
-    // console.log(response)
-    setInterval(() => onOk(), 3000)
-     // Close the modal
-    // if (response[Symbol] === "success") {
-    // message.success('Entry deleted successfully'); // Success message for delete
-    // }
+  const handleDeleteClick = async () => {
+    const response = await deleteTicket.mutateAsync(id);
+    if (response.status === 200) {
+      onOk()
+    }
   };
 
-  const handleDuplicateClick = () => {
-    message.success('Entry duplicated successfully'); // Success message for duplicate
-    onCancel(); // Close the modal 
+  const handleDuplicateClick = async () => {
+    const response = await createTicket.mutateAsync(data);
+    if(response.status === 200) {
+      message.success('Entry duplicated successfully'); // Success message for duplicate
+      onOk(); // Close the modal 
+    }
   };
 
   return (

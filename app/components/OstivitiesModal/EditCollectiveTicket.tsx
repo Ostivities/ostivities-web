@@ -58,7 +58,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
 
 
   const ticketDetails = getSingleTicket?.data?.data?.data;
-  console.log(ticketDetails?.ticketDescription);
+  // console.log(ticketDetails?.ticketDescription);
   useEffect(() => {
     if (ticketDetails){
       form.setFieldsValue({
@@ -367,11 +367,16 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         content={"Ticket description"}
         styles={{ fontWeight: "bold !important" }}
       />
-      <div className="mb-3 pb-16 w-full mt-3">
-        <EmailEditor
-          initialValue={ticketDetails?.ticketDescription}
-          onChange={handleEditorChange}
-        />
+      <div
+        className="mb-9 pb-16 w-full"
+        style={{ marginBottom: "20px", marginTop: "10px" }}
+      >  
+        {getSingleTicket.isSuccess === true && (
+          <EmailEditor
+            initialValue={`${ticketDetails?.ticketDescription}`}
+            onChange={handleEditorChange}
+          />
+        )} 
       </div>
 
       <Form.Item

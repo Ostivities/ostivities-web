@@ -34,7 +34,7 @@ const EventTicketTable = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isShown, setIsShown] = useState(false);
   const [actionType, setActionType] = useState<"delete" | "warning">();
-  const [cookies, setCookie, removeCookie] = useCookies(["ticket_id",]);
+  // const [cookies, setCookie, removeCookie] = useCookies(["ticket_id",]);
   const params = useParams<{ id: string }>();
   const [selectedTicket, setSelectedTicket] = useState<string | undefined>("");
   const [selectedTicketEntity, setSelectedTicketEntity] = useState<string | undefined>("");
@@ -207,7 +207,8 @@ const EventTicketTable = () => {
           handleActionSuccess();
         }}
         actionType={actionType}
-        id={selectedTicket} 
+        id={selectedTicket}
+        data={data} 
       />
 
       <Space direction="vertical" size="large" style={{ width: "100%" }}>

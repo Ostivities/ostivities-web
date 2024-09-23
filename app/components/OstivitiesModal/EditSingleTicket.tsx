@@ -308,12 +308,17 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, id }) =
         content={"Ticket description"}
         styles={{ fontWeight: "bold !important" }}
       />
-      <Form.Item className="mb-3 pb-16 w-full mt-3">
-        <EmailEditor
-          initialValue={ticketDetails?.ticketDescription}
-          onChange={handleEditorChange}
-        />
-      </Form.Item><br /><br /><br />
+      <div
+        className="mb-9 pb-16 w-full"
+        style={{ marginBottom: "20px", marginTop: "10px" }}
+      >  
+        {getSingleTicket.isSuccess === true && (
+          <EmailEditor
+            initialValue={`${ticketDetails?.ticketDescription}`}
+            onChange={handleEditorChange}
+          />
+        )} 
+      </div>
 
 <Form.Item
 style={{ marginBottom: "24px", display: "flex", alignItems: "center", gap: "20px" }}

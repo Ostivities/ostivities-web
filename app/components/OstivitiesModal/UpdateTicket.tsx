@@ -50,9 +50,9 @@ const UpdateTicket = ({
       // }
     >
       {ticketEntity === "SINGLE" ? (
-        <EditSingleTicket onCancel={onCancel} id={id} />
+        <EditSingleTicket onCancel={onCancel} id={id} onOk={onOk} />
       ) : (
-        <EditCollectiveTicket onCancel={onCancel} id={id} />
+        <EditCollectiveTicket onCancel={onCancel} id={id} onOk={onOk} />
       )}
     </Modal>
   );

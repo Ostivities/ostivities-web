@@ -3,7 +3,7 @@ import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import { Button } from "antd";
 import Image from "next/image";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { Heading5 } from "../components/typography/Typography";
+import { Heading5 } from "../../../../components/typography/Typography";
 import PublishSuccess from "@/app/components/OstivitiesModal/PublishSuccessModal";
 import CantPublish from "@/app/components/OstivitiesModal/CantPublishModal";
 import { useState } from "react";
@@ -12,7 +12,7 @@ import { useProfile } from "@/app/hooks/auth/auth.hook";
 import { useCookies } from "react-cookie";
 
 import React from "react";
-import { dateFormat, timeFormat } from "../utils/helper";
+import { dateFormat, timeFormat } from "../../../../utils/helper";
 import Link from "next/link";
 
 export default function PublishEvent(): JSX.Element {
@@ -42,7 +42,7 @@ export default function PublishEvent(): JSX.Element {
     setIsModalOpen(true);
     // if (response.) {
     // }
-  }
+  };
 
   const socialLinks = eventDetails?.socials;
   const twitterLink = socialLinks?.find(
@@ -77,13 +77,13 @@ export default function PublishEvent(): JSX.Element {
       <DashboardLayout title={title} isLoggedIn>
         <section>
           <div className="flex gap-12">
-          <div className="relative w-[400px] h-[550px] rounded-[3.125rem] overflow-hidden">
-          <Image
-            src={eventDetails?.eventImage}
-            alt="Event Image"
-            fill
-            style={{ objectFit: "cover" }}
-            className=""
+            <div className="relative w-[400px] h-[550px] rounded-[3.125rem] overflow-hidden">
+              <Image
+                src={eventDetails?.eventImage}
+                alt="Event Image"
+                fill
+                style={{ objectFit: "cover" }}
+                className=""
               />
               <div className="absolute inset-0 bg-image-card"></div>
             </div>
@@ -142,11 +142,11 @@ export default function PublishEvent(): JSX.Element {
                       Location
                     </div>
                     <div
-                     style={{
-                      maxWidth: '190px', // Adjust this value as needed
-                      wordWrap: 'break-word', // Ensures long words wrap to the next line
-                      overflowWrap: 'break-word' // Adds further wrapping behavior for better browser support
-                    }}
+                      style={{
+                        maxWidth: "190px", // Adjust this value as needed
+                        wordWrap: "break-word", // Ensures long words wrap to the next line
+                        overflowWrap: "break-word", // Adds further wrapping behavior for better browser support
+                      }}
                     >
                       <a
                         href="https://maps.app.goo.gl/jBmgQ5EFxngj2ffS6"

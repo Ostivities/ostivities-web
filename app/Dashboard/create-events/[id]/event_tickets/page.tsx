@@ -121,7 +121,7 @@ function CreateTicketPage(): JSX.Element {
               size="large"
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
               onClick={() => {
-                router.push("/publish-events");
+                router.push(`/Dashboard/create-events/${params?.id}/publish-events`);
               }}
             >
               Save & continue
