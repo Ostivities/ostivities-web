@@ -313,28 +313,22 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, id }) =
           initialValue={ticketDetails?.ticketDescription}
           onChange={handleEditorChange}
         />
-      </Form.Item>
+      </Form.Item><br /><br /><br />
 
-      <Form.Item
-      
-        style={{ marginBottom: "24px", display: "flex", alignItems: "center" }}
-      >
-        <Form.Item<ITicketData>
-          name="guestAsChargeBearer"
-          valuePropName="checked"
-          noStyle
-        >
-          <Checkbox style={{ marginRight: "20px" }}>
-            Transfer charge fees to guest
-          </Checkbox>
-        </Form.Item>
-        <Form.Item>
-          <Checkbox onChange={(e) => setShowAdditionalField(e.target.checked)}>
-            Enable additional information
-          </Checkbox>
-        </Form.Item>
-      </Form.Item>
-
+<Form.Item
+style={{ marginBottom: "24px", display: "flex", alignItems: "center", gap: "20px" }}
+>
+<Form.Item<ITicketData> name="guestAsChargeBearer" valuePropName="checked" noStyle>
+<Checkbox style={{ marginRight: "10px" }}>
+Transfer charge fees to guest
+</Checkbox>
+</Form.Item>
+<Form.Item noStyle>
+<Checkbox onChange={(e) => setShowAdditionalField(e.target.checked)}>
+Enable additional information
+</Checkbox>
+</Form.Item>
+</Form.Item>
       {showAdditionalField && (
         <Form.Item<ITicketData>
           style={{ marginBottom: "24px" }}
@@ -420,8 +414,9 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, id }) =
           size={"large"}
           htmlType="submit"
           className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
+          style={{ width: '150px' }}
         >
-          Add Ticket
+          Update Ticket
         </Button>
       </div>
     </Form>

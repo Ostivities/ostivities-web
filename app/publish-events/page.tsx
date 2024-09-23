@@ -17,7 +17,13 @@ import Link from "next/link";
 
 export default function PublishEvent(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [cookies, setCookie, removeCookie] = useCookies(["event_id"]);
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "event_id",
+    "form_stage",
+    "stage_one",
+    "stage_two",
+    "stage_three",
+  ]);
   const pathname = usePathname();
   const params = useParams<{ id: string }>();
   const router = useRouter();
@@ -71,13 +77,13 @@ export default function PublishEvent(): JSX.Element {
       <DashboardLayout title={title} isLoggedIn>
         <section>
           <div className="flex gap-12">
-            <div className="relative w-fit rounded-[3.125rem] overflow-hidden">
-              <Image
-                src={eventDetails?.eventImage}
-                alt=""
-                height={520}
-                width={370}
-                className=""
+          <div className="relative w-[400px] h-[550px] rounded-[3.125rem] overflow-hidden">
+          <Image
+            src={eventDetails?.eventImage}
+            alt="Event Image"
+            fill
+            style={{ objectFit: "cover" }}
+            className=""
               />
               <div className="absolute inset-0 bg-image-card"></div>
             </div>
@@ -98,7 +104,7 @@ export default function PublishEvent(): JSX.Element {
                       Date
                     </div>
                     <div>
-                      {dateFormat(eventDetails?.startDate)},{" "}
+                      {dateFormat(eventDetails?.startDate)} -{" "}
                       {dateFormat(eventDetails?.endDate)}
                     </div>
                   </div>
@@ -122,7 +128,7 @@ export default function PublishEvent(): JSX.Element {
                     </div>
                   </div>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-3 items-center">
                   <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
                     <Image
                       src="/icons/location.svg"
@@ -136,11 +142,11 @@ export default function PublishEvent(): JSX.Element {
                       Location
                     </div>
                     <div
-                      style={{
-                        width: "190px",
-                        whiteSpace: "normal",
-                        wordWrap: "break-word",
-                      }}
+                     style={{
+                      maxWidth: '190px', // Adjust this value as needed
+                      wordWrap: 'break-word', // Ensures long words wrap to the next line
+                      overflowWrap: 'break-word' // Adds further wrapping behavior for better browser support
+                    }}
                     >
                       <a
                         href="https://maps.app.goo.gl/jBmgQ5EFxngj2ffS6"
@@ -179,8 +185,8 @@ export default function PublishEvent(): JSX.Element {
                       <Image
                         src="/icons/phone.svg"
                         alt=""
-                        height={30}
-                        width={30}
+                        height={25}
+                        width={25}
                       />
                     </div>
                     <div>
@@ -265,8 +271,7 @@ export default function PublishEvent(): JSX.Element {
                 </div>
               </div>
               <div
-                className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-5"
-                style={{ marginTop: "150px" }}
+                className="font-BricolageGrotesqueRegular flex-1 h-fit px-1"
                 dangerouslySetInnerHTML={{
                   __html: eventDetails?.eventDetails as string,
                 }}

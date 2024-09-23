@@ -75,7 +75,7 @@ const EventPageAppearance: React.FC = () => {
           }
         }
         setLoader(false);
-      } catch (error) {}
+      } catch (error) { }
     },
     async onChange(info) {
       if (info.file.status !== "uploading") {
@@ -104,19 +104,19 @@ const EventPageAppearance: React.FC = () => {
   const validateFile = (file: { type: string; size: number; }) => {
     const isAllowedFormat = ['image/png', 'image/jpeg', 'image/gif'].includes(file.type);
     const isBelowSizeLimit = file.size / 1024 / 1024 < 10; // Convert file size to MB
-  
+
     if (!isAllowedFormat) {
       message.error('Only PNG, JPEG, and GIF files are allowed.');
     }
-  
+
     if (!isBelowSizeLimit) {
       message.error('File must be smaller than 10MB.');
     }
-  
+
     return isAllowedFormat && isBelowSizeLimit;
   };
-  
-  
+
+
   return (
     <Flex vertical gap={48} style={{ width: "100%" }}>
       <Flex
@@ -164,48 +164,48 @@ const EventPageAppearance: React.FC = () => {
             className=""
           />
           <div className="absolute inset-0 bg-image-card"></div>
-  <Upload
-    className="absolute top-2 right-2 z-10"
-    {...props}
-    beforeUpload={(file) => validateFile(file)} // Add validation check here
-  >
-    <button
-      className="bg-white p-4 rounded-full shadow flex items-center justify-center relative"
-      disabled={loader}
-    >
-      {loader ? (
-        // Replace this with your actual loader component
-        <svg
-          className="animate-spin h-6 w-6 text-red-600"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle
-            className="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            strokeWidth="4"
-          ></circle>
-          <path
-            className="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.964 7.964 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-          ></path>
-        </svg>
-      ) : (
-        <CameraFilled
-          style={{
-            fontSize: '24px',
-            color: '#e20000',
-            background: 'none',
-          }}
-        />
-      )}
-    </button>
-  </Upload>
+          <Upload
+            className="absolute top-2 right-2 z-10"
+            {...props}
+            beforeUpload={(file) => validateFile(file)} // Add validation check here
+          >
+            <button
+              className="bg-white p-4 rounded-full shadow flex items-center justify-center relative"
+              disabled={loader}
+            >
+              {loader ? (
+                // Replace this with your actual loader component
+                <svg
+                  className="animate-spin h-6 w-6 text-red-600"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.964 7.964 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+              ) : (
+                <CameraFilled
+                  style={{
+                    fontSize: '24px',
+                    color: '#e20000',
+                    background: 'none',
+                  }}
+                />
+              )}
+            </button>
+          </Upload>
 
         </div>
         <div className="py-8">
@@ -244,7 +244,7 @@ const EventPageAppearance: React.FC = () => {
                 </div>
               </div>
             </div>
-            {/* Location 1 */}
+            {/* Location */}
             <div className="flex gap-3 items-center">
               <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
                 <Image
@@ -258,11 +258,20 @@ const EventPageAppearance: React.FC = () => {
                 <div className="text-sm" style={{ fontWeight: 600 }}>
                   Location
                 </div>
-                <div>{eventDetails?.address}</div>
+                <div
+                  style={{
+                    maxWidth: '250px', // Adjust this value as needed
+                    wordWrap: 'break-word', // Ensures long words wrap to the next line
+                    overflowWrap: 'break-word' // Adds further wrapping behavior for better browser support
+                  }}
+                >
+                  {eventDetails?.address}
+                </div>
               </div>
             </div>
 
-            {/* Location 2 */}
+
+            {/* Host */}
             <div className="flex gap-3 items-center">
               <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
                 <Image src="/icons/host.svg" alt="" height={30} width={30} />
@@ -283,148 +292,70 @@ const EventPageAppearance: React.FC = () => {
                   Contact Us
                 </div>
                 <div className="flex flex-wrap items-center space-x-2 mt-1">
-                {websiteLink && websiteLink?.url && (
-                        <Link
-                          href={websiteLink?.url}
-                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <Image
-                            src="/icons/link.svg"
-                            alt=""
-                            height={14}
-                            width={14}
-                          />
-                        </Link>
-                      )}
-                      {twitterLink && twitterLink?.url && (
-                        <Link
-                          href={twitterLink?.url}
-                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <Image
-                            src="/icons/x.svg"
-                            alt=""
-                            height={14}
-                            width={14}
-                          />
-                        </Link>
-                      )}
-                      {facebookLink && facebookLink?.url && (
-                        <Link
-                          href={facebookLink?.url}
-                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <Image
-                            src="/icons/facebook.svg"
-                            alt=""
-                            height={10}
-                            width={10}
-                          />
-                        </Link>
-                      )}
-                      {instagramLink && instagramLink?.url && (
-                        <Link
-                          href={instagramLink?.url}
-                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <Image
-                            src="/icons/instagram.svg"
-                            alt=""
-                            height={16}
-                            width={16}
-                          />
-                        </Link>
-                      )}
+                  {websiteLink && websiteLink?.url && (
+                    <Link
+                      href={websiteLink?.url}
+                      className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <Image
+                        src="/icons/link.svg"
+                        alt=""
+                        height={14}
+                        width={14}
+                      />
+                    </Link>
+                  )}
+                  {twitterLink && twitterLink?.url && (
+                    <Link
+                      href={twitterLink?.url}
+                      className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <Image
+                        src="/icons/x.svg"
+                        alt=""
+                        height={14}
+                        width={14}
+                      />
+                    </Link>
+                  )}
+                  {facebookLink && facebookLink?.url && (
+                    <Link
+                      href={facebookLink?.url}
+                      className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <Image
+                        src="/icons/facebook.svg"
+                        alt=""
+                        height={10}
+                        width={10}
+                      />
+                    </Link>
+                  )}
+                  {instagramLink && instagramLink?.url && (
+                    <Link
+                      href={instagramLink?.url}
+                      className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <Image
+                        src="/icons/instagram.svg"
+                        alt=""
+                        height={16}
+                        width={16}
+                      />
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
-            {twitterLink?.url ||
-            instagramLink?.url ||
-            websiteLink?.url ||
-            facebookLink?.url ? (
-              <div className="flex gap-3 items-center">
-                <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
-                  <Image src="/icons/phone.svg" alt="" height={30} width={30} />
-                </div>
-                <div>
-                  <div className="text-sm" style={{ fontWeight: 600 }}>
-                    Contact Us
-                  </div>
-                  <div className="flex items-center gap-4 mt-1">
-                    <div className="flex items-center mt-1" style={{ gap: 6 }}>
-                      {websiteLink && websiteLink?.url && (
-                        <Link
-                          href={websiteLink?.url}
-                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <Image
-                            src="/icons/link.svg"
-                            alt=""
-                            height={14}
-                            width={14}
-                          />
-                        </Link>
-                      )}
-                      {twitterLink && twitterLink?.url && (
-                        <Link
-                          href={twitterLink?.url}
-                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <Image
-                            src="/icons/x.svg"
-                            alt=""
-                            height={14}
-                            width={14}
-                          />
-                        </Link>
-                      )}
-                      {facebookLink && facebookLink?.url && (
-                        <Link
-                          href={facebookLink?.url}
-                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <Image
-                            src="/icons/facebook.svg"
-                            alt=""
-                            height={10}
-                            width={10}
-                          />
-                        </Link>
-                      )}
-                      {instagramLink && instagramLink?.url && (
-                        <Link
-                          href={instagramLink?.url}
-                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <Image
-                            src="/icons/instagram.svg"
-                            alt=""
-                            height={16}
-                            width={16}
-                          />
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : null}
+
           </div>
         </div>
         <div
