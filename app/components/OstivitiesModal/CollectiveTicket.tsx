@@ -342,7 +342,7 @@ const CollectiveTicket = ({
           initialValue="<p>Enter ticket description!</p>"
           onChange={handleEditorChange}
         />
-      </Form.Item>
+      </Form.Item><br /><br /><br /><br />
 
       <Form.Item
   style={{ marginBottom: "24px", display: "flex", alignItems: "center", gap: "20px" }}
