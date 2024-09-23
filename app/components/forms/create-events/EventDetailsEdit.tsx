@@ -45,6 +45,7 @@ import {
   Select,
   Space,
   Upload,
+  UploadFile,
   UploadProps,
 } from "antd";
 import axios from "axios";
@@ -74,6 +75,7 @@ function EventDetailsEdit(): JSX.Element {
   const [formStep, setFormStep] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
   const { updateEvent } = useUpdateEvent();
   const { profile } = useProfile();
   const { createEvent } = useCreateEvent();
@@ -161,6 +163,8 @@ function EventDetailsEdit(): JSX.Element {
       setEditorContent(eventDetails?.eventDetails);
     }
   }, [eventDetails]);
+
+ // const handleUploadChange =
 
   const props: UploadProps = {
     name: "image",
@@ -606,7 +610,7 @@ function EventDetailsEdit(): JSX.Element {
             />
 
             <Space direction="vertical" size="small">
-              <Controller
+            <Controller
                 name="eventDocument"
                 control={control}
                 render={({ field }) => (
@@ -630,9 +634,6 @@ function EventDetailsEdit(): JSX.Element {
                           borderBottomRightRadius: "0px !important",
                         }}
                         placeholder="Enter file name (optional)"
-                        defaultValue={
-                          eventDetails?.supportingDocument?.fileName
-                        }
                       />
                       <Upload className="upload-button" {...props}>
                         <Button
@@ -649,18 +650,30 @@ function EventDetailsEdit(): JSX.Element {
                       many others. *Only JPEG, PNG & PDF Allowed and file size
                       should not be more than 10MB.
                     </span>
-                    {Array.isArray(field.value) && field.value.length > 0 && (
+                    {fileList.length > 0 && (
                       <div className="font-BricolageGrotesqueLight text-xs text-gray-400">
-                        Uploaded File:
+                        Uploaded Files: {" "}
                         <Space>
-                          <span>{field.value[0].name}</span>
-                          <DeleteOutlined
-                            style={{
-                              color: "#e20000",
-                              cursor: "pointer",
-                            }}
-                            onClick={() => field.onChange([])} // Clear the uploaded file
-                          />
+                          {fileList.map((file) => (
+                            <Space key={file.uid}>
+                              <span>{file.name}</span>
+                              <DeleteOutlined
+                                style={{
+                                  color: "#e20000",
+                                  cursor: "pointer",
+                                  marginLeft: "8px",
+                                }}
+                                onClick={() => {
+                                  setFileList(
+                                    fileList.filter(
+                                      (item) => item.uid !== file.uid
+                                    )
+                                  );
+                                  setValue("eventDocument", ""); // Clear the field value
+                                }}
+                              />
+                            </Space>
+                          ))}
                         </Space>
                       </div>
                     )}

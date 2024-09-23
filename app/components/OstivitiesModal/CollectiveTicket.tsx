@@ -337,32 +337,27 @@ const CollectiveTicket = ({
         content={"Ticket description"}
         styles={{ fontWeight: "bold !important" }}
       />
-      <div className="mb-3 pb-16 w-full mt-3">
+      <Form.Item className="mb-3 pb-16 w-full mt-3">
         <EmailEditor
           initialValue="<p>Enter ticket description!</p>"
           onChange={handleEditorChange}
         />
-      </div>
+      </Form.Item>
 
       <Form.Item
-      
-        style={{ marginBottom: "24px", display: "flex", alignItems: "center" }}
-      >
-        <Form.Item<ITicketData>
-          name="guestAsChargeBearer"
-          valuePropName="checked"
-          noStyle
-        >
-          <Checkbox defaultChecked={true} style={{ marginRight: "20px" }}>
-            Transfer charge fees to guest
-          </Checkbox>
-        </Form.Item>
-        <Form.Item>
-          <Checkbox onChange={(e) => setShowAdditionalField(e.target.checked)}>
-            Enable additional information
-          </Checkbox>
-        </Form.Item>
-      </Form.Item>
+  style={{ marginBottom: "24px", display: "flex", alignItems: "center", gap: "20px" }}
+>
+  <Form.Item<ITicketData> name="guestAsChargeBearer" valuePropName="checked" noStyle>
+    <Checkbox style={{ marginRight: "10px" }}>
+      Transfer charge fees to guest
+    </Checkbox>
+  </Form.Item>
+  <Form.Item noStyle>
+    <Checkbox onChange={(e) => setShowAdditionalField(e.target.checked)}>
+      Enable additional information
+    </Checkbox>
+  </Form.Item>
+</Form.Item>
 
       {showAdditionalField && (
         <Form.Item<ITicketData>

@@ -54,8 +54,25 @@ function CreateTicketPage(): JSX.Element {
               />
             </Space>
           </div>
+          <Button 
+            type="default"
+            size={"large"}
+            className="font-BricolageGrotesqueSemiBold button-style sign-in cursor-pointer font-bold float-end place-self-end"
+            style={{ width: "150px" }}
+            onClick={() => {
+              setCookie("stage_one", "process");
+              setCookie("stage_two", "process");
+              setCookie("stage_three", "wait");
+              router.push(
+                `/Dashboard/create-events/${params?.id}/event_appearance`
+              );
+            }}
+          >
+            Back
+          </Button>
         </Flex>
         <div className="w-full mx-auto flex flex-col space-y-5 py-6">
+        <br /><br />
           <EventTicketTable />
           <Space className="flex flex-row justify-center space-x-4 mt-8">
             <Button
