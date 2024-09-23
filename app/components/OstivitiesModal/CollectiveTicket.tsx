@@ -13,7 +13,7 @@ import {
 import React, { useEffect, useState } from "react";
 import EmailEditor from "../QuillEditor/EmailEditor";
 import { ITicketCreate, ITicketData } from "@/app/utils/interface";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { useProfile } from "@/app/hooks/auth/auth.hook";
 import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
 
@@ -44,7 +44,8 @@ const CollectiveTicket = ({
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
-
+  const pathname = usePathname()
+  console.log(pathname)
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form); // Watch ticketType changes
   const groupPrice: number = Form.useWatch("groupPrice", form);
@@ -103,8 +104,26 @@ const CollectiveTicket = ({
           console.log(response);
           form.resetFields();
           // linkRef.current?.click();
-          // router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+          router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+          onCancel
         }
+      }
+    }
+    const payload: ITicketCreate = {
+      ...rest,
+      ticketDescription: editorContent,
+      event: params?.id,
+      ticketEntity: "SINGLE",
+      user: profile?.data?.data?.data?.id,
+    };
+    if (payload) {
+      const response = await createTicket.mutateAsync(payload);
+      if (response.status === 201) {
+        console.log(response);
+        form.resetFields();
+        // linkRef.current?.click();
+        router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+        onCancel
       }
     }
   };
@@ -159,6 +178,13 @@ const CollectiveTicket = ({
     }
   }, [guestAsChargeBearer]);
 
+  useEffect(() => {
+    if (ticketStock === TICKET_STOCK.UNLIMITED) {
+      form.setFieldsValue({ ticketStock: TICKET_STOCK.UNLIMITED });
+    } else {
+      form.setFieldsValue({ ticketStock: TICKET_STOCK.LIMITED });
+    }
+  }, [ticketStock]);
 
   // const handleGroupPriceChange = (value: number | null) => {
   //   setGroupPrice(value);
@@ -224,6 +250,7 @@ const CollectiveTicket = ({
           placeholder={
             ticketStock === TICKET_STOCK.UNLIMITED ? "∞" : "Enter ticket stock"
           }
+          style={{ width: "100%" }}
           disabled={ticketStock === TICKET_STOCK.UNLIMITED}
         />
       </Form.Item>

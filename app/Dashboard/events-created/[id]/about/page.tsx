@@ -72,7 +72,7 @@ const AboutEvent = () => {
     return errorInfo;
   };
   const eventDetails = getUserEvent?.data?.data?.data;
-
+  console.log(eventDetails)
   const {
     handleSubmit,
     control,

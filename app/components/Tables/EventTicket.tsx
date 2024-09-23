@@ -36,11 +36,12 @@ const EventTicketTable = () => {
   const [actionType, setActionType] = useState<"delete" | "warning">();
   const [cookies, setCookie, removeCookie] = useCookies(["ticket_id",]);
   const params = useParams<{ id: string }>();
+  const [selectedTicket, setSelectedTicket] = useState<string | undefined>("");
 
   const { getTickets } = useGetEventTickets(params?.id);
   const ticketData = getTickets?.data?.data?.data;
-  console.log(ticketData)
-  console.log(ticketData?.event?.eventName,)
+  // console.log(ticketData)
+  // console.log(ticketData?.event?.eventName,)
 
   interface MenuItemType {
     label: React.ReactNode;
@@ -54,7 +55,11 @@ const EventTicketTable = () => {
           type="link"
           className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           style={{ color: "#000000", fontFamily: "BricolageGrotesqueRegular" }}
-          onClick={() => setIsOpen(true)}
+          onClick={(e) => {
+            // console.log(e)
+            // setSelectedTicket(e);  // Set the selected ticket's data here
+            setIsOpen(true);
+          }}
         >
           Edit
         </Button>
@@ -98,7 +103,7 @@ const EventTicketTable = () => {
 
   const handleMenuClick = (key: string) => {
     // Handle menu item clicks
-    console.log("Clicked on:", key);
+    // console.log("Clicked on:", key);
   };
 
   const columns: ColumnsType<ITicketDetails> = [
@@ -171,7 +176,7 @@ const EventTicketTable = () => {
     };
   });
 
-  console.log(data)
+  // console.log(data)
 
   return (
     <React.Fragment>
@@ -184,12 +189,14 @@ const EventTicketTable = () => {
         open={isOpen}
         onCancel={() => setIsOpen(false)}
         onOk={() => setIsOpen(false)}
+        id={selectedTicket} 
       />
       <DeleteTicket
         open={isShown}
         onCancel={() => setIsShown(false)}
         onOk={() => setIsShown(false)}
         actionType={actionType}
+        id={selectedTicket} 
       />
 
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
@@ -209,6 +216,14 @@ const EventTicketTable = () => {
           rowSelection={{
             selectedRowKeys,
             onChange: (keys) => setSelectedRowKeys(keys),
+          }}
+          onRow={(record, rowIndex) => {
+            return {
+              onClick: () => {
+                // console.log(record)
+                setSelectedTicket(record?.key)
+              }, // click row
+            };
           }}
           columns={columns}
           dataSource={data}

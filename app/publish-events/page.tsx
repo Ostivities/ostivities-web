@@ -7,7 +7,7 @@ import { Heading5 } from "../components/typography/Typography";
 import PublishSuccess from "@/app/components/OstivitiesModal/PublishSuccessModal";
 import CantPublish from "@/app/components/OstivitiesModal/CantPublishModal";
 import { useState } from "react";
-import { useGetUserEvent } from "@/app/hooks/event/event.hook";
+import { useGetUserEvent, usePublishEvent } from "@/app/hooks/event/event.hook";
 import { useProfile } from "@/app/hooks/auth/auth.hook";
 import { useCookies } from "react-cookie";
 
@@ -22,6 +22,7 @@ export default function PublishEvent(): JSX.Element {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const { profile } = useProfile();
+  const { publishEvent } = usePublishEvent();
   const userFullName =
     profile?.data?.data?.data?.firstName +
     " " +
@@ -29,6 +30,13 @@ export default function PublishEvent(): JSX.Element {
 
   const { getUserEvent } = useGetUserEvent(params?.id || cookies.event_id);
   const eventDetails = getUserEvent?.data?.data?.data;
+
+  const handlePublishEvent = () => {
+    const response = publishEvent.mutateAsync(params?.id || cookies.event_id);
+    setIsModalOpen(true);
+    // if (response.) {
+    // }
+  }
 
   const socialLinks = eventDetails?.socials;
   const twitterLink = socialLinks?.find(
@@ -273,7 +281,7 @@ export default function PublishEvent(): JSX.Element {
                     fontFamily: "BricolageGrotesqueMedium",
                     float: "right",
                   }}
-                  onClick={() => setIsModalOpen(true)}
+                  onClick={handlePublishEvent}
                 >
                   Publish Event
                 </Button>

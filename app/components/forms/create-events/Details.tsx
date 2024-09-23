@@ -160,7 +160,7 @@ function Details(): JSX.Element {
     showUploadList: false,
     fileList,
   };
-  console.log(fileList);
+  // console.log(fileList);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     const {

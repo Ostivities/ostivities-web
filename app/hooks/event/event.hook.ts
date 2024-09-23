@@ -47,3 +47,18 @@ export const useUpdateEvent = () => {
   });
   return { updateEvent };
 };
+
+export const usePublishEvent = () => {
+  const publishEvent = useMutation({
+    mutationFn: (id: string) => {
+      return API_SERVICE._publishEvent(id);
+    },
+    onSuccess: (data: AxiosResponse) => {
+      successFormatter(data);
+    },
+    onError: (error: AxiosError | any) => {
+      errorFormatter(error);
+    },
+  });
+  return { publishEvent };
+};

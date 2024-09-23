@@ -1,6 +1,6 @@
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 import { useProfile } from "@/app/hooks/auth/auth.hook";
-import { useCreateTicket } from "@/app/hooks/ticket/ticket.hook";
+import { useUpdateTicket, useGetSingleTicket } from "@/app/hooks/ticket/ticket.hook";
 import {
   CloseOutlined,
   CloseSquareOutlined,
@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 
 import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
-import { ITicketCreate, ITicketData } from "@/app/utils/interface";
+import { ITicketUpdate, ITicketData } from "@/app/utils/interface";
 import {
   Button,
   Checkbox,
@@ -29,12 +29,15 @@ const { Option } = Select;
 interface SingleTicketProps {
   onCancel?: () => void;  // Optional function with no parameters and no return value
   onOk?: () => void;      // Optional function with no parameters and no return value
+  id: string ;     // Optional object with properties of type ITicketData
 }
 
-const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {  
+const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, id }) => {  
   const [form] = Form.useForm();
-  const { createTicket } = useCreateTicket();
+  const [cookies, setCookie, removeCookie] = useCookies(["ticket_id"]);
+  const { updateTicket } = useUpdateTicket();
   const { profile } = useProfile();
+  const { getSingleTicket } = useGetSingleTicket(id);
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const [additionalFields, setAdditionalFields] = useState<
@@ -47,12 +50,12 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
-  const [cookies, setCookies] = useCookies(["ticket_id",]);
+  // console.log(id)
 
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form);
   const guestAsChargeBearer = Form.useWatch("guestAsChargeBearer", form);
-  console.log(guestAsChargeBearer, "guestAsChargeBearer")
+  // console.log(guestAsChargeBearer, "guestAsChargeBearer")
    
   useEffect(() => {
     if (ticketStock === TICKET_STOCK.UNLIMITED) {
@@ -68,9 +71,24 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
     }
   }, [guestAsChargeBearer]);
 
+  const ticketDetails = getSingleTicket?.data?.data?.data;
+  // console.log(ticketDetails, "ticketDetails");
+  useEffect(() => {
+    if (ticketDetails){
+      form.setFieldsValue({
+        ticketType: ticketDetails?.ticketType,
+        ticketName: ticketDetails?.ticketName,
+        ticketQty: ticketDetails?.ticketQty,
+        ticketPrice: ticketDetails?.ticketPrice,
+        purchaseLimit: ticketDetails?.purchaseLimit,
+        guestAsChargeBearer: ticketDetails?.guestAsChargeBearer,
+      });
+    }
+  }, [ticketDetails]);
+
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ...rest } = values;
-    console.log(values)
+    // console.log(values)
 
     if (
       // @ts-ignore
@@ -99,9 +117,10 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
           };
         }
       );
-      console.log("values")
+      // console.log("values")
 
-      const payload: ITicketCreate = {
+      const payload: ITicketUpdate = {
+        id: ticketDetails?.id,
         ...rest,
         ticketQuestions: combinedArray,
         ticketDescription: editorContent,
@@ -109,23 +128,24 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
         ticketEntity: "SINGLE",
         user: profile?.data?.data?.data?.id,
       };
-      console.log(payload, "kk");
+      // console.log(payload, "kk");
 
       // make api call here
 
       if (payload) {
-        const response = await createTicket.mutateAsync(payload);
+        const response = await updateTicket.mutateAsync(payload);
         if (response.status === 201) {
-          console.log(response);
+          // console.log(response);
           form.resetFields();
           // linkRef.current?.click();
-          onOk && onOk()
           router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+          onOk && onOk()
         }
       }
     } else {
 
-      const payload: ITicketCreate = {
+      const payload: ITicketUpdate = {
+        id: ticketDetails?.id,
         ...rest,
         ticketDescription: editorContent,
         event: params?.id,
@@ -133,14 +153,13 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
         user: profile?.data?.data?.data?.id,
       };
       if (payload) {
-        const response = await createTicket.mutateAsync(payload);
+        const response = await updateTicket.mutateAsync(payload);
         if (response.status === 201) {
-          console.log(response);
+          // console.log(response);
           form.resetFields();
           // linkRef.current?.click();
-          setCookies("ticket_id", response?.data?.data?.id);
           router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
-          onCancel
+          onOk && onOk()
         }
       }
     }
@@ -151,7 +170,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
   const onFinishFailed: FormProps<ITicketData>["onFinishFailed"] = (
     errorInfo
   ) => {
-    console.log(errorInfo);
+    // console.log(errorInfo);
     return errorInfo;
   };
 
@@ -184,7 +203,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
     </Form.Item>
   );
 
-  console.log(ticketStock, "ticketStock");
+  // console.log(ticketStock, "ticketStock");
 
   return (
     <Form<ITicketData>

@@ -128,6 +128,7 @@ export interface IEventDetails {
 }
 
 export interface IModal {
+  id?: any;
   open?: boolean;
   onClose?: any;
   onCancel?: any;
@@ -313,6 +314,7 @@ export interface IUpdateUser {
 export interface IUpdateEvent extends Partial<ICreateEvent> {
   id?: string;
   eventImage?: string;
+  discover?: boolean;
 }
 
 export interface ITicketData {
@@ -343,6 +345,7 @@ export interface ITicketUpdate extends Partial<ITicketData> {
 }
 
 export interface ITicketDetails {
+  key?: string;
   id: string;
   purchaseLimit: number
   ticketDescription: string

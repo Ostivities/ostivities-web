@@ -1,4 +1,4 @@
-import { CREATE_TICKET, GET_EVENT_TICKETS, UPDATE_TICKET } from "@/app/utils/constants";
+import { CREATE_TICKET, GET_EVENT_TICKETS, GET_SINGLE_TICKET, UPDATE_TICKET } from "@/app/utils/constants";
 import { errorFormatter, successFormatter } from "@/app/utils/helper";
 import { ITicketCreate, ITicketUpdate } from "@/app/utils/interface";
 import { API_SERVICE } from "@/app/utils/service";
@@ -44,4 +44,25 @@ export const useGetEventTickets = (id: string) => {
     queryFn: () => API_SERVICE._getAllEventTickets(id),
   });
   return { getTickets };
+}
+
+export const useGetSingleTicket = (id: string) => {
+  const getSingleTicket = useQuery({
+    queryKey: [GET_SINGLE_TICKET, id],
+    queryFn: () => API_SERVICE._getSingleTicket(id),
+  });
+  return { getSingleTicket };
+}
+
+export const useDeleteTicket = () => {
+  const deleteTicket = useMutation({
+    mutationFn: (id: string) => API_SERVICE._deleteTicket(id),
+    onSuccess: (data: AxiosResponse) => {
+      successFormatter(data);
+    },
+    onError: (error: AxiosError | any) => {
+      errorFormatter(error);
+    },
+  });
+  return { deleteTicket };
 }

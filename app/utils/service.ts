@@ -99,6 +99,13 @@ export class API_SERVICE {
     });
   }
 
+  static async _publishEvent(id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/events/publish_event/${id}`,
+      method: HttpMethod.PUT,
+    });
+  }
+
   static async _createTicket(data: ITicketCreate): Promise<AxiosResponse> {
     return await instance({
       url: `/ticket/create_ticket`,
@@ -110,7 +117,7 @@ export class API_SERVICE {
   static async _updateTicket(data: ITicketUpdate): Promise<AxiosResponse> {
     const { id, ...rest } = data;
     return await instance({
-      url: `/ticket/update_ticket`,
+      url: `/ticket/update_ticket/${id}`,
       method: HttpMethod.PUT,
       data: { ...rest },
     });
@@ -120,6 +127,20 @@ export class API_SERVICE {
     return await instance({
       url: `/ticket/get_event_ticket/${id}`,
       method: HttpMethod.GET,
+    });
+  }
+
+  static async _getSingleTicket(id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/ticket/get_ticket/${id}`,
+      method: HttpMethod.GET,
+    });
+  }
+
+  static async _deleteTicket(id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/ticket/delete_ticket/${id}`,
+      method: HttpMethod.DELETE,
     });
   }
 }

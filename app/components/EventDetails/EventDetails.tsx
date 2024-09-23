@@ -5,13 +5,14 @@ import type { MenuProps } from "antd";
 import { Button, Card, Dropdown, message, Space, Switch } from "antd";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiMiniArrowLongLeft } from "react-icons/hi2"; 
 import { IoChevronDown } from "react-icons/io5";
 import { LiaExternalLinkAltSolid } from "react-icons/lia";
 import PaymentDetails from "../OstivitiesModal/PaymentDetails";
 import Image from 'next/image';
 import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
+import { useGetUserEvent, useUpdateEvent, } from "@/app/hooks/event/event.hook";
 
 
 export default function EventDetailsComponent({
@@ -21,13 +22,17 @@ export default function EventDetailsComponent({
 }): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const pathname = usePathname();
-  const params = useParams();
+  const params = useParams<{ id: string }>();
   const router = useRouter();
+  const { getUserEvent } = useGetUserEvent(params?.id);
+  const { updateEvent } = useUpdateEvent();
   const onToggle = (checked: boolean) => {
     console.log(`Switch to ${checked}`);
   };
 
   const [isPublished, setIsPublished] = useState(false); // State to track publish status
+  const eventDetails = getUserEvent?.data?.data?.data;
+  console.log(eventDetails?.discover)
 
   const handleButtonClick = () => {
     setIsPublished(!isPublished);
@@ -41,12 +46,26 @@ export default function EventDetailsComponent({
   const [activeToggle, setActiveToggle] = useState<string | null>(null);
   const [isActive, setIsActive] = useState<boolean>(false);
   
-  const handleSwitchChange = (checked: boolean) => {
-    if (checked) {
-      message.success('Event added to discovery');
-    } else {
-      message.success('Event removed from discovery');
+  const handleSwitchChange = async (checked: boolean) => {
+    try {
+      const res = await updateEvent.mutateAsync({
+        discover: checked,
+        id: params?.id // Replace with actual user ID from cookies or state
+      });
+      if (res.status === 200) {
+        setIsActive(checked);
+        message.success(checked ? 'Event added to discovery' : 'Event removed from discovery');
+      } else {
+        message.error('Failed to update discovery status');
+      }
+    } catch (error) {
+      message.error('An error occurred while updating discovery status');
     }
+    // if (checked) {
+    //   message.success('Event added to discovery');
+    // } else {
+    //   message.success('Event removed from discovery');
+    // }
   };
   
   const handleToggle = (label: string) => {
@@ -54,6 +73,19 @@ export default function EventDetailsComponent({
     setIsActive(!isActive);
   };
 
+  useEffect(() => {
+    const fetchInitialState = async () => {
+      try {
+        // Replace this with your actual API call
+        const response = eventDetails?.discover
+        setIsActive(response);
+      } catch (error) {
+        console.error('Failed to fetch event details', error);
+      }
+    };
+    
+    fetchInitialState();
+  }, [eventDetails]);
 
   const ExtraTab = (): JSX.Element => {
     const handleMenuClick: MenuProps["onClick"] = (e) => {
