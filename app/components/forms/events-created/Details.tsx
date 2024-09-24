@@ -20,7 +20,7 @@ import * as XLSX from "xlsx";
 const { Search } = Input;
 
 const EventsCreatedTable: React.FC = () => {
-  const router = useRouter();
+  const router = useRouter(); 
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);

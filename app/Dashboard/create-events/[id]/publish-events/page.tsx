@@ -25,6 +25,7 @@ export default function PublishEvent(): JSX.Element {
     "stage_three",
   ]);
   const pathname = usePathname();
+  const [imageUrl, setImageUrl] = useState<string>("/images/emptyimage2.png");
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const { profile } = useProfile();
@@ -79,7 +80,7 @@ export default function PublishEvent(): JSX.Element {
           <div className="flex gap-12">
             <div className="relative w-[400px] h-[550px] rounded-[3.125rem] overflow-hidden">
               <Image
-                src={eventDetails?.eventImage}
+                src={eventDetails?.eventImage || imageUrl}
                 alt="Event Image"
                 fill
                 style={{ objectFit: "cover" }}

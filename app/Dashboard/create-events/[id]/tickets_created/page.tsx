@@ -73,7 +73,7 @@ function CreateTicketPage(): JSX.Element {
         </Flex>
         <div className="w-full mx-auto flex flex-col space-y-5 py-6">
         <br /><br />
-          <EventTicketTable />
+          <EventTicketTable /> 
           <Space className="flex flex-row justify-center space-x-4 mt-8">
             <Button
               type="default"

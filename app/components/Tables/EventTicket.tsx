@@ -65,7 +65,7 @@ const EventTicketTable = () => {
         <Button
           type="link"
           className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
-          style={{ color: "#000000", fontFamily: "BricolageGrotesqueRegular" }}
+          style={{ color: "#000000", fontFamily: "BricolageGrotesqueRegular" }} 
           onClick={(e) => {
             // console.log(e)
             // setSelectedTicket(e);  // Set the selected ticket's data here

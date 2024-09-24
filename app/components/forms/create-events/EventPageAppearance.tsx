@@ -157,7 +157,7 @@ const EventPageAppearance: React.FC = () => {
       <div className="flex gap-12">
         <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
           <Image
-            src={eventDetails?.eventImage || imageUrl}
+            src={eventDetails?.eventImage || imageUrl} 
             alt="Event Image"
             fill
             style={{ objectFit: "cover" }}
@@ -210,162 +210,197 @@ const EventPageAppearance: React.FC = () => {
         </div>
         <div className="py-8">
           <Heading5 className="text-2xl" content={"About this event"} />
-          <div className="mt-12 flex flex-col gap-8">
-            <div className="flex gap-3 items-center">
-              <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
-                <Image
-                  src="/icons/calendar.svg"
-                  alt=""
-                  height={30}
-                  width={30}
-                />
-              </div>
-              <div>
-                <div className="text-sm" style={{ fontWeight: 600 }}>
-                  Date
+              <div className="mt-14 flex flex-col gap-8">
+                <div className="flex gap-3">
+                  <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+                    <Image
+                      src="/icons/calendar.svg"
+                      alt=""
+                      height={25}
+                      width={25}
+                    />
+                  </div>
+                  <div>
+                    <div className="text-sm" style={{ fontWeight: 600 }}>
+                      Date
+                    </div>
+                    <div>
+                      {dateFormat(eventDetails?.startDate)} -{" "}
+                      {dateFormat(eventDetails?.endDate)}
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  {dateFormat(eventDetails?.startDate)}{" "}-{" "}
-                  {dateFormat(eventDetails?.endDate)}
+                <div className="flex gap-3">
+                  <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+                    <Image
+                      src="/icons/time.svg"
+                      alt=""
+                      height={25}
+                      width={25}
+                    />
+                  </div>
+                  <div>
+                    <div className="text-sm" style={{ fontWeight: 600 }}>
+                      Time
+                    </div>
+                    <div>
+                      {timeFormat(eventDetails?.startDate)} -{" "}
+                      {timeFormat(eventDetails?.endDate)}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div className="flex gap-3 items-center">
-              <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
-                <Image src="/icons/time.svg" alt="" height={30} width={30} />
-              </div>
-              <div>
-                <div className="text-sm" style={{ fontWeight: 600 }}>
-                  Time
+                <div className="flex gap-3 items-center">
+                  <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+                    <Image
+                      src="/icons/location.svg"
+                      alt=""
+                      height={25}
+                      width={25}
+                    />
+                  </div>
+                  <div>
+                    <div className="text-sm" style={{ fontWeight: 600 }}>
+                      Location
+                    </div>
+                    <div
+                      style={{
+                        maxWidth: "190px", // Adjust this value as needed
+                        wordWrap: "break-word", // Ensures long words wrap to the next line
+                        overflowWrap: "break-word", // Adds further wrapping behavior for better browser support
+                      }}
+                    >
+                      <a
+                        href="https://maps.app.goo.gl/jBmgQ5EFxngj2ffS6"
+                        style={{ color: "#e20000", textDecoration: "none" }}
+                        target="_blank"
+                      >
+                        {eventDetails?.address}
+                      </a>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  {timeFormat(eventDetails?.startDate)} -{" "}
-                  {timeFormat(eventDetails?.endDate)}
-                </div>
-              </div>
-            </div>
-            {/* Location */}
-            <div className="flex gap-3 items-center">
-              <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
-                <Image
-                  src="/icons/location.svg"
-                  alt=""
-                  height={30}
-                  width={30}
-                />
-              </div>
-              <div>
-                <div className="text-sm" style={{ fontWeight: 600 }}>
-                  Location
-                </div>
-                <div
-                  style={{
-                    maxWidth: '250px', // Adjust this value as needed
-                    wordWrap: 'break-word', // Ensures long words wrap to the next line
-                    overflowWrap: 'break-word' // Adds further wrapping behavior for better browser support
-                  }}
-                >
-                  {eventDetails?.address}
-                </div>
-              </div>
-            </div>
 
-
-            {/* Host */}
-            <div className="flex gap-3 items-center">
-              <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
-                <Image src="/icons/host.svg" alt="" height={30} width={30} />
-              </div>
-              <div>
-                <div className="text-sm" style={{ fontWeight: 600 }}>
-                  Host
+                <div className="flex gap-3">
+                  <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+                    <Image
+                      src="/icons/host.svg"
+                      alt=""
+                      height={25}
+                      width={25}
+                    />
+                  </div>
+                  <div>
+                    <div className="text-sm" style={{ fontWeight: 600 }}>
+                      Host
+                    </div>
+                    <div>{userFullName}</div>
+                  </div>
                 </div>
-                <div>{userFullName}</div>
+
+                {twitterLink?.url ||
+                instagramLink?.url ||
+                websiteLink?.url ||
+                facebookLink?.url ? (
+                  <div className="flex gap-3 items-center">
+                    <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
+                      <Image
+                        src="/icons/phone.svg"
+                        alt=""
+                        height={25}
+                        width={25}
+                      />
+                    </div>
+                    <div>
+                      <div className="text-sm" style={{ fontWeight: 600 }}>
+                        Contact Us
+                      </div>
+                      <div className="flex items-center gap-4 mt-1">
+                        <div className="flex items-center gap-4 mt-1">
+                          {websiteLink && websiteLink?.url && (
+                            <Link
+                              href={websiteLink?.url}
+                              className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <Image
+                                src="/icons/link.svg"
+                                alt=""
+                                height={14}
+                                width={14}
+                              />
+                            </Link>
+                          )}
+                          {twitterLink && twitterLink?.url && (
+                            <Link
+                              href={twitterLink?.url}
+                              className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <Image
+                                src="/icons/x.svg"
+                                alt=""
+                                height={14}
+                                width={14}
+                              />
+                            </Link>
+                          )}
+                          {facebookLink && facebookLink?.url && (
+                            <Link
+                              href={facebookLink?.url}
+                              className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <Image
+                                src="/icons/facebook.svg"
+                                alt=""
+                                height={10}
+                                width={10}
+                              />
+                            </Link>
+                          )}
+                          {instagramLink && instagramLink?.url && (
+                            <Link
+                              href={instagramLink?.url}
+                              className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <Image
+                                src="/icons/instagram.svg"
+                                alt=""
+                                height={16}
+                                width={16}
+                              />
+                            </Link>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
               </div>
             </div>
-            <div className="flex gap-3 items-center">
-              <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
-                <Image src="/icons/phone.svg" alt="" height={30} width={30} />
-              </div>
-              <div>
-                <div className="text-sm" style={{ fontWeight: 600 }}>
-                  Contact Us
-                </div>
-                <div className="flex flex-wrap items-center space-x-2 mt-1">
-                  {websiteLink && websiteLink?.url && (
-                    <Link
-                      href={websiteLink?.url}
-                      className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Image
-                        src="/icons/link.svg"
-                        alt=""
-                        height={14}
-                        width={14}
-                      />
-                    </Link>
-                  )}
-                  {twitterLink && twitterLink?.url && (
-                    <Link
-                      href={twitterLink?.url}
-                      className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Image
-                        src="/icons/x.svg"
-                        alt=""
-                        height={14}
-                        width={14}
-                      />
-                    </Link>
-                  )}
-                  {facebookLink && facebookLink?.url && (
-                    <Link
-                      href={facebookLink?.url}
-                      className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Image
-                        src="/icons/facebook.svg"
-                        alt=""
-                        height={10}
-                        width={10}
-                      />
-                    </Link>
-                  )}
-                  {instagramLink && instagramLink?.url && (
-                    <Link
-                      href={instagramLink?.url}
-                      className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Image
-                        src="/icons/instagram.svg"
-                        alt=""
-                        height={16}
-                        width={16}
-                      />
-                    </Link>
-                  )}
+            <div className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-6">
+              <div className="py-8">
+                <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between">
+                  <h2 className="text-2xl font-BricolageGrotesqueMedium">
+                    {eventDetails?.eventName}
+                  </h2>
                 </div>
               </div>
-            </div>
-
-          </div>
-        </div>
-        <div
-          className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-5"
-          style={{ marginTop: "150px" }}
-          dangerouslySetInnerHTML={{
-            __html: eventDetails?.eventDetails as string,
-          }}
-        ></div>
-      </div>
+              <div
+                className="font-BricolageGrotesqueRegular flex-1 h-fit px-1"
+                dangerouslySetInnerHTML={{
+                  __html: eventDetails?.eventDetails as string,
+                }}
+              ></div>
+              <div className="flex justify-center mt-12">
+              </div>
+              </div>
+              </div>
 
       <Space
         className="flex flex-row justify-center space-x-4 mt-8"

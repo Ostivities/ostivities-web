@@ -325,15 +325,10 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
             onChange={handleEditorChange}
           />
         )}
-      </div>
+      </div><br />
 
       <Form.Item
-        style={{
-          marginBottom: "24px",
-          display: "flex",
-          alignItems: "center",
-          gap: "20px",
-        }}
+       style={{ marginBottom: "24px", display: "flex", alignItems: "center", gap: "20px" }}
       >
         <Form.Item<ITicketData>
           name="guestAsChargeBearer"
@@ -350,6 +345,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
           </Checkbox>
         </Form.Item>
       </Form.Item>
+
       {showAdditionalField && (
         <Form.Item<ITicketData>
           style={{ marginBottom: "24px" }}
@@ -423,7 +419,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
 
       <div className="flex flex-row items-center justify-center py-6 space-x-4">
         <Button
-          type="default"
+          type="default" 
           size={"large"}
           className={`font-BricolageGrotesqueSemiBold button-styles sign-in cursor-pointer font-bold`}
           onClick={onCancel}

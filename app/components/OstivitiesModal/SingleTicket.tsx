@@ -299,7 +299,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
           initialValue="<p>Enter ticket description!</p>"
           onChange={handleEditorChange}
         />
-      </Form.Item><br /><br /><br />
+      </Form.Item><br /><br />
 
       <Form.Item
   style={{ marginBottom: "24px", display: "flex", alignItems: "center", gap: "20px" }}

@@ -377,19 +377,18 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
       </div>
 
       <Form.Item
-      
-        style={{ marginBottom: "24px", display: "flex", alignItems: "center" }}
+       style={{ marginBottom: "24px", display: "flex", alignItems: "center", gap: "20px" }}
       >
         <Form.Item<ITicketData>
           name="guestAsChargeBearer"
           valuePropName="checked"
           noStyle
         >
-          <Checkbox style={{ marginRight: "20px" }}>
+          <Checkbox style={{ marginRight: "10px" }}>
             Transfer charge fees to guest
           </Checkbox>
         </Form.Item>
-        <Form.Item>
+        <Form.Item noStyle>
           <Checkbox onChange={(e) => setShowAdditionalField(e.target.checked)}>
             Enable additional information
           </Checkbox>
@@ -447,7 +446,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
                         Make compulsory
                       </Checkbox>
                     </Form.Item>
-                  </div>
+                  </div> 
                 ))}
                 <Form.Item>
                   <Button

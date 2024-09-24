@@ -28,9 +28,8 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk }: IModal): JSX.Ele
             Success!
           </h2>
           <p className="font-bricolage-grotesque font-semibold text-OWAMBE_FADE_TEXT w-[35rem] mx-auto mt-5">
-            Your purchase has been confirmed and a confirmation mail has been dispatched to your 
-            email address at onome@gmail.com. <br /> In the event that you do not receive your ticket, 
-            kindly reach out to our support team at <a href="mailto:sales@ostivities.com"style={{ color: "#e20000", textDecoration: "none" }} >sales@ostivities.com</a>.
+            Your order was successful. We&apos;ve also sent a copy to your email address. <br /> <br /> In the event that you do not receive your ticket, 
+            Please email us at <a href="mailto:sales@ostivities.com"style={{ color: "#e20000", textDecoration: "none" }} >sales@ostivities.com</a>.
           </p>
           <div className="flex flex-col items-center space-y-4">
             <button
