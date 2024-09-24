@@ -125,7 +125,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
           console.log(response);
           form.resetFields();
           // linkRef.current?.click();
-          // onOk && onOk()
+          onOk && onOk()
           router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
         }
       }
@@ -144,7 +144,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
           console.log(response);
           form.resetFields();
           // linkRef.current?.click();
-          // onOk && onOk()
+          onOk && onOk()
           router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
         }
       }
@@ -195,7 +195,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
     <Form<ITicketData>
       name="basic"
       initialValues={{ remember: true, guestAsChargeBearer: true }}
-      // onFinish={onFinish}
+      onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
       layout="vertical"
@@ -400,16 +400,16 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
           type="primary"
           size={"large"}
           htmlType="submit"
-          onClick={() => {
-            form.validateFields().then(values => {
-              onFinish(values);
-              setInterval(() => {
-                onOk && onOk();
-              }, 2000)
-            }).catch(errorInfo => {
-              onFinishFailed(errorInfo);
-            });
-          }}
+          // onClick={() => {
+          //   form.validateFields().then(values => {
+          //     onFinish(values);
+          //     setInterval(() => {
+          //       onOk && onOk();
+          //     }, 2000)
+          //   }).catch(errorInfo => {
+          //     onFinishFailed(errorInfo);
+          //   });
+          // }}
           className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
         >
           Add Ticket

@@ -1,6 +1,9 @@
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 import { useProfile } from "@/app/hooks/auth/auth.hook";
-import { useUpdateTicket, useGetSingleTicket } from "@/app/hooks/ticket/ticket.hook";
+import {
+  useUpdateTicket,
+  useGetSingleTicket,
+} from "@/app/hooks/ticket/ticket.hook";
 import {
   CloseOutlined,
   CloseSquareOutlined,
@@ -21,18 +24,22 @@ import {
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import EmailEditor from "../QuillEditor/EmailEditor";
-import { usePathname } from 'next/navigation'
+import { usePathname } from "next/navigation";
 import { useCookies } from "react-cookie";
 
 const { Option } = Select;
 
 interface SingleTicketProps {
-  onCancel?: () => void;  // Optional function with no parameters and no return value
-  onOk?: () => void;      // Optional function with no parameters and no return value
-  id: string ;     // Optional object with properties of type ITicketData
+  onCancel?: () => void; // Optional function with no parameters and no return value
+  onOk?: any // Optional function with no parameters and no return value
+  id: string; // Optional object with properties of type ITicketData
 }
 
-const EditSingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, id }) => {  
+const EditSingleTicket: React.FC<SingleTicketProps> = ({
+  onCancel,
+  onOk,
+  id,
+}) => {
   const [form] = Form.useForm();
   const [cookies, setCookie, removeCookie] = useCookies(["ticket_id"]);
   const { updateTicket } = useUpdateTicket();
@@ -46,17 +53,18 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, id }) =
   const [showAdditionalField, setShowAdditionalField] =
     useState<boolean>(false);
   const [counter, setCounter] = useState<number>(0); // Counter for unique keys
-  const [editorContent, setEditorContent] = useState("");
+  const ticketDetails = getSingleTicket?.data?.data?.data;
+  const [editorContent, setEditorContent] = useState("" || ticketDetails?.ticketDescription);
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
-  // console.log(id)
+  // console.log(editorContent)
 
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form);
   const guestAsChargeBearer = Form.useWatch("guestAsChargeBearer", form);
   // console.log(guestAsChargeBearer, "guestAsChargeBearer")
-   
+
   useEffect(() => {
     if (ticketStock === TICKET_STOCK.UNLIMITED) {
       form.setFieldsValue({ ticketStock: TICKET_STOCK.UNLIMITED });
@@ -71,10 +79,10 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, id }) =
     }
   }, [guestAsChargeBearer]);
 
-  const ticketDetails = getSingleTicket?.data?.data?.data;
+  
   // console.log(ticketDetails, "ticketDetails");
   useEffect(() => {
-    if (ticketDetails){
+    if (ticketDetails) {
       form.setFieldsValue({
         ticketType: ticketDetails?.ticketType,
         ticketName: ticketDetails?.ticketName,
@@ -127,6 +135,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, id }) =
         event: params?.id,
         ticketEntity: "SINGLE",
         user: profile?.data?.data?.data?.id,
+        guestAsChargeBearer: true
       };
       // console.log(payload, "kk");
 
@@ -134,16 +143,15 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, id }) =
 
       if (payload) {
         const response = await updateTicket.mutateAsync(payload);
-        if (response.status === 201) {
-          // console.log(response);
+        if (response.status === 200) {
+          console.log(response);
           form.resetFields();
           // linkRef.current?.click();
           router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
-          onOk && onOk()
+          onOk();
         }
       }
     } else {
-
       const payload: ITicketUpdate = {
         id: ticketDetails?.id,
         ...rest,
@@ -151,20 +159,19 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, id }) =
         event: params?.id,
         ticketEntity: "SINGLE",
         user: profile?.data?.data?.data?.id,
+        guestAsChargeBearer: true
       };
       if (payload) {
         const response = await updateTicket.mutateAsync(payload);
-        if (response.status === 201) {
-          // console.log(response);
+        if (response.status === 200) {
+          console.log(response);
           form.resetFields();
           // linkRef.current?.click();
           router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
-          onOk && onOk()
+          onOk();
         }
       }
     }
-
-
   };
 
   const onFinishFailed: FormProps<ITicketData>["onFinishFailed"] = (
@@ -311,29 +318,38 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, id }) =
       <div
         className="mb-9 pb-16 w-full"
         style={{ marginBottom: "20px", marginTop: "10px" }}
-      >  
+      >
         {getSingleTicket.isSuccess === true && (
           <EmailEditor
             initialValue={`${ticketDetails?.ticketDescription}`}
             onChange={handleEditorChange}
           />
-        )} 
+        )}
       </div>
 
-<Form.Item
-style={{ marginBottom: "24px", display: "flex", alignItems: "center", gap: "20px" }}
->
-<Form.Item<ITicketData> name="guestAsChargeBearer" valuePropName="checked" noStyle>
-<Checkbox style={{ marginRight: "10px" }}>
-Transfer charge fees to guest
-</Checkbox>
-</Form.Item>
-<Form.Item noStyle>
-<Checkbox onChange={(e) => setShowAdditionalField(e.target.checked)}>
-Enable additional information
-</Checkbox>
-</Form.Item>
-</Form.Item>
+      <Form.Item
+        style={{
+          marginBottom: "24px",
+          display: "flex",
+          alignItems: "center",
+          gap: "20px",
+        }}
+      >
+        <Form.Item<ITicketData>
+          name="guestAsChargeBearer"
+          valuePropName="checked"
+          noStyle
+        >
+          <Checkbox style={{ marginRight: "10px" }}>
+            Transfer charge fees to guest
+          </Checkbox>
+        </Form.Item>
+        <Form.Item noStyle>
+          <Checkbox onChange={(e) => setShowAdditionalField(e.target.checked)}>
+            Enable additional information
+          </Checkbox>
+        </Form.Item>
+      </Form.Item>
       {showAdditionalField && (
         <Form.Item<ITicketData>
           style={{ marginBottom: "24px" }}
@@ -419,7 +435,7 @@ Enable additional information
           size={"large"}
           htmlType="submit"
           className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
-          style={{ width: '150px' }}
+          style={{ width: "150px" }}
         >
           Update Ticket
         </Button>

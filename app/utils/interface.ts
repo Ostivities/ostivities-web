@@ -338,7 +338,7 @@ export interface ITicketData {
 }
 
 export interface ITicketCreate extends Partial<ITicketData> {
-  user: string;
+  user?: string;
 }
 export interface ITicketUpdate extends Partial<ITicketData> {
   id: string;
@@ -356,6 +356,7 @@ export interface ITicketDetails {
   ticketStock: string
   ticketType: string
   createdAt: string
+  guestAsChargeBearer: boolean
   ticketQuestions?: {
     question?: string;
     isCompulsory?: boolean;

@@ -8,10 +8,10 @@ import { useDeleteTicket, useGetSingleTicket, useCreateTicket } from "@/app/hook
 import { useCookies } from "react-cookie";
 
 const DeleteTicket = ({ open, onCancel, onOk, actionType, id, data }: IModal) => {
-  const [cookies, setCookie] = useCookies(["ticket_id"]);
+  // const [cookies, setCookie] = useCookies(["ticket_id"]);
   const { deleteTicket } = useDeleteTicket();
   const { createTicket } = useCreateTicket();
-  // console.log(id)
+  console.log(data)
 
   const handleDeleteClick = async () => {
     const response = await deleteTicket.mutateAsync(id);
@@ -22,8 +22,8 @@ const DeleteTicket = ({ open, onCancel, onOk, actionType, id, data }: IModal) =>
 
   const handleDuplicateClick = async () => {
     const response = await createTicket.mutateAsync(data);
-    if(response.status === 200) {
-      message.success('Entry duplicated successfully'); // Success message for duplicate
+    console.log(response)
+    if(response.status === 201) {
       onOk(); // Close the modal 
     }
   };

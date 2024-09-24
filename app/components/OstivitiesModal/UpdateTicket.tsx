@@ -17,10 +17,10 @@ const UpdateTicket = ({
   // const { id } = data;
 
   // Function to handle the update button click
-  const handleUpdate = () => {
+  // const handleUpdate = () => {
     // message.success('Ticket updated successfully'); // Success message
-    onOk(); // Call onOk to perform any additional actions
-  };
+    // onOk(); // Call onOk to perform any additional actions
+  // };
 
   return (
     <Modal

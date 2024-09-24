@@ -20,7 +20,7 @@ import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
 const { Option } = Select;
 interface CollectiveTicketProps {
   onCancel?: () => void;  // Optional function with no parameters and no return value
-  onOk?: () => void;  
+  onOk?: any;  
   id: string    
 }
 
@@ -120,14 +120,13 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
 
       if (payload) {
         const response = await updateTicket.mutateAsync(payload);
-        if (response.status === 201) {
-          console.log(response);
+        if (response.status === 200) {
+          // console.log(response);
           form.resetFields();
           // linkRef.current?.click();
           router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
-          setInterval(() => {
-            onOk && onOk();
-          }, 3000)
+          onOk();
+      
         }
       }
     }
@@ -141,14 +140,12 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
     };
     if (payload) {
       const response = await updateTicket.mutateAsync(payload);
-      if (response.status === 201) {
-        console.log(response);
+      if (response.status === 200) {
+        // console.log(response);
         form.resetFields();
         // linkRef.current?.click();
         router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
-        setInterval(() => {
-          onOk && onOk();
-        }, 3000)
+        onOk();
       }
     }
   };

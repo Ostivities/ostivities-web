@@ -2,7 +2,7 @@ import AddTicketModal from "@/app/components/OstivitiesModal/AddTicket";
 import DeleteTicket from "@/app/components/OstivitiesModal/DeleteTicket";
 import UpdateTicket from "@/app/components/OstivitiesModal/UpdateTicket";
 import { Label } from "@/app/components/typography/Typography";
-import { DataType, ITicketDetails } from "@/app/utils/interface";
+import { DataType, ITicketCreate, ITicketDetails } from "@/app/utils/interface";
 
 import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
 import { SalesDataType } from "@/app/utils/interface";
@@ -14,6 +14,7 @@ import EventDetailsComponent from "../EventDetails/EventDetails";
 import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
 import { useCookies } from "react-cookie";
 import { useParams, useRouter } from "next/navigation";
+import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
 
 // Currency formatter for Naira (₦)
 const formatCurrency = (amount: number) => {
@@ -22,6 +23,7 @@ const formatCurrency = (amount: number) => {
     currency: "NGN",
     minimumFractionDigits: 0,
   });
+  // console.log(amount)
   return formatter.format(amount);
 };
 
@@ -36,17 +38,21 @@ const EventTicketTable = () => {
   const [actionType, setActionType] = useState<"delete" | "warning">();
   // const [cookies, setCookie, removeCookie] = useCookies(["ticket_id",]);
   const params = useParams<{ id: string }>();
+  const [duplicateData, setDuplicateData] = useState<ITicketCreate | undefined>();
   const [selectedTicket, setSelectedTicket] = useState<string | undefined>("");
   const [selectedTicketEntity, setSelectedTicketEntity] = useState<string | undefined>("");
 
   const { getTickets } = useGetEventTickets(params?.id);
   const ticketData = getTickets?.data?.data?.data;
-  console.log(ticketData)
+  // const {id, ...rest} = ticketData;
+  // console.log(ticketData, "ticketData") 
+  // console.log(duplicateData, "duplicateData")
 
   interface MenuItemType {
     label: React.ReactNode;
     key: string;
   }
+
 
   const handleActionSuccess = () => {
     // Refetch the tickets after an action (delete, edit, duplicate)
@@ -114,7 +120,7 @@ const EventTicketTable = () => {
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
-      dataIndex: "eventName",
+      dataIndex: "ticketName",
       sorter: (a, b) => (a.event?.eventName ?? "").localeCompare(b.event?.eventName ?? ""),
     },
     {
@@ -124,7 +130,7 @@ const EventTicketTable = () => {
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
-      dataIndex: "ticketSold",
+      dataIndex: "ticketQty",
       sorter: (a, b) => a.ticketQty - b.ticketQty,
     },
     {
@@ -134,9 +140,25 @@ const EventTicketTable = () => {
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
-      dataIndex: "revenue",
+      dataIndex: "ticketPrice",
+      sorter: (a, b) => (a?.ticketPrice ?? 0) - (b?.ticketPrice ?? 0),
+      render: (text, record: ITicketDetails) => {
+        // console.log(text, "text")
+        return <>{record?.ticketType === TICKET_TYPE.FREE ? "" : <span>{formatCurrency(text as number)}</span>}</>
+      },
+    },
+    {
+      title: (
+        <Label
+          content="Ticket Type"
+          className="font-semibold text-OWANBE_TABLE_TITLE"
+        />
+      ),
+      dataIndex: "ticketType",
       sorter: (a, b) => (a.ticketPrice ?? 0) - (b.ticketPrice ?? 0),
-      render: (revenue: number) => <span>{formatCurrency(revenue)}</span>,
+      render: (text, record: ITicketDetails) => {
+        return <>{record?.ticketType === TICKET_TYPE.FREE ? "Free" : "Paid"}</>
+      }
     },
     {
       title: (
@@ -157,7 +179,7 @@ const EventTicketTable = () => {
                 ))}
               </Menu>
             }
-            trigger={["click"]}
+            trigger={["click", "hover"]}
           >
             <MenuOutlined className="cursor-pointer text-lg" />
           </Dropdown>
@@ -169,15 +191,20 @@ const EventTicketTable = () => {
   const data: ITicketDetails[] = ticketData?.map((item: any) => {
     return {
       key: item?.id,
-      eventName: item?.ticketName,
-      ticketSold: item?.ticketQty,
-      revenue: item?.ticketPrice,
-      event: item?.event?.eventName,
+      ticketName: item?.ticketName,
+      ticketQty: item?.ticketQty,
+      ticketPrice: item?.ticketPrice,
+      event: item?.event,
       ticketEntity: item?.ticketEntity,
+      ticketDescription: item?.ticketDescription,
+      ticketStock: item?.ticketStock,
+      ticketType: item?.ticketType,
+      user: item?.user,
+      ticketQuestions: item?.ticketQuestions,
     };
   });
 
-  // console.log(data)
+  // console.log(data, "data")
 
   return (
     <React.Fragment>
@@ -208,7 +235,7 @@ const EventTicketTable = () => {
         }}
         actionType={actionType}
         id={selectedTicket}
-        data={data} 
+        data={duplicateData} 
       />
 
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
@@ -225,6 +252,7 @@ const EventTicketTable = () => {
           Add Tickets
         </Button>
         <Table
+          loading={getTickets.isFetching}
           rowSelection={{
             selectedRowKeys,
             onChange: (keys) => setSelectedRowKeys(keys),
@@ -232,8 +260,25 @@ const EventTicketTable = () => {
           onRow={(record, rowIndex) => {
             return {
               onClick: () => {
+                // console.log(record, "record")
                 setSelectedTicket(record?.key)
                 setSelectedTicketEntity(record?.ticketEntity)
+                setDuplicateData({
+                  ticketName: record?.ticketName,
+                  ticketQty: record?.ticketQty,
+                  ticketPrice: record?.ticketPrice,
+                  ticketType: record?.ticketType,
+                  ticketDescription: record?.ticketDescription,
+                  ticketStock: record?.ticketStock as TICKET_STOCK | undefined,
+                  ticketEntity: record?.ticketEntity,
+                  event: record?.event?.id,
+                  user: record?.user?.id,
+                  ticketQuestions: record?.ticketQuestions?.map(q => ({
+                    question: q?.question ?? "",
+                    isCompulsory: q?.isCompulsory ?? false,
+                  })),
+                  guestAsChargeBearer: record?.guestAsChargeBearer ?? true
+                });
               },
             };
           }}
