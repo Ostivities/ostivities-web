@@ -10,7 +10,7 @@ import {
   EVENT_TYPES,
   STATES_IN_NIGERIA,
 } from "@/app/utils/data";
-import { EVENT_INFO } from "@/app/utils/enums";
+import { EVENT_INFO, EXHIBITION_SPACE } from "@/app/utils/enums";
 import { IFormInput } from "@/app/utils/interface";
 import {
   DeleteOutlined,
@@ -81,12 +81,7 @@ const AboutEvent = () => {
     trigger,
   } = useForm<IFormInput>({
     mode: "all",  // Use your preferred validation mode
-    defaultValues: {
-      exhibitionspace: false,
-      spaceType: '',  // Initializing as an empty string
-      spaceAvailable: undefined,
-      spaceFee: undefined,
-    },
+
   });
 
   const watchEventInfo = watch("eventInfo");
@@ -217,7 +212,7 @@ const AboutEvent = () => {
           </div>
 
 <Controller
-  name="vendorregistration"
+  name="vendor_registration"
   control={control}
   render={({ field }) => (
     <Form.Item
@@ -283,7 +278,7 @@ const AboutEvent = () => {
 
 {showRadio && (
   <Controller
-    name="spaceType"
+    name="exhibition_space_booking"
     control={control}
     render={({ field }) => (
       <Radio.Group
@@ -291,19 +286,19 @@ const AboutEvent = () => {
         onChange={(e) => field.onChange(e.target.value as string)} // Ensure value is string
         value={field.value}
       >
-        <Radio value="paid">Paid Space</Radio>
-        <Radio value="free">Free Space</Radio>
+        <Radio value={EXHIBITION_SPACE.PAID}>Paid Space</Radio>
+        <Radio value={EXHIBITION_SPACE.FREE}>Free Space</Radio>
       </Radio.Group>
     )}
   />
 )}
 
-{showRadio && watch('spaceType') === 'paid' && (
+{showRadio && watch('exhibition_space_booking') === EXHIBITION_SPACE.PAID && (
   <Space direction="horizontal" size="large">
     <Form.Item  label={<span style={{ fontFamily: 'Bricolage Grotesque Light' }}>Space Available</span>}
     >
       <Controller
-        name="spaceAvailable"
+        name="space_available"
         control={control}
         render={({ field }) => (
           <Input {...field} placeholder="Enter number of spaces" type="number" />
@@ -313,7 +308,7 @@ const AboutEvent = () => {
     <Form.Item  label={<span style={{ fontFamily: 'Bricolage Grotesque Light' }}>Space Fee</span>}
     >
       <Controller
-        name="spaceFee"
+        name="space_fee"
         control={control}
         render={({ field }) => (
           <InputNumber 
