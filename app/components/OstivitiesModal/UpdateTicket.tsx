@@ -27,30 +27,30 @@ const UpdateTicket = ({
       title={<Heading5 content={"Update Ticket"} className="" />}
       open={open}
       onCancel={onCancel}
-      // footer={
-      //   <div style={{ textAlign: "center", marginTop: 20, marginBottom: 20 }}>
-      //     <Button
-      //       size="large"
-      //       onClick={onCancel}
-      //       className={`font-BricolageGrotesqueSemiBold button-styles sign-in cursor-pointer font-bold`}
-      //       style={{ marginRight: 8, borderRadius: 20 }}
-      //     >
-      //       Cancel
-      //     </Button>
-      //     <Button
-      //       type="primary"
-      //       size="large"
-      //       onClick={handleUpdate}
-      //       className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
-      //       style={{ borderRadius: 20 }}
-      //     >
-      //       Update
-      //     </Button>
-      //   </div>
-      // }
+      footer={
+        <div style={{ textAlign: "center", marginTop: 20, marginBottom: 20 }}>
+          {/* <Button
+            size="large"
+            onClick={onCancel}
+            className={`font-BricolageGrotesqueSemiBold button-styles sign-in cursor-pointer font-bold`}
+            style={{ marginRight: 8, borderRadius: 20 }}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="primary"
+            size="large"
+            onClick={handleUpdate}
+            className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
+            style={{ borderRadius: 20 }}
+          >
+            Update
+          </Button> */}
+        </div>
+      }
     >
       {ticketEntity === "SINGLE" ? (
-        <EditSingleTicket onCancel={onCancel} id={id} onOk={onOk} />
+        <EditSingleTicket onCancel={onCancel} id={id}  />
       ) : (
         <EditCollectiveTicket onCancel={onCancel} id={id} onOk={onOk} />
       )}
