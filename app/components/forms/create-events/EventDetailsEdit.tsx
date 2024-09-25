@@ -17,7 +17,7 @@ import {
   STATES_IN_NIGERIA,
   stepOne,
 } from "@/app/utils/data";
-import { ACCOUNT_TYPE, EVENT_INFO } from "@/app/utils/enums";
+import { ACCOUNT_TYPE, EVENT_INFO, EXHIBITION_SPACE } from "@/app/utils/enums";
 import { getUsernameFromUrl } from "@/app/utils/helper";
 import { IEventDetails, IFormInput } from "@/app/utils/interface";
 import Ticket from "@/public/Ticket.svg";
@@ -97,7 +97,7 @@ function EventDetailsEdit(): JSX.Element {
 
   const { getUserEvent } = useGetUserEvent(params?.id || cookies.event_id);
   const eventDetails: IEventDetails = getUserEvent?.data?.data?.data;
-  // console.log(eventDetails)
+  console.log(eventDetails)
   const { Option } = Select;
 
   const userName =
@@ -108,12 +108,6 @@ function EventDetailsEdit(): JSX.Element {
   const { handleSubmit, control, setValue, watch, trigger, reset, getValues } =
     useForm<IFormInput>({
       mode: "all",
-      defaultValues: {
-        exhibitionspace: false,
-        spaceType: "",
-        spaceAvailable: undefined,
-        spaceFee: undefined,
-      },
     });
 
   const watchEventInfo = watch("eventInfo");
@@ -155,6 +149,9 @@ function EventDetailsEdit(): JSX.Element {
       setValue("startDate", dayjs(eventDetails?.startDate));
       setValue("endDate", dayjs(eventDetails?.endDate));
       setValue("frequency", eventDetails?.frequency);
+      setValue("space_available", eventDetails?.space_available);
+      setValue("space_fee", eventDetails?.space_fee);
+      setValue("vendor_registration", eventDetails?.vendor_registration);
     }
   }, [eventDetails, setValue]);
 
@@ -196,6 +193,7 @@ function EventDetailsEdit(): JSX.Element {
       } catch (error) {}
     },
     async onChange(info) {
+      setFileList(info.fileList);
       if (info.file.status !== "uploading") {
       }
       if (info.file.status === "done") {
@@ -203,7 +201,10 @@ function EventDetailsEdit(): JSX.Element {
       }
     },
     showUploadList: false,
+    fileList
   };
+  console.log(fileList);
+
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     const {
@@ -213,12 +214,9 @@ function EventDetailsEdit(): JSX.Element {
       instagramUrl,
       facebookUrl,
       websiteUrl,
-      spaceType,
-      vendorregistration,
+      vendor_registration,
       eventDocument,
       eventURL,
-      spaceAvailable,
-      spaceFee,
       ...rest
     } = data;
     try {
@@ -361,7 +359,7 @@ function EventDetailsEdit(): JSX.Element {
             </div>
 
             <Controller
-              name="vendorregistration"
+              name="vendor_registration"
               control={control}
               render={({ field }) => (
                 <Form.Item style={{ marginBottom: "1px" }}>
@@ -438,7 +436,7 @@ function EventDetailsEdit(): JSX.Element {
 
             {showRadio && (
               <Controller
-                name="spaceType"
+                name="exhibition_space_booking"
                 control={control}
                 render={({ field }) => (
                   <Radio.Group
@@ -446,14 +444,14 @@ function EventDetailsEdit(): JSX.Element {
                     onChange={(e) => field.onChange(e.target.value as string)} // Ensure value is string
                     value={field.value}
                   >
-                    <Radio value="paid">Paid Space</Radio>
-                    <Radio value="free">Free Space</Radio>
+                    <Radio value={EXHIBITION_SPACE.PAID}>Paid Space</Radio>
+                    <Radio value={EXHIBITION_SPACE.FREE}>Free Space</Radio>
                   </Radio.Group>
                 )}
               />
             )}
 
-            {showRadio && watch("spaceType") === "paid" && (
+            {showRadio && watch("exhibition_space_booking") === EXHIBITION_SPACE.PAID && (
               <Space direction="horizontal" size="large">
                 <Form.Item
                   label={
@@ -463,7 +461,7 @@ function EventDetailsEdit(): JSX.Element {
                   }
                 >
                   <Controller
-                    name="spaceAvailable"
+                    name="space_available"
                     control={control}
                     render={({ field }) => (
                       <Input
@@ -482,7 +480,7 @@ function EventDetailsEdit(): JSX.Element {
                   }
                 >
                   <Controller
-                    name="spaceFee"
+                    name="space_fee"
                     control={control}
                     render={({ field }) => (
                       <InputNumber
@@ -610,7 +608,7 @@ function EventDetailsEdit(): JSX.Element {
             />
 
             <Space direction="vertical" size="small">
-            <Controller
+              <Controller
                 name="eventDocument"
                 control={control}
                 render={({ field }) => (

@@ -30,3 +30,8 @@ export enum HttpMethod {
   OPTIONS = "OPTIONS",
   HEAD = "HEAD",
 }
+
+export enum EXHIBITION_SPACE {
+  PAID = 'PAID',
+  FREE = 'FREE',
+}

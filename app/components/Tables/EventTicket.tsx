@@ -45,7 +45,7 @@ const EventTicketTable = () => {
   const { getTickets } = useGetEventTickets(params?.id);
   const ticketData = getTickets?.data?.data?.data;
   // const {id, ...rest} = ticketData;
-  // console.log(ticketData, "ticketData") 
+  console.log(ticketData, "ticketData") 
   // console.log(duplicateData, "duplicateData")
 
   interface MenuItemType {
@@ -132,6 +132,9 @@ const EventTicketTable = () => {
       ),
       dataIndex: "ticketQty",
       sorter: (a, b) => a.ticketQty - b.ticketQty,
+      render: (text, record: ITicketDetails) => {
+        return <>{record?.ticketStock === TICKET_STOCK.UNLIMITED ? "Unlimited" : <span>{text}</span>}</>
+      }
     },
     {
       title: (
@@ -144,7 +147,7 @@ const EventTicketTable = () => {
       sorter: (a, b) => (a?.ticketPrice ?? 0) - (b?.ticketPrice ?? 0),
       render: (text, record: ITicketDetails) => {
         // console.log(text, "text")
-        return <>{record?.ticketType === TICKET_TYPE.FREE ? "" : <span>{formatCurrency(text as number)}</span>}</>
+        return <>{record?.ticketType === TICKET_TYPE.FREE ? "Free" : <span>{formatCurrency(text as number)}</span>}</>
       },
     },
     {
@@ -201,10 +204,12 @@ const EventTicketTable = () => {
       ticketType: item?.ticketType,
       user: item?.user,
       ticketQuestions: item?.ticketQuestions,
+      groupSize: item?.groupSize,
+      groupPrice: item?.groupPrice,
     };
   });
 
-  // console.log(data, "data")
+  console.log(data, "data")
 
   return (
     <React.Fragment>
@@ -268,6 +273,8 @@ const EventTicketTable = () => {
                   ticketQty: record?.ticketQty,
                   ticketPrice: record?.ticketPrice,
                   ticketType: record?.ticketType,
+                  groupSize: record?.groupSize,
+                  groupPrice: record?.groupPrice,
                   ticketDescription: record?.ticketDescription,
                   ticketStock: record?.ticketStock as TICKET_STOCK | undefined,
                   ticketEntity: record?.ticketEntity,
@@ -275,7 +282,7 @@ const EventTicketTable = () => {
                   user: record?.user?.id,
                   ticketQuestions: record?.ticketQuestions?.map(q => ({
                     question: q?.question ?? "",
-                    isCompulsory: q?.isCompulsory ?? false,
+                    is_compulsory: q?.is_compulsory ?? false,
                   })),
                   guestAsChargeBearer: record?.guestAsChargeBearer ?? true
                 });

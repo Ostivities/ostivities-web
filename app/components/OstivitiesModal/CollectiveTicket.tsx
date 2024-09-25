@@ -41,6 +41,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
   const [counter, setCounter] = useState<number>(0); // Counter for unique keys
   const [form] = Form.useForm(); // Initialize form instance
   const [editorContent, setEditorContent] = useState("");
+  const [loading, setLoading] = useState(false);
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
@@ -55,8 +56,9 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
   // console.log(groupPrice, groupSize);
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
-    const { ticketQuestions, ...rest } = values;
+    const { ticketQuestions, ticketType, ...rest } = values;
     // return console.log(values)
+    setLoading(true);
     if (
       // @ts-ignore
       ticketQuestions?.length > 0 &&
@@ -67,19 +69,19 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
       const questionsArray = ticketQuestions;
       const combinedArray: {
         question: string;
-        isCompulsory: boolean;
+        is_compulsory: boolean;
       }[] = questionsArray?.map(
         (
           questionObj: {
             question: string;
-            isCompulsory: boolean;
+            is_compulsory: boolean;
           },
           index
         ) => {
           const { id, compulsory, ...rest } = additionalFields[index];
           return {
             ...questionObj,
-            isCompulsory: compulsory,
+            is_compulsory: compulsory,
             ...rest,
           };
         }
@@ -92,8 +94,10 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
         event: params?.id,
         ticketEntity: "COLLECTIVE",
         user: profile?.data?.data?.data?.id,
+        groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
+        ticketType
       };
-      // console.log(payload, "kk");
+      console.log(payload, "kk");
 
       // make api call here
 
@@ -103,11 +107,12 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
           console.log(response);
           form.resetFields();
           // linkRef.current?.click();
+          onOk && onOk();
+          setLoading(false);
           router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
-          setInterval(() => {
-            onOk && onOk();
-          }, 3000)
         }
+      } else{
+        setLoading(false);
       }
     }
     const payload: ITicketCreate = {
@@ -116,19 +121,21 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
       event: params?.id,
       ticketEntity: "COLLECTIVE",
       user: profile?.data?.data?.data?.id,
+      groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
+      ticketType
     };
     if (payload) {
       const response = await createTicket.mutateAsync(payload);
       if (response.status === 201) {
         console.log(response);
         form.resetFields();
+        onOk && onOk();
+        setLoading(false);
         // linkRef.current?.click();
         router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
-        setInterval(() => {
-          onOk && onOk();
-        }, 3000)
       }
     }
+    setLoading(false);
   };
 
   const onFinishFailed: FormProps<ITicketData>["onFinishFailed"] = (
@@ -160,7 +167,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
 
   useEffect(() => {
     if (groupPrice !== null && groupSize !== null) {
-      const price = (groupPrice / groupSize).toFixed(2);
+      const price = (groupPrice / groupSize).toFixed(0);
       setPricePerTicket(parseFloat(price));
       const price_per_ticket = pricePerTicket
       if(price_per_ticket) {
@@ -445,10 +452,12 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
         <Button
           type="primary"
           size={"large"}
+          loading={loading}
+          disabled={loading}
           htmlType="submit"
           className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
         >
-          Add Ticket
+          {createTicket.isPending ? "Please Wait" : "Add Ticket"}
         </Button>
       </div>
     </Form>

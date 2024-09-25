@@ -285,7 +285,7 @@ const EventTickets = () => {
                   user: record?.user?.id,
                   ticketQuestions: record?.ticketQuestions?.map(q => ({
                     question: q?.question ?? "",
-                    isCompulsory: q?.isCompulsory ?? false,
+                    is_compulsory: q?.is_compulsory ?? false,
                   })),
                   guestAsChargeBearer: record?.guestAsChargeBearer ?? true
                 });
