@@ -17,7 +17,7 @@ import {
   STATES_IN_NIGERIA,
   stepOne,
 } from "@/app/utils/data";
-import { ACCOUNT_TYPE, EVENT_INFO } from "@/app/utils/enums";
+import { ACCOUNT_TYPE, EVENT_INFO, EXHIBITION_SPACE } from "@/app/utils/enums";
 import { IFormInput } from "@/app/utils/interface";
 import Ticket from "@/public/Ticket.svg";
 import {
@@ -46,6 +46,8 @@ import {
   Upload,
   UploadProps,
   UploadFile,
+  GetProps,
+  message,
 } from "antd";
 import axios from "axios";
 import Image from "next/image";
@@ -56,13 +58,18 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useProfile } from "../../../hooks/auth/auth.hook";
 import { useCreateEvent } from "../../../hooks/event/event.hook";
 import EmailEditor from "../../QuillEditor/EmailEditor";
+import dayjs from "dayjs";
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
+
 
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
 const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const cloud_api: any = process.env.NEXT_PUBLIC_CLOUDINARY_API_URL;
 const discovery_url: any = process.env.NEXT_PUBLIC_EVENT_DISCOVERY_URL;
-const event_supporting_docs: any =
-  process.env.NEXT_PUBLIC_OSTIVITIES_EVENT_SUPPORTING_DOCS;
+const event_supporting_docs: any = process.env.NEXT_PUBLIC_OSTIVITIES_EVENT_SUPPORTING_DOCS;
+
 
 function Details(): JSX.Element {
   const router = useRouter();
@@ -85,6 +92,10 @@ function Details(): JSX.Element {
     setEditorContent(content);
   };
 
+  dayjs.extend(customParseFormat);
+
+  const { RangePicker } = DatePicker;
+
   const accountType = profile?.data?.data?.data?.accountType;
 
   const { Option } = Select;
@@ -97,15 +108,16 @@ function Details(): JSX.Element {
   const { handleSubmit, control, setValue, watch, trigger, reset } =
     useForm<IFormInput>({
       mode: "all", // Use your preferred validation mode
-      defaultValues: {
-        exhibitionspace: false,
-        spaceType: "", // Initializing as an empty string
-        spaceAvailable: undefined,
-        spaceFee: undefined,
-      },
     });
 
   const watchEventInfo = watch("eventInfo");
+  // const watchExhibitionSpace = watch("exhibitionspace")
+  // console.log(watchExhibitionSpace, "watchExhibitionSpace")
+
+  const disabledDate: RangePickerProps['disabledDate'] = (current) => {
+    // Can not select days before today and today
+    return current && current < dayjs().endOf('day');
+  };
 
   useEffect(() => {
     const subscription: any = watch(() => {
@@ -160,7 +172,7 @@ function Details(): JSX.Element {
     showUploadList: false,
     fileList,
   };
-  // console.log(fileList);
+  console.log(fileList);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     const {
@@ -170,16 +182,19 @@ function Details(): JSX.Element {
       instagramUrl,
       facebookUrl,
       websiteUrl,
-      spaceType,
-      vendorregistration,
       eventDocument,
       eventURL,
-      spaceAvailable,
-      spaceFee,
       ...rest
     } = data;
     // console.log(data?.eventDocument);
+    
     try {
+      if(!facebookUrl?.startsWith("https://") || !instagramUrl?.startsWith("https://") || !websiteUrl?.startsWith("https://") ){
+        return Modal.error({
+          title: "Invalid URL",
+          content: "Please ensure all Social Media URLs start with 'https://'",
+        });
+      }
       const response = await createEvent.mutateAsync({
         ...rest,
         supportingDocument: {
@@ -313,7 +328,7 @@ function Details(): JSX.Element {
             </div>
 
             <Controller
-              name="vendorregistration"
+              name="vendor_registration"
               control={control}
               render={({ field }) => (
                 <Form.Item style={{ marginBottom: "1px" }}>
@@ -386,7 +401,7 @@ function Details(): JSX.Element {
 
             {showRadio && (
               <Controller
-                name="spaceType"
+                name="exhibition_space_booking"
                 control={control}
                 render={({ field }) => (
                   <Radio.Group
@@ -394,14 +409,14 @@ function Details(): JSX.Element {
                     onChange={(e) => field.onChange(e.target.value as string)} // Ensure value is string
                     value={field.value}
                   >
-                    <Radio value="paid">Paid Space</Radio>
-                    <Radio value="free">Free Space</Radio>
+                    <Radio value={EXHIBITION_SPACE.PAID}>Paid Space</Radio>
+                    <Radio value={EXHIBITION_SPACE.FREE}>Free Space</Radio>
                   </Radio.Group>
                 )}
               />
             )}
 
-            {showRadio && watch("spaceType") === "paid" && (
+            {showRadio && watch("exhibition_space_booking") === EXHIBITION_SPACE.PAID && (
               <Space direction="horizontal" size="large">
                 <Form.Item
                   label={
@@ -411,13 +426,12 @@ function Details(): JSX.Element {
                   }
                 >
                   <Controller
-                    name="spaceAvailable"
+                    name="space_available"
                     control={control}
                     render={({ field }) => (
-                      <Input
+                      <InputNumber
                         {...field}
                         placeholder="Enter number of spaces"
-                        type="number"
                       />
                     )}
                   />
@@ -430,7 +444,7 @@ function Details(): JSX.Element {
                   }
                 >
                   <Controller
-                    name="spaceFee"
+                    name="space_fee"
                     control={control}
                     render={({ field }) => (
                       <InputNumber
@@ -734,6 +748,7 @@ function Details(): JSX.Element {
                             showTime
                             format="YYYY-MM-DD HH:mm:ss"
                             style={{ width: "100%", height: "33px" }}
+                            disabledDate={disabledDate}
                           />
                         )}
                       />
@@ -751,6 +766,7 @@ function Details(): JSX.Element {
                             showTime
                             format="YYYY-MM-DD HH:mm:ss"
                             style={{ width: "100%", height: "33px" }}
+                            disabledDate={disabledDate}
                           />
                         )}
                       />

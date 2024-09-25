@@ -1,5 +1,5 @@
 import React, { HTMLAttributeAnchorTarget } from "react";
-import { TICKET_STOCK } from "./enums";
+import { EXHIBITION_SPACE, TICKET_STOCK } from "./enums";
 export enum ACCOUNT_TYPE {
   PERSONAL = "PERSONAL",
   ORGANISATION = "ORGANISATION",
@@ -66,11 +66,11 @@ export interface IFormInput {
   twitterUrl?: string;
   facebookUrl?: string;
   instagramUrl?: string;
-  vendorregistration?: boolean;
+  vendor_registration?: boolean;
   exhibitionspace?: boolean;
-  spaceType?: string;
-  spaceAvailable?: number;
-  spaceFee?: string;
+  exhibition_space_booking?: EXHIBITION_SPACE;
+  space_available?: number;
+  space_fee?: string;
 }
 
 export interface ICreateEvent
@@ -125,6 +125,11 @@ export interface IEventDetails {
   createdAt: string;
   updatedAt: string;
   eventImage: string;
+  vendor_registration?: boolean;
+  exhibitionspace?: boolean;
+  exhibition_space_booking?: EXHIBITION_SPACE;
+  space_available?: number;
+  space_fee?: string;
 }
 
 export interface IModal {

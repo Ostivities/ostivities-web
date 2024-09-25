@@ -44,6 +44,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
     useState<boolean>(false);
   const [counter, setCounter] = useState<number>(0); // Counter for unique keys
   const [editorContent, setEditorContent] = useState("");
+  const [loading, setLoading] = useState(false);
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
@@ -77,7 +78,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ...rest } = values;
     console.log(values)
-
+    setLoading(true);
     if (
       // @ts-ignore
       ticketQuestions?.length > 0 &&
@@ -105,7 +106,6 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
           };
         }
       );
-      console.log("values")
 
       const payload: ITicketCreate = {
         ...rest,
@@ -126,6 +126,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
           form.resetFields();
           // linkRef.current?.click();
           onOk && onOk()
+          setLoading(false);
           router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
         }
       }
@@ -145,6 +146,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
           form.resetFields();
           // linkRef.current?.click();
           onOk && onOk()
+          setLoading(false);
           router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
         }
       }
@@ -322,6 +324,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
           rules={[
             {
               required: showAdditionalField === true,
+              message: "Please add additional information",
             },
           ]}
         >
@@ -335,7 +338,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
                       fieldKey={[id, "info"]}
                       rules={[
                         {
-                          required: compulsory,
+                          required: true,
                           message: "Please enter additional information",
                         },
                       ]}
@@ -399,17 +402,8 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
         <Button
           type="primary"
           size={"large"}
+          loading={loading}
           htmlType="submit"
-          // onClick={() => {
-          //   form.validateFields().then(values => {
-          //     onFinish(values);
-          //     setInterval(() => {
-          //       onOk && onOk();
-          //     }, 2000)
-          //   }).catch(errorInfo => {
-          //     onFinishFailed(errorInfo);
-          //   });
-          // }}
           className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
         >
           Add Ticket

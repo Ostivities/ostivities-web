@@ -132,6 +132,9 @@ const EventTicketTable = () => {
       ),
       dataIndex: "ticketQty",
       sorter: (a, b) => a.ticketQty - b.ticketQty,
+      render: (text, record: ITicketDetails) => {
+        return <>{record?.ticketStock === TICKET_STOCK.UNLIMITED ? "Unlimited" : <span>{text}</span>}</>
+      }
     },
     {
       title: (
@@ -144,7 +147,7 @@ const EventTicketTable = () => {
       sorter: (a, b) => (a?.ticketPrice ?? 0) - (b?.ticketPrice ?? 0),
       render: (text, record: ITicketDetails) => {
         // console.log(text, "text")
-        return <>{record?.ticketType === TICKET_TYPE.FREE ? "" : <span>{formatCurrency(text as number)}</span>}</>
+        return <>{record?.ticketType === TICKET_TYPE.FREE ? "Free" : <span>{formatCurrency(text as number)}</span>}</>
       },
     },
     {

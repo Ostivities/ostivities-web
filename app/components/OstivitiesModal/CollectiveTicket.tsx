@@ -41,6 +41,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
   const [counter, setCounter] = useState<number>(0); // Counter for unique keys
   const [form] = Form.useForm(); // Initialize form instance
   const [editorContent, setEditorContent] = useState("");
+  const [loading, setLoading] = useState(false);
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
@@ -57,6 +58,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ...rest } = values;
     // return console.log(values)
+    setLoading(true);
     if (
       // @ts-ignore
       ticketQuestions?.length > 0 &&
@@ -103,10 +105,9 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
           console.log(response);
           form.resetFields();
           // linkRef.current?.click();
+          onOk && onOk();
+          setLoading(false);
           router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
-          setInterval(() => {
-            onOk && onOk();
-          }, 3000)
         }
       }
     }
@@ -122,11 +123,10 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
       if (response.status === 201) {
         console.log(response);
         form.resetFields();
+        onOk && onOk();
+        setLoading(false);
         // linkRef.current?.click();
         router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
-        setInterval(() => {
-          onOk && onOk();
-        }, 3000)
       }
     }
   };
@@ -445,6 +445,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
         <Button
           type="primary"
           size={"large"}
+          loading={loading}
           htmlType="submit"
           className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
         >

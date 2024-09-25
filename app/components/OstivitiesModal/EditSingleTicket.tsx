@@ -80,7 +80,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
   }, [guestAsChargeBearer]);
 
   
-  // console.log(ticketDetails, "ticketDetails");
+  console.log(ticketDetails, "ticketDetails");
   useEffect(() => {
     if (ticketDetails) {
       form.setFieldsValue({
