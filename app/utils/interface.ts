@@ -338,7 +338,7 @@ export interface ITicketData {
   guestAsChargeBearer: boolean;
   ticketQuestions?: {
     question: string;
-    isCompulsory: boolean;
+    is_compulsory: boolean;
   }[];
 }
 
@@ -358,13 +358,15 @@ export interface ITicketDetails {
   ticketName: string
   ticketQty: number
   ticketPrice?: number
+  groupSize?: number
+  groupPrice?: number
   ticketStock: string
   ticketType: string
   createdAt: string
   guestAsChargeBearer: boolean
   ticketQuestions?: {
     question?: string;
-    isCompulsory?: boolean;
+    is_compulsory?: boolean;
   }[];
   user?: {
     accountType: string
@@ -408,4 +410,9 @@ export interface ITicketDetails {
     timeZone: string;
     user: string;
   }
+}
+
+export interface ITicketQuestions {
+  question: string;
+  is_compulsory: boolean;
 }

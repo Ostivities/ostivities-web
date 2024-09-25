@@ -89,19 +89,19 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
       const questionsArray = ticketQuestions;
       const combinedArray: {
         question: string;
-        isCompulsory: boolean;
+        is_compulsory: boolean;
       }[] = questionsArray?.map(
         (
           questionObj: {
             question: string;
-            isCompulsory: boolean;
+            is_compulsory: boolean;
           },
           index
         ) => {
           const { id, compulsory, ...rest } = additionalFields[index];
           return {
             ...questionObj,
-            isCompulsory: compulsory,
+            is_compulsory: compulsory,
             ...rest,
           };
         }
@@ -403,11 +403,12 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
           type="primary"
           size={"large"}
           loading={loading}
+          disabled={loading}
           htmlType="submit"
           className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
         >
-          Add Ticket
-        </Button>
+          {createTicket.isPending ? "Please Wait" : "Add Ticket"}
+          </Button>
       </div>
     </Form>
   );

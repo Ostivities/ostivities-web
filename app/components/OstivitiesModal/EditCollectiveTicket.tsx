@@ -58,7 +58,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
 
 
   const ticketDetails = getSingleTicket?.data?.data?.data;
-  // console.log(ticketDetails?.ticketDescription);
+  console.log(ticketDetails, "ticketDetails");
   useEffect(() => {
     if (ticketDetails){
       form.setFieldsValue({
@@ -70,12 +70,14 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         ticketPrice: ticketDetails?.ticketPrice,
         purchaseLimit: ticketDetails?.purchaseLimit,
         guestAsChargeBearer: ticketDetails?.guestAsChargeBearer,
+        ticketStock: ticketDetails?.ticketStock,
+        ticketQuestions: ticketDetails?.ticketQuestions,
       });
     }
   }, [ticketDetails]);
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
-    const { ticketQuestions, ...rest } = values;
+    const { ticketQuestions, ticketType, ...rest } = values;
     // return console.log(values)
     if (
       // @ts-ignore
@@ -87,19 +89,19 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
       const questionsArray = ticketQuestions;
       const combinedArray: {
         question: string;
-        isCompulsory: boolean;
+        is_compulsory: boolean;
       }[] = questionsArray?.map(
         (
           questionObj: {
             question: string;
-            isCompulsory: boolean;
+            is_compulsory: boolean;
           },
           index
         ) => {
           const { id, compulsory, ...rest } = additionalFields[index];
           return {
             ...questionObj,
-            isCompulsory: compulsory,
+            is_compulsory: compulsory,
             ...rest,
           };
         }
@@ -113,6 +115,8 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         event: params?.id,
         ticketEntity: "COLLECTIVE",
         user: profile?.data?.data?.data?.id,
+        groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
+        ticketType
       };
       // console.log(payload, "kk");
 
@@ -137,6 +141,8 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
       event: params?.id,
       ticketEntity: "COLLECTIVE",
       user: profile?.data?.data?.data?.id,
+      groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
+      ticketType
     };
     if (payload) {
       const response = await updateTicket.mutateAsync(payload);
@@ -232,7 +238,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
     <Form<ITicketData>
       form={form} // Bind form instance
       name="basic"
-      initialValues={{ remember: true, guestAsChargeBearer: true }}
+      initialValues={{ remember: true }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
@@ -384,7 +390,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
           valuePropName="checked"
           noStyle
         >
-          <Checkbox style={{ marginRight: "10px" }}>
+          <Checkbox defaultChecked={ticketDetails?.guestAsChargeBearer} style={{ marginRight: "10px" }}>
             Transfer charge fees to guest
           </Checkbox>
         </Form.Item>
@@ -475,10 +481,12 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         <Button
           type="primary"
           size={"large"}
+          disabled={updateTicket.isPending}
+          loading={updateTicket.isPending}
           htmlType="submit"
           className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
         >
-          Add Ticket
+          {updateTicket.isPending ? "Please Wait" : "Update Ticket"}
         </Button>
       </div>
     </Form>

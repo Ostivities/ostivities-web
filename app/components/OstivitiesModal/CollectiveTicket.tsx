@@ -56,7 +56,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
   // console.log(groupPrice, groupSize);
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
-    const { ticketQuestions, ...rest } = values;
+    const { ticketQuestions, ticketType, ...rest } = values;
     // return console.log(values)
     setLoading(true);
     if (
@@ -69,19 +69,19 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
       const questionsArray = ticketQuestions;
       const combinedArray: {
         question: string;
-        isCompulsory: boolean;
+        is_compulsory: boolean;
       }[] = questionsArray?.map(
         (
           questionObj: {
             question: string;
-            isCompulsory: boolean;
+            is_compulsory: boolean;
           },
           index
         ) => {
           const { id, compulsory, ...rest } = additionalFields[index];
           return {
             ...questionObj,
-            isCompulsory: compulsory,
+            is_compulsory: compulsory,
             ...rest,
           };
         }
@@ -94,8 +94,10 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
         event: params?.id,
         ticketEntity: "COLLECTIVE",
         user: profile?.data?.data?.data?.id,
+        groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
+        ticketType
       };
-      // console.log(payload, "kk");
+      console.log(payload, "kk");
 
       // make api call here
 
@@ -109,6 +111,8 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
           setLoading(false);
           router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
         }
+      } else{
+        setLoading(false);
       }
     }
     const payload: ITicketCreate = {
@@ -117,6 +121,8 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
       event: params?.id,
       ticketEntity: "COLLECTIVE",
       user: profile?.data?.data?.data?.id,
+      groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
+      ticketType
     };
     if (payload) {
       const response = await createTicket.mutateAsync(payload);
@@ -129,6 +135,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
         router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
       }
     }
+    setLoading(false);
   };
 
   const onFinishFailed: FormProps<ITicketData>["onFinishFailed"] = (
@@ -160,7 +167,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
 
   useEffect(() => {
     if (groupPrice !== null && groupSize !== null) {
-      const price = (groupPrice / groupSize).toFixed(2);
+      const price = (groupPrice / groupSize).toFixed(0);
       setPricePerTicket(parseFloat(price));
       const price_per_ticket = pricePerTicket
       if(price_per_ticket) {
@@ -446,10 +453,11 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
           type="primary"
           size={"large"}
           loading={loading}
+          disabled={loading}
           htmlType="submit"
           className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
         >
-          Add Ticket
+          {createTicket.isPending ? "Please Wait" : "Add Ticket"}
         </Button>
       </div>
     </Form>

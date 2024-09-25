@@ -149,14 +149,17 @@ function Details(): JSX.Element {
           `${cloud_api}/${cloud_name}/auto/upload`,
           formData
         );
+        console.log(response, "fileupload");
         if (response.status === 201) {
           const urlString: string | any =
             response?.data?.secure_url || response?.data?.url;
           setValue("eventDocument", urlString);
-          console.log(response);
         }
         setLoader(false);
-      } catch (error) {}
+      } catch (error) {
+        // console.error(error);
+        setLoader(false);
+      }
     },
     async onChange(info) {
       setFileList(info.fileList);
