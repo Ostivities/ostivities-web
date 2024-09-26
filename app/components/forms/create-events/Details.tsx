@@ -227,7 +227,12 @@ function Details(): JSX.Element {
     // console.log(data?.eventDocument);
     
     try {
-      if(!facebookUrl?.startsWith("https://") || !instagramUrl?.startsWith("https://") || !websiteUrl?.startsWith("https://") ){
+      if (
+        (facebookUrl && !facebookUrl.startsWith("https://")) ||
+        (instagramUrl && !instagramUrl.startsWith("https://")) ||
+        (websiteUrl && !websiteUrl.startsWith("https://")) ||
+        (twitterUrl && !twitterUrl.startsWith("https://"))
+      ) {
         return Modal.error({
           title: "Invalid URL",
           content: "Please ensure all Social Media URLs start with 'https://'",
