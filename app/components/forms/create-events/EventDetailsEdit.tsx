@@ -36,6 +36,7 @@ import {
   Col,
   DatePicker,
   Form,
+  GetProps,
   Input,
   InputNumber,
   Modal,
@@ -62,6 +63,9 @@ import {
   useUpdateEvent,
 } from "../../../hooks/event/event.hook";
 import EmailEditor from "../../QuillEditor/EmailEditor";
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
 const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
@@ -93,6 +97,10 @@ function EventDetailsEdit(): JSX.Element {
     setEditorContent(content);
   };
 
+  dayjs.extend(customParseFormat);
+
+  const { RangePicker } = DatePicker;
+  
   const accountType = profile?.data?.data?.data?.accountType;
 
   const { getUserEvent } = useGetUserEvent(params?.id || cookies.event_id);
@@ -109,6 +117,11 @@ function EventDetailsEdit(): JSX.Element {
     useForm<IFormInput>({
       mode: "all",
     });
+
+    const disabledDate: RangePickerProps['disabledDate'] = (current) => {
+      // Disable past dates and times
+      return current && current < dayjs().startOf('day');
+    };
 
   const watchEventInfo = watch("eventInfo");
 
@@ -205,7 +218,41 @@ function EventDetailsEdit(): JSX.Element {
   };
   console.log(fileList);
 
-
+  useEffect(() => {
+    const storedFiles = localStorage.getItem("uploadedFiles");
+    if (storedFiles) {
+      setFileList(JSON.parse(storedFiles));
+    }
+  }, []);
+  
+  const handleFileUpload = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (e.target) {
+        const fileContent = e.target.result as string;
+        const newFile = {
+          uid: Date.now().toString(), // Generate a unique id based on timestamp
+          name: file.name,
+          content: fileContent,
+          type: file.type,
+          size: file.size,
+        };
+        const updatedFileList = [...fileList, newFile];
+        setFileList(updatedFileList);
+        localStorage.setItem("uploadedFiles", JSON.stringify(updatedFileList));
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+  
+  
+  const handleDeleteFile = (fileUid: string) => {
+    const updatedFileList = fileList.filter((item) => item.uid !== fileUid);
+    setFileList(updatedFileList);
+    localStorage.setItem("uploadedFiles", JSON.stringify(updatedFileList));
+  };
+  
+ 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     const {
       exhibitionspace,
@@ -633,7 +680,11 @@ function EventDetailsEdit(): JSX.Element {
                         }}
                         placeholder="Enter file name (optional)"
                       />
-                      <Upload className="upload-button" {...props}>
+                      <Upload className="upload-button" {...props}
+                      beforeUpload={(file) => {
+                        handleFileUpload(file);
+                        return false; // Prevent automatic upload
+                      }}>
                         <Button
                           icon={<UploadOutlined />}
                           className="custom-upload-button"
@@ -661,14 +712,7 @@ function EventDetailsEdit(): JSX.Element {
                                   cursor: "pointer",
                                   marginLeft: "8px",
                                 }}
-                                onClick={() => {
-                                  setFileList(
-                                    fileList.filter(
-                                      (item) => item.uid !== file.uid
-                                    )
-                                  );
-                                  setValue("eventDocument", ""); // Clear the field value
-                                }}
+                                onClick={() => handleDeleteFile(file.uid)}
                               />
                             </Space>
                           ))}
@@ -785,6 +829,7 @@ function EventDetailsEdit(): JSX.Element {
                             showTime
                             format="YYYY-MM-DD HH:mm:ss"
                             style={{ width: "100%", height: "33px" }}
+                            disabledDate={disabledDate}
                           />
                         )}
                       />
@@ -802,6 +847,7 @@ function EventDetailsEdit(): JSX.Element {
                             showTime
                             format="YYYY-MM-DD HH:mm:ss"
                             style={{ width: "100%", height: "33px" }}
+                            disabledDate={disabledDate}
                           />
                         )}
                       />
@@ -1013,6 +1059,7 @@ function EventDetailsEdit(): JSX.Element {
                               showTime
                               format="YYYY-MM-DD HH:mm:ss"
                               style={{ width: "100%", height: "33px" }}
+                              disabledDate={disabledDate}
                             />
                           )}
                         />
@@ -1030,6 +1077,7 @@ function EventDetailsEdit(): JSX.Element {
                               showTime
                               format="YYYY-MM-DD HH:mm:ss"
                               style={{ width: "100%", height: "33px" }}
+                              disabledDate={disabledDate}
                             />
                           )}
                         />

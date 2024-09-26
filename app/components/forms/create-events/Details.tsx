@@ -116,7 +116,7 @@ function Details(): JSX.Element {
 
   const disabledDate: RangePickerProps['disabledDate'] = (current) => {
     // Can not select days before today and today
-    return current && current < dayjs().endOf('day');
+    return current && current < dayjs().startOf('day');
   };
 
   useEffect(() => {
@@ -176,6 +176,41 @@ function Details(): JSX.Element {
     fileList,
   };
   console.log(fileList);
+
+  useEffect(() => {
+    const storedFiles = localStorage.getItem("uploadedFiles");
+    if (storedFiles) {
+      setFileList(JSON.parse(storedFiles));
+    }
+  }, []);
+  
+  const handleFileUpload = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      if (e.target) {
+        const fileContent = e.target.result as string;
+        const newFile = {
+          uid: Date.now().toString(), // Generate a unique id based on timestamp
+          name: file.name,
+          content: fileContent,
+          type: file.type,
+          size: file.size,
+        };
+        const updatedFileList = [...fileList, newFile];
+        setFileList(updatedFileList);
+        localStorage.setItem("uploadedFiles", JSON.stringify(updatedFileList));
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+  
+  
+  const handleDeleteFile = (fileUid: string) => {
+    const updatedFileList = fileList.filter((item) => item.uid !== fileUid);
+    setFileList(updatedFileList);
+    localStorage.setItem("uploadedFiles", JSON.stringify(updatedFileList));
+  };
+
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     const {
@@ -589,7 +624,7 @@ function Details(): JSX.Element {
                       htmlFor="supportingDocument"
                     />
 
-                    <Space.Compact className="w-full h-8">
+<Space.Compact className="w-full h-8">
                       <Input
                         name="eventDocumentName"
                         style={{
@@ -599,7 +634,11 @@ function Details(): JSX.Element {
                         }}
                         placeholder="Enter file name (optional)"
                       />
-                      <Upload className="upload-button" {...props}>
+                      <Upload className="upload-button" {...props}
+                      beforeUpload={(file) => {
+                        handleFileUpload(file);
+                        return false; // Prevent automatic upload
+                      }}>
                         <Button
                           icon={<UploadOutlined />}
                           className="custom-upload-button"
@@ -627,14 +666,7 @@ function Details(): JSX.Element {
                                   cursor: "pointer",
                                   marginLeft: "8px",
                                 }}
-                                onClick={() => {
-                                  setFileList(
-                                    fileList.filter(
-                                      (item) => item.uid !== file.uid
-                                    )
-                                  );
-                                  setValue("eventDocument", ""); // Clear the field value
-                                }}
+                                onClick={() => handleDeleteFile(file.uid)}
                               />
                             </Space>
                           ))}
@@ -981,6 +1013,7 @@ function Details(): JSX.Element {
                               showTime
                               format="YYYY-MM-DD HH:mm:ss"
                               style={{ width: "100%", height: "33px" }}
+                              disabledDate={disabledDate}
                             />
                           )}
                         />
@@ -998,6 +1031,7 @@ function Details(): JSX.Element {
                               showTime
                               format="YYYY-MM-DD HH:mm:ss"
                               style={{ width: "100%", height: "33px" }}
+                              disabledDate={disabledDate}
                             />
                           )}
                         />
