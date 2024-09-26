@@ -166,6 +166,13 @@ function EventDetailsEdit(): JSX.Element {
       setValue("space_fee", eventDetails?.space_fee);
       setValue("vendor_registration", eventDetails?.vendor_registration);
     }
+
+    if(eventDetails?.exhibition_space_booking) {
+      setShowRadio(true);
+      setValue("exhibitionspace", true);
+      setValue("exhibition_space_booking", eventDetails?.exhibition_space_booking);
+
+    }
   }, [eventDetails, setValue]);
 
   useEffect(() => {
@@ -254,6 +261,7 @@ function EventDetailsEdit(): JSX.Element {
   
  
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    // return console.log(data)
     const {
       exhibitionspace,
       twitterUrl,
@@ -267,6 +275,11 @@ function EventDetailsEdit(): JSX.Element {
       ...rest
     } = data;
     try {
+      if(exhibitionspace === false) {
+        delete rest.exhibition_space_booking;
+        delete rest.space_available;
+        delete rest.space_fee;
+      }
       const response = await updateEvent.mutateAsync({
         id: params?.id || cookies.event_id,
         ...rest,
