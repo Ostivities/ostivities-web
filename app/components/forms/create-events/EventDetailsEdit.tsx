@@ -204,10 +204,11 @@ function EventDetailsEdit(): JSX.Element {
           `${cloud_api}/${cloud_name}/auto/upload`,
           formData
         );
-        if (response.status === 201) {
+        if (response.status === 200) {
           const urlString: string | any =
             response?.data?.secure_url || response?.data?.url;
           setValue("eventDocument", urlString);
+          console.log(urlString)
         }
         setLoader(false);
       } catch (error) {}
@@ -280,11 +281,12 @@ function EventDetailsEdit(): JSX.Element {
         delete rest.space_available;
         delete rest.space_fee;
       }
+      setLoader(true);
       const response = await updateEvent.mutateAsync({
         id: params?.id || cookies.event_id,
         ...rest,
         supportingDocument: {
-          fileName: "supportingDocument",
+          fileName: data.eventDocumentName || "",
           fileUrl: data.eventDocument,
         },
         eventURL: `${discovery_url}${eventURL}`,
@@ -307,8 +309,10 @@ function EventDetailsEdit(): JSX.Element {
         router.push(
           `/Dashboard/create-events/${params?.id}/event_appearance`
         );
+        setLoader(false)
       }
     } catch (error) {
+      setLoader(false)
       return error;
     }
   };
@@ -669,7 +673,7 @@ function EventDetailsEdit(): JSX.Element {
 
             <Space direction="vertical" size="small">
               <Controller
-                name="eventDocument"
+                name="eventDocumentName"
                 control={control}
                 render={({ field }) => (
                   <Space direction="vertical" size="small">
@@ -685,12 +689,15 @@ function EventDetailsEdit(): JSX.Element {
 
                     <Space.Compact className="w-full h-8">
                       <Input
-                        name="eventDocumentName"
+                        // name="eventDocumentName"
+                        {...field}
                         style={{
                           width: "75%",
                           borderTopRightRadius: "0px !important",
                           borderBottomRightRadius: "0px !important",
                         }}
+                        value={field.value || ''}
+                        onChange={(e) => field.onChange(e.target.value)}
                         placeholder="Enter file name (optional)"
                       />
                       <Upload className="upload-button" {...props}
@@ -733,6 +740,13 @@ function EventDetailsEdit(): JSX.Element {
                       </div>
                     )}
                   </Space>
+                )}
+              />
+              <Controller
+                name="eventDocument"
+                control={control}
+                render={({ field }) => (
+                  <input type="hidden" {...field} />
                 )}
               />
               <Controller
@@ -1243,9 +1257,9 @@ function EventDetailsEdit(): JSX.Element {
             size="large"
             className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
             // onClick={nextStep}
-            loading={createEvent.isPending}
+            loading={updateEvent.isPending}
           >
-            {createEvent.isPending ? "Please wait..." : " Save & Continue"}
+            {updateEvent.isPending ? "Please wait..." : " Save & Continue"}
           </Button>
         </Space>
       </form>

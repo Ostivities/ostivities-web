@@ -426,9 +426,13 @@ const EventPageAppearance: React.FC = () => {
             setCookie("stage_one", "finish");
             setCookie("stage_two", "finish");
             setCookie("stage_three", "process");
-            router.push(
-              `/Dashboard/create-events/${cookies.event_id}/event_tickets`
-            );
+            if(cookies.stage_three === "processing") {
+              router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+            } else {
+              router.push(
+                `/Dashboard/create-events/${cookies.event_id}/event_tickets`
+              );
+            }
           }}
         >
           Save & Continue
