@@ -63,11 +63,12 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form);
   const guestAsChargeBearer = Form.useWatch("guestAsChargeBearer", form);
-  // console.log(guestAsChargeBearer, "guestAsChargeBearer")
+  const ticketQty = Form.useWatch("ticketQty", form);
 
   useEffect(() => {
     if (ticketStock === TICKET_STOCK.UNLIMITED) {
       form.setFieldsValue({ ticketStock: TICKET_STOCK.UNLIMITED });
+      form.setFieldsValue({ ticketQty: null });
     } else {
       form.setFieldsValue({ ticketStock: TICKET_STOCK.LIMITED });
     }
@@ -79,8 +80,15 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
     }
   }, [guestAsChargeBearer]);
 
+  useEffect(() => {
+    if (ticketType === TICKET_TYPE.FREE) {
+      form.setFieldsValue({ ticketPrice: null });
+    }
+  }, [ticketType]);
+
   
-  console.log(ticketDetails, "ticketDetails");
+  // console.log(ticketDetails, "ticketDetails");
+
   useEffect(() => {
     if (ticketDetails) {
       form.setFieldsValue({
@@ -89,10 +97,40 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
         ticketQty: ticketDetails?.ticketQty,
         ticketPrice: ticketDetails?.ticketPrice,
         purchaseLimit: ticketDetails?.purchaseLimit,
+        ticketStock: ticketDetails?.ticketStock,
         guestAsChargeBearer: ticketDetails?.guestAsChargeBearer,
       });
     }
+
+    if (ticketDetails?.ticketQuestions) {
+      setAdditionalFields(
+        ticketDetails?.ticketQuestions.map((question: { is_compulsory: any; }, index: any) => ({
+          id: index,
+          compulsory: question?.is_compulsory,
+        }))
+      );
+      setShowAdditionalField(true);
+      form.setFieldsValue({
+        question: ticketDetails?.ticketQuestions.map(
+          (question: { question: any; }) => ({
+            question: question?.question,
+          })
+        ),
+      })
+    }
   }, [ticketDetails]);
+
+  // useEffect(() => {
+  //     if (ticketDetails?.ticketQuestions) {
+  //       form.setFieldsValue({
+  //         question: ticketDetails?.ticketQuestions.map(
+  //           (question: { question: any; }) => ({
+  //             question: question?.question,
+  //           })
+  //         ),
+  //       })
+  //     }
+  // }, [ticketDetails]);
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ...rest } = values;
@@ -340,7 +378,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
           </Checkbox>
         </Form.Item>
         <Form.Item noStyle>
-          <Checkbox onChange={(e) => setShowAdditionalField(e.target.checked)}>
+          <Checkbox checked={showAdditionalField} onChange={(e) => setShowAdditionalField(e.target.checked)}>
             Enable additional information
           </Checkbox>
         </Form.Item>
@@ -362,7 +400,6 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
                   <div key={id} style={{ marginBottom: "16px" }}>
                     <Form.Item
                       name={[id, "question"]}
-                      fieldKey={[id, "info"]}
                       rules={[
                         {
                           required: compulsory,

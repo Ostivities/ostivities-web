@@ -123,6 +123,8 @@ function CreateTicketPage(): JSX.Element {
               onClick={() => {
                 router.push(`/Dashboard/create-events/${params?.id}/publish-events`);
               }}
+              disabled={true}
+              title="This button is disabled until the user creates a ticket"
             >
               Save & continue
             </Button>

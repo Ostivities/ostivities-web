@@ -133,25 +133,27 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
       
         }
       }
-    }
-    const payload: ITicketUpdate = {
-      id: ticketDetails?.id,
-      ...rest,
-      ticketDescription: editorContent,
-      event: params?.id,
-      ticketEntity: "COLLECTIVE",
-      user: profile?.data?.data?.data?.id,
-      groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
-      ticketType
-    };
-    if (payload) {
-      const response = await updateTicket.mutateAsync(payload);
-      if (response.status === 200) {
-        // console.log(response);
-        form.resetFields();
-        // linkRef.current?.click();
-        router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
-        onOk();
+    } else {
+
+      const payload: ITicketUpdate = {
+        id: ticketDetails?.id,
+        ...rest,
+        ticketDescription: editorContent,
+        event: params?.id,
+        ticketEntity: "COLLECTIVE",
+        user: profile?.data?.data?.data?.id,
+        groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
+        ticketType
+      };
+      if (payload) {
+        const response = await updateTicket.mutateAsync(payload);
+        if (response.status === 200) {
+          // console.log(response);
+          form.resetFields();
+          // linkRef.current?.click();
+          router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+          onOk();
+        }
       }
     }
   };
@@ -210,10 +212,17 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
   useEffect(() => {
     if (ticketStock === TICKET_STOCK.UNLIMITED) {
       form.setFieldsValue({ ticketStock: TICKET_STOCK.UNLIMITED });
+      form.setFieldsValue({ ticketQty: null });
     } else {
       form.setFieldsValue({ ticketStock: TICKET_STOCK.LIMITED });
     }
   }, [ticketStock]);
+
+  useEffect(() => {
+    if (ticketType === TICKET_TYPE.FREE) {
+      form.setFieldsValue({ ticketPrice: null });
+    }
+  }, [ticketType]);
 
   // const handleGroupPriceChange = (value: number | null) => {
   //   setGroupPrice(value);
@@ -406,7 +415,17 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
           style={{ marginBottom: "24px" }}
           rules={[
             {
-              required: showAdditionalField === true,
+              validator: async (_, ticketQuestions) => {
+                if (
+                  showAdditionalField && additionalFields.length === 0 &&
+                  (!ticketQuestions || ticketQuestions.length === 0)
+                ) {
+                  return Promise.reject(
+                    new Error("Please add additional information")
+                  );
+                }
+                return Promise.resolve();
+              },
             },
           ]}
         >
@@ -417,7 +436,6 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
                   <div key={id} style={{ marginBottom: "16px" }}>
                     <Form.Item
                       name={[id, "question"]}
-                      fieldKey={[id, "info"]}
                       rules={[
                         {
                           required: compulsory,
@@ -466,6 +484,11 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
               </>
             )}
           </Form.List>
+          {showAdditionalField && additionalFields.length === 0 && (
+            <div style={{ color: "#ff4d4f", marginTop: "8px" }}>
+              Please add at least one question.
+            </div>
+          )}
         </Form.Item>
       )}
 

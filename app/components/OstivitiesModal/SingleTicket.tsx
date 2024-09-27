@@ -21,17 +21,17 @@ import {
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import EmailEditor from "../QuillEditor/EmailEditor";
-import { usePathname } from 'next/navigation'
+import { usePathname } from "next/navigation";
 import { useCookies } from "react-cookie";
 
 const { Option } = Select;
 
 interface SingleTicketProps {
-  onCancel?: () => void;  // Optional function with no parameters and no return value
-  onOk?: () => void;      // Optional function with no parameters and no return value
+  onCancel?: () => void; // Optional function with no parameters and no return value
+  onOk?: () => void; // Optional function with no parameters and no return value
 }
 
-const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {  
+const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
   const [form] = Form.useForm();
   const { createTicket } = useCreateTicket();
   const { profile } = useProfile();
@@ -48,26 +48,28 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
-  const [cookies, setCookies] = useCookies(["ticket_id",]);
+  const [cookies, setCookies] = useCookies(["ticket_created", "stage_three"]);
 
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form);
   const guestAsChargeBearer = Form.useWatch("guestAsChargeBearer", form);
-  // console.log(guestAsChargeBearer, "guestAsChargeBearer")
-   
+  const ticketQty = Form.useWatch("ticketQty", form);
+  console.log(additionalFields, "additionalFields");
+
   useEffect(() => {
     if (ticketStock === TICKET_STOCK.UNLIMITED) {
       form.setFieldsValue({ ticketStock: TICKET_STOCK.UNLIMITED });
+      form.setFieldsValue({ ticketQty: null });
     } else {
       form.setFieldsValue({ ticketStock: TICKET_STOCK.LIMITED });
     }
   }, [ticketStock]);
 
-  // useEffect(() => {
-  //   if(ticketType === TICKET_TYPE.FREE) {
-  //     form.setFieldsValue({ ticketPrice: "Free" });
-  //   }
-  // }, [ticketType]);
+  useEffect(() => {
+    if (ticketType === TICKET_TYPE.FREE) {
+      form.setFieldsValue({ ticketPrice: null });
+    }
+  }, [ticketType]);
 
   useEffect(() => {
     if (guestAsChargeBearer === true) {
@@ -77,7 +79,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ...rest } = values;
-    console.log(values)
+    // console.log(values);
     setLoading(true);
     if (
       // @ts-ignore
@@ -124,14 +126,14 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
         if (response.status === 201) {
           console.log(response);
           form.resetFields();
+          setCookies("stage_three", "processing");
           // linkRef.current?.click();
-          onOk && onOk()
+          onOk && onOk();
           setLoading(false);
           router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
         }
       }
     } else {
-
       const payload: ITicketCreate = {
         ...rest,
         ticketDescription: editorContent,
@@ -145,14 +147,14 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
           console.log(response);
           form.resetFields();
           // linkRef.current?.click();
-          onOk && onOk()
+          onOk && onOk();
+          setCookies("ticket_created", "yes");
+          setCookies("stage_three", "processing");
           setLoading(false);
           router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
         }
       }
     }
-
-
   };
 
   const onFinishFailed: FormProps<ITicketData>["onFinishFailed"] = (
@@ -301,30 +303,58 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
           initialValue="<p>Enter ticket description!</p>"
           onChange={handleEditorChange}
         />
-      </Form.Item><br /><br />
+      </Form.Item>
+      <br />
+      <br />
 
       <Form.Item
-  style={{ marginBottom: "24px", display: "flex", alignItems: "center", gap: "20px" }}
->
-  <Form.Item<ITicketData> name="guestAsChargeBearer" valuePropName="checked" noStyle>
-    <Checkbox style={{ marginRight: "10px" }}>
-      Transfer charge fees to guest
-    </Checkbox>
-  </Form.Item>
-  <Form.Item noStyle>
-    <Checkbox onChange={(e) => setShowAdditionalField(e.target.checked)}>
-      Enable additional information
-    </Checkbox>
-  </Form.Item>
-</Form.Item>
+        style={{
+          marginBottom: "24px",
+          display: "flex",
+          alignItems: "center",
+          gap: "20px",
+        }}
+      >
+        <Form.Item<ITicketData>
+          name="guestAsChargeBearer"
+          valuePropName="checked"
+          noStyle
+        >
+          <Checkbox style={{ marginRight: "10px" }}>
+            Transfer charge fees to guest
+          </Checkbox>
+        </Form.Item>
+        <Form.Item
+          rules={[
+            {
+              required: showAdditionalField === true,
+              message: "You must add question(s) or else",
+            },
+          ]}
+          noStyle
+        >
+          <Checkbox onChange={(e) => setShowAdditionalField(e.target.checked)}>
+            Enable additional information
+          </Checkbox>
+        </Form.Item>
+      </Form.Item>
 
       {showAdditionalField && (
         <Form.Item<ITicketData>
           style={{ marginBottom: "24px" }}
           rules={[
             {
-              required: showAdditionalField === true,
-              message: "Please add additional information",
+              validator: async (_, ticketQuestions) => {
+                if (
+                  showAdditionalField && additionalFields.length === 0 &&
+                  (!ticketQuestions || ticketQuestions.length === 0)
+                ) {
+                  return Promise.reject(
+                    new Error("Please add additional information")
+                  );
+                }
+                return Promise.resolve();
+              },
             },
           ]}
         >
@@ -335,7 +365,6 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
                   <div key={id} style={{ marginBottom: "16px" }}>
                     <Form.Item
                       name={[id, "question"]}
-                      fieldKey={[id, "info"]}
                       rules={[
                         {
                           required: true,
@@ -361,7 +390,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
                       </div>
                     </Form.Item>
                     <Form.Item
-                      name="isCompulsory"
+                      name="is_compulsory"
                       style={{ marginBottom: "8px" }}
                     >
                       <Checkbox
@@ -387,6 +416,12 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
               </>
             )}
           </Form.List>
+          {/* Show validation error if no fields are added and showAdditionalField is true */}
+          {showAdditionalField && additionalFields.length === 0 && (
+            <div style={{ color: "#ff4d4f", marginTop: "8px" }}>
+              Please add at least one question.
+            </div>
+          )}
         </Form.Item>
       )}
 
@@ -408,7 +443,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk, }) => {
           className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
         >
           {createTicket.isPending ? "Please Wait" : "Add Ticket"}
-          </Button>
+        </Button>
       </div>
     </Form>
   );

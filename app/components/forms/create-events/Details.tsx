@@ -150,7 +150,7 @@ function Details(): JSX.Element {
           formData
         );
         console.log(response, "fileupload");
-        if (response.status === 201) {
+        if (response.status === 200) {
           const urlString: string | any =
             response?.data?.secure_url || response?.data?.url;
           setValue("eventDocument", urlString);
@@ -224,7 +224,7 @@ function Details(): JSX.Element {
       eventURL,
       ...rest
     } = data;
-    // console.log(data?.eventDocument);
+    // return console.log(data);
     
     try {
       if (
@@ -615,7 +615,7 @@ function Details(): JSX.Element {
 
             <Space direction="vertical" size="small">
               <Controller
-                name="eventDocument"
+                name="eventDocumentName"
                 control={control}
                 render={({ field }) => (
                   <Space direction="vertical" size="small">
@@ -629,20 +629,23 @@ function Details(): JSX.Element {
                       htmlFor="supportingDocument"
                     />
 
-<Space.Compact className="w-full h-8">
+                    <Space.Compact className="w-full h-8">
                       <Input
-                        name="eventDocumentName"
+                        // name="eventDocumentName"
+                        {...field}
                         style={{
                           width: "75%",
                           borderTopRightRadius: "0px !important",
                           borderBottomRightRadius: "0px !important",
                         }}
+                        value={field.value || ''}
+                        onChange={(e) => field.onChange(e.target.value)}
                         placeholder="Enter file name (optional)"
                       />
                       <Upload className="upload-button" {...props}
                       beforeUpload={(file) => {
                         handleFileUpload(file);
-                        return false; // Prevent automatic upload
+                        // return false; // Prevent automatic upload
                       }}>
                         <Button
                           icon={<UploadOutlined />}
@@ -679,6 +682,13 @@ function Details(): JSX.Element {
                       </div>
                     )}
                   </Space>
+                )}
+              />
+              <Controller
+                name="eventDocument"
+                control={control}
+                render={({ field }) => (
+                  <input type="hidden" {...field} />
                 )}
               />
               <Controller
