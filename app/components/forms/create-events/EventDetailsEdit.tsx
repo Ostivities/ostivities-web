@@ -171,7 +171,6 @@ function EventDetailsEdit(): JSX.Element {
       setShowRadio(true);
       setValue("exhibitionspace", true);
       setValue("exhibition_space_booking", eventDetails?.exhibition_space_booking);
-
     }
   }, [eventDetails, setValue]);
 

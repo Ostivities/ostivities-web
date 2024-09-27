@@ -48,7 +48,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
-  const [cookies, setCookies] = useCookies(["ticket_id", "stage_three"]);
+  const [cookies, setCookies] = useCookies(["ticket_created", "stage_three"]);
 
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form);
@@ -148,6 +148,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
           form.resetFields();
           // linkRef.current?.click();
           onOk && onOk();
+          setCookies("ticket_created", "yes");
           setCookies("stage_three", "processing");
           setLoading(false);
           router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);

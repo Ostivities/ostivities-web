@@ -28,6 +28,7 @@ const EventPageAppearance: React.FC = () => {
     "stage_one",
     "stage_two",
     "stage_three",
+    "ticket_created",
   ]);
   const params = useParams<{ id: string }>();
   const { getUserEvent } = useGetUserEvent(params?.id);
@@ -147,7 +148,7 @@ const EventPageAppearance: React.FC = () => {
             setCookie("stage_two", "wait");
             setCookie("stage_three", "wait");
             router.push(
-              `/Dashboard/create-events/${cookies.event_id}/event_details`
+              `/Dashboard/create-events/${params?.id}/event_details`
             );
           }}
         >
@@ -426,11 +427,11 @@ const EventPageAppearance: React.FC = () => {
             setCookie("stage_one", "finish");
             setCookie("stage_two", "finish");
             setCookie("stage_three", "process");
-            if(cookies.stage_three === "processing") {
+            if(cookies.ticket_created === "yes") {
               router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
             } else {
               router.push(
-                `/Dashboard/create-events/${cookies.event_id}/event_tickets`
+                `/Dashboard/create-events/${params?.id}/event_tickets`
               );
             }
           }}

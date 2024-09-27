@@ -21,6 +21,7 @@ function CreateTicketPage(): JSX.Element {
     "stage_one",
     "stage_two",
     "stage_three",
+    "ticket_created",
   ]);
 
   const title = (
@@ -63,6 +64,7 @@ function CreateTicketPage(): JSX.Element {
               setCookie("stage_one", "process");
               setCookie("stage_two", "process");
               setCookie("stage_three", "wait");
+              setCookie("ticket_created", "yes")
               router.push(
                 `/Dashboard/create-events/${params?.id}/event_appearance`
               );

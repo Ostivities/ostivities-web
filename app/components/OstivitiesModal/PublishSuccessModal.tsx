@@ -45,7 +45,7 @@ const PublishSuccessModal = ({
             <button
               onClick={() =>
                 router.push(
-                  `/Dashboard/events-created/${cookies?.event_id}/about`
+                  `/Dashboard/events-created/${params?.id}/about`
                 )
               }
               className="block primary-btn font-normal text-base mt-10 px-32"
