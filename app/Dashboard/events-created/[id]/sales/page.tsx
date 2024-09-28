@@ -199,52 +199,109 @@ const EventSales = () => {
 >
   Change Table
 </Button>
-
-
           </Dropdown>
         </Space>
 
-        {visibleTable === "ticket" && (
-          <>
-            <Search placeholder="Search Ticket Name" onChange={(e) => setSearchText(e.target.value)} style={{ width: 300 }} />
-            <Table
-              rowSelection={{ selectedRowKeys, onChange: setSelectedRowKeys }}
-              columns={columns}
-              dataSource={data.filter(item => item.eventName.toLowerCase().includes(searchText.toLowerCase()))}
-              className="font-BricolageGrotesqueRegular w-full"
-              pagination={{ current: currentPage, pageSize, onChange: setCurrentPage }}
-              scroll={{ x: "max-content" }}
-            />
-          </>
-        )}
+        {visibleTable === "ticket" && selectedRowKeys.length > 0 && (
+    <Space className="mb-3">
+      <Button
+        type="default"
+        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+        style={{ borderRadius: 15, marginRight: 0 }}
+        onClick={() => handleExport("excel", data.filter((item) => selectedRowKeys.includes(item.key)), columns, "TicketSales")}
+      >
+        <FileExcelOutlined />
+      </Button>
+      <Button
+        type="default"
+        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+        style={{ borderRadius: 15 }}
+        onClick={() => handleExport("pdf", data.filter((item) => selectedRowKeys.includes(item.key)), columns, "TicketSales")}
+      >
+        <FilePdfOutlined />
+      </Button>
+    </Space>
+  )}
 
-        {visibleTable === "exhibition" && (
-          <>
-            <Table
-              rowSelection={{ selectedRowKeys: selectedSpaceRowKeys, onChange: setSelectedSpaceRowKeys }}
-              columns={spaceColumns}
-              dataSource={exhibitionData}
-              className="font-BricolageGrotesqueRegular w-full"
-              pagination={{ current: currentSpacePage, pageSize: spacePageSize, onChange: setCurrentSpacePage }}
-              scroll={{ x: "max-content" }}
-            />
-          </>
-        )}
+  {visibleTable === "exhibition" && selectedSpaceRowKeys.length > 0 && (
+    <Space className="mb-3">
+      <Button
+       type="default"
+        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+        style={{ borderRadius: 15, marginRight: 0 }}
+        onClick={() => handleExport("excel", exhibitionData, spaceColumns, "Exhibition Sales")}
+      >
+        <FileExcelOutlined />
+      </Button>
+      <Button
+        type="default"
+        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+        style={{ borderRadius: 15 }}
+        onClick={() => handleExport("pdf", exhibitionData, spaceColumns, "Exhibition Sales")}
+      >
+         <FilePdfOutlined />
+      </Button>
+    </Space>
+  )}
 
-        {visibleTable === "payment" && (
-          <>
-            <Search placeholder="Search Recipient Name" onChange={(e) => setPaymentSearchText(e.target.value)} style={{ width: 300 }} />
-            <Table
-              rowSelection={{ selectedRowKeys: selectedPaymentRowKeys, onChange: setSelectedPaymentRowKeys }}
-              columns={paymentColumns}
-              dataSource={paymentData.filter(item => item.recipient.toLowerCase().includes(paymentSearchText.toLowerCase()))}
-              className="font-BricolageGrotesqueRegular w-full"
-              pagination={{ current: currentPaymentPage, pageSize: paymentPageSize, onChange: setCurrentPaymentPage }}
-              scroll={{ x: "max-content" }}
-            />
-          </>
-        )}
-      </Space>
+  {visibleTable === "payment" && selectedPaymentRowKeys.length > 0 && (
+    <Space className="mb-3">
+      <Button
+        type="default"
+        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+        style={{ borderRadius: 15, marginRight: 0 }}
+        onClick={() => handleExport("excel", paymentData, paymentColumns, "Payment History")}
+      >
+       <FileExcelOutlined />
+      </Button>
+      <Button
+        type="default"
+        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+        style={{ borderRadius: 15 }}
+        onClick={() => handleExport("pdf", paymentData, paymentColumns, "Payment History")}
+      >
+        <FilePdfOutlined />
+      </Button>
+    </Space>
+  )}
+
+  {/* Table rendering */}
+  {visibleTable === "ticket" && (
+    <Table
+      rowSelection={{
+        selectedRowKeys,
+        onChange: setSelectedRowKeys,
+      }}
+      columns={columns}
+      dataSource={data}
+      pagination={{ current: currentPage, pageSize, onChange: (page) => setCurrentPage(page) }}
+    />
+  )}
+
+  {visibleTable === "exhibition" && (
+    <Table
+      rowSelection={{
+        selectedRowKeys: selectedSpaceRowKeys,
+        onChange: setSelectedSpaceRowKeys,
+      }}
+      columns={spaceColumns}
+      dataSource={exhibitionData}
+      pagination={{ current: currentSpacePage, pageSize: spacePageSize, onChange: (page) => setCurrentSpacePage(page) }}
+    />
+  )}
+
+  {visibleTable === "payment" && (
+    <Table
+      rowSelection={{
+        selectedRowKeys: selectedPaymentRowKeys,
+        onChange: setSelectedPaymentRowKeys,
+      }}
+      columns={paymentColumns}
+      dataSource={paymentData}
+      pagination={{ current: currentPaymentPage, pageSize: paymentPageSize, onChange: (page) => setCurrentPaymentPage(page) }}
+    />
+  )}
+</Space>
     </EventDetailsComponent>
   );
 };
