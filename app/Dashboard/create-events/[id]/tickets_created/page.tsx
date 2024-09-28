@@ -75,14 +75,14 @@ function CreateTicketPage(): JSX.Element {
         </Flex>
         <div className="w-full mx-auto flex flex-col space-y-5 py-6">
         <br /><br />
-          <EventTicketTable /> 
-          <Space className="flex flex-row justify-center space-x-4 mt-8">
+          <EventTicketTable /> <br /><br />
+          <Space className="flex flex-row justify-center space-x-4 mt-8"> 
             <Button
               type="default"
               size={"large"}
               className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
               onClick={() => {
-                // router.push("/publish-events");
+                router.push(`/Dashboard/create-events/${params?.id}/publish-event`);
               }}
             >
               Skip & do this later
