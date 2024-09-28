@@ -291,7 +291,7 @@ const AboutEvent = () => {
                   onChange={handleEditorChange}
                 />
               )}
-            </div>
+            </div><br /><br /><br />
 
             <Controller
               name="vendor_registration"
