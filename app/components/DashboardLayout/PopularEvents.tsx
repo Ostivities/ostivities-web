@@ -3,7 +3,11 @@ import InfoCard from './InfoCard';
 
 const PopularEvents = () => {
   return (
-    <EventSection title="Popular Events" uri="/Dashboard/popular">
+    <EventSection 
+    title="Popular Events"
+    titleClass="custom-title-class"
+    style={{ fontSize: '20px', fontFamily: 'Bricolage Grotesque, font-semibold' }}  // Inline style 
+    uri="/Dashboard/popular">
       <InfoCard
         title="Concert with Davido"
         about="Concert"

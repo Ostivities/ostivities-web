@@ -54,7 +54,13 @@ const Event = ({ params }: { params: { event: string } }) => {
   return (
     <DashboardLayout title={title} isLoggedIn>
       <section>
-        <h2 className="font-bricolage-grotesque font-semibold text-2xl mb-3">{currentSubtitle}</h2>
+      <h2
+  className="mb-3"
+  style={{ fontSize: '24px', fontFamily: 'Bricolage Grotesque, font-semibold' }}
+>
+  {currentSubtitle}
+</h2>
+
         <div className="grid grid-cols-5 gap-3 gap-y-10 mt-7">
           <InfoCard
             title="Concert with Davido"

@@ -3,7 +3,12 @@ import InfoCard from './InfoCard';
 
 const FreeEvents = () => {
   return (
-    <EventSection title="Free Events" uri="/Dashboard/free">
+    <EventSection 
+    title="Free Events"
+     titleClass="custom-title-class"
+     style={{ fontSize: '20px', fontFamily: 'Bricolage Grotesque, font-semibold' }}  // Inline style
+      
+    uri="/Dashboard/free">
       <InfoCard
         title="Concert with Davido"
         about="Concert"

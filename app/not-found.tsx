@@ -1,5 +1,5 @@
 "use client";
-import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
+import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayoutnotfound";
 import React from "react";
 import { useRouter } from "next/navigation";
 import notfound from '@/public/notfound.svg';
@@ -13,18 +13,14 @@ function EventNotFound(): JSX.Element {
     router.push("/Dashboard"); 
   };
 
-  const title = (
-    <div className="flex justify-between items-center w-full relative pb-2">
-      <h1 style={{ fontSize: '24px' }}>Discovery</h1>
-    </div>
-  );
+ 
 
   return (
-    <DashboardLayout title={title} isLoggedIn>
+    <DashboardLayout>
       <div className="w-full mx-auto flex flex-row items-center justify-between space-y-5 py-6">
         <div className="w-1/2 flex flex-col gap-2 p-[8rem] justify-center">
           <h2 className="w-full md:w-full font-BricolageGrotesqueMedium text-3xl font-bold mb-4">Oops.... page not found!</h2>
-          <p className="w-full md:w-full font-BricolageGrotesqueMedium text-md mb-6">This Event Page doesn`t exist or was removed!
+          <p className="w-full md:w-full font-BricolageGrotesqueMedium text-md mb-6">This Page doesn`t exist or was removed!
           We suggest you confirm the search parameters or if the url is correct and try again.</p>
           <button
             onClick={handleBackToDiscovery}

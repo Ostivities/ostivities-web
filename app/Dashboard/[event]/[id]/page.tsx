@@ -1,5 +1,6 @@
 'use client';
 
+import AvailableEvents from '@/app/components/DashboardLayout/AvailableEvents';
 import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
 import { Heading5 } from '@/app/components/typography/Typography';
 import { Button, Dropdown, MenuProps, Space } from 'antd';
@@ -17,14 +18,14 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
 
   const title = (
     <div className="flex-center gap-2">
-      <Image
+      {/* <Image
         src="/icons/back-arrow.svg"
         alt=""
         height={25}
         width={25}
         onClick={() => router.back()}
         className="cursor-pointer"
-      />
+      /> */}
 
 <h1 style={{ fontSize: '24px' }}>Concert with Davido</h1>
 
@@ -227,7 +228,8 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
 
             </div>
           </div>
-        </div>
+        </div><br /><br /><br /><br />
+        <AvailableEvents />
       </section>
     </DashboardLayout>
   );
