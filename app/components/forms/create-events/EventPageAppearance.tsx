@@ -8,9 +8,12 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { useQueryClient } from "@tanstack/react-query"
 import { Heading5, Paragraph } from "../../typography/Typography";
+import { GET_EVENT} from "@/app/utils/constants";
+
 
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
 const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
@@ -20,6 +23,7 @@ const event_appearance_image: any =
 
 const EventPageAppearance: React.FC = () => {
   const router = useRouter();
+  const queryClient = useQueryClient()
   const [imageUrl, setImageUrl] = useState<string>("/images/emptyimage2.png");
   const [loader, setLoader] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies([
@@ -34,13 +38,22 @@ const EventPageAppearance: React.FC = () => {
   const { getUserEvent } = useGetUserEvent(params?.id);
   const { updateEvent } = useUpdateEvent();
 
+  useEffect(() => {
+    if (params?.id) {
+      queryClient.invalidateQueries({ queryKey: [GET_EVENT, params.id] });
+    }
+  }, [params?.id]);
+
   const { profile } = useProfile();
   const userFullName =
     profile?.data?.data?.data?.firstName +
     " " +
     profile?.data?.data?.data?.lastName;
 
+
   const eventDetails = getUserEvent?.data?.data?.data;
+
+
   const props: UploadProps = {
     name: "image",
     maxCount: 1,

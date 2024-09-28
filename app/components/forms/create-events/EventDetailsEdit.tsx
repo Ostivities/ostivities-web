@@ -63,7 +63,7 @@ import {
   useUpdateEvent,
 } from "../../../hooks/event/event.hook";
 import EmailEditor from "../../QuillEditor/EmailEditor";
-import customParseFormat from 'dayjs/plugin/customParseFormat';
+import customParseFormat from "dayjs/plugin/customParseFormat";
 
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 
@@ -92,6 +92,7 @@ function EventDetailsEdit(): JSX.Element {
   ]);
   const params = useParams<{ id: string }>();
   const [showRadio, setShowRadio] = useState(false);
+  const [vendorRegRadio, setVendorRegRadio] = useState(false);
   const [editorContent, setEditorContent] = useState("");
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
@@ -100,12 +101,12 @@ function EventDetailsEdit(): JSX.Element {
   dayjs.extend(customParseFormat);
 
   const { RangePicker } = DatePicker;
-  
+
   const accountType = profile?.data?.data?.data?.accountType;
 
   const { getUserEvent } = useGetUserEvent(params?.id || cookies.event_id);
   const eventDetails: IEventDetails = getUserEvent?.data?.data?.data;
-  console.log(eventDetails)
+  console.log(eventDetails);
   const { Option } = Select;
 
   const userName =
@@ -113,15 +114,23 @@ function EventDetailsEdit(): JSX.Element {
       ? profile?.data?.data?.data?.firstName
       : profile?.data?.data?.data?.businessName || "";
 
-  const { handleSubmit, control, setValue, watch, trigger, reset, getValues } =
-    useForm<IFormInput>({
-      mode: "all",
-    });
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    setValue,
+    watch,
+    trigger,
+    reset,
+    getValues,
+  } = useForm<IFormInput>({
+    mode: "all",
+  });
 
-    const disabledDate: RangePickerProps['disabledDate'] = (current) => {
-      // Disable past dates and times
-      return current && current < dayjs().startOf('day');
-    };
+  const disabledDate: RangePickerProps["disabledDate"] = (current) => {
+    // Disable past dates and times
+    return current && current < dayjs().startOf("day");
+  };
 
   const watchEventInfo = watch("eventInfo");
 
@@ -164,13 +173,17 @@ function EventDetailsEdit(): JSX.Element {
       setValue("frequency", eventDetails?.frequency);
       setValue("space_available", eventDetails?.space_available);
       setValue("space_fee", eventDetails?.space_fee);
+      setVendorRegRadio(eventDetails?.vendor_registration ?? false);
       setValue("vendor_registration", eventDetails?.vendor_registration);
     }
 
-    if(eventDetails?.exhibition_space_booking) {
+    if (eventDetails?.exhibition_space_booking) {
       setShowRadio(true);
       setValue("exhibitionspace", true);
-      setValue("exhibition_space_booking", eventDetails?.exhibition_space_booking);
+      setValue(
+        "exhibition_space_booking",
+        eventDetails?.exhibition_space_booking
+      );
     }
   }, [eventDetails, setValue]);
 
@@ -180,7 +193,13 @@ function EventDetailsEdit(): JSX.Element {
     }
   }, [eventDetails]);
 
- // const handleUploadChange =
+  useEffect(() => {
+    if (vendorRegRadio === false) {
+      setShowRadio(false);
+    }
+  }, [vendorRegRadio]);
+
+  // const handleUploadChange =
 
   const props: UploadProps = {
     name: "image",
@@ -207,7 +226,7 @@ function EventDetailsEdit(): JSX.Element {
           const urlString: string | any =
             response?.data?.secure_url || response?.data?.url;
           setValue("eventDocument", urlString);
-          console.log(urlString)
+          console.log(urlString);
         }
         setLoader(false);
       } catch (error) {}
@@ -221,7 +240,7 @@ function EventDetailsEdit(): JSX.Element {
       }
     },
     showUploadList: false,
-    fileList
+    fileList,
   };
   console.log(fileList);
 
@@ -231,7 +250,7 @@ function EventDetailsEdit(): JSX.Element {
       setFileList(JSON.parse(storedFiles));
     }
   }, []);
-  
+
   const handleFileUpload = (file: File) => {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -251,15 +270,13 @@ function EventDetailsEdit(): JSX.Element {
     };
     reader.readAsDataURL(file);
   };
-  
-  
+
   const handleDeleteFile = (fileUid: string) => {
     const updatedFileList = fileList.filter((item) => item.uid !== fileUid);
     setFileList(updatedFileList);
     localStorage.setItem("uploadedFiles", JSON.stringify(updatedFileList));
   };
-  
- 
+
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     // return console.log(data)
     const {
@@ -275,11 +292,31 @@ function EventDetailsEdit(): JSX.Element {
       ...rest
     } = data;
     try {
-      if(exhibitionspace === false) {
+      if (
+        (facebookUrl && !facebookUrl.startsWith("https://")) ||
+        (instagramUrl && !instagramUrl.startsWith("https://")) ||
+        (websiteUrl && !websiteUrl.startsWith("https://")) ||
+        (twitterUrl && !twitterUrl.startsWith("https://"))
+      ) {
+        return Modal.error({
+          title: "Invalid URL",
+          content: "Please ensure all Social Media URLs start with 'https://'",
+        });
+      }
+
+      if (exhibitionspace === false) {
         delete rest.exhibition_space_booking;
         delete rest.space_available;
         delete rest.space_fee;
       }
+
+      const socials = [
+        { name: "twitter", url: twitterUrl },
+        { name: "facebook", url: facebookUrl },
+        { name: "instagram", url: instagramUrl },
+        { name: "website", url: websiteUrl },
+      ].filter((social) => social.url);
+
       setLoader(true);
       const response = await updateEvent.mutateAsync({
         id: params?.id || cookies.event_id,
@@ -290,12 +327,7 @@ function EventDetailsEdit(): JSX.Element {
         },
         eventURL: `${discovery_url}${eventURL}`,
         eventDetails: editorContent,
-        socials: [
-          { name: "twitter", url: twitterUrl },
-          { name: "facebook", url: facebookUrl },
-          { name: "instagram", url: instagramUrl },
-          { name: "website", url: websiteUrl },
-        ],
+        socials,
       });
 
       if (response.status === 200) {
@@ -305,13 +337,11 @@ function EventDetailsEdit(): JSX.Element {
         setCookie("stage_one", "finish");
         setCookie("stage_two", "process");
         setCookie("stage_three", "wait");
-        router.push(
-          `/Dashboard/create-events/${params?.id}/event_appearance`
-        );
-        setLoader(false)
+        router.push(`/Dashboard/create-events/${params?.id}/event_appearance`);
+        setLoader(false);
       }
     } catch (error) {
-      setLoader(false)
+      setLoader(false);
       return error;
     }
   };
@@ -388,6 +418,7 @@ function EventDetailsEdit(): JSX.Element {
             <Controller
               name="eventName"
               control={control}
+              rules={{ required: "Event Name is required!" }}
               render={({ field }) => (
                 <Space direction="vertical" size={"small"}>
                   <Label
@@ -400,6 +431,11 @@ function EventDetailsEdit(): JSX.Element {
                     placeholder="Enter Event Name"
                     name="eventName"
                   />
+                  {errors.eventName && (
+                    <span style={{ color: "red" }}>
+                      {errors.eventName.message}
+                    </span>
+                  )}
                 </Space>
               )}
             />
@@ -430,7 +466,10 @@ function EventDetailsEdit(): JSX.Element {
                     <Checkbox
                       {...field}
                       checked={field.value}
-                      onChange={(e) => field.onChange(e.target.checked)}
+                      onChange={(e) => {
+                        field.onChange(e.target.checked);
+                        setVendorRegRadio(e.target.checked);
+                      }}
                     >
                       <span
                         style={{
@@ -462,111 +501,139 @@ function EventDetailsEdit(): JSX.Element {
               )}
             />
 
-            <Controller
-              name="exhibitionspace"
-              control={control}
-              render={({ field }) => (
-                <Checkbox
-                  {...field}
-                  checked={field.value as boolean} // Ensure exhibitionspace is boolean
-                  onChange={(e) => {
-                    field.onChange(e.target.checked);
-                    setShowRadio(e.target.checked); // Toggle radio buttons visibility
-                  }}
-                >
-                  <span
-                    style={{ fontFamily: "Bricolage Grotesque Light" }}
-                    className="font-BricolageGrotesqueRegular"
+            {vendorRegRadio && (
+              <Controller
+                name="exhibitionspace"
+                control={control}
+                render={({ field }) => (
+                  <Checkbox
+                    {...field}
+                    checked={showRadio} // Ensure exhibitionspace is boolean
+                    onChange={(e) => {
+                      field.onChange(e.target.checked);
+                      setShowRadio(e.target.checked); // Toggle radio buttons visibility
+                    }}
                   >
-                    Exhibition Space Booking{" "}
-                    <span className="optional-text font-BricolageGrotesqueLight">
-                      (allows vendors to book exhibition space at your event)
-                    </span>{" "}
-                    <a
-                      href="https://ostivities.tawk.help/article/how-exhibition-space-booking-works" // Replace with your actual URL
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ marginLeft: "8px" }}
+                    <span
+                      style={{ fontFamily: "Bricolage Grotesque Light" }}
+                      className="font-BricolageGrotesqueRegular"
                     >
-                      <QuestionCircleOutlined
-                        style={{ fontSize: "16px", color: "#858990" }}
-                      />
-                    </a>
-                  </span>
-                </Checkbox>
-              )}
-            />
+                      Exhibition Space Booking{" "}
+                      <span className="optional-text font-BricolageGrotesqueLight">
+                        (allows vendors to book exhibition space at your event)
+                      </span>{" "}
+                      <a
+                        href="https://ostivities.tawk.help/article/how-exhibition-space-booking-works" // Replace with your actual URL
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ marginLeft: "8px" }}
+                      >
+                        <QuestionCircleOutlined
+                          style={{ fontSize: "16px", color: "#858990" }}
+                        />
+                      </a>
+                    </span>
+                  </Checkbox>
+                )}
+              />
+            )}
 
             {showRadio && (
               <Controller
                 name="exhibition_space_booking"
                 control={control}
+                rules={{ required: "Please select an option!" }}
                 render={({ field }) => (
-                  <Radio.Group
-                    {...field}
-                    onChange={(e) => field.onChange(e.target.value as string)} // Ensure value is string
-                    value={field.value}
-                  >
-                    <Radio value={EXHIBITION_SPACE.PAID}>Paid Space</Radio>
-                    <Radio value={EXHIBITION_SPACE.FREE}>Free Space</Radio>
-                  </Radio.Group>
+                  <>
+                    <Radio.Group
+                      {...field}
+                      onChange={(e) => field.onChange(e.target.value as string)} // Ensure value is string
+                      value={field.value}
+                    >
+                      <Radio value={EXHIBITION_SPACE.PAID}>Paid Space</Radio>
+                      <Radio value={EXHIBITION_SPACE.FREE}>Free Space</Radio>
+                    </Radio.Group>
+                    {errors.exhibition_space_booking && (
+                      <span style={{ color: "red" }}>
+                        {errors.exhibition_space_booking.message}
+                      </span>
+                    )}
+                  </>
                 )}
               />
             )}
 
-            {showRadio && watch("exhibition_space_booking") === EXHIBITION_SPACE.PAID && (
-              <Space direction="horizontal" size="large">
-                <Form.Item
-                  label={
-                    <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
-                      Space Available
-                    </span>
-                  }
-                >
-                  <Controller
-                    name="space_available"
-                    control={control}
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        placeholder="Enter number of spaces"
-                        type="number"
-                      />
-                    )}
-                  />
-                </Form.Item>
-                <Form.Item
-                  label={
-                    <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
-                      Space Fee
-                    </span>
-                  }
-                >
-                  <Controller
-                    name="space_fee"
-                    control={control}
-                    render={({ field }) => (
-                      <InputNumber
-                        {...field}
-                        placeholder="Enter space fee"
-                        style={{ width: "80%" }}
-                        min={0}
-                        formatter={(value) =>
-                          `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                        }
-                        parser={(value) =>
-                          value?.replace(/\₦\s?|(,*)/g, "") as any
-                        }
-                      />
-                    )}
-                  />
-                </Form.Item>
-              </Space>
-            )}
+            {showRadio &&
+              watch("exhibition_space_booking") === EXHIBITION_SPACE.PAID && (
+                <Space direction="horizontal" size="large">
+                  <Form.Item
+                    label={
+                      <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
+                        Space Available
+                      </span>
+                    }
+                  >
+                    <Controller
+                      name="space_available"
+                      control={control}
+                      rules={{ required: "Space Available is required!" }}
+                      render={({ field }) => (
+                        <>
+                          <InputNumber
+                            {...field}
+                            style={{ width: "80%" }}
+                            placeholder="Enter number of spaces"
+                          />
+                          {errors.space_available && (
+                            <span style={{ color: "red" }}>
+                              {errors.space_available.message}
+                            </span>
+                          )}
+                        </>
+                      )}
+                    />
+                  </Form.Item>
+                  <Form.Item
+                    label={
+                      <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
+                        Space Fee
+                      </span>
+                    }
+                  >
+                    <Controller
+                      name="space_fee"
+                      control={control}
+                      rules={{ required: "Space Fee is required!" }}
+                      render={({ field }) => (
+                        <>
+                          <InputNumber
+                            {...field}
+                            placeholder="Enter space fee"
+                            style={{ width: "80%" }}
+                            min={0}
+                            formatter={(value) =>
+                              `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            }
+                            parser={(value) =>
+                              value?.replace(/\₦\s?|(,*)/g, "") as any
+                            }
+                          />
+                          {errors.space_fee && (
+                            <span style={{ color: "red" }}>
+                              {errors.space_fee.message}
+                            </span>
+                          )}
+                        </>
+                      )}
+                    />
+                  </Form.Item>
+                </Space>
+              )}
 
             <Controller
               name="state"
               control={control}
+              rules={{ required: "State is required!" }}
               render={({ field }) => (
                 <Space
                   direction="vertical"
@@ -586,6 +653,9 @@ function EventDetailsEdit(): JSX.Element {
                       </Option>
                     ))}
                   </Select>
+                  {errors.state && (
+                    <span style={{ color: "red" }}>{errors.state.message}</span>
+                  )}
                 </Space>
               )}
             />
@@ -593,6 +663,7 @@ function EventDetailsEdit(): JSX.Element {
             <Controller
               name="address"
               control={control}
+              rules={{ required: "Address is required!" }}
               render={({ field }) => (
                 <Space
                   direction="vertical"
@@ -631,6 +702,11 @@ function EventDetailsEdit(): JSX.Element {
                       </Button>
                     </Popover>
                   </div>
+                  {errors.address && (
+                    <span style={{ color: "red" }}>
+                      {errors.address.message}
+                    </span>
+                  )}
                 </Space>
               )}
             />
@@ -639,6 +715,7 @@ function EventDetailsEdit(): JSX.Element {
             <Controller
               name="eventURL"
               control={control}
+              rules={{ required: "Event URL is required!" }}
               render={({ field }) => (
                 <Space direction="vertical" size="small">
                   <Label content="Event URL" className="" htmlFor="eventURL" />
@@ -666,6 +743,11 @@ function EventDetailsEdit(): JSX.Element {
                       placeholder="Enter your desired name"
                     />
                   </Space.Compact>
+                  {errors.eventURL && (
+                    <span style={{ color: "red" }}>
+                      {errors.eventURL.message}
+                    </span>
+                  )}
                 </Space>
               )}
             />
@@ -695,15 +777,18 @@ function EventDetailsEdit(): JSX.Element {
                           borderTopRightRadius: "0px !important",
                           borderBottomRightRadius: "0px !important",
                         }}
-                        value={field.value || ''}
+                        value={field.value || ""}
                         onChange={(e) => field.onChange(e.target.value)}
                         placeholder="Enter file name (optional)"
                       />
-                      <Upload className="upload-button" {...props}
-                      beforeUpload={(file) => {
-                        handleFileUpload(file);
-                        return false; // Prevent automatic upload
-                      }}>
+                      <Upload
+                        className="upload-button"
+                        {...props}
+                        beforeUpload={(file) => {
+                          handleFileUpload(file);
+                          return false; // Prevent automatic upload
+                        }}
+                      >
                         <Button
                           icon={<UploadOutlined />}
                           className="custom-upload-button"
@@ -720,7 +805,7 @@ function EventDetailsEdit(): JSX.Element {
                     </span>
                     {fileList.length > 0 && (
                       <div className="font-BricolageGrotesqueLight text-xs text-gray-400">
-                        Uploaded Files: {" "}
+                        Uploaded Files:{" "}
                         <Space>
                           {fileList.map((file) => (
                             <Space key={file.uid}>
@@ -744,13 +829,12 @@ function EventDetailsEdit(): JSX.Element {
               <Controller
                 name="eventDocument"
                 control={control}
-                render={({ field }) => (
-                  <input type="hidden" {...field} />
-                )}
+                render={({ field }) => <input type="hidden" {...field} />}
               />
               <Controller
                 name="eventType"
                 control={control}
+                rules={{ required: "Event Type is required!" }}
                 render={({ field }) => (
                   <Space direction="vertical" size={"small"} className="w-full">
                     <Label
@@ -769,6 +853,11 @@ function EventDetailsEdit(): JSX.Element {
                         </Option>
                       ))}
                     </Select>
+                    {errors.eventType && (
+                      <span style={{ color: "red" }}>
+                        {errors.eventType.message}
+                      </span>
+                    )}
                   </Space>
                 )}
               />
@@ -777,6 +866,7 @@ function EventDetailsEdit(): JSX.Element {
             <Controller
               name="eventInfo"
               control={control}
+              rules={{ required: "Event Info is required!" }}
               render={({ field }) => (
                 <Space direction="vertical" size={"small"} className="w-full">
                   <Label
@@ -801,6 +891,11 @@ function EventDetailsEdit(): JSX.Element {
                       Recurring Event
                     </Radio>
                   </Radio.Group>
+                  {errors.eventInfo && (
+                    <span style={{ color: "red" }}>
+                      {errors.eventInfo.message}
+                    </span>
+                  )}
                 </Space>
               )}
             />
@@ -810,6 +905,7 @@ function EventDetailsEdit(): JSX.Element {
                 <Controller
                   name="timeZone"
                   control={control}
+                  rules={{ required: "Time Zone is required!" }}
                   render={({ field }) => (
                     <Space
                       direction="vertical"
@@ -832,6 +928,11 @@ function EventDetailsEdit(): JSX.Element {
                           </Option>
                         ))}
                       </Select>
+                      {errors.timeZone && (
+                        <span style={{ color: "red" }}>
+                          {errors.timeZone.message}
+                        </span>
+                      )}
                     </Space>
                   )}
                 />
@@ -849,14 +950,25 @@ function EventDetailsEdit(): JSX.Element {
                       <Controller
                         name="startDate"
                         control={control}
+                        rules={{ required: "Start Date & Time is required!" }}
                         render={({ field }) => (
-                          <DatePicker
-                            {...field}
-                            showTime
-                            format="YYYY-MM-DD HH:mm:ss"
-                            style={{ width: "100%", height: "33px" }}
-                            disabledDate={disabledDate}
-                          />
+                          <>
+                            <DatePicker
+                              {...field}
+                              showTime
+                              format="YYYY-MM-DD HH:mm:ss"
+                              style={{ width: "100%", height: "33px" }}
+                              disabledDate={disabledDate}
+                            />
+                            {errors.startDate && (
+                              <span style={{ color: "red" }}>
+                                {errors.startDate &&
+                                  typeof errors.startDate.message ===
+                                    "string" &&
+                                  errors.startDate.message}
+                              </span>
+                            )}
+                          </>
                         )}
                       />
                     </div>
@@ -867,14 +979,24 @@ function EventDetailsEdit(): JSX.Element {
                       <Controller
                         name="endDate"
                         control={control}
+                        rules={{ required: "End Date & Time is required!" }}
                         render={({ field }) => (
-                          <DatePicker
-                            {...field}
-                            showTime
-                            format="YYYY-MM-DD HH:mm:ss"
-                            style={{ width: "100%", height: "33px" }}
-                            disabledDate={disabledDate}
-                          />
+                          <>
+                            <DatePicker
+                              {...field}
+                              showTime
+                              format="YYYY-MM-DD HH:mm:ss"
+                              style={{ width: "100%", height: "33px" }}
+                              disabledDate={disabledDate}
+                            />
+                            {errors.endDate && (
+                              <span style={{ color: "red" }}>
+                                {errors.endDate &&
+                                  typeof errors.endDate.message === "string" &&
+                                  errors.endDate.message}
+                              </span>
+                            )}
+                          </>
                         )}
                       />
                     </div>
