@@ -83,6 +83,13 @@ export class API_SERVICE {
     });
   }
 
+  static async _getAllUserEvents(): Promise<AxiosResponse> {
+    return await instance({
+      url: `/events/get_user_events`,
+      method: HttpMethod.GET,
+    });
+  }
+
   static async _getUserEvent(id: string): Promise<AxiosResponse> {
     return await instance({
       url: `/events/get_user_event/${id}`,

@@ -98,6 +98,7 @@ function EventDetailsEdit(): JSX.Element {
     setEditorContent(content);
   };
 
+  console.log(showRadio, "showradio")
   dayjs.extend(customParseFormat);
 
   const { RangePicker } = DatePicker;
@@ -171,19 +172,24 @@ function EventDetailsEdit(): JSX.Element {
       setValue("startDate", dayjs(eventDetails?.startDate));
       setValue("endDate", dayjs(eventDetails?.endDate));
       setValue("frequency", eventDetails?.frequency);
-      setValue("space_available", eventDetails?.space_available);
-      setValue("space_fee", eventDetails?.space_fee);
       setVendorRegRadio(eventDetails?.vendor_registration ?? false);
       setValue("vendor_registration", eventDetails?.vendor_registration);
     }
 
+
+  }, [eventDetails, setValue]);
+
+  useEffect(() => {
     if (eventDetails?.exhibition_space_booking) {
-      setShowRadio(true);
-      setValue("exhibitionspace", true);
-      setValue(
-        "exhibition_space_booking",
-        eventDetails?.exhibition_space_booking
-      );
+      setTimeout(() => {
+        setShowRadio(true);
+        setValue(
+          "exhibition_space_booking",
+          eventDetails?.exhibition_space_booking
+        );
+        setValue("space_available", eventDetails?.space_available);
+        setValue("space_fee", eventDetails?.space_fee);  
+      }, 1000);
     }
   }, [eventDetails, setValue]);
 
@@ -465,7 +471,7 @@ function EventDetailsEdit(): JSX.Element {
                   <Space align="center">
                     <Checkbox
                       {...field}
-                      checked={field.value}
+                      checked={vendorRegRadio}
                       onChange={(e) => {
                         field.onChange(e.target.checked);
                         setVendorRegRadio(e.target.checked);

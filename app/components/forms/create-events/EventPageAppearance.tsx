@@ -52,6 +52,7 @@ const EventPageAppearance: React.FC = () => {
 
 
   const eventDetails = getUserEvent?.data?.data?.data;
+  console.log(eventDetails)
 
 
   const props: UploadProps = {

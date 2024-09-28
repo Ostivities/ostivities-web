@@ -20,6 +20,7 @@ export default function PublishEvent(): JSX.Element {
   const [cookies, setCookie, removeCookie] = useCookies([
     "event_id",
     "form_stage",
+    "ticket_created",
     "stage_one",
     "stage_two",
     "stage_three",
@@ -42,9 +43,15 @@ export default function PublishEvent(): JSX.Element {
   const handlePublishEvent = async () => {
     const response = await publishEvent.mutateAsync(params?.id || cookies.event_id);
     console.log(response, "response");
-    setIsModalOpen(true);
-    // if (response.) {
-    // }
+    if (response.status === 200) {
+      setIsModalOpen(true);
+      removeCookie('event_id');
+      removeCookie('form_stage');
+      removeCookie('ticket_created');
+      removeCookie('stage_one');
+      removeCookie('stage_two');
+      removeCookie('stage_three');
+    }
   };
 
   const socialLinks = eventDetails?.socials;

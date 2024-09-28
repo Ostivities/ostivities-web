@@ -86,8 +86,8 @@ function Details(): JSX.Element {
     "stage_two",
     "stage_three",
   ]);
-  const [showRadio, setShowRadio] = useState(false);
   const [vendorRegRadio, setVendorRegRadio] = useState(false);
+  const [showRadio, setShowRadio] = useState(false);
   const [editorContent, setEditorContent] = useState("<p>Enter event details!</p>");
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
@@ -410,7 +410,7 @@ function Details(): JSX.Element {
                   <Space align="center">
                     <Checkbox
                       {...field}
-                      checked={showRadio}
+                      checked={vendorRegRadio}
                       onChange={(e) => {
                         field.onChange(e.target.checked);
                         setVendorRegRadio(e.target.checked);
@@ -452,7 +452,7 @@ function Details(): JSX.Element {
                 render={({ field }) => (
                   <Checkbox
                     {...field}
-                    checked={field.value as boolean} // Ensure exhibitionspace is boolean
+                    checked={showRadio} // Ensure exhibitionspace is boolean
                     onChange={(e) => {
                       field.onChange(e.target.checked);
                       setShowRadio(e.target.checked); // Toggle radio buttons visibility

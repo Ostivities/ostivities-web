@@ -73,6 +73,8 @@ export interface IFormInput {
   space_fee?: string;
 }
 
+
+
 export interface ICreateEvent
   extends Omit<
     IFormInput,
@@ -95,6 +97,7 @@ export interface ICreateEvent
 
 export interface IEventDetails {
   _id: string;
+  key?: string;
   eventName: string;
   eventDetails: string;
   state: string;
@@ -110,6 +113,7 @@ export interface IEventDetails {
   timeZone: string;
   frequency: string;
   startDate: string;
+  status?: string;
   endDate: string;
   socials: {
     name: string;

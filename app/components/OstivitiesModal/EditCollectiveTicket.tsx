@@ -30,7 +30,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
   const params = useParams<{ id: string }>();
   const { TextArea } = Input;
   const router = useRouter();
-  // const [groupPrice, setGroupPrice] = useState<number | null>(null);
+  const [groupPrices, setGroupPrices] = useState<number | null>(null);
   // const [groupSize, setGroupSize] = useState<number | null>(null);
   const [pricePerTicket, setPricePerTicket] = useState<number | null>(null);
   const [ticketStockValue, setTicketStockValue] = useState<string>("limited"); // Default to "limited"
@@ -74,7 +74,26 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         ticketQuestions: ticketDetails?.ticketQuestions,
       });
     }
+
+    if (ticketDetails?.ticketQuestions?.length > 0) {
+      setAdditionalFields(
+        ticketDetails?.ticketQuestions?.map((question: { is_compulsory: any; }, index: any) => ({
+          id: index,
+          compulsory: question?.is_compulsory,
+        }))
+      );
+      setShowAdditionalField(true);
+      form.setFieldsValue({
+        question: ticketDetails?.ticketQuestions.map(
+          (question: { question: any; }) => ({
+            question: question?.question,
+          })
+        ),
+      })
+    }
+
   }, [ticketDetails]);
+  console.log(groupPrices, "groupPrices")
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ticketType, ...rest } = values;
@@ -115,7 +134,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         event: params?.id,
         ticketEntity: "COLLECTIVE",
         user: profile?.data?.data?.data?.id,
-        groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
+        // groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
         ticketType
       };
       // console.log(payload, "kk");
@@ -142,7 +161,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         event: params?.id,
         ticketEntity: "COLLECTIVE",
         user: profile?.data?.data?.data?.id,
-        groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
+        // groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
         ticketType
       };
       if (payload) {
@@ -187,7 +206,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
 
   useEffect(() => {
     if (groupPrice !== null && groupSize !== null) {
-      const price = (groupPrice / groupSize).toFixed(2);
+      const price = (groupPrice / groupSize).toFixed(0);
       setPricePerTicket(parseFloat(price));
       const price_per_ticket = pricePerTicket
       if(price_per_ticket) {
@@ -221,6 +240,8 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
   useEffect(() => {
     if (ticketType === TICKET_TYPE.FREE) {
       form.setFieldsValue({ ticketPrice: null });
+      form.setFieldsValue({ groupPrice: null })
+      setGroupPrices(null)
     }
   }, [ticketType]);
 
@@ -304,6 +325,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
           placeholder="Enter group price"
           style={{ width: "100%" }}
           min={0}
+          value={groupPrices}
           disabled={ticketType === TICKET_TYPE.FREE}
           // onChange={handleGroupPriceChange}
           formatter={(value) =>

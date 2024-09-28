@@ -87,7 +87,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
   }, [ticketType]);
 
   
-  // console.log(ticketDetails, "ticketDetails");
+  console.log(ticketDetails, "ticketDetails");
 
   useEffect(() => {
     if (ticketDetails) {
@@ -102,9 +102,9 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
       });
     }
 
-    if (ticketDetails?.ticketQuestions) {
+    if (ticketDetails?.ticketQuestions?.length > 0) {
       setAdditionalFields(
-        ticketDetails?.ticketQuestions.map((question: { is_compulsory: any; }, index: any) => ({
+        ticketDetails?.ticketQuestions?.map((question: { is_compulsory: any; }, index: any) => ({
           id: index,
           compulsory: question?.is_compulsory,
         }))

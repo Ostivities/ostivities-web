@@ -1,4 +1,4 @@
-import { CREATE_EVENT, DISCOVERY_EVENTS, GET_EVENT, UPDATE_EVENT } from "@/app/utils/constants";
+import { CREATE_EVENT, DISCOVERY_EVENTS, GET_EVENT, UPDATE_EVENT, GET_ALL_USER_EVENTS } from "@/app/utils/constants";
 import { errorFormatter, successFormatter } from "@/app/utils/helper";
 import { ICreateEvent, IFormInput, IUpdateEvent } from "@/app/utils/interface";
 import { API_SERVICE } from "@/app/utils/service";
@@ -22,6 +22,16 @@ export const useCreateEvent = () => {
   });
   return { createEvent };
 };
+
+export const useGetAllUserEvents = () => {
+  const getAllUserEvents = useQuery({
+    queryKey: [GET_ALL_USER_EVENTS],
+    queryFn: () => {
+      return API_SERVICE._getAllUserEvents();
+    },
+  });
+  return { getAllUserEvents };
+}
 
 export const useGetUserEvent = (id: string) => {
   const getUserEvent = useQuery({

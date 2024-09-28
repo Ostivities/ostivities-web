@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import useLocalStorage from "use-local-storage";
+import { useRouter } from "next/navigation"
 
 const useFetch = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  const router = useRouter()
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.sessionStorage) {
@@ -13,6 +16,7 @@ const useFetch = () => {
         setIsLoggedIn(true);
       } else {
         setIsLoggedIn(false);
+        router.push("/login");
       }
     }
   }, []);

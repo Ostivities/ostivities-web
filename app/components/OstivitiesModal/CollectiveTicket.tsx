@@ -1,5 +1,5 @@
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
-import { useCreateTicket } from "@/app/hooks/ticket/ticket.hook";
+import { useCreateTicket, useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
 import { CloseSquareOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -29,6 +29,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
   const { createTicket } = useCreateTicket();
   const { profile } = useProfile();
   const params = useParams<{ id: string }>();
+  const { getTickets } = useGetEventTickets(params?.id);
   const { TextArea } = Input;
   const router = useRouter();
   // const [groupPrice, setGroupPrice] = useState<number | null>(null);
@@ -113,6 +114,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
           form.resetFields();
           setCookies("stage_three", "processing")
           // linkRef.current?.click();
+          getTickets.refetch()
           onOk && onOk();
           setLoading(false);
           router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
@@ -139,6 +141,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
           setCookies("stage_three", "processing");
           onOk && onOk();
           setLoading(false);
+          getTickets.refetch()
           // linkRef.current?.click();
           router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
         }
@@ -210,6 +213,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
   useEffect(() => {
     if (ticketType === TICKET_TYPE.FREE) {
       form.setFieldsValue({ ticketPrice: null });
+      form.setFieldsValue({ groupPrice: null })
     }
   }, [ticketType]);
 

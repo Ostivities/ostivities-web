@@ -130,17 +130,22 @@ const AboutEvent = () => {
       setValue("frequency", eventDetails?.frequency);
     }
 
-    if (eventDetails?.exhibition_space_booking) {
-      setShowRadio(true);
-      setValue("exhibitionspace", true);
-      setValue("space_available", eventDetails?.space_available);
-      setValue("space_fee", eventDetails?.space_fee);
-      setValue(
-        "exhibition_space_booking",
-        eventDetails?.exhibition_space_booking
-      );
-    }
+
   }, [eventDetails, setValue]);
+
+  useEffect(() => {
+    if (eventDetails?.exhibition_space_booking) {
+      setTimeout(() => {
+        setShowRadio(true);
+        setValue(
+          "exhibition_space_booking",
+          eventDetails?.exhibition_space_booking
+        );
+        setValue("space_available", eventDetails?.space_available);
+        setValue("space_fee", eventDetails?.space_fee);  
+      }, 1000);
+    }
+  }, [eventDetails, setValue])
 
   useEffect(() => {
     if (eventDetails) {

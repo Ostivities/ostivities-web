@@ -16,6 +16,10 @@ import "jspdf-autotable";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import * as XLSX from "xlsx";
+import { useGetAllUserEvents } from "@/app/hooks/event/event.hook";
+import { IEventDetails } from "@/app/utils/interface";
+import { dateFormat, timeFormat } from "@/app/utils/helper";
+
 
 const { Search } = Input;
 
@@ -28,20 +32,36 @@ const EventsCreatedTable: React.FC = () => {
   const [isShown, setIsShown] = useState(false);
   const [actionType, setActionType] = useState<"delete" | "warning">();
 
-  const data: DataType[] = Array.from({ length: 50 }, (_, index) => ({
-    key: `${index + 1}`,
-    eventName: `Event ${index + 1}`,
-    eventType: `Type ${index + 1}`,
-    ticketSold: Math.floor(Math.random() * 100),
-    dateCreated: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
-    status: ["Active", "Closed", "Pending"][Math.floor(Math.random() * 3)] as
-      | "Active"
-      | "Closed"
-      | "Pending",
-    id: generateRandomString(10),
-  }));
+  const { getAllUserEvents } = useGetAllUserEvents();
+  // console.log(getAllUserEvents,"getAllUserEvents")
 
-  const columns: ColumnsType<DataType> = [
+  const allUserEventDetails = getAllUserEvents?.data?.data?.data?.data;
+  console.log(allUserEventDetails, "allUserEventDetails")
+  // const data: IFormInput[] = Array.from({ length: 50 }, (_, index) => ({
+  //   key: `${index + 1}`,
+  //   eventName: `Event ${index + 1}`,
+  //   eventType: `Type ${index + 1}`,
+  //   ticketSold: Math.floor(Math.random() * 100),
+  //   dateCreated: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
+  //   status: ["Active", "Closed", "Pending"][Math.floor(Math.random() * 3)] as
+  //     | "Active"
+  //     | "Closed"
+  //     | "Pending",
+  //   id: generateRandomString(10),
+  // }));
+
+  const data: IEventDetails[] = allUserEventDetails?.map((item: any) => {
+    return {
+      key: item?.id,
+      eventName: item?.eventName,
+      eventType: item?.eventType,
+      ticketSold: item?.ticketSold,
+      dateCreated: item?.createdAt,
+      status: item?.status,
+    }
+  })
+
+  const columns: ColumnsType<IEventDetails> = [
     {
       title: (
         <Label
@@ -50,7 +70,7 @@ const EventsCreatedTable: React.FC = () => {
         />
       ),
       dataIndex: "eventName",
-      sorter: (a, b) => a.eventName.localeCompare(b.eventName),
+      sorter: (a, b) => a?.eventName?.localeCompare(b.eventName),
     },
     {
       title: (
@@ -60,14 +80,14 @@ const EventsCreatedTable: React.FC = () => {
         />
       ),
       dataIndex: "eventType",
-      sorter: (a, b) => a.eventType.localeCompare(b.eventType),
+      sorter: (a, b) => a?.eventType?.localeCompare(b.eventType),
       filters: [
         { text: "Type 1", value: "Type 1" },
         { text: "Type 2", value: "Type 2" },
         { text: "Type 3", value: "Type 3" },
         // Add more types as needed
       ],
-      onFilter: (value, record) => record.eventType.includes(value as string),
+      onFilter: (value, record) => record?.eventType?.includes(value as string),
     },
     {
       title: (
@@ -77,7 +97,7 @@ const EventsCreatedTable: React.FC = () => {
         />
       ),
       dataIndex: "ticketSold",
-      sorter: (a, b) => a.ticketSold - b.ticketSold,
+      sorter: (a, b) => a?.ticketSold - b?.ticketSold,
     },
     {
       title: (
@@ -87,7 +107,8 @@ const EventsCreatedTable: React.FC = () => {
         />
       ),
       dataIndex: "dateCreated",
-      sorter: (a, b) => new Date(a.dateCreated).getTime() - new Date(b.dateCreated).getTime(),
+      render: (text) => {return dateFormat(text);},
+      sorter: (a, b) => new Date(a?.startDate).getTime() - new Date(b?.startDate).getTime(),
     },
     {
       title: (
@@ -102,7 +123,7 @@ const EventsCreatedTable: React.FC = () => {
         { text: "Closed", value: "Closed" },
         { text: "Pending", value: "Pending" },
       ],
-      onFilter: (value, record) => record.status.includes(value as string),
+      onFilter: (value, record) => record?.status?.includes(value as string) ?? false,
       render: (status) => {
         let style = {};
         let dotColor = "";
@@ -153,7 +174,7 @@ const EventsCreatedTable: React.FC = () => {
         />
       ),
       dataIndex: "",
-      render: (text: any, record: DataType) => (
+      render: (text: any, record: IEventDetails) => (
         <Button
           type="primary"
           shape="round"
@@ -165,7 +186,7 @@ const EventsCreatedTable: React.FC = () => {
             padding: "4px",
           }}
           onClick={() =>
-            router.push(`/Dashboard/events-created/${record.id}/about`)
+            router.push(`/Dashboard/events-created/${record?._id}/about`)
           }
         >
           View
@@ -179,19 +200,19 @@ const EventsCreatedTable: React.FC = () => {
     setSearchText(e.target.value);
   };
 
-  const filteredData = data.filter((item) =>
-    item.eventName.toLowerCase().includes(searchText.toLowerCase())
+  const filteredData = data?.filter((item) =>
+    item?.eventName?.toLowerCase()?.includes(searchText?.toLowerCase())
   );
 
-  const hasSelected = selectedRowKeys.length > 0;
+  const hasSelected = selectedRowKeys?.length > 0;
 
   const handleExport = (format: string) => {
-    const exportData = selectedRowKeys.length
-      ? data.filter((item) => selectedRowKeys.includes(item.key))
+    const exportData = selectedRowKeys?.length
+      ? data?.filter((item) => selectedRowKeys?.includes(item?.key as React.Key))
       : data;
 
     // Prepare data for export without 'id' column
-    const dataToExport = exportData.map(({ id, ...rest }) => rest);
+    const dataToExport = exportData?.map(({ _id, ...rest }) => rest);
 
     if (format === "excel") {
       const ws = XLSX.utils.json_to_sheet(dataToExport);
@@ -202,7 +223,7 @@ const EventsCreatedTable: React.FC = () => {
       const doc = new jsPDF();
       (doc as any).autoTable({
         head: [Object.keys(dataToExport[0])],
-        body: dataToExport.map((item) => Object.values(item)),
+        body: dataToExport?.map((item) => Object.values(item)),
         didDrawCell: (data: {
           column: { index: number };
           cell: { styles: { fillColor: string } };
@@ -265,6 +286,8 @@ const EventsCreatedTable: React.FC = () => {
         )}
       </div>
       <Table
+        loading={getAllUserEvents.isFetching}
+
         rowSelection={{
           selectedRowKeys,
           onChange: (keys) => setSelectedRowKeys(keys),
@@ -275,7 +298,7 @@ const EventsCreatedTable: React.FC = () => {
         pagination={{
           current: currentPage,
           pageSize: pageSize,
-          total: filteredData.length,
+          total: filteredData?.length,
           onChange: (page, size) => {
             setCurrentPage(page);
             setPageSize(size);
