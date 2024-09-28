@@ -124,17 +124,17 @@ export default function EventDetailsComponent({
         ),
         key: "2",
       },
-      {
-        label: (
-          <Link
-            href={`/Dashboard/events-created/${params?.id}/tickets/email`}
-            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
-          >
-            Ticket E-mail
-          </Link>
-        ),
-        key: "3",
-      },
+      // {
+      //   label: (
+      //     <Link
+      //       href={`/Dashboard/events-created/${params?.id}/tickets/email`}
+      //       className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+      //     >
+      //       Ticket E-mail
+      //     </Link>
+      //   ),
+      //   key: "3",
+      // },
     ];
 
     const GuestItems: MenuProps["items"] = [
