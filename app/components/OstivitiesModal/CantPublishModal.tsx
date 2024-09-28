@@ -2,17 +2,22 @@
 
 import { IModal } from '@/app/utils/interface';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from "next/navigation";
+import { useCookies } from "react-cookie";
 
 const CantPublishModal = ({ open, onCancel, onClose, onOk }: IModal): JSX.Element => {
   const router = useRouter();
+  const params = useParams<{ id: string }>();
+  const [cookies, setCookie, removeCookie] = useCookies(["event_id"]);
 
   return (
-    <div className="fixed inset-0 bg-black/20 grid place-items-center">
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="bg-white rounded-2xl px-12 py-12 lg:min-w-[33rem]"
-      >
+    <div className="fixed inset-0 bg-black/20 grid place-items-center"
+    onClick={(e) => e.stopPropagation()} // prevent clicks outside the modal from closing it
+  >
+    <div
+      onClick={(e) => e.stopPropagation()} // prevent clicks inside the modal from bubbling up
+      className="bg-white rounded-2xl px-12 py-12 lg:min-w-[33rem]"
+    >
         <div className="flex justify-center">
           <div className="bg-OWANBE_NOTIFICATION rounded-full w-[4.5rem] h-[4.5rem] grid place-items-center">
             <Image
@@ -33,7 +38,11 @@ const CantPublishModal = ({ open, onCancel, onClose, onOk }: IModal): JSX.Elemen
           </p>
           <div className="flex justify-center">
             <button
-              onClick={() => router.push("/Dashboard/events-created/${params?.id}/about")}
+              onClick={() =>
+                router.push(
+                  `/Dashboard/events-created/${params?.id}/about`
+                )
+              }
               className="block primary-btn font-normal text-base mt-10 px-32"
             >
               Manage Event
