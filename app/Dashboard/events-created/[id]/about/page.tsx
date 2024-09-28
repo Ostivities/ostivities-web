@@ -80,6 +80,7 @@ const AboutEvent = () => {
   };
   const eventDetails = getUserEvent?.data?.data?.data;
   console.log(eventDetails);
+  const [vendorRegRadio, setVendorRegRadio] = useState(false);
 
   const { handleSubmit, control, setValue, watch, trigger } =
     useForm<IFormInput>({
@@ -122,6 +123,8 @@ const AboutEvent = () => {
       setValue("twitterUrl", twitterLink?.url);
       setValue("facebookUrl", facebookLink?.url);
       setValue("instagramUrl", instagramLink?.url);
+      setVendorRegRadio(eventDetails?.vendor_registration);
+      setValue("vendor_registration", eventDetails?.vendor_registration);
       setValue("startDate", dayjs(eventDetails?.startDate));
       setValue("endDate", dayjs(eventDetails?.endDate));
       setValue("frequency", eventDetails?.frequency);
@@ -145,55 +148,11 @@ const AboutEvent = () => {
     }
   }, [eventDetails]);
 
-  // const onSubmit: SubmitHandler<IFormInput> = async (data: any) => {
-  //   const {
-  //     exhibitionspace,
-  //     twitterUrl,
-  //     eventDocumentName,
-  //     instagramUrl,
-  //     facebookUrl,
-  //     websiteUrl,
-  //     vendor_registration,
-  //     eventDocument,
-  //     eventURL,
-  //     ...rest
-  //   } = data;
-  //   try {
-  //     if(exhibitionspace === false) {
-  //       delete rest.exhibition_space_booking;
-  //       delete rest.space_available;
-  //       delete rest.space_fee;
-  //     }
-  //     // setLoader(true);
-  //     const response = await updateEvent.mutateAsync({
-  //       id: params?.id
-  //       ...rest,
-  //       supportingDocument: {
-  //         fileName: data.eventDocumentName || "",
-  //         fileUrl: data.eventDocument,
-  //       },
-  //       eventURL: `${discovery_url}${eventURL}`,
-  //       eventDetails: editorContent,
-  //       socials: [
-  //         { name: "twitter", url: twitterUrl },
-  //         { name: "facebook", url: facebookUrl },
-  //         { name: "instagram", url: instagramUrl },
-  //         { name: "website", url: websiteUrl },
-  //       ],
-  //     });
-
-  //     if (response.status === 200) {
-  //       // reset();
-  //       getUserEvent.refetch();
-  //       // setLoader(false)
-  //     }
-  //   } catch (error) {
-  //     // setLoader(false)
-  //     return error;
-  //   }
-
-  //   console.log(data, "data");
-  // };
+  useEffect(() => {
+    if (vendorRegRadio === false) {
+      setShowRadio(false);
+    }
+  }, [vendorRegRadio]);
 
   const onFinish: FormProps<IFormInput>["onFinish"] = async (values) => {
     // return values;
@@ -342,8 +301,11 @@ const AboutEvent = () => {
                   <Space align="center">
                     <Checkbox
                       {...field}
-                      checked={field.value}
-                      onChange={(e) => field.onChange(e.target.checked)}
+                      checked={vendorRegRadio}
+                      onChange={(e) => {
+                        field.onChange(e.target.checked);
+                        setVendorRegRadio(e.target.checked);
+                      }}
                     >
                       <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
                         Vendors registration{" "}
@@ -367,37 +329,39 @@ const AboutEvent = () => {
               )}
             />
 
-            <Controller
-              name="exhibitionspace"
-              control={control}
-              render={({ field }) => (
-                <Checkbox
-                  {...field}
-                  checked={field.value as boolean} // Ensure exhibitionspace is boolean
-                  onChange={(e) => {
-                    field.onChange(e.target.checked);
-                    setShowRadio(e.target.checked); // Toggle radio buttons visibility
-                  }}
-                >
-                  <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
-                    Exhibition Space Booking{" "}
-                    <span className="optional-text">
-                      (allows vendors to book exhibition space at your event)
-                    </span>{" "}
-                    <a
-                      href="https://ostivities.tawk.help/article/how-exhibition-space-booking-works" // Replace with your actual URL
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ marginLeft: "8px" }}
-                    >
-                      <QuestionCircleOutlined
-                        style={{ fontSize: "16px", color: "#858990" }}
-                      />
-                    </a>
-                  </span>
-                </Checkbox>
-              )}
-            />
+            {vendorRegRadio && (
+              <Controller
+                name="exhibitionspace"
+                control={control}
+                render={({ field }) => (
+                  <Checkbox
+                    {...field}
+                    checked={showRadio} // Ensure exhibitionspace is boolean
+                    onChange={(e) => {
+                      field.onChange(e.target.checked);
+                      setShowRadio(e.target.checked); // Toggle radio buttons visibility
+                    }}
+                  >
+                    <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
+                      Exhibition Space Booking{" "}
+                      <span className="optional-text">
+                        (allows vendors to book exhibition space at your event)
+                      </span>{" "}
+                      <a
+                        href="https://ostivities.tawk.help/article/how-exhibition-space-booking-works" // Replace with your actual URL
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ marginLeft: "8px" }}
+                      >
+                        <QuestionCircleOutlined
+                          style={{ fontSize: "16px", color: "#858990" }}
+                        />
+                      </a>
+                    </span>
+                  </Checkbox>
+                )}
+              />
+            )}
 
             {showRadio && (
               <Controller

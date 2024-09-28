@@ -12,7 +12,7 @@ import { LiaExternalLinkAltSolid } from "react-icons/lia";
 import PaymentDetails from "../OstivitiesModal/PaymentDetails";
 import Image from 'next/image';
 import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
-import { useGetUserEvent, useUpdateEvent, useAddEventToDiscovery } from "@/app/hooks/event/event.hook";
+import { useGetUserEvent, useAddEventToDiscovery, usePublishEvent } from "@/app/hooks/event/event.hook";
 
 
 export default function EventDetailsComponent({
@@ -25,7 +25,6 @@ export default function EventDetailsComponent({
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const { getUserEvent } = useGetUserEvent(params?.id);
-  const { updateEvent } = useUpdateEvent();
   const { addEventToDiscovery } = useAddEventToDiscovery();
   const onToggle = (checked: boolean) => {
     console.log(`Switch to ${checked}`);
@@ -42,6 +41,14 @@ export default function EventDetailsComponent({
       message.success('Event unpublished successfully');
     }
   };
+
+  const linkToCopy = eventDetails?.eventURL
+
+  const copyToClipBoard = () => {
+    navigator.clipboard.writeText(linkToCopy)
+    message.success('Event link copied');
+  }
+
 
   const [activeToggle, setActiveToggle] = useState<string | null>(null);
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -491,9 +498,7 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
             type="text"
             target="_self"
             className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK cursor-pointer"
-            onClick={() => {
-              message.success('Event link copied'); // Success message
-            }}
+            onClick={copyToClipBoard}
           >
             <LiaExternalLinkAltSolid
               color="#E20000"

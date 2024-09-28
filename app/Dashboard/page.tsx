@@ -7,6 +7,7 @@ import PopularEvents from '../components/DashboardLayout/PopularEvents';
 import PaidEvents from '../components/DashboardLayout/PaidEvents';
 import FreeEvents from '../components/DashboardLayout/FreeEvents';
 import { Input, Select } from 'antd';
+import { useGetDiscoveryEvents } from '@/app/hooks/event/event.hook';
 import { PlusOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import { Country, State } from 'country-state-city';
@@ -18,6 +19,10 @@ function Dashboard(): JSX.Element {
   const { isLoggedIn } = useFetch();
   const [activeTab, setActiveTab] = useState('free');
   const [searchResults, setSearchResults] = useState<any[]>([]);
+
+  // Get all events for discovery
+  const { getDiscoveryEvents } = useGetDiscoveryEvents();
+  console.log(getDiscoveryEvents?.data);
 
   const COUNTRY_JSON: any = Country.getAllCountries().map((i: any) => {
     return { value: i?.name, label: i?.name, isoCode: i?.isoCode };

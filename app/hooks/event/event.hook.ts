@@ -1,10 +1,11 @@
-import { CREATE_EVENT, GET_EVENT, UPDATE_EVENT } from "@/app/utils/constants";
+import { CREATE_EVENT, DISCOVERY_EVENTS, GET_EVENT, UPDATE_EVENT } from "@/app/utils/constants";
 import { errorFormatter, successFormatter } from "@/app/utils/helper";
 import { ICreateEvent, IFormInput, IUpdateEvent } from "@/app/utils/interface";
 import { API_SERVICE } from "@/app/utils/service";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, } from "@tanstack/react-query";
 import { message } from "antd";
 import { AxiosError, AxiosResponse } from "axios";
+
 
 export const useCreateEvent = () => {
   const createEvent = useMutation({
@@ -54,7 +55,7 @@ export const usePublishEvent = () => {
       return API_SERVICE._publishEvent(id);
     },
     onSuccess: (data: AxiosResponse) => {
-      successFormatter(data);
+      // successFormatter(data);
     },
     onError: (error: AxiosError | any) => {
       errorFormatter(error);
@@ -76,4 +77,14 @@ export const useAddEventToDiscovery = () => {
     },
   });
   return { addEventToDiscovery };
+}
+
+export const useGetDiscoveryEvents = () => {
+  const getDiscoveryEvents = useQuery({
+    queryKey: [DISCOVERY_EVENTS],
+    queryFn: () => {
+      return API_SERVICE._getDiscoveryEvents();
+    },
+  });
+  return { getDiscoveryEvents };
 }
