@@ -83,39 +83,52 @@ function Dashboard(): JSX.Element {
     color: 'grey', // Inactive color
   };
 
+
+  
   return (
     <DashboardLayout title={header}>
       <div className="flex flex-col gap-7">
         <DiscoverEvents />
         <div className="border-[1px] border-[#FADEDE] rounded-3xl p-8 shadow-md">
-          <h3 className="font-semibold mb-3">Find events happening around you.</h3>
-          <div>
-            <form onSubmit={handleSearch} className="flex gap-4 [&>label]:flex-1">
-              <label htmlFor="name" className="w-full">
-                <span className="text-OWANBE_PRY mb-1 block">Event Name</span>
-                <Input placeholder="Enter Event Name" className="w-full" />
-              </label>
-              <label htmlFor="state" className="w-full">
-                <span className="text-OWANBE_PRY mb-1 block">Event State</span>
-                <Select
-                  defaultValue="Select State"
-                  className="w-full"
-                  options={[...STATE_BY_COUNTRYCODE('NG')]}
-                />
-              </label>
-              <label htmlFor="type" className="w-full">
-                <span className="text-OWANBE_PRY mb-1 block">Event Type</span>
-                <Select
-                  defaultValue="Select event type"
-                  className="w-full"
-                  options={[...EVENT_TYPES]}
-                />
-              </label>
-              <div className="flex items-end">
-                <button type="submit" className="place-items-end w-36 h-fit text-sm text-white bg-OWANBE_PRY py-1.5 px-12 rounded-full">
-                  Search
-                </button>
-              </div>
+  <h3 className="font-semibold mb-3">Find events happening around you.</h3>
+  <div>
+    <form onSubmit={handleSearch} className="flex gap-4 [&>label]:flex-1">
+      <label htmlFor="name" className="w-full">
+        <span className="text-OWANBE_PRY mb-1 block font-bricolage">Event Name (optional)</span>
+        <Input placeholder="Enter Event Name" className="w-full" />
+      </label>
+      <label htmlFor="state" className="w-full">
+        <span className="text-OWANBE_PRY mb-1 block font-bricolage">Event State (optional)</span>
+        <Select
+          defaultValue="Select State"
+          className="w-full"
+          options={[...STATE_BY_COUNTRYCODE('NG')]}
+        />
+      </label>
+      <label htmlFor="category" className="w-full">
+        <span className="text-OWANBE_PRY mb-1 block font-bricolage">Event Category</span>
+        <Select
+          defaultValue="Select Event Category"
+          className="w-full"
+          options={[
+            { value: 'free', label: 'Free Events' },
+            { value: 'paid', label: 'Paid Events' }
+          ]}
+        />
+      </label>
+      <label htmlFor="type" className="w-full">
+        <span className="text-OWANBE_PRY mb-1 block font-bricolage">Event Type</span>
+        <Select
+          defaultValue="Select event type"
+          className="w-full"
+          options={[...EVENT_TYPES]}
+        />
+      </label>
+      <div className="flex items-end">
+        <button type="submit" className="place-items-end w-36 h-fit text-sm text-white bg-OWANBE_PRY py-1.5 px-12 rounded-full">
+          Search
+        </button>
+      </div>
             </form>
           </div>
         </div>
