@@ -121,7 +121,20 @@ function Dashboard(): JSX.Element {
         <Select
           defaultValue="Select event type"
           className="w-full"
-          options={[...EVENT_TYPES]}
+          options={[
+            { value: "All", label: "All" },
+            { value: "Wedding", label: "Wedding" },
+            { value: "Birthday", label: "Birthday" },
+            { value: "Concert", label: "Concert" },
+            { value: "Paint & Sip", label: "Paint & Sip" },
+            { value: "Hangouts", label: "Hangouts" },
+            { value: "Webinar", label: "Webinar" },
+            { value: "Seminar", label: "Seminar" },
+            { value: "Conference", label: "Conference" },
+            { value: "Theater Performance", label: "Theater Performance" },
+            { value: "Hackathon", label: "Hackathon" },
+            { value: "Others", label: "Others" },
+          ]}
         />
       </label>
       <div className="flex items-end">

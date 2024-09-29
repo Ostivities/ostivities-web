@@ -2436,8 +2436,8 @@ export const stepOne = [
 ];
 
 export const EVENT_TYPES: { label: string; value: string }[] = [
-  { value: "Wedding", label: "Wedding Event" },
-  { value: "Birthday party", label: "Birthday Party" },
+  { value: "Wedding", label: "Wedding" },
+  { value: "Birthday", label: "Birthday" },
   { value: "Concert", label: "Concert" },
   { value: "Paint & Sip", label: "Paint & Sip" },
   { value: "Hangouts", label: "Hangouts" },
@@ -2446,8 +2446,7 @@ export const EVENT_TYPES: { label: string; value: string }[] = [
   { value: "Conference", label: "Conference" },
   { value: "Theater Performance", label: "Theater Performance" },
   { value: "Hackathon", label: "Hackathon" },
-  { value: "Sporting Event", label: "Sporting Event" },
-  { value: "Other Events", label: "Other Events" },
+  { value: "Others", label: "Others" },
 ];
 
 export const AFRICAN_TIME_ZONES = [
