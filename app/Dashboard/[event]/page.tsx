@@ -4,6 +4,7 @@ import InfoCard from "@/app/components/DashboardLayout/OtherInfoCard";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useLayoutEffect, useMemo } from "react";
+import { useGetDiscoveryEvents } from '@/app/hooks/event/event.hook';
 
 interface PropsI {
   event: "popular"| "all" | "paid" | "free" ;
@@ -29,6 +30,10 @@ const Event = ({ params }: { params: { event: string } }) => {
 
   const currentTitle = eventTitles[params.event as keyof typeof eventTitles] || "Events";
   const currentSubtitle = eventSubtitles[params.event as keyof typeof eventSubtitles] || "Explore Events";
+
+  const { getDiscoveryEvents } = useGetDiscoveryEvents();
+  const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
+  console.log(discoveryEvents, 'discoveryEvents');
 
   const title = (
     <div className="flex-center gap-2">
@@ -84,16 +89,19 @@ const Event = ({ params }: { params: { event: string } }) => {
             aboutClass="font-bricolage-grotesque"
             statusClass="font-bricolage-grotesque font-medium"
           />
-          <InfoCard
-            title="Tobi Weds Shade"
-            about="Wedding"
-            status="Get Tickets"
-            image="/images/placeholder-4.png"
-            url={`/Dashboard/${params.event}/3`}
-            titleClass="font-bricolage-grotesque font-medium"
-            aboutClass="font-bricolage-grotesque"
-            statusClass="font-bricolage-grotesque font-medium"
-          />
+          {discoveryEvents?.map((event: any) => (
+        <InfoCard
+          key={event?.id}
+          title={event?.eventName}
+          about={event?.eventType}
+          status="Get Tickets"
+          image={event?.eventImage}
+          url={`/Dashboard/discovery/${event?.id}`}
+          titleClass="font-bricolage-grotesque font-medium"
+          aboutClass="font-bricolage-grotesque"
+          statusClass="font-bricolage-grotesque font-medium"
+        />
+      ))}
           <InfoCard
             title="Agbaya Linkup"
             about="Hangout"

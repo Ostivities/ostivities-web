@@ -64,26 +64,6 @@ function Dashboard(): JSX.Element {
       )}
     </div>
   );
-
-  const { TabPane } = Tabs;
-
-  const tabStyle = {
-    fontFamily: 'Bricolage Grotesque',
-    fontWeight: 500,
-  };
-  
-  const activeTabStyle = {
-    ...tabStyle, // Include common styles
-    color: '#e20000', // Active color
-    position: 'relative',
-  };
-  
-  const inactiveTabStyle = {
-    ...tabStyle, // Include common styles
-    color: 'grey', // Inactive color
-  };
-
-
   
   return (
     <DashboardLayout title={header}>
