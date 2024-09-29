@@ -1,10 +1,10 @@
 import EventSection from './PopularEventSection';
 import InfoCard from './OtherInfoCard';
 
-const PopularEvents = () => {
+const AllEvents = () => {
   return (
     <EventSection
-      title="Popular Events"
+      title="All Events"
       titleClass="custom-title-class"
       style={{ fontSize: '20px', fontFamily: 'Bricolage Grotesque, font-semibold' }}  // Inline style 
       uri="/Dashboard/popular">
@@ -90,4 +90,4 @@ const PopularEvents = () => {
   );
 };
 
-export default PopularEvents;
+export default AllEvents;

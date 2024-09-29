@@ -4,9 +4,8 @@ import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
 import React, { useState } from 'react';
 import DiscoverEvents from '../components/DashboardLayout/DiscoverEvents';
 import PopularEvents from '../components/DashboardLayout/PopularEvents';
-import PaidEvents from '../components/DashboardLayout/PaidEvents';
-import FreeEvents from '../components/DashboardLayout/FreeEvents';
-import { Input, Select } from 'antd';
+import AllEvents from '../components/DashboardLayout/AllEvents';
+import { Input, Select, Tabs } from 'antd';
 import { useGetDiscoveryEvents } from '@/app/hooks/event/event.hook';
 import { PlusOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
@@ -17,7 +16,7 @@ import useFetch from '../components/forms/create-events/auth';
 function Dashboard(): JSX.Element {
   const route = useRouter();
   const { isLoggedIn } = useFetch();
-  const [activeTab, setActiveTab] = useState('free');
+  const [activeTab, setActiveTab] = useState('popular');
   const [searchResults, setSearchResults] = useState<any[]>([]);
 
   // Get all events for discovery
@@ -66,6 +65,24 @@ function Dashboard(): JSX.Element {
     </div>
   );
 
+  const { TabPane } = Tabs;
+
+  const tabStyle = {
+    fontFamily: 'Bricolage Grotesque',
+    fontWeight: 500,
+  };
+  
+  const activeTabStyle = {
+    ...tabStyle, // Include common styles
+    color: '#e20000', // Active color
+    position: 'relative',
+  };
+  
+  const inactiveTabStyle = {
+    ...tabStyle, // Include common styles
+    color: 'grey', // Inactive color
+  };
+
   return (
     <DashboardLayout title={header}>
       <div className="flex flex-col gap-7">
@@ -103,47 +120,9 @@ function Dashboard(): JSX.Element {
           </div>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex space-x-8 mb-1">
-          {/* <button
-            className={`relative font-semibold pb-2 ${
-              activeTab === 'popular' ? 'text-red-600' : 'text-gray-500'
-            }`}
-            onClick={() => setActiveTab('popular')}
-          >
-            Popular Events
-            {activeTab === 'popular' && (
-              <div className="absolute left-0 bottom-[-2px] w-full h-[4px] bg-red-600 rounded-full" style={{ borderRadius: '25px' }} />
-            )}
-          </button> */}
-          <button
-            className={`relative font-semibold pb-2 ${
-              activeTab === 'free' ? 'text-red-600' : 'text-gray-500'
-            }`}
-            onClick={() => setActiveTab('free')}
-          >
-            Free Events
-            {activeTab === 'free' && (
-              <div className="absolute left-0 bottom-[-2px] w-full h-[4px] bg-red-600 rounded-full" style={{ borderRadius: '25px' }} />
-            )}
-          </button>
-          <button
-            className={`relative font-semibold pb-2 ${
-              activeTab === 'paid' ? 'text-red-600' : 'text-gray-500'
-            }`}
-            onClick={() => setActiveTab('paid')}
-          >
-            Paid Events
-            {activeTab === 'paid' && (
-              <div className="absolute left-0 bottom-[-2px] w-full h-[4px] bg-red-600 rounded-full" style={{ borderRadius: '25px' }} />
-            )}
-          </button>
-        </div>
-
-        {/* Tab Content */}
-        {activeTab === 'popular' && <PopularEvents />}
-        {activeTab === 'free' && <FreeEvents />}
-        {activeTab === 'paid' && <PaidEvents />}
+       {/* Popular Events Content */}
+       
+       <PopularEvents />
       </div>
     </DashboardLayout>
   );

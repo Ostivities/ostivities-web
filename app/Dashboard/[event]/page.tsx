@@ -1,12 +1,12 @@
 "use client";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
-import InfoCard from "@/app/components/DashboardLayout/InfoCard";
+import InfoCard from "@/app/components/DashboardLayout/OtherInfoCard";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useLayoutEffect, useMemo } from "react";
 
 interface PropsI {
-  event: "popular" | "paid" | "free" ;
+  event: "popular"| "all" | "paid" | "free" ;
 }
 
 const Event = ({ params }: { params: { event: string } }) => {
@@ -15,12 +15,14 @@ const Event = ({ params }: { params: { event: string } }) => {
   // Mapping event types to titles and subtitles
   const eventTitles = {
     popular: "Popular Events",
+    all: "All Events",
     paid: "Paid Events",
     free: "Free Events",
   };
 
   const eventSubtitles = {
     popular: "Explore Popular Events",
+    all: "Explore All Events",
     paid: "Explore Paid Events",
     free: "Explore Free Events",
   };
@@ -43,7 +45,7 @@ const Event = ({ params }: { params: { event: string } }) => {
   );
 
   // Memoize uri array
-  const uri = useMemo(() => ["popular", "discovery", "paid", "free", "online"], []);
+  const uri = useMemo(() => ["popular", "discovery", "paid", "free", "all"], []);
 
   useLayoutEffect(() => {
     if (!uri.includes(params.event)) {
@@ -61,7 +63,7 @@ const Event = ({ params }: { params: { event: string } }) => {
   {currentSubtitle}
 </h2>
 
-        <div className="grid grid-cols-5 gap-3 gap-y-10 mt-7">
+        <div className="grid grid-cols-6 gap-6 gap-y-10 mt-7">
           <InfoCard
             title="Concert with Davido"
             about="Concert"
@@ -122,6 +124,71 @@ const Event = ({ params }: { params: { event: string } }) => {
             aboutClass="font-bricolage-grotesque"
             statusClass="font-bricolage-grotesque font-medium"
           />
+          <InfoCard
+            title="Tobi Weds Shade"
+            about="Wedding"
+            status="Get Tickets"
+            image="/images/placeholder-4.png"
+            url={`/Dashboard/${params.event}/3`}
+            titleClass="font-bricolage-grotesque font-medium"
+            aboutClass="font-bricolage-grotesque"
+            statusClass="font-bricolage-grotesque font-medium"
+          /><InfoCard
+          title="Tobi Weds Shade"
+          about="Wedding"
+          status="Get Tickets"
+          image="/images/placeholder-4.png"
+          url={`/Dashboard/${params.event}/3`}
+          titleClass="font-bricolage-grotesque font-medium"
+          aboutClass="font-bricolage-grotesque"
+          statusClass="font-bricolage-grotesque font-medium"
+        /><InfoCard
+        title="Tobi Weds Shade"
+        about="Wedding"
+        status="Get Tickets"
+        image="/images/placeholder-4.png"
+        url={`/Dashboard/${params.event}/3`}
+        titleClass="font-bricolage-grotesque font-medium"
+        aboutClass="font-bricolage-grotesque"
+        statusClass="font-bricolage-grotesque font-medium"
+      /><InfoCard
+      title="Tobi Weds Shade"
+      about="Wedding"
+      status="Get Tickets"
+      image="/images/placeholder-4.png"
+      url={`/Dashboard/${params.event}/3`}
+      titleClass="font-bricolage-grotesque font-medium"
+      aboutClass="font-bricolage-grotesque"
+      statusClass="font-bricolage-grotesque font-medium"
+    />
+     <InfoCard
+            title="Concert with Davido"
+            about="Concert"
+            status="Sold Out"
+            image="/images/placeholder-1.png"
+            url={`/Dashboard/${params.event}/5`}
+            titleClass="font-bricolage-grotesque font-medium"
+            aboutClass="font-bricolage-grotesque"
+            statusClass="font-bricolage-grotesque font-medium"
+          /> <InfoCard
+          title="Concert with Davido"
+          about="Concert"
+          status="Sold Out"
+          image="/images/placeholder-1.png"
+          url={`/Dashboard/${params.event}/5`}
+          titleClass="font-bricolage-grotesque font-medium"
+          aboutClass="font-bricolage-grotesque"
+          statusClass="font-bricolage-grotesque font-medium"
+        /> <InfoCard
+        title="Concert with Davido"
+        about="Concert"
+        status="Sold Out"
+        image="/images/placeholder-1.png"
+        url={`/Dashboard/${params.event}/5`}
+        titleClass="font-bricolage-grotesque font-medium"
+        aboutClass="font-bricolage-grotesque"
+        statusClass="font-bricolage-grotesque font-medium"
+      />
           {/* Add more InfoCards as needed */}
         </div>
       </section>
