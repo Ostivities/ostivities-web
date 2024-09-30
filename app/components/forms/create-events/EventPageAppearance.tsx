@@ -52,8 +52,35 @@ const EventPageAppearance: React.FC = () => {
 
 
   const eventDetails = getUserEvent?.data?.data?.data;
-  console.log(eventDetails)
+  // console.log(eventDetails)
 
+  const API_KEY = "pk.78628ea993a1c84c0c71a9563edddb7f"
+
+  const mapLocation = async () => {
+    const link = `https://us1.locationiq.com/v1/search?key=${API_KEY}&q=${eventDetails?.address}&format=json`
+    
+    try {
+      const response = await fetch(link);
+      const data = await response.json();
+      console.log(data)
+  
+      // Extract latitude, longitude, and name from the API response
+    const { lat, lon, display_name } = data[0]; // Assuming the first result is the most accurate
+    
+      // seperate the display_name at the point of coma
+      // const loc = display_name?.split(",")[0];
+    // If the display_name is available, encode it for a valid URL format
+    const locationName = display_name ? encodeURIComponent(display_name) : "";
+
+    // Construct a Google Maps URL with latitude, longitude, and the location name
+    const mapUrl = `https://www.google.com/maps?q=${locationName}+${lat},${lon}`;
+  
+      // Open the Geoapify map in a new tab
+      window.open(mapUrl, '_blank');
+    } catch (error) {
+      console.error("Error fetching the location:", error);
+    }
+  };
 
   const props: UploadProps = {
     name: "image",
@@ -284,13 +311,19 @@ const EventPageAppearance: React.FC = () => {
                         overflowWrap: "break-word", // Adds further wrapping behavior for better browser support
                       }}
                     >
-                      <a
-                        href="https://maps.app.goo.gl/jBmgQ5EFxngj2ffS6"
+                      <button
+                        style={{ color: "#e20000", textDecoration: "none" }}
+                        onClick={mapLocation}
+                      >
+                      {eventDetails?.address}
+                      </button>
+                      {/* <a
+                        href={`https://api.geoapify.com/v1/geocode/autocomplete?text=${eventDetails?.address}&format=json&apiKey=${API_KEY}`}
                         style={{ color: "#e20000", textDecoration: "none" }}
                         target="_blank"
                       >
                         {eventDetails?.address}
-                      </a>
+                      </a> */}
                     </div>
                   </div>
                 </div>
