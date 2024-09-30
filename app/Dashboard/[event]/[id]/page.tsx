@@ -3,12 +3,85 @@
 import AvailableEvents from '@/app/components/DashboardLayout/AvailableEvents';
 import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
 import { Heading5 } from '@/app/components/typography/Typography';
-import { Button, Dropdown, MenuProps, Space } from 'antd';
+import { Button, Dropdown, MenuProps, Space, Modal } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { IoChevronDown } from 'react-icons/io5';
 import React, { useEffect, useState } from 'react';
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  LinkedinShareButton,
+  WhatsappShareButton,
+  FacebookIcon,
+  WhatsappIcon,
+  TwitterIcon,
+  LinkedinIcon,
+  XIcon,
+} from "react-share";
+import { ShareAltOutlined, CopyOutlined } from '@ant-design/icons';
+
+const ShareModalContent: React.FC<{ url: string; title: string }> = ({ url, title }) => {
+  const [copySuccess, setCopySuccess] = useState('');
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(url);
+    setCopySuccess('Copied!');
+    setTimeout(() => setCopySuccess(''), 2000);
+  };
+
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <h2 style={{ marginBottom: '20px', fontWeight: 600, fontFamily: 'Bricolage Grotesque' }}>Share Event</h2>
+
+
+      <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '20px', fontFamily: 'Bricolage Grotesque' }}>
+        <FacebookShareButton url={url}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <FacebookIcon size={50} round />
+            <p style={{ marginTop: '5px', marginBottom: '0', textAlign: 'center' }}>Facebook</p>
+          </div>
+        </FacebookShareButton>
+
+        <TwitterShareButton url={url}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <XIcon size={50} round />
+            <p style={{ marginTop: '5px', marginBottom: '0', textAlign: 'center' }}>Twitter</p>
+          </div>
+        </TwitterShareButton>
+
+        <WhatsappShareButton url={url}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <WhatsappIcon size={50} round />
+            <p style={{ marginTop: '5px', marginBottom: '0', textAlign: 'center' }}>Whatsapp</p>
+          </div>
+        </WhatsappShareButton>
+
+        <LinkedinShareButton url={url}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <LinkedinIcon size={50} round />
+            <p style={{ marginTop: '5px', marginBottom: '0', textAlign: 'center' }}>LinkedIn</p>
+          </div>
+        </LinkedinShareButton>
+      </div>
+
+      <div style={{ borderTop: '1px solid #ddd', paddingTop: '20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <input
+            style={{ width: '80%', padding: '5px', border: '1px solid #ccc', borderRadius: '5px' }}
+            value={url}
+            readOnly
+          />
+          <Button onClick={copyToClipboard} icon={<CopyOutlined />}></Button>
+        </div>
+        {copySuccess && <p style={{ color: 'green', marginTop: '10px' }}>{copySuccess}</p>}
+      </div>
+    </div>
+  );
+};
+
+
 
 const EventDetail = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
@@ -16,6 +89,13 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
   const handleMenuClick: MenuProps["onClick"] = (e) => {
     return e;
   };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+
+  const eventUrl = "https://your-event-url.com";
+  const eventTitle = "DonJons Playground Anniversary";
 
    // Countdown logic
    const eventDate = new Date('2024-12-14T17:00:00');
@@ -81,7 +161,6 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
       key: "2",
     },
   ];
-
 
   return (
     <DashboardLayout title={title} isLoggedIn>
@@ -213,11 +292,32 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
           </div>
           <div className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-6">
           <div className="py-8">
-  <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between">
-    <h2 className="text-2xl font-BricolageGrotesqueMedium">
-      Concert with Davido
-    </h2>
-  </div>
+          <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between items-center">
+  <h2 className="text-2xl font-BricolageGrotesqueMedium">
+    Concert with Davido
+  </h2>
+  
+  <Button
+        icon={
+          <ShareAltOutlined
+            className="text-black text-2xl"
+          />
+        }
+        onClick={handleOpenModal}
+        className="bg-white border-none p-0"
+      />
+      
+      <Modal
+        open={isModalOpen}
+        onCancel={handleCloseModal}
+        footer={null}
+        centered
+        bodyStyle={{ padding: '20px', borderRadius: '15px' }}
+      >
+        <ShareModalContent url={eventUrl} title={eventTitle} />
+      </Modal>
+</div>
+
   <div className="mt-8">
   <div className="flex justify-center gap-12">
     <div className="flex flex-col items-center">
