@@ -8,6 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { IoChevronDown } from 'react-icons/io5';
+import React, { useEffect, useState } from 'react';
 
 const EventDetail = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
@@ -16,6 +17,29 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
     return e;
   };
 
+   // Countdown logic
+   const eventDate = new Date('2024-12-14T17:00:00');
+   const [timeRemaining, setTimeRemaining] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+ 
+   useEffect(() => {
+     const countdownInterval = setInterval(() => {
+       const now = new Date().getTime();
+       const distance = eventDate.getTime() - now;
+ 
+       if (distance > 0) {
+         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+         const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+         setTimeRemaining({ days, hours, minutes, seconds });
+       } else {
+         clearInterval(countdownInterval);
+       }
+     }, 1000);
+ 
+     return () => clearInterval(countdownInterval);
+   }, [eventDate]);
+   
   const title = (
     <div className="flex-center gap-2">
       <Image
@@ -87,7 +111,7 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
                 </div>
                 <div>
                   <div className="text-sm"style={{ fontWeight: 600 }}>Date</div>
-                  <div>14 December, 2023</div> 
+                  <div>14 December, 2024</div> 
                 </div>
               </div>
               <div className="flex gap-3">
@@ -194,7 +218,40 @@ const EventDetail = ({ params }: { params: { id: string } }) => {
       Concert with Davido
     </h2>
   </div>
+  <div className="mt-8">
+  <div className="flex justify-center gap-12">
+    <div className="flex flex-col items-center">
+      <div className="flex items-center justify-center w-16 h-16 border-2 border-[#e20000] rounded-full">
+        <div className="text-2xl font-semibold">{timeRemaining.days}</div>
+      </div>
+      <div className="text-xs capitalize mt-2">Days</div>
+    </div>
+
+    <div className="flex flex-col items-center">
+      <div className="flex items-center justify-center w-16 h-16 border-2 border-[#e20000] rounded-full">
+        <div className="text-2xl font-semibold">{timeRemaining.hours}</div>
+      </div>
+      <div className="text-xs capitalize mt-2">Hours</div>
+    </div>
+
+    <div className="flex flex-col items-center">
+      <div className="flex items-center justify-center w-16 h-16 border-2 border-[#e20000] rounded-full">
+        <div className="text-2xl font-semibold">{timeRemaining.minutes}</div>
+      </div>
+      <div className="text-xs capitalize mt-2">Minutes</div>
+    </div>
+
+    <div className="flex flex-col items-center">
+      <div className="flex items-center justify-center w-16 h-16 border-2 border-[#e20000] rounded-full">
+        <div className="text-2xl font-semibold">{timeRemaining.seconds}</div>
+      </div>
+      <div className="text-xs capitalize mt-2">Seconds</div>
+    </div>
+  </div>
 </div>
+</div>
+
+
             <p>
             Join us for an unforgettable night of music and entertainment with Davido as he takes the stage at Eko Hotel and Suites. 
             Known for their electrifying performances and chart-topping hits, Davido will bring his unique music and energy to life 
