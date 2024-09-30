@@ -106,17 +106,21 @@ export class API_SERVICE {
     });
   }
 
-  static async _publishEvent(id: string): Promise<AxiosResponse> {
+  static async _publishEvent(data: { mode: string, id: string; } ): Promise<AxiosResponse> {
+    const { id, mode } = data
     return await instance({
-      url: `/events/publish_event/${id}`,
+      url: `/events/update_event_mode/${id}`,
       method: HttpMethod.PUT,
+      data: { mode },
     });
   }
 
-  static async _addEventToDiscovery(id: string): Promise<AxiosResponse> {
+  static async _addEventToDiscovery(data: { discover: boolean, id: string }): Promise<AxiosResponse> {
+    const { id, discover } = data;
     return await instance({
-      url: `/events/add_to_discovery/${id}`,
+      url: `/events/update_event_discovery/${id}`,
       method: HttpMethod.PUT,
+      data: { discover }
     });
   }
 

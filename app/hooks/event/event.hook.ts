@@ -61,8 +61,8 @@ export const useUpdateEvent = () => {
 
 export const usePublishEvent = () => {
   const publishEvent = useMutation({
-    mutationFn: (id: string) => {
-      return API_SERVICE._publishEvent(id);
+    mutationFn: (data: { id: string; mode: string;}) => {
+      return API_SERVICE._publishEvent(data);
     },
     onSuccess: (data: AxiosResponse) => {
       // successFormatter(data);
@@ -76,8 +76,8 @@ export const usePublishEvent = () => {
 
 export const useAddEventToDiscovery = () => {
   const addEventToDiscovery = useMutation({
-    mutationFn: (id: string) => {
-      return API_SERVICE._addEventToDiscovery(id);
+    mutationFn: (data: { discover: boolean, id: string }) => {
+      return API_SERVICE._addEventToDiscovery(data);
     },
     onSuccess: (data: AxiosResponse) => {
       successFormatter(data);

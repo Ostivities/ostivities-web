@@ -14,6 +14,7 @@ import { useCookies } from "react-cookie";
 import React from "react";
 import { dateFormat, timeFormat } from "../../../../utils/helper";
 import Link from "next/link";
+import { PUBLISH_TYPE } from "@/app/utils/enums";
 
 export default function PublishEvent(): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,9 +42,13 @@ export default function PublishEvent(): JSX.Element {
   // console.log(eventDetails, "eventDetails");
 
   const handlePublishEvent = async () => {
-    const response = await publishEvent.mutateAsync(params?.id || cookies.event_id);
+    const response = await publishEvent.mutateAsync({
+      id: params?.id, 
+      mode: PUBLISH_TYPE.ACTIVE
+    });
     console.log(response, "response");
     if (response.status === 200) {
+      localStorage.removeItem("uploadedFiles")
       setIsModalOpen(true);
       removeCookie('event_id');
       removeCookie('form_stage');
@@ -296,6 +301,7 @@ export default function PublishEvent(): JSX.Element {
                     fontFamily: "BricolageGrotesqueMedium",
                     float: "right",
                   }}
+                  loading={publishEvent.isPending}
                   onClick={handlePublishEvent}
                 >
                   Publish Event

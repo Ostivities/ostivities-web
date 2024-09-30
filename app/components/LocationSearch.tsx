@@ -88,6 +88,8 @@ interface LocationSearchProps {
   onSelectLocation: (address: string) => void;
 }
 
+const NEXT_PUBLIC_GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+
 const LocationSearch: React.FC<LocationSearchProps> = ({ onSelectLocation }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [locations, setLocations] = useState<string[]>([]);

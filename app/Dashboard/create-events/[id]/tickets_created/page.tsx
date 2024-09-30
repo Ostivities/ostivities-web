@@ -82,7 +82,7 @@ function CreateTicketPage(): JSX.Element {
               size={"large"}
               className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
               onClick={() => {
-                router.push(`/Dashboard/create-events/${params?.id}/publish-event`);
+                router.push(`/Dashboard/create-events/${params?.id}/incomplete-publish-event`);
               }}
             >
               Skip & do this later
