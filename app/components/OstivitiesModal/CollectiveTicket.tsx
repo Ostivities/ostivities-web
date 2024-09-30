@@ -486,6 +486,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
           size={"large"}
           loading={loading}
           disabled={loading}
+          style={{ width: "150px" }}
           htmlType="submit"
           className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
         >

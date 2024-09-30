@@ -1,4 +1,4 @@
-import { useProfile, useUpdateProfile } from "@/app/hooks/auth/auth.hook";
+import { useProfile } from "@/app/hooks/auth/auth.hook";
 import { useGetUserEvent, useUpdateEvent } from "@/app/hooks/event/event.hook";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
 import { CameraFilled } from "@ant-design/icons";

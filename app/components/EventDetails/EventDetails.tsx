@@ -12,7 +12,9 @@ import { LiaExternalLinkAltSolid } from "react-icons/lia";
 import PaymentDetails from "../OstivitiesModal/PaymentDetails";
 import Image from 'next/image';
 import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
+// import { useGetUserEvent, usePublishEvent } from "@/app/hooks/event/event.hook";
 import { useGetUserEvent, useAddEventToDiscovery, usePublishEvent } from "@/app/hooks/event/event.hook";
+import { PUBLISH_TYPE } from "@/app/utils/enums";
 
 
 export default function EventDetailsComponent({
@@ -26,6 +28,7 @@ export default function EventDetailsComponent({
   const router = useRouter();
   const { getUserEvent } = useGetUserEvent(params?.id);
   const { addEventToDiscovery } = useAddEventToDiscovery();
+  const { publishEvent } = usePublishEvent();
   const onToggle = (checked: boolean) => {
     console.log(`Switch to ${checked}`);
   };
@@ -34,6 +37,7 @@ export default function EventDetailsComponent({
   const eventDetails = getUserEvent?.data?.data?.data;
 
   const handleButtonClick = () => {
+
     setIsPublished(!isPublished);
     if (isPublished) {
       message.success('Event published successfully');
@@ -41,6 +45,14 @@ export default function EventDetailsComponent({
       message.success('Event unpublished successfully');
     }
   };
+
+  
+  const handlePublishEvent = async () => {
+    const response = await publishEvent.mutateAsync({
+      id: params?.id, 
+      mode: PUBLISH_TYPE.ACTIVE
+    });
+  }
 
   const linkToCopy = eventDetails?.eventURL
 
@@ -55,7 +67,10 @@ export default function EventDetailsComponent({
   
   const handleSwitchChange = async (checked: boolean) => {
     try {
-      const res = await addEventToDiscovery.mutateAsync(params?.id) 
+      const res = await addEventToDiscovery.mutateAsync({
+        id: params?.id,
+        discover: true,
+      }) 
       if (res.status === 200) {
         console.log(res)
         // setIsActive(checked);

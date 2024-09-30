@@ -187,7 +187,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
   const handleCompulsoryChange = (id: number, checked: boolean) => {
     setAdditionalFields(
       additionalFields.map((field) =>
-        field.id === id ? { ...field, compulsory: checked } : field
+        field.id === id ? { ...field, is_compulsory: checked } : field
       )
     );
   };
@@ -529,6 +529,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
           disabled={updateTicket.isPending}
           loading={updateTicket.isPending}
           htmlType="submit"
+          style={{ width: "150px" }}
           className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
         >
           {updateTicket.isPending ? "Please Wait" : "Update Ticket"}

@@ -222,7 +222,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
   const handleCompulsoryChange = (id: number, checked: boolean) => {
     setAdditionalFields(
       additionalFields.map((field) =>
-        field.id === id ? { ...field, compulsory: checked } : field
+        field.id === id ? { ...field, is_compulsory: checked } : field
       )
     );
   };

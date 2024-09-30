@@ -35,3 +35,8 @@ export enum EXHIBITION_SPACE {
   PAID = 'PAID',
   FREE = 'FREE',
 }
+
+export enum PUBLISH_TYPE {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+}
