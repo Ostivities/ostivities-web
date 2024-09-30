@@ -1,10 +1,11 @@
 import { IModal } from "@/app/utils/interface";
-import { Button, Input, Modal, Space } from "antd";
+import { Button, Form, Input, Modal, Space } from "antd";
 import React from "react";
 import { Label, Paragraph } from "../typography/Typography";
 
 const GuestDetail = ({ open, onCancel, onOk, data }: IModal) => {
   console.log(data, "modal data");
+
   return (
     <Modal
       title={
@@ -36,19 +37,39 @@ const GuestDetail = ({ open, onCancel, onOk, data }: IModal) => {
       width={700}
     >
       <div className="grid grid-cols-2 gap-x-8 gap-y-8 pb-4">
+        {/* Ticket Name Field */}
         <Space direction="vertical" size={"small"}>
           <Label
-            content="Ticket Name"
+            content="Ticket Name(s)"
             className="font-BricolageGrotesqueRegular"
           />
-          <Input readOnly defaultValue={data?.eventName} />
+          {Array.isArray(data?.eventName) ? (
+            data.eventName.map((ticketName: string, index: number) => (
+              <Input key={index} readOnly defaultValue={ticketName} />
+            ))
+          ) : (
+            <Input readOnly defaultValue={data?.eventName} />
+          )}
+        </Space>
+ {/* Order Quantity Field */}
+ <Space direction="vertical" size={"small"}>
+          <Label content="Order Qty" className="font-BricolageGrotesqueRegular" />
+          {Array.isArray(data?.ticketSold) ? (
+            data.ticketSold.map((quantity: number, index: number) => (
+              <Input key={index} readOnly defaultValue={quantity} />
+            ))
+          ) : (
+            <Input readOnly defaultValue={data?.ticketSold} />
+          )}
         </Space>
 
+        {/* Email Field */}
         <Space direction="vertical" size={"small"}>
           <Label content="Email" className="font-BricolageGrotesqueRegular" />
           <Input readOnly defaultValue={data?.eventType} />
         </Space>
 
+        {/* Phone number */}
         <Space direction="vertical" size={"small"}>
           <Label
             content="Phone number"
@@ -57,44 +78,49 @@ const GuestDetail = ({ open, onCancel, onOk, data }: IModal) => {
           <Input readOnly defaultValue={2347062383712} />
         </Space>
 
+        {/* Amount */}
         <Space direction="vertical" size={"small"}>
           <Label content="Amount" className="font-BricolageGrotesqueRegular" />
           <Input readOnly defaultValue={data?.revenue} />
         </Space>
 
+        {/* Ostivities Fees */}
         <Space direction="vertical" size={"small"}>
-          <Label
-            content="Ostivities Fees"
-            className="font-BricolageGrotesqueRegular"
-          />
+          <Label content="Ostivities Fees" className="font-BricolageGrotesqueRegular" />
           <Input readOnly defaultValue={data?.fees} />
         </Space>
 
+        {/* Order Number */}
         <Space direction="vertical" size={"small"}>
-          <Label
-            content="Order Qty"
-            className="font-BricolageGrotesqueRegular"
-          />
-          <Input readOnly defaultValue={data?.ticketSold} />
-        </Space>
-
-        <Space direction="vertical" size={"small"}>
-          <Label
-            content="Order Number"
-            className="font-BricolageGrotesqueRegular"
-          />
+          <Label content="Order Number" className="font-BricolageGrotesqueRegular" />
           <Input readOnly defaultValue={data?.sales} />
         </Space>
 
+        {/* Order Date */}
         <Space direction="vertical" size={"small"}>
-          <Label
-            content="Order Date"
-            className="font-BricolageGrotesqueRegular"
-          />
+          <Label content="Order Date" className="font-BricolageGrotesqueRegular" />
           <Input readOnly defaultValue={data?.dateCreated} />
         </Space>
       </div>
-    </Modal>
+      <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-4 custom-font-size">
+    Additional Information.
+  </h3> 
+  <Form layout="vertical">
+    <Form.Item
+      label="Information 1"
+      name="information1"
+    >
+      <Input type="text" placeholder="answer will be here" readOnly />
+    </Form.Item>
+    <Form.Item
+      label="Information 2"
+      name="information2"
+    >
+      <Input type="text" placeholder="answer will be here" readOnly />
+    </Form.Item>
+  </Form>
+  <br/>
+</Modal>
   );
 };
 

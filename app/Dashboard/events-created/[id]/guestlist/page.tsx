@@ -131,7 +131,18 @@ const EventsGuestList = () => {
 
   const handleAction = (record: SalesDataType) => {
     setIsModalOpen(true);
-    setModalData(record);
+
+    const mockModalData = {
+      eventName: ["VIP Ticket", "General Admission"],  // Two tickets
+      eventType: record.eventType,
+      ticketSold: [1, 2],  // Quantities for each ticket
+      revenue: `₦${record.revenue}`,
+      fees: `₦${record.fees}`,
+      sales: record.sales,
+      dateCreated: record.dateCreated,
+    };
+  
+    setModalData(mockModalData);
   };
 
   return (
