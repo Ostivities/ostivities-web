@@ -38,7 +38,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const [additionalFields, setAdditionalFields] = useState<
-    { id: number; compulsory: boolean }[]
+    { id: number; is_compulsory: boolean; question: string }[]
   >([]);
   const [showAdditionalField, setShowAdditionalField] =
     useState<boolean>(false);
@@ -79,7 +79,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ...rest } = values;
-    // console.log(values);
+    console.log(ticketQuestions, "ticketQuestions");
     setLoading(true);
     if (
       // @ts-ignore
@@ -88,36 +88,24 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
       ticketQuestions?.length === additionalFields.length &&
       showAdditionalField === true
     ) {
-      const questionsArray = ticketQuestions;
-      const combinedArray: {
-        question: string;
-        is_compulsory: boolean;
-      }[] = questionsArray?.map(
-        (
-          questionObj: {
-            question: string;
-            is_compulsory: boolean;
-          },
-          index
-        ) => {
-          const { id, compulsory, ...rest } = additionalFields[index];
-          return {
-            ...questionObj,
-            is_compulsory: compulsory,
-            ...rest,
-          };
+      const reducedTicketQuestions = additionalFields?.map(
+        (questionObj: { id: number; is_compulsory: boolean; question: string }) => {
+          const { question, is_compulsory } = questionObj;
+          console.log(question, is_compulsory, "question, is_compulsory");
+          return { question, is_compulsory };
         }
       );
+      //  console.log(reducedTicketQuestions, "reducedTicketQuestions");
 
       const payload: ITicketCreate = {
         ...rest,
-        ticketQuestions: combinedArray,
+        ticketQuestions: reducedTicketQuestions,
         ticketDescription: editorContent,
         event: params?.id,
         ticketEntity: "SINGLE",
         user: profile?.data?.data?.data?.id,
       };
-      console.log(payload, "kk");
+      // return console.log(payload, "kk");
 
       // make api call here
 
@@ -167,7 +155,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
   const addAdditionalField = () => {
     setAdditionalFields([
       ...additionalFields,
-      { id: counter, compulsory: false },
+      { id: counter, is_compulsory: false, question: "" },
     ]);
     setCounter(counter + 1); // Increment the counter for the next key
   };
@@ -179,10 +167,18 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
   const handleCompulsoryChange = (id: number, checked: boolean) => {
     setAdditionalFields(
       additionalFields.map((field) =>
-        field.id === id ? { ...field, compulsory: checked } : field
+        field.id === id ? { ...field, is_compulsory: checked } : field
       )
     );
   };
+
+  const handleQuestionChange = (id: number, question: string) => {
+    setAdditionalFields(
+      additionalFields.map((field) =>
+        field.id === id ? { ...field, question } : field
+      )
+    );
+  }
 
   const prefixSelector = (
     <Form.Item name="ticketStock" noStyle>
@@ -361,7 +357,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
           <Form.List name="ticketQuestions" rules={[]}>
             {(fields, { add }) => (
               <>
-                {additionalFields.map(({ id, compulsory }) => (
+                {additionalFields.map(({ id, is_compulsory }) => (
                   <div key={id} style={{ marginBottom: "16px" }}>
                     <Form.Item
                       name={[id, "question"]}
@@ -377,6 +373,9 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
                         <Input
                           placeholder="Enter additional information"
                           style={{ flex: 1 }}
+                          onChange={(e) =>
+                            handleQuestionChange(id, e.target.value)
+                          }
                         />
                         <Button
                           type="link"
@@ -394,7 +393,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
                       style={{ marginBottom: "8px" }}
                     >
                       <Checkbox
-                        checked={compulsory}
+                        checked={is_compulsory}
                         onChange={(e) =>
                           handleCompulsoryChange(id, e.target.checked)
                         }

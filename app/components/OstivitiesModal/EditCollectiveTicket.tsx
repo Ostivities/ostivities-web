@@ -35,14 +35,15 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
   const [pricePerTicket, setPricePerTicket] = useState<number | null>(null);
   const [ticketStockValue, setTicketStockValue] = useState<string>("limited"); // Default to "limited"
   const [additionalFields, setAdditionalFields] = useState<
-    { id: number; compulsory: boolean }[]
+    { id: number; is_compulsory: boolean, question: string }[]
   >([]);
   const [showAdditionalField, setShowAdditionalField] =
     useState<boolean>(false);
   const [counter, setCounter] = useState<number>(0); // Counter for unique keys
   const [form] = Form.useForm(); // Initialize form instance
-  const [editorContent, setEditorContent] = useState("");
   const { getSingleTicket } = useGetSingleTicket(id);
+  const ticketDetails = getSingleTicket?.data?.data?.data;
+  const [editorContent, setEditorContent] = useState("" || ticketDetails?.ticketDescription);
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
@@ -54,10 +55,9 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
   const groupSize: number = Form.useWatch("groupSize", form);
   const guestAsChargeBearer = Form.useWatch("guestAsChargeBearer", form);
 
-  // console.log(groupPrice, groupSize);
+  console.log(showAdditionalField, "showAdditionalField");
 
 
-  const ticketDetails = getSingleTicket?.data?.data?.data;
   console.log(ticketDetails, "ticketDetails");
   useEffect(() => {
     if (ticketDetails){
@@ -77,19 +77,20 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
 
     if (ticketDetails?.ticketQuestions?.length > 0) {
       setAdditionalFields(
-        ticketDetails?.ticketQuestions?.map((question: { is_compulsory: any; }, index: any) => ({
+        ticketDetails?.ticketQuestions?.map((question: { is_compulsory: boolean; question: string; }, index: any) => ({
           id: index,
-          compulsory: question?.is_compulsory,
+          question: question?.question,
+          is_compulsory: question?.is_compulsory,
         }))
       );
-      setShowAdditionalField(true);
       form.setFieldsValue({
-        question: ticketDetails?.ticketQuestions.map(
+        ticketQuestions: ticketDetails?.ticketQuestions.map(
           (question: { question: any; }) => ({
             question: question?.question,
           })
         ),
-      })
+      });
+      setShowAdditionalField(true);
     }
 
   }, [ticketDetails]);
@@ -105,31 +106,18 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
       ticketQuestions?.length === additionalFields.length &&
       showAdditionalField === true
     ) {
-      const questionsArray = ticketQuestions;
-      const combinedArray: {
-        question: string;
-        is_compulsory: boolean;
-      }[] = questionsArray?.map(
-        (
-          questionObj: {
-            question: string;
-            is_compulsory: boolean;
-          },
-          index
-        ) => {
-          const { id, compulsory, ...rest } = additionalFields[index];
-          return {
-            ...questionObj,
-            is_compulsory: compulsory,
-            ...rest,
-          };
+      const reducedTicketQuestions = additionalFields?.map(
+        (questionObj: { id: number; is_compulsory: boolean; question: string }) => {
+          const { question, is_compulsory } = questionObj;
+          console.log(question, is_compulsory, "question, is_compulsory");
+          return { question, is_compulsory };
         }
       );
 
       const payload: ITicketUpdate = {
         id: ticketDetails?.id,
         ...rest,
-        ticketQuestions: combinedArray,
+        ticketQuestions: reducedTicketQuestions,
         ticketDescription: editorContent,
         event: params?.id,
         ticketEntity: "COLLECTIVE",
@@ -187,7 +175,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
   const addAdditionalField = () => {
     setAdditionalFields([
       ...additionalFields,
-      { id: counter, compulsory: false },
+      { id: counter, is_compulsory: false, question: "" },
     ]);
     setCounter(counter + 1); // Increment the counter for the next key
   };
@@ -200,6 +188,14 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
     setAdditionalFields(
       additionalFields.map((field) =>
         field.id === id ? { ...field, compulsory: checked } : field
+      )
+    );
+  };
+
+  const handleQuestionChange = (id: number, question: string) => {
+    setAdditionalFields(
+      additionalFields.map((field) =>
+        field.id === id ? { ...field, question } : field
       )
     );
   };
@@ -426,7 +422,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
           </Checkbox>
         </Form.Item>
         <Form.Item noStyle>
-          <Checkbox onChange={(e) => setShowAdditionalField(e.target.checked)}>
+          <Checkbox checked={showAdditionalField} onChange={(e) => setShowAdditionalField(e.target.checked)}>
             Enable additional information
           </Checkbox>
         </Form.Item>
@@ -454,13 +450,13 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
           <Form.List name="ticketQuestions" rules={[]}>
             {(fields, { add }) => (
               <>
-                {additionalFields.map(({ id, compulsory }) => (
+                {additionalFields.map(({ id, is_compulsory, question }) => (
                   <div key={id} style={{ marginBottom: "16px" }}>
                     <Form.Item
                       name={[id, "question"]}
                       rules={[
                         {
-                          required: compulsory,
+                          required: true,
                           message: "Please enter additional information",
                         },
                       ]}
@@ -470,6 +466,10 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
                         <Input
                           placeholder="Enter additional information"
                           style={{ flex: 1 }}
+                          value={question}
+                          onChange={(e) =>
+                            handleQuestionChange(id, e.target.value)
+                          }
                         />
                         <Button
                           type="link"
@@ -484,7 +484,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
                     </Form.Item>
                     <Form.Item style={{ marginBottom: "8px" }}>
                       <Checkbox
-                        checked={compulsory}
+                        checked={is_compulsory}
                         onChange={(e) =>
                           handleCompulsoryChange(id, e.target.checked)
                         }

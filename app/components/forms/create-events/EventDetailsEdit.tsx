@@ -331,7 +331,7 @@ function EventDetailsEdit(): JSX.Element {
           fileName: data.eventDocumentName || "",
           fileUrl: data.eventDocument,
         },
-        eventURL: `${discovery_url}${eventURL}`,
+        eventURL: `${discovery_url}${eventURL.replace(/\s+/g, "")}`,
         eventDetails: editorContent,
         socials,
       });
@@ -747,6 +747,9 @@ function EventDetailsEdit(): JSX.Element {
                       }}
                       {...field}
                       placeholder="Enter your desired name"
+                      onChange={(e) => {
+                        field.onChange(e.target.value.replace(/\s+/g, "")); // Remove spaces as the user types
+                      }}
                     />
                   </Space.Compact>
                   {errors.eventURL && (

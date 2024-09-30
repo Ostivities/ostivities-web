@@ -188,7 +188,7 @@ function Details(): JSX.Element {
     showUploadList: false,
     fileList,
   };
-  console.log(fileList);
+  // console.log(fileList);
 
   useEffect(() => {
     const storedFiles = localStorage.getItem("uploadedFiles");
@@ -226,7 +226,7 @@ function Details(): JSX.Element {
       localStorage.removeItem("uploadedFiles");
       setFileList([]); // Clear the fileList state
     }
-  }, []);
+  }, [pathname]);
 
   const handleDeleteFile = (fileUid: string) => {
     const updatedFileList = fileList.filter((item) => item.uid !== fileUid);
@@ -276,7 +276,7 @@ function Details(): JSX.Element {
           fileName: data.eventDocumentName || "",
           fileUrl: data.eventDocument,
         },
-        eventURL: `${discovery_url}${eventURL}`,
+        eventURL: `${discovery_url}${eventURL.replace(/\s+/g, "")}`,
         eventDetails: editorContent,
         socials,
       });
@@ -683,6 +683,9 @@ function Details(): JSX.Element {
                       }}
                       {...field}
                       placeholder="Enter your desired name"
+                      onChange={(e) => {
+                        field.onChange(e.target.value.replace(/\s+/g, "")); // Remove spaces as the user types
+                      }}
                     />
                   </Space.Compact>
                   {errors.eventURL && (
