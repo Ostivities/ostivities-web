@@ -288,12 +288,12 @@ const EventDetail = () => {
     <DashboardLayout title={title} isLoggedIn>
       <section>
         <div className="flex gap-12">
-          <div className="relative w-fit rounded-[3.125rem] overflow-hidden">
+        <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
             <Image
               src={eventDetails?.eventImage}
-              alt=""
-              height={520}
-              width={390}
+              alt="Event Image"
+              fill
+              style={{ objectFit: "cover" }}
               className=""
             />
             <div className="absolute inset-0 bg-image-card"></div>
