@@ -39,7 +39,7 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk }: IModal): JSX.Ele
               Download ticket
             </button>
             <button
-              onClick={() => router.push("/Dashboard/payment")} 
+              onClick={() => router.push("/Dashboard/tickets")} 
               className="block primary-btn font-normal continue cursor-pointer text-base mt-10 w-[20rem]" // Set same width for both buttons
             >
               Buy Again
