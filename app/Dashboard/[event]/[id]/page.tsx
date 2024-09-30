@@ -290,7 +290,7 @@ const EventDetail = () => {
         <div className="flex gap-12">
           <div className="relative w-fit rounded-[3.125rem] overflow-hidden">
             <Image
-              src="/images/placeholder-6.png"
+              src={eventDetails?.eventImage}
               alt=""
               height={520}
               width={390}
