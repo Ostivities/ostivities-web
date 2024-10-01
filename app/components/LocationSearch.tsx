@@ -88,14 +88,13 @@ interface LocationSearchProps {
   onSelectLocation: (address: string) => void;
 }
 
-const NEXT_PUBLIC_GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 
 const LocationSearch: React.FC<LocationSearchProps> = ({ onSelectLocation }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [locations, setLocations] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const GOOGLE_API_KEY = 'AIzaSyAnxWW8tCO39g2ffSHTELsALShn_FbCCzc'; // Replace with your Google API key
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
