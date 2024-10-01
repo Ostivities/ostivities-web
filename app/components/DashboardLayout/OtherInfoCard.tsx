@@ -16,7 +16,7 @@ const InfoCard: React.FC<PropsI> = ({ title, about, status, image, url, titleCla
   return (
     <Link
       href={url}
-      className="block relative overflow-hidden h-[200px] w-[200px] rounded-[40px]"
+      className="block relative overflow-hidden rounded-[40px]"
     >
       <Image
         src={image}

@@ -20,33 +20,16 @@ const DiscoverEvents = () => {
         }} // Inline style
       >
         {isPending ? (
-          // Display 4 skeleton cards as placeholders while loading
+          // Display 5 skeleton buttons as placeholders while loading
           <>
-            <Skeleton.Button
-              active
-              shape="round"
-              style={{ height: 220, width: 220, margin: "10px" }}
-            />
-            <Skeleton.Button
-              active
-              shape="round"
-              style={{ height: 220, width: 220, margin: "10px" }}
-            />
-            <Skeleton.Button
-              active
-              shape="round"
-              style={{ height: 220, width: 220, margin: "10px" }}
-            />
-            <Skeleton.Button
-              active
-              shape="round"
-              style={{ height: 220, width: 220, margin: "10px" }}
-            />
-            <Skeleton.Button
-              active
-              shape="round"
-              style={{ height: 220, width: 220, margin: "10px" }}
-            />
+            {Array(5).fill(null).map((_, index) => (
+              <Skeleton.Button
+                key={index}
+                active
+                shape="round"
+                style={{ height: 220, width: 230, margin: "10px" }}
+              />
+            ))}
           </>
         ) : (
           // Once data is loaded, map through discoveryEvents and render InfoCard components

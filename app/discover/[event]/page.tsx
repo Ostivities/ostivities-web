@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useLayoutEffect, useMemo } from "react";
 import { useGetDiscoveryEvents } from '@/app/hooks/event/event.hook';
+import { Skeleton } from "antd";
 
 interface PropsI {
   event: "popular"| "all" | "paid" | "free" ;
@@ -34,6 +35,8 @@ const Event = ({ params }: { params: { event: string } }) => {
   const { getDiscoveryEvents } = useGetDiscoveryEvents();
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
   console.log(discoveryEvents, 'discoveryEvents');
+  const isPending = getDiscoveryEvents?.isLoading;
+  const skeletonCount = discoveryEvents?.length || 12;    
 
   const title = (
     <div className="flex-center gap-2">
@@ -69,135 +72,34 @@ const Event = ({ params }: { params: { event: string } }) => {
 </h2>
 
         <div className="grid grid-cols-6 gap-6 gap-y-10 mt-7">
-          <InfoCard
-            title="Concert with Davido"
-            about="Concert"
-            status="Get Tickets"
-            image="/images/placeholder-1.png"
-            url={`/Dashboard/${params.event}/1`}
-            titleClass="font-bricolage-grotesque font-medium"
-            aboutClass="font-bricolage-grotesque"
-            statusClass="font-bricolage-grotesque font-medium"
-          />
-           <InfoCard
-            title="Agbaya Linkup"
-            about="Hangout"
-            status="Sold Out"
-            image="/images/placeholder-5.png"
-            url={`/Dashboard/${params.event}/4`}
-            titleClass="font-bricolage-grotesque font-medium"
-            aboutClass="font-bricolage-grotesque"
-            statusClass="font-bricolage-grotesque font-medium"
-          />
-          {discoveryEvents?.map((event: any) => (
-        <InfoCard
-          key={event?.id}
-          title={event?.eventName}
-          about={event?.eventType}
-          status="Get Tickets"
-          image={event?.eventImage}
-          url={`/Dashboard/discovery/${event?.id}`}
-          titleClass="font-bricolage-grotesque font-medium"
-          aboutClass="font-bricolage-grotesque"
-          statusClass="font-bricolage-grotesque font-medium"
-        />
-      ))}
-          <InfoCard
-            title="Agbaya Linkup"
-            about="Hangout"
-            status="Sold Out"
-            image="/images/placeholder-5.png"
-            url={`/Dashboard/${params.event}/4`}
-            titleClass="font-bricolage-grotesque font-medium"
-            aboutClass="font-bricolage-grotesque"
-            statusClass="font-bricolage-grotesque font-medium"
-          />
-          <InfoCard
-            title="Concert with Davido"
-            about="Concert"
-            status="Sold Out"
-            image="/images/placeholder-1.png"
-            url={`/Dashboard/${params.event}/5`}
-            titleClass="font-bricolage-grotesque font-medium"
-            aboutClass="font-bricolage-grotesque"
-            statusClass="font-bricolage-grotesque font-medium"
-          />
-          <InfoCard
-            title="Agbaya Linkup"
-            about="Hangout"
-            status="Sold Out"
-            image="/images/placeholder-5.png"
-            url={`/Dashboard/${params.event}/4`}
-            titleClass="font-bricolage-grotesque font-medium"
-            aboutClass="font-bricolage-grotesque"
-            statusClass="font-bricolage-grotesque font-medium"
-          />
-          <InfoCard
-            title="Tobi Weds Shade"
-            about="Wedding"
-            status="Get Tickets"
-            image="/images/placeholder-4.png"
-            url={`/Dashboard/${params.event}/3`}
-            titleClass="font-bricolage-grotesque font-medium"
-            aboutClass="font-bricolage-grotesque"
-            statusClass="font-bricolage-grotesque font-medium"
-          /><InfoCard
-          title="Tobi Weds Shade"
-          about="Wedding"
-          status="Get Tickets"
-          image="/images/placeholder-4.png"
-          url={`/Dashboard/${params.event}/3`}
-          titleClass="font-bricolage-grotesque font-medium"
-          aboutClass="font-bricolage-grotesque"
-          statusClass="font-bricolage-grotesque font-medium"
-        /><InfoCard
-        title="Tobi Weds Shade"
-        about="Wedding"
-        status="Get Tickets"
-        image="/images/placeholder-4.png"
-        url={`/Dashboard/${params.event}/3`}
-        titleClass="font-bricolage-grotesque font-medium"
-        aboutClass="font-bricolage-grotesque"
-        statusClass="font-bricolage-grotesque font-medium"
-      /><InfoCard
-      title="Tobi Weds Shade"
-      about="Wedding"
-      status="Get Tickets"
-      image="/images/placeholder-4.png"
-      url={`/Dashboard/${params.event}/3`}
-      titleClass="font-bricolage-grotesque font-medium"
-      aboutClass="font-bricolage-grotesque"
-      statusClass="font-bricolage-grotesque font-medium"
-    />
-     <InfoCard
-            title="Concert with Davido"
-            about="Concert"
-            status="Sold Out"
-            image="/images/placeholder-1.png"
-            url={`/Dashboard/${params.event}/5`}
-            titleClass="font-bricolage-grotesque font-medium"
-            aboutClass="font-bricolage-grotesque"
-            statusClass="font-bricolage-grotesque font-medium"
-          /> <InfoCard
-          title="Concert with Davido"
-          about="Concert"
-          status="Sold Out"
-          image="/images/placeholder-1.png"
-          url={`/Dashboard/${params.event}/5`}
-          titleClass="font-bricolage-grotesque font-medium"
-          aboutClass="font-bricolage-grotesque"
-          statusClass="font-bricolage-grotesque font-medium"
-        /> <InfoCard
-        title="Concert with Davido"
-        about="Concert"
-        status="Sold Out"
-        image="/images/placeholder-1.png"
-        url={`/Dashboard/${params.event}/5`}
-        titleClass="font-bricolage-grotesque font-medium"
-        aboutClass="font-bricolage-grotesque"
-        statusClass="font-bricolage-grotesque font-medium"
-      />
-          {/* Add more InfoCards as needed */}
+        {isPending ? (
+          // Display skeleton buttons dynamically based on the data length or fallback to 5
+          <>
+            {Array(skeletonCount).fill(null).map((_, index) => (
+              <Skeleton.Button
+                key={index}
+                active
+                shape="round"
+                style={{ height: 200, width: 200, margin: "10px" }}
+              />
+            ))}
+          </>
+        ) : (
+          // Once data is loaded, map through discoveryEvents and render InfoCard components
+          discoveryEvents?.map((event: any) => (
+            <InfoCard
+              key={event?.id}
+              title={event?.eventName}
+              about={event?.eventType}
+              status="Get Tickets"
+              image={event?.eventImage}
+              url={`/Dashboard/${event?.eventName}/${event?.id}`}
+              titleClass="font-bricolage-grotesque font-medium"
+              aboutClass="font-bricolage-grotesque"
+              statusClass="font-bricolage-grotesque font-medium"
+            />
+          ))
+        )}
         </div>
       </section>
     </DashboardLayout>
