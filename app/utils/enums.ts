@@ -39,6 +39,7 @@ export enum EXHIBITION_SPACE {
 export enum PUBLISH_TYPE {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
+  CLOSED = 'CLOSED'
 }
 
 export enum EVENT_TYPE {

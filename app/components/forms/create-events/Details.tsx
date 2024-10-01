@@ -279,6 +279,7 @@ function Details(): JSX.Element {
         eventURL: `${discovery_url}${eventURL.replace(/\s+/g, "")}`,
         eventDetails: editorContent,
         socials,
+        discover: true,
       });
 
       if (response.status === 201) {

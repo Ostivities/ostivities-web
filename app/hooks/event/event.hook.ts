@@ -23,11 +23,26 @@ export const useCreateEvent = () => {
   return { createEvent };
 };
 
-export const useGetAllUserEvents = () => {
+export const useDeleteEvent = () => {
+  const deleteEvent = useMutation({
+    mutationFn: (data: string[]) => {
+      return API_SERVICE._deleteEvent(data);
+    },
+    onSuccess: (data: AxiosResponse) => {
+      successFormatter(data);
+    },
+    onError: (error: AxiosError | any) => {
+      errorFormatter(error);
+    },
+  });
+  return { deleteEvent };
+}
+
+export const useGetAllUserEvents = (page: number, limit: number, search?: string) => {
   const getAllUserEvents = useQuery({
-    queryKey: [GET_ALL_USER_EVENTS],
+    queryKey: [GET_ALL_USER_EVENTS, page, limit, search],
     queryFn: () => {
-      return API_SERVICE._getAllUserEvents();
+      return API_SERVICE._getAllUserEvents(page, limit, search);
     },
   });
   return { getAllUserEvents };

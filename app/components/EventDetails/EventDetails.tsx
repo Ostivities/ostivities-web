@@ -32,7 +32,8 @@ export default function EventDetailsComponent({
   const onToggle = (checked: boolean) => {
     console.log(`Switch to ${checked}`);
   };
-
+  const [isDiscover, setIsDiscover] = useState(true); // State to track publish status
+  console.log(isDiscover, "isDiscover")
   const [isPublished, setIsPublished] = useState(false); // State to track publish status
   const eventDetails = getUserEvent?.data?.data?.data;
 
@@ -74,8 +75,15 @@ export default function EventDetailsComponent({
       if (res.status === 200) {
         console.log(res)
         // setIsActive(checked);
-        message.success(checked ? 'Event added to discovery' : 'Event removed from discovery');
+        if(checked) {
+          setIsDiscover(true)
+          message.success('Event added to discovery');
+        } else{
+          setIsDiscover(false)
+          message.success('Event removed from discovery');
+        }
       } else {
+        // setIsDiscover(false)
         message.error('Failed to update discovery status');
       }
     } catch (error) {
@@ -488,7 +496,8 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
               label="Add to discovery page"
             />
             <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
-              Add to discovery page
+              {isDiscover ? 'Remove from discovery' : 'Add to discovery'  }
+              {/* Add to discovery page */}
             </span>
           </div>
         )}

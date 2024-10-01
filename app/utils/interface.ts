@@ -93,10 +93,12 @@ export interface ICreateEvent
     fileName: string;
     fileUrl: string;
   };
+  discover: boolean;
 }
 
 export interface IEventDetails {
   _id: string;
+  id?: string;
   key?: string;
   eventName: string;
   eventDetails: string;
@@ -134,6 +136,8 @@ export interface IEventDetails {
   exhibition_space_booking?: EXHIBITION_SPACE;
   space_available?: number;
   space_fee?: string;
+  mode?: string;
+  eventMode?: string;
 }
 
 export interface IModal {
@@ -145,7 +149,8 @@ export interface IModal {
   onOk?: any;
   actionType?: "delete" | "warning" | "detail";
   data?: any;
-  selectedRowKeys?: string | number;
+  selectedRowKeys?: string[];
+
 }
 
 export type FieldType = {

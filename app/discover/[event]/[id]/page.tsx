@@ -549,6 +549,7 @@ const EventDetail = () => {
                     fontSize: "16px", // Increase text size
                     border: "none", // Remove border if needed
                   }}
+                  disabled={eventdates < new Date().getTime()}
                 >
                   <Space>
                     Register

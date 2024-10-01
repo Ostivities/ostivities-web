@@ -535,6 +535,7 @@ const EventDetail = () => {
             ></div>
             <div className="flex justify-center mt-12">
               <Dropdown
+                disabled={eventdates < new Date().getTime()}
                 menu={{ items: RegistrationTypes, onClick: handleMenuClick }}
               >
                 <Button
@@ -549,6 +550,7 @@ const EventDetail = () => {
                     fontSize: "16px", // Increase text size
                     border: "none", // Remove border if needed
                   }}
+                  disabled={eventdates < new Date().getTime()}
                 >
                   <Space>
                     Register

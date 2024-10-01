@@ -83,10 +83,19 @@ export class API_SERVICE {
     });
   }
 
-  static async _getAllUserEvents(): Promise<AxiosResponse> {
+  static async _deleteEvent(ids: string[]): Promise<AxiosResponse> {
+    return await instance({
+      url: `/events/delete_events`,
+      method: HttpMethod.DELETE,
+      data: { ids },
+    });
+  }
+
+  static async _getAllUserEvents(page: number, limit: number, search?: string): Promise<AxiosResponse> {
     return await instance({
       url: `/events/get_user_events`,
       method: HttpMethod.GET,
+      params: { page, limit, search: search ?? "" },
     });
   }
 
