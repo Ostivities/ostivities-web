@@ -1,6 +1,7 @@
 import Cube from "@/public/cube.svg";
 import Star from "@/public/star.svg";
 import { IFeatures, INavLinks } from "./interface";
+import { EVENT_TYPE } from "./enums"
 
 export const NAV_LINKS: INavLinks[] = [
   {
@@ -2436,17 +2437,12 @@ export const stepOne = [
 ];
 
 export const EVENT_TYPES: { label: string; value: string }[] = [
-  { value: "Wedding", label: "Wedding" },
-  { value: "Birthday", label: "Birthday" },
-  { value: "Concert", label: "Concert" },
-  { value: "Paint & Sip", label: "Paint & Sip" },
-  { value: "Hangouts", label: "Hangouts" },
-  { value: "Webinar", label: "Webinar" },
-  { value: "Seminar", label: "Seminar" },
-  { value: "Conference", label: "Conference" },
-  { value: "Theater Performance", label: "Theater Performance" },
-  { value: "Hackathon", label: "Hackathon" },
-  { value: "Others", label: "Others" },
+  { value: EVENT_TYPE.WEDDING, label: "Wedding" },
+  { value: EVENT_TYPE.BIRTHDAY_PARTY, label: "Birthday" },
+  { value: EVENT_TYPE.MUSIC_SHOW, label: "Music Concert" },
+  { value: EVENT_TYPE.PAINT_AND_SIP, label: "Paint & Sip" },
+  { value: EVENT_TYPE.HANGOUTS, label: "Hangouts" },
+  { value: EVENT_TYPE.OTHERS, label: "Others" },
 ];
 
 export const AFRICAN_TIME_ZONES = [

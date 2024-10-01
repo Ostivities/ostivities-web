@@ -40,3 +40,13 @@ export enum PUBLISH_TYPE {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
 }
+
+export enum EVENT_TYPE {
+  WEDDING = 'Wedding',
+  BIRTHDAY_PARTY = 'Birthday party',
+  HANGOUT = 'Hangout',
+  PAINT_AND_SIP = 'Paint & Sip',
+  MUSIC_SHOW = 'Music Show',
+  HANGOUTS = 'Hangouts',
+  OTHERS = 'Others',
+}
