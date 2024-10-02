@@ -68,6 +68,7 @@ const AboutEvent = () => {
   const { getUserEvent } = useGetUserEvent(params?.id);
   const [showRadio, setShowRadio] = useState(false);
   const { updateEvent } = useUpdateEvent();
+  console.log(componentDisabled, "componentDisabled");
 
   const [editorContent, setEditorContent] = useState("");
   const handleEditorChange = (content: React.SetStateAction<string>) => {
@@ -80,7 +81,7 @@ const AboutEvent = () => {
     return errorInfo;
   };
   const eventDetails = getUserEvent?.data?.data?.data;
-  console.log(eventDetails);
+  // console.log(eventDetails);
   const [vendorRegRadio, setVendorRegRadio] = useState(false);
 
   // const { handleSubmit, control, setValue, watch, trigger } =
@@ -142,8 +143,6 @@ const AboutEvent = () => {
       setValue("endDate", dayjs(eventDetails?.endDate));
       setValue("frequency", eventDetails?.frequency);
     }
-
-
   }, [eventDetails, setValue]);
 
   useEffect(() => {
@@ -155,10 +154,10 @@ const AboutEvent = () => {
           eventDetails?.exhibition_space_booking
         );
         setValue("space_available", eventDetails?.space_available);
-        setValue("space_fee", eventDetails?.space_fee);  
+        setValue("space_fee", eventDetails?.space_fee);
       }, 1000);
     }
-  }, [eventDetails, setValue])
+  }, [eventDetails, setValue]);
 
   useEffect(() => {
     if (eventDetails) {
@@ -230,7 +229,7 @@ const AboutEvent = () => {
         getUserEvent.refetch();
         console.log(response, "response");
         // setLoader(false)
-        setComponentDisabled(false);
+        setComponentDisabled(true);
       }
     } catch (error) {
       // setLoader(false)
@@ -245,7 +244,6 @@ const AboutEvent = () => {
     setValue("state", address); // Update the form field value
     setPopoverVisible(false); // Close the popover
   };
-
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -293,8 +291,11 @@ const AboutEvent = () => {
                     className=""
                     htmlFor="eventName"
                   />
-                  <Input {...field}         disabled={componentDisabled}
- placeholder="Enter Event Name" />
+                  <Input
+                    {...field}
+                    disabled={componentDisabled}
+                    placeholder="Enter Event Name"
+                  />
                 </Space>
               )}
             />
@@ -325,7 +326,10 @@ const AboutEvent = () => {
                   onChange={handleEditorChange}
                 />
               )}
-            </div><br /><br /><br />
+            </div>
+            <br />
+            <br />
+            <br />
 
             <Controller
               name="vendor_registration"
@@ -336,7 +340,6 @@ const AboutEvent = () => {
                     <Checkbox
                       {...field}
                       disabled={componentDisabled}
-
                       checked={vendorRegRadio}
                       onChange={(e) => {
                         field.onChange(e.target.checked);
@@ -373,7 +376,6 @@ const AboutEvent = () => {
                   <Checkbox
                     {...field}
                     disabled={componentDisabled}
-
                     checked={showRadio} // Ensure exhibitionspace is boolean
                     onChange={(e) => {
                       field.onChange(e.target.checked);
@@ -409,7 +411,6 @@ const AboutEvent = () => {
                   <Radio.Group
                     {...field}
                     disabled={componentDisabled}
-
                     onChange={(e) => field.onChange(e.target.value as string)} // Ensure value is string
                     value={field.value}
                   >
@@ -437,7 +438,6 @@ const AboutEvent = () => {
                         <Input
                           {...field}
                           disabled={componentDisabled}
-
                           placeholder="Enter number of spaces"
                           type="number"
                         />
@@ -458,7 +458,6 @@ const AboutEvent = () => {
                         <InputNumber
                           {...field}
                           disabled={componentDisabled}
-
                           placeholder="Enter space fee"
                           style={{ width: "80%" }}
                           min={0}
@@ -487,8 +486,7 @@ const AboutEvent = () => {
                 >
                   <Label content="Event State" className="" htmlFor="state" />
                   <Select
-                          disabled={componentDisabled}
-
+                    disabled={componentDisabled}
                     placeholder="Select State"
                     {...field}
                     style={{ width: "100%" }}
@@ -519,7 +517,6 @@ const AboutEvent = () => {
                     <Input
                       {...field}
                       disabled={componentDisabled}
-
                       placeholder="Enter Address"
                       style={{
                         flex: 1,
@@ -536,7 +533,6 @@ const AboutEvent = () => {
                       <Button
                         type="default"
                         disabled={componentDisabled}
-
                         style={{ borderRadius: "5px", minWidth: "120px" }}
                         onClick={() => setPopoverVisible(!popoverVisible)}
                       >
@@ -575,7 +571,6 @@ const AboutEvent = () => {
                         borderBottomLeftRadius: "0px !important",
                       }}
                       disabled={componentDisabled}
-
                       {...field}
                       placeholder="Enter your desired name"
                     />
@@ -608,7 +603,6 @@ const AboutEvent = () => {
                           borderBottomRightRadius: "0px !important",
                         }}
                         disabled={componentDisabled}
-
                         placeholder="Enter file name (optional)"
                       />
                       <Upload
@@ -619,11 +613,9 @@ const AboutEvent = () => {
                           const file = info.fileList[0]; // Only take the first file
                           field.onChange(file ? [file] : []); // Override with the new file or empty array
                         }}
-
                       >
                         <Button
-                                disabled={componentDisabled}
-
+                          disabled={componentDisabled}
                           icon={<UploadOutlined />}
                           className="custom-upload-button"
                         >
@@ -669,7 +661,6 @@ const AboutEvent = () => {
                       placeholder="Select Event Type"
                       {...field}
                       disabled={componentDisabled}
-
                       style={{ width: "100%" }}
                     >
                       {EVENT_TYPES.map((_i) => (
@@ -699,16 +690,14 @@ const AboutEvent = () => {
                     className="w-full font-BricolageGrotesqueRegular"
                   >
                     <Radio
-                            disabled={componentDisabled}
-
+                      disabled={componentDisabled}
                       value={EVENT_INFO.SINGLE_EVENT}
                       className="w-1/2 font-BricolageGrotesqueRegular"
                     >
                       Single Event
                     </Radio>
                     <Radio
-                            disabled={componentDisabled}
-
+                      disabled={componentDisabled}
                       value={EVENT_INFO.RECURRING_EVENT}
                       className="font-BricolageGrotesqueRegular"
                     >
@@ -739,7 +728,6 @@ const AboutEvent = () => {
                         placeholder="Select Time Zone"
                         {...field}
                         disabled={componentDisabled}
-
                         style={{ width: "100%" }}
                       >
                         {AFRICAN_TIME_ZONES.map((zone) => (
@@ -783,7 +771,6 @@ const AboutEvent = () => {
                           <DatePicker
                             {...field}
                             disabled={componentDisabled}
-
                             showTime
                             format="YYYY-MM-DD HH:mm:ss"
                             style={{ width: "100%", height: "33px" }}
@@ -832,7 +819,6 @@ const AboutEvent = () => {
                                 marginTop: "8px", // Adjust spacing between label and field
                               }}
                               disabled={componentDisabled}
-
                               {...field}
                               placeholder="Enter your website URL"
                             />
@@ -860,7 +846,6 @@ const AboutEvent = () => {
                                 marginTop: "8px", // Adjust spacing between label and field
                               }}
                               disabled={componentDisabled}
-
                               {...field}
                               placeholder="Enter your Twitter/X URL"
                             />
@@ -888,7 +873,6 @@ const AboutEvent = () => {
                                 marginTop: "8px", // Adjust spacing between label and field
                               }}
                               disabled={componentDisabled}
-
                               {...field}
                               placeholder="Enter your Facebook URL"
                             />
@@ -916,7 +900,6 @@ const AboutEvent = () => {
                                 marginTop: "8px", // Adjust spacing between label and field
                               }}
                               disabled={componentDisabled}
-
                               {...field}
                               placeholder="Enter your Instagram URL"
                             />
@@ -952,7 +935,6 @@ const AboutEvent = () => {
                             <Select
                               placeholder="Select Time Zone"
                               disabled={componentDisabled}
-
                               {...field}
                               style={{ width: "100%", height: "33px" }}
                             >
@@ -977,7 +959,6 @@ const AboutEvent = () => {
                               placeholder="Select Event Frequency"
                               {...field}
                               disabled={componentDisabled}
-
                               style={{ width: "100%", height: "33px" }}
                             >
                               {EVENT_FREQUENCIES.map((frequency) => (
@@ -1008,7 +989,6 @@ const AboutEvent = () => {
                             <DatePicker
                               {...field}
                               disabled={componentDisabled}
-
                               showTime
                               format="YYYY-MM-DD HH:mm:ss"
                               style={{ width: "100%", height: "33px" }}
@@ -1025,8 +1005,7 @@ const AboutEvent = () => {
                           control={control}
                           render={({ field }) => (
                             <DatePicker
-                            disabled={componentDisabled}
-
+                              disabled={componentDisabled}
                               {...field}
                               showTime
                               format="YYYY-MM-DD HH:mm:ss"
@@ -1072,7 +1051,6 @@ const AboutEvent = () => {
                             <Input
                               prefix={<LinkOutlined />}
                               disabled={componentDisabled}
-
                               style={{
                                 width: "100%",
                                 color: "#000000",
@@ -1100,7 +1078,6 @@ const AboutEvent = () => {
                             <Input
                               prefix={<XOutlined />}
                               disabled={componentDisabled}
-
                               style={{
                                 width: "100%",
                                 color: "#000000",
@@ -1128,7 +1105,6 @@ const AboutEvent = () => {
                             <Input
                               prefix={<FacebookFilled />}
                               disabled={componentDisabled}
-
                               style={{
                                 width: "100%",
                                 color: "#000000",
@@ -1156,7 +1132,6 @@ const AboutEvent = () => {
                             <Input
                               prefix={<InstagramFilled />}
                               disabled={componentDisabled}
-
                               style={{
                                 width: "100%",
                                 color: "#000000",
@@ -1187,6 +1162,26 @@ const AboutEvent = () => {
           {componentDisabled === false ? (
             <Button
               type="default"
+              htmlType="submit"
+              size={"large"}
+              disabled={false}
+              loading={updateEvent.isPending}
+              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
+              style={{
+                borderRadius: "20px",
+                fontFamily: "BricolageGrotesqueMedium",
+                marginTop: "60px", // Add top margin to the button
+              }}
+              // onClick={() => {
+              //   // onSubmit(data);
+              //   setComponentDisabled(true);
+              // }}
+            >
+              Save Changes
+            </Button>
+          ) : (
+            <Button
+              type="default"
               htmlType="button"
               size={"large"}
               disabled={false}
@@ -1198,24 +1193,9 @@ const AboutEvent = () => {
               }}
               onClick={() => {
                 // onSubmit(data);
-                setComponentDisabled(true);
+                setComponentDisabled(false);
               }}
-            >
-              Save Changes
-            </Button>
-          ) : (
-            <Button
-              type="default"
-              htmlType="submit"
-              size={"large"}
-              disabled={false}
-              loading={updateEvent.isPending}
-              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
-              style={{
-                borderRadius: "20px",
-                fontFamily: "BricolageGrotesqueMedium",
-                marginTop: "60px", // Add top margin to the button
-              }}
+
             >
               Update
             </Button>
