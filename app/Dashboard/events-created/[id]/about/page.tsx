@@ -38,6 +38,7 @@ import {
   Popover,
   Radio,
   Row,
+  Modal,
   Select,
   Space,
   Upload,
@@ -159,8 +160,9 @@ const AboutEvent = () => {
     }
   }, [vendorRegRadio]);
 
-  const onFinish: FormProps<IFormInput>["onFinish"] = async (values) => {
-    // return values;
+  const onFinish: FormProps<IFormInput>["onFinish"] = async (data) => {
+    // return console.log(data, "data");
+
     const {
       exhibitionspace,
       twitterUrl,
@@ -172,34 +174,49 @@ const AboutEvent = () => {
       eventDocument,
       eventURL,
       ...rest
-    } = values;
+    } = data;
     try {
       if (exhibitionspace === false) {
         delete rest.exhibition_space_booking;
         delete rest.space_available;
         delete rest.space_fee;
       }
+
+      if (
+        (facebookUrl && !facebookUrl.startsWith("https://")) ||
+        (instagramUrl && !instagramUrl.startsWith("https://")) ||
+        (websiteUrl && !websiteUrl.startsWith("https://")) ||
+        (twitterUrl && !twitterUrl.startsWith("https://"))
+      ) {
+        return Modal.error({
+          title: "Invalid URL",
+          content: "Please ensure all Social Media URLs start with 'https://'",
+        });
+      }
+
+      const socials = [
+        { name: "twitter", url: twitterUrl },
+        { name: "facebook", url: facebookUrl },
+        { name: "instagram", url: instagramUrl },
+        { name: "website", url: websiteUrl },
+      ].filter((social) => social.url);
       // setLoader(true);
       const response = await updateEvent.mutateAsync({
         id: params?.id,
         ...rest,
         supportingDocument: {
-          fileName: values.eventDocumentName || "",
-          fileUrl: values.eventDocument,
+          fileName: data.eventDocumentName || "",
+          fileUrl: data.eventDocument,
         },
         eventURL: `${discovery_url}${eventURL}`,
         eventDetails: editorContent,
-        socials: [
-          { name: "twitter", url: twitterUrl },
-          { name: "facebook", url: facebookUrl },
-          { name: "instagram", url: instagramUrl },
-          { name: "website", url: websiteUrl },
-        ],
+        socials,
       });
 
       if (response.status === 200) {
         // reset();
         getUserEvent.refetch();
+        console.log(response, "response");
         // setLoader(false)
       }
     } catch (error) {

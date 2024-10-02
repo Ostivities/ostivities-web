@@ -93,7 +93,7 @@ export interface ICreateEvent
     fileName: string;
     fileUrl: string;
   };
-  discover: boolean;
+  discover?: boolean;
 }
 
 export interface IEventDetails {

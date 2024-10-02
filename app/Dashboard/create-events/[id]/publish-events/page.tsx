@@ -7,7 +7,7 @@ import { Heading5 } from "../../../../components/typography/Typography";
 import PublishSuccess from "@/app/components/OstivitiesModal/PublishSuccessModal";
 import CantPublish from "@/app/components/OstivitiesModal/CantPublishModal";
 import { useState } from "react";
-import { useGetUserEvent, usePublishEvent } from "@/app/hooks/event/event.hook";
+import { useGetUserEvent, usePublishEvent, useAddEventToDiscovery } from "@/app/hooks/event/event.hook";
 import { useProfile } from "@/app/hooks/auth/auth.hook";
 import { useCookies } from "react-cookie";
 
@@ -32,6 +32,7 @@ export default function PublishEvent(): JSX.Element {
   const router = useRouter();
   const { profile } = useProfile();
   const { publishEvent } = usePublishEvent();
+  const { addEventToDiscovery } = useAddEventToDiscovery();
   const userFullName =
     profile?.data?.data?.data?.firstName +
     " " +
@@ -46,8 +47,14 @@ export default function PublishEvent(): JSX.Element {
       id: params?.id, 
       mode: PUBLISH_TYPE.ACTIVE
     });
+
     console.log(response, "response");
     if (response.status === 200) {
+       await addEventToDiscovery.mutateAsync({
+        id: params?.id,
+        discover: true,
+      });
+
       localStorage.removeItem("uploadedFiles")
       setIsModalOpen(true);
       removeCookie('event_id');

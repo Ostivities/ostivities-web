@@ -23,6 +23,7 @@ export default function EventDetailsComponent({
   children: React.ReactNode;
 }): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const pathname = usePathname();
   const params = useParams<{ id: string }>();
   const router = useRouter();
@@ -32,27 +33,66 @@ export default function EventDetailsComponent({
   const onToggle = (checked: boolean) => {
     console.log(`Switch to ${checked}`);
   };
-  const [isDiscover, setIsDiscover] = useState(true); // State to track publish status
-  console.log(isDiscover, "isDiscover")
-  const [isPublished, setIsPublished] = useState(false); // State to track publish status
   const eventDetails = getUserEvent?.data?.data?.data;
+  const [isPublished, setIsPublished] = useState(false); // State to track publish status
+  const [isDiscover, setIsDiscover] = useState(false); // State to track discovery status
+  console.log(isDiscover, "isDiscover")
+  console.log(isPublished, "isPublished")
 
-  const handleButtonClick = () => {
+  // const handleButtonClick = () => {
 
-    setIsPublished(!isPublished);
-    if (isPublished) {
-      message.success('Event published successfully');
-    } else {
-      message.success('Event unpublished successfully');
+  //   setIsPublished(!isPublished);
+  //   if (isPublished) {
+  //     message.success('Event published successfully');
+  //   } else {
+  //     message.success('Event unpublished successfully');
+  //   }
+  // };
+
+  useEffect(() => {
+    if(eventDetails?.mode && eventDetails?.mode === PUBLISH_TYPE.ACTIVE) {
+      setIsPublished(true)
+    } else if(eventDetails?.mode && eventDetails?.mode === PUBLISH_TYPE.INACTIVE) {
+      setIsPublished(false)
     }
-  };
+    if(eventDetails?.discover === true) {
+      setIsDiscover(true)
+    }
+  }, [eventDetails])
+
+
 
   
   const handlePublishEvent = async () => {
-    const response = await publishEvent.mutateAsync({
-      id: params?.id, 
-      mode: PUBLISH_TYPE.ACTIVE
-    });
+    if (eventDetails?.mode === PUBLISH_TYPE.ACTIVE) {
+      const response = await publishEvent.mutateAsync({
+        id: params?.id, 
+        mode: PUBLISH_TYPE.INACTIVE
+      });
+
+      if (response.status === 200) {
+        setIsPublished(!isPublished);
+        getUserEvent.refetch()
+        await addEventToDiscovery.mutateAsync({
+          id: params?.id,
+          discover: false
+        })
+        setIsDiscover(false)
+        message.success('Event unpublished successfully');
+        console.log(response, 'response inactive')
+      }
+    } else if (eventDetails?.mode === PUBLISH_TYPE.INACTIVE){
+      const response = await publishEvent.mutateAsync({
+        id: params?.id, 
+        mode: PUBLISH_TYPE.ACTIVE
+      });
+      if (response.status === 200) {
+        getUserEvent.refetch()
+        setIsPublished(!isPublished);
+        message.success('Event published successfully');
+        console.log(response, 'response active')
+      }
+    }
   }
 
   const linkToCopy = eventDetails?.eventURL
@@ -67,28 +107,48 @@ export default function EventDetailsComponent({
   const [isActive, setIsActive] = useState<boolean>(false);
   
   const handleSwitchChange = async (checked: boolean) => {
-    try {
+    if (eventDetails?.discover === false) {
       const res = await addEventToDiscovery.mutateAsync({
         id: params?.id,
         discover: true,
       }) 
+
       if (res.status === 200) {
-        console.log(res)
-        // setIsActive(checked);
-        if(checked) {
-          setIsDiscover(true)
-          message.success('Event added to discovery');
-        } else{
-          setIsDiscover(false)
-          message.success('Event removed from discovery');
-        }
-      } else {
-        // setIsDiscover(false)
-        message.error('Failed to update discovery status');
+        message.success('Event added to discovery successfully');
+        setIsDiscover(true)
+        getUserEvent.refetch()
+        console.log(res, 'res discover true') 
       }
-    } catch (error) {
-      message.error('An error occurred while updating discovery status');
+    } else if(eventDetails?.discover === true) {
+      const res = await addEventToDiscovery.mutateAsync({
+        id: params?.id,
+        discover: false
+      })
+      if(res.status === 200) {
+        setIsDiscover(false)
+        getUserEvent.refetch()
+        message.success('Event removed from discovery successfully');
+      }
     }
+
+    // try {
+    //   if (res.status === 200) {
+    //     console.log(res)
+    //     // setIsActive(checked);
+    //     if(checked) {
+    //       setIsDiscover(true)
+    //       message.success('Event added to discovery');
+    //     } else{
+    //       setIsDiscover(false)
+    //       message.success('Event removed from discovery');
+    //     }
+    //   } else {
+    //     // setIsDiscover(false)
+    //     message.error('Failed to update discovery status');
+    //   }
+    // } catch (error) {
+    //   message.error('An error occurred while updating discovery status');
+    // }
     // if (checked) {
     //   message.success('Event added to discovery');
     // } else {
@@ -485,7 +545,7 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
       </div>
   
       <div className="flex flex-row items-center space-x-4">
-        {!isPublished && (
+        {isPublished && (
           <div className="flex flex-row items-center space-x-2">
             <ToggleSwitch
               isActive={isActive}
@@ -511,12 +571,13 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
           borderRadius: "20px",
           fontFamily: "BricolageGrotesqueMedium",
         }}
-        onClick={handleButtonClick}
+        onClick={handlePublishEvent}
+        loading={publishEvent.isPending}
       >
-        {isPublished ? 'Publish Event' : 'Unpublish Event'}
+        {isPublished ? 'Unpublish Event' : 'Publish Event'}
       </Button>
   
-      {!isPublished && (
+      {isPublished && (
         <div className="flex flex-row items-center space-x-1">
           <Button
             type="text"
