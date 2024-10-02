@@ -74,12 +74,12 @@ function Dashboard(): JSX.Element {
     <form onSubmit={handleSearch} className="flex gap-4 [&>label]:flex-1">
       <label htmlFor="name" className="w-full">
         <span className="text-OWANBE_PRY mb-1 block font-bricolage">Event Name (optional)</span>
-        <Input placeholder="Enter Event Name" className="w-full" />
+        <Input placeholder="enter event name" className="w-full" />
       </label>
       <label htmlFor="state" className="w-full">
         <span className="text-OWANBE_PRY mb-1 block font-bricolage">Event State (optional)</span>
         <Select
-          defaultValue="Select State"
+          defaultValue="select event state"
           className="w-full"
           options={[...STATE_BY_COUNTRYCODE('NG')]}
         />
@@ -87,7 +87,7 @@ function Dashboard(): JSX.Element {
       <label htmlFor="category" className="w-full">
         <span className="text-OWANBE_PRY mb-1 block font-bricolage">Event Category</span>
         <Select
-          defaultValue="Select Event Category"
+          defaultValue="select event category"
           className="w-full"
           options={[
             { value: 'free', label: 'Free Events' },
@@ -98,7 +98,7 @@ function Dashboard(): JSX.Element {
       <label htmlFor="type" className="w-full">
         <span className="text-OWANBE_PRY mb-1 block font-bricolage">Event Type</span>
         <Select
-          defaultValue="Select event type"
+          defaultValue="select event type"
           className="w-full"
           options={[
             { value: "All", label: "All" },

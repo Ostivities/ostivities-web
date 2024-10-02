@@ -46,6 +46,22 @@ function LoginForm(): JSX.Element {
     return errorInfo;
   };
 
+  const validatePassword = (_: any, value: string) => {
+    if (!value) {
+      return Promise.reject(new Error("Please input your password"));
+    }
+    const hasAlphabet = /[a-zA-Z]/.test(value);
+    const hasNumber = /[0-9]/.test(value);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
+    
+    if (hasAlphabet && hasNumber && hasSpecialChar) {
+      return Promise.resolve();
+    }
+  
+    return Promise.reject(new Error("Password must contain at least one alphabet, one number, and one special character"));
+  };
+  
+
   return (
     <Form
       name="validateOnly"
@@ -85,7 +101,7 @@ function LoginForm(): JSX.Element {
         label="Password"
         name="password"
         hasFeedback
-        rules={[{ required: true, message: "Please input your password" }]}
+        rules={[{ required: true, validator: validatePassword }]}
       >
         <Input.Password
           defaultValue={cookies?.user_password}
