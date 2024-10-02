@@ -107,7 +107,7 @@ const EventsCreatedTable: React.FC = () => {
       filters: [
         { text: "Active", value: "Active" }, 
         { text: "Closed", value: "Closed" },
-        { text: "INACTIVE", value: "Inactive" },
+        { text: "Inactive", value: "Inactive" },
       ],
       onFilter: (value, record) => record?.status?.includes(value as string) ?? false,
       render: (status, endDate) => {

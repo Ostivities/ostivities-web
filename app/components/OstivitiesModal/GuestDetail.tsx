@@ -9,25 +9,20 @@ const GuestDetail = ({ open, onCancel, onOk, data }: IModal) => {
   return (
     <Modal
       title={
-        <Space direction="vertical" size={"large"}>
+        <Space direction="vertical" size="large">
           <Paragraph content={data?.eventType} className="pb-5 text-2xl" />
         </Space>
       }
       open={open}
       onOk={onOk}
-      onCancel={() => {
-        onCancel();
-      }}
+      onCancel={onCancel}
       footer={
-        <Space className=" mx-auto text-center w-full flex flex-row justify-center pb-5">
+        <Space className="mx-auto text-center w-full flex flex-row justify-center pb-5">
           <Button
-            type={"primary"}
+            type="primary"
             size="large"
-            className={`font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold rounded-2xl mx-auto place-self-center`}
-            style={{
-              borderRadius: "20px",
-              fontFamily: "BricolageGrotesqueMedium",
-            }}
+            className="font-BricolageGrotesqueSemiBold cursor-pointer font-bold rounded-2xl"
+            style={{ borderRadius: "20px", fontFamily: "BricolageGrotesqueMedium" }}
             onClick={onCancel}
           >
             Resend confirmation Email
@@ -38,11 +33,8 @@ const GuestDetail = ({ open, onCancel, onOk, data }: IModal) => {
     >
       <div className="grid grid-cols-2 gap-x-8 gap-y-8 pb-4">
         {/* Ticket Name Field */}
-        <Space direction="vertical" size={"small"}>
-          <Label
-            content="Ticket Name(s)"
-            className="font-BricolageGrotesqueRegular"
-          />
+        <Space direction="vertical" size="small">
+          <Label content="Ticket Name(s)" className="font-BricolageGrotesqueRegular" />
           {Array.isArray(data?.eventName) ? (
             data.eventName.map((ticketName: string, index: number) => (
               <Input key={index} readOnly defaultValue={ticketName} />
@@ -51,8 +43,9 @@ const GuestDetail = ({ open, onCancel, onOk, data }: IModal) => {
             <Input readOnly defaultValue={data?.eventName} />
           )}
         </Space>
- {/* Order Quantity Field */}
- <Space direction="vertical" size={"small"}>
+
+        {/* Order Quantity Field */}
+        <Space direction="vertical" size="small">
           <Label content="Order Qty" className="font-BricolageGrotesqueRegular" />
           {Array.isArray(data?.ticketSold) ? (
             data.ticketSold.map((quantity: number, index: number) => (
@@ -64,63 +57,56 @@ const GuestDetail = ({ open, onCancel, onOk, data }: IModal) => {
         </Space>
 
         {/* Email Field */}
-        <Space direction="vertical" size={"small"}>
+        <Space direction="vertical" size="small">
           <Label content="Email" className="font-BricolageGrotesqueRegular" />
-          <Input readOnly defaultValue={data?.eventType} />
+          <Input readOnly defaultValue={`${data?.email || "user"}@gmail.com`} />
         </Space>
 
         {/* Phone number */}
-        <Space direction="vertical" size={"small"}>
-          <Label
-            content="Phone number"
-            className="font-BricolageGrotesqueRegular"
-          />
-          <Input readOnly defaultValue={2347062383712} />
+        <Space direction="vertical" size="small">
+          <Label content="Phone number" className="font-BricolageGrotesqueRegular" />
+          <Input readOnly defaultValue={data?.phone || "2347062383712"} />
         </Space>
 
         {/* Amount */}
-        <Space direction="vertical" size={"small"}>
+        <Space direction="vertical" size="small">
           <Label content="Amount" className="font-BricolageGrotesqueRegular" />
           <Input readOnly defaultValue={data?.revenue} />
         </Space>
 
         {/* Ostivities Fees */}
-        <Space direction="vertical" size={"small"}>
+        <Space direction="vertical" size="small">
           <Label content="Ostivities Fees" className="font-BricolageGrotesqueRegular" />
           <Input readOnly defaultValue={data?.fees} />
         </Space>
 
         {/* Order Number */}
-        <Space direction="vertical" size={"small"}>
+        <Space direction="vertical" size="small">
           <Label content="Order Number" className="font-BricolageGrotesqueRegular" />
           <Input readOnly defaultValue={data?.sales} />
         </Space>
 
         {/* Order Date */}
-        <Space direction="vertical" size={"small"}>
+        <Space direction="vertical" size="small">
           <Label content="Order Date" className="font-BricolageGrotesqueRegular" />
           <Input readOnly defaultValue={data?.dateCreated} />
         </Space>
       </div>
+
+      {/* Additional Information */}
       <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-4 custom-font-size">
-    Additional Information.
-  </h3> 
-  <Form layout="vertical">
-    <Form.Item
-      label="Information 1"
-      name="information1"
-    >
-      <Input type="text" placeholder="answer will be here" readOnly />
-    </Form.Item>
-    <Form.Item
-      label="Information 2"
-      name="information2"
-    >
-      <Input type="text" placeholder="answer will be here" readOnly />
-    </Form.Item>
-  </Form>
-  <br/>
-</Modal>
+        Additional Information.
+      </h3>
+      <Form layout="vertical">
+        <Form.Item label="Information 1" name="information1">
+          <Input type="text" placeholder="answer will be here" readOnly />
+        </Form.Item>
+        <Form.Item label="Information 2" name="information2">
+          <Input type="text" placeholder="answer will be here" readOnly />
+        </Form.Item>
+      </Form>
+      <br />
+    </Modal>
   );
 };
 

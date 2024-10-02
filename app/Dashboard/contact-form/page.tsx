@@ -168,7 +168,7 @@ const ContactForm = () => {
 
               <br/>
               <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size">
-              Ticket 1 - Group of 2- Regular.
+              Ticket 1 - Collective of 2- Regular.
               </h3> 
               <Form
                 form={form}
@@ -197,7 +197,7 @@ const ContactForm = () => {
                     </Form.Item>
                   </Col>
                 </Row>
-                <Form.Item
+                {/* <Form.Item
                   label="Attendee Email Address"
                   name="Attendeeemail"
                   rules={[{ required: true, message: 'Please provide attendee email' }]}
@@ -210,11 +210,11 @@ const ContactForm = () => {
                   rules={[{ required: true, message: 'Please confirm provide attendee email' }]}
                 >
                   <Input type="email" placeholder="Confirm Attendee Email Address" />
-                </Form.Item>
+                </Form.Item> */}
 
                 <br/>
               <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size">
-              Ticket 2 - Group of 2- Regular.
+              Ticket 2 - Collective of 2- Regular.
               </h3> 
               <Form
                 form={form}
@@ -243,7 +243,7 @@ const ContactForm = () => {
                     </Form.Item>
                   </Col>
                 </Row>
-                <Form.Item
+                {/* <Form.Item
                   label="Attendee Email Address"
                   name="AttendeEmail"
                   rules={[{ required: true, message: 'Please provide attendee email' }]}
@@ -256,7 +256,7 @@ const ContactForm = () => {
                   rules={[{ required: true, message: 'Please confirm provide attendee email' }]}
                 >
                   <Input type="email" placeholder="Confirm Attendee Email Address" />
-                </Form.Item>
+                </Form.Item> */}
 
               </Form>
               </Form>

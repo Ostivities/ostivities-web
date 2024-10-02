@@ -51,7 +51,7 @@ const DeleteEvent = ({
         >
           {data === "ACTIVE" ? (
             <Button
-              type={"default"}
+            type={"primary"}
               size={"large"}
               className="font-BricolageGrotesqueSemiBold cursor-pointer font-bold rounded-2xl mx-auto place-self-center w-2/3"
               style={{
