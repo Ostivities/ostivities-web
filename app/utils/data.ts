@@ -2438,10 +2438,10 @@ export const stepOne = [
 
 export const EVENT_TYPES: { label: string; value: string }[] = [
   { value: EVENT_TYPE.WEDDING, label: "Wedding" },
-  { value: EVENT_TYPE.BIRTHDAY_PARTY, label: "Birthday" },
-  { value: EVENT_TYPE.MUSIC_SHOW, label: "Concert" },
+  { value: EVENT_TYPE.BIRTHDAY, label: "Birthday" },
+  { value: EVENT_TYPE.CONCERT, label: "Concert" },
   { value: EVENT_TYPE.PAINT_AND_SIP, label: "Paint & Sip" },
-  { value: EVENT_TYPE.HANGOUTS, label: "Hangouts" },
+  { value: EVENT_TYPE.HANGOUT, label: "Hangouts" },
   { value: EVENT_TYPE.CARNIVAL, label: "Carnival" },
   { value: EVENT_TYPE.CONFERENCE, label: "Conference" },
   { value: EVENT_TYPE.SEMINAR, label: "Seminar" },

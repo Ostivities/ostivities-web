@@ -106,7 +106,7 @@ function Dashboard(): JSX.Element {
             { value: "Birthday", label: "Birthday" },
             { value: "Concert", label: "Concert" },
             { value: "Paint & Sip", label: "Paint & Sip" }, 
-            { value: "Hangouts", label: "Hangouts" },
+            { value: "Hangout", label: "Hangout" },
             { value: "Carnival", label: "Carnival" },
             { value: "Seminar", label: "Seminar" },
             { value: "Conference", label: "Conference" },
