@@ -1,6 +1,6 @@
 "use client";
 
-import AvailableEvents from "@/app/components/DashboardLayout/AvailableEvents";
+import AvailableEvents from "@/app/components/DashboardLayout/OtherEvents";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import { Heading5 } from "@/app/components/typography/Typography";
 import { Button, Dropdown, MenuProps, Space, Modal } from "antd";

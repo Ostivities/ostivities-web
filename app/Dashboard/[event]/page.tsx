@@ -33,10 +33,11 @@ const Event = ({ params }: { params: { event: string } }) => {
   const currentSubtitle = eventSubtitles[params.event as keyof typeof eventSubtitles] || "Explore Events";
 
   const { getDiscoveryEvents } = useGetDiscoveryEvents();
-  const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
-  console.log(discoveryEvents, 'discoveryEvents');
-  const isPending = getDiscoveryEvents?.isLoading;
-  const skeletonCount = discoveryEvents?.length || 12;    
+const discoveryEvents = getDiscoveryEvents?.data?.data?.data || []; // Ensure this is always an array
+console.log(discoveryEvents.length, 'Number of Discovery Events'); // Log the length
+
+const isPending = getDiscoveryEvents?.isLoading;
+const skeletonCount = Math.max(12, discoveryEvents.length);   
 
   const title = (
     <div className="flex-center gap-2">
