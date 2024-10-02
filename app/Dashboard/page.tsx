@@ -105,13 +105,14 @@ function Dashboard(): JSX.Element {
             { value: "Wedding", label: "Wedding" },
             { value: "Birthday", label: "Birthday" },
             { value: "Concert", label: "Concert" },
-            { value: "Paint & Sip", label: "Paint & Sip" },
+            { value: "Paint & Sip", label: "Paint & Sip" }, 
             { value: "Hangouts", label: "Hangouts" },
-            { value: "Webinar", label: "Webinar" },
+            { value: "Carnival", label: "Carnival" },
             { value: "Seminar", label: "Seminar" },
             { value: "Conference", label: "Conference" },
-            { value: "Theater Performance", label: "Theater Performance" },
-            { value: "Hackathon", label: "Hackathon" },
+            { value: "Tech Event", label: "Tech Event" },
+            { value: "Art Exhibition", label: "Art Exhibition" },
+            { value: "Holiday Camp", label: "Holiday Camp" },
             { value: "Others", label: "Others" },
           ]}
         />
