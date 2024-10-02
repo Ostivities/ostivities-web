@@ -44,10 +44,16 @@ export enum PUBLISH_TYPE {
 
 export enum EVENT_TYPE {
   WEDDING = 'Wedding',
-  BIRTHDAY_PARTY = 'Birthday party',
+  BIRTHDAY_PARTY = 'Birthday',
   HANGOUT = 'Hangout',
   PAINT_AND_SIP = 'Paint & Sip',
   MUSIC_SHOW = 'Music Show',
   HANGOUTS = 'Hangouts',
   OTHERS = 'Others',
+  CONFERENCE = "CONFERENCE",
+  SEMINAR = "SEMINAR",
+  TECH_EVENT = "TECH_EVENT",
+  ART_EXHIBITION = "ART_EXHIBITION",
+  RELIGIOUS_GATHERING = "RELIGIOUS_GATHERING",
+  CARNIVAL = "CARNIVAL",
 }

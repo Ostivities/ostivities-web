@@ -22,8 +22,6 @@ const eventNames = [
   "Charity Gala",
   "Comedy Show",
   "Theater Play",
-  "Film Screening",
-  "Book Fair",
 ];
 
 // Function to get a random event name from the array

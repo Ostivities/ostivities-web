@@ -2442,6 +2442,12 @@ export const EVENT_TYPES: { label: string; value: string }[] = [
   { value: EVENT_TYPE.MUSIC_SHOW, label: "Music Concert" },
   { value: EVENT_TYPE.PAINT_AND_SIP, label: "Paint & Sip" },
   { value: EVENT_TYPE.HANGOUTS, label: "Hangouts" },
+  { value: EVENT_TYPE.CARNIVAL, label: "Carnival" },
+  { value: EVENT_TYPE.CONFERENCE, label: "Conference" },
+  { value: EVENT_TYPE.SEMINAR, label: "Seminar" },
+  { value: EVENT_TYPE.TECH_EVENT, label: "Tech Event" },
+  { value: EVENT_TYPE.ART_EXHIBITION, label: "Art Exhibition" },
+  { value: EVENT_TYPE.RELIGIOUS_GATHERING, label: "Religous Gathering" },
   { value: EVENT_TYPE.OTHERS, label: "Others" },
 ];
 
