@@ -17,9 +17,10 @@ function Dashboard(): JSX.Element {
   const { isLoggedIn } = useFetch();
   const [activeTab, setActiveTab] = useState('popular');
   const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchText, setSearchText] = useState('');
 
   // Get all events for discovery
-  const { getDiscoveryEvents } = useGetDiscoveryEvents();
+  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 10, searchText);
   console.log(getDiscoveryEvents?.data);
 
   const COUNTRY_JSON: any = Country.getAllCountries().map((i: any) => {

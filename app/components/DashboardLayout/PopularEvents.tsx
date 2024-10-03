@@ -5,7 +5,7 @@ import { Skeleton } from "antd";
  
 
 const PopularEvents = () => {
-  const { getDiscoveryEvents } = useGetDiscoveryEvents();
+  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 20);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
   console.log(discoveryEvents, 'discoveryEvents');
 
