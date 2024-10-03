@@ -177,7 +177,7 @@ const EventDetail = () => {
   // console.log(params, 'params');
   const { getUserEvent } = useGetUserEvent(params?.id);
   const eventDetails = getUserEvent?.data?.data?.data;
-  console.log(eventDetails, "eventDetails");
+  // console.log(eventDetails, "eventDetails");
 
   const handleMenuClick: MenuProps["onClick"] = (e) => {
     return e;
@@ -213,7 +213,7 @@ const EventDetail = () => {
   // Countdown logic
   const eventDate = eventDetails?.startDate;
   const eventdates = new Date(eventDate).getTime();
-  console.log(eventdates, "eventdates");
+  // console.log(eventdates, "eventdates");
   const [timeRemaining, setTimeRemaining] = useState({
     days: 0,
     hours: 0,
@@ -224,7 +224,7 @@ const EventDetail = () => {
   useEffect(() => {
     const countdownInterval = setInterval(() => {
       const now = new Date().getTime();
-      console.log(now, "now");
+      // console.log(now, "now");
       const distance = new Date(eventDate).getTime() - now;
       //  console.log(distance)
 

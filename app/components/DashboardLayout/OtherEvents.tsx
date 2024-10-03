@@ -11,7 +11,7 @@ const DiscoverEvents = () => {
 
   const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 10);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
-  console.log(discoveryEvents, 'discoveryEvents');
+  // console.log(discoveryEvents, 'discoveryEvents');
 
 
   return (

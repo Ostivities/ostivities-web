@@ -104,12 +104,6 @@ const EventsCreatedTable: React.FC = () => {
         />
       ),
       dataIndex: "status",
-      filters: [
-        { text: "Active", value: "Active" }, 
-        { text: "Closed", value: "Closed" },
-        { text: "Inactive", value: "Inactive" },
-      ],
-      onFilter: (value, record) => record?.status?.includes(value as string) ?? false,
       render: (status, endDate) => {
         // console.log(status)
         let style = {};
@@ -306,6 +300,7 @@ const EventsCreatedTable: React.FC = () => {
             setCurrentPage(page);
             setPageSize(size);
           },
+          showSizeChanger: true,
         }}
         scroll={{ x: "max-content" }}
       />
