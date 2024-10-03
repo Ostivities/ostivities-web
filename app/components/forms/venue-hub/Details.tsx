@@ -179,7 +179,7 @@ const VenueHubTable: React.FC = () => {
             minWidth: "70px",
             padding: "4px",
           }}
-          onClick={() => router.push(`/Dashboard/venue-hub/${record.id}/about`)}
+          onClick={() => router.push(`/Dashboard/venue-hub/${record.id}/event_page_view`)}
         >
           View
         </Button>

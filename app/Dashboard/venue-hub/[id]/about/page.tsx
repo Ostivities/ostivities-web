@@ -1,7 +1,7 @@
 "use client";
 import EventDetailsComponent from "@/app/components/VenueHubDetails/VenueHubDetails";
 import LocationSearch from "@/app/components/LocationSearch";
-import EmailEditor from "@/app/components/QuillEditor/EmailEditor";
+import EmailEditor from "@/app/components/QuillEditor/EmailEditor"; 
 import {
   Heading5,
   Label,

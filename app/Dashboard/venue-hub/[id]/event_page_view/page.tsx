@@ -1,389 +1,178 @@
 "use client";
-import { useProfile, useUpdateProfile } from "@/app/hooks/auth/auth.hook";
-import { useGetUserEvent, useUpdateEvent } from "@/app/hooks/event/event.hook";
-import { dateFormat, timeFormat } from "@/app/utils/helper";
-import { CameraFilled } from "@ant-design/icons";
-import { Button, Flex, Space, Upload, message } from "antd";
-import type { RcFile, UploadProps } from "antd/es/upload/interface";
-import axios from "axios";
-import Image from "next/image";
-import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+
 import React, { useState } from "react";
-import { useCookies } from "react-cookie";
-import { Heading5, Paragraph } from "@/app/components/typography/Typography";
-import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
+import { Button, Rate } from "antd";
+import Image from "next/image";
+import EventDetailsComponent from "@/app/components/VenueHubDetails/VenueHubDetails"; // Assuming you have this component
+import styles from "/app/VenueHubView.module.css"; // Custom CSS file for styling
 
+const VenueHubView = () => {
+  const [imageUrl, setImageUrl] = useState("/images/1.jpg"); // Default venue image
+  const [selectedImage, setSelectedImage] = useState(0);
 
-const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
-const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-const cloud_api: any = process.env.NEXT_PUBLIC_CLOUDINARY_API_URL;
-const event_appearance_image: any =
-  process.env.NEXT_PUBLIC_OSTIVITIES_EVENT_APPEARANCE_IMAGES;
+  const images = [
+    "/images/2.jpg",
+    "/images/3.jpg",
+    "/images/1.jpg",
+  ];
 
-
-const EventPageView = () => {
-  const router = useRouter();
-  const [imageUrl, setImageUrl] = useState<string>("/images/emptyimage2.png");
-  const [loader, setLoader] = useState(false);
-  const [cookies, setCookie, removeCookie] = useCookies([
-    "event_id",
-    "form_stage",
-    "stage_one",
-    "stage_two",
-    "stage_three",
-  ]);
-  const { getUserEvent } = useGetUserEvent(cookies.event_id);
-  const { updateEvent } = useUpdateEvent();
-  const params = useParams<{ id: string }>();
-
-  const { profile } = useProfile();
-  const userFullName =
-    profile?.data?.data?.data?.firstName +
-    " " +
-    profile?.data?.data?.data?.lastName;
-
-  const eventDetails = getUserEvent?.data?.data?.data;
-  const props: UploadProps = {
-    name: "image",
-    maxCount: 1,
-    action: `${cloud_api}/${cloud_name}/auto/upload`,
-    beforeUpload: (file, fileList) => {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("folder", event_appearance_image);
-      formData.append("upload_preset", preset);
-    },
-    async customRequest({ file, onSuccess, onError }) {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("folder", event_appearance_image);
-      formData.append("upload_preset", preset);
-      setLoader(true);
-      try {
-        const response = await axios.post(
-          `${cloud_api}/${cloud_name}/auto/upload`,
-          formData
-        );
-        if (response.status === 200) {
-          const urlString: string | any =
-            response?.data?.secure_url || response?.data?.url;
-          const res = await updateEvent.mutateAsync({
-            id: eventDetails?._id,
-            eventImage: urlString,
-          });
-          if (res.status === 200) {
-            message.success("Image uploaded successfully");
-            getUserEvent.refetch();
-            setImageUrl(urlString);
-          }
-        }
-        setLoader(false);
-      } catch (error) { }
-    },
-    async onChange(info) {
-      if (info.file.status !== "uploading") {
-      }
-      if (info.file.status === "done") {
-      } else if (info.file.status === "error") {
-      }
-    },
-    showUploadList: false,
+  const handleImageSelect = (index: number) => {
+    setSelectedImage(index);
+    setImageUrl(images[index]);
   };
 
-  const socialLinks = eventDetails?.socials;
-  const twitterLink = socialLinks?.find(
-    (link: any) => link?.name.toLowerCase() === "twitter"
-  );
-  const instagramLink = socialLinks?.find(
-    (link: any) => link?.name.toLowerCase() === "instagram"
-  );
-  const websiteLink = socialLinks?.find(
-    (link: any) => link?.name.toLowerCase() === "website"
-  );
-  const facebookLink = socialLinks?.find(
-    (link: any) => link?.name.toLowerCase() === "facebook"
-  );
+  const venueStatus = "Available"; // Example status
+  let style, dotColor;
 
-  const validateFile = (file: { type: string; size: number; }) => {
-    const isAllowedFormat = ['image/png', 'image/jpeg', 'image/gif'].includes(file.type);
-    const isBelowSizeLimit = file.size / 1024 / 1024 < 10; // Convert file size to MB
-
-    if (!isAllowedFormat) {
-      message.error('Only PNG, JPEG, and GIF files are allowed.');
-    }
-
-    if (!isBelowSizeLimit) {
-      message.error('File must be smaller than 10MB.');
-    }
-
-    return isAllowedFormat && isBelowSizeLimit;
-  };
-
- 
+  if (venueStatus === "Available") {
+    style = { color: "#009A44", backgroundColor: "#E6F5ED" }; // Green
+    dotColor = "#009A44";
+  } else if (venueStatus === "Unavailable") {
+    style = { color: "#D30000", backgroundColor: "#FFD3D3" }; // Red
+    dotColor = "#D30000";
+  }
 
   return (
     <EventDetailsComponent>
-      <Space direction="vertical" size={"large"}>
-        <Space direction="vertical" size={"small"}>
-          <Heading5 className="" content={"Event Page Appearance "} />
-          <Paragraph
-            className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
-            content={
-              "Update your event image here by clicking the camera icon (File size should not be more than 10MB)."
-            }
-            styles={{ fontWeight: "normal !important" }}
-          />
-        </Space>
-        <div className="flex gap-12">
-          <div className="relative w-[390px] h-[520px] rounded-[3.125rem] overflow-hidden">
-          <Image
-            src={eventDetails?.eventImage || imageUrl} 
-            alt="Event Image"
-            fill
-            style={{ objectFit: "cover" }}
-            className=""
-          />
-          <div className="absolute inset-0 bg-image-card"></div>
-          <Upload
-            className="absolute top-2 right-2 z-10"
-            {...props}
-            beforeUpload={(file) => validateFile(file)} // Add validation check here
-          >
-            <button
-              className="bg-white p-4 rounded-full shadow flex items-center justify-center relative"
-              disabled={loader}
-            >
-              {loader ? (
-                // Replace this with your actual loader component
-                <svg
-                  className="animate-spin h-6 w-6 text-red-600"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.964 7.964 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-              ) : (
-                <CameraFilled
-                  style={{
-                    fontSize: '24px',
-                    color: '#e20000',
-                    background: 'none',
-                  }}
-                />
-              )}
-            </button>
-          </Upload>
-          </div>
-          <div className="py-8">
-          <Heading5 className="text-2xl" content={"About this event"} />
-              <div className="mt-14 flex flex-col gap-8">
-                <div className="flex gap-3">
-                  <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
-                    <Image
-                      src="/icons/calendar.svg"
-                      alt=""
-                      height={25}
-                      width={25}
-                    />
-                  </div>
-                  <div>
-                    <div className="text-sm" style={{ fontWeight: 600 }}>
-                      Date
-                    </div>
-                    <div>
-                      {dateFormat(eventDetails?.startDate)} -{" "}
-                      {dateFormat(eventDetails?.endDate)}
-                    </div>
-                  </div>
-                </div>
-                <div className="flex gap-3">
-                  <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
-                    <Image
-                      src="/icons/time.svg"
-                      alt=""
-                      height={25}
-                      width={25}
-                    />
-                  </div>
-                  <div>
-                    <div className="text-sm" style={{ fontWeight: 600 }}>
-                      Time
-                    </div>
-                    <div>
-                      {timeFormat(eventDetails?.startDate)} -{" "}
-                      {timeFormat(eventDetails?.endDate)}
-                    </div>
-                  </div>
-                </div>
-                <div className="flex gap-3 items-center">
-                  <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
-                    <Image
-                      src="/icons/location.svg"
-                      alt=""
-                      height={25}
-                      width={25}
-                    />
-                  </div>
-                  <div>
-                    <div className="text-sm" style={{ fontWeight: 600 }}>
-                      Location
-                    </div>
-                    <div
-                      style={{
-                        maxWidth: "190px", // Adjust this value as needed
-                        wordWrap: "break-word", // Ensures long words wrap to the next line
-                        overflowWrap: "break-word", // Adds further wrapping behavior for better browser support
-                      }}
-                    >
-                      <a
-                        href="https://maps.app.goo.gl/jBmgQ5EFxngj2ffS6"
-                        style={{ color: "#e20000", textDecoration: "none" }}
-                        target="_blank"
-                      >
-                        {eventDetails?.address}
-                      </a>
-                    </div>
-                  </div>
-                </div>
+      <div className={`${styles.venueHubView} p-2`} style={{ fontFamily: 'Bricolage Grotesque, sans-serif' }}>
+        {/* Venue Images and Details Section */}
+        <div className={`${styles.venueSection} flex justify-between`}>
 
-                <div className="flex gap-3">
-                  <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
-                    <Image
-                      src="/icons/host.svg"
-                      alt=""
-                      height={25}
-                      width={25}
-                    />
-                  </div>
-                  <div>
-                    <div className="text-sm" style={{ fontWeight: 600 }}>
-                      Host
-                    </div>
-                    <div>{userFullName}</div>
-                  </div>
-                </div>
-
-                {twitterLink?.url ||
-                instagramLink?.url ||
-                websiteLink?.url ||
-                facebookLink?.url ? (
-                  <div className="flex gap-3 items-center">
-                    <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
-                      <Image
-                        src="/icons/phone.svg"
-                        alt=""
-                        height={25}
-                        width={25}
-                      />
-                    </div>
-                    <div>
-                      <div className="text-sm" style={{ fontWeight: 600 }}>
-                        Contact Us
-                      </div>
-                      <div className="flex items-center gap-4 mt-1">
-                        <div className="flex items-center gap-4 mt-1">
-                          {websiteLink && websiteLink?.url && (
-                            <Link
-                              href={websiteLink?.url}
-                              className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              <Image
-                                src="/icons/link.svg"
-                                alt=""
-                                height={14}
-                                width={14}
-                              />
-                            </Link>
-                          )}
-                          {twitterLink && twitterLink?.url && (
-                            <Link
-                              href={twitterLink?.url}
-                              className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              <Image
-                                src="/icons/x.svg"
-                                alt=""
-                                height={14}
-                                width={14}
-                              />
-                            </Link>
-                          )}
-                          {facebookLink && facebookLink?.url && (
-                            <Link
-                              href={facebookLink?.url}
-                              className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              <Image
-                                src="/icons/facebook.svg"
-                                alt=""
-                                height={10}
-                                width={10}
-                              />
-                            </Link>
-                          )}
-                          {instagramLink && instagramLink?.url && (
-                            <Link
-                              href={instagramLink?.url}
-                              className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              <Image
-                                src="/icons/instagram.svg"
-                                alt=""
-                                height={16}
-                                width={16}
-                              />
-                            </Link>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ) : null}
-              </div>
+          {/* Left side: Image Gallery */}
+          <div className={`${styles.venueImage} w-2/3`}>
+            <div className="relative w-[560px] h-[400px] overflow-hidden rounded-[20px]">
+              <Image
+                src={imageUrl}
+                alt="Venue Image"
+                layout="fill"
+                objectFit="cover"
+              />
             </div>
-            <div className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-6">
-              <div className="py-8">
-                <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between">
-                  <h2 className="text-2xl font-BricolageGrotesqueMedium">
-                    {eventDetails?.eventName}
-                  </h2>
+            <br />
+            <div className={`${styles.imageThumbnails} flex mt-2 space-x-2`}>
+              {images.map((img, index) => (
+                <div
+                  key={index}
+                  className={`${styles.thumbnail} w-[70px] h-[70px] cursor-pointer ${selectedImage === index ? "border-2 border-blue-500" : ""} rounded-[12px] overflow-hidden`}
+                  onClick={() => handleImageSelect(index)}
+                >
+                  <Image
+                    src={img}
+                    alt={`Venue ${index}`}
+                    width={70}
+                    height={70}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-              </div>
-              <div
-                className="font-BricolageGrotesqueRegular flex-1 h-fit px-1"
-                dangerouslySetInnerHTML={{
-                  __html: eventDetails?.eventDetails as string,
+              ))}
+            </div>
+          </div>
+
+          {/* Right side: Venue Details */}
+          <div className={`${styles.venueDetails} w-2/3 px-4`}>
+            <h1 className="text-3xl font-bold mb-2 flex items-center">
+              Actuated Event Hall
+              <span
+                style={{
+                  ...style,
+                  padding: "0px 15px",
+                  borderRadius: "25px",
+                  fontWeight: "500",
+                  display: "inline-block",
+                  minWidth: "80px",
+                  textAlign: "center",
+                  marginLeft: "10px", // Space between the heading and status
                 }}
-              ></div>
-              <div className="flex justify-center mt-12">
-              </div>
-              </div>
-              </div>
-      </Space>
+              >
+                <span
+                  style={{
+                    width: "10px",
+                    height: "10px",
+                    backgroundColor: dotColor,
+                    borderRadius: "50%",
+                    display: "inline-block",
+                    marginRight: "8px",
+                  }}
+                  ></span>
+                  <span style={{ fontSize: "16px" }}>{venueStatus}</span> {/* Adjusted font size here */}
+                </span>
+            </h1>
+            <div className="flex items-center mb-4">
+              <Rate defaultValue={4.5} disabled /> <span className="ml-2">(12 Reviews)</span>
+            </div>
+            <p className="text-2xl text-green-600 font-semibold mb-1">
+              ₦3,500,000 <span className="text-sm font-normal text-gray-600">for a day</span>
+            </p>
+
+            <br />
+            <Button
+              type="primary"
+              shape="round"
+              style={{
+                borderRadius: "25px",
+                backgroundColor: "#e20000",
+                borderColor: "#e20000",
+                minWidth: "190px",
+                padding: "8px 16px", // Adjusted padding for increased height
+                fontFamily: "Bricolage Grotesque", // Set the font
+                fontSize: "16px", // Adjust font size as needed
+              }}
+            >
+              Contact / Book Hall
+            </Button>
+            <br /><br /><br />
+            <h2 className="text-xl font-semibold mb-4">Amenities</h2>
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-lg">
+              <li className="flex items-start list-disc">
+                <span className="mr-2">•</span> Parking Space
+              </li>
+              <li className="flex items-start list-disc">
+                <span className="mr-2">•</span> Air Conditioning
+              </li>
+              <li className="flex items-start list-disc">
+                <span className="mr-2">•</span> Stage & Sound System
+              </li>
+              <li className="flex items-start list-disc">
+                <span className="mr-2">•</span> Wi-Fi
+              </li>
+              <li className="flex items-start list-disc">
+                <span className="mr-2">•</span> VIP Lounge
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Overview Section */}
+        <div className={`${styles.overview} mt-8 p-4 bg-white rounded-lg shadow`}>
+          <h2 className="text-xl font-semibold mb-4">Overview</h2>
+          <p className="text-[17px] leading-7">
+            This spacious event hall is located in the heart of the city, making it easily accessible for your guests. It is perfect for weddings, conferences, and large gatherings, with seating for up to 500 guests. The venue includes all necessary amenities, such as high-quality audiovisual equipment, ample parking space, and on-site catering services.
+
+            With its flexible layout, the hall can be configured to accommodate various event types, from formal dinners to casual receptions. The modern decor features elegant lighting and a beautiful stage area, creating a stunning backdrop for your special occasions.
+
+            In addition, the venue offers dedicated staff to assist with event planning and coordination, ensuring a seamless experience from start to finish. Whether you're hosting a corporate event, a birthday celebration, or a community gathering, this event hall provides the perfect setting for unforgettable moments.
+          </p>
+        </div>
+
+        {/* Reviews Section */}
+        <div className={`${styles.reviews} mt-8 p-4 bg-white rounded-lg shadow`}>
+          <h2 className="text-xl font-semibold mb-4">Reviews</h2>
+          <ul className="space-y-4">
+            <li className="border-b pb-4">
+              <p className="font-semibold text-lg">John Doe</p>
+              <Rate defaultValue={5} disabled />
+              <p className="mt-2 text-lg">"Amazing venue! The staff were incredibly helpful, and the amenities exceeded our expectations."</p>
+            </li>
+            <li>
+              <p className="font-semibold text-lg">Jane Smith</p>
+              <Rate defaultValue={4} disabled />
+              <p className="mt-2 text-lg">"Great experience, but the Wi-Fi was a bit slow during our event."</p>
+            </li>
+          </ul>
+        </div>
+      </div>
     </EventDetailsComponent>
   );
 };
 
-export default EventPageView;
+export default VenueHubView;

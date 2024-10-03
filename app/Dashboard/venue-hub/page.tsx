@@ -6,7 +6,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-function EventsCreated(): JSX.Element {
+function VenueHub(): JSX.Element {
   const router = useRouter();
   const {isLoggedIn} = useFetch() // Update this based on your authentication logic
 
@@ -16,7 +16,7 @@ function EventsCreated(): JSX.Element {
 
       {isLoggedIn && ( 
         <button
-          onClick={() => router.push('/Dashboard/create-events')}
+          onClick={() => router.push('/Dashboard/venue-hub')}
           
         >
          
@@ -38,4 +38,4 @@ function EventsCreated(): JSX.Element {
   );
 }
 
-export default EventsCreated;
+export default VenueHub;

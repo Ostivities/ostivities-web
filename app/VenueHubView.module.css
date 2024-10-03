@@ -1,0 +1,65 @@
+.venueHubView {
+    max-width: 1500px;
+    margin: auto;
+    background-color: #f9f9f9;
+  }
+  
+  .venueSection {
+    border: 1px solid #ebebeb;
+    padding: 30px;
+    background-color: #fff;
+  }
+  
+  .venueImage {
+    border-right: 1px solid #ebebeb;
+    padding-right: 10px;
+  }
+  
+  .mainImage {
+    position: relative;
+  }
+  
+  .imageThumbnails {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .thumbnail {
+    border: 1px solid #ebebeb;
+    transition: border 0.3s ease;
+  }
+  
+  
+  
+  .venueDetails h1 {
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .venueDetails p {
+    margin-top: 5px;
+    color: #00a651;
+  }
+  
+  .amenities, .overview, .reviews {
+    border: 1px solid #ebebeb;
+    padding: 20px;
+    background-color: #fff;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .amenities ul, .reviews ul {
+    font-size: 16px;
+    line-height: 1.8;
+  }
+  
+  .reviews ul li {
+    padding-bottom: 20px;
+  }
+  
+  .selectedImage {
+    border: 2px solid gold; /* or any other color you prefer */
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); /* Optional shadow effect */
+  }
+  
