@@ -74,6 +74,7 @@ const DeleteEvent = ({
                     fontFamily: "BricolageGrotesqueMedium",
                   }}
                   onClick={handleDeleteClick}
+                  loading={deleteEvent.isPending}
                 >
                   Yes, delete
                 </Button>
@@ -104,6 +105,7 @@ const DeleteEvent = ({
         >
           <div className="mx-auto text-center flex flex-row w-full justify-center items-center">
             {/* Icon can be added here if needed */}
+            <WarningIcon />
           </div>
           <Paragraph
             className="text-OWANBE_DARK_SHADE text-sm font-normal font-BricolageGrotesqueRegular text-center mx-auto mt-5"

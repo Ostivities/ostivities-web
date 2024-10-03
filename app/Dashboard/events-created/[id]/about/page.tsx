@@ -727,6 +727,7 @@ const AboutEvent = () => {
                       placeholder="Select Event Type"
                       {...field}
                       style={{ width: "100%" }}
+                      disabled={componentDisabled}
                     >
                       {EVENT_TYPES.map((_i) => (
                         <Option value={_i.value} key={_i.label}>

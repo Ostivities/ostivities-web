@@ -104,18 +104,6 @@ const EventsCreatedTable: React.FC = () => {
         />
       ),
       dataIndex: "status",
-      filters: [
-        { text: "Active", value: PUBLISH_TYPE.ACTIVE }, 
-        { text: "Closed", value: "Closed" },
-        { text: "Inactive", value: PUBLISH_TYPE.INACTIVE || "undefined" },
-      ],
-      onFilter: (value, record) => {
-        if (value === PUBLISH_TYPE.INACTIVE) {
-          // Include both inactive and undefined status values
-          return record?.status === PUBLISH_TYPE.INACTIVE || record?.status === undefined;
-        }
-        return record?.status?.includes(value as string) ?? false;
-      },
       render: (status, endDate) => {
         // console.log(status)
         let style = {};
@@ -312,6 +300,7 @@ const EventsCreatedTable: React.FC = () => {
             setCurrentPage(page);
             setPageSize(size);
           },
+          showSizeChanger: true,
         }}
         scroll={{ x: "max-content" }}
       />

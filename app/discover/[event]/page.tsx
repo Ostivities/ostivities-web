@@ -32,9 +32,9 @@ const Event = ({ params }: { params: { event: string } }) => {
   const currentTitle = eventTitles[params.event as keyof typeof eventTitles] || "Events";
   const currentSubtitle = eventSubtitles[params.event as keyof typeof eventSubtitles] || "Explore Events";
 
-  const { getDiscoveryEvents } = useGetDiscoveryEvents();
+  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 10);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
-  console.log(discoveryEvents, 'discoveryEvents');
+  // console.log(discoveryEvents, 'discoveryEvents');
   const isPending = getDiscoveryEvents?.isLoading;
   const skeletonCount = discoveryEvents?.length || 12;    
 

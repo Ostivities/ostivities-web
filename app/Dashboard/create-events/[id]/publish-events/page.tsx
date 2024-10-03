@@ -324,6 +324,7 @@ export default function PublishEvent(): JSX.Element {
         <PublishSuccess
           open={isModalOpen}
           onClose={() => setIsModalOpen(false)}
+          onOk={getUserEvent.refetch}
         />
       )}
     </React.Fragment>
