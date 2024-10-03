@@ -51,9 +51,13 @@ export default function EventDetailsComponent({
 
   useEffect(() => {
     if(eventDetails?.mode && eventDetails?.mode === PUBLISH_TYPE.ACTIVE) {
-      setIsPublished(true)
+      setTimeout(() => {
+        setIsPublished(true)
+      }, 2000)
     } else if(eventDetails?.mode && eventDetails?.mode === PUBLISH_TYPE.INACTIVE) {
-      setIsPublished(false)
+      setTimeout(() => {
+        setIsPublished(false)
+      })
     }
     if(eventDetails?.discover === true) {
       setIsDiscover(true)
