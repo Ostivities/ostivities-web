@@ -17,6 +17,7 @@ import {
   PlusCircleOutlined,
   QuestionCircleOutlined,
   SettingOutlined,
+  ShopOutlined,
   UsergroupAddOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
@@ -54,8 +55,10 @@ const items2: MenuProps["items"] = [
     title: "Events Created",
     link: "/Dashboard/events-created",
   },
+  { icon: ShopOutlined, title: 'Venue Hub', link: '/Dashboard/venue-hub' },
   { icon: SettingOutlined, title: "Settings", link: "/Dashboard/settings" },
   // { icon: FieldTimeOutlined, title: "Coming Soon", link: "/Dashboard/coming-soon" },
+ 
 ].map((item) => {
   const key = item.link;
   return {
@@ -145,6 +148,7 @@ function DashboardLayout({
   const endpoints = [
     "create-events",
     "events-created",
+    "venue-hub",
     "coming-soon",
     "settings",
   ];
@@ -184,6 +188,7 @@ function DashboardLayout({
     pathname.split("/").includes("settings") ||
     pathname.split("/").includes("events-created") ||
     pathname.split("/").includes("coming-soon") ||
+    pathname.split("/").includes("venue-hub") ||
     pathname.split("/").includes("create-events");
 
   const toggleSidebar = () => {

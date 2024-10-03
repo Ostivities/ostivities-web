@@ -191,6 +191,8 @@ export interface DataType {
   id?: string; // Optional, since it's not used in the data generation
 }
 
+
+
 export interface SalesDataType {
   eventType: any;
   dateCreated: any;
