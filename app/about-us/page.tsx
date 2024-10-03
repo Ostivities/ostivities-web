@@ -223,7 +223,7 @@ function AboutUs(): JSX.Element {
                   <Image src={empty} alt="John" className="w-full h-auto" />
                   <div className="p-6">
                     <h2 className="text-md font-bold">-----</h2>
-                    <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Finance</p>
+                    <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Quality Assurance</p>
                   </div>
                 </div>
               </div>
@@ -233,7 +233,7 @@ function AboutUs(): JSX.Element {
                   <Image src={empty} alt="John" className="w-full h-auto" />
                   <div className="p-6">
                     <h2 className="text-md font-bold">-----</h2>
-                    <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Engineering</p>
+                    <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Finance</p>
                   </div>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 import InfoCard from "./InfoCard";
-import EventSection from "./EventSection";
+import EventSection from "./DiscoverEventSection";
 import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
 import { Skeleton } from "antd";
 import { useState } from "react";

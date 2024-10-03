@@ -12,7 +12,7 @@ const useFetch = () => {
       const token = sessionStorage.getItem("token");
 
       // Static public paths
-      const publicPaths = ["/", "/Dashboard", "/discover", "/forgot-password", "/password-reset", "/login", "/signup"];
+      const publicPaths = ["/", "/Dashboard", "/discover", "/forgot-password", "/password-reset", "/login", "/signup", "/about-us", "/faqs", "/terms-and-condition", "/privacy-policy", "/refund-policy", "/feedback"];
 
       // Regex patterns for dynamic public paths with two parameters
       const dynamicPublicPaths = [

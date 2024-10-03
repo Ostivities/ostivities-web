@@ -569,71 +569,75 @@ function EventDetailsEdit(): JSX.Element {
               />
             )}
 
-            {showRadio &&
-              watch("exhibition_space_booking") === EXHIBITION_SPACE.PAID && (
-                <Space direction="horizontal" size="large">
-                  <Form.Item
-                    label={
-                      <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
-                        Space Available
-                      </span>
-                    }
-                  >
-                    <Controller
-                      name="space_available"
-                      control={control}
-                      rules={{ required: "Space Available is required!" }}
-                      render={({ field }) => (
-                        <>
-                          <InputNumber
-                            {...field}
-                            style={{ width: "80%" }}
-                            placeholder="Enter number of spaces"
-                          />
-                          {errors.space_available && (
-                            <span style={{ color: "red" }}>
-                              {errors.space_available.message}
-                            </span>
-                          )}
-                        </>
-                      )}
-                    />
-                  </Form.Item>
-                  <Form.Item
-                    label={
-                      <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
-                        Space Fee
-                      </span>
-                    }
-                  >
-                    <Controller
-                      name="space_fee"
-                      control={control}
-                      rules={{ required: "Space Fee is required!" }}
-                      render={({ field }) => (
-                        <>
-                          <InputNumber
-                            {...field}
-                            placeholder="Enter space fee"
-                            style={{ width: "80%" }}
-                            min={0}
-                            formatter={(value) =>
-                              `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                            }
-                            parser={(value) =>
-                              value?.replace(/\₦\s?|(,*)/g, "") as any
-                            }
-                          />
-                          {errors.space_fee && (
-                            <span style={{ color: "red" }}>
-                              {errors.space_fee.message}
-                            </span>
-                          )}
-                        </>
-                      )}
-                    />
-                  </Form.Item>
-                </Space>
+{showRadio &&
+  (watch("exhibition_space_booking") === EXHIBITION_SPACE.PAID || 
+  watch("exhibition_space_booking") === EXHIBITION_SPACE.FREE) && (
+    <Space direction="horizontal" size="large">
+      <Form.Item
+        label={
+          <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
+            Space Available
+          </span>
+        }
+      >
+        <Controller
+          name="space_available"
+          rules={{ required: "Space Available is required!" }}
+          control={control}
+          render={({ field }) => (
+            <>
+              <InputNumber
+                {...field}
+                style={{ width: "80%" }}
+                placeholder="Enter number of space"
+              />
+              {errors.space_available && (
+                <span style={{ color: "red" }}>
+                  {errors.space_available.message}
+                </span>
+              )}
+            </>
+          )}
+        />
+      </Form.Item>
+
+      {watch("exhibition_space_booking") === EXHIBITION_SPACE.PAID && (
+        <Form.Item
+          label={
+            <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
+              Space Fee
+            </span>
+          }
+        >
+          <Controller
+            name="space_fee"
+            rules={{ required: "Space Fee is required!" }}
+            control={control}
+            render={({ field }) => (
+              <>
+                <InputNumber
+                  {...field}
+                  placeholder="Enter space fee"
+                  style={{ width: "80%" }}
+                  min={0}
+                  formatter={(value) =>
+                    `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
+                  parser={(value) =>
+                    value?.replace(/\₦\s?|(,*)/g, "") as any
+                  }
+                />
+                {errors.space_fee && (
+                  <span style={{ color: "red" }}>
+                    {errors.space_fee.message}
+                  </span>
+                )}
+              </>
+            )}
+          />
+        </Form.Item>
+      )}
+    </Space>
               )}
 
             <Controller

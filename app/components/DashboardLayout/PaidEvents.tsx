@@ -1,4 +1,4 @@
-import EventSection from './EventSection';
+import EventSection from './DiscoverEventSection';
 import InfoCard from './InfoCard';
 
 const PaidEvents = () => {
