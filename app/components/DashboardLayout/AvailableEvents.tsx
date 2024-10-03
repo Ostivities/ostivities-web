@@ -9,7 +9,7 @@ const DiscoverEvents = () => {
     return value !== params?.id;
   }
 
-  const { getDiscoveryEvents } = useGetDiscoveryEvents();
+  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 10);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
   console.log(discoveryEvents, 'discoveryEvents');
 

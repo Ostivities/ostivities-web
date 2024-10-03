@@ -2,9 +2,11 @@ import InfoCard from "./InfoCard";
 import EventSection from "./EventSection";
 import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
 import { Skeleton } from "antd";
+import { useState } from "react";
 
 const DiscoverEvents = () => {
-  const { getDiscoveryEvents } = useGetDiscoveryEvents();
+  const [searchText, setSearchText] = useState("");
+  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 10, searchText);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
 
   const isPending = getDiscoveryEvents?.isLoading;

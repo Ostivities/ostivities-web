@@ -795,7 +795,7 @@ function EventDetailsEdit(): JSX.Element {
                         {...props}
                         beforeUpload={(file) => {
                           handleFileUpload(file);
-                          return false; // Prevent automatic upload
+                          // return false; // Prevent automatic upload
                         }}
                       >
                         <Button
