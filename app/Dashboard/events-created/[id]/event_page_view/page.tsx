@@ -33,9 +33,9 @@ const EventPageView = () => {
     "stage_two",
     "stage_three",
   ]);
-  const { getUserEvent } = useGetUserEvent(cookies.event_id);
   const { updateEvent } = useUpdateEvent();
   const params = useParams<{ id: string }>();
+  const { getUserEvent } = useGetUserEvent(params?.id);
 
   const { profile } = useProfile();
   const userFullName =

@@ -81,7 +81,7 @@ export default function EventDetailsComponent({
         message.success('Event unpublished successfully');
         // console.log(response, 'response inactive')
       }
-    } else if (eventDetails?.mode === PUBLISH_TYPE.INACTIVE){
+    } else if (eventDetails?.mode === PUBLISH_TYPE.INACTIVE || !eventDetails?.mode){
       const response = await publishEvent.mutateAsync({
         id: params?.id, 
         mode: PUBLISH_TYPE.ACTIVE
