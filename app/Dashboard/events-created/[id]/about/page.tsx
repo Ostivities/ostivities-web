@@ -40,8 +40,10 @@ import {
   Row,
   Modal,
   Select,
+  UploadProps,
   Space,
   Upload,
+  UploadFile,
 } from "antd";
 import { useRouter, useParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
@@ -49,6 +51,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useGetUserEvent, useUpdateEvent } from "@/app/hooks/event/event.hook";
 import { getUsernameFromUrl } from "@/app/utils/helper";
 import dayjs from "dayjs";
+import axios from "axios";
 
 interface FieldType {}
 
@@ -63,8 +66,10 @@ const AboutEvent = () => {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const [form] = Form.useForm();
-  const [componentDisabled, setComponentDisabled] = useComponentDisabled();
+  const [loader, setLoader] = useState(false);
+  const [componentDisabled, setComponentDisabled] = useState(true);
   const { Option } = Select;
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
   const { getUserEvent } = useGetUserEvent(params?.id);
   const [showRadio, setShowRadio] = useState(false);
   const { updateEvent } = useUpdateEvent();
@@ -80,13 +85,74 @@ const AboutEvent = () => {
     return errorInfo;
   };
   const eventDetails = getUserEvent?.data?.data?.data;
-  console.log(eventDetails);
+  // console.log(eventDetails);
   const [vendorRegRadio, setVendorRegRadio] = useState(false);
 
-  const { handleSubmit, control, setValue, watch, trigger } =
-    useForm<IFormInput>({
-      mode: "all", // Use your preferred validation mode
-    });
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    setValue,
+    watch,
+    trigger,
+    reset,
+    getValues,
+  } = useForm<IFormInput>({
+    mode: "all",
+  });
+
+  const props: UploadProps = {
+    name: "image",
+    maxCount: 1,
+    action: `${cloud_api}/${cloud_name}/auto/upload`,
+    beforeUpload: (file, fileList) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", event_supporting_docs);
+      formData.append("upload_preset", preset);
+    },
+    async customRequest({ file, onSuccess, onError }) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", event_supporting_docs);
+      formData.append("upload_preset", preset);
+      setLoader(true);
+      try {
+        const response = await axios.post(
+          `${cloud_api}/${cloud_name}/auto/upload`,
+          formData
+        );
+        console.log(response, "fileupload");
+        if (response.status === 200) {
+          const urlString: string | any =
+            response?.data?.secure_url || response?.data?.url;
+          setValue("eventDocument", urlString);
+        }
+        setLoader(false);
+      } catch (error) {
+        // console.error(error);
+        setLoader(false);
+      }
+    },
+    async onChange(info) {
+      setFileList(info.fileList);
+      if (info.file.status !== "uploading") {
+      }
+      if (info.file.status === "done") {
+        const urlString =
+          info.file.response?.secure_url || info.file.response?.url;
+        setValue("eventDocument", urlString);
+      } else if (info.file.status === "error") {
+      }
+    },
+    showUploadList: false,
+    fileList,
+  };
+
+  const handleDeleteFile = (fileUid: string) => {
+    const updatedFileList = fileList.filter((item) => item.uid !== fileUid);
+    setFileList(updatedFileList);
+  };
 
   const watchEventInfo = watch("eventInfo");
 
@@ -130,8 +196,6 @@ const AboutEvent = () => {
       setValue("endDate", dayjs(eventDetails?.endDate));
       setValue("frequency", eventDetails?.frequency);
     }
-
-
   }, [eventDetails, setValue]);
 
   useEffect(() => {
@@ -143,10 +207,10 @@ const AboutEvent = () => {
           eventDetails?.exhibition_space_booking
         );
         setValue("space_available", eventDetails?.space_available);
-        setValue("space_fee", eventDetails?.space_fee);  
+        setValue("space_fee", eventDetails?.space_fee);
       }, 1000);
     }
-  }, [eventDetails, setValue])
+  }, [eventDetails, setValue]);
 
   useEffect(() => {
     if (eventDetails) {
@@ -160,7 +224,7 @@ const AboutEvent = () => {
     }
   }, [vendorRegRadio]);
 
-  const onFinish: FormProps<IFormInput>["onFinish"] = async (data) => {
+  const onSubmit: FormProps<IFormInput>["onFinish"] = async (data) => {
     // return console.log(data, "data");
 
     const {
@@ -218,6 +282,7 @@ const AboutEvent = () => {
         getUserEvent.refetch();
         console.log(response, "response");
         // setLoader(false)
+        setComponentDisabled(true);
       }
     } catch (error) {
       // setLoader(false)
@@ -257,14 +322,10 @@ const AboutEvent = () => {
 
   return (
     <EventDetailsComponent>
-      <Form
+      <form
         name="basic"
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
-        layout="vertical"
-        form={form}
-        disabled={componentDisabled}
+        className="flex flex-col space-y-16 pb-5"
       >
         <Space direction="vertical">
           <Heading5 className="pb-8" content={"Event Details"} />
@@ -282,7 +343,11 @@ const AboutEvent = () => {
                     className=""
                     htmlFor="eventName"
                   />
-                  <Input {...field} placeholder="Enter Event Name" />
+                  <Input
+                    {...field}
+                    disabled={componentDisabled}
+                    placeholder="Enter Event Name"
+                  />
                 </Space>
               )}
             />
@@ -313,7 +378,10 @@ const AboutEvent = () => {
                   onChange={handleEditorChange}
                 />
               )}
-            </div><br /><br /><br />
+            </div>
+            <br />
+            <br />
+            <br />
 
             <Controller
               name="vendor_registration"
@@ -323,6 +391,7 @@ const AboutEvent = () => {
                   <Space align="center">
                     <Checkbox
                       {...field}
+                      disabled={componentDisabled}
                       checked={vendorRegRadio}
                       onChange={(e) => {
                         field.onChange(e.target.checked);
@@ -358,6 +427,7 @@ const AboutEvent = () => {
                 render={({ field }) => (
                   <Checkbox
                     {...field}
+                    disabled={componentDisabled}
                     checked={showRadio} // Ensure exhibitionspace is boolean
                     onChange={(e) => {
                       field.onChange(e.target.checked);
@@ -392,6 +462,7 @@ const AboutEvent = () => {
                 render={({ field }) => (
                   <Radio.Group
                     {...field}
+                    disabled={componentDisabled}
                     onChange={(e) => field.onChange(e.target.value as string)} // Ensure value is string
                     value={field.value}
                   >
@@ -416,10 +487,11 @@ const AboutEvent = () => {
                       name="space_available"
                       control={control}
                       render={({ field }) => (
-                        <Input
+                        <InputNumber
                           {...field}
+                          style={{ width: "80%" }}
+                          disabled={componentDisabled}
                           placeholder="Enter number of spaces"
-                          type="number"
                         />
                       )}
                     />
@@ -437,6 +509,7 @@ const AboutEvent = () => {
                       render={({ field }) => (
                         <InputNumber
                           {...field}
+                          disabled={componentDisabled}
                           placeholder="Enter space fee"
                           style={{ width: "80%" }}
                           min={0}
@@ -465,6 +538,7 @@ const AboutEvent = () => {
                 >
                   <Label content="Event State" className="" htmlFor="state" />
                   <Select
+                    disabled={componentDisabled}
                     placeholder="Select State"
                     {...field}
                     style={{ width: "100%" }}
@@ -494,6 +568,7 @@ const AboutEvent = () => {
                   >
                     <Input
                       {...field}
+                      disabled={componentDisabled}
                       placeholder="Enter Address"
                       style={{
                         flex: 1,
@@ -509,6 +584,7 @@ const AboutEvent = () => {
                     >
                       <Button
                         type="default"
+                        disabled={componentDisabled}
                         style={{ borderRadius: "5px", minWidth: "120px" }}
                         onClick={() => setPopoverVisible(!popoverVisible)}
                       >
@@ -546,6 +622,7 @@ const AboutEvent = () => {
                         borderTopLeftRadius: "0px !important",
                         borderBottomLeftRadius: "0px !important",
                       }}
+                      disabled={componentDisabled}
                       {...field}
                       placeholder="Enter your desired name"
                     />
@@ -556,7 +633,7 @@ const AboutEvent = () => {
 
             <Space direction="vertical" size="small">
               <Controller
-                name="eventDocument"
+                name="eventDocumentName"
                 control={control}
                 render={({ field }) => (
                   <Space direction="vertical" size="small">
@@ -567,30 +644,36 @@ const AboutEvent = () => {
                           <span className="optional-text">(optional)</span>
                         </span>
                       }
-                      htmlFor="document"
+                      htmlFor="supportingDocument"
                     />
 
                     <Space.Compact className="w-full h-8">
                       <Input
+                        // name="eventDocumentName"
+                        {...field}
                         style={{
                           width: "75%",
                           borderTopRightRadius: "0px !important",
                           borderBottomRightRadius: "0px !important",
                         }}
+                        disabled={componentDisabled}
+                        value={field.value || ""}
+                        onChange={(e) => field.onChange(e.target.value)}
                         placeholder="Enter file name (optional)"
                       />
                       <Upload
-                        showUploadList={false}
-                        beforeUpload={() => false}
                         className="upload-button"
-                        onChange={(info) => {
-                          const file = info.fileList[0]; // Only take the first file
-                          field.onChange(file ? [file] : []); // Override with the new file or empty array
+                        {...props}
+                        beforeUpload={(file) => {
+                          // handleFileUpload(file);
+                          // return false; // Prevent automatic upload
                         }}
                       >
                         <Button
                           icon={<UploadOutlined />}
                           className="custom-upload-button"
+                          loading={loader}
+                          disabled={componentDisabled}
                         >
                           Click to Upload
                         </Button>
@@ -601,18 +684,23 @@ const AboutEvent = () => {
                       many others. *Only JPEG, PNG & PDF Allowed and file size
                       should not be more than 10MB.
                     </span>
-                    {Array.isArray(field.value) && field.value.length > 0 && (
+                    {fileList.length > 0 && (
                       <div className="font-BricolageGrotesqueLight text-xs text-gray-400">
-                        Uploaded File:
+                        Uploaded Files:{" "}
                         <Space>
-                          <span>{field.value[0].name}</span>
-                          <DeleteOutlined
-                            style={{
-                              color: "#e20000",
-                              cursor: "pointer",
-                            }}
-                            onClick={() => field.onChange([])} // Clear the uploaded file
-                          />
+                          {fileList.map((file) => (
+                            <Space key={file.uid}>
+                              <span>{file.name}</span>
+                              <DeleteOutlined
+                                style={{
+                                  color: "#e20000",
+                                  cursor: "pointer",
+                                  marginLeft: "8px",
+                                }}
+                                onClick={() => handleDeleteFile(file.uid)}
+                              />
+                            </Space>
+                          ))}
                         </Space>
                       </div>
                     )}
@@ -620,8 +708,14 @@ const AboutEvent = () => {
                 )}
               />
               <Controller
+                name="eventDocument"
+                control={control}
+                render={({ field }) => <input type="hidden" {...field} />}
+              />
+              <Controller
                 name="eventType"
                 control={control}
+                rules={{ required: "Event Type is required!" }}
                 render={({ field }) => (
                   <Space direction="vertical" size={"small"} className="w-full">
                     <Label
@@ -633,6 +727,7 @@ const AboutEvent = () => {
                       placeholder="Select Event Type"
                       {...field}
                       style={{ width: "100%" }}
+                      disabled={componentDisabled}
                     >
                       {EVENT_TYPES.map((_i) => (
                         <Option value={_i.value} key={_i.label}>
@@ -640,6 +735,11 @@ const AboutEvent = () => {
                         </Option>
                       ))}
                     </Select>
+                    {errors.eventType && (
+                      <span style={{ color: "red" }}>
+                        {errors.eventType.message}
+                      </span>
+                    )}
                   </Space>
                 )}
               />
@@ -657,15 +757,18 @@ const AboutEvent = () => {
                   />
                   <Radio.Group
                     {...field}
+                    disabled={componentDisabled}
                     className="w-full font-BricolageGrotesqueRegular"
                   >
                     <Radio
+                      disabled={componentDisabled}
                       value={EVENT_INFO.SINGLE_EVENT}
                       className="w-1/2 font-BricolageGrotesqueRegular"
                     >
                       Single Event
                     </Radio>
                     <Radio
+                      disabled={componentDisabled}
                       value={EVENT_INFO.RECURRING_EVENT}
                       className="font-BricolageGrotesqueRegular"
                     >
@@ -695,6 +798,7 @@ const AboutEvent = () => {
                       <Select
                         placeholder="Select Time Zone"
                         {...field}
+                        disabled={componentDisabled}
                         style={{ width: "100%" }}
                       >
                         {AFRICAN_TIME_ZONES.map((zone) => (
@@ -719,6 +823,7 @@ const AboutEvent = () => {
                         render={({ field }) => (
                           <DatePicker
                             {...field}
+                            disabled={componentDisabled}
                             showTime
                             format="YYYY-MM-DD HH:mm:ss"
                             style={{ width: "100%", height: "33px" }}
@@ -736,6 +841,7 @@ const AboutEvent = () => {
                         render={({ field }) => (
                           <DatePicker
                             {...field}
+                            disabled={componentDisabled}
                             showTime
                             format="YYYY-MM-DD HH:mm:ss"
                             style={{ width: "100%", height: "33px" }}
@@ -783,6 +889,7 @@ const AboutEvent = () => {
                                 color: "#000000",
                                 marginTop: "8px", // Adjust spacing between label and field
                               }}
+                              disabled={componentDisabled}
                               {...field}
                               placeholder="Enter your website URL"
                             />
@@ -809,6 +916,7 @@ const AboutEvent = () => {
                                 color: "#000000",
                                 marginTop: "8px", // Adjust spacing between label and field
                               }}
+                              disabled={componentDisabled}
                               {...field}
                               placeholder="Enter your Twitter/X URL"
                             />
@@ -835,6 +943,7 @@ const AboutEvent = () => {
                                 color: "#000000",
                                 marginTop: "8px", // Adjust spacing between label and field
                               }}
+                              disabled={componentDisabled}
                               {...field}
                               placeholder="Enter your Facebook URL"
                             />
@@ -861,6 +970,7 @@ const AboutEvent = () => {
                                 color: "#000000",
                                 marginTop: "8px", // Adjust spacing between label and field
                               }}
+                              disabled={componentDisabled}
                               {...field}
                               placeholder="Enter your Instagram URL"
                             />
@@ -895,6 +1005,7 @@ const AboutEvent = () => {
                           render={({ field }) => (
                             <Select
                               placeholder="Select Time Zone"
+                              disabled={componentDisabled}
                               {...field}
                               style={{ width: "100%", height: "33px" }}
                             >
@@ -918,6 +1029,7 @@ const AboutEvent = () => {
                             <Select
                               placeholder="Select Event Frequency"
                               {...field}
+                              disabled={componentDisabled}
                               style={{ width: "100%", height: "33px" }}
                             >
                               {EVENT_FREQUENCIES.map((frequency) => (
@@ -947,6 +1059,7 @@ const AboutEvent = () => {
                           render={({ field }) => (
                             <DatePicker
                               {...field}
+                              disabled={componentDisabled}
                               showTime
                               format="YYYY-MM-DD HH:mm:ss"
                               style={{ width: "100%", height: "33px" }}
@@ -963,6 +1076,7 @@ const AboutEvent = () => {
                           control={control}
                           render={({ field }) => (
                             <DatePicker
+                              disabled={componentDisabled}
                               {...field}
                               showTime
                               format="YYYY-MM-DD HH:mm:ss"
@@ -1007,6 +1121,7 @@ const AboutEvent = () => {
                           >
                             <Input
                               prefix={<LinkOutlined />}
+                              disabled={componentDisabled}
                               style={{
                                 width: "100%",
                                 color: "#000000",
@@ -1033,6 +1148,7 @@ const AboutEvent = () => {
                           >
                             <Input
                               prefix={<XOutlined />}
+                              disabled={componentDisabled}
                               style={{
                                 width: "100%",
                                 color: "#000000",
@@ -1059,6 +1175,7 @@ const AboutEvent = () => {
                           >
                             <Input
                               prefix={<FacebookFilled />}
+                              disabled={componentDisabled}
                               style={{
                                 width: "100%",
                                 color: "#000000",
@@ -1085,6 +1202,7 @@ const AboutEvent = () => {
                           >
                             <Input
                               prefix={<InstagramFilled />}
+                              disabled={componentDisabled}
                               style={{
                                 width: "100%",
                                 color: "#000000",
@@ -1115,26 +1233,7 @@ const AboutEvent = () => {
           {componentDisabled === false ? (
             <Button
               type="default"
-              htmlType="button"
-              size={"large"}
-              disabled={false}
-              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
-              style={{
-                borderRadius: "20px",
-                fontFamily: "BricolageGrotesqueMedium",
-                marginTop: "60px", // Add top margin to the button
-              }}
-              onClick={() => {
-                // onSubmit(data);
-                setComponentDisabled(true);
-              }}
-            >
-              Save Changes
-            </Button>
-          ) : (
-            <Button
-              type="default"
-              htmlType="submit"
+              htmlType="submit" // This will only trigger the submit when 'Save Changes' is clicked
               size={"large"}
               disabled={false}
               loading={updateEvent.isPending}
@@ -1142,9 +1241,29 @@ const AboutEvent = () => {
               style={{
                 borderRadius: "20px",
                 fontFamily: "BricolageGrotesqueMedium",
-                marginTop: "60px", // Add top margin to the button
+                marginTop: "60px",
               }}
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault(); // Prevent form default submission behavior
+                handleSubmit(onSubmit)();
+              }}
+            >
+              Save Changes
+            </Button>
+          ) : (
+            <Button
+              type="default"
+              htmlType="button" // No form submission, just a state change
+              size={"large"}
+              disabled={false}
+              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
+              style={{
+                borderRadius: "20px",
+                fontFamily: "BricolageGrotesqueMedium",
+                marginTop: "60px",
+              }}
+              onClick={(e) => {
+                e.preventDefault();
                 setComponentDisabled(false);
               }}
             >
@@ -1152,7 +1271,7 @@ const AboutEvent = () => {
             </Button>
           )}
         </Space>
-      </Form>
+      </form>
     </EventDetailsComponent>
   );
 };

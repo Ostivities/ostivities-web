@@ -133,10 +133,11 @@ export class API_SERVICE {
     });
   }
 
-  static async _getDiscoveryEvents(): Promise<AxiosResponse> {
+  static async _getDiscoveryEvents(page: number, limit: number, search?: string): Promise<AxiosResponse> {
     return await instance({
       url: `/events/discovery`,
       method: HttpMethod.GET,
+      params: { page, limit, search: search ?? "" },
     });
   }
 
