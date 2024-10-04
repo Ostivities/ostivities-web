@@ -94,7 +94,7 @@ function Dashboard(): JSX.Element {
                   Event State (optional)
                 </span>
                 <Select
-                  defaultValue="select event state"
+                 placeholder="select event state"
                   className="w-full"
                   options={[...STATE_BY_COUNTRYCODE("NG")]}
                   onChange={(value) => setSearchText(value)}
@@ -106,7 +106,7 @@ function Dashboard(): JSX.Element {
                   Event Category
                 </span>
                 <Select
-                  defaultValue="select event category"
+                 placeholder="select event category"
                   className="w-full"
                   options={[
                     { value: "free", label: "Free Events" },
@@ -121,7 +121,7 @@ function Dashboard(): JSX.Element {
                   Event Type
                 </span>
                 <Select
-                  defaultValue="select event type"
+                  placeholder="select event type"
                   onChange={(value) => setSearchText(value)}
                   className="w-full"
                   options={[
