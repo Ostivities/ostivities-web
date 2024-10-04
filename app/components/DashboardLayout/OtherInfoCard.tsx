@@ -16,15 +16,14 @@ const InfoCard: React.FC<PropsI> = ({ title, about, status, image, url, titleCla
   return (
     <Link
       href={url}
-      className="block relative overflow-hidden rounded-[40px]"
+      className="relative w-full max-w-[200px] h-[200px] rounded-[40px] overflow-hidden"
     >
-      <Image
-        src={image}
-        alt=""
-        width={200}
-        height={200}
-        className="rounded-[40px] h-full w-full"
-      />
+       <Image
+    src={image}
+    alt=""
+    fill
+    className="object-cover"
+  />
       <div className="absolute inset-0 bg-image-card text-white">
         <div className={`absolute top-0 right-0 py-3 px-4 bg-OWANBE_PRY rounded-bl-[1.25rem] ${statusClass}`}>
           {status}
