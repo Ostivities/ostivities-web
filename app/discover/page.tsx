@@ -20,7 +20,7 @@ function Dashboard(): JSX.Element {
   const [searchText, setSearchText] = useState("");
 
   // Get all events for discovery
-  const { getDiscoveryEvents } = useGetDiscoveryEvents();
+  const { getDiscoveryEvents } = useGetDiscoveryEvents(1,10);
   console.log(getDiscoveryEvents?.data);
 
   const COUNTRY_JSON: any = Country.getAllCountries().map((i: any) => {
