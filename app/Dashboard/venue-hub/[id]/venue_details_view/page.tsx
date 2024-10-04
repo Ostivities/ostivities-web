@@ -163,7 +163,7 @@ const VenueHubView = () => {
 
               <li className="flex items-start list-disc">
                 <span className="mr-2">•</span>
-                <span style={{ color: "#e20000" }}>Location</span> - Lagos State
+                <span style={{ color: "#e20000" }}>State</span> - Lagos
               </li>
 
               <li className="flex items-start list-disc">
