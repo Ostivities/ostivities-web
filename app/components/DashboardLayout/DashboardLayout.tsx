@@ -4,7 +4,7 @@ import FormProvider from "@/app/contexts/form-context/FormContext";
 import Button from "@/app/ui/atoms/Button";
 import { NAV_LINKS } from "@/app/utils/data";
 import { ACCOUNT_TYPE } from "@/app/utils/enums";
-import { IDashboard, INavLinks } from "@/app/utils/interface";
+import { IDashboard, INavLinks } from "@/app/utils/interface"; 
 import Hamburger from "@/public/hamburger.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
 import {
