@@ -49,53 +49,57 @@ const VenueHubView = () => {
               />
             </div>
             <br />
-            <div className={`${styles.imageThumbnails} flex mt-2 space-x-2`}>
-              {images.map((img, index) => (
-                <div
-                  key={index}
-                  className={`${styles.thumbnail} w-[70px] h-[70px] cursor-pointer ${selectedImage === index ? "border-2 border-blue-500" : ""} rounded-[12px] overflow-hidden`}
-                  onClick={() => handleImageSelect(index)}
-                >
-                  <Image
-                    src={img}
-                    alt={`Venue ${index}`}
-                    width={70}
-                    height={70}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
+            <div className={`${styles.imageThumbnails} flex mt-2 space-x-2 overflow-x-auto`}>
+  {images.map((img, index) => (
+    <div
+      key={index}
+      className={`${styles.thumbnail} w-[70px] h-[70px] cursor-pointer ${selectedImage === index ? "border-2 border-blue-500" : ""} rounded-[12px] overflow-hidden`}
+      onClick={() => handleImageSelect(index)}
+    >
+      <Image
+        src={img}
+        alt={`Venue ${index}`}
+        width={70}
+        height={70}
+        className="w-full h-full object-cover"
+      />
+    </div>
+  ))}
+</div></div>
+
 
           {/* Right side: Venue Details */}
           <div className={`${styles.venueDetails} w-2/3 px-4`}>
             <h1 className="text-3xl font-bold mb-2 flex items-center">
               Actuated Event Hall
               <span
-                style={{
-                  ...style,
-                  padding: "0px 15px",
-                  borderRadius: "25px",
-                  fontWeight: "500",
-                  display: "inline-block",
-                  minWidth: "80px",
-                  textAlign: "center",
-                  marginLeft: "10px", // Space between the heading and status
-                }}
-              >
-                <span
-                  style={{
-                    width: "10px",
-                    height: "10px",
-                    backgroundColor: dotColor,
-                    borderRadius: "50%",
-                    display: "inline-block",
-                    marginRight: "8px",
-                  }}
-                  ></span>
-                  <span style={{ fontSize: "16px" }}>{venueStatus}</span> {/* Adjusted font size here */}
-                </span>
+  style={{
+    ...style,
+    padding: "0px 15px", // Keep padding as 0
+    borderRadius: "50px", // Maintain border radius
+    fontWeight: "500",
+    display: "inline-flex", // Use flexbox to center content
+    alignItems: "center", // Vertically center content
+    justifyContent: "center", // Horizontally center content
+    minWidth: "80px", // Keep the same width
+    textAlign: "center",
+    marginLeft: "10px", // Space between the heading and status
+    height: "30px", // Optional: Control the exact height
+    lineHeight: "normal", // Reset line-height to default
+  }}
+>
+  <span
+    style={{
+      width: "10px",
+      height: "10px",
+      backgroundColor: dotColor,
+      borderRadius: "50%",
+      display: "inline-block",
+      marginRight: "8px",
+    }}
+  ></span>
+  <span style={{ fontSize: "16px" }}>{venueStatus}</span> {/* Adjusted font size here */}
+</span>
             </h1>
             <div className="flex items-center mb-4">
               <Rate defaultValue={4.5} disabled /> <span className="ml-2">(12 Reviews)</span>
@@ -143,7 +147,7 @@ const VenueHubView = () => {
         </div>
 
         {/* Overview Section */}
-        <div className={`${styles.overview} mt-8 p-4 bg-white rounded-lg shadow`}>
+        <div className={`${styles.overview} mt-8 p-4 bg-white rounded-lg`}>
           <h2 className="text-xl font-semibold mb-4">Overview</h2>
           <p className="text-[17px] leading-7">
             This spacious event hall is located in the heart of the city, making it easily accessible for your guests. It is perfect for weddings, conferences, and large gatherings, with seating for up to 500 guests. The venue includes all necessary amenities, such as high-quality audiovisual equipment, ample parking space, and on-site catering services.
@@ -155,7 +159,7 @@ const VenueHubView = () => {
         </div>
 
         {/* Reviews Section */}
-        <div className={`${styles.reviews} mt-8 p-4 bg-white rounded-lg shadow`}>
+        <div className={`${styles.reviews} mt-8 p-4 bg-white rounded-lg`}>
           <h2 className="text-xl font-semibold mb-4">Reviews</h2>
           <ul className="space-y-4">
             <li className="border-b pb-4">
