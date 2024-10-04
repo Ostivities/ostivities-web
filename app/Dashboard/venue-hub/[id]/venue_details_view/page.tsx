@@ -116,22 +116,22 @@ const VenueHubView = () => {
 
             <br />
             <Button
-             href="https://highpointeventscentre.com" 
-             target="_blank" 
-             rel="noopener noreferrer" 
+              href="https://highpointeventscentre.com"
+              target="_blank"
+              rel="noopener noreferrer"
               type="primary"
               shape="round"
               style={{
                 borderRadius: "25px",
                 backgroundColor: "#e20000",
                 borderColor: "#e20000",
-                minWidth: "190px",
-                padding: "20px 16px", // Adjusted padding for increased height
+                minWidth: "150px",
+                padding: "20px 10px", // Adjusted padding for increased height
                 fontFamily: "Bricolage Grotesque", // Set the font
                 fontSize: "16px", // Adjust font size as needed
               }}
             >
-              Contact / Book Hall
+              Book Now
             </Button>
             <br /><br />
             <ul className="flex space-x-4 mt-4">
