@@ -3,6 +3,7 @@ import { EXHIBITION_SPACE, TICKET_STOCK } from "./enums";
 export enum ACCOUNT_TYPE {
   PERSONAL = "PERSONAL",
   ORGANISATION = "ORGANISATION",
+  HALLMANAGER = "HALL MANAGER",
 }
 
 export interface INavLinks {
@@ -282,6 +283,7 @@ export interface IUser {
   confirmPassword: string;
   terms_and_condition: boolean;
   businessName: string;
+  hallName: string;
   phonenumber: string;
   feedback: string;
 }

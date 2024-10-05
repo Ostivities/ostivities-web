@@ -206,7 +206,10 @@ const VenueHubView = () => {
 
         {/* Overview Section */}
         <div className={`${styles.overview} mt-8 p-4 bg-white rounded-lg`}>
-          <h2 className="text-xl font-semibold mb-4">Overview</h2>
+          <h2 className="text-xl font-semibold mb-4" style={{ color: '#e20000' }}>
+            Overview
+          </h2>
+
           <p className="text-[17px] leading-7">
             This spacious event hall is located in the heart of the city, making it easily accessible for your guests. It is perfect for weddings, conferences, and large gatherings, with seating for up to 500 guests. The venue includes all necessary amenities, such as high-quality audiovisual equipment, ample parking space, and on-site catering services.
 
@@ -218,7 +221,10 @@ const VenueHubView = () => {
 
         {/* Reviews Section */}
         <div className={`${styles.reviews} mt-8 p-4 bg-white rounded-lg`}>
-          <h2 className="text-xl font-semibold mb-4">Reviews</h2>
+          <h2 className="text-xl font-semibold mb-4" style={{ color: '#e20000' }}>
+            Reviews
+          </h2>
+
           <ul className="space-y-4">
             <li className="border-b pb-4">
               <p className="font-semibold text-lg">John Doe</p>
