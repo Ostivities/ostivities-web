@@ -1,5 +1,4 @@
 "use client";
-import { useProfile, useUpdateProfile } from "@/app/hooks/auth/auth.hook";
 import { useGetUserEvent, useUpdateEvent } from "@/app/hooks/event/event.hook";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
 import { CameraFilled } from "@ant-design/icons";
@@ -36,14 +35,16 @@ const EventPageView = () => {
   const { updateEvent } = useUpdateEvent();
   const params = useParams<{ id: string }>();
   const { getUserEvent } = useGetUserEvent(params?.id);
+  console.log(getUserEvent, "getUserEvent");
 
-  const { profile } = useProfile();
-  const userFullName =
-    profile?.data?.data?.data?.firstName +
-    " " +
-    profile?.data?.data?.data?.lastName;
-
+  
   const eventDetails = getUserEvent?.data?.data?.data;
+
+  const userFullName =
+      (eventDetails?.user?.firstName || "") +
+      " " +
+      (eventDetails?.user?.lastName || "");
+  
   const props: UploadProps = {
     name: "image",
     maxCount: 1,

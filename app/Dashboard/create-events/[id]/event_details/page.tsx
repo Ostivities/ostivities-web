@@ -6,11 +6,11 @@ import useFetch from "@/app/components/forms/create-events/auth";
 
 function CreateEvents(): JSX.Element {
 
-  const { isLoggedIn } = useFetch();
+  // const { isLoggedIn } = useFetch();
 
-  if(!isLoggedIn) {
-    return <></>;
-  }
+  // if(!isLoggedIn) {
+  //   return <></>;
+  // }
   
   const title = (
     <div className="flex justify-between items-center w-full relative pb-2">

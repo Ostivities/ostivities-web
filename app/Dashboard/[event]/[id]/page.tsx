@@ -192,12 +192,10 @@ const EventDetail = () => {
   const eventUrl = eventDetails?.eventURL;
   const eventTitle = eventDetails?.eventName;
 
-  const { profile } = useProfile();
-  // const [cookies, setCookie, removeCookie] = useCookies(["user_fullname"]);
   const userFullName =
-    profile?.data?.data?.data?.firstName +
-    " " +
-    profile?.data?.data?.data?.lastName;
+      (eventDetails?.user?.firstName || "") +
+      " " +
+      (eventDetails?.user?.lastName || "");
 
   const socialLinks = eventDetails?.socials;
   const twitterLink = socialLinks?.find(

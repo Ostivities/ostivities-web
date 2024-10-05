@@ -1,5 +1,5 @@
 import React, { HTMLAttributeAnchorTarget } from "react";
-import { EXHIBITION_SPACE, TICKET_STOCK } from "./enums";
+import { EXHIBITION_SPACE, TICKET_STOCK, USAGE_LIMIT, DISCOUNT_TYPE } from "./enums";
 export enum ACCOUNT_TYPE {
   PERSONAL = "PERSONAL",
   ORGANISATION = "ORGANISATION",
@@ -124,7 +124,11 @@ export interface IEventDetails {
     createdAt: string;
     updatedAt: string;
   }[];
-  user: string;
+  user: {
+    firstName: string;
+    id: string;
+    lastName: string;
+  };
   ticketSold: number;
   eventInfo: string;
   discover: boolean;
@@ -424,4 +428,14 @@ export interface ITicketDetails {
 export interface ITicketQuestions {
   question: string;
   is_compulsory: boolean;
+}
+
+export interface IDiscountDetails {
+  discountCode: string;
+  discountType: DISCOUNT_TYPE;  // Assuming you have multiple types like PERCENTAGE, FIXED, etc.
+  ticket: string[];  // Array of strings
+  usageLimit: USAGE_LIMIT;  // Assuming usage can be "ONCE" or "MULTIPLE"
+  startDateAndTime: string;  // Assuming it's an ISO string date, but consider using `Date` if you want stricter typing
+  endDateAndTime: string;    // Same as above
+  event: string;
 }

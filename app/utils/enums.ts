@@ -56,3 +56,14 @@ export enum EVENT_TYPE {
   HOLIDAY_CAMP = "Holiday Camp",
   OTHERS = 'Others',
 }
+
+
+export enum DISCOUNT_TYPE {
+  PERCENTAGE = 'PERCENTAGE',
+  FIXED = 'FIXED',
+}
+
+export enum USAGE_LIMIT {
+  ONCE = 'ONCE',
+  MULTIPLE = 'MULTIPLE',
+}

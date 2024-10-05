@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const DiscoverEvents = () => {
   const [searchText, setSearchText] = useState("");
-  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 10, searchText);
+  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 10);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
 
   const isPending = getDiscoveryEvents?.isLoading;

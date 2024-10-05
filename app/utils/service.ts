@@ -3,6 +3,7 @@ import { HttpMethod } from "./enums";
 import { instance } from "./instance";
 import {
   ICreateEvent,
+  IDiscountDetails,
   IFormInput,
   ILogin,
   IResetPassword,
@@ -133,11 +134,11 @@ export class API_SERVICE {
     });
   }
 
-  static async _getDiscoveryEvents(page: number, limit: number, search?: string): Promise<AxiosResponse> {
+  static async _getDiscoveryEvents(page: number, limit: number): Promise<AxiosResponse> {
     return await instance({
       url: `/events/discovery`,
       method: HttpMethod.GET,
-      params: { page, limit, search: search ?? "" },
+      params: { page, limit },
     });
   }
 
@@ -176,6 +177,36 @@ export class API_SERVICE {
     return await instance({
       url: `/ticket/delete_ticket/${id}`,
       method: HttpMethod.DELETE,
+    });
+  }
+
+  static async _createDiscount(data: IDiscountDetails): Promise<AxiosResponse> {
+    const { event, ...rest } = data;
+    return await instance({
+      url: `/discount/create_discount/${event}`,
+      method: HttpMethod.POST,
+      data: { ...rest },
+    });
+  }
+
+  static async _deleteDiscount(id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/discount/delete/${id}`,
+      method: HttpMethod.DELETE,
+    });
+  }
+
+  static async _getEventDiscount(id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/discount/event/${id}`,
+      method: HttpMethod.GET,
+    });
+  }
+
+  static async _getTicketDiscount(id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/discount/ticket/${id}`,
+      method: HttpMethod.GET,
     });
   }
 }

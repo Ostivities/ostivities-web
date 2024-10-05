@@ -4,7 +4,7 @@ import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
 import { Skeleton } from "antd";
 
 const AllEvents = () => {
-  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 20);
+  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 5);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
   console.log(discoveryEvents, "discoveryEvents");
 

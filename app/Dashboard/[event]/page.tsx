@@ -4,17 +4,17 @@ import InfoCard from "@/app/components/DashboardLayout/OtherInfoCard";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useLayoutEffect, useMemo, useState } from "react";
-import { useGetDiscoveryEvents } from '@/app/hooks/event/event.hook';
-import { Skeleton } from "antd";
+import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
+import { Button, Skeleton } from "antd";
 
 interface PropsI {
-  event: "popular"| "all" | "paid" | "free" ;
+  event: "popular" | "all" | "paid" | "free";
 }
 
 const Event = ({ params }: { params: { event: string } }) => {
   const router = useRouter();
   const [pageSize, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(12);
 
   // Mapping event types to titles and subtitles
   const eventTitles = {
@@ -31,15 +31,18 @@ const Event = ({ params }: { params: { event: string } }) => {
     free: "Explore Free Events",
   };
 
-  const currentTitle = eventTitles[params.event as keyof typeof eventTitles] || "Events";
-  const currentSubtitle = eventSubtitles[params.event as keyof typeof eventSubtitles] || "Explore Events";
+  const currentTitle =
+    eventTitles[params.event as keyof typeof eventTitles] || "Events";
+  const currentSubtitle =
+    eventSubtitles[params.event as keyof typeof eventSubtitles] ||
+    "Explore Events";
 
-  const { getDiscoveryEvents } = useGetDiscoveryEvents(1,10);
-const discoveryEvents = getDiscoveryEvents?.data?.data?.data || []; // Ensure this is always an array
-console.log(discoveryEvents.length, 'Number of Discovery Events'); // Log the length
+  const { getDiscoveryEvents } = useGetDiscoveryEvents(pageSize, limit);
+  const discoveryEvents = getDiscoveryEvents?.data?.data?.data || []; // Ensure this is always an array
+  console.log(discoveryEvents.length, "Number of Discovery Events"); // Log the length
 
-const isPending = getDiscoveryEvents?.isLoading;
-const skeletonCount = Math.max(12, discoveryEvents.length);   
+  const isPending = getDiscoveryEvents?.isLoading;
+  const skeletonCount = Math.max(12, discoveryEvents.length);
 
   const title = (
     <div className="flex-center gap-2">
@@ -56,7 +59,10 @@ const skeletonCount = Math.max(12, discoveryEvents.length);
   );
 
   // Memoize uri array
-  const uri = useMemo(() => ["popular", "discovery", "paid", "free", "all"], []);
+  const uri = useMemo(
+    () => ["popular", "discovery", "paid", "free", "all"],
+    []
+  );
 
   useLayoutEffect(() => {
     if (!uri.includes(params.event)) {
@@ -67,42 +73,55 @@ const skeletonCount = Math.max(12, discoveryEvents.length);
   return (
     <DashboardLayout title={title} isLoggedIn>
       <section>
-      <h2
-  className="mb-3"
-  style={{ fontSize: '24px', fontFamily: 'Bricolage Grotesque, font-semibold' }}
->
-  {currentSubtitle}
-</h2>
-
+        <h2
+          className="mb-3"
+          style={{
+            fontSize: "24px",
+            fontFamily: "Bricolage Grotesque, font-semibold",
+          }}
+        >
+          {currentSubtitle}
+        </h2>
+        <div>
+          <Button
+            onClick={() => {
+              setPage(pageSize + 1);
+            }}
+          >
+            Next
+          </Button>
+        </div>
         <div className="grid grid-cols-6 gap-6 gap-y-10 mt-7">
-        {isPending ? (
-          // Display skeleton buttons dynamically based on the data length or fallback to 5
-          <>
-            {Array(skeletonCount).fill(null).map((_, index) => (
-              <Skeleton.Button
-                key={index}
-                active
-                shape="round"
-                style={{ height: 200, width: 200, margin: "10px" }}
+          {isPending ? (
+            // Display skeleton buttons dynamically based on the data length or fallback to 5
+            <>
+              {Array(skeletonCount)
+                .fill(null)
+                .map((_, index) => (
+                  <Skeleton.Button
+                    key={index}
+                    active
+                    shape="round"
+                    style={{ height: 200, width: 200, margin: "10px" }}
+                  />
+                ))}
+            </>
+          ) : (
+            // Once data is loaded, map through discoveryEvents and render InfoCard components
+            discoveryEvents?.map((event: any) => (
+              <InfoCard
+                key={event?.id}
+                title={event?.eventName}
+                about={event?.eventType}
+                status="Get Tickets"
+                image={event?.eventImage}
+                url={`/Dashboard/${event?.eventName}/${event?.id}`}
+                titleClass="font-bricolage-grotesque font-medium"
+                aboutClass="font-bricolage-grotesque"
+                statusClass="font-bricolage-grotesque font-medium"
               />
-            ))}
-          </>
-        ) : (
-          // Once data is loaded, map through discoveryEvents and render InfoCard components
-          discoveryEvents?.map((event: any) => (
-            <InfoCard
-              key={event?.id}
-              title={event?.eventName}
-              about={event?.eventType}
-              status="Get Tickets"
-              image={event?.eventImage}
-              url={`/Dashboard/${event?.eventName}/${event?.id}`}
-              titleClass="font-bricolage-grotesque font-medium"
-              aboutClass="font-bricolage-grotesque"
-              statusClass="font-bricolage-grotesque font-medium"
-            />
-          ))
-        )}
+            ))
+          )}
         </div>
       </section>
     </DashboardLayout>
