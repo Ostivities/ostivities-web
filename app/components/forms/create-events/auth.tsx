@@ -26,6 +26,7 @@ const useFetch = () => {
         "/privacy-policy",
         "/refund-policy",
         "/feedback",
+        "/Dashboard/event-not-found",
       ];
 
       // Updated regex patterns for dynamic public paths

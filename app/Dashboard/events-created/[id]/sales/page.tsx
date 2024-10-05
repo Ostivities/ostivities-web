@@ -336,7 +336,7 @@ const inactiveTabStyle = {
                     style={{ borderRadius: 15, marginRight: 8 }}
                     onClick={() => handleExport("excel", data.filter((item) => selectedRowKeys.includes(item.key)), columns, "TicketSales")}
                   >
-                    <FileExcelOutlined />
+                    <FileExcelOutlined /> 
                   </Button>
                   <Button
                     type="default"
