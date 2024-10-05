@@ -174,7 +174,7 @@ function Dashboard(): JSX.Element {
           </button>
           <button
             className={`relative font-semibold pb-2 ${
-              activeTab === 'paid' ? 'text-red-600' : 'text-gray-500'
+              activeTab === 'popular' ? 'text-red-600' : 'text-gray-500'
             }`}
             onClick={() => setActiveTab('popular')}
           >
