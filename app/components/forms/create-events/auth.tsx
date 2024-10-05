@@ -10,7 +10,7 @@ const useFetch = () => {
   useEffect(() => {
     if (typeof window !== "undefined" && window.sessionStorage) {
       const token = sessionStorage.getItem("token");
-  
+
       // Static public paths
       const publicPaths = [
         "/",
@@ -25,42 +25,45 @@ const useFetch = () => {
         "/terms-and-condition",
         "/privacy-policy",
         "/refund-policy",
-        "/feedback"
+        "/feedback",
       ];
-  
-      // Regex patterns for dynamic public paths with two parameters
+
+      // Updated regex patterns for dynamic public paths
       const dynamicPublicPaths = [
-        /^\/Dashboard\/[a-zA-Z0-9]+\/[a-zA-Z0-9]+$/, // Matches paths like `/Dashboard/123/overview`, `/Dashboard/abc/settings`
-        /^\/profile\/[a-zA-Z0-9]+\/[a-zA-Z0-9]+$/,   // Matches paths like `/profile/123/posts`, `/profile/username/settings`
+        /^\/Dashboard\/[a-zA-Z0-9\s\-:.]+\/[a-zA-Z0-9\s\-:.]+$/,  // Matches paths like `/Dashboard/Sunset Vibes: A Night of Chill Beats/670072d1aae36ba5c6a155e2`
       ];
-  
+
       // Function to check if the current path is public
       const isPublicPath = (path: string) => {
+        const decodedPath = decodeURIComponent(path);  // Decode the path
+        console.log("Decoded path:", decodedPath);
+
         // Check if it's a static public path
-        if (publicPaths.includes(path)) return true;
-  
+        if (publicPaths.includes(decodedPath)) return true;
+
         // Check if it matches any dynamic public path pattern
         return dynamicPublicPaths.some((pattern) => {
-          const isMatch = pattern.test(path);
-          console.log(`Testing pattern: ${pattern}, Path: ${path}, Match: ${isMatch}`);
+          const isMatch = pattern.test(decodedPath);
+          console.log(`Testing pattern: ${pattern}, Path: ${decodedPath}, Match: ${isMatch}`);
           return isMatch;
         });
       };
-  
-      // If the token exists, the user is logged in
+
       if (token) {
         setIsLoggedIn(true);
       } else {
         setIsLoggedIn(false);
-  
-        // Check if current route is public
-        // if (!isPublicPath(pathname)) {
-        //   router.push("/login");
-        // }
+
+        // Check if the current path is public
+        if (!isPublicPath(pathname)) {
+          console.log("Private path detected, redirecting to /login");
+          router.push("/login");
+        } else {
+          console.log("Public path, no redirection needed.");
+        }
       }
     }
   }, [pathname, router]);
-  
 
   return { isLoggedIn };
 };
