@@ -14,7 +14,7 @@ import Image from 'next/image';
 import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
 // import { useGetUserEvent, usePublishEvent } from "@/app/hooks/event/event.hook";
 import { useGetUserEvent, useAddEventToDiscovery, usePublishEvent } from "@/app/hooks/event/event.hook";
-import { PUBLISH_TYPE } from "@/app/utils/enums";
+import { EVENT_INFO, PUBLISH_TYPE } from "@/app/utils/enums";
 
 
 export default function EventDetailsComponent({
@@ -30,24 +30,14 @@ export default function EventDetailsComponent({
   const { getUserEvent } = useGetUserEvent(params?.id);
   const { addEventToDiscovery } = useAddEventToDiscovery();
   const { publishEvent } = usePublishEvent();
-  const onToggle = (checked: boolean) => {
-    console.log(`Switch to ${checked}`);
-  };
   const eventDetails = getUserEvent?.data?.data?.data;
   const [isPublished, setIsPublished] = useState(false); // State to track publish status
   const [isDiscover, setIsDiscover] = useState(false); // State to track discovery status
   // console.log(isDiscover, "isDiscover")
   // console.log(isPublished, "isPublished")
 
-  // const handleButtonClick = () => {
-
-  //   setIsPublished(!isPublished);
-  //   if (isPublished) {
-  //     message.success('Event published successfully');
-  //   } else {
-  //     message.success('Event unpublished successfully');
-  //   }
-  // };
+  const eventDate = eventDetails?.endDate;
+  const eventdates = new Date(eventDate).getTime();
 
   useEffect(() => {
     if(eventDetails?.mode && eventDetails?.mode === PUBLISH_TYPE.ACTIVE) {
@@ -86,6 +76,10 @@ export default function EventDetailsComponent({
         // console.log(response, 'response inactive')
       }
     } else if (eventDetails?.mode === PUBLISH_TYPE.INACTIVE || !eventDetails?.mode){
+      if (eventdates < new Date().getTime() && eventDetails?.eventInfo === EVENT_INFO.SINGLE_EVENT) {
+        message.error('Event has ended, cannot be published');
+        return;
+      }
       const response = await publishEvent.mutateAsync({
         id: params?.id, 
         mode: PUBLISH_TYPE.ACTIVE
@@ -121,7 +115,7 @@ export default function EventDetailsComponent({
         message.success('Event added to discovery successfully');
         setIsDiscover(true)
         getUserEvent.refetch()
-        console.log(res, 'res discover true') 
+        // console.log(res, 'res discover true') 
       }
     } else if(eventDetails?.discover === true) {
       const res = await addEventToDiscovery.mutateAsync({
@@ -134,36 +128,28 @@ export default function EventDetailsComponent({
         message.success('Event removed from discovery successfully');
       }
     }
-
-    // try {
-    //   if (res.status === 200) {
-    //     console.log(res)
-    //     // setIsActive(checked);
-    //     if(checked) {
-    //       setIsDiscover(true)
-    //       message.success('Event added to discovery');
-    //     } else{
-    //       setIsDiscover(false)
-    //       message.success('Event removed from discovery');
-    //     }
-    //   } else {
-    //     // setIsDiscover(false)
-    //     message.error('Failed to update discovery status');
-    //   }
-    // } catch (error) {
-    //   message.error('An error occurred while updating discovery status');
-    // }
-    // if (checked) {
-    //   message.success('Event added to discovery');
-    // } else {
-    //   message.success('Event removed from discovery');
-    // }
   };
   
   const handleToggle = (label: string) => {
     setActiveToggle((prev: string | null) => (prev === label ? null : label));
     setIsActive(!isActive);
   };
+
+  useEffect(() => {
+    const checkEventStatus = async () => {
+      if (eventdates < new Date().getTime() && eventDetails?.eventInfo === EVENT_INFO.SINGLE_EVENT) {
+        const response = await publishEvent.mutateAsync({
+          id: params?.id, 
+          mode: PUBLISH_TYPE.INACTIVE
+        });
+        if(response.status === 200) {
+          setIsPublished(false)
+        }
+      }
+    };
+
+    checkEventStatus();
+  },[eventDetails?.frequency, eventdates])
 
   useEffect(() => {
     const fetchInitialState = async () => {

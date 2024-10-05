@@ -1,5 +1,6 @@
 "use client";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
+import useFetch from "@/app/components/forms/create-events/auth";
 import AddTicketModal from "@/app/components/OstivitiesModal/AddTicket";
 import Steppers from "@/app/components/Steppper/Steppers";
 import EventTicketTable from "@/app/components/Tables/EventTicket";
@@ -12,6 +13,11 @@ import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 
 function CreateTicketPage(): JSX.Element {
+  // const { isLoggedIn } = useFetch();
+
+  // if(!isLoggedIn) {
+  //   return <></>;
+  // }
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const [isModalOpen, setIsModalOpen] = useState(false);

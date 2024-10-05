@@ -99,6 +99,7 @@ function DashboardLayout({
     "stage_one",
     "stage_two",
     "stage_three",
+    "user_fullname"
   ]);
 
   // const accountType = profile?.data?.data?.data?.accountType
@@ -156,6 +157,7 @@ function DashboardLayout({
         userProfile?.data?.data?.data?.lastName
       : userProfile?.data?.data?.data?.businessName || "";
 
+  // setCookie("user_fullname", userName) 
   const avatarName =
     accountType === ACCOUNT_TYPE.PERSONAL
       ? userProfile?.data?.data?.data?.firstName?.charAt(0) +

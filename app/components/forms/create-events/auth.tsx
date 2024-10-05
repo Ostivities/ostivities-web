@@ -3,7 +3,7 @@ import { useRouter, usePathname } from "next/navigation";
 
 const useFetch = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-
+  const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -62,10 +62,11 @@ const useFetch = () => {
           console.log("Public path, no redirection needed.");
         }
       }
+      setLoading(false);
     }
   }, [pathname, router]);
 
-  return { isLoggedIn };
+  return { isLoggedIn, loading };
 };
 
 export default useFetch;

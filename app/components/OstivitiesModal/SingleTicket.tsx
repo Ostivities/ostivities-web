@@ -35,6 +35,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
   const [form] = Form.useForm();
   const { createTicket } = useCreateTicket();
   const { profile } = useProfile();
+  const pathname = usePathname();
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const [additionalFields, setAdditionalFields] = useState<
@@ -118,7 +119,9 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
           // linkRef.current?.click();
           onOk && onOk();
           setLoading(false);
-          router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+          if(pathname.startsWith("/Dashboard/create-events")) {
+            router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+          }
         }
       }
     } else {
@@ -139,7 +142,9 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
           setCookies("ticket_created", "yes");
           setCookies("stage_three", "processing");
           setLoading(false);
-          router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+          if(pathname.startsWith("/Dashboard/create-events")) {
+            router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+          }
         }
       }
     }

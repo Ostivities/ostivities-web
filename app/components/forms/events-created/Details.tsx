@@ -37,7 +37,7 @@ const EventsCreatedTable: React.FC = () => {
   // console.log(getAllUserEvents,"getAllUserEvents")
 
   const totalEvents = getAllUserEvents?.data?.data?.data?.total;
-  console.log(selectedRowKeys)
+  // console.log(selectedRowKeys)
 
   const allUserEventDetails = getAllUserEvents?.data?.data?.data?.data;
 
@@ -279,7 +279,7 @@ const EventsCreatedTable: React.FC = () => {
         )}
       </div>
       <Table
-        loading={getAllUserEvents.isFetching}
+        loading={getAllUserEvents?.isFetching}
 
         rowSelection={{
           selectedRowKeys,

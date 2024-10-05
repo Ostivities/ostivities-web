@@ -52,6 +52,7 @@ import { useGetUserEvent, useUpdateEvent } from "@/app/hooks/event/event.hook";
 import { getUsernameFromUrl } from "@/app/utils/helper";
 import dayjs from "dayjs";
 import axios from "axios";
+import useFetch from "@/app/components/forms/create-events/auth";
 
 interface FieldType {}
 
@@ -63,8 +64,20 @@ const event_supporting_docs: any =
   process.env.NEXT_PUBLIC_OSTIVITIES_EVENT_SUPPORTING_DOCS;
 
 const AboutEvent = () => {
-  const params = useParams<{ id: string }>();
+  const { isLoggedIn, loading } = useFetch();
   const router = useRouter();
+  console.log(isLoggedIn, "isLoggedIn");
+
+  useEffect(() => {
+    if (!loading) { // Wait for loading to complete
+      if (!isLoggedIn) {
+        console.log("User not logged in, redirecting to login...");
+        router.push("/login"); // Only redirect after loading completes
+      }
+    }
+  }, [isLoggedIn, loading, router]);
+  
+  const params = useParams<{ id: string }>();
   const [form] = Form.useForm();
   const [loader, setLoader] = useState(false);
   const [componentDisabled, setComponentDisabled] = useState(true);

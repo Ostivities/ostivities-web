@@ -18,6 +18,7 @@ import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
 import { useCookies } from "react-cookie";
 import { useParams, useRouter } from "next/navigation";
 import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
+import useFetch from "@/app/components/forms/create-events/auth";
 
 // Currency formatter for Naira (₦)
 const formatCurrency = (amount: number) => {
@@ -30,6 +31,12 @@ const formatCurrency = (amount: number) => {
 };
 
 const EventTickets = () => {
+  // const { isLoggedIn } = useFetch();
+
+  // if(!isLoggedIn) {
+  //   return <div>Loading...</div>;
+  // }
+  
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -139,6 +146,9 @@ const EventTickets = () => {
       ),
       dataIndex: "ticketQty",
       sorter: (a, b) => a.ticketQty - b.ticketQty,
+      render: (text, record: ITicketDetails) => {
+        return <>{record?.ticketStock === TICKET_STOCK.UNLIMITED ? "Unlimited" : <span>{text}</span>}</>
+      }
     },
     {
       title: (
@@ -151,7 +161,7 @@ const EventTickets = () => {
       sorter: (a, b) => (a?.ticketPrice ?? 0) - (b?.ticketPrice ?? 0),
       render: (text, record: ITicketDetails) => {
         // console.log(text, "text")
-        return <>{record?.ticketType === TICKET_TYPE.FREE ? "" : <span>{formatCurrency(text as number)}</span>}</>
+        return <>{record?.ticketType === TICKET_TYPE.FREE ? "Free" : <span>{formatCurrency(text as number)}</span>}</>
       },
     },
     {
@@ -195,7 +205,7 @@ const EventTickets = () => {
     },
   ];
 
-  const data: ITicketDetails[] = ticketData?.map((item: any) => {
+  const data: ITicketDetails[] = ticketData?.map((item: ITicketDetails) => {
     return {
       key: item?.id,
       ticketName: item?.ticketName,
@@ -208,6 +218,8 @@ const EventTickets = () => {
       ticketType: item?.ticketType,
       user: item?.user,
       ticketQuestions: item?.ticketQuestions,
+      groupSize: item?.groupSize,
+      groupPrice: item?.groupPrice,
     };
   });
   // console.log(data, "data")
@@ -218,18 +230,31 @@ const EventTickets = () => {
       <AddTicketModal
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
-        onOk={() => setIsModalOpen(false)}
+        onOk={() => {
+          setIsModalOpen(false)
+          handleActionSuccess();
+        }}
       />
       <UpdateTicket 
         open={isOpen}
         onCancel={() => setIsOpen(false)}
-        onOk={() => setIsOpen(false)}
+        onOk={() => {
+          setIsOpen(false)
+          handleActionSuccess();
+        }}
+        id={selectedTicket}
+        ticketEntity={selectedTicketEntity}
       />
       <DeleteTicket
         open={isShown}
         onCancel={() => setIsShown(false)}
-        onOk={() => setIsShown(false)}
+        onOk={() => {
+          setIsShown(false)
+          handleActionSuccess();
+        }}
         actionType={actionType}
+        id={selectedTicket}
+        data={duplicateData}
       />
       <EventDetailsComponent>
         <Space direction="vertical" size="large">
@@ -262,7 +287,7 @@ const EventTickets = () => {
               style={{ marginBottom: 16, width: 300 }}
             /> */}
             <Table
-          loading={getTickets.isFetching}
+          loading={getTickets?.isFetching}
           rowSelection={{
             selectedRowKeys,
             onChange: (keys) => setSelectedRowKeys(keys),
@@ -278,6 +303,8 @@ const EventTickets = () => {
                   ticketQty: record?.ticketQty,
                   ticketPrice: record?.ticketPrice,
                   ticketType: record?.ticketType,
+                  groupSize: record?.groupSize,
+                  groupPrice: record?.groupPrice,
                   ticketDescription: record?.ticketDescription,
                   ticketStock: record?.ticketStock as TICKET_STOCK | undefined,
                   ticketEntity: record?.ticketEntity,

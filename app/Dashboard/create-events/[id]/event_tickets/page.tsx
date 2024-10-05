@@ -1,5 +1,6 @@
 "use client";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
+import useFetch from "@/app/components/forms/create-events/auth";
 import AddTicketModal from "@/app/components/OstivitiesModal/AddTicket";
 import Steppers from "@/app/components/Steppper/Steppers";
 import EventTicketTable from "@/app/components/Tables/EventTicket";
@@ -22,6 +23,11 @@ function CreateTicketPage(): JSX.Element {
     "stage_two",
     "stage_three",
   ]);
+  // const { isLoggedIn } = useFetch();
+
+  // if(!isLoggedIn) {
+  //   return <></>;
+  // }
 
   const title = (
     <div className="flex justify-between items-center w-full relative pb-2">

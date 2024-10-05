@@ -191,7 +191,7 @@ const EventTicketTable = () => {
     },
   ];
 
-  const data: ITicketDetails[] = ticketData?.map((item: any) => {
+  const data: ITicketDetails[] = ticketData?.map((item: ITicketDetails) => {
     return {
       key: item?.id,
       ticketName: item?.ticketName,
@@ -209,7 +209,7 @@ const EventTicketTable = () => {
     };
   });
 
-  console.log(data, "data")
+  // console.log(data, "data")
 
   return (
     <React.Fragment>
@@ -257,7 +257,7 @@ const EventTicketTable = () => {
           Add Tickets
         </Button>
         <Table
-          loading={getTickets.isFetching}
+          loading={getTickets?.isFetching}
           rowSelection={{
             selectedRowKeys,
             onChange: (keys) => setSelectedRowKeys(keys),

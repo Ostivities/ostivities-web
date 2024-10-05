@@ -11,7 +11,8 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import { IoChevronDown } from "react-icons/io5";
 import React, { useEffect, useState } from "react";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
-import { useGetUserEvent } from "@/app/hooks/event/event.hook";
+import { useGetUserEvent, usePublishEvent } from "@/app/hooks/event/event.hook";
+import { useCookies } from "react-cookie";
 import useFetch from "@/app/components/forms/create-events/auth";
 import {
   FacebookShareButton,
@@ -192,6 +193,7 @@ const EventDetail = () => {
   const eventTitle = eventDetails?.eventName;
 
   const { profile } = useProfile();
+  // const [cookies, setCookie, removeCookie] = useCookies(["user_fullname"]);
   const userFullName =
     profile?.data?.data?.data?.firstName +
     " " +
@@ -545,12 +547,13 @@ const EventDetail = () => {
                   style={{
                     borderRadius: "25px",
                     fontFamily: "BricolageGrotesqueMedium",
-                    backgroundColor: "#e20000", // Button color
-                    color: "white", // Text color
+                    backgroundColor: eventdates < new Date().getTime() ? "#cccccc" : "#e20000", // Gray for disabled, red for active
+                    color: eventdates < new Date().getTime() ? "#666666" : "white",
                     height: "50px", // Adjust height as needed
                     fontSize: "16px", // Increase text size
                     border: "none", // Remove border if needed
                   }}
+                  title={eventdates < new Date().getTime() ? "Registration Closed" : ""}
                   disabled={eventdates < new Date().getTime()}
                 >
                   <Space>

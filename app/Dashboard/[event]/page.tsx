@@ -3,7 +3,7 @@ import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import InfoCard from "@/app/components/DashboardLayout/OtherInfoCard";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useLayoutEffect, useMemo } from "react";
+import { useLayoutEffect, useMemo, useState } from "react";
 import { useGetDiscoveryEvents } from '@/app/hooks/event/event.hook';
 import { Skeleton } from "antd";
 
@@ -13,6 +13,8 @@ interface PropsI {
 
 const Event = ({ params }: { params: { event: string } }) => {
   const router = useRouter();
+  const [pageSize, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
 
   // Mapping event types to titles and subtitles
   const eventTitles = {
