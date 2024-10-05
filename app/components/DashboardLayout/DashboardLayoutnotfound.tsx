@@ -113,7 +113,7 @@ function DashboardLayout({
     accountType === ACCOUNT_TYPE.PERSONAL
       ? userProfile?.data?.data?.data?.firstName?.charAt(0) +
         userProfile?.data?.data?.data?.lastName?.charAt(0)
-      : userProfile?.data?.data?.data?.businessName?.charAt(0).toUpperCase() +
+      : userProfile?.data?.data?.data?.businessName?.charAt(0).toUpperCase() + 
           userProfile?.data?.data?.data?.businessName
             ?.charAt(1)
             .toUpperCase() || "";
@@ -232,8 +232,99 @@ function DashboardLayout({
                 align="center"
                 size={"small"}
               >
-               
-                
+                {/* <div className="mt-5 relative">
+                  <Badge count={2}>
+                    <BellFilled
+                      className="cursor-pointer"
+                      style={{
+                        fontSize: "26px",
+                        color: "#8C95A1",
+                      }}
+                      onClick={() => setToggleNotifications((prev) => !prev)}
+                    />
+                  </Badge>
+                  <div
+                   ref={notificationRef}
+                    className={`fixed top-16 right-0 min-w-[30rem] w-[30rem] transition-all z-50 ${
+                      toggleNotifications
+                        ? " translate-y-0"
+                        : "-translate-y-[150%]"
+                    }`}
+                  >
+                    <div className="bg-white rounded-[1.25rem] pl-6 pr-7 pt-4 pb-10 shadow-ticket-card">
+                      <div className="text-center font-semibold">
+                        Notifications
+                      </div>
+                      <div className="flex flex-col gap-3">
+                        <div className="flex-center gap-3">
+                          <div className="!bg-OWANBE_NOTIFICATION w-4 h-4 rounded-full"></div>
+                          <p
+                            className="text-base font-normal"
+                            style={{ fontSize: "14px" }}
+                          >
+                            You have a new sale{" "}
+                            <a
+                              href="#"
+                              style={{
+                                color: "#e20000",
+                                textDecoration: "underline",
+                                fontSize: "14px",
+                              }}
+                            >
+                              click to view
+                            </a>
+                            .
+                          </p>
+                        </div>
+                        <div className="flex-center gap-3">
+                          <div className=" !bg-OWANBE_NOTIFICATION w-4 h-4 rounded-full"></div>
+                          <p
+                            className="text-base font-normal"
+                            style={{ fontSize: "14px" }}
+                          >
+                            You have a new attendee{" "}
+                            <a
+                              href="#"
+                              style={{
+                                color: "#e20000",
+                                textDecoration: "underline",
+                                fontSize: "14px",
+                              }}
+                            >
+                              click to view
+                            </a>
+                            .
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> */}
+                <Dropdown menu={{ items }} trigger={["click", "hover"]}>
+                  <div className="flex-center gap-4 cursor-pointer">
+                    <Avatar
+                      size={40}
+                      style={{
+                        background: "#E20000",
+                        fontFamily: "BricolageGrotesqueMedium",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {avatarName}
+                    </Avatar>
+                    <div className="h-fit flex gap-4">
+                      <div className="flex flex-col justify-start">
+                        <h3 className=" text-sm text-OWANBE_TABLE_CELL">
+                          {userName}
+                        </h3>
+                        <span className="text-xs text-[#8C95A1]">
+                          {account_type}
+                        </span>
+                      </div>
+                      <CaretDownFilled />
+                    </div>
+                  </div>
+                </Dropdown>
               </Space>
             </>
           )}
@@ -243,7 +334,7 @@ function DashboardLayout({
           <Layout
             style={
               {
-                // paddingBottom: '2rem',
+                
               }
             }
           >

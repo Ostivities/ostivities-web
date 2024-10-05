@@ -73,16 +73,16 @@ function Dashboard(): JSX.Element {
     <DashboardLayout title={header}>
       <div className="flex flex-col gap-7">
         <DiscoverEvents />
-        <div className="border-[1px] border-[#FADEDE] rounded-3xl p-8 shadow-md">
+        <div className="border-[1px] border-[#FADEDE] rounded-[24px] p-8 shadow-md">
           <h3 className="font-semibold mb-3">
             Find events happening around you.
           </h3>
           <div>
             <form
               onSubmit={handleSearch}
-              className="flex gap-4 [&>label]:flex-1"
+              className="flex flex-wrap gap-4"
             >
-              <label htmlFor="name" className="w-full">
+              <label htmlFor="name" className="flex-1 min-w-[200px]">
                 <span className="text-OWANBE_PRY mb-1 block font-bricolage">
                   Event Name (optional)
                 </span>
@@ -92,23 +92,25 @@ function Dashboard(): JSX.Element {
                   className="w-full"
                 />
               </label>
-              <label htmlFor="state" className="w-full">
+
+              <label htmlFor="state" className="flex-1 min-w-[200px]">
                 <span className="text-OWANBE_PRY mb-1 block font-bricolage">
                   Event State (optional)
                 </span>
                 <Select
-                  defaultValue="select event state"
+                  placeholder="select event state"
                   className="w-full"
                   options={[...STATE_BY_COUNTRYCODE("NG")]}
                   onChange={(value) => setSearchText(value)}
                 />
               </label>
-              <label htmlFor="category" className="w-full">
+
+              <label htmlFor="category" className="flex-1 min-w-[200px]">
                 <span className="text-OWANBE_PRY mb-1 block font-bricolage">
                   Event Category
                 </span>
                 <Select
-                  defaultValue="select event category"
+                  placeholder="select event category"
                   className="w-full"
                   options={[
                     { value: "free", label: "Free Events" },
@@ -117,12 +119,13 @@ function Dashboard(): JSX.Element {
                   onChange={(value) => setSearchText(value)}
                 />
               </label>
-              <label htmlFor="type" className="w-full">
+
+              <label htmlFor="type" className="flex-1 min-w-[200px]">
                 <span className="text-OWANBE_PRY mb-1 block font-bricolage">
                   Event Type
                 </span>
                 <Select
-                  defaultValue="select event type"
+                 placeholder="select event type"
                   onChange={(value) => setSearchText(value)}
                   className="w-full"
                   options={[
@@ -142,10 +145,11 @@ function Dashboard(): JSX.Element {
                   ]}
                 />
               </label>
+
               <div className="flex items-end">
                 <button
                   type="submit"
-                  className="place-items-end w-36 h-fit text-sm text-white bg-OWANBE_PRY py-1.5 px-12 rounded-full"
+                  className="w-full md:w-36 h-fit text-sm text-white bg-OWANBE_PRY py-1.5 px-12 rounded-full"
                 >
                   Search
                 </button>
