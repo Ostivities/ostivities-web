@@ -4,6 +4,7 @@ import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import React, { useState } from "react";
 import DiscoverEvents from "../components/DashboardLayout/DiscoverEvents";
 import PopularEvents from "../components/DashboardLayout/PopularEvents";
+import AllEvents from "../components/DashboardLayout/AllEvents";
 import { Input, Select, Tabs, Skeleton } from "antd";
 import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
 import { PlusOutlined } from "@ant-design/icons";
@@ -15,7 +16,7 @@ import useFetch from "../components/forms/create-events/auth";
 function Dashboard(): JSX.Element {
   const route = useRouter();
   const { isLoggedIn } = useFetch();
-  const [activeTab, setActiveTab] = useState("popular");
+  const [activeTab, setActiveTab] = useState("all");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [searchText, setSearchText] = useState("");
 
@@ -157,10 +158,40 @@ function Dashboard(): JSX.Element {
             </form>
           </div>
         </div>
+ {/* Tab Navigation */}
+ <div className="flex space-x-8 mb-1">
+          
+          <button
+            className={`relative font-semibold pb-2 ${
+              activeTab === 'all' ? 'text-red-600' : 'text-gray-500'
+            }`}
+            onClick={() => setActiveTab('all')}
+          >
+            All Events
+            {activeTab === 'all' && (
+              <div className="absolute left-0 bottom-[-2px] w-full h-[4px] bg-red-600 rounded-full" style={{ borderRadius: '25px' }} />
+            )}
+          </button>
+          <button
+            className={`relative font-semibold pb-2 ${
+              activeTab === 'paid' ? 'text-red-600' : 'text-gray-500'
+            }`}
+            onClick={() => setActiveTab('popular')}
+          >
+            Popular Events
+            {activeTab === 'popular' && (
+              <div className="absolute left-0 bottom-[-2px] w-full h-[4px] bg-red-600 rounded-full" style={{ borderRadius: '25px' }} />
+            )}
+          </button>
+        </div>
+
+
 
         {/* Popular Events Content */}
-
-        <PopularEvents />
+           {/* Tab Content */}
+           {activeTab === 'popular' && <PopularEvents />}
+        {activeTab === 'all' && <AllEvents />}
+    
       </div>
     </DashboardLayout>
   );
