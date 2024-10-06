@@ -258,9 +258,10 @@ export interface CoordinatorsDataType {
 
 export interface SummaryDataType {
   key: string;
-  buyerName: string;
+  guestName: string;
   ticketName: string;
   checkedInBy: string;
+  checkedInTime: string;
   discountCode?: string; // optional if they can be null or undefined
   uses?: number;
   dateEnding?: string;

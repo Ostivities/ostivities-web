@@ -65,7 +65,7 @@ const EventsGuestList = () => {
         a.ticketSold - b.ticketSold,
     },
     {
-      title: "Buyer Name",
+      title: "Guest Name",
       dataIndex: "eventType",
       sorter: (a: SalesDataType, b: SalesDataType) =>
         a.eventType.localeCompare(b.eventType),
@@ -158,7 +158,7 @@ const EventsGuestList = () => {
             <Heading5 className="" content={"Guest List"} />
             <Paragraph
               className="text-OWANBE_PRY font-normal font-BricolageGrotesqueRegular text-center mx-auto border border-OWANBE_PRY bg-OWANBE_PRY2 rounded-lg w-[500px] h-14 flex flex-row items-center justify-center text-3xl py-8 place-self-center"
-              content={`${filteredData.length} Guests`}
+              content={`${filteredData.length} Ticketed Guests`}
               styles={{ fontWeight: "normal !important" }}
             />
           </Space>
@@ -172,7 +172,7 @@ const EventsGuestList = () => {
               className="justify-between pt-5"
             >
               <Search
-                placeholder="Search Ticket Name or Buyer Name"
+                placeholder="Search Ticket Name or Guest Name"
                 onSearch={handleSearch}
                 onChange={(e) => handleSearch(e.target.value)}
                 style={{ width: 300 }}
