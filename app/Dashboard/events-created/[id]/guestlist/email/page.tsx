@@ -212,36 +212,17 @@ const EventsGuestListEmail = () => {
             />
           </div>
 
-          <div className="pt-3 flex flex-row">
-            <div className="flex flex-row items-center space-x-6 w-1/2">
-              <Paragraph
-                className="text-OWANBE_DARK text-sm font-normal font-BricolageGrotesqueRegular"
-                content={"Enter Email Address to send test Message"}
-                styles={{ fontWeight: "normal !important" }}
-              />
-              <Input
-                placeholder="Enter address"
-                type="email"
-                style={{ width: "50%" }}
-              />
+          <div className="pt-3 flex flex-row">   
             </div>
-            <div className="">
-              <Button
-                type={"primary"}
-                size="middle"
-                className={`font-BricolageGrotesqueSemiBold continue font-bold w-32 rounded-2xl`}
-                style={{
-                  borderRadius: "16px",
-                  fontFamily: "BricolageGrotesqueMedium",
-                }}
-                onClick={() => message.success('Test email has been sent successfully')}
-              >
-                Send test
-              </Button>
-            </div>
-          </div>
-
-          <div className="mx-auto pt-8 pb-8">
+          <div className="flex flex-row justify-center space-x-4 mt-8">
+          <Button
+              type="default"
+              size={"large"}
+              htmlType="button"
+              className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
+            >
+              Preview
+            </Button>
             <Button
               type="primary"
               size={"large"}
@@ -249,7 +230,7 @@ const EventsGuestListEmail = () => {
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
               onClick={() => message.success('Guestlist email has been initiated successfully')}
             >
-              Send Email
+              Send Email 
             </Button>
           </div>
         </Form>
