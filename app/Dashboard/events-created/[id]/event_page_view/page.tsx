@@ -12,6 +12,7 @@ import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
+import ReadMoreHTML from "@/app/components/ReadMoreHTML";
 
 
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
@@ -372,12 +373,13 @@ const EventPageView = () => {
                   </h2>
                 </div>
               </div>
-              <div
+              {/* <div
                 className="font-BricolageGrotesqueRegular flex-1 h-fit px-1"
                 dangerouslySetInnerHTML={{
                   __html: eventDetails?.eventDetails as string,
                 }}
-              ></div>
+              ></div> */}
+              <ReadMoreHTML htmlContent={eventDetails?.eventDetails || ""} maxLength={100} />
               <div className="flex justify-center mt-12">
               </div>
               </div>
