@@ -193,9 +193,9 @@ const EventDetail = () => {
   const eventTitle = eventDetails?.eventName;
 
   const userFullName =
-      (eventDetails?.user?.firstName || "") +
-      " " +
-      (eventDetails?.user?.lastName || "");
+    (eventDetails?.user?.firstName || "") +
+    " " +
+    (eventDetails?.user?.lastName || "");
 
   const socialLinks = eventDetails?.socials;
   const twitterLink = socialLinks?.find(
@@ -289,7 +289,7 @@ const EventDetail = () => {
     <DashboardLayout title={title} isLoggedIn>
       <section>
         <div className="flex gap-12">
-        <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
+          <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
             <Image
               src={eventDetails?.eventImage}
               alt="Event Image"
@@ -379,9 +379,9 @@ const EventDetail = () => {
                 </div>
               </div>
               {twitterLink?.url ||
-              instagramLink?.url ||
-              websiteLink?.url ||
-              facebookLink?.url ? (
+                instagramLink?.url ||
+                websiteLink?.url ||
+                facebookLink?.url ? (
                 <div className="flex gap-3 items-center">
                   <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
                     <Image
@@ -482,7 +482,10 @@ const EventDetail = () => {
                   onCancel={handleCloseModal}
                   footer={null}
                   centered
-                  bodyStyle={{ padding: "20px", borderRadius: "15px" }}
+                  style={{
+                    borderRadius: "15px",
+                    padding: "20px"  // Include padding here instead of using bodyStyle
+                  }}
                 >
                   <ShareModalContent url={eventUrl} title={eventTitle} />
                 </Modal>

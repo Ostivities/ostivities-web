@@ -73,24 +73,56 @@ const Event = ({ params }: { params: { event: string } }) => {
   return (
     <DashboardLayout title={title} isLoggedIn>
       <section>
-        <h2
-          className="mb-3"
-          style={{
-            fontSize: "24px",
-            fontFamily: "Bricolage Grotesque, font-semibold",
-          }}
-        >
-          {currentSubtitle}
-        </h2>
-        <div>
-          <Button
-            onClick={() => {
-              setPage(pageSize + 1);
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "60px" }}>
+          <h2
+            style={{
+              fontSize: "24px",
+              fontFamily: "Bricolage Grotesque, font-semibold",
             }}
           >
-            Next
-          </Button>
+            {currentSubtitle}
+          </h2>
+          <div style={{ display: "flex", gap: "10px"}}>
+            {pageSize > 1 && ( // Conditionally render Back button
+              <Button
+                onClick={() => {
+                  setPage(pageSize - 1); // Go back to the previous page
+                }}
+                style={{
+                  backgroundColor: "#fff", // Default background
+                  borderRadius: "25px",    // Corner radius
+                  border: "1px solid #ccc", // Border for default button
+                  color: "#000",           // Default text color
+                  fontFamily: "'Bricolage Grotesque', sans-serif", // Set custom font
+                  width: "100px",          // Adjust the width
+                  height: "40px",          // Adjust the height
+                  fontSize: "16px",
+                }}
+              >
+                Back
+              </Button>
+            )}
+
+            <Button
+              onClick={() => {
+                setPage(pageSize + 1);
+              }}
+              style={{
+                backgroundColor: "#fadede", // Background color
+                borderRadius: "25px",       // Corner radius
+                border: "none",             // Optional: remove border
+                color: "#e20000",           // Text color for contrast
+                fontFamily: "'Bricolage Grotesque', sans-serif", // Set custom font
+                width: "100px",             // Adjust the width
+                height: "40px", 
+                fontSize: "16px",           // Adjust the height
+              }}
+            >
+              Next
+            </Button>
+          </div>
         </div>
+
         <div className="grid grid-cols-6 gap-6 gap-y-10 mt-7">
           {isPending ? (
             // Display skeleton buttons dynamically based on the data length or fallback to 5

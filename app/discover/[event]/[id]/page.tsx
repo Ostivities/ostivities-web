@@ -378,9 +378,9 @@ const EventDetail = () => {
                 </div>
               </div>
               {twitterLink?.url ||
-              instagramLink?.url ||
-              websiteLink?.url ||
-              facebookLink?.url ? (
+                instagramLink?.url ||
+                websiteLink?.url ||
+                facebookLink?.url ? (
                 <div className="flex gap-3 items-center">
                   <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
                     <Image
@@ -481,7 +481,10 @@ const EventDetail = () => {
                   onCancel={handleCloseModal}
                   footer={null}
                   centered
-                  bodyStyle={{ padding: "20px", borderRadius: "15px" }}
+                  style={{
+                    borderRadius: "15px",
+                    padding: "20px"  // Include padding here instead of using bodyStyle
+                  }}
                 >
                   <ShareModalContent url={eventUrl} title={eventTitle} />
                 </Modal>
