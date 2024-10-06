@@ -26,6 +26,8 @@ import {
   XIcon,
 } from "react-share";
 import { ShareAltOutlined, CopyOutlined } from "@ant-design/icons";
+import ReadMoreHTML from "@/app/components/ReadMoreHTML";
+
 
 const ShareModalContent: React.FC<{ url: string; title: string }> = ({
   url,
@@ -531,12 +533,13 @@ const EventDetail = () => {
                 </div>
               </div>
             </div>
-            <div
+            {/* <div
               className="font-BricolageGrotesqueRegular flex-1 h-fit px-1"
               dangerouslySetInnerHTML={{
                 __html: eventDetails?.eventDetails as string,
               }}
-            ></div>
+            ></div> */}
+            <ReadMoreHTML htmlContent={eventDetails?.eventDetails || ""} maxLength={100} />
             <div className="flex justify-center mt-12">
               <Dropdown
                 disabled={eventdates < new Date().getTime()}

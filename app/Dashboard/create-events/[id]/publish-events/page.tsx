@@ -18,11 +18,11 @@ import { PUBLISH_TYPE } from "@/app/utils/enums";
 import useFetch from "@/app/components/forms/create-events/auth";
 
 export default function PublishEvent(): JSX.Element {
-  const { isLoggedIn } = useFetch();
+  // const { isLoggedIn } = useFetch();
 
-  if(!isLoggedIn) {
-    return <></>;
-  }
+  // if(!isLoggedIn) {
+  //   return <></>;
+  // }
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies([
