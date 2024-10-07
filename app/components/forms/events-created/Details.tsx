@@ -16,32 +16,44 @@ import "jspdf-autotable";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import * as XLSX from "xlsx";
+import { useGetAllUserEvents } from "@/app/hooks/event/event.hook";
+import { IEventDetails } from "@/app/utils/interface";
+import { dateFormat, timeFormat } from "@/app/utils/helper";
+import { PUBLISH_TYPE } from "@/app/utils/enums";
+
 
 const { Search } = Input;
 
 const EventsCreatedTable: React.FC = () => {
-  const router = useRouter();
+  const router = useRouter(); 
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const [isShown, setIsShown] = useState(false);
+  const [eventStatus, setEventStatus] = useState("");
   const [actionType, setActionType] = useState<"delete" | "warning">();
+  const { getAllUserEvents } = useGetAllUserEvents(currentPage, pageSize, searchText);
+  // console.log(getAllUserEvents,"getAllUserEvents")
 
-  const data: DataType[] = Array.from({ length: 50 }, (_, index) => ({
-    key: `${index + 1}`,
-    eventName: `Event ${index + 1}`,
-    eventType: `Type ${index + 1}`,
-    ticketSold: Math.floor(Math.random() * 100),
-    dateCreated: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
-    status: ["Active", "Closed", "Pending"][Math.floor(Math.random() * 3)] as
-      | "Active"
-      | "Closed"
-      | "Pending",
-    id: generateRandomString(10),
-  }));
+  const totalEvents = getAllUserEvents?.data?.data?.data?.total;
+  // console.log(selectedRowKeys)
 
-  const columns: ColumnsType<DataType> = [
+  const allUserEventDetails = getAllUserEvents?.data?.data?.data?.data;
+
+  const data: IEventDetails[] = allUserEventDetails?.map((item: IEventDetails) => {
+    return {
+      key: item?.id,
+      eventName: item?.eventName,
+      eventType: item?.eventType,
+      ticketSold: item?.ticketSold,
+      dateCreated: item?.createdAt,
+      status: item?.mode ,
+      endDate: item?.endDate,
+    }
+  })
+
+  const columns: ColumnsType<IEventDetails> = [
     {
       title: (
         <Label
@@ -50,7 +62,7 @@ const EventsCreatedTable: React.FC = () => {
         />
       ),
       dataIndex: "eventName",
-      sorter: (a, b) => a.eventName.localeCompare(b.eventName),
+      sorter: (a, b) => a?.eventName?.localeCompare(b.eventName),
     },
     {
       title: (
@@ -60,14 +72,8 @@ const EventsCreatedTable: React.FC = () => {
         />
       ),
       dataIndex: "eventType",
-      sorter: (a, b) => a.eventType.localeCompare(b.eventType),
-      filters: [
-        { text: "Type 1", value: "Type 1" },
-        { text: "Type 2", value: "Type 2" },
-        { text: "Type 3", value: "Type 3" },
-        // Add more types as needed
-      ],
-      onFilter: (value, record) => record.eventType.includes(value as string),
+      sorter: (a, b) => a?.eventType?.localeCompare(b.eventType),
+      onFilter: (value, record) => record?.eventType?.includes(value as string),
     },
     {
       title: (
@@ -77,7 +83,7 @@ const EventsCreatedTable: React.FC = () => {
         />
       ),
       dataIndex: "ticketSold",
-      sorter: (a, b) => a.ticketSold - b.ticketSold,
+      sorter: (a, b) => a?.ticketSold - b?.ticketSold,
     },
     {
       title: (
@@ -87,7 +93,8 @@ const EventsCreatedTable: React.FC = () => {
         />
       ),
       dataIndex: "dateCreated",
-      sorter: (a, b) => new Date(a.dateCreated).getTime() - new Date(b.dateCreated).getTime(),
+      render: (text) => {return dateFormat(text);},
+      sorter: (a, b) => new Date(a?.startDate).getTime() - new Date(b?.startDate).getTime(),
     },
     {
       title: (
@@ -97,23 +104,18 @@ const EventsCreatedTable: React.FC = () => {
         />
       ),
       dataIndex: "status",
-      filters: [
-        { text: "Active", value: "Active" }, 
-        { text: "Closed", value: "Closed" },
-        { text: "Pending", value: "Pending" },
-      ],
-      onFilter: (value, record) => record.status.includes(value as string),
-      render: (status) => {
+      render: (status, endDate) => {
+        // console.log(status)
         let style = {};
         let dotColor = "";
     
-        if (status === "Active") {
+        if (status === PUBLISH_TYPE.ACTIVE) {
           style = { color: "#009A44", backgroundColor: "#E6F5ED" }; // Green
           dotColor = "#009A44";
         } else if (status === "Closed") {
           style = { color: "#D30000", backgroundColor: "#FFD3D3" }; // Red
           dotColor = "#D30000";
-        } else if (status === "Pending") {
+        } else if (status === PUBLISH_TYPE.INACTIVE || !status) {
           style = { color: "#F68D2E", backgroundColor: "#FDE8D5" }; // Orange
           dotColor = "#F68D2E";
         }
@@ -140,7 +142,7 @@ const EventsCreatedTable: React.FC = () => {
                 marginRight: "8px",
               }}
             ></span>
-            {status}
+            {status ? status.charAt(0) + status.slice(1).toLowerCase() : "Inactive"}
           </span>
         );
       },
@@ -153,7 +155,7 @@ const EventsCreatedTable: React.FC = () => {
         />
       ),
       dataIndex: "",
-      render: (text: any, record: DataType) => (
+      render: (text: any, record: IEventDetails) => (
         <Button
           type="primary"
           shape="round"
@@ -165,7 +167,7 @@ const EventsCreatedTable: React.FC = () => {
             padding: "4px",
           }}
           onClick={() =>
-            router.push(`/Dashboard/events-created/${record.id}/about`)
+            router.push(`/Dashboard/events-created/${record?.key}/about`)
           }
         >
           View
@@ -179,19 +181,19 @@ const EventsCreatedTable: React.FC = () => {
     setSearchText(e.target.value);
   };
 
-  const filteredData = data.filter((item) =>
-    item.eventName.toLowerCase().includes(searchText.toLowerCase())
+  const filteredData = data?.filter((item) =>
+    item?.eventName?.toLowerCase()?.includes(searchText?.toLowerCase())
   );
 
-  const hasSelected = selectedRowKeys.length > 0;
+  const hasSelected = selectedRowKeys?.length > 0;
 
   const handleExport = (format: string) => {
-    const exportData = selectedRowKeys.length
-      ? data.filter((item) => selectedRowKeys.includes(item.key))
+    const exportData = selectedRowKeys?.length
+      ? data?.filter((item) => selectedRowKeys?.includes(String(item?.key)))
       : data;
 
     // Prepare data for export without 'id' column
-    const dataToExport = exportData.map(({ id, ...rest }) => rest);
+    const dataToExport = exportData?.map(({ _id, ...rest }) => rest);
 
     if (format === "excel") {
       const ws = XLSX.utils.json_to_sheet(dataToExport);
@@ -202,7 +204,7 @@ const EventsCreatedTable: React.FC = () => {
       const doc = new jsPDF();
       (doc as any).autoTable({
         head: [Object.keys(dataToExport[0])],
-        body: dataToExport.map((item) => Object.values(item)),
+        body: dataToExport?.map((item) => Object.values(item)),
         didDrawCell: (data: {
           column: { index: number };
           cell: { styles: { fillColor: string } };
@@ -216,13 +218,25 @@ const EventsCreatedTable: React.FC = () => {
     }
   };
 
+  const handleActionSuccess = () => {
+    // Refetch the tickets after an action (delete, edit, duplicate)
+  };
+
   return (
     <React.Fragment>
       <DeleteTicket
+        data={eventStatus}
         open={isShown}
-        onCancel={() => setIsShown(false)}
-        onOk={() => setIsShown(false)}
+        onCancel={() => {
+          setIsShown(false)
+        }}
+        onOk={() => {
+          setIsShown(false)
+          getAllUserEvents.refetch()
+        }}
         actionType={actionType}
+        selectedRowKeys={selectedRowKeys}
+
       />
     <div className="w-full flex flex-col space-y-6">
       <div className="flex justify-between items-center mb-4">
@@ -265,21 +279,28 @@ const EventsCreatedTable: React.FC = () => {
         )}
       </div>
       <Table
+        loading={getAllUserEvents?.isFetching}
+
         rowSelection={{
           selectedRowKeys,
-          onChange: (keys) => setSelectedRowKeys(keys),
+          onChange: (keys) => setSelectedRowKeys(keys.map(String)),
+          onSelect: (record, selected) => {
+            setEventStatus(record?.status ?? "");
+            // console.log({record, selected}, "record and selected")
+          },
         }}
         columns={columns}
-        dataSource={filteredData}
+        dataSource={data}
         className="font-BricolageGrotesqueRegular w-full"
         pagination={{
           current: currentPage,
           pageSize: pageSize,
-          total: filteredData.length,
+          total: totalEvents,
           onChange: (page, size) => {
             setCurrentPage(page);
             setPageSize(size);
           },
+          showSizeChanger: true,
         }}
         scroll={{ x: "max-content" }}
       />

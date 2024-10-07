@@ -1,5 +1,5 @@
 "use client";
-import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
+import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayoutnotfound";
 import React from "react";
 import { useRouter } from "next/navigation";
 import notfound from '@/public/notfound.svg';
@@ -23,13 +23,13 @@ function EventNotFound(): JSX.Element {
     <DashboardLayout title={title} isLoggedIn>
       <div className="w-full mx-auto flex flex-row items-center justify-between space-y-5 py-6">
         <div className="w-1/2 flex flex-col gap-2 p-[8rem] justify-center">
-          <h2 className="w-full md:w-full font-BricolageGrotesqueMedium text-3xl font-bold mb-4">Oops.... page not found!</h2>
-          <p className="w-full md:w-full font-BricolageGrotesqueMedium text-md mb-6">This Event Page doesn`t exist or was removed!
-          We suggest you confirm the search parameters or if the url is correct and try again.</p>
+          <h2 className="w-full md:w-full font-BricolageGrotesqueMedium text-3xl font-bold mb-4">Oops.... event not found!</h2>
+          <p className="w-full md:w-full font-BricolageGrotesqueMedium text-md mb-6">This Page doesn`t exist or was removed!
+          We suggest you confirm the search parameters is correct and try again.</p>
           <button
             onClick={handleBackToDiscovery}
-            className="primary-btn hover:none w-100 text-center text-white py-2 px-6 rounded-full text-lg"
-            style={{ borderRadius: '20px' }} // Apply corner radius
+            className="primary-btn hover:none w-80 text-center text-white py-2 px-6 rounded-full text-lg font-bricolage"
+            style={{ borderRadius: '25px' }} // Apply corner radius
           >
             Back to discovery
           </button>

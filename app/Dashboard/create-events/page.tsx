@@ -2,9 +2,16 @@
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import Steppers from "@/app/components/Steppper/Steppers";
 import Details from "@/app/components/forms/create-events/Details";
+import useFetch from "@/app/components/forms/create-events/auth";
 import { useRouter } from "next/navigation";
 
 function CreateEvents(): JSX.Element {
+
+  // const { isLoggedIn } = useFetch();
+
+  // if(!isLoggedIn) {
+  //   return <></>;
+  // }
 
   const title = (
     <div className="flex justify-between items-center w-full relative pb-2">

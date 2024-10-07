@@ -8,7 +8,6 @@ import React, { useState } from "react";
 
 const EventTicketsEmail = () => {
   const [editorContent, setEditorContent] = useState("");
-
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };

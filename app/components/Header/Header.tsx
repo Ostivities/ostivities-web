@@ -1,32 +1,41 @@
-'use client';
-import theme from '@/app/theme/theme.config';
-import Button from '@/app/ui/atoms/Button';
-import { NAV_LINKS } from '@/app/utils/data';
-import { INavLinks } from '@/app/utils/interface';
-import CloseIcon from '@/public/close.svg';
-import Hamburger from '@/public/hamburger.svg';
-import OwanbeLogo from '@/public/owanbe.svg';
-import { ConfigProvider, Drawer } from 'antd';
-import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+"use client";
+import theme from "@/app/theme/theme.config";
+import Button from "@/app/ui/atoms/Button";
+import { NAV_LINKS } from "@/app/utils/data";
+import { INavLinks } from "@/app/utils/interface";
+import CloseIcon from "@/public/close.svg";
+import Hamburger from "@/public/hamburger.svg";
+import OwanbeLogo from "@/public/owanbe.svg";
+import { ConfigProvider, Drawer } from "antd";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { useCookies } from "react-cookie";
+import useFetch from "../forms/create-events/auth";
 
 function Header(): JSX.Element {
   const router = useRouter();
   const pathname = usePathname();
   const [open, setOpen] = useState<boolean>(false);
+  const { isLoggedIn } = useFetch();
+  const [cookies, setCookie] = useCookies([
+    "is_registered",
+    "user_email",
+    "user_password",
+  ]);
+
+  const isRegistered = cookies?.is_registered === "registered";
 
   const pathCheck =
-    pathname.includes('password-reset') ||
-    pathname.includes('forgot-password') ||
-    pathname === '/login' ||
-    pathname === '/signup';
+    pathname.includes("password-reset") ||
+    pathname.includes("forgot-password") ||
+    pathname === "/login" ||
+    pathname === "/signup";
 
   // Check if NAV_LINKS should be displayed
-  const showNavLinks = !pathCheck && pathname !== '/Dashboard'; // Add other pages as needed
+  const showNavLinks = !pathCheck && pathname !== "/Dashboard"; // Add other pages as needed
 
-  const isNotLoggedIn = !['/login', '/signup'].includes(pathname);
 
   const showDrawer = () => {
     setOpen(true);
@@ -50,7 +59,7 @@ function Header(): JSX.Element {
               <Image
                 src={OwanbeLogo}
                 alt="Owanbe Logo"
-                style={{ height: '40px' }}
+                style={{ height: "40px" }}
                 className="w-[110px]"
               />
             </Link>
@@ -72,22 +81,33 @@ function Header(): JSX.Element {
           {/* Conditional Buttons Rendering */}
           {!pathCheck && (
             <div className="flex flex-row items-end justify-end space-x-3">
-              {isNotLoggedIn ? (
-                <>
+              {!isLoggedIn ? (
+                isRegistered ? (
+                  // Show only Sign In button if user is registered but not logged in
                   <Button
                     variant="outline"
                     label="Sign in"
-                    onClick={() => router.push('/login')}
+                    onClick={() => router.push("/login")}
                   />
-                  <Button
-                    label="Sign Up"
-                    onClick={() => router.push('/signup')}
-                  />
-                </>
+                ) : (
+                  // Show both Sign In and Sign Up buttons if user is not registered
+                  <>
+                    <Button
+                      variant="outline"
+                      label="Sign in"
+                      onClick={() => router.push("/login")}
+                    />
+                    <Button
+                      label="Sign Up"
+                      onClick={() => router.push("/signup")}
+                    />
+                  </>
+                )
               ) : (
+                // Show My Account button if user is logged in
                 <Button
                   label="My Account"
-                  onClick={() => router.push('/Dashboard')}
+                  onClick={() => router.push("/Dashboard")}
                 />
               )}
             </div>
@@ -100,14 +120,14 @@ function Header(): JSX.Element {
             <Image
               src={OwanbeLogo}
               alt="Owanbe Logo"
-              style={{ width: '80px', height: '40px' }}
+              style={{ width: "80px", height: "40px" }}
             />
           </Link>
 
           <Image
             src={Hamburger}
             alt="Owanbe Logo"
-            style={{ width: '40px', height: '35px' }}
+            style={{ width: "40px", height: "35px" }}
             onClick={showDrawer}
           />
         </div>
@@ -116,20 +136,20 @@ function Header(): JSX.Element {
             <Image
               src={OwanbeLogo}
               alt="Owanbe Logo"
-              style={{ width: '80px', height: '40px' }}
+              style={{ width: "80px", height: "40px" }}
             />
           }
           extra={
             <Image
               src={CloseIcon}
               alt="Owanbe Logo"
-              style={{ width: '40px', height: '35px' }}
+              style={{ width: "40px", height: "35px" }}
               onClick={onClose}
             />
           }
           placement="right"
           open={open}
-          style={{ borderBottom: '0px solid !important', width: '100%' }}
+          style={{ borderBottom: "0px solid !important", width: "100%" }}
         >
           {showNavLinks && (
             <>
@@ -148,27 +168,35 @@ function Header(): JSX.Element {
           <div className="flex flex-col items-center justify-center space-y-4 mt-7 mx-auto w-3/5 md:w-1/5">
             {!pathCheck && (
               <>
-                {isNotLoggedIn ? (
+              {!isLoggedIn ? (
+                isRegistered ? (
+                  // Show only Sign In button if user is registered but not logged in
+                  <Button
+                    variant="outline"
+                    label="Sign in"
+                    onClick={() => router.push("/login")}
+                  />
+                ) : (
+                  // Show both Sign In and Sign Up buttons if user is not registered
                   <>
                     <Button
                       variant="outline"
                       label="Sign in"
-                      className="max-w-full"
-                      onClick={() => router.push('/login')}
+                      onClick={() => router.push("/login")}
                     />
                     <Button
                       label="Sign Up"
-                      className="max-w-full"
-                      onClick={() => router.push('/signup')}
+                      onClick={() => router.push("/signup")}
                     />
                   </>
-                ) : (
-                  <Button
-                    label="My Account"
-                    className="max-w-full"
-                    onClick={() => router.push('/Dashboard')}
-                  />
-                )}
+                )
+              ) : (
+                // Show My Account button if user is logged in
+                <Button
+                  label="My Account"
+                  onClick={() => router.push("/Dashboard")}
+                />
+              )}
               </>
             )}
           </div>

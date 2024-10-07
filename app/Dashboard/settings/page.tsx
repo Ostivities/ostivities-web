@@ -8,7 +8,7 @@ import Profile from "@/app/ui/organisms/Profile";
 import OrderNotifications from "@/app/ui/organisms/OrderNotification";
 import PaymentSetting from "@/app/ui/organisms/PaymentSetting";
 
-const tabs = ["Profile", "Billing", "Order Notifications", "Payment Settings"];
+const tabs = ["Profile", "Billing", "Payment Settings"];
 
 function Settings() {
   const [currentTab, setCurrentTab] = useState(tabs[0]);

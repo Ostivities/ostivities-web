@@ -1,9 +1,13 @@
-import EventSection from './EventSection';
+import EventSection from './DiscoverEventSection';
 import InfoCard from './InfoCard';
 
 const PaidEvents = () => {
   return (
-    <EventSection title="Paid Events" uri="/Dashboard/paid">
+    <EventSection 
+    title="Paid Events"
+    titleClass="custom-title-class"
+    style={{ fontSize: '20px', fontFamily: 'Bricolage Grotesque, font-semibold' }}  // Inline style 
+    uri="/Dashboard/paid">
       <InfoCard
         title="Concert with Davido"
         about="Concert"

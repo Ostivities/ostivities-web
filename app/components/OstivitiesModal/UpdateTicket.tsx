@@ -3,24 +3,33 @@ import { Modal, Button, message } from "antd";
 import React from "react";
 import { Heading5 } from "../typography/Typography";
 import SingleTicket from "./SingleTicket";
+import EditSingleTicket from "./EditSingleTicket";
+import EditCollectiveTicket from "./EditCollectiveTicket";
 
-const UpdateTicket = ({ open, onCancel, onOk }: IModal): JSX.Element => {
+const UpdateTicket = ({
+  open,
+  onCancel,
+  onOk,
+  id,
+  ticketEntity,
+}: IModal): JSX.Element => {
+  // console.log(id)
+  // const { id } = data;
+
   // Function to handle the update button click
-  const handleUpdate = () => {
-    message.success('Ticket updated successfully'); // Success message
-    onOk(); // Call onOk to perform any additional actions
-  };
+  // const handleUpdate = () => {
+    // message.success('Ticket updated successfully'); // Success message
+    // onOk(); // Call onOk to perform any additional actions
+  // };
 
   return (
     <Modal
-      title={
-        <Heading5 content={"Update Ticket"} className="" />
-      }
+      title={<Heading5 content={"Update Ticket"} className="" />}
       open={open}
       onCancel={onCancel}
       footer={
         <div style={{ textAlign: "center", marginTop: 20, marginBottom: 20 }}>
-          <Button
+          {/* <Button
             size="large"
             onClick={onCancel}
             className={`font-BricolageGrotesqueSemiBold button-styles sign-in cursor-pointer font-bold`}
@@ -36,11 +45,15 @@ const UpdateTicket = ({ open, onCancel, onOk }: IModal): JSX.Element => {
             style={{ borderRadius: 20 }}
           >
             Update
-          </Button>
+          </Button> */}
         </div>
       }
     >
-      <SingleTicket />
+      {ticketEntity === "SINGLE" ? (
+        <EditSingleTicket onCancel={onCancel} id={id} onOk={onOk} />
+      ) : (
+        <EditCollectiveTicket onCancel={onCancel} id={id} onOk={onOk} />
+      )}
     </Modal>
   );
 };

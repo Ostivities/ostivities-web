@@ -5,13 +5,16 @@ import type { MenuProps } from "antd";
 import { Button, Card, Dropdown, message, Space, Switch } from "antd";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiMiniArrowLongLeft } from "react-icons/hi2"; 
 import { IoChevronDown } from "react-icons/io5";
 import { LiaExternalLinkAltSolid } from "react-icons/lia";
 import PaymentDetails from "../OstivitiesModal/PaymentDetails";
 import Image from 'next/image';
 import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
+// import { useGetUserEvent, usePublishEvent } from "@/app/hooks/event/event.hook";
+import { useGetUserEvent, useAddEventToDiscovery, usePublishEvent } from "@/app/hooks/event/event.hook";
+import { EVENT_INFO, PUBLISH_TYPE } from "@/app/utils/enums";
 
 
 export default function EventDetailsComponent({
@@ -20,32 +23,110 @@ export default function EventDetailsComponent({
   children: React.ReactNode;
 }): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const pathname = usePathname();
-  const params = useParams();
+  const params = useParams<{ id: string }>();
   const router = useRouter();
-  const onToggle = (checked: boolean) => {
-    console.log(`Switch to ${checked}`);
-  };
-
+  const { getUserEvent } = useGetUserEvent(params?.id);
+  const { addEventToDiscovery } = useAddEventToDiscovery();
+  const { publishEvent } = usePublishEvent();
+  const eventDetails = getUserEvent?.data?.data?.data;
   const [isPublished, setIsPublished] = useState(false); // State to track publish status
+  const [isDiscover, setIsDiscover] = useState(false); // State to track discovery status
+  // console.log(isDiscover, "isDiscover")
+  // console.log(isPublished, "isPublished")
 
-  const handleButtonClick = () => {
-    setIsPublished(!isPublished);
-    if (isPublished) {
-      message.success('Event published successfully');
-    } else {
-      message.success('Event unpublished successfully');
+  const eventDate = eventDetails?.endDate;
+  const eventdates = new Date(eventDate).getTime();
+
+  useEffect(() => {
+    if(eventDetails?.mode && eventDetails?.mode === PUBLISH_TYPE.ACTIVE) {
+      setTimeout(() => {
+        setIsPublished(true)
+      }, 2000)
+    } else if(eventDetails?.mode && eventDetails?.mode === PUBLISH_TYPE.INACTIVE) {
+      setTimeout(() => {
+        setIsPublished(false)
+      })
     }
-  };
+    if(eventDetails?.discover === true) {
+      setIsDiscover(true)
+    }
+  }, [eventDetails])
+
+
+
+  
+  const handlePublishEvent = async () => {
+    if (eventDetails?.mode === PUBLISH_TYPE.ACTIVE) {
+      const response = await publishEvent.mutateAsync({
+        id: params?.id, 
+        mode: PUBLISH_TYPE.INACTIVE
+      });
+
+      if (response.status === 200) {
+        setIsPublished(!isPublished);
+        getUserEvent.refetch()
+        await addEventToDiscovery.mutateAsync({
+          id: params?.id,
+          discover: false
+        })
+        setIsDiscover(false)
+        message.success('Event unpublished successfully');
+        // console.log(response, 'response inactive')
+      }
+    } else if (eventDetails?.mode === PUBLISH_TYPE.INACTIVE || !eventDetails?.mode){
+      if (eventdates < new Date().getTime() && eventDetails?.eventInfo === EVENT_INFO.SINGLE_EVENT) {
+        message.error('Event has ended, cannot be published');
+        return;
+      }
+      const response = await publishEvent.mutateAsync({
+        id: params?.id, 
+        mode: PUBLISH_TYPE.ACTIVE
+      });
+      if (response.status === 200) {
+        getUserEvent.refetch()
+        setIsPublished(!isPublished);
+        message.success('Event published successfully');
+        // console.log(response, 'response active')
+      }
+    }
+  }
+
+  const linkToCopy = eventDetails?.eventURL
+
+  const copyToClipBoard = () => {
+    navigator.clipboard.writeText(linkToCopy)
+    message.success('Event link copied');
+  }
+
 
   const [activeToggle, setActiveToggle] = useState<string | null>(null);
   const [isActive, setIsActive] = useState<boolean>(false);
   
-  const handleSwitchChange = (checked: boolean) => {
-    if (checked) {
-      message.success('Event added to discovery');
-    } else {
-      message.success('Event removed from discovery');
+  const handleSwitchChange = async (checked: boolean) => {
+    if (eventDetails?.discover === false) {
+      const res = await addEventToDiscovery.mutateAsync({
+        id: params?.id,
+        discover: true,
+      }) 
+
+      if (res.status === 200) {
+        message.success('Event added to discovery successfully');
+        setIsDiscover(true)
+        getUserEvent.refetch()
+        // console.log(res, 'res discover true') 
+      }
+    } else if(eventDetails?.discover === true) {
+      const res = await addEventToDiscovery.mutateAsync({
+        id: params?.id,
+        discover: false
+      })
+      if(res.status === 200) {
+        setIsDiscover(false)
+        getUserEvent.refetch()
+        message.success('Event removed from discovery successfully');
+      }
     }
   };
   
@@ -54,6 +135,35 @@ export default function EventDetailsComponent({
     setIsActive(!isActive);
   };
 
+  useEffect(() => {
+    const checkEventStatus = async () => {
+      if (eventdates < new Date().getTime() && eventDetails?.eventInfo === EVENT_INFO.SINGLE_EVENT) {
+        const response = await publishEvent.mutateAsync({
+          id: params?.id, 
+          mode: PUBLISH_TYPE.INACTIVE
+        });
+        if(response.status === 200) {
+          setIsPublished(false)
+        }
+      }
+    };
+
+    checkEventStatus();
+  },[eventDetails?.frequency, eventdates])
+
+  useEffect(() => {
+    const fetchInitialState = async () => {
+      try {
+        // Replace this with your actual API call
+        const response = eventDetails?.discover
+        setIsActive(response);
+      } catch (error) {
+        console.error('Failed to fetch event details', error);
+      }
+    };
+    
+    fetchInitialState();
+  }, [eventDetails]);
 
   const ExtraTab = (): JSX.Element => {
     const handleMenuClick: MenuProps["onClick"] = (e) => {
@@ -87,17 +197,17 @@ export default function EventDetailsComponent({
         ),
         key: "2",
       },
-      {
-        label: (
-          <Link
-            href={`/Dashboard/events-created/${params?.id}/tickets/email`}
-            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
-          >
-            Ticket E-mail
-          </Link>
-        ),
-        key: "3",
-      },
+      // {
+      //   label: (
+      //     <Link
+      //       href={`/Dashboard/events-created/${params?.id}/tickets/email`}
+      //       className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+      //     >
+      //       Ticket E-mail
+      //     </Link>
+      //   ),
+      //   key: "3",
+      // },
     ];
 
     const GuestItems: MenuProps["items"] = [
@@ -362,7 +472,7 @@ export default function EventDetailsComponent({
       gap: '4px', // Adjust the spacing between title and value (you can customize this)
     };
 
-    const salesRevenue = 2000;
+    const salesRevenue = 250000;
 
 const formattedRevenue = new Intl.NumberFormat('en-NG', {
   style: 'currency',
@@ -372,17 +482,25 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
 }).format(salesRevenue);
   
     return (
-      <div className="grid grid-cols-3 gap-x-8">
+      <div className="grid grid-cols-4 gap-x-6">
         <CardMetrics
-          title="Tickets Sold"
-          value={20}
+          title="Total Tickets Sold"
+          value={250}
           cardStyle={cardStyle}
           titleStyle={titleStyle}
           valueStyle={valueStyle}
           containerStyle={containerStyle}
         />
         <CardMetrics
-  title="Sales Revenue"
+          title="Total Space Booked"
+          value={10}
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+        <CardMetrics
+  title="Total Sales Revenue"
   value={formattedRevenue}
   cardStyle={cardStyle}
   titleStyle={titleStyle}
@@ -417,7 +535,7 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
       </div>
   
       <div className="flex flex-row items-center space-x-4">
-        {!isPublished && (
+        {isPublished && (
           <div className="flex flex-row items-center space-x-2">
             <ToggleSwitch
               isActive={isActive}
@@ -428,7 +546,8 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
               label="Add to discovery page"
             />
             <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
-              Add to discovery page
+              {isDiscover ? 'Remove from discovery' : 'Add to discovery'  }
+              {/* Add to discovery page */}
             </span>
           </div>
         )}
@@ -442,20 +561,19 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
           borderRadius: "20px",
           fontFamily: "BricolageGrotesqueMedium",
         }}
-        onClick={handleButtonClick}
+        onClick={handlePublishEvent}
+        loading={publishEvent.isPending}
       >
-        {isPublished ? 'Publish Event' : 'Unpublish Event'}
+        {isPublished ? 'Unpublish Event' : 'Publish Event'}
       </Button>
   
-      {!isPublished && (
+      {isPublished && (
         <div className="flex flex-row items-center space-x-1">
           <Button
             type="text"
             target="_self"
             className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK cursor-pointer"
-            onClick={() => {
-              message.success('Event link copied'); // Success message
-            }}
+            onClick={copyToClipBoard}
           >
             <LiaExternalLinkAltSolid
               color="#E20000"

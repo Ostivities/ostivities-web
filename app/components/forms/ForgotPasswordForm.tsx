@@ -3,16 +3,30 @@
 import { IResetToken } from "@/app/utils/interface";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Button, Form, FormProps, Input } from "antd";
+import { useResetToken } from "@/app/hooks/auth/auth.hook";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useCookies } from 'react-cookie';
+
+
 
 function ForgotPasswordForm(): JSX.Element { 
+  const { resetToken } = useResetToken();
   const router = useRouter();
   const [form] = Form.useForm();
   const [email, setEmail] = useState("");
+  const [cookies, setCookie] = useCookies(['forgot_email']);
 
-  const onFinish: FormProps<IResetToken>["onFinish"] = (value) => {
-    console.log(value);
+
+  const onFinish: FormProps<IResetToken>["onFinish"] = async (value) => {
+    if (value) {
+      const response = await resetToken?.mutateAsync(value);
+      if (response.status === 200) {
+        form.resetFields();
+        setCookie('forgot_email', value.email);
+        router.push('/password-reset')
+      }
+    }
   };
 
   const onFinishFailed: FormProps<IResetToken>["onFinishFailed"] = (
@@ -38,7 +52,7 @@ function ForgotPasswordForm(): JSX.Element {
         className="font-BricolageGrotesqueRegular"
       >
         <Form.Item
-          name="emailAddress"
+          name={"email"}
           noStyle
           rules={[{ required: true, message: "Please input your email" }]}
         >
@@ -72,7 +86,7 @@ function ForgotPasswordForm(): JSX.Element {
             width: "100%",
             height: "51px",
           }}
-          onClick={() => email !== "" && router.push("/password-reset")}
+          loading={resetToken?.isPending}
         >
           Continue
         </Button>

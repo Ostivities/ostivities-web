@@ -1,0 +1,18 @@
+.scrollable-content {
+    max-height: 100vh; /* Limit height to viewport */
+    overflow-y: scroll; /* Enable vertical scrolling */
+    padding-right: 15px; /* Compensate for hidden scrollbar */
+  }
+  
+  /* Hide scrollbar for WebKit browsers */
+  .scrollable-content::-webkit-scrollbar {
+    width: 0; /* Remove scrollbar space */
+    background: transparent; /* Optional: to ensure the background is transparent */
+  }
+  
+  /* Hide scrollbar for IE, Edge, and Firefox */
+  .scrollable-content {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  

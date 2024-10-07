@@ -2,10 +2,21 @@ import {
   LOGIN_USER,
   REGISTER_USER,
   RESET_PASSWORD_TOKEN,
+  USER_PROFILE,
+  VERIFY_OTP,
+  UPDATE_PROFILE,
 } from "@/app/utils/constants";
-import { ILogin, IResetToken, IUser } from "@/app/utils/interface";
+import { errorFormatter, successFormatter } from "@/app/utils/helper";
+import {
+  ILogin,
+  IResetToken,
+  IUser,
+  IVerifyToken,
+  IResetPassword,
+  IUpdateUser,
+} from "@/app/utils/interface";
 import { API_SERVICE } from "@/app/utils/service";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { message } from "antd";
 import { AxiosError, AxiosResponse } from "axios";
 
@@ -16,13 +27,10 @@ export const useRegister = () => {
     },
     mutationKey: [REGISTER_USER],
     onSuccess: (data: AxiosResponse) => {
-      message.success(data?.data?.message);
+      successFormatter(data);
     },
     onError: (error: AxiosError | any) => {
-      const errorMessage = error?.response?.data?.message;
-      typeof errorMessage === "string"
-        ? message.error(error?.response?.data?.message)
-        : message.error(error?.response?.data?.message?.[0]);
+      errorFormatter(error);
     },
   });
   return { registerUser };
@@ -35,37 +43,90 @@ export const useLogin = () => {
     },
     mutationKey: [LOGIN_USER],
     onSuccess: (data: AxiosResponse) => {
-      const accessToken = data?.data?.data?.accessToken;
-      sessionStorage.setItem("token", accessToken);
-      message.success(data?.data?.message);
+      if (data) {
+        const accessToken = data?.data?.data?.accessToken;
+        sessionStorage.setItem("token", accessToken);
+       
+      }
     },
     onError: (error: AxiosError | any) => {
-      const errorMessage = error?.response?.data?.message;
-      typeof errorMessage === "string"
-        ? message.error(error?.response?.data?.message)
-        : message.error(error?.response?.data?.message?.[0]);
+      errorFormatter(error);
     },
   });
   return { loginUser };
 };
 
-export const useRsetToken = () => {
-  const loginUser = useMutation({
+export const useVerifyOtp = () => {
+  const verifyOtp = useMutation({
+    mutationFn: (data: IVerifyToken) => {
+      return API_SERVICE._verifyToken(data);
+    },
+    mutationKey: [LOGIN_USER],
+    onSuccess: (data: AxiosResponse) => {
+      // successFormatter(data);
+    },
+    onError: (error: AxiosError | any) => {
+      errorFormatter(error);
+    },
+  });
+  return { verifyOtp };
+};
+
+export const useResetToken = () => {
+  const resetToken = useMutation({
     mutationFn: (data: IResetToken) => {
       return API_SERVICE._resetToken(data);
     },
-    mutationKey: [RESET_PASSWORD_TOKEN],
+    mutationKey: [VERIFY_OTP],
     onSuccess: (data: AxiosResponse) => {
-      const accessToken = data?.data?.data?.accessToken;
-      sessionStorage.setItem("token", accessToken);
-      message.success(data?.data?.message);
+      successFormatter(data);
     },
     onError: (error: AxiosError | any) => {
-      const errorMessage = error?.response?.data?.message;
-      typeof errorMessage === "string"
-        ? message.error(error?.response?.data?.message)
-        : message.error(error?.response?.data?.message?.[0]);
+      errorFormatter(error);
     },
   });
-  return { loginUser };
+  return { resetToken };
 };
+
+export const useResetPassword = () => {
+  const resetPassword = useMutation({
+    mutationFn: (data: IResetPassword) => {
+      return API_SERVICE._resetPassword(data);
+    },
+    mutationKey: [RESET_PASSWORD_TOKEN],
+    onSuccess: (data: AxiosResponse) => {
+      successFormatter(data);
+    },
+    onError: (error: AxiosError | any) => {
+      errorFormatter(error);
+    },
+  });
+  return { resetPassword };
+};
+
+
+export const useProfile = () => {
+  const profile = useQuery<AxiosResponse, AxiosError>({
+    queryKey: [USER_PROFILE],
+    queryFn: () => {
+      return API_SERVICE._userProfile();
+    },
+  });
+  return { profile };
+}
+
+export const useUpdateProfile = () => {
+  const updateProfile = useMutation({
+    mutationFn: (data: IUpdateUser) => {
+      return API_SERVICE._updateProfile(data);
+    },
+    mutationKey: [UPDATE_PROFILE],
+    onSuccess: (data: AxiosResponse) => {
+      // successFormatter(data);
+    },
+    onError: (error: AxiosError | any) => {
+      errorFormatter(error);
+    },
+  });
+  return { updateProfile };
+}

@@ -5,7 +5,8 @@ import { useState } from 'react';
 import { global } from "styled-jsx/css";
 import "@/app/globals.css";
 import { Heading5 } from '../typography/Typography';
-import { ForwardOutlined, PlusCircleOutlined, PlusOutlined, PlusSquareOutlined } from '@ant-design/icons';
+import PaymentSuccess from '@/app/components/OstivitiesModal/PaymentSuccessModal';
+import { PlusSquareOutlined } from '@ant-design/icons';
 
 interface SummaryProps {
   continueBtn?: boolean;
@@ -17,6 +18,7 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
   const [showInput, setShowInput] = useState(false);
   const [discountApplied, setDiscountApplied] = useState(false);
   const [discountCode, setDiscountCode] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleAddDiscountClick = () => {
     setShowInput(true);
@@ -127,8 +129,24 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
           )}
           {paymentBtn && (
             <div className="flex justify-center mt-12 mb-6 w-full">
-              <button className="primary-btn w-full">Make Payment</button>
+              <button className="primary-btn w-full" onClick={() => setIsModalOpen(true)}>
+                Make Payment
+              </button>
             </div>
+          )}
+          {isModalOpen && (
+            <PaymentSuccess
+              open={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+            />
+          )}
+
+
+          {isModalOpen && (
+            <PaymentSuccess
+              open={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+            />
           )}
         </div>
       </section>

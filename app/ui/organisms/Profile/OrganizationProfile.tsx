@@ -1,92 +1,163 @@
-import React, { useState } from 'react';
-import { Form, Input, Button, Upload, message, Modal } from 'antd';
+import React, { useState, useEffect } from "react";
+import {
+  Form,
+  Input,
+  Button,
+  Upload,
+  message,
+  Modal,
+  FormProps,
+  UploadProps,
+} from "antd";
 import H4 from "../../atoms/H4";
-import Image from 'next/image';
+import Image from "next/image";
 import "@/app/globals.css"; // Assuming this is where your global styles are imported
+import { useProfile, useUpdateProfile } from "../../../hooks/auth/auth.hook";
+import { IUpdateUser } from "@/app/utils/interface";
+import axios from "axios";
+import { successFormatter } from "@/app/utils/helper";
+
+const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
+const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+const cloud_api: any = process.env.NEXT_PUBLIC_CLOUDINARY_API_URL;
+const profile_pictures: any = process.env.NEXT_PUBLIC_OSTIVITIES_USER_PROFILE_PICTURE
 
 const OrganizationProfile = () => {
-  const [profileImage, setProfileImage] = useState<string>("/images/emptyimage.png"); // State for profile image URL
+  const [fields, setFields] = useState<any>();
+  const [profileImage, setProfileImage] = useState<string>(
+    "/images/emptyimage.png"
+  ); // State for profile image URL
   const [uploadButton, setUploadButton] = useState<string>("Update"); // State for button text
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false); // State to track if image is uploaded
+  const { profile } = useProfile();
+  const { updateProfile } = useUpdateProfile();
+  const [loader, setLoader] = useState(false);
+  const [saveLoader, setSaveLoader] = useState(false);
+  const [form] = Form.useForm();
 
-  // Function to handle file upload
-  const handleImageUpload = (options: any) => {
-    const { file, onSuccess, onError } = options;
-
-    // Check file format and size
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    const isLt10M = file.size / 1024 / 1024 < 10;
-  
-    if (!isJpgOrPng) {
-      message.error('You can only upload JPEG or PNG files!');
-      onError(new Error('You can only upload JPEG or PNG files!'));
-      return;
+  useEffect(() => {
+    if (profile) {
+      form.setFieldsValue({
+        accountType: profile?.data?.data?.data?.accountType,
+        businessName: profile?.data?.data?.data?.businessName,
+        emailAddress: profile?.data?.data?.data?.email,
+        phone_number: profile?.data?.data?.data?.phone_number,
+      });
     }
-    if (!isLt10M) {
-      message.error('Image must be smaller than 10MB!');
-      onError(new Error('Image must be smaller than 10MB!'));
-      return;
-    }
+  }, [profile]);
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      setProfileImage(reader.result as string);
-      setUploadButton("Remove");
-      setIsImageUploaded(true);
-      message.success(`${file.name} file uploaded successfully`);
-      onSuccess('ok');
-    };
-    reader.onerror = () => {
-      message.error('Image upload failed!');
-      onError(new Error('Image upload failed!'));
-    };
-    reader.readAsDataURL(file);
+  const props: UploadProps = {
+    name: "image",
+    maxCount: 1,
+    action: `${cloud_api}/${cloud_name}/auto/upload`,
+    beforeUpload: (file, fileList) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", profile_pictures);
+      formData.append("upload_preset", preset);
+    },
+    async customRequest({ file, onSuccess, onError }) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", profile_pictures);
+      formData.append("upload_preset", preset);
+      setLoader(true)
+      try {
+        const response = await axios.post(
+          `${cloud_api}/${cloud_name}/auto/upload`,
+          formData
+        );
+        if (response.status === 200) {
+          const urlString: string | any =
+            response?.data?.secure_url || response?.data?.url;
+          const res = await updateProfile.mutateAsync({
+            image: urlString,
+            id: profile?.data?.data?.data?.id,
+          });
+          if (res.status === 200) {
+            setLoader(false);
+            profile.refetch();
+            setFields(urlString);
+          }
+        }
+      } catch (error) {}
+    },
+    async onChange(info) {
+      if (info.file.status !== "uploading") {
+      }
+      if (info.file.status === "done") {
+      } else if (info.file.status === "error") {
+      }
+    },
+    showUploadList: false,
   };
 
-  // Function to handle image removal
   const handleRemoveImage = () => {
     Modal.confirm({
-      title: 'Are you sure you want to remove your profile picture?',
+      title: "Are you sure you want to remove your profile picture?",
       icon: null,
       onOk() {
         setProfileImage("/images/emptyimage.png"); // Reset profile image to default
         setUploadButton("Update"); // Change button text back to "Update"
         setIsImageUploaded(false); // Set image upload state to false
-        message.success('Profile picture removed successfully');
+        message.success("Profile picture removed successfully");
       },
       onCancel() {},
     });
   };
 
-  // Function to save changes
-  const handleSaveChanges = () => {
-    // Implement the logic to save the image
-    console.log("Image saved:", profileImage);
-    // After saving, you can reset the button text if needed
-    setUploadButton("Update");
-    setIsImageUploaded(false);
+  const handleSaveChanges = async () => {
+    try {
+      await form.validateFields(); // Validate all required fields except the phone number
+      const phoneNumber = form.getFieldValue("phone_number");
+
+      if (!phoneNumber) {
+        message.warning("Phone number is optional, but it is currently empty.");
+      }
+      // Implement the logic to save the profile
+      setUploadButton("Update");
+      setIsImageUploaded(false);
+    } catch (error) {
+      message.error("Please fill in the required fields.");
+    }
+  };
+
+  const onFinish: FormProps<IUpdateUser>["onFinish"] = async (value) => {
+    setSaveLoader(true);
+    const { phone_number, ...rest } = value;
+    if (value) {
+      const response = await updateProfile.mutateAsync({
+        phone_number,
+        id: profile?.data?.data?.data?.id,
+      });
+      if (response.status === 200) {
+        successFormatter(response);
+        setSaveLoader(false);
+        profile.refetch();
+      }
+    }
   };
 
   return (
-    <div style={{ maxWidth: '1100px', marginLeft: '50px' }}>
-      
-      <div className="flex items-center space-x-6 mb-6"> {/* Flex container for profile picture and buttons */}
+    <div style={{ maxWidth: "1100px", marginLeft: "50px" }}>
+      <div className="flex items-center space-x-6 mb-6">
+        {" "}
+        {/* Flex container for profile picture and buttons */}
         <div className="relative profile-image-container">
-        <Image
-    src={profileImage} // Display the profile image dynamically
-    alt="Profile Picture"
-    width={96} // Equivalent to w-24
-    height={96} // Equivalent to h-24
-    className="object-cover w-24 h-24 rounded-full" 
+          <Image
+            src={profile?.data?.data?.data?.image || "/images/emptyimage.png"} // Display the profile image dynamically
+            alt="Profile Picture"
+            width={96} // Equivalent to w-24
+            height={96} // Equivalent to h-24
+            className="object-cover w-24 h-24 rounded-full"
           />
         </div>
-        
         {/* Conditional rendering for upload and remove buttons */}
         {uploadButton === "Update" ? (
           <Upload
             name="avatar"
             showUploadList={false} // Hide the file list after upload
-            customRequest={handleImageUpload} // Handle upload action
+            {...props}
           >
             <Button
               type="default"
@@ -95,6 +166,7 @@ const OrganizationProfile = () => {
                 borderRadius: "20px",
                 fontFamily: "BricolageGrotesqueMedium",
               }}
+              loading={loader}
             >
               Update
             </Button>
@@ -113,92 +185,91 @@ const OrganizationProfile = () => {
           </Button>
         )}
       </div>
-      <div style={{ maxWidth: '1100px', marginLeft: '-10px' }}>
-      <Form
-        layout="vertical"
-        className="w-full space-y-6 px-8 py-5"
-        style={{ marginBottom: '20px' }} // Margin bottom for form container
-      >
-        <div className="grid grid-cols-2 gap-x-14">
-          <div className="grid gap-y-6">
-            <Form.Item
-              label="Account Type"
-              name="accountType"
-            >
-              <Input placeholder="Organization" disabled style={{ width: '100%' }} />
-            </Form.Item>
-            <Form.Item
-              label="Business Name"
-              name="businessName"
-              rules={[{ required: true, message: "Please input your business name!" }]}
-            >
-              <Input placeholder="Enter business name" style={{ width: '100%' }} />
-            </Form.Item>
+      <div style={{ maxWidth: "1100px", marginLeft: "-10px" }}>
+        <br />
+        <Form
+          layout="vertical"
+          className="w-full space-y-6 px-8 py-5"
+          style={{ marginBottom: "20px" }} // Margin bottom for form container
+          form={form}
+          onFinish={onFinish}
+        >
+          <div className="grid grid-cols-2 gap-x-14">
+            <div className="grid gap-y-6">
+              <Form.Item label="Account Type" name="accountType">
+                <Input
+                  placeholder="Organization"
+                  disabled
+                  style={{ width: "100%" }}
+                />
+              </Form.Item>
+              <Form.Item
+                label="Business Name"
+                name="businessName"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your business name!",
+                  },
+                ]}
+              >
+                <Input
+                  placeholder="Enter business name"
+                  disabled
+                  style={{ width: "100%" }}
+                />
+              </Form.Item>
+            </div>
+
+            <div className="grid gap-y-6">
+              <Form.Item
+                label="Email Address"
+                name="emailAddress"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input the email address!",
+                  },
+                ]}
+              >
+                <Input
+                  placeholder="Enter email address"
+                  disabled
+                  style={{ width: "100%" }}
+                />
+              </Form.Item>
+              <Form.Item
+                label="Phone Number"
+                name="phone_number"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your phone number!",
+                  },
+                ]}
+              >
+                <Input
+                  placeholder="Enter phone number"
+                  style={{ width: "100%" }}
+                />
+              </Form.Item>
+            </div>
           </div>
-
-          <div className="grid gap-y-6">
-            <Form.Item
-              label="Email Address"
-              name="emailAddress"
-              rules={[{ required: true, message: "Please input the email address!" }]}
+          <div style={{ textAlign: "center", marginTop: "60px" }}>
+            <Button
+              type="default"
+              size="large"
+              className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
+              style={{ marginBottom: "20px" }}
+              htmlType="submit"
+              onClick={handleSaveChanges}
+              loading={saveLoader}
             >
-              <Input placeholder="Enter email address" style={{ width: '100%' }} />
-            </Form.Item>
-            <Form.Item
-              label="Phone Number"
-              name="phoneNumber"
-              rules={[{ required: true, message: "Please input your phone number!" }]}
-            >
-              <Input placeholder="Enter phone number" style={{ width: '100%' }} />
-            </Form.Item>
+              Save changes
+            </Button>
           </div>
-        </div>
-
-        <H4
-          className="pt-10 pb-5" content={"Update Password"} />
-
-<div className="grid grid-cols-2 gap-x-14">
-  <div className="grid gap-y-6">
-    <Form.Item
-      label="Old Password"
-      name="oldPassword"
-      rules={[{ required: true, message: "Please input the old password!" }]}
-    >
-      <Input.Password placeholder="Enter old password" style={{ width: '100%' }} />
-    </Form.Item>
-  </div>
-
-  <div className="grid grid-cols-2 gap-x-6">
-    <Form.Item
-      label="New Password"
-      name="newPassword"
-      rules={[{ required: true, message: "Please input the new password!" }]}
-    >
-      <Input.Password placeholder="Enter new password" style={{ width: '100%' }} />
-    </Form.Item>
-
-    <Form.Item
-      label="Confirm Password"
-      name="confirmPassword"
-      rules={[{ required: true, message: "Please confirm the new password!" }]}
-    >
-      <Input.Password placeholder="Confirm new password" style={{ width: '100%' }} />
-    </Form.Item>
-  </div>
-</div>
-        <div style={{ textAlign: 'center', marginTop: '60px' }}>
-          <Button
-            type="default"
-            size="large"
-            className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
-            style={{ marginBottom: '20px' }}
-            onClick={handleSaveChanges} // Save changes action
-          >
-            Save changes
-          </Button>
-        </div>
-      </Form>
-    </div>
+        </Form>
+      </div>
     </div>
   );
 };

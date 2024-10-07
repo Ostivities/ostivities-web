@@ -1,6 +1,6 @@
 "use client";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
-import { Heading5, Label } from "@/app/components/typography/Typography";
+import { Heading5, Label, Paragraph } from "@/app/components/typography/Typography";
 import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
 import { SummaryDataType } from "@/app/utils/interface";
 import { Button, Input, Space, Table } from "antd";
@@ -13,9 +13,14 @@ import { ColumnsType } from "antd/es/table";
 
 const { Search } = Input;
 
-function getRandomBuyerName(): string {
+function getRandomGuestName(): string {
   const names = ["John Doe", "Jane Smith", "Michael Johnson", "Emily Brown", "David Wilson"];
   return names[Math.floor(Math.random() * names.length)];
+}
+
+function getRandomCheckInName(): string {
+  const checkers = ["Alice Manager", "Bob Supervisor", "Charlie Checker", "Dana Admin"];
+  return checkers[Math.floor(Math.random() * checkers.length)];
 }
 
 const EventsGuestListSummary = () => {
@@ -26,21 +31,22 @@ const EventsGuestListSummary = () => {
 
   const data: SummaryDataType[] = Array.from({ length: 50 }, (_, index) => ({
     key: `${index + 1}`,
-    buyerName: getRandomBuyerName(),
+    guestName: getRandomGuestName(),
     ticketName: `Ticket ${index + 1}`,
-    checkedInBy: `2024-07-${(index + 1).toString().padStart(2, "0")}, ${Math.floor(Math.random() * 12)}:${Math.floor(Math.random() * 60).toString().padStart(2, "0")}${Math.random() > 0.5 ? 'am' : 'pm'}`,
+    checkedInTime: `2024-07-${(index + 1).toString().padStart(2, "0")}, ${Math.floor(Math.random() * 12)}:${Math.floor(Math.random() * 60).toString().padStart(2, "0")}${Math.random() > 0.5 ? 'am' : 'pm'}`,
+    checkedInBy: getRandomCheckInName(), // New field for checked-in by
   }));
 
   const columns: ColumnsType<SummaryDataType> = [
     {
       title: (
         <Label
-          content="Buyer Name"
+          content="Guest Name"
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
-      dataIndex: "buyerName",
-      sorter: (a, b) => a.buyerName.localeCompare(b.buyerName),
+      dataIndex: "guestName",
+      sorter: (a, b) => a.guestName.localeCompare(b.guestName),
     },
     {
       title: (
@@ -55,12 +61,22 @@ const EventsGuestListSummary = () => {
     {
       title: (
         <Label
+          content="Checked in Time"
+          className="font-semibold text-OWANBE_TABLE_TITLE"
+        />
+      ),
+      dataIndex: "checkedInTime",
+      sorter: (a, b) => new Date(a.checkedInTime).getTime() - new Date(b.checkedInTime).getTime(),
+    },
+    {
+      title: (
+        <Label
           content="Checked in By"
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
-      dataIndex: "checkedInBy",
-      sorter: (a, b) => new Date(a.checkedInBy).getTime() - new Date(b.checkedInBy).getTime(),
+      dataIndex: "checkedInBy", // New column for the person who checked the guest in
+      sorter: (a, b) => a.checkedInBy.localeCompare(b.checkedInBy),
     },
   ];
 
@@ -74,9 +90,10 @@ const EventsGuestListSummary = () => {
       : data;
 
     const formattedExportData = exportData.map((item) => ({
-      "Buyer Name": item.buyerName,
+      "Guest Name": item.guestName,
       "Ticket Name": item.ticketName,
-      "Checked in By": item.checkedInBy,
+      "Checked in Time": item.checkedInTime,
+      "Checked in By": item.checkedInBy, // Include in the export data
     }));
 
     if (format === "excel") {
@@ -95,17 +112,30 @@ const EventsGuestListSummary = () => {
   };
 
   const filteredData = data.filter((item) =>
-    item.buyerName.toLowerCase().includes(searchText.toLowerCase())
+    item.guestName.toLowerCase().includes(searchText.toLowerCase())
   );
 
   return (
     <EventDetailsComponent>
       <Space direction="vertical" size="middle" className="w-full">
         <Heading5 className="pb-5" content={"Checked In Summary"} />
+        <Paragraph
+              className="text-OWANBE_PRY font-normal font-BricolageGrotesqueRegular text-center mx-auto border border-OWANBE_PRY bg-OWANBE_PRY2 rounded-lg w-[500px] h-14 flex flex-row items-center justify-center text-3xl py-8 place-self-center"
+              content={`${filteredData.length} Checked In Guests`}
+              styles={{ fontWeight: "normal !important" }}
+            />
+          </Space>
 
-        <Space className="w-full justify-between">
+          <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+            <Space
+              direction="horizontal"
+              align="center"
+              size="middle"
+              style={{ width: "100%" }}
+              className="justify-between pt-5"
+            >
           <Search
-            placeholder="Search Buyer Name"
+            placeholder="Search Guest Name"
             onChange={handleSearch}
             style={{ width: 300 }}
           />

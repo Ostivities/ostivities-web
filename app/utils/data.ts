@@ -1,6 +1,7 @@
 import Cube from "@/public/cube.svg";
 import Star from "@/public/star.svg";
 import { IFeatures, INavLinks } from "./interface";
+import { EVENT_TYPE } from "./enums"
 
 export const NAV_LINKS: INavLinks[] = [
   {
@@ -2436,19 +2437,18 @@ export const stepOne = [
 ];
 
 export const EVENT_TYPES: { label: string; value: string }[] = [
-  { value: "All Events", label: "All Events" },
-  { value: "Wedding Event", label: "Wedding Event" },
-  { value: "Birthday Party", label: "Birthday Party" },
-  { value: "Concert", label: "Concert" },
-  { value: "Paint & Sip", label: "Paint & Sip" },
-  { value: "Hangouts", label: "Hangouts" },
-  { value: "Webinar", label: "Webinar" },
-  { value: "Seminar", label: "Seminar" },
-  { value: "Conference", label: "Conference" },
-  { value: "Theater Performance", label: "Theater Performance" },
-  { value: "Hackathon", label: "Hackathon" },
-  { value: "Sporting Event", label: "Sporting Event" },
-  { value: "Other Events", label: "Other Events" },
+  { value: EVENT_TYPE.WEDDING, label: "Wedding" },
+  { value: EVENT_TYPE.BIRTHDAY, label: "Birthday" },
+  { value: EVENT_TYPE.CONCERT, label: "Concert" },
+  { value: EVENT_TYPE.PAINT_AND_SIP, label: "Paint & Sip" },
+  { value: EVENT_TYPE.HANGOUT, label: "Hangouts" },
+  { value: EVENT_TYPE.CARNIVAL, label: "Carnival" },
+  { value: EVENT_TYPE.CONFERENCE, label: "Conference" },
+  { value: EVENT_TYPE.SEMINAR, label: "Seminar" },
+  { value: EVENT_TYPE.TECH_EVENT, label: "Tech Event" },
+  { value: EVENT_TYPE.ART_EXHIBITION, label: "Art Exhibition" },
+  { value: EVENT_TYPE.HOLIDAY_CAMP, label: "Holiday Camp" },
+  { value: EVENT_TYPE.OTHERS, label: "Others" },
 ];
 
 export const AFRICAN_TIME_ZONES = [
