@@ -19,7 +19,7 @@ const EventsGuestListEmail = () => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const [guestName, setGuestName] = useState<string>("John Doe");
+  const [guestName, setGuestName] = useState<string>("Guest Name");
   const [eventName, setEventName] = useState<string>("Awesome Event");
   const [cookies, setCookie, removeCookie] = useCookies(["event_id"]);
   const { updateEvent } = useUpdateEvent();
