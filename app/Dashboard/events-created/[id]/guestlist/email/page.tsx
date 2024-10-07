@@ -1,32 +1,33 @@
 "use client";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import EmailEditor from "@/app/components/QuillEditor/EmailEditor";
-import { Heading5, Paragraph } from "@/app/components/typography/Typography";
-import { Button, Form, FormProps, Input, message, Select, Space, Upload, UploadFile } from "antd";
+import { Heading5 } from "@/app/components/typography/Typography";
+import { Button, Form, Input, message, Select, Space, Upload, UploadFile } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import PreviewEmail from "@/app/components/OstivitiesModal/GuestMailPreviewModal";
 
-interface FieldType {}
-
 const EventsGuestListEmail = () => {
   const [form] = Form.useForm();
-  const [editorContent, setEditorContent] = useState("");
+  const [editorContent, setEditorContent] = useState<string>("Your dynamic message here");
   const [recipientType, setRecipientType] = useState<string>("all");
   const [selectedTickets, setSelectedTickets] = useState<string[]>([]);
   const [selectedAttendees, setSelectedAttendees] = useState<string[]>([]);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const [guestName, setGuestName] = useState<string>("John Doe"); // Define the guest name here
+  const [eventName, setEventName] = useState<string>("Awesome Event"); // Define the event name here
 
   const handleEditorChange = (content: string) => {
     setEditorContent(content);
   };
 
-  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+  const onFinish = (values: any) => {
     return values;
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
+  const onFinishFailed = (errorInfo: any) => {
     return errorInfo;
   };
 
@@ -50,7 +51,6 @@ const EventsGuestListEmail = () => {
 
   const handleFileChange = ({ fileList: newFileList }: { fileList: UploadFile[] }) => {
     setFileList(newFileList);
-    // File upload success and removal messages
     const lastFile = newFileList[newFileList.length - 1];
     if (lastFile && lastFile.status === 'done') {
       message.success('File uploaded successfully!', 2);
@@ -60,12 +60,10 @@ const EventsGuestListEmail = () => {
     }
   };
 
-  // Function to handle modal open
   const showModal = () => {
     setIsModalOpen(true);
   };
 
-  // Function to handle modal close
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -74,7 +72,7 @@ const EventsGuestListEmail = () => {
     <EventDetailsComponent>
       <Space direction="vertical" size={"large"}>
         <Space direction="horizontal" align="start">
-          <Heading5 className="" content={"Email Guestlist"} />
+          <Heading5 content={"Email Guestlist"} />
         </Space>
         <Form
           name="basic"
@@ -86,7 +84,7 @@ const EventsGuestListEmail = () => {
           form={form}
         >
           <div className="grid grid-cols-2 gap-x-12">
-            <Form.Item<FieldType>
+            <Form.Item
               label="Sender Name"
               name="senderName"
               rules={[{ required: true, message: "Please input your sender name!" }]}
@@ -95,7 +93,7 @@ const EventsGuestListEmail = () => {
               <Input placeholder="Enter sender name" />
             </Form.Item>
 
-            <Form.Item<FieldType>
+            <Form.Item
               label="Reply To"
               name="replyTo"
               rules={[{ required: true, message: "Please input your reply email!" }]}
@@ -104,7 +102,7 @@ const EventsGuestListEmail = () => {
               <Input placeholder="Enter reply email" />
             </Form.Item>
 
-            <Form.Item<FieldType>
+            <Form.Item
               label="Recipients"
               name="recipients"
               rules={[{ required: true, message: "Please select recipient type!" }]}
@@ -117,7 +115,7 @@ const EventsGuestListEmail = () => {
               </Select>
             </Form.Item>
 
-            <Form.Item<FieldType>
+            <Form.Item
               label="Email Subject"
               name="subject"
               rules={[{ required: true, message: "Please input email subject!" }]}
@@ -128,7 +126,7 @@ const EventsGuestListEmail = () => {
           </div>
 
           {recipientType === "ticket" && (
-            <Form.Item<FieldType>
+            <Form.Item
               label="Select Tickets"
               name="selectedTickets"
               style={{ marginBottom: "8px" }}
@@ -146,7 +144,7 @@ const EventsGuestListEmail = () => {
           )}
 
           {recipientType === "selected" && (
-            <Form.Item<FieldType>
+            <Form.Item
               label="Select Attendees"
               name="selectedAttendees"
               style={{ marginBottom: "8px" }}
@@ -177,7 +175,7 @@ const EventsGuestListEmail = () => {
             </Form.Item>
           )}
 
-          <Form.Item<FieldType>
+          <Form.Item
             label="Attachments"
             name="attachments"
             style={{ marginBottom: "8px" }}
@@ -204,15 +202,15 @@ const EventsGuestListEmail = () => {
           </div>
           <br />
           <div className="flex flex-row justify-center space-x-4 mt-8">
-          <Button
-  type="default"
-  size={"large"}
-  htmlType="button"
-  className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold equal-width-button"
-  onClick={() => setIsModalOpen(true)} // Open modal on click
->
-  Preview
-</Button>
+            <Button
+              type="default"
+              size={"large"}
+              htmlType="button"
+              className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold equal-width-button"
+              onClick={showModal} // Open modal on click
+            >
+              Preview
+            </Button>
             <Button
               type="primary"
               size={"large"}
@@ -227,16 +225,16 @@ const EventsGuestListEmail = () => {
 
         {/* Modal Component */}
         {isModalOpen && (
-  <PreviewEmail
-    open={isModalOpen}
-    onCancel={() => setIsModalOpen(false)} // Close modal on cancel
-    onClose={() => setIsModalOpen(false)} // Close modal on close
-    onOk={() => {
-      setIsModalOpen(false); // Close modal on OK
-      // Add any additional logic for the OK button here
-    }}
-  />
-)}
+          <PreviewEmail
+            open={isModalOpen}
+            onCancel={handleCancel}
+            onClose={handleCancel}
+            onOk={handleCancel}
+            messageContent={editorContent} // Pass the email content from the editor
+            guestName={guestName} // Pass the guest name
+            eventName={eventName} // Pass the event name
+          />
+        )}
       </Space>
     </EventDetailsComponent>
   );
