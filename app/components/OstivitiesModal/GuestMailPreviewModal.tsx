@@ -10,6 +10,7 @@ interface PreviewEmailProps extends IModal {
   eventName: string;
 }
 
+
 const PreviewEmail = ({
   open,
   onCancel,

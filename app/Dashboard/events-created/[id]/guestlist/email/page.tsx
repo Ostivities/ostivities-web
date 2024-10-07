@@ -4,8 +4,11 @@ import EmailEditor from "@/app/components/QuillEditor/EmailEditor";
 import { Heading5 } from "@/app/components/typography/Typography";
 import { Button, Form, Input, message, Select, Space, Upload, UploadFile } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PreviewEmail from "@/app/components/OstivitiesModal/GuestMailPreviewModal";
+import { useCookies } from "react-cookie";
+import { useGetUserEvent, useUpdateEvent } from "@/app/hooks/event/event.hook";
+import { useParams } from "next/navigation";
 
 const EventsGuestListEmail = () => {
   const [form] = Form.useForm();
@@ -16,8 +19,21 @@ const EventsGuestListEmail = () => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const [guestName, setGuestName] = useState<string>("John Doe"); // Define the guest name here
-  const [eventName, setEventName] = useState<string>("Awesome Event"); // Define the event name here
+  const [guestName, setGuestName] = useState<string>("John Doe");
+  const [eventName, setEventName] = useState<string>("Awesome Event");
+  const [cookies, setCookie, removeCookie] = useCookies(["event_id"]);
+  const { updateEvent } = useUpdateEvent();
+  const params = useParams<{ id: string }>();
+  const { getUserEvent } = useGetUserEvent(params?.id);
+  console.log(getUserEvent, "getUserEvent");
+  const eventDetails = getUserEvent?.data?.data?.data;
+
+  // Update eventName when eventDetails is available
+  useEffect(() => {
+    if (eventDetails && eventDetails.eventName) {
+      setEventName(eventDetails.eventName);
+    }
+  }, [eventDetails]);
 
   const handleEditorChange = (content: string) => {
     setEditorContent(content);
@@ -52,11 +68,11 @@ const EventsGuestListEmail = () => {
   const handleFileChange = ({ fileList: newFileList }: { fileList: UploadFile[] }) => {
     setFileList(newFileList);
     const lastFile = newFileList[newFileList.length - 1];
-    if (lastFile && lastFile.status === 'done') {
-      message.success('File uploaded successfully!', 2);
+    if (lastFile && lastFile.status === "done") {
+      message.success("File uploaded successfully!", 2);
     }
     if (newFileList.length < fileList.length) {
-      message.success('File removed successfully.', 2);
+      message.success("File removed successfully.", 2);
     }
   };
 
@@ -126,16 +142,8 @@ const EventsGuestListEmail = () => {
           </div>
 
           {recipientType === "ticket" && (
-            <Form.Item
-              label="Select Tickets"
-              name="selectedTickets"
-              style={{ marginBottom: "8px" }}
-            >
-              <Select
-                mode="multiple"
-                placeholder="Select tickets"
-                onChange={handleTicketTypeChange}
-              >
+            <Form.Item label="Select Tickets" name="selectedTickets" style={{ marginBottom: "8px" }}>
+              <Select mode="multiple" placeholder="Select tickets" onChange={handleTicketTypeChange}>
                 <Select.Option value="ticketType1">Ticket Type 1</Select.Option>
                 <Select.Option value="ticketType2">Ticket Type 2</Select.Option>
                 <Select.Option value="ticketType3">Ticket Type 3</Select.Option>
@@ -144,11 +152,7 @@ const EventsGuestListEmail = () => {
           )}
 
           {recipientType === "selected" && (
-            <Form.Item
-              label="Select Attendees"
-              name="selectedAttendees"
-              style={{ marginBottom: "8px" }}
-            >
+            <Form.Item label="Select Attendees" name="selectedAttendees" style={{ marginBottom: "8px" }}>
               <Input.Search
                 placeholder="Search and select attendees"
                 onSearch={handleAttendeeSearch}
@@ -175,17 +179,13 @@ const EventsGuestListEmail = () => {
             </Form.Item>
           )}
 
-          <Form.Item
-            label="Attachments"
-            name="attachments"
-            style={{ marginBottom: "8px" }}
-          >
+          <Form.Item label="Attachments" name="attachments" style={{ marginBottom: "8px" }}>
             <Upload
               fileList={fileList}
               onChange={handleFileChange}
               beforeUpload={() => false}
               itemRender={(originNode) => (
-                <div className="ant-upload-list-item" style={{ display: 'flex', alignItems: '' }}>
+                <div className="ant-upload-list-item" style={{ display: 'flex', alignItems: 'center' }}>
                   {originNode}
                 </div>
               )}
@@ -195,10 +195,7 @@ const EventsGuestListEmail = () => {
           </Form.Item>
 
           <div className="mb-4 pb-12 w-full">
-            <EmailEditor
-              initialValue="<p>Write your email here!</p>"
-              onChange={handleEditorChange}
-            />
+            <EmailEditor initialValue="<p>Write your email here!</p>" onChange={handleEditorChange} />
           </div>
           <br />
           <div className="flex flex-row justify-center space-x-4 mt-8">
@@ -240,4 +237,4 @@ const EventsGuestListEmail = () => {
   );
 };
 
-export default EventsGuestListEmail;
+export default EventsGuestListEmail
