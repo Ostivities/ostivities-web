@@ -3,8 +3,9 @@ import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import EmailEditor from "@/app/components/QuillEditor/EmailEditor";
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 import { Button, Form, FormProps, Input, message, Select, Space, Upload, UploadFile } from "antd";
-import { UploadOutlined, DeleteOutlined } from "@ant-design/icons";
+import { UploadOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
+import PreviewEmail from "@/app/components/OstivitiesModal/GuestMailPreviewModal";
 
 interface FieldType {}
 
@@ -15,6 +16,7 @@ const EventsGuestListEmail = () => {
   const [selectedTickets, setSelectedTickets] = useState<string[]>([]);
   const [selectedAttendees, setSelectedAttendees] = useState<string[]>([]);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
 
   const handleEditorChange = (content: string) => {
     setEditorContent(content);
@@ -30,8 +32,7 @@ const EventsGuestListEmail = () => {
 
   const handleRecipientTypeChange = (value: string) => {
     setRecipientType(value);
-    // Reset selections when recipient type changes
-    setSelectedTickets([]);
+    setSelectedTickets([]); // Reset selections when recipient type changes
     setSelectedAttendees([]);
   };
 
@@ -41,8 +42,6 @@ const EventsGuestListEmail = () => {
 
   const handleAttendeeSearch = (value: string) => {
     // Simulate fetching attendees based on search value
-    // Replace with actual fetching logic
-    // For example: fetchAttendees(value).then(data => setAttendees(data));
   };
 
   const handleSelectAttendee = (value: string) => {
@@ -51,17 +50,24 @@ const EventsGuestListEmail = () => {
 
   const handleFileChange = ({ fileList: newFileList }: { fileList: UploadFile[] }) => {
     setFileList(newFileList);
-
-    // Check if a file was added
+    // File upload success and removal messages
     const lastFile = newFileList[newFileList.length - 1];
     if (lastFile && lastFile.status === 'done') {
-      message.success('File uploaded successfully!', 2); // 2 seconds duration
+      message.success('File uploaded successfully!', 2);
     }
-
-    // Check if a file was removed
     if (newFileList.length < fileList.length) {
-      message.success('File removed successfully.', 2); // 2 seconds duration
+      message.success('File removed successfully.', 2);
     }
+  };
+
+  // Function to handle modal open
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  // Function to handle modal close
+  const handleCancel = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -83,9 +89,7 @@ const EventsGuestListEmail = () => {
             <Form.Item<FieldType>
               label="Sender Name"
               name="senderName"
-              rules={[
-                { required: true, message: "Please input your sender name!" },
-              ]}
+              rules={[{ required: true, message: "Please input your sender name!" }]}
               style={{ marginBottom: "8px" }}
             >
               <Input placeholder="Enter sender name" />
@@ -94,9 +98,7 @@ const EventsGuestListEmail = () => {
             <Form.Item<FieldType>
               label="Reply To"
               name="replyTo"
-              rules={[
-                { required: true, message: "Please input your reply email!" },
-              ]}
+              rules={[{ required: true, message: "Please input your reply email!" }]}
               style={{ marginBottom: "8px" }}
             >
               <Input placeholder="Enter reply email" />
@@ -105,15 +107,10 @@ const EventsGuestListEmail = () => {
             <Form.Item<FieldType>
               label="Recipients"
               name="recipients"
-              rules={[
-                { required: true, message: "Please select recipient type!" },
-              ]}
+              rules={[{ required: true, message: "Please select recipient type!" }]}
               style={{ marginBottom: "8px" }}
             >
-              <Select
-                placeholder="Select recipient type"
-                onChange={handleRecipientTypeChange}
-              >
+              <Select placeholder="Select recipient type" onChange={handleRecipientTypeChange}>
                 <Select.Option value="all">All attendees</Select.Option>
                 <Select.Option value="ticket">Guestlist by ticket</Select.Option>
                 <Select.Option value="selected">Selected attendees</Select.Option>
@@ -123,9 +120,7 @@ const EventsGuestListEmail = () => {
             <Form.Item<FieldType>
               label="Email Subject"
               name="subject"
-              rules={[
-                { required: true, message: "Please input email subject!" },
-              ]}
+              rules={[{ required: true, message: "Please input email subject!" }]}
               style={{ marginBottom: "8px" }}
             >
               <Input placeholder="Enter email subject" />
@@ -143,7 +138,6 @@ const EventsGuestListEmail = () => {
                 placeholder="Select tickets"
                 onChange={handleTicketTypeChange}
               >
-                {/* Replace with dynamic data */}
                 <Select.Option value="ticketType1">Ticket Type 1</Select.Option>
                 <Select.Option value="ticketType2">Ticket Type 2</Select.Option>
                 <Select.Option value="ticketType3">Ticket Type 3</Select.Option>
@@ -172,9 +166,7 @@ const EventsGuestListEmail = () => {
                       type="text"
                       size="small"
                       onClick={() =>
-                        setSelectedAttendees(
-                          selectedAttendees.filter((item) => item !== attendee)
-                        )
+                        setSelectedAttendees(selectedAttendees.filter((item) => item !== attendee))
                       }
                     >
                       Remove
@@ -193,10 +185,9 @@ const EventsGuestListEmail = () => {
             <Upload
               fileList={fileList}
               onChange={handleFileChange}
-              beforeUpload={() => false} // Prevent automatic upload
+              beforeUpload={() => false}
               itemRender={(originNode) => (
-                <div className="ant-upload-list-item" 
-                style={{ display: 'flex', alignItems: '' }}>
+                <div className="ant-upload-list-item" style={{ display: 'flex', alignItems: '' }}>
                   {originNode}
                 </div>
               )}
@@ -211,18 +202,17 @@ const EventsGuestListEmail = () => {
               onChange={handleEditorChange}
             />
           </div>
-
-          <div className="pt-3 flex flex-row">   
-            </div>
+          <br />
           <div className="flex flex-row justify-center space-x-4 mt-8">
           <Button
-              type="default"
-              size={"large"}
-              htmlType="button"
-              className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
-            >
-              Preview
-            </Button>
+  type="default"
+  size={"large"}
+  htmlType="button"
+  className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold equal-width-button"
+  onClick={() => setIsModalOpen(true)} // Open modal on click
+>
+  Preview
+</Button>
             <Button
               type="primary"
               size={"large"}
@@ -234,6 +224,19 @@ const EventsGuestListEmail = () => {
             </Button>
           </div>
         </Form>
+
+        {/* Modal Component */}
+        {isModalOpen && (
+  <PreviewEmail
+    open={isModalOpen}
+    onCancel={() => setIsModalOpen(false)} // Close modal on cancel
+    onClose={() => setIsModalOpen(false)} // Close modal on close
+    onOk={() => {
+      setIsModalOpen(false); // Close modal on OK
+      // Add any additional logic for the OK button here
+    }}
+  />
+)}
       </Space>
     </EventDetailsComponent>
   );

@@ -309,7 +309,7 @@ export default function PublishEvent(): JSX.Element {
       {isModalOpen && (
         <PublishSuccess
           open={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => setIsModalOpen(false)} 
         />
       )}
     </React.Fragment>
