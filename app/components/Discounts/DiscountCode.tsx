@@ -14,7 +14,7 @@ import {
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Heading5, Label } from "../typography/Typography"; // Ensure Label component is correctly imported
+import { Heading5, Label, Paragraph } from "../typography/Typography"; // Ensure Label component is correctly imported
 import { useCreateDiscount } from "@/app/hooks/discount/discount.hook";
 import { DISCOUNT_TYPE, USAGE_LIMIT } from "@/app/utils/enums";
 import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
@@ -117,7 +117,15 @@ const DiscountCode = (): JSX.Element => {
     >
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
         <Space direction="vertical" size="small" style={{ width: "100%" }}>
-          <Heading5 content="Discount Code" />
+        <Heading5 className="" content={"Create Discount"} />
+          <Paragraph
+            className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
+            content={
+              "Generate discount codes and implement automatic discounts."
+            }
+            styles={{ fontWeight: "normal !important" }} 
+          /><br />
+
           <div className="grid grid-cols-2 gap-x-8">
             <Form.Item
               label={<Label content="Discount code" />} // Correct usage of Label component
@@ -322,7 +330,7 @@ const DiscountCode = (): JSX.Element => {
             </Form.Item>
           </div>
         </Space>
-      </Space>
+      </Space><br />
 
       <Space
         direction="horizontal"
@@ -360,7 +368,7 @@ const DiscountCode = (): JSX.Element => {
             // onClick={handleAddDiscount}
             loading={createDiscount.isPending}
           >
-            Add Discount
+            Create Discount
           </Button>
         </Form.Item>
       </Space>

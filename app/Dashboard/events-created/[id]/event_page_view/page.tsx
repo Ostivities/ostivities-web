@@ -134,8 +134,8 @@ const EventPageView = () => {
             content={
               "Update your event image here by clicking the camera icon (File size should not be more than 10MB)."
             }
-            styles={{ fontWeight: "normal !important" }}
-          />
+            styles={{ fontWeight: "normal !important" }} 
+          /><br />
         </Space>
         <div className="flex gap-12">
           <div className="relative w-[390px] h-[520px] rounded-[3.125rem] overflow-hidden">

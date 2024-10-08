@@ -9,7 +9,7 @@ import { dateFormat, timeFormat } from "@/app/utils/helper";
 import { useGetEventDiscount } from "@/app/hooks/discount/discount.hook";
 import { useRouter, useParams } from "next/navigation";
 import DeleteDiscount from "../OstivitiesModal/DeleteDiscount";
-import { Heading5, Label } from "../typography/Typography";
+import { Heading5, Label, Paragraph } from "../typography/Typography";
 
 const DiscountRecord = (): JSX.Element => {
   const [searchText, setSearchText] = useState("");
@@ -135,8 +135,18 @@ const DiscountRecord = (): JSX.Element => {
         id={selectedRowKeys}
         actionType={actionType}
       />
-      <Space direction="vertical" size={"large"} className="w-full">
-        <Heading5 className="pb-5" content={"Discount Code"} />
+
+<Space direction="vertical" size={"small"}>
+      <Heading5 className="" content={"Discounts "} />
+          <Paragraph
+            className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
+            content={
+              "Generate discount codes and implement automatic discounts."
+            }
+            styles={{ fontWeight: "normal !important" }} 
+          />
+    
+       
 
         <Space direction="vertical" size={"large"} className="w-full">
           <div className="flex flex-row items-center justify-end">

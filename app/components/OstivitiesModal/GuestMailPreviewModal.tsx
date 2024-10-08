@@ -111,7 +111,7 @@ const PreviewEmail = ({
 
         {/* Scrollable content with inline styles */}
         <div
-          className="mt-8 text-left"
+          className="mt-8 text-aligned"
           style={{
             overflowY: 'auto', // Enable vertical scrolling
             maxHeight: '600px', // Set the maximum height for content
@@ -119,13 +119,13 @@ const PreviewEmail = ({
             WebkitOverflowScrolling: 'touch', // Enable momentum scrolling on iOS
           }}
           onScroll={(e) => {
-            // Hide scrollbar for Chrome, Safari, and Opera
+            // Hide scrollbar for Chrome, Safari, Edge and Opera
             const target = e.currentTarget;
             target.style.overflowY = target.scrollHeight > target.clientHeight ? 'scroll' : 'hidden';
           }}
         >
           <div
-            className="w-full text-left"
+            className="w-full text-aligned"
             dangerouslySetInnerHTML={{ __html: htmlContent }}
           />
         </div>
