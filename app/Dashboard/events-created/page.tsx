@@ -4,11 +4,18 @@ import useFetch from "@/app/components/forms/create-events/auth";
 import Details from "@/app/components/forms/events-created/Details";
 import { PlusOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 function EventsCreated(): JSX.Element {
   const router = useRouter();
-  const {isLoggedIn} = useFetch() // Update this based on your authentication logic
+  const {isLoggedIn, loading} = useFetch() // Update this based on your authentication logic
+
+  useEffect(() => {
+    // Only attempt redirect if not loading
+    if (!loading && isLoggedIn === false) {
+      router.push('/login');
+    }
+  }, [isLoggedIn, loading, router]);
 
   const header = (
     <div className="flex-center justify-between w-full">

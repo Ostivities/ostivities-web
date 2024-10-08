@@ -3,7 +3,8 @@ import { HttpMethod } from "./enums";
 import { instance } from "./instance";
 import {
   ICreateEvent,
-  IDiscountDetails,
+  IDiscountCreate,
+  IDiscountData,
   IFormInput,
   ILogin,
   IResetPassword,
@@ -180,10 +181,10 @@ export class API_SERVICE {
     });
   }
 
-  static async _createDiscount(data: IDiscountDetails): Promise<AxiosResponse> {
-    const { event, ...rest } = data;
+  static async _createDiscount(data: IDiscountCreate): Promise<AxiosResponse> {
+    const { eventId, ...rest } = data;
     return await instance({
-      url: `/discount/create_discount/${event}`,
+      url: `/discount/create/${eventId}`,
       method: HttpMethod.POST,
       data: { ...rest },
     });

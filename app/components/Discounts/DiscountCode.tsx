@@ -4,6 +4,7 @@ import {
   DatePicker,
   Form,
   FormProps,
+  GetProps,
   Input,
   InputNumber,
   Select,
@@ -11,19 +12,73 @@ import {
   message,
   notification,
 } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { Heading5, Label } from "../typography/Typography"; // Ensure Label component is correctly imported
+import { useCreateDiscount } from "@/app/hooks/discount/discount.hook";
+import { DISCOUNT_TYPE, USAGE_LIMIT } from "@/app/utils/enums";
+import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
+import { useProfile } from "@/app/hooks/auth/auth.hook";
+import {
+  IDiscountData,
+  IDiscountCreate,
+  ITicketDetails,
+} from "@/app/utils/interface";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+
+
+type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 
 interface FieldType {}
 
 const DiscountCode = (): JSX.Element => {
   const { toggleDiscount } = useDiscount();
   const [form] = Form.useForm();
-  const [ticketApplicable, setTicketApplicable] = useState("All Tickets");
+  const [ticketApplicable, setTicketApplicable] = useState("");
   const [discountType, setDiscountType] = useState("");
+  const [selectedTickets, setSelectedTickets] = useState<string[]>([]);
+  const params = useParams<{ id: string }>();
+  const router = useRouter();
+  const { createDiscount } = useCreateDiscount();
+  const { profile } = useProfile();
+  const { getTickets } = useGetEventTickets(params?.id);
+  const ticketData = getTickets?.data?.data?.data;
+  // console.log(ticketData, "ticketData");
+  // console.log(selectedTickets, "selectedTickets");
+  // console.log(ticketApplicable, "ticketApplicable")
+  
+  dayjs.extend(customParseFormat);
 
-  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    return values;
+
+  const disabledDate: RangePickerProps["disabledDate"] = (current) => {
+    // Can not select days before today and today
+    return current && current < dayjs().startOf("day");
+  };
+
+  useEffect(() => {
+    if (ticketApplicable === "All Tickets") {
+      console.log("effect");
+      // Set selected tickets to all ticket IDs
+      setSelectedTickets(ticketData.map((ticket: ITicketDetails) => ticket.id));
+    }
+  }, [ticketApplicable, ticketData]);
+
+  const onFinish: FormProps<IDiscountData>["onFinish"] = async (values) => {
+    // return console.log(values, "values");
+    const { discountValue, ticketApplicable, ...rest } = values;
+
+    const response = await createDiscount.mutateAsync({
+      ...rest,
+      event: params?.id,
+      eventId: params?.id,
+      user: profile?.data?.data?.data?.id,
+    })
+
+    if(response.status === 201) {
+      router.push(`/Dashboard/events-created/${params?.id}/tickets/discounts`);
+    }
   };
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
@@ -39,16 +94,19 @@ const DiscountCode = (): JSX.Element => {
   const handleDiscountTypeChange = (value: string) => {
     setDiscountType(value);
   };
+  const handleTicketTypeChange = (value: string[]) => {
+    setSelectedTickets(value);
+  };
 
   const handleAddDiscount = () => {
-    message.success('Your discount code has been successfully created');
-    
+    message.success("Your discount code has been successfully created");
+
     // Proceed with the discount creation logic, e.g., saving the discount and moving to the next page
     toggleDiscount("Discount_Record");
   };
 
   return (
-    <Form
+    <Form<IDiscountData>
       form={form}
       name="basic"
       onFinish={onFinish}
@@ -82,17 +140,24 @@ const DiscountCode = (): JSX.Element => {
                 placeholder="Select discount type"
                 onChange={handleDiscountTypeChange}
               >
-                <Select.Option value="Percentage">Percentage Discount</Select.Option>
-                <Select.Option value="Fixed Value">Fixed Value Discount</Select.Option>
+                <Select.Option value={DISCOUNT_TYPE.PERCENTAGE}>
+                  Percentage Discount
+                </Select.Option>
+                <Select.Option value={DISCOUNT_TYPE.FIXED}>
+                  Fixed Value Discount
+                </Select.Option>
               </Select>
             </Form.Item>
 
-            {discountType === "Percentage" && (
+            {discountType === DISCOUNT_TYPE.PERCENTAGE && (
               <Form.Item
                 label={<Label content="Discount Value" />} // Correct usage of Label component
                 name="discountValue"
                 rules={[
-                  { required: true, message: "Please input the discount value!" },
+                  {
+                    required: true,
+                    message: "Please input the discount value!",
+                  },
                 ]}
               >
                 <InputNumber
@@ -101,17 +166,20 @@ const DiscountCode = (): JSX.Element => {
                   min={0}
                   max={100}
                   formatter={(value) => `${value}%`}
-                  parser={(value) => value?.replace('%', '') as any}
+                  parser={(value) => value?.replace("%", "") as any}
                 />
               </Form.Item>
             )}
 
-            {discountType === "Fixed Value" && (
+            {discountType === DISCOUNT_TYPE.FIXED && (
               <Form.Item
                 label={<Label content="Discount Value" />} // Correct usage of Label component
                 name="discountValue"
                 rules={[
-                  { required: true, message: "Please input the discount value!" },
+                  {
+                    required: true,
+                    message: "Please input the discount value!",
+                  },
                 ]}
               >
                 <InputNumber
@@ -140,26 +208,58 @@ const DiscountCode = (): JSX.Element => {
                 placeholder="Select ticket applicable"
                 onChange={handleTicketApplicableChange}
               >
-                <Select.Option value="All Tickets">All Tickets In The Current Event</Select.Option>
+                <Select.Option value="All Tickets">
+                  All Tickets In The Current Event
+                </Select.Option>
                 <Select.Option value="Specific Ticket Types">
                   Specific Ticket Types
                 </Select.Option>
               </Select>
             </Form.Item>
 
+            {ticketApplicable === "All Tickets" && (
+              <Form.Item
+                style={{ display: "none" }} // Optionally hide the field
+                label={<Label content="All Tickets" />}
+                name="ticket"
+                initialValue={ticketData?.map(
+                  (ticket: ITicketDetails) => ticket.id
+                )} // Automatically set the initial value to all ticket IDs
+              >
+                <Select
+                  mode="multiple"
+                  placeholder="Select ticket"
+                  value={ticketData?.map((ticket: ITicketDetails) => ticket.id)} // Automatically select all tickets
+                  disabled // Disable input when "All Tickets" is selected
+                >
+                  {ticketData?.map((ticket: ITicketDetails) => (
+                    <Select.Option key={ticket.id} value={ticket.id}>
+                      {ticket.ticketName}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            )}
+
             {ticketApplicable === "Specific Ticket Types" && (
               <Form.Item
                 label={<Label content="Select Ticket" />} // Correct usage of Label component
-                name="selectTicket"
+                name="ticket"
                 rules={[
                   { required: true, message: "Please select the ticket!" },
                 ]}
               >
-                <Select placeholder="Select ticket">
+                <Select
+                  mode="multiple"
+                  placeholder="Select ticket"
+                  onChange={handleTicketTypeChange}
+                >
                   {/* Map through your created tickets here */}
-                  <Select.Option value="Ticket 1">Ticket 1</Select.Option>
-                  <Select.Option value="Ticket 2">Ticket 2</Select.Option>
-                  <Select.Option value="Ticket 3">Ticket 3</Select.Option>
+                  {ticketData?.map((ticket: ITicketDetails) => (
+                    <Select.Option key={ticket.id} value={ticket.id}>
+                      {ticket.ticketName}
+                    </Select.Option>
+                  ))}
                 </Select>
               </Form.Item>
             )}
@@ -176,14 +276,18 @@ const DiscountCode = (): JSX.Element => {
               ]}
             >
               <Select placeholder="Select usage limit">
-                <Select.Option value="Unlimited">Unlimited</Select.Option>
-                <Select.Option value="Useable Once">Useable Once</Select.Option>
+                <Select.Option value={USAGE_LIMIT.MULTIPLE}>
+                  Unlimited
+                </Select.Option>
+                <Select.Option value={USAGE_LIMIT.ONCE}>
+                  Useable Once
+                </Select.Option>
               </Select>
             </Form.Item>
 
             <Form.Item
               label={<Label content="End Date & Time" />} // Correct usage of Label component
-              name="endDate"
+              name="endDateAndTime"
               rules={[
                 {
                   required: true,
@@ -195,12 +299,13 @@ const DiscountCode = (): JSX.Element => {
                 showTime
                 format="YYYY-MM-DD HH:mm:ss"
                 style={{ width: "100%", height: "33px" }}
+                disabledDate={disabledDate}
               />
             </Form.Item>
 
             <Form.Item
               label={<Label content="Start Date & Time" />} // Correct usage of Label component
-              name="startDate"
+              name="startDateAndTime"
               rules={[
                 {
                   required: true,
@@ -212,6 +317,7 @@ const DiscountCode = (): JSX.Element => {
                 showTime
                 format="YYYY-MM-DD HH:mm:ss"
                 style={{ width: "100%", height: "33px" }}
+                disabledDate={disabledDate}
               />
             </Form.Item>
           </div>
@@ -240,7 +346,7 @@ const DiscountCode = (): JSX.Element => {
               borderRadius: "16px",
               fontFamily: "BricolageGrotesqueMedium",
             }}
-            onClick={() => toggleDiscount("Discount")}
+            // onClick={() => toggleDiscount("Discount")}
           >
             Cancel
           </Button>
@@ -248,10 +354,11 @@ const DiscountCode = (): JSX.Element => {
         <Form.Item>
           <Button
             type="default"
-            htmlType="button"
+            htmlType="submit"
             size="large"
             className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
-            onClick={handleAddDiscount}
+            // onClick={handleAddDiscount}
+            loading={createDiscount.isPending}
           >
             Add Discount
           </Button>

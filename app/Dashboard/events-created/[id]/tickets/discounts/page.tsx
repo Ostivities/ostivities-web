@@ -7,12 +7,11 @@ import { useDiscount } from "@/app/contexts/discount-context/DiscountContext";
 import React from "react";
 
 const EventTicketDiscount = () => {
-  const { discount } = useDiscount();
   return (
     <EventDetailsComponent>
-      {discount === "Discount" && <Discount />}
-      {discount === "Discount_Code" && <DiscountCode />}
-      {discount === "Discount_Record" && <DiscountRecord />}
+      {/* {discount === "Discount" && <Discount />} */}
+      {/* {discount === "Discount_Code" && <DiscountCode />} */}
+     <DiscountRecord />
     </EventDetailsComponent>
   );
 };

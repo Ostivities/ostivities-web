@@ -266,7 +266,7 @@ function Details(): JSX.Element {
         { name: "website", url: websiteUrl },
       ].filter((social) => social.url);
 
-      console.log(twitterUrl);
+      // console.log(twitterUrl);
 
       const response = await createEvent.mutateAsync({
         ...rest,
