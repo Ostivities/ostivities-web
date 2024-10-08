@@ -561,7 +561,7 @@ const EventDetail = () => {
                   disabled={eventdates < new Date().getTime()}
                 >
                   <Space>
-                    Register
+                  Get Tickets
                     <IoChevronDown />
                   </Space>
                 </Button>

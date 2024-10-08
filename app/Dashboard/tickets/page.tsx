@@ -84,16 +84,16 @@ const TicketsSelection = () => {
             </h3>
           </div>
           {/* Add Single Ticket Button before the first ticket */}
-          {/* <div className="mb-4">
+          {<div className="mb-4">
             <button
-              className="bg-OWANBE_PRY text-white px-3 py-2 rounded-md text-sm font-BricolageGrotesqueMedium"
+              className="bg-OWANBE_PRY text-white px-3 py-1 rounded-md text-sm font-BricolageGrotesqueMedium"
               style={{ borderRadius: '20px', fontSize: '12px' }} // Adjusted text size
             >
               Single Ticket
             </button>
-          </div> */}
-          
-          <div className="mt-10 flex flex-col gap-6">
+          </div>}
+
+          <div className="mt-5 flex flex-col gap-6">
             {ticketTypes.map((ticket, index) => (
               <div key={index}>
                 {/* Add Group Ticket Header Button before the third ticket */}

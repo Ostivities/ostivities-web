@@ -168,7 +168,7 @@ const ContactForm = () => {
 
               <br/>
               <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size">
-              Ticket 1 - Collective of 2- Regular.
+              Ticket 1 - Group of 2- Regular.
               </h3> 
               <Form
                 form={form}
@@ -214,7 +214,7 @@ const ContactForm = () => {
 
                 <br/>
               <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size">
-              Ticket 2 - Collective of 2- Regular.
+              Ticket 2 - Group of 2- Regular.
               </h3> 
               <Form
                 form={form}
