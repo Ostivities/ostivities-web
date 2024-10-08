@@ -431,12 +431,21 @@ export interface ITicketQuestions {
   is_compulsory: boolean;
 }
 
-export interface IDiscountDetails {
+export interface IDiscountData {
+  id: string;
   discountCode: string;
-  discountType: DISCOUNT_TYPE;  // Assuming you have multiple types like PERCENTAGE, FIXED, etc.
+  discountType: DISCOUNT_TYPE;
+  discountValue?: number;
   ticket: string[];  // Array of strings
   usageLimit: USAGE_LIMIT;  // Assuming usage can be "ONCE" or "MULTIPLE"
   startDateAndTime: string;  // Assuming it's an ISO string date, but consider using `Date` if you want stricter typing
   endDateAndTime: string;    // Same as above
+  ticketApplicable: string;  // Assuming it's a string, but consider using a more specific type
   event: string;
+}
+
+export interface IDiscountCreate extends Partial<IDiscountData> {
+  // event: string;
+  eventId: string;
+  user: string;
 }

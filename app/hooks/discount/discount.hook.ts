@@ -1,14 +1,14 @@
 import { API_SERVICE } from "@/app/utils/service";
 import { useMutation, useQuery, } from "@tanstack/react-query";
 import { CREATE_DISCOUNT, GET_EVENT_DISCOUNT, GET_TICKET_DISCOUNT } from "@/app/utils/constants";
-import { IDiscountDetails } from "@/app/utils/interface";
+import { IDiscountCreate, IDiscountData } from "@/app/utils/interface";
 import { AxiosError, AxiosResponse } from "axios";
 import { errorFormatter, successFormatter } from "@/app/utils/helper";
 
 
 export const useCreateDiscount = () => {
     const createDiscount = useMutation({
-        mutationFn: (data: IDiscountDetails) => {
+        mutationFn: (data: IDiscountCreate) => {
         return API_SERVICE._createDiscount(data);
         },
         mutationKey: [CREATE_DISCOUNT],

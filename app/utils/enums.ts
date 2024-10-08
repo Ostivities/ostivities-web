@@ -65,5 +65,5 @@ export enum DISCOUNT_TYPE {
 
 export enum USAGE_LIMIT {
   ONCE = 'ONCE',
-  MULTIPLE = 'MULTIPLE',
+  MULTIPLE = 'UN_LIMITED',
 }

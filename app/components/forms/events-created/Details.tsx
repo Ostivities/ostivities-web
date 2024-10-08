@@ -22,6 +22,7 @@ import { dateFormat, timeFormat } from "@/app/utils/helper";
 import { PUBLISH_TYPE } from "@/app/utils/enums";
 
 
+
 const { Search } = Input;
 
 const EventsCreatedTable: React.FC = () => {
