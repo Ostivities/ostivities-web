@@ -101,7 +101,7 @@ const TicketsSelection = () => {
           {/* Add Single Ticket Button before the first ticket */}
           <div className="mb-4">
             <button
-              className="bg-OWANBE_PRY text-white px-3 py-2 rounded-md text-sm font-BricolageGrotesqueMedium"
+              className="bg-OWANBE_PRY text-white px-3 py-1 rounded-md text-sm font-BricolageGrotesqueMedium"
               style={{ borderRadius: '20px', fontSize: '12px' }} // Adjusted text size
             >
               Single Ticket
