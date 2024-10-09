@@ -53,6 +53,7 @@ import { getUsernameFromUrl } from "@/app/utils/helper";
 import dayjs from "dayjs";
 import axios from "axios";
 import useFetch from "@/app/components/forms/create-events/auth";
+import { RangePickerProps } from "antd/es/date-picker";
 
 interface FieldType {}
 
@@ -332,6 +333,11 @@ const AboutEvent = () => {
       <LocationSearch onSelectLocation={handleSelectLocation} />
     </div>
   );
+
+  const disabledDate: RangePickerProps["disabledDate"] = (current) => {
+    // Can not select days before today and today
+    return current && current < dayjs().startOf("day");
+  };
 
   return (
     <EventDetailsComponent>
@@ -657,7 +663,7 @@ const AboutEvent = () => {
                       content={
                         <span>
                           Upload Supporting Doc{" "}
-                          <span className="optional-text">(optional)</span>
+                          <span className="optional-text">(optional)</span> 
                         </span>
                       }
                       htmlFor="supportingDocument"
@@ -843,6 +849,7 @@ const AboutEvent = () => {
                             showTime
                             format="YYYY-MM-DD HH:mm:ss"
                             style={{ width: "100%", height: "33px" }}
+                            disabledDate={disabledDate}
                           />
                         )}
                       />
@@ -861,6 +868,7 @@ const AboutEvent = () => {
                             showTime
                             format="YYYY-MM-DD HH:mm:ss"
                             style={{ width: "100%", height: "33px" }}
+                            disabledDate={disabledDate}
                           />
                         )}
                       />
@@ -1079,6 +1087,7 @@ const AboutEvent = () => {
                               showTime
                               format="YYYY-MM-DD HH:mm:ss"
                               style={{ width: "100%", height: "33px" }}
+                              disabledDate={disabledDate}
                             />
                           )}
                         />
@@ -1097,6 +1106,7 @@ const AboutEvent = () => {
                               showTime
                               format="YYYY-MM-DD HH:mm:ss"
                               style={{ width: "100%", height: "33px" }}
+                              disabledDate={disabledDate}
                             />
                           )}
                         />

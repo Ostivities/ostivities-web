@@ -6,7 +6,7 @@ import { MenuItemType } from "antd/es/menu/interface";
 import { ColumnsType } from "antd/es/table";
 import React, { useState } from "react";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
-import { useGetEventDiscount } from "@/app/hooks/discount/discount.hook";
+import { useGetEventDiscount } from "@/app/hooks/discount/discount.hook"; 
 import { useRouter, useParams } from "next/navigation";
 import DeleteDiscount from "../OstivitiesModal/DeleteDiscount";
 import { Heading5, Label, Paragraph } from "../typography/Typography";
@@ -166,6 +166,8 @@ const DiscountRecord = (): JSX.Element => {
           </div>
 
           <Table
+          loading={getEventDiscount?.isFetching} 
+
             rowSelection={{
               selectedRowKeys,
               onChange: (keys) => setSelectedRowKeys(keys),
