@@ -60,7 +60,7 @@ const TicketsSelection = () => {
   }[]>([]);
 
   console.log(ticketDetails, "ticketDetails");
-  
+
   useEffect(() => {
     // When ticketData is updated, re-initialize selectedTickets
     if (ticketData?.length) {
@@ -105,7 +105,8 @@ const TicketsSelection = () => {
   return (
     <DashboardLayout title={title} isLoggedIn>
       <section className="flex gap-12">
-        <section className="flex-1 pr-17">
+        {/* Scrollable content container */}
+        <section className="flex-1 pr-1 pl-3 scrollable-content">
           <div className="flex-center justify-between">
             <div className="flex-center gap-3">
               <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
@@ -149,7 +150,7 @@ const TicketsSelection = () => {
               Single Ticket
             </button>
           </div>
-          
+
           <div className="mt-5 flex flex-col gap-6">
             {ticketData?.map((ticket: ITicketDetails, index: any) => (
               <div key={index}>
@@ -167,27 +168,27 @@ const TicketsSelection = () => {
                 <div className="card-shadow flex justify-between items-start">
                   <div>
                     {ticket?.groupSize ? (
-                       <h2 className="text-lg font-BricolageGrotesqueMedium" style={{ fontWeight: 500, fontSize: '18px' }}>Group Of {ticket?.groupSize} - {ticket.ticketName}</h2>
+                      <h2 className="text-lg font-BricolageGrotesqueMedium" style={{ fontWeight: 500, fontSize: '18px' }}>Group Of {ticket?.groupSize} - {ticket.ticketName}</h2>
 
-                    ): (
+                    ) : (
                       <h2 className="text-lg font-BricolageGrotesqueMedium" style={{ fontWeight: 500, fontSize: '18px' }}>{ticket.ticketName}</h2>
 
                     )}
                     <h3>
-                      {ticket.ticketPrice ? 
+                      {ticket.ticketPrice ?
                         (
                           <>
-                          {ticket.groupPrice ? (
-                            <>
-                              <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>₦{ticket.groupPrice.toLocaleString()}</span>{' '}
-                              <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including ₦{ticket.groupPrice.toLocaleString()} fee</span>
-                            </>
-                          ): (
-                            <>
-                              <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>₦{ticket.ticketPrice.toLocaleString()}</span>{' '}
-                              <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including ₦{ticket.ticketPrice.toLocaleString()} fee</span>
-                            </>
-                          )}
+                            {ticket.groupPrice ? (
+                              <>
+                                <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>₦{ticket.groupPrice.toLocaleString()}</span>{' '}
+                                <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including ₦{ticket.groupPrice.toLocaleString()} fee</span>
+                              </>
+                            ) : (
+                              <>
+                                <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>₦{ticket.ticketPrice.toLocaleString()}</span>{' '}
+                                <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including ₦{ticket.ticketPrice.toLocaleString()} fee</span>
+                              </>
+                            )}
                           </>
                         ) : (
                           <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>Free</span>
@@ -195,14 +196,14 @@ const TicketsSelection = () => {
                       }
                     </h3>
                     <p className="text-s font-BricolageGrotesqueRegular" style={{ fontSize: '13px', color: 'black', marginTop: '17px' }}>
-  <ReadMoreHTML 
-    htmlContent={ticket.ticketDescription || ""} 
-    maxLength={100} 
-  />
-</p>
+                      <ReadMoreHTML
+                        htmlContent={ticket.ticketDescription || ""}
+                        maxLength={100}
+                      />
+                    </p>
 
                   </div>
-                  <div className="flex items-start gap-2" style={{ marginBlockStart: '10px'}}>
+                  <div className="flex items-start gap-2" style={{ marginBlockStart: '10px' }}>
                     <button
                       className="w-8 h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
                       onClick={() => handleDecrement(index)}
