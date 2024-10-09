@@ -99,16 +99,16 @@ const TicketsSelection = () => {
             </h3>
           </div>
           {/* Add Single Ticket Button before the first ticket */}
-          {/* <div className="mb-4">
+          <div className="mb-4">
             <button
               className="bg-OWANBE_PRY text-white px-3 py-2 rounded-md text-sm font-BricolageGrotesqueMedium"
               style={{ borderRadius: '20px', fontSize: '12px' }} // Adjusted text size
             >
               Single Ticket
             </button>
-          </div> */}
+          </div>
           
-          <div className="mt-10 flex flex-col gap-6">
+          <div className="mt-5 flex flex-col gap-6">
             {ticketData?.map((ticket: ITicketDetails, index: any) => (
               <div key={index}>
                 {/* Add Group Ticket Header Button before the third ticket */}
@@ -128,7 +128,7 @@ const TicketsSelection = () => {
                     <h3>
                       <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>{ticket.ticketPrice}</span>{' '}
                       {ticket.ticketPrice && (
-                        <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including {ticket.ticketPrice} fee</span>
+                        <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including #{ticket.ticketPrice} fee</span>
                       )}
                     </h3>
                     <p className="text-s font-BricolageGrotesqueRegular" style={{ fontSize: '12px', color: 'black', marginTop: '17px' }}>
