@@ -12,9 +12,16 @@ interface SummaryProps {
   continueBtn?: boolean;
   to?: string | any;
   paymentBtn?: boolean;
+  ticketDetails?: {
+    ticketName: string;
+    ticketPrice: number;
+    ticketFee: number;
+    ticketNumber: number;
+  }[];
+  eventName?: string;
 }
 
-const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
+const Summary = ({ continueBtn, to, paymentBtn, ticketDetails, eventName }: SummaryProps) => {
   const [showInput, setShowInput] = useState(false);
   const [discountApplied, setDiscountApplied] = useState(false);
   const [discountCode, setDiscountCode] = useState("");
@@ -46,7 +53,7 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
             Event name
           </h3>
           <span className="text-OWANBE_FADE text-s font-BricolageGrotesqueRegular">
-            Concert with Davido
+            {eventName}
           </span>
         </div>
         <div className="mt-3">
@@ -124,6 +131,7 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
                 {/* Adjust this based on your calculation */}
               </div>
             </div>
+            
           </div>
           <div className="flex-center justify-between font-BricolageGrotesqueMedium text-2xl text-OWANBE_PRY my-6">
             <div>Total</div>

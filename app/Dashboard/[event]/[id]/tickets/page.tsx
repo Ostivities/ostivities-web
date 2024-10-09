@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
 import Summary from '@/app/components/Discovery/Summary';
 import Image from 'next/image';
@@ -44,17 +44,58 @@ const TicketsSelection = () => {
   ];
 
   // State to manage selected ticket counts
-  const [selectedTickets, setSelectedTickets] = useState([0, 0, 0]);
+  const [selectedTickets, setSelectedTickets] = useState<number[]>(
+    new Array(ticketData?.length).fill(0)
+  );
+  // const [we, setWe] = useState<number[]>(
+  //   new Array(ticketData?.length || 0).fill(0)
+  // );
+  console.log(selectedTickets, "selectedTickets")
+  const [ticketDetails, setTicketDetails] = useState<{
+    ticketName: string;
+    ticketPrice: number;
+    ticketFee: number;
+    ticketNumber: number;
+  }[]>([]);
+
+  console.log(ticketDetails, "ticketDetails");
+  
+  useEffect(() => {
+    // When ticketData is updated, re-initialize selectedTickets
+    if (ticketData?.length) {
+      setSelectedTickets(new Array(ticketData.length).fill(0));
+    }
+  }, [ticketData]);
 
   // Function to handle ticket increment
   const handleIncrement = (index: number) => {
+    setTicketDetails((prevDetails) => {
+      const updatedDetails = [...prevDetails];
+      updatedDetails[index] = {
+        ticketName: ticketData[index]?.ticketName,
+        ticketPrice: ticketData[index]?.ticketPrice,
+        ticketFee: ticketData[index]?.ticketPrice,
+        ticketNumber: selectedTickets[index] + 1,
+      };
+      return updatedDetails;
+    });
     setSelectedTickets((prevTickets) =>
-      prevTickets.map((count, i) => (i === index ? count + 1 : count))
+      prevTickets.map((count: number, i: number) => (i === index ? count + 1 : count))
     );
   };
 
   // Function to handle ticket decrement
   const handleDecrement = (index: number) => {
+    setTicketDetails((prevDetails) => {
+      const updatedDetails = [...prevDetails];
+      updatedDetails[index] = {
+        ticketName: ticketData[index]?.ticketName,
+        ticketPrice: ticketData[index]?.ticketPrice,
+        ticketFee: ticketData[index]?.ticketPrice,
+        ticketNumber: selectedTickets[index] - 1,
+      };
+      return updatedDetails;
+    });
     setSelectedTickets((prevTickets) =>
       prevTickets.map((count, i) => (i === index && count > 0 ? count - 1 : count))
     );
@@ -101,7 +142,7 @@ const TicketsSelection = () => {
           {/* Add Single Ticket Button before the first ticket */}
           <div className="mb-4">
             <button
-              className="bg-OWANBE_PRY text-white px-3 py-2 rounded-md text-sm font-BricolageGrotesqueMedium"
+              className="bg-OWANBE_PRY text-white px-3 py-1 rounded-md text-sm font-BricolageGrotesqueMedium"
               style={{ borderRadius: '20px', fontSize: '12px' }} // Adjusted text size
             >
               Single Ticket
@@ -122,14 +163,35 @@ const TicketsSelection = () => {
                     </button>
                   </div>
                 )}
-                <div className="card-shadow flex justify-between items-center">
+                <div className="card-shadow flex justify-between items-start">
                   <div>
-                    <h2 className="text-lg font-BricolageGrotesqueMedium" style={{ fontWeight: 500, fontSize: '18px' }}>{ticket.ticketName}</h2>
+                    {ticket?.groupSize ? (
+                       <h2 className="text-lg font-BricolageGrotesqueMedium" style={{ fontWeight: 500, fontSize: '18px' }}>Group Of {ticket?.groupSize} - {ticket.ticketName}</h2>
+
+                    ): (
+                      <h2 className="text-lg font-BricolageGrotesqueMedium" style={{ fontWeight: 500, fontSize: '18px' }}>{ticket.ticketName}</h2>
+
+                    )}
                     <h3>
-                      <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>{ticket.ticketPrice}</span>{' '}
-                      {ticket.ticketPrice && (
-                        <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including #{ticket.ticketPrice} fee</span>
-                      )}
+                      {ticket.ticketPrice ? 
+                        (
+                          <>
+                          {ticket.groupPrice ? (
+                            <>
+                              <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>₦{ticket.groupPrice}</span>{' '}
+                              <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including ₦{ticket.ticketPrice} fee</span>
+                            </>
+                          ): (
+                            <>
+                              <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>₦{ticket.ticketPrice}</span>{' '}
+                              <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including ₦{ticket.ticketPrice} fee</span>
+                            </>
+                          )}
+                          </>
+                        ) : (
+                          <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>Free</span>
+                        )
+                      }
                     </h3>
                     <p className="text-s font-BricolageGrotesqueRegular" style={{ fontSize: '12px', color: 'black', marginTop: '17px' }}>
                       <div
@@ -138,7 +200,7 @@ const TicketsSelection = () => {
                       </div>
                     </p>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-start gap-2" style={{ marginBlockStart: '10px'}}>
                     <button
                       className="w-8 h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
                       onClick={() => handleDecrement(index)}
@@ -161,7 +223,7 @@ const TicketsSelection = () => {
             ))}
           </div>
         </section>
-        <Summary continueBtn to={`/Dashboard/${params?.event}/${params?.id}/contact-form`} />
+        <Summary eventName={eventDetails?.eventName} ticketDetails={ticketDetails} continueBtn to={`/Dashboard/${params?.event}/${params?.id}/contact-form`} />
       </section>
     </DashboardLayout>
   );
