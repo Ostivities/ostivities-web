@@ -11,6 +11,7 @@ import { useGetUserEvent } from "@/app/hooks/event/event.hook";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
 import "@/app/globals.css";
 import "@/app/scroll.css";
+import ReadMoreHTML from '@/app/components/ReadMoreHTML';
 
 const TicketsSelection = () => {
   const router = useRouter();
@@ -135,7 +136,7 @@ const TicketsSelection = () => {
           </div>
 
           <div className="pr-full mt-16">
-            <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueMedium my-4 custom-font-size">
+            <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueMedium my-8 custom-font-size">
               Choose one or more tickets and prepare for an extraordinary experience!
             </h3>
           </div>
@@ -178,13 +179,13 @@ const TicketsSelection = () => {
                           <>
                           {ticket.groupPrice ? (
                             <>
-                              <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>₦{ticket.groupPrice}</span>{' '}
-                              <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including ₦{ticket.ticketPrice} fee</span>
+                              <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>₦{ticket.groupPrice.toLocaleString()}</span>{' '}
+                              <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including ₦{ticket.groupPrice.toLocaleString()} fee</span>
                             </>
                           ): (
                             <>
-                              <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>₦{ticket.ticketPrice}</span>{' '}
-                              <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including ₦{ticket.ticketPrice} fee</span>
+                              <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>₦{ticket.ticketPrice.toLocaleString()}</span>{' '}
+                              <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including ₦{ticket.ticketPrice.toLocaleString()} fee</span>
                             </>
                           )}
                           </>
@@ -193,12 +194,13 @@ const TicketsSelection = () => {
                         )
                       }
                     </h3>
-                    <p className="text-s font-BricolageGrotesqueRegular" style={{ fontSize: '12px', color: 'black', marginTop: '17px' }}>
-                      <div
-                        dangerouslySetInnerHTML={{__html: ticket.ticketDescription  as string}}
-                      >
-                      </div>
-                    </p>
+                    <p className="text-s font-BricolageGrotesqueRegular" style={{ fontSize: '13px', color: 'black', marginTop: '17px' }}>
+  <ReadMoreHTML 
+    htmlContent={ticket.ticketDescription || ""} 
+    maxLength={100} 
+  />
+</p>
+
                   </div>
                   <div className="flex items-start gap-2" style={{ marginBlockStart: '10px'}}>
                     <button

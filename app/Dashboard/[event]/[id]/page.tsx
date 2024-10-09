@@ -539,7 +539,7 @@ const EventDetail = () => {
                 __html: eventDetails?.eventDetails as string,
               }}
             ></div> */}
-            <ReadMoreHTML htmlContent={eventDetails?.eventDetails || ""} maxLength={400} />
+            <ReadMoreHTML htmlContent={eventDetails?.eventDetails || ""} maxLength={400} /> 
             <div className="flex justify-center mt-12">
               <Dropdown
                 disabled={eventdates < new Date().getTime()}
