@@ -1,6 +1,7 @@
 import { message } from "antd";
 import { AxiosError, AxiosResponse } from "axios";
 import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
 
 export const generateRandomString = (length: number): string => {
   const characters =
@@ -12,6 +13,8 @@ export const generateRandomString = (length: number): string => {
   }
   return result;
 };
+
+dayjs.extend(advancedFormat);
 
 const eventNames = [
   "Music Concert",
@@ -129,7 +132,7 @@ export const errorFormatter = (error: AxiosError | any) => {
 };
 
 export const dateFormat = (text: string): string => {
-  return dayjs(text).format("YYYY-MM-DD") as string;
+  return dayjs(text).format("ddd, MMM Do YYYY") as string;
 };
 
 export const dateTimeFormat = (text: string): string => {
@@ -137,7 +140,7 @@ export const dateTimeFormat = (text: string): string => {
 };
 
 export const timeFormat = (text: string): string => {
-  return dayjs(text).format("h:mm:ss A");
+  return dayjs(text).format("h:mm A");
 };
 
 export const getUsernameFromUrl = (url: string): string =>

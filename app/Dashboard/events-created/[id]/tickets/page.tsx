@@ -11,7 +11,7 @@ import {
 import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
 import { ITicketCreate, ITicketDetails, SalesDataType } from "@/app/utils/interface";
 import { MenuOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Menu, Space, Table, Input } from "antd";
+import { Button, Dropdown, Menu, Space, Table, Input, message } from "antd";
 import { ColumnsType } from "antd/es/table";
 import React, { useState, useEffect, useMemo } from "react";
 import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
@@ -19,6 +19,8 @@ import { useCookies } from "react-cookie";
 import { useParams, useRouter } from "next/navigation";
 import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
 import useFetch from "@/app/components/forms/create-events/auth";
+import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
+
 
 // Currency formatter for Naira (₦)
 const formatCurrency = (amount: number) => {
@@ -223,7 +225,14 @@ const EventTickets = () => {
     };
   });
   // console.log(data, "data")
-  
+
+
+  const [isToggled, setIsToggled] = useState(false);
+
+const onChange = () => {
+  setIsToggled(!isToggled);
+};
+
 
   return (
     <React.Fragment>
@@ -268,18 +277,36 @@ const EventTickets = () => {
           </Space>
 
           <Space direction="vertical" size="large" style={{ width: "100%" }}>
-            <Button
-              type="primary"
-              size="large"
-              className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button float-end"
-              style={{
-                borderRadius: "20px",
-                fontFamily: "BricolageGrotesqueMedium", 
-              }}
-              onClick={() => setIsModalOpen(true)}
-            >
-              Add Tickets 
-            </Button>
+
+          <div className="flex flex-row items-center justify-between space-x-4 mt-8">
+  <div className="flex flex-row items-center space-x-2">
+    <ToggleSwitch 
+      isActive={isToggled} 
+      onToggle={(checked: boolean) => {
+        setIsToggled(checked); // Update the toggle state
+        onChange(); // Additional logic if necessary
+      }}
+      label="Registration toggle" // Provide the required label prop
+    />
+    <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
+      {isToggled ? 'Stop registration' : 'Start registration'}
+    </span>
+  </div>
+
+  <Button
+    type="primary"
+    size="large"
+    className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
+    style={{
+      borderRadius: "20px",
+      fontFamily: "BricolageGrotesqueMedium",
+    }}
+    onClick={() => setIsModalOpen(true)}
+  >
+    Add Tickets
+  </Button>
+</div>
+
             {/* <Input.Search
               placeholder="Search tickets"
               onSearch={handleSearch}

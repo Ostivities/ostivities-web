@@ -615,7 +615,7 @@ const AboutEvent = () => {
               control={control}
               render={({ field }) => (
                 <Space direction="vertical" size="small">
-                  <Label content="Custom URL" className="" htmlFor="eventURL" />
+                  <Label content="Event URL" className="" htmlFor="eventURL" /> 
 
                   <Space.Compact className="w-full">
                     <Input
@@ -625,8 +625,8 @@ const AboutEvent = () => {
                         borderBottomRightRadius: "0px !important",
                         color: "#000000",
                       }}
-                      defaultValue="https://ostivities.com/discover/"
-                      value="https://ostivities.com/discover/"
+                      defaultValue={discovery_url}
+                      value={discovery_url}
                       disabled
                     />
                     <Input
@@ -638,6 +638,9 @@ const AboutEvent = () => {
                       disabled={componentDisabled}
                       {...field}
                       placeholder="Enter your desired name"
+                      onChange={(e) => {
+                        field.onChange(e.target.value.replace(/\s+/g, "")); // Remove spaces as the user types
+                      }}
                     />
                   </Space.Compact>
                 </Space>
