@@ -1,5 +1,5 @@
 import React, { HTMLAttributeAnchorTarget } from "react";
-import { EXHIBITION_SPACE, TICKET_STOCK, USAGE_LIMIT, DISCOUNT_TYPE } from "./enums";
+import { EXHIBITION_SPACE, TICKET_STOCK, USAGE_LIMIT, DISCOUNT_TYPE, PAYMENT_METHOD } from "./enums";
 export enum ACCOUNT_TYPE {
   PERSONAL = "PERSONAL",
   ORGANISATION = "ORGANISATION",
@@ -432,10 +432,12 @@ export interface ITicketQuestions {
 }
 
 export interface IDiscountData {
+  key?: string;
   id: string;
   discountCode: string;
   discountType: DISCOUNT_TYPE;
   discountValue?: number;
+  uses?: string;
   ticket: string[];  // Array of strings
   usageLimit: USAGE_LIMIT;  // Assuming usage can be "ONCE" or "MULTIPLE"
   startDateAndTime: string;  // Assuming it's an ISO string date, but consider using `Date` if you want stricter typing
@@ -448,4 +450,24 @@ export interface IDiscountCreate extends Partial<IDiscountData> {
   // event: string;
   eventId: string;
   user: string;
+}
+
+export interface IGuestData {
+  ticket: string;
+  personal_information: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    terms_and_condition: boolean;
+    phoneNumber: boolean;
+  };
+  fees: number;
+  total_amount_paid: number;
+  discountCode?: string; // Optional field (fixed typo from original "disocuntCode")
+  quantity: number;
+  payment_method: PAYMENT_METHOD;
+}
+
+export interface IGuestCreate extends Partial<IGuestData> {
+  eventId: string;
 }

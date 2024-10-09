@@ -10,6 +10,7 @@ import { useGetEventDiscount } from "@/app/hooks/discount/discount.hook";
 import { useRouter, useParams } from "next/navigation";
 import DeleteDiscount from "../OstivitiesModal/DeleteDiscount";
 import { Heading5, Label, Paragraph } from "../typography/Typography";
+import { USAGE_LIMIT } from "@/app/utils/enums";
 
 const DiscountRecord = (): JSX.Element => {
   const [searchText, setSearchText] = useState("");
@@ -21,7 +22,7 @@ const DiscountRecord = (): JSX.Element => {
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const { getEventDiscount } = useGetEventDiscount(params?.id);
-  // console.log(getEventDiscount, "getEventDiscount");
+  console.log(selectedRowKeys, "selectedRowKeys");
   const eventDiscountDetails = getEventDiscount?.data?.data?.data;
   const GuestItems: MenuItemType[] = [
     {
@@ -79,6 +80,9 @@ const DiscountRecord = (): JSX.Element => {
         />
       ),
       dataIndex: "uses",
+      render: (text, record: IDiscountData) => {
+        return record?.uses === USAGE_LIMIT.MULTIPLE ? "Unlimited" : "Once";
+      }
       // sorter: (a, b) => a.uses.localeCompare(b.uses),
     },
     {
@@ -91,7 +95,7 @@ const DiscountRecord = (): JSX.Element => {
       dataIndex: "dateEnding",
       render: (text) => {
         return `${dateFormat(text)} ${timeFormat(text)}`;
-      }
+      },
       // sorter: (a, b) =>
       //   new Date(a.dateEnding).getTime() - new Date(b.dateEnding).getTime(),
     },
@@ -130,23 +134,19 @@ const DiscountRecord = (): JSX.Element => {
         onCancel={() => setIsShown(false)}
         onOk={() => {
           setIsShown(false);
-          getEventDiscount.refetch()
+          getEventDiscount.refetch();
         }}
         id={selectedRowKeys}
         actionType={actionType}
       />
 
-<Space direction="vertical" size={"small"}>
-      <Heading5 className="" content={"Discounts "} />
-          <Paragraph
-            className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
-            content={
-              "Generate discount codes and implement automatic discounts."
-            }
-            styles={{ fontWeight: "normal !important" }} 
-          />
-    
-       
+      <Space direction="vertical" size={"small"}>
+        <Heading5 className="" content={"Discounts "} />
+        <Paragraph
+          className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
+          content={"Generate discount codes and implement automatic discounts."}
+          styles={{ fontWeight: "normal !important" }}
+        />
 
         <Space direction="vertical" size={"large"} className="w-full">
           <div className="flex flex-row items-center justify-end">
@@ -169,6 +169,15 @@ const DiscountRecord = (): JSX.Element => {
             rowSelection={{
               selectedRowKeys,
               onChange: (keys) => setSelectedRowKeys(keys),
+            }}
+            onRow={(record, rowIndex) => {
+              return {
+                onClick: () => {
+                  if (record?.key !== undefined) {
+                    setSelectedRowKeys([record.key]);
+                  }
+                },
+              };
             }}
             columns={columns}
             dataSource={filteredData}

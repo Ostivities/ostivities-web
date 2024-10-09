@@ -6,6 +6,7 @@ import {
   IDiscountCreate,
   IDiscountData,
   IFormInput,
+  IGuestCreate,
   ILogin,
   IResetPassword,
   IResetToken,
@@ -207,6 +208,29 @@ export class API_SERVICE {
   static async _getTicketDiscount(id: string): Promise<AxiosResponse> {
     return await instance({
       url: `/discount/ticket/${id}`,
+      method: HttpMethod.GET,
+    });
+  }
+
+  static async _registerGuest(data: IGuestCreate): Promise<AxiosResponse> {
+    const {eventId, ...rest} = data;
+    return await instance({
+      url: `/guest/register/${eventId}`,
+      method: HttpMethod.POST,
+      data: { ...rest }
+    });
+  }
+
+  static async _getEventGuests(id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/guest/event/${id}`,
+      method: HttpMethod.GET,
+    });
+  }
+
+  static async _getTicketGuestd(id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/guest/ticket/${id}`,
       method: HttpMethod.GET,
     });
   }

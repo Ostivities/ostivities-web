@@ -45,7 +45,7 @@ const EventTicketTable = () => {
   const { getTickets } = useGetEventTickets(params?.id);
   const ticketData = getTickets?.data?.data?.data;
   // const {id, ...rest} = ticketData;
-  console.log(ticketData, "ticketData") 
+  // console.log(ticketData, "ticketData") 
   // console.log(duplicateData, "duplicateData")
 
   interface MenuItemType {

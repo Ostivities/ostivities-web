@@ -98,12 +98,7 @@ const DiscountCode = (): JSX.Element => {
     setSelectedTickets(value);
   };
 
-  const handleAddDiscount = () => {
-    message.success("Your discount code has been successfully created");
 
-    // Proceed with the discount creation logic, e.g., saving the discount and moving to the next page
-    toggleDiscount("Discount_Record");
-  };
 
   return (
     <Form<IDiscountData>
@@ -354,7 +349,7 @@ const DiscountCode = (): JSX.Element => {
               borderRadius: "16px",
               fontFamily: "BricolageGrotesqueMedium",
             }}
-            // onClick={() => toggleDiscount("Discount")}
+            onClick={() => router.push(`/Dashboard/events-created/${params?.id}/tickets/discounts`)}
           >
             Cancel
           </Button>
