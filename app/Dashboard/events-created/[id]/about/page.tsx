@@ -1087,6 +1087,7 @@ const AboutEvent = () => {
                               showTime
                               format="YYYY-MM-DD HH:mm:ss"
                               style={{ width: "100%", height: "33px" }}
+                              disabledDate={disabledDate}
                             />
                           )}
                         />
@@ -1105,6 +1106,7 @@ const AboutEvent = () => {
                               showTime
                               format="YYYY-MM-DD HH:mm:ss"
                               style={{ width: "100%", height: "33px" }}
+                              disabledDate={disabledDate}
                             />
                           )}
                         />
