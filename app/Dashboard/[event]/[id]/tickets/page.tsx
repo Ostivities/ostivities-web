@@ -106,7 +106,7 @@ const TicketsSelection = () => {
     <DashboardLayout title={title} isLoggedIn>
       <section className="flex gap-12">
         {/* Scrollable content container */}
-        <section className="flex-1 pr-1 pl-3 scrollable-content">
+        <section className="flex-1 pr-1 pl-3 pb-4 scrollable-content shadow-none">
           <div className="flex-center justify-between">
             <div className="flex-center gap-3">
               <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
