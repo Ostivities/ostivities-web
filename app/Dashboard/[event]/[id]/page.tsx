@@ -290,7 +290,7 @@ const EventDetail = () => {
   return (
     <DashboardLayout title={title} isLoggedIn>
       <section>
-        <div className="flex gap-12">
+        <div className="flex gap-10">
           <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
             <Image
               src={eventDetails?.eventImage}
@@ -469,7 +469,7 @@ const EventDetail = () => {
           <div className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-6">
             <div className="py-8">
               <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between items-center">
-                <h2 className="text-2xl font-BricolageGrotesqueMedium">
+                <h2 className="text-xl font-BricolageGrotesqueMedium">
                   {eventDetails?.eventName}
                 </h2>
 
@@ -539,7 +539,7 @@ const EventDetail = () => {
                 __html: eventDetails?.eventDetails as string,
               }}
             ></div> */}
-            <ReadMoreHTML htmlContent={eventDetails?.eventDetails || ""} maxLength={100} />
+            <ReadMoreHTML htmlContent={eventDetails?.eventDetails || ""} maxLength={400} />
             <div className="flex justify-center mt-12">
               <Dropdown
                 disabled={eventdates < new Date().getTime()}

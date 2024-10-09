@@ -379,7 +379,7 @@ const EventPageView = () => {
                   __html: eventDetails?.eventDetails as string,
                 }}
               ></div> */}
-              <ReadMoreHTML htmlContent={eventDetails?.eventDetails || ""} maxLength={100} />
+              <ReadMoreHTML htmlContent={eventDetails?.eventDetails || ""} maxLength={500} />
               <div className="flex justify-center mt-12">
               </div>
               </div>
