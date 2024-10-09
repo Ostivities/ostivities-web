@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
+import Link from "next/link";
+import { useState } from "react";
 import { global } from "styled-jsx/css";
 import "@/app/globals.css";
-import { Heading5 } from '../typography/Typography';
-import PaymentSuccess from '@/app/components/OstivitiesModal/PaymentSuccessModal';
-import { PlusSquareOutlined } from '@ant-design/icons';
+import { Heading5 } from "../typography/Typography";
+import PaymentSuccess from "@/app/components/OstivitiesModal/PaymentSuccessModal";
+import { PlusSquareOutlined } from "@ant-design/icons";
 
 interface SummaryProps {
   continueBtn?: boolean;
@@ -17,7 +17,7 @@ interface SummaryProps {
 const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
   const [showInput, setShowInput] = useState(false);
   const [discountApplied, setDiscountApplied] = useState(false);
-  const [discountCode, setDiscountCode] = useState('');
+  const [discountCode, setDiscountCode] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleAddDiscountClick = () => {
@@ -26,13 +26,13 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
 
   const handleApplyDiscount = () => {
     // Logic to apply the discount code (e.g., validate code, apply discount)
-    if (discountCode.trim() !== '') {
+    if (discountCode.trim() !== "") {
       setDiscountApplied(true);
     }
   };
 
   const handleClearDiscount = () => {
-    setDiscountCode('');
+    setDiscountCode("");
     setDiscountApplied(false);
     setShowInput(false); // Disable input after clearing
   };
@@ -42,8 +42,12 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
       <Heading5 className="text-3xl text-center" content={"Summary"} />
       <section className="mt-14 px-20 h-4/5 border-l border-[#525252]">
         <div>
-          <h3 className="text-OWANBE_PRY text-lg font-BricolageGrotesqueRegular">Event name</h3>
-          <span className="text-OWANBE_FADE text-s font-BricolageGrotesqueRegular">Concert with Davido</span>
+          <h3 className="text-OWANBE_PRY text-lg font-BricolageGrotesqueRegular">
+            Event name
+          </h3>
+          <span className="text-OWANBE_FADE text-s font-BricolageGrotesqueRegular">
+            Concert with Davido
+          </span>
         </div>
         <div className="mt-3">
           {!showInput && (
@@ -56,8 +60,7 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
           )}
           {showInput && (
             <>
-              <div className="mt-3">
-              </div>
+              <div className="mt-3"></div>
               <div className="flex-center gap-3 w-full mt-3">
                 <input
                   type="text"
@@ -71,7 +74,9 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
                   <button
                     onClick={handleApplyDiscount}
                     disabled={!discountCode.trim()} // Disable button if discountCode is empty or only whitespace
-                    className={`py-1 px-7 rounded-full bg-OWANBE_PRY font-semibold text-white ${!discountCode.trim() && 'opacity-50 cursor-not-allowed'}`}
+                    className={`py-1 px-7 rounded-full bg-OWANBE_PRY font-semibold text-white ${
+                      !discountCode.trim() && "opacity-50 cursor-not-allowed"
+                    }`}
                   >
                     Apply
                   </button>
@@ -94,7 +99,9 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
         </div>
         <div>
           <div className="mt-3 border-b border-[#525252] pb-10">
-            <h3 className="text-OWANBE_PRY text-lg font-BricolageGrotesqueRegular">Payment details</h3>
+            <h3 className="text-OWANBE_PRY text-lg font-BricolageGrotesqueRegular">
+              Payment details
+            </h3>
             <div className="flex flex-col gap-2 mt-2 text-OWANBE_FADE text-s font-BricolageGrotesqueRegular">
               <div className="flex-center justify-between">
                 <div>Early Bird x 2</div>
@@ -107,12 +114,14 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
               {discountApplied && (
                 <div className="flex-center justify-between">
                   <div>Discount</div>
-                  <div>-₦100.00</div> {/* Adjust this based on your discount logic */}
+                  <div>-₦100.00</div>{" "}
+                  {/* Adjust this based on your discount logic */}
                 </div>
               )}
               <div className="flex-center justify-between">
                 <div>Subtotal</div>
-                <div>₦10,200.00</div> {/* Adjust this based on your calculation */}
+                <div>₦10,200.00</div>{" "}
+                {/* Adjust this based on your calculation */}
               </div>
             </div>
           </div>
@@ -122,14 +131,20 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
           </div>
           {continueBtn && (
             <div className="flex justify-center mt-12 mb-6 w-full">
-              <Link href={to} className="primary-btn hover:none w-full text-center">
+              <Link
+                href={to}
+                className="primary-btn hover:none w-full text-center"
+              >
                 Continue
               </Link>
             </div>
           )}
           {paymentBtn && (
             <div className="flex justify-center mt-12 mb-6 w-full">
-              <button className="primary-btn w-full" onClick={() => setIsModalOpen(true)}>
+              <button
+                className="primary-btn w-full"
+                onClick={() => setIsModalOpen(true)}
+              >
                 Make Payment
               </button>
             </div>
@@ -140,7 +155,6 @@ const Summary = ({ continueBtn, to, paymentBtn }: SummaryProps) => {
               onClose={() => setIsModalOpen(false)}
             />
           )}
-
 
           {isModalOpen && (
             <PaymentSuccess

@@ -266,7 +266,7 @@ const EventDetail = () => {
     {
       label: (
         <Link
-          href={`/Dashboard/tickets`}
+          href={`/Dashboard/${params?.event}/${params?.id}/tickets`}
           className="font-BricolageGrotesqueRegular font-normal text-md text-OWANBE_DARK"
         >
           Register as a guest

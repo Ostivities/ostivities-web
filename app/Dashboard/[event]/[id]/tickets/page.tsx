@@ -4,12 +4,24 @@ import { useState } from 'react';
 import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
 import Summary from '@/app/components/Discovery/Summary';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { ITicketCreate, ITicketDetails, SalesDataType } from "@/app/utils/interface";
+import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
+import { useRouter, useParams } from 'next/navigation';
+import { useGetUserEvent } from "@/app/hooks/event/event.hook";
+import { dateFormat, timeFormat } from "@/app/utils/helper";
 import "@/app/globals.css";
 import "@/app/scroll.css";
 
 const TicketsSelection = () => {
   const router = useRouter();
+  const params = useParams<{ event: string; id: string }>();
+  const { getUserEvent } = useGetUserEvent(params?.id);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalFee, setTotalFee] = useState(0);
+  const eventDetails = getUserEvent?.data?.data?.data;
+  const { getTickets } = useGetEventTickets(params?.id);
+  const ticketData = getTickets?.data?.data?.data;
+
   const title = (
     <div className="flex-center gap-2">
       <Image
@@ -64,7 +76,7 @@ const TicketsSelection = () => {
               </div>
               <div>
                 <h3 className="text-sm" style={{ fontWeight: 600 }}>Date</h3>
-                <span>14 December, 2023</span>
+                <span>{dateFormat(eventDetails?.startDate)}</span>
               </div>
             </div>
             <div className="flex-center gap-3">
@@ -73,7 +85,10 @@ const TicketsSelection = () => {
               </div>
               <div>
                 <h3 className="text-sm" style={{ fontWeight: 600 }}>Time</h3>
-                <span>5:00PM - 10:00PM WAT</span>
+                <span>
+                  {timeFormat(eventDetails?.startDate)} -{" "}
+                  {timeFormat(eventDetails?.endDate)} {eventDetails?.timeZone}
+                </span>
               </div>
             </div>
           </div>
@@ -94,7 +109,7 @@ const TicketsSelection = () => {
           </div> */}
           
           <div className="mt-10 flex flex-col gap-6">
-            {ticketTypes.map((ticket, index) => (
+            {ticketData?.map((ticket: ITicketDetails, index: any) => (
               <div key={index}>
                 {/* Add Group Ticket Header Button before the third ticket */}
                 {index === 2 && (
@@ -109,15 +124,18 @@ const TicketsSelection = () => {
                 )}
                 <div className="card-shadow flex justify-between items-center">
                   <div>
-                    <h2 className="text-lg font-BricolageGrotesqueMedium" style={{ fontWeight: 500, fontSize: '18px' }}>{ticket.name}</h2>
+                    <h2 className="text-lg font-BricolageGrotesqueMedium" style={{ fontWeight: 500, fontSize: '18px' }}>{ticket.ticketName}</h2>
                     <h3>
-                      <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>{ticket.price}</span>{' '}
-                      {ticket.fee && (
-                        <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including {ticket.fee} fee</span>
+                      <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>{ticket.ticketPrice}</span>{' '}
+                      {ticket.ticketPrice && (
+                        <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including {ticket.ticketPrice} fee</span>
                       )}
                     </h3>
                     <p className="text-s font-BricolageGrotesqueRegular" style={{ fontSize: '12px', color: 'black', marginTop: '17px' }}>
-                      {ticket.description}
+                      <div
+                        dangerouslySetInnerHTML={{__html: ticket.ticketDescription  as string}}
+                      >
+                      </div>
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
@@ -143,7 +161,7 @@ const TicketsSelection = () => {
             ))}
           </div>
         </section>
-        <Summary continueBtn to={"/Dashboard/contact-form"} />
+        <Summary continueBtn to={`/Dashboard/${params?.event}/${params?.id}/contact-form`} />
       </section>
     </DashboardLayout>
   );
