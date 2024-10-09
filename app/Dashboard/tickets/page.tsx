@@ -28,7 +28,7 @@ const TicketsSelection = () => {
   const ticketTypes = [
     { name: "Early Bird", price: "₦5,000", fee: "₦300", description: "Your pass to sweet music and ambiance" },
     { name: "VIP Access", price: "₦15,000", fee: "₦500", description: "Enjoy premium benefits and services" },
-    { name: "Group Of 5- Regular", price: "₦22,000", fee: "", description: "Regular price for group of 5 tickets" },
+    { name: "Group Of 2- Regular", price: "₦22,000", fee: "", description: "Regular price for group of 2 tickets" },
   ];
 
   // State to manage selected ticket counts
@@ -84,14 +84,14 @@ const TicketsSelection = () => {
             </h3>
           </div>
           {/* Add Single Ticket Button before the first ticket */}
-          {<div className="mb-4">
+          <div className="mb-4">
             <button
               className="bg-OWANBE_PRY text-white px-3 py-1 rounded-md text-sm font-BricolageGrotesqueMedium"
               style={{ borderRadius: '20px', fontSize: '12px' }} // Adjusted text size
             >
               Single Ticket
             </button>
-          </div>}
+          </div>
 
           <div className="mt-5 flex flex-col gap-6">
             {ticketTypes.map((ticket, index) => (
