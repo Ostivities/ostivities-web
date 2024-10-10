@@ -1,17 +1,22 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
-import Summary from '@/app/components/Discovery/Summary';
-import Image from 'next/image';
-import { ITicketCreate, ITicketDetails, SalesDataType } from "@/app/utils/interface";
+import { useEffect, useState } from "react";
+import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
+import Summary from "@/app/components/Discovery/Summary";
+import Image from "next/image";
+import {
+  ITicketCreate,
+  ITicketDetails,
+  SalesDataType,
+} from "@/app/utils/interface";
 import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter, useParams } from "next/navigation";
 import { useGetUserEvent } from "@/app/hooks/event/event.hook";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
 import "@/app/globals.css";
 import "@/app/scroll.css";
-import ReadMoreHTML from '@/app/components/ReadMoreHTML';
+import ReadMoreHTML from "@/app/components/ReadMoreHTML";
+import { TICKET_ENTITY } from "@/app/utils/enums";
 
 const TicketsSelection = () => {
   const router = useRouter();
@@ -33,15 +38,30 @@ const TicketsSelection = () => {
         onClick={() => router.back()}
         className="cursor-pointer"
       />
-      <h1 style={{ fontSize: '24px' }}>Choose your tickets</h1>
+      <h1 style={{ fontSize: "24px" }}>Choose your tickets</h1>
     </div>
   );
 
   // Define ticket types and their details
   const ticketTypes = [
-    { name: "Early Bird", price: "₦5,000", fee: "₦300", description: "Your pass to sweet music and ambiance" },
-    { name: "VIP Access", price: "₦15,000", fee: "₦500", description: "Enjoy premium benefits and services" },
-    { name: "Group Of 5- Regular", price: "₦22,000", fee: "", description: "Regular price for group of 5 tickets" },
+    {
+      name: "Early Bird",
+      price: "₦5,000",
+      fee: "₦300",
+      description: "Your pass to sweet music and ambiance",
+    },
+    {
+      name: "VIP Access",
+      price: "₦15,000",
+      fee: "₦500",
+      description: "Enjoy premium benefits and services",
+    },
+    {
+      name: "Group Of 5- Regular",
+      price: "₦22,000",
+      fee: "",
+      description: "Regular price for group of 5 tickets",
+    },
   ];
 
   // State to manage selected ticket counts
@@ -51,13 +71,15 @@ const TicketsSelection = () => {
   // const [we, setWe] = useState<number[]>(
   //   new Array(ticketData?.length || 0).fill(0)
   // );
-  console.log(selectedTickets, "selectedTickets")
-  const [ticketDetails, setTicketDetails] = useState<{
-    ticketName: string;
-    ticketPrice: number;
-    ticketFee: number;
-    ticketNumber: number;
-  }[]>([]);
+  console.log(selectedTickets, "selectedTickets");
+  const [ticketDetails, setTicketDetails] = useState<
+    {
+      ticketName: string;
+      ticketPrice: number;
+      ticketFee: number;
+      ticketNumber: number;
+    }[]
+  >([]);
 
   console.log(ticketDetails, "ticketDetails");
 
@@ -74,14 +96,18 @@ const TicketsSelection = () => {
       const updatedDetails = [...prevDetails];
       updatedDetails[index] = {
         ticketName: ticketData[index]?.ticketName,
-        ticketPrice: ticketData[index]?.ticketPrice,
+        ticketPrice:
+          ticketData[index]?.ticketPrice * (selectedTickets[index] + 1),
+        // ticketPrice: selectedTickets[index] === 0 ? 0 : ticketData[index]?.ticketPrice * (selectedTickets[index] + 1),
         ticketFee: ticketData[index]?.ticketPrice,
         ticketNumber: selectedTickets[index] + 1,
       };
       return updatedDetails;
     });
     setSelectedTickets((prevTickets) =>
-      prevTickets.map((count: number, i: number) => (i === index ? count + 1 : count))
+      prevTickets.map((count: number, i: number) =>
+        i === index ? count + 1 : count
+      )
     );
   };
 
@@ -98,7 +124,9 @@ const TicketsSelection = () => {
       return updatedDetails;
     });
     setSelectedTickets((prevTickets) =>
-      prevTickets.map((count, i) => (i === index && count > 0 ? count - 1 : count))
+      prevTickets.map((count, i) =>
+        i === index && count > 0 ? count - 1 : count
+      )
     );
   };
 
@@ -118,7 +146,9 @@ const TicketsSelection = () => {
                 />
               </div>
               <div>
-                <h3 className="text-sm" style={{ fontWeight: 600 }}>Date</h3>
+                <h3 className="text-sm" style={{ fontWeight: 600 }}>
+                  Date
+                </h3>
                 <span>{dateFormat(eventDetails?.startDate)}</span>
               </div>
             </div>
@@ -127,7 +157,9 @@ const TicketsSelection = () => {
                 <Image src="/icons/time.svg" alt="" height={25} width={25} />
               </div>
               <div>
-                <h3 className="text-sm" style={{ fontWeight: 600 }}>Time</h3>
+                <h3 className="text-sm" style={{ fontWeight: 600 }}>
+                  Time
+                </h3>
                 <span>
                   {timeFormat(eventDetails?.startDate)} -{" "}
                   {timeFormat(eventDetails?.endDate)} {eventDetails?.timeZone}
@@ -138,95 +170,343 @@ const TicketsSelection = () => {
 
           <div className="pr-full mt-16">
             <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueMedium my-8 custom-font-size">
-              Choose one or more tickets and prepare for an extraordinary experience!
+              Choose one or more tickets and prepare for an extraordinary
+              experience!
             </h3>
           </div>
           {/* Add Single Ticket Button before the first ticket */}
           <div className="mb-4">
             <button
               className="bg-OWANBE_PRY text-white px-3 py-1 rounded-md text-sm font-BricolageGrotesqueMedium"
-              style={{ borderRadius: '20px', fontSize: '12px' }} // Adjusted text size
+              style={{ borderRadius: "20px", fontSize: "12px" }} // Adjusted text size
             >
               Single Ticket
             </button>
+            <div>
+              {ticketData
+                ?.filter((ticket: ITicketDetails) => {
+                  return ticket?.ticketEntity === TICKET_ENTITY.SINGLE;
+                })
+                .map((ticket: ITicketDetails, index: any) => (
+                  <div key={index}>
+                    <div className="card-shadow flex justify-between items-start">
+                      <div>
+                        <h2
+                          className="text-lg font-BricolageGrotesqueMedium"
+                          style={{ fontWeight: 500, fontSize: "18px" }}
+                        >
+                          {ticket.ticketName}
+                        </h2>
+
+                        <h3>
+                          {ticket.ticketPrice ? (
+                            <>
+                              <span
+                                className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                style={{
+                                  fontWeight: 600,
+                                  fontSize: "17px",
+                                }}
+                              >
+                                ₦{ticket.ticketPrice.toLocaleString()}
+                              </span>{" "}
+                              <span
+                                className="text-s font-BricolageGrotesqueRegular"
+                                style={{
+                                  fontWeight: 400,
+                                  fontSize: "12px",
+                                }}
+                              >
+                                Including ₦{ticket.ticketPrice.toLocaleString()}{" "}
+                                fee
+                              </span>
+                            </>
+                          ) : (
+                            <span
+                              className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                              style={{ fontWeight: 600, fontSize: "17px" }}
+                            >
+                              Free
+                            </span>
+                          )}
+                        </h3>
+                        <p
+                          className="text-s font-BricolageGrotesqueRegular"
+                          style={{
+                            fontSize: "13px",
+                            color: "black",
+                            marginTop: "17px",
+                          }}
+                        >
+                          <ReadMoreHTML
+                            htmlContent={ticket.ticketDescription || ""}
+                            maxLength={100}
+                          />
+                        </p>
+                      </div>
+                      <div
+                        className="flex items-start gap-2"
+                        style={{ marginBlockStart: "10px" }}
+                      >
+                        <button
+                          className="w-8 h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
+                          onClick={() => handleDecrement(index)}
+                          disabled={selectedTickets[index] === 0}
+                          style={{ backgroundColor: "#FADEDE" }}
+                        >
+                          -
+                        </button>
+                        <span className="text-lg mx-2">
+                          {selectedTickets[index]}
+                        </span>
+                        <button
+                          className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
+                          onClick={() => handleIncrement(index)}
+                          style={{
+                            color: "#e20000",
+                            backgroundColor: "#FADEDE",
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
           </div>
 
           <div className="mt-5 flex flex-col gap-6">
-            {ticketData?.map((ticket: ITicketDetails, index: any) => (
-              <div key={index}>
-                {/* Add Group Ticket Header Button before the third ticket */}
-                {index === 2 && (
-                  <div className="mb-4">
-                    <button
-                      className="bg-OWANBE_PRY text-white px-3 py-1 rounded-md text-sm font-BricolageGrotesqueMedium"
-                      style={{ borderRadius: '20px', fontSize: '12px' }} // Adjusted text size
-                    >
-                      Collective Ticket
-                    </button>
-                  </div>
-                )}
-                <div className="card-shadow flex justify-between items-start">
-                  <div>
-                    {ticket?.groupSize ? (
-                      <h2 className="text-lg font-BricolageGrotesqueMedium" style={{ fontWeight: 500, fontSize: '18px' }}>Group Of {ticket?.groupSize} - {ticket.ticketName}</h2>
-
-                    ) : (
-                      <h2 className="text-lg font-BricolageGrotesqueMedium" style={{ fontWeight: 500, fontSize: '18px' }}>{ticket.ticketName}</h2>
-
-                    )}
-                    <h3>
-                      {ticket.ticketPrice ?
-                        (
+            <div className="mb-4">
+              <button
+                className="bg-OWANBE_PRY text-white px-3 py-1 rounded-md text-sm font-BricolageGrotesqueMedium"
+                style={{ borderRadius: "20px", fontSize: "12px" }} // Adjusted text size
+              >
+                Collective Ticket
+              </button>
+            </div>
+            {ticketData
+              ?.filter((ticket: ITicketDetails) => {
+                return ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE;
+              })
+              .map((ticket: ITicketDetails, index: any) => (
+                <div key={index}>
+                  <div className="card-shadow flex justify-between items-start">
+                    <div>
+                      {ticket?.groupSize ? (
+                        <h2
+                          className="text-lg font-BricolageGrotesqueMedium"
+                          style={{ fontWeight: 500, fontSize: "18px" }}
+                        >
+                          Group Of {ticket?.groupSize} - {ticket.ticketName}
+                        </h2>
+                      ) : (
+                        <h2
+                          className="text-lg font-BricolageGrotesqueMedium"
+                          style={{ fontWeight: 500, fontSize: "18px" }}
+                        >
+                          {ticket.ticketName}
+                        </h2>
+                      )}
+                      <h3>
+                        {ticket.ticketPrice ? (
                           <>
                             {ticket.groupPrice ? (
                               <>
-                                <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>₦{ticket.groupPrice.toLocaleString()}</span>{' '}
-                                <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including ₦{ticket.groupPrice.toLocaleString()} fee</span>
+                                <span
+                                  className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                  style={{ fontWeight: 600, fontSize: "17px" }}
+                                >
+                                  ₦{ticket.groupPrice.toLocaleString()}
+                                </span>{" "}
+                                <span
+                                  className="text-s font-BricolageGrotesqueRegular"
+                                  style={{ fontWeight: 400, fontSize: "12px" }}
+                                >
+                                  Including ₦
+                                  {ticket.groupPrice.toLocaleString()} fee
+                                </span>
                               </>
                             ) : (
                               <>
-                                <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>₦{ticket.ticketPrice.toLocaleString()}</span>{' '}
-                                <span className="text-s font-BricolageGrotesqueRegular" style={{ fontWeight: 400, fontSize: '12px' }}>Including ₦{ticket.ticketPrice.toLocaleString()} fee</span>
+                                <span
+                                  className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                  style={{ fontWeight: 600, fontSize: "17px" }}
+                                >
+                                  ₦{ticket.ticketPrice.toLocaleString()}
+                                </span>{" "}
+                                <span
+                                  className="text-s font-BricolageGrotesqueRegular"
+                                  style={{ fontWeight: 400, fontSize: "12px" }}
+                                >
+                                  Including ₦
+                                  {ticket.ticketPrice.toLocaleString()} fee
+                                </span>
                               </>
                             )}
                           </>
                         ) : (
-                          <span className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular" style={{ fontWeight: 600, fontSize: '17px' }}>Free</span>
-                        )
-                      }
+                          <span
+                            className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                            style={{ fontWeight: 600, fontSize: "17px" }}
+                          >
+                            Free
+                          </span>
+                        )}
+                      </h3>
+                      <p
+                        className="text-s font-BricolageGrotesqueRegular"
+                        style={{
+                          fontSize: "13px",
+                          color: "black",
+                          marginTop: "17px",
+                        }}
+                      >
+                        <ReadMoreHTML
+                          htmlContent={ticket.ticketDescription || ""}
+                          maxLength={100}
+                        />
+                      </p>
+                    </div>
+                    <div
+                      className="flex items-start gap-2"
+                      style={{ marginBlockStart: "10px" }}
+                    >
+                      <button
+                        className="w-8 h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
+                        onClick={() => handleDecrement(index)}
+                        disabled={selectedTickets[index] === 0}
+                        style={{ backgroundColor: "#FADEDE" }}
+                      >
+                        -
+                      </button>
+                      <span className="text-lg mx-2">
+                        {selectedTickets[index]}
+                      </span>
+                      <button
+                        className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
+                        onClick={() => handleIncrement(index)}
+                        style={{ color: "#e20000", backgroundColor: "#FADEDE" }}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            {/* {ticketData?.map((ticket: ITicketDetails, index: any) => (
+              <div key={index}>
+                <div className="card-shadow flex justify-between items-start">
+                  <div>
+                    {ticket?.groupSize ? (
+                      <h2
+                        className="text-lg font-BricolageGrotesqueMedium"
+                        style={{ fontWeight: 500, fontSize: "18px" }}
+                      >
+                        Group Of {ticket?.groupSize} - {ticket.ticketName}
+                      </h2>
+                    ) : (
+                      <h2
+                        className="text-lg font-BricolageGrotesqueMedium"
+                        style={{ fontWeight: 500, fontSize: "18px" }}
+                      >
+                        {ticket.ticketName}
+                      </h2>
+                    )}
+                    <h3>
+                      {ticket.ticketPrice ? (
+                        <>
+                          {ticket.groupPrice ? (
+                            <>
+                              <span
+                                className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                style={{ fontWeight: 600, fontSize: "17px" }}
+                              >
+                                ₦{ticket.groupPrice.toLocaleString()}
+                              </span>{" "}
+                              <span
+                                className="text-s font-BricolageGrotesqueRegular"
+                                style={{ fontWeight: 400, fontSize: "12px" }}
+                              >
+                                Including ₦{ticket.groupPrice.toLocaleString()}{" "}
+                                fee
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              <span
+                                className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                style={{ fontWeight: 600, fontSize: "17px" }}
+                              >
+                                ₦{ticket.ticketPrice.toLocaleString()}
+                              </span>{" "}
+                              <span
+                                className="text-s font-BricolageGrotesqueRegular"
+                                style={{ fontWeight: 400, fontSize: "12px" }}
+                              >
+                                Including ₦{ticket.ticketPrice.toLocaleString()}{" "}
+                                fee
+                              </span>
+                            </>
+                          )}
+                        </>
+                      ) : (
+                        <span
+                          className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                          style={{ fontWeight: 600, fontSize: "17px" }}
+                        >
+                          Free
+                        </span>
+                      )}
                     </h3>
-                    <p className="text-s font-BricolageGrotesqueRegular" style={{ fontSize: '13px', color: 'black', marginTop: '17px' }}>
+                    <p
+                      className="text-s font-BricolageGrotesqueRegular"
+                      style={{
+                        fontSize: "13px",
+                        color: "black",
+                        marginTop: "17px",
+                      }}
+                    >
                       <ReadMoreHTML
                         htmlContent={ticket.ticketDescription || ""}
                         maxLength={100}
                       />
                     </p>
-
                   </div>
-                  <div className="flex items-start gap-2" style={{ marginBlockStart: '10px' }}>
+                  <div
+                    className="flex items-start gap-2"
+                    style={{ marginBlockStart: "10px" }}
+                  >
                     <button
                       className="w-8 h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
                       onClick={() => handleDecrement(index)}
                       disabled={selectedTickets[index] === 0}
-                      style={{ backgroundColor: '#FADEDE' }}
+                      style={{ backgroundColor: "#FADEDE" }}
                     >
                       -
                     </button>
-                    <span className="text-lg mx-2">{selectedTickets[index]}</span>
+                    <span className="text-lg mx-2">
+                      {selectedTickets[index]}
+                    </span>
                     <button
                       className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
                       onClick={() => handleIncrement(index)}
-                      style={{ color: '#e20000', backgroundColor: '#FADEDE' }}
+                      style={{ color: "#e20000", backgroundColor: "#FADEDE" }}
                     >
                       +
                     </button>
                   </div>
                 </div>
               </div>
-            ))}
+            ))} */}
           </div>
         </section>
-        <Summary eventName={eventDetails?.eventName} ticketDetails={ticketDetails} continueBtn to={`/Dashboard/${params?.event}/${params?.id}/contact-form`} />
+        <Summary
+          eventName={eventDetails?.eventName}
+          ticketDetails={ticketDetails}
+          continueBtn
+          to={`/Dashboard/${params?.event}/${params?.id}/contact-form`}
+        />
       </section>
     </DashboardLayout>
   );

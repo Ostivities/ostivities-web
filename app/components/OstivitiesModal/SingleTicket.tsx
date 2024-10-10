@@ -7,7 +7,7 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 
-import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
+import { TICKET_ENTITY, TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
 import { ITicketCreate, ITicketData } from "@/app/utils/interface";
 import {
   Button,
@@ -103,7 +103,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
         ticketQuestions: reducedTicketQuestions,
         ticketDescription: editorContent,
         event: params?.id,
-        ticketEntity: "SINGLE",
+        ticketEntity: TICKET_ENTITY.SINGLE,
         user: profile?.data?.data?.data?.id,
       };
       // return console.log(payload, "kk");
@@ -129,7 +129,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
         ...rest,
         ticketDescription: editorContent,
         event: params?.id,
-        ticketEntity: "SINGLE",
+        ticketEntity: TICKET_ENTITY.SINGLE,
         user: profile?.data?.data?.data?.id,
       };
       if (payload) {

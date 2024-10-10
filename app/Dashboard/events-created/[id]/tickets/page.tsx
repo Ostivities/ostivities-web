@@ -9,7 +9,11 @@ import {
   Paragraph,
 } from "@/app/components/typography/Typography";
 import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
-import { ITicketCreate, ITicketDetails, SalesDataType } from "@/app/utils/interface";
+import {
+  ITicketCreate,
+  ITicketDetails,
+  SalesDataType,
+} from "@/app/utils/interface";
 import { MenuOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Menu, Space, Table, Input, message } from "antd";
 import { ColumnsType } from "antd/es/table";
@@ -17,10 +21,9 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
 import { useCookies } from "react-cookie";
 import { useParams, useRouter } from "next/navigation";
-import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
+import { TICKET_ENTITY, TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
 import useFetch from "@/app/components/forms/create-events/auth";
 import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
-
 
 // Currency formatter for Naira (₦)
 const formatCurrency = (amount: number) => {
@@ -38,7 +41,7 @@ const EventTickets = () => {
   // if(!isLoggedIn) {
   //   return <div>Loading...</div>;
   // }
-  
+
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -49,14 +52,18 @@ const EventTickets = () => {
   const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState<SalesDataType[]>([]);
   const params = useParams<{ id: string }>();
-  const [duplicateData, setDuplicateData] = useState<ITicketCreate | undefined>();
+  const [duplicateData, setDuplicateData] = useState<
+    ITicketCreate | undefined
+  >();
   const [selectedTicket, setSelectedTicket] = useState<string | undefined>("");
-  const [selectedTicketEntity, setSelectedTicketEntity] = useState<string | undefined>("");
+  const [selectedTicketEntity, setSelectedTicketEntity] = useState<
+    string | undefined
+  >("");
 
   const { getTickets } = useGetEventTickets(params?.id);
   const ticketData = getTickets?.data?.data?.data;
   // const {id, ...rest} = ticketData;
-  // console.log(ticketData, "ticketData") 
+  // console.log(ticketData, "ticketData")
   // console.log(duplicateData, "duplicateData")
 
   const handleActionSuccess = () => {
@@ -64,9 +71,7 @@ const EventTickets = () => {
     getTickets.refetch();
   };
 
-
-  
-  interface MenuItemType { 
+  interface MenuItemType {
     label: React.ReactNode;
     key: string;
   }
@@ -137,7 +142,8 @@ const EventTickets = () => {
         />
       ),
       dataIndex: "ticketName",
-      sorter: (a, b) => (a.event?.eventName ?? "").localeCompare(b.event?.eventName ?? ""),
+      sorter: (a, b) =>
+        (a.event?.eventName ?? "").localeCompare(b.event?.eventName ?? ""),
     },
     {
       title: (
@@ -149,8 +155,16 @@ const EventTickets = () => {
       dataIndex: "ticketQty",
       sorter: (a, b) => a.ticketQty - b.ticketQty,
       render: (text, record: ITicketDetails) => {
-        return <>{record?.ticketStock === TICKET_STOCK.UNLIMITED ? "Unlimited" : <span>{text}</span>}</>
-      }
+        return (
+          <>
+            {record?.ticketStock === TICKET_STOCK.UNLIMITED ? (
+              "Unlimited"
+            ) : (
+              <span>{text}</span>
+            )}
+          </>
+        );
+      },
     },
     {
       title: (
@@ -159,11 +173,22 @@ const EventTickets = () => {
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
-      dataIndex: "ticketPrice",
+      dataIndex: ["ticketPrice", "groupPrice"],
       sorter: (a, b) => (a?.ticketPrice ?? 0) - (b?.ticketPrice ?? 0),
       render: (text, record: ITicketDetails) => {
-        // console.log(text, "text")
-        return <>{record?.ticketType === TICKET_TYPE.FREE ? "Free" : <span>{formatCurrency(text as number)}</span>}</>
+        // console.log(text, "text");
+        // console.log(record, "record");
+
+        // Safeguard against missing properties with optional chaining
+        if (record?.ticketType === TICKET_TYPE.FREE) {
+          return <>Free</>;
+        }
+
+        if (record?.ticketEntity === TICKET_ENTITY.COLLECTIVE) {
+          return <span>{formatCurrency(record?.groupPrice ?? 0)}</span>;
+        }
+
+        return <span>{formatCurrency(record?.ticketPrice ?? 0)}</span>;
       },
     },
     {
@@ -176,8 +201,21 @@ const EventTickets = () => {
       dataIndex: "ticketType",
       sorter: (a, b) => (a.ticketPrice ?? 0) - (b.ticketPrice ?? 0),
       render: (text, record: ITicketDetails) => {
-        return <>{record?.ticketType === TICKET_TYPE.FREE ? "Free" : "Paid"}</>
-      }
+        return <>{record?.ticketType === TICKET_TYPE.FREE ? "Free" : "Paid"}</>;
+      },
+    },
+    {
+      title: <Label content="Ticket Entity" />,
+      dataIndex: "ticketEntity",
+      render: (text, record: ITicketDetails) => {
+        return (
+          <>
+            {record?.ticketEntity === TICKET_ENTITY.SINGLE
+              ? "Single"
+              : "Collective"}
+          </>
+        );
+      },
     },
     {
       title: (
@@ -226,13 +264,11 @@ const EventTickets = () => {
   });
   // console.log(data, "data")
 
-
   const [isToggled, setIsToggled] = useState(false);
 
-const onChange = () => {
-  setIsToggled(!isToggled);
-};
-
+  const onChange = () => {
+    setIsToggled(!isToggled);
+  };
 
   return (
     <React.Fragment>
@@ -240,15 +276,15 @@ const onChange = () => {
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         onOk={() => {
-          setIsModalOpen(false)
+          setIsModalOpen(false);
           handleActionSuccess();
         }}
       />
-      <UpdateTicket 
+      <UpdateTicket
         open={isOpen}
         onCancel={() => setIsOpen(false)}
         onOk={() => {
-          setIsOpen(false)
+          setIsOpen(false);
           handleActionSuccess();
         }}
         id={selectedTicket}
@@ -258,7 +294,7 @@ const onChange = () => {
         open={isShown}
         onCancel={() => setIsShown(false)}
         onOk={() => {
-          setIsShown(false)
+          setIsShown(false);
           handleActionSuccess();
         }}
         actionType={actionType}
@@ -277,35 +313,34 @@ const onChange = () => {
           </Space>
 
           <Space direction="vertical" size="large" style={{ width: "100%" }}>
+            <div className="flex flex-row items-center justify-between space-x-4 mt-8">
+              <div className="flex flex-row items-center space-x-2">
+                <ToggleSwitch
+                  isActive={isToggled}
+                  onToggle={(checked: boolean) => {
+                    setIsToggled(checked); // Update the toggle state
+                    onChange(); // Additional logic if necessary
+                  }}
+                  label="Registration toggle" // Provide the required label prop
+                />
+                <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
+                  {isToggled ? "Stop registration" : "Start registration"}
+                </span>
+              </div>
 
-          <div className="flex flex-row items-center justify-between space-x-4 mt-8">
-  <div className="flex flex-row items-center space-x-2">
-    <ToggleSwitch 
-      isActive={isToggled} 
-      onToggle={(checked: boolean) => {
-        setIsToggled(checked); // Update the toggle state
-        onChange(); // Additional logic if necessary
-      }}
-      label="Registration toggle" // Provide the required label prop
-    />
-    <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
-      {isToggled ? 'Stop registration' : 'Start registration'}
-    </span>
-  </div>
-
-  <Button
-    type="primary"
-    size="large"
-    className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
-    style={{
-      borderRadius: "20px",
-      fontFamily: "BricolageGrotesqueMedium",
-    }}
-    onClick={() => setIsModalOpen(true)}
-  >
-    Add Tickets
-  </Button>
-</div>
+              <Button
+                type="primary"
+                size="large"
+                className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
+                style={{
+                  borderRadius: "20px",
+                  fontFamily: "BricolageGrotesqueMedium",
+                }}
+                onClick={() => setIsModalOpen(true)}
+              >
+                Add Tickets
+              </Button>
+            </div>
 
             {/* <Input.Search
               placeholder="Search tickets"
@@ -314,52 +349,54 @@ const onChange = () => {
               style={{ marginBottom: 16, width: 300 }}
             /> */}
             <Table
-          loading={getTickets?.isFetching}
-          rowSelection={{
-            selectedRowKeys,
-            onChange: (keys) => setSelectedRowKeys(keys),
-          }}
-          onRow={(record, rowIndex) => {
-            return {
-              onClick: () => {
-                // console.log(record, "record")
-                setSelectedTicket(record?.key)
-                setSelectedTicketEntity(record?.ticketEntity)
-                setDuplicateData({
-                  ticketName: record?.ticketName,
-                  ticketQty: record?.ticketQty,
-                  ticketPrice: record?.ticketPrice,
-                  ticketType: record?.ticketType,
-                  groupSize: record?.groupSize,
-                  groupPrice: record?.groupPrice,
-                  ticketDescription: record?.ticketDescription,
-                  ticketStock: record?.ticketStock as TICKET_STOCK | undefined,
-                  ticketEntity: record?.ticketEntity,
-                  event: record?.event?.id,
-                  user: record?.user?.id,
-                  ticketQuestions: record?.ticketQuestions?.map(q => ({
-                    question: q?.question ?? "",
-                    is_compulsory: q?.is_compulsory ?? false,
-                  })),
-                  guestAsChargeBearer: record?.guestAsChargeBearer ?? true
-                });
-              },
-            };
-          }}
-          columns={columns}
-          dataSource={data}
-          className="font-BricolageGrotesqueRegular w-full"
-          pagination={{
-            current: currentPage,
-            pageSize: pageSize,
-            total: data?.length,
-            onChange: (page, size) => {
-              setCurrentPage(page);
-              setPageSize(size);
-            },
-          }}
-          scroll={{ x: "max-content" }}
-        />
+              loading={getTickets?.isFetching}
+              rowSelection={{
+                selectedRowKeys,
+                onChange: (keys) => setSelectedRowKeys(keys),
+              }}
+              onRow={(record, rowIndex) => {
+                return {
+                  onClick: () => {
+                    // console.log(record, "record")
+                    setSelectedTicket(record?.key);
+                    setSelectedTicketEntity(record?.ticketEntity);
+                    setDuplicateData({
+                      ticketName: record?.ticketName,
+                      ticketQty: record?.ticketQty,
+                      ticketPrice: record?.ticketPrice,
+                      ticketType: record?.ticketType,
+                      groupSize: record?.groupSize,
+                      groupPrice: record?.groupPrice,
+                      ticketDescription: record?.ticketDescription,
+                      ticketStock: record?.ticketStock as
+                        | TICKET_STOCK
+                        | undefined,
+                      ticketEntity: record?.ticketEntity,
+                      event: record?.event?.id,
+                      user: record?.user?.id,
+                      ticketQuestions: record?.ticketQuestions?.map((q) => ({
+                        question: q?.question ?? "",
+                        is_compulsory: q?.is_compulsory ?? false,
+                      })),
+                      guestAsChargeBearer: record?.guestAsChargeBearer ?? true,
+                    });
+                  },
+                };
+              }}
+              columns={columns}
+              dataSource={data}
+              className="font-BricolageGrotesqueRegular w-full"
+              pagination={{
+                current: currentPage,
+                pageSize: pageSize,
+                total: data?.length,
+                onChange: (page, size) => {
+                  setCurrentPage(page);
+                  setPageSize(size);
+                },
+              }}
+              scroll={{ x: "max-content" }}
+            />
           </Space>
         </Space>
       </EventDetailsComponent>

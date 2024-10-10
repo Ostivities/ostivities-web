@@ -61,7 +61,7 @@ function CreateTicketPage(): JSX.Element {
               />
             </Space>
           </div>
-          <Button 
+          <Button
             type="default"
             size={"large"}
             className="font-BricolageGrotesqueSemiBold button-style sign-in cursor-pointer font-bold float-end place-self-end"
@@ -70,7 +70,7 @@ function CreateTicketPage(): JSX.Element {
               setCookie("stage_one", "process");
               setCookie("stage_two", "process");
               setCookie("stage_three", "wait");
-              setCookie("ticket_created", "yes")
+              setCookie("ticket_created", "yes");
               router.push(
                 `/Dashboard/create-events/${params?.id}/event_appearance`
               );
@@ -80,15 +80,19 @@ function CreateTicketPage(): JSX.Element {
           </Button>
         </Flex>
         <div className="w-full mx-auto flex flex-col space-y-5 py-6">
-        <br /><br />
-          <EventTicketTable /> <br /><br />
-          <Space className="flex flex-row justify-center space-x-4 mt-8"> 
+          <br />
+          <br />
+          <EventTicketTable /> <br />
+          <br />
+          <Space className="flex flex-row justify-center space-x-4 mt-8">
             <Button
               type="default"
               size={"large"}
               className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
               onClick={() => {
-                router.push(`/Dashboard/create-events/${params?.id}/incomplete-publish-event`);
+                router.push(
+                  `/Dashboard/create-events/${params?.id}/incomplete-publish-event`
+                );
               }}
             >
               Skip & do this later
@@ -99,7 +103,9 @@ function CreateTicketPage(): JSX.Element {
               size="large"
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
               onClick={() => {
-                router.push(`/Dashboard/create-events/${params?.id}/publish-events`);
+                router.push(
+                  `/Dashboard/create-events/${params?.id}/publish-events`
+                );
               }}
             >
               Save & continue

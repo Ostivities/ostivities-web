@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { global } from "styled-jsx/css";
 import "@/app/globals.css";
 import { Heading5 } from "../typography/Typography";
 import PaymentSuccess from "@/app/components/OstivitiesModal/PaymentSuccessModal";
 import { PlusSquareOutlined } from "@ant-design/icons";
+import { ITicketDetails } from "@/app/utils/interface";
 
 interface SummaryProps {
   continueBtn?: boolean;
@@ -24,6 +25,8 @@ interface SummaryProps {
 const Summary = ({ continueBtn, to, paymentBtn, ticketDetails, eventName }: SummaryProps) => {
   const [showInput, setShowInput] = useState(false);
   const [discountApplied, setDiscountApplied] = useState(false);
+  const [totalTicketPrice, setTotalTicketPrice] = useState<number>();
+  const [subTotal, setSubTotal] = useState(false);
   const [discountCode, setDiscountCode] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -38,11 +41,20 @@ const Summary = ({ continueBtn, to, paymentBtn, ticketDetails, eventName }: Summ
     }
   };
 
+  console.log(ticketDetails, "ticketDetails")
   const handleClearDiscount = () => {
     setDiscountCode("");
     setDiscountApplied(false);
     setShowInput(false); // Disable input after clearing
   };
+
+  // useEffect(() => {
+  //   if (ticketDetails) {
+  //     const total = ticketDetails.reduce((acc, ticket) => acc + (ticket.ticketNumber * ticket.ticketPrice), 0);
+  //     console.log(total, "ttoal")
+  //     setTotalTicketPrice(total);
+  //   }
+  // }, [ticketDetails])
 
   return (
     <section className="flex-1">
@@ -117,6 +129,31 @@ const Summary = ({ continueBtn, to, paymentBtn, ticketDetails, eventName }: Summ
               <div className="flex-center justify-between">
                 <div>Fees</div>
                 <div>₦300.00</div>
+              </div>
+              <div className="flex flex-col gap-2 mt-2 text-OWANBE_FADE text-s font-BricolageGrotesqueRegular">
+                {ticketDetails?.filter((ticketDetails: any) => {
+                  return ticketDetails?.ticketNumber !== 0 || ticketDetails !== "undefined"
+                }).map((ticket: any, index: any) => (
+                  <>
+                    <div className="flex-center justify-between">
+                      <div key={index}>
+                        {ticket?.ticketName} x {ticket?.ticketNumber}
+                      </div>
+                      <div>
+                        ₦{ticket?.ticketPrice?.toLocaleString()}
+                      </div>
+                    </div>
+                    <div className="flex-center justify-between">
+                      <div>Fee</div>
+                      <div>₦{ticket?.ticketFee?.toLocaleString()}</div>
+                    </div>
+                    <div className="flex-center justify-between">
+                      <div>Subtotal</div>
+                      <div>₦{(ticket?.ticketFee + ticket?.ticketFee).toLocaleString()}</div>{" "}
+                      {/* Adjust this based on your calculation */}
+                    </div>
+                  </>
+                ))}
               </div>
               {discountApplied && (
                 <div className="flex-center justify-between">

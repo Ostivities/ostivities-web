@@ -14,7 +14,7 @@ import EventDetailsComponent from "../EventDetails/EventDetails";
 import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
 import { useCookies } from "react-cookie";
 import { useParams, useRouter } from "next/navigation";
-import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
+import { TICKET_ENTITY, TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
 
 // Currency formatter for Naira (₦)
 const formatCurrency = (amount: number) => {
@@ -27,7 +27,6 @@ const formatCurrency = (amount: number) => {
   return formatter.format(amount);
 };
 
-
 const EventTicketTable = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,21 +37,24 @@ const EventTicketTable = () => {
   const [actionType, setActionType] = useState<"delete" | "warning">();
   // const [cookies, setCookie, removeCookie] = useCookies(["ticket_id",]);
   const params = useParams<{ id: string }>();
-  const [duplicateData, setDuplicateData] = useState<ITicketCreate | undefined>();
+  const [duplicateData, setDuplicateData] = useState<
+    ITicketCreate | undefined
+  >();
   const [selectedTicket, setSelectedTicket] = useState<string | undefined>("");
-  const [selectedTicketEntity, setSelectedTicketEntity] = useState<string | undefined>("");
+  const [selectedTicketEntity, setSelectedTicketEntity] = useState<
+    string | undefined
+  >("");
 
   const { getTickets } = useGetEventTickets(params?.id);
   const ticketData = getTickets?.data?.data?.data;
   // const {id, ...rest} = ticketData;
-  // console.log(ticketData, "ticketData") 
+  // console.log(ticketData, "ticketData")
   // console.log(duplicateData, "duplicateData")
 
   interface MenuItemType {
     label: React.ReactNode;
     key: string;
   }
-
 
   const handleActionSuccess = () => {
     // Refetch the tickets after an action (delete, edit, duplicate)
@@ -65,7 +67,7 @@ const EventTicketTable = () => {
         <Button
           type="link"
           className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
-          style={{ color: "#000000", fontFamily: "BricolageGrotesqueRegular" }} 
+          style={{ color: "#000000", fontFamily: "BricolageGrotesqueRegular" }}
           onClick={(e) => {
             // console.log(e)
             // setSelectedTicket(e);  // Set the selected ticket's data here
@@ -111,7 +113,6 @@ const EventTicketTable = () => {
     },
   ];
 
-
   const columns: ColumnsType<ITicketDetails> = [
     {
       title: (
@@ -121,7 +122,8 @@ const EventTicketTable = () => {
         />
       ),
       dataIndex: "ticketName",
-      sorter: (a, b) => (a.event?.eventName ?? "").localeCompare(b.event?.eventName ?? ""),
+      sorter: (a, b) =>
+        (a.event?.eventName ?? "").localeCompare(b.event?.eventName ?? ""),
     },
     {
       title: (
@@ -133,8 +135,16 @@ const EventTicketTable = () => {
       dataIndex: "ticketQty",
       sorter: (a, b) => a.ticketQty - b.ticketQty,
       render: (text, record: ITicketDetails) => {
-        return <>{record?.ticketStock === TICKET_STOCK.UNLIMITED ? "Unlimited" : <span>{text}</span>}</>
-      }
+        return (
+          <>
+            {record?.ticketStock === TICKET_STOCK.UNLIMITED ? (
+              "Unlimited"
+            ) : (
+              <span>{text}</span>
+            )}
+          </>
+        );
+      },
     },
     {
       title: (
@@ -143,11 +153,22 @@ const EventTicketTable = () => {
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
-      dataIndex: "ticketPrice",
+      dataIndex: ["ticketPrice", "groupPrice"],
       sorter: (a, b) => (a?.ticketPrice ?? 0) - (b?.ticketPrice ?? 0),
       render: (text, record: ITicketDetails) => {
-        // console.log(text, "text")
-        return <>{record?.ticketType === TICKET_TYPE.FREE ? "Free" : <span>{formatCurrency(text as number)}</span>}</>
+        // console.log(text, "text");
+        // console.log(record, "record");
+
+        // Safeguard against missing properties with optional chaining
+        if (record?.ticketType === TICKET_TYPE.FREE) {
+          return <>Free</>;
+        }
+
+        if (record?.ticketEntity === TICKET_ENTITY.COLLECTIVE) {
+          return <span>{formatCurrency(record?.groupPrice ?? 0)}</span>;
+        }
+
+        return <span>{formatCurrency(record?.ticketPrice ?? 0)}</span>;
       },
     },
     {
@@ -160,8 +181,21 @@ const EventTicketTable = () => {
       dataIndex: "ticketType",
       sorter: (a, b) => (a.ticketPrice ?? 0) - (b.ticketPrice ?? 0),
       render: (text, record: ITicketDetails) => {
-        return <>{record?.ticketType === TICKET_TYPE.FREE ? "Free" : "Paid"}</>
-      }
+        return <>{record?.ticketType === TICKET_TYPE.FREE ? "Free" : "Paid"}</>;
+      },
+    },
+    {
+      title: <Label content="Ticket Entity" />,
+      dataIndex: "ticketEntity",
+      render: (text, record: ITicketDetails) => {
+        return (
+          <>
+            {record?.ticketEntity === TICKET_ENTITY.SINGLE
+              ? "Single"
+              : "Collective"}
+          </>
+        );
+      },
     },
     {
       title: (
@@ -217,7 +251,7 @@ const EventTicketTable = () => {
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         onOk={() => {
-          setIsModalOpen(false)
+          setIsModalOpen(false);
           handleActionSuccess();
         }}
       />
@@ -225,22 +259,22 @@ const EventTicketTable = () => {
         open={isOpen}
         onCancel={() => setIsOpen(false)}
         onOk={() => {
-          setIsOpen(false)
+          setIsOpen(false);
           handleActionSuccess();
         }}
         id={selectedTicket}
-        ticketEntity={selectedTicketEntity} 
+        ticketEntity={selectedTicketEntity}
       />
       <DeleteTicket
         open={isShown}
         onCancel={() => setIsShown(false)}
         onOk={() => {
-          setIsShown(false)
+          setIsShown(false);
           handleActionSuccess();
         }}
         actionType={actionType}
         id={selectedTicket}
-        data={duplicateData} 
+        data={duplicateData}
       />
 
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
@@ -266,8 +300,8 @@ const EventTicketTable = () => {
             return {
               onClick: () => {
                 // console.log(record, "record")
-                setSelectedTicket(record?.key)
-                setSelectedTicketEntity(record?.ticketEntity)
+                setSelectedTicket(record?.key);
+                setSelectedTicketEntity(record?.ticketEntity);
                 setDuplicateData({
                   ticketName: record?.ticketName,
                   ticketQty: record?.ticketQty,
@@ -280,11 +314,11 @@ const EventTicketTable = () => {
                   ticketEntity: record?.ticketEntity,
                   event: record?.event?.id,
                   user: record?.user?.id,
-                  ticketQuestions: record?.ticketQuestions?.map(q => ({
+                  ticketQuestions: record?.ticketQuestions?.map((q) => ({
                     question: q?.question ?? "",
                     is_compulsory: q?.is_compulsory ?? false,
                   })),
-                  guestAsChargeBearer: record?.guestAsChargeBearer ?? true
+                  guestAsChargeBearer: record?.guestAsChargeBearer ?? true,
                 });
               },
             };
