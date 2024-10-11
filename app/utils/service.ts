@@ -37,6 +37,13 @@ export class API_SERVICE {
     });
   }
 
+  static async _logoutUser(): Promise<AxiosResponse> {
+    return await instance({
+      url: `/auth/logout`,
+      method: HttpMethod.POST,
+    })
+  }
+
   static async _userProfile(): Promise<AxiosResponse> {
     return await instance({
       url: `/auth/profile`,

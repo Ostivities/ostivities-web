@@ -18,11 +18,18 @@ interface SummaryProps {
     ticketPrice: number;
     ticketFee: number;
     ticketNumber: number;
+    subTotal: number;
   }[];
   eventName?: string;
 }
 
-const Summary = ({ continueBtn, to, paymentBtn, ticketDetails, eventName }: SummaryProps) => {
+const Summary = ({
+  continueBtn,
+  to,
+  paymentBtn,
+  ticketDetails,
+  eventName,
+}: SummaryProps) => {
   const [showInput, setShowInput] = useState(false);
   const [discountApplied, setDiscountApplied] = useState(false);
   const [totalTicketPrice, setTotalTicketPrice] = useState<number>();
@@ -41,7 +48,7 @@ const Summary = ({ continueBtn, to, paymentBtn, ticketDetails, eventName }: Summ
     }
   };
 
-  console.log(ticketDetails, "ticketDetails")
+  // console.log(ticketDetails, "ticketDetails")
   const handleClearDiscount = () => {
     setDiscountCode("");
     setDiscountApplied(false);
@@ -50,11 +57,15 @@ const Summary = ({ continueBtn, to, paymentBtn, ticketDetails, eventName }: Summ
 
   // useEffect(() => {
   //   if (ticketDetails) {
-  //     const total = ticketDetails.reduce((acc, ticket) => acc + (ticket.ticketNumber * ticket.ticketPrice), 0);
-  //     console.log(total, "ttoal")
+  //     const total = ticketDetails.reduce((acc, ticket) => {
+  //       const subtotal =
+  //         ticket?.ticketNumber * (ticket?.ticketPrice + ticket?.ticketFee);
+  //       return acc + subtotal;
+  //     }, 0);
+  //     console.log(total, "total");
   //     setTotalTicketPrice(total);
   //   }
-  // }, [ticketDetails])
+  // }, [ticketDetails]);
 
   return (
     <section className="flex-1">
@@ -122,38 +133,38 @@ const Summary = ({ continueBtn, to, paymentBtn, ticketDetails, eventName }: Summ
               Payment details
             </h3>
             <div className="flex flex-col gap-2 mt-2 text-OWANBE_FADE text-s font-BricolageGrotesqueRegular">
-              <div className="flex-center justify-between">
-                <div>Early Bird x 2</div>
-                <div>₦10,000.00</div>
-              </div>
-              <div className="flex-center justify-between">
-                <div>Fees</div>
-                <div>₦300.00</div>
-              </div>
               <div className="flex flex-col gap-2 mt-2 text-OWANBE_FADE text-s font-BricolageGrotesqueRegular">
-                {ticketDetails?.filter((ticketDetails: any) => {
-                  return ticketDetails?.ticketNumber !== 0 || ticketDetails !== "undefined"
-                }).map((ticket: any, index: any) => (
-                  <>
-                    <div className="flex-center justify-between">
-                      <div key={index}>
-                        {ticket?.ticketName} x {ticket?.ticketNumber}
+                {ticketDetails
+                  ?.filter((ticketDetails: any) => {
+                    return (
+                      ticketDetails?.ticketNumber !== 0 ||
+                      ticketDetails !== "undefined"
+                    );
+                  })
+                  .map((ticket: any, index: any) => (
+                    <>
+                      <div className="flex-center justify-between">
+                        <div key={index}>
+                          {ticket?.ticketName} x {ticket?.ticketNumber}
+                        </div>
+                        <div>₦{ticket?.ticketPrice?.toLocaleString()}</div>
                       </div>
-                      <div>
-                        ₦{ticket?.ticketPrice?.toLocaleString()}
+                      <div className="flex-center justify-between">
+                        <div>Fee</div>
+                        <div>₦{ticket?.ticketFee?.toLocaleString()}</div>
                       </div>
-                    </div>
-                    <div className="flex-center justify-between">
-                      <div>Fee</div>
-                      <div>₦{ticket?.ticketFee?.toLocaleString()}</div>
-                    </div>
-                    <div className="flex-center justify-between">
-                      <div>Subtotal</div>
-                      <div>₦{(ticket?.ticketFee + ticket?.ticketFee).toLocaleString()}</div>{" "}
-                      {/* Adjust this based on your calculation */}
-                    </div>
-                  </>
-                ))}
+                      <div className="flex-center justify-between">
+                        <div>Subtotal</div>
+                        <div>
+                          ₦
+                          {(
+                            ticket?.ticketPrice + ticket?.ticketFee
+                          ).toLocaleString()}
+                        </div>{" "}
+                        {/* Adjust this based on your calculation */}
+                      </div>
+                    </>
+                  ))}
               </div>
               {discountApplied && (
                 <div className="flex-center justify-between">
@@ -162,17 +173,17 @@ const Summary = ({ continueBtn, to, paymentBtn, ticketDetails, eventName }: Summ
                   {/* Adjust this based on your discount logic */}
                 </div>
               )}
-              <div className="flex-center justify-between">
-                <div>Subtotal</div>
-                <div>₦10,200.00</div>{" "}
-                {/* Adjust this based on your calculation */}
-              </div>
             </div>
-            
           </div>
           <div className="flex-center justify-between font-BricolageGrotesqueMedium text-2xl text-OWANBE_PRY my-6">
             <div>Total</div>
-            <div>₦10,200.00</div> {/* Adjust this based on your calculation */}
+            <div>
+              ₦{" "}
+              {ticketDetails
+                ?.reduce((acc, ticket) => acc + ticket?.subTotal, 0)
+                ?.toLocaleString()}
+            </div>{" "}
+            {/* Adjust this based on your calculation */}
           </div>
           {continueBtn && (
             <div className="flex justify-center mt-12 mb-6 w-full">
