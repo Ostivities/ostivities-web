@@ -30,6 +30,8 @@ import { useCookies } from "react-cookie";
 import useLocalStorage from "use-local-storage";
 import { useProfile } from "../../hooks/auth/auth.hook";
 import useFetch from "../forms/create-events/auth";
+import { useLogout } from "@/app/hooks/auth/auth.hook";
+
 
 const items1: MenuProps["items"] = [
   {
@@ -91,6 +93,7 @@ function DashboardLayout({
   const pathname = usePathname();
 
   const { profile } = useProfile();
+  const { logoutUser } = useLogout()
   const [cookies, setCookie, removeCookie] = useCookies([
     "forgot_email",
     "is_registered",
@@ -123,6 +126,7 @@ function DashboardLayout({
       label: <Label className="cursor-pointer" content="Sign out" />,
       key: "sign-out",
       onClick: () => {
+        // logoutUser.mutateAsync()
         sessionStorage.removeItem("token");
         removeCookie("forgot_email");
         removeCookie("event_id");
@@ -168,7 +172,7 @@ function DashboardLayout({
             .toUpperCase() || "";
 
   const account_type =
-    accountType === ACCOUNT_TYPE.PERSONAL ? "User" : "Organisation" || "";
+      accountType === ACCOUNT_TYPE.PERSONAL ? "User" : "Organisation";
   const index = pathname.split("/")[2];
 
   const confirmIndex = endpoints.includes(index);

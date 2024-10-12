@@ -119,7 +119,7 @@ function DashboardLayout({
             .toUpperCase() || "";
 
   const account_type =
-    accountType === ACCOUNT_TYPE.PERSONAL ? "User" : "Organisation" || "";
+    accountType === ACCOUNT_TYPE.PERSONAL ? "User" : "Organisation";
   const index = pathname.split("/")[2];
 
   const confirmIndex = endpoints.includes(index);
