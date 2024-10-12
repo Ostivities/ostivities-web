@@ -10,7 +10,7 @@ function EventNotFound(): JSX.Element {
 
   const handleBackToDiscovery = () => {
     // Add the route you want to navigate to
-    router.push("/Dashboard");
+    router.push("/Discover");
   };
 
 

@@ -189,7 +189,7 @@ const EventPageAppearance: React.FC = () => {
             setCookie("stage_two", "wait");
             setCookie("stage_three", "wait");
             router.push(
-              `/Dashboard/create-events/${params?.id}/event_details`
+              `/Discover/create-events/${params?.id}/event_details`
             );
           }}
         >
@@ -475,10 +475,10 @@ const EventPageAppearance: React.FC = () => {
             setCookie("stage_two", "finish");
             setCookie("stage_three", "process");
             if(cookies.ticket_created === "yes") {
-              router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+              router.push(`/Discover/create-events/${params?.id}/tickets_created`);
             } else {
               router.push(
-                `/Dashboard/create-events/${params?.id}/event_tickets`
+                `/Discover/create-events/${params?.id}/event_tickets`
               );
             }
           }}

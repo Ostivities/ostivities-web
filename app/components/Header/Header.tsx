@@ -34,7 +34,7 @@ function Header(): JSX.Element {
     pathname === "/signup";
 
   // Check if NAV_LINKS should be displayed
-  const showNavLinks = !pathCheck && pathname !== "/Dashboard"; // Add other pages as needed
+  const showNavLinks = !pathCheck && pathname !== "/Discover"; // Add other pages as needed
 
 
   const showDrawer = () => {
@@ -107,7 +107,7 @@ function Header(): JSX.Element {
                 // Show My Account button if user is logged in
                 <Button
                   label="My Account"
-                  onClick={() => router.push("/Dashboard")}
+                  onClick={() => router.push("/Discover")}
                 />
               )}
             </div>
@@ -194,7 +194,7 @@ function Header(): JSX.Element {
                 // Show My Account button if user is logged in
                 <Button
                   label="My Account"
-                  onClick={() => router.push("/Dashboard")}
+                  onClick={() => router.push("/Discover")}
                 />
               )}
               </>

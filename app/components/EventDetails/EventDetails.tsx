@@ -173,7 +173,7 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/Dashboard/events-created/${params?.id}/tickets`}
+            href={`/Discover/events-created/${params?.id}/tickets`}
             className={`font-BricolageGrotesqueRegular font-normal text-sm ${pathname.includes("tickets")
                 ? "text-OWANBE_PRY"
                 : "text-OWANBE_DARK"
@@ -187,7 +187,7 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/Dashboard/events-created/${params?.id}/tickets/discounts`}
+            href={`/Discover/events-created/${params?.id}/tickets/discounts`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
             Discounts
@@ -198,7 +198,7 @@ export default function EventDetailsComponent({
       // {
       //   label: (
       //     <Link
-      //       href={`/Dashboard/events-created/${params?.id}/tickets/email`}
+      //       href={`/Discover/events-created/${params?.id}/tickets/email`}
       //       className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
       //     >
       //       Ticket E-mail
@@ -212,7 +212,7 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/Dashboard/events-created/${params?.id}/guestlist`}
+            href={`/Discover/events-created/${params?.id}/guestlist`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
             Guestlist
@@ -223,7 +223,7 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/Dashboard/events-created/${params?.id}/guestlist/email`}
+            href={`/Discover/events-created/${params?.id}/guestlist/email`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
             Email Guestlist
@@ -234,7 +234,7 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/Dashboard/events-created/${params?.id}/guestlist/summary`}
+            href={`/Discover/events-created/${params?.id}/guestlist/summary`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
             Check in Summary
@@ -248,7 +248,7 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/Dashboard/events-created/${params?.id}/coordinators`}
+            href={`/Discover/events-created/${params?.id}/coordinators`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
             Coordinators
@@ -259,7 +259,7 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/Dashboard/events-created/${params?.id}/coordinators/vendors`}
+            href={`/Discover/events-created/${params?.id}/coordinators/vendors`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
             Vendors Management
@@ -282,7 +282,7 @@ export default function EventDetailsComponent({
               fontFamily: "BricolageGrotesqueMedium",
             }}
             onClick={() => {
-              router.push(`/Dashboard/events-created/${params?.id}/about`);
+              router.push(`/Discover/events-created/${params?.id}/about`);
             }}
           >
             About
@@ -324,7 +324,7 @@ export default function EventDetailsComponent({
             }}
             onClick={() => {
               router.push(
-                `/Dashboard/events-created/${params?.id}/event_page_view`
+                `/Discover/events-created/${params?.id}/event_page_view`
               );
             }}
           >
@@ -375,7 +375,7 @@ export default function EventDetailsComponent({
               fontFamily: "BricolageGrotesqueMedium",
             }}
             onClick={() => {
-              router.push(`/Dashboard/events-created/${params?.id}/sales`);
+              router.push(`/Discover/events-created/${params?.id}/sales`);
             }}
           >
             Sales
@@ -521,7 +521,7 @@ export default function EventDetailsComponent({
           height={25}
           width={25}
           onClick={() => {
-            router.push(`/Dashboard/events-created`);
+            router.push(`/Discover/events-created`);
           }}
         />
         <h1 style={{ fontSize: "24px" }}>Event Details</h1>

@@ -157,7 +157,7 @@ const DiscountRecord = (): JSX.Element => {
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
               onClick={() =>
                 router.push(
-                  `/Dashboard/events-created/${params?.id}/tickets/create-discount`
+                  `/Discover/events-created/${params?.id}/tickets/create-discount`
                 )
               }
             >

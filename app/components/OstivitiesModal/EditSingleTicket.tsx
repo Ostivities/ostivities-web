@@ -174,8 +174,8 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
           console.log(response);
           form.resetFields();
           // linkRef.current?.click();
-          if(pathname.startsWith("/Dashboard/create-events")) {
-            router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+          if(pathname.startsWith("/Discover/create-events")) {
+            router.push(`/Discover/create-events/${params?.id}/tickets_created`);
           }
           onOk();
         }
@@ -196,8 +196,8 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
           console.log(response);
           form.resetFields();
           // linkRef.current?.click();
-          if(pathname.startsWith("/Dashboard/create-events")) {
-            router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+          if(pathname.startsWith("/Discover/create-events")) {
+            router.push(`/Discover/create-events/${params?.id}/tickets_created`);
           }
           onOk();
         }

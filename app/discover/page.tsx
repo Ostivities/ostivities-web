@@ -1,62 +1,67 @@
-'use client';
+"use client";
 
-import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
-import React, { useState } from 'react';
-import DiscoverEvents from '../components/DashboardLayout/DiscoverEvents';
-import PopularEvents from '../components/DashboardLayout/PopularEvents';
-import { Input, Select, Tabs } from 'antd';
-import { useGetDiscoveryEvents } from '@/app/hooks/event/event.hook';
-import { PlusOutlined } from '@ant-design/icons';
-import { useRouter } from 'next/navigation';
-import { Country, State } from 'country-state-city';
-import { EVENT_TYPES } from '../utils/data';
-import useFetch from '../components/forms/create-events/auth';
+import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
+import React, { useState } from "react";
+import DiscoverEvents from "../components/DashboardLayout/DiscoverEvents";
+import PopularEvents from "../components/DashboardLayout/PopularEvents";
+import AllEvents from "../components/DashboardLayout/AllEvents";
+import { Input, Select, Tabs, Skeleton } from "antd";
+import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
+import { PlusOutlined } from "@ant-design/icons";
+import { useRouter } from "next/navigation";
+import { Country, State } from "country-state-city";
+import { EVENT_TYPES } from "../utils/data";
+import useFetch from "../components/forms/create-events/auth";
 
 function Dashboard(): JSX.Element {
   const route = useRouter();
   const { isLoggedIn } = useFetch();
-  const [activeTab, setActiveTab] = useState('popular');
+  const [activeTab, setActiveTab] = useState("all");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [searchText, setSearchText] = useState("");
 
   // Get all events for discovery
-  const { getDiscoveryEvents } = useGetDiscoveryEvents(1,10);
-  console.log(getDiscoveryEvents?.data);
 
   const COUNTRY_JSON: any = Country.getAllCountries().map((i: any) => {
     return { value: i?.name, label: i?.name, isoCode: i?.isoCode };
   });
 
-  const STATE_BY_COUNTRYCODE = (stateCode: string): { label: string; value: string }[] => {
+  const STATE_BY_COUNTRYCODE = (
+    stateCode: string
+  ): { label: string; value: string }[] => {
     const result: any = State.getStatesOfCountry(stateCode);
-    const stateJson: { label: string; value: string }[] = result.map((i: any) => {
-      return { label: i?.name, value: i?.name };
-    });
+    const stateJson: { label: string; value: string }[] = result.map(
+      (i: any) => {
+        return { label: i?.name, value: i?.name };
+      }
+    );
     return stateJson;
   };
 
   const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
+    // const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 10, searchText);
+    // console.log(getDiscoveryEvents?.data);
+
     // Perform search logic here
     // For demonstration purposes, let's assume searchResults are updated based on the search
     // Example: setSearchResults([]) or setSearchResults([{...}])
 
     if (searchResults.length === 0) {
-      route.push('/Dashboard/event-not-found');
+      route.push("/Discover/event-not-found");
     } else {
       // Handle the case where search results are available
-      console.log('Search results found:', searchResults);
+      console.log("Search results found:", searchResults);
     }
   };
 
   const header = (
     <div className="flex-center justify-between w-full">
-      <h1 style={{ fontSize: '24px' }}>Discovery</h1>
+      <h1 style={{ fontSize: "24px" }}>Discovery</h1>
 
       {isLoggedIn && (
         <button
-          onClick={() => route.push('/Dashboard/create-events')}
+          onClick={() => route.push("/Discover/create-events")}
           className="bg-OWANBE_PRY rounded-full px-4 py-2 text-xs font-semibold text-white"
         >
           <PlusOutlined /> <span className="pl-1">Create New Event</span>
@@ -64,7 +69,7 @@ function Dashboard(): JSX.Element {
       )}
     </div>
   );
-  
+
   return (
     <DashboardLayout title={header}>
       <div className="flex flex-col gap-7">
@@ -94,7 +99,7 @@ function Dashboard(): JSX.Element {
                   Event State (optional)
                 </span>
                 <Select
-                 placeholder="select event state"
+                  placeholder="select event state"
                   className="w-full"
                   options={[...STATE_BY_COUNTRYCODE("NG")]}
                   onChange={(value) => setSearchText(value)}
@@ -106,7 +111,7 @@ function Dashboard(): JSX.Element {
                   Event Category
                 </span>
                 <Select
-                 placeholder="select event category"
+                  placeholder="select event category"
                   className="w-full"
                   options={[
                     { value: "free", label: "Free Events" },
@@ -121,7 +126,7 @@ function Dashboard(): JSX.Element {
                   Event Type
                 </span>
                 <Select
-                  placeholder="select event type"
+                 placeholder="select event type"
                   onChange={(value) => setSearchText(value)}
                   className="w-full"
                   options={[
@@ -153,10 +158,40 @@ function Dashboard(): JSX.Element {
             </form>
           </div>
         </div>
+ {/* Tab Navigation */}
+ <div className="flex space-x-8 mb-1">
+          
+          <button
+            className={`relative font-semibold pb-2 ${
+              activeTab === 'all' ? 'text-red-600' : 'text-gray-500'
+            }`}
+            onClick={() => setActiveTab('all')}
+          >
+            All Events
+            {activeTab === 'all' && (
+              <div className="absolute left-0 bottom-[-2px] w-full h-[4px] bg-red-600 rounded-full" style={{ borderRadius: '25px' }} />
+            )}
+          </button>
+          <button
+            className={`relative font-semibold pb-2 ${
+              activeTab === 'popular' ? 'text-red-600' : 'text-gray-500'
+            }`}
+            onClick={() => setActiveTab('popular')}
+          >
+            Popular Events
+            {activeTab === 'popular' && (
+              <div className="absolute left-0 bottom-[-2px] w-full h-[4px] bg-red-600 rounded-full" style={{ borderRadius: '25px' }} />
+            )}
+          </button>
+        </div>
 
-       {/* Popular Events Content */}
-       
-       <PopularEvents />
+
+
+        {/* Popular Events Content */}
+           {/* Tab Content */}
+           {activeTab === 'popular' && <PopularEvents />}
+        {activeTab === 'all' && <AllEvents />}
+    
       </div>
     </DashboardLayout>
   );

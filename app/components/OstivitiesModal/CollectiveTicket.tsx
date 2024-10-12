@@ -104,8 +104,8 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
           getTickets.refetch()
           onOk && onOk();
           setLoading(false);
-          if(pathname.startsWith("/Dashboard/create-events")) {
-            router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+          if(pathname.startsWith("/Discover/create-events")) {
+            router.push(`/Discover/create-events/${params?.id}/tickets_created`);
           }
         }
       } else{
@@ -132,8 +132,8 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
           setLoading(false);
           getTickets.refetch()
           // linkRef.current?.click();
-          if(pathname.startsWith("/Dashboard/create-events")) {
-            router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+          if(pathname.startsWith("/Discover/create-events")) {
+            router.push(`/Discover/create-events/${params?.id}/tickets_created`);
           }
         }
       }

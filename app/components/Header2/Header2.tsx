@@ -25,7 +25,7 @@ function Header2(): JSX.Element {
     pathname === '/verify-account';
 
   // Check if NAV_LINKS should be displayed
-  const showNavLinks = !pathCheck && pathname !== '/Dashboard'; // Add other pages as needed
+  const showNavLinks = !pathCheck && pathname !== '/Discover'; // Add other pages as needed
 
   const isNotLoggedIn = !['/login', '/signup'].includes(pathname);
 
@@ -88,7 +88,7 @@ function Header2(): JSX.Element {
               ) : (
                 <Button
                   label="My Account"
-                  onClick={() => router.push('/Dashboard')}
+                  onClick={() => router.push('/Discover')}
                 />
               )}
             </div>
@@ -162,7 +162,7 @@ function Header2(): JSX.Element {
                   <Button
                     label="My Account"
                     className="max-w-full"
-                    onClick={() => router.push('/Dashboard')}
+                    onClick={() => router.push('/Discover')}
                   />
                 )}
               </>

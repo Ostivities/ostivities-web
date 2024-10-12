@@ -27,7 +27,7 @@ const DiscoverEvents = () => {
           about={event?.eventType}
           status="Get Tickets"
           image={event?.eventImage}
-          url={`/Dashboard/discovery/${event?.id}`}
+          url={`/Discover/discovery/${event?.id}`}
           titleClass="font-bricolage-grotesque font-medium"
           aboutClass="font-bricolage-grotesque"
           statusClass="font-bricolage-grotesque font-medium"
@@ -40,7 +40,7 @@ const DiscoverEvents = () => {
           about={event?.eventType}
           status="Get Tickets"
           image={event?.eventImage}
-          url={`/Dashboard/discovery/${event?.id}`}
+          url={`/Discover/discovery/${event?.id}`}
           titleClass="font-bricolage-grotesque font-medium"
           aboutClass="font-bricolage-grotesque"
           statusClass="font-bricolage-grotesque font-medium"

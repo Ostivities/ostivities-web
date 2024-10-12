@@ -343,7 +343,7 @@ function EventDetailsEdit(): JSX.Element {
         setCookie("stage_one", "finish");
         setCookie("stage_two", "process");
         setCookie("stage_three", "wait");
-        router.push(`/Dashboard/create-events/${params?.id}/event_appearance`);
+        router.push(`/Discover/create-events/${params?.id}/event_appearance`);
         setLoader(false);
       }
     } catch (error) {
@@ -1381,7 +1381,7 @@ function EventDetailsEdit(): JSX.Element {
             type="default"
             size={"large"}
             className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
-            onClick={() => router.push("/Dashboard")}
+            onClick={() => router.push("/Discover")}
           >
             Cancel
           </Button>

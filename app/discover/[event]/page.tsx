@@ -66,7 +66,7 @@ const Event = ({ params }: { params: { event: string } }) => {
 
   useLayoutEffect(() => {
     if (!uri.includes(params.event)) {
-      router.push("/Dashboard");
+      router.push("/Discover");
     }
   }, [params.event, router, uri]);
 
@@ -147,7 +147,7 @@ const Event = ({ params }: { params: { event: string } }) => {
                 about={event?.eventType}
                 status="Get Tickets"
                 image={event?.eventImage}
-                url={`/Dashboard/${event?.eventName}/${event?.id}`}
+                url={`/Discover/${event?.eventName}/${event?.id}`}
                 titleClass="font-bricolage-grotesque font-medium"
                 aboutClass="font-bricolage-grotesque"
                 statusClass="font-bricolage-grotesque font-medium"

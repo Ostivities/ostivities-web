@@ -15,6 +15,7 @@ const useFetch = () => {
       const publicPaths = [
         "/",
         "/Dashboard",
+        "/Discover",
         "/discover",
         "/forgot-password",
         "/password-reset",
@@ -26,12 +27,12 @@ const useFetch = () => {
         "/privacy-policy",
         "/refund-policy",
         "/feedback",
-        "/Dashboard/event-not-found",
+        "/Discover/event-not-found",
       ];
 
       // Updated regex patterns for dynamic public paths
       const dynamicPublicPaths = [
-        /^\/Dashboard\/[a-zA-Z0-9\s\-:.]+\/[a-zA-Z0-9\s\-:.]+$/,  // Matches paths like `/Dashboard/Sunset Vibes: A Night of Chill Beats/670072d1aae36ba5c6a155e2`
+        /^\/Discover\/[a-zA-Z0-9\s\-:.]+\/[a-zA-Z0-9\s\-:.]+$/,  // Matches paths like `/Discover/Sunset Vibes: A Night of Chill Beats/670072d1aae36ba5c6a155e2`
       ];
 
       // Function to check if the current path is public
