@@ -11,7 +11,10 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import { IoChevronDown } from "react-icons/io5";
 import React, { useEffect, useState } from "react";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
-import { useGetUserEvent, useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
+import {
+  useGetUserEvent,
+  useGetUserEventByUniqueKey,
+} from "@/app/hooks/event/event.hook";
 import { useCookies } from "react-cookie";
 import useFetch from "@/app/components/forms/create-events/auth";
 import {
@@ -29,7 +32,6 @@ import { ShareAltOutlined, CopyOutlined } from "@ant-design/icons";
 import ReadMoreHTML from "@/app/components/ReadMoreHTML";
 import start from "@/public/Startsin.svg";
 import end from "@/public/Endsin.svg";
-
 
 const ShareModalContent: React.FC<{ url: string; title: string }> = ({
   url,
@@ -179,7 +181,7 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
 const EventDetail = () => {
   const router = useRouter();
   const pathname = usePathname();
-  const params = useParams<{event: string }>();
+  const params = useParams<{ event: string }>();
   // console.log(params, 'params');
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
   const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
@@ -231,58 +233,67 @@ const EventDetail = () => {
   const [isEventStarted, setIsEventStarted] = useState(false);
   const [isRegistrationClosed, setIsRegistrationClosed] = useState(false);
 
-  console.log(isRegistrationClosed, "isRegistrationClosed")
-  useEffect(() => {
-
-  }, [eventDetails])
+  console.log(isRegistrationClosed, "isRegistrationClosed");
+  useEffect(() => {}, [eventDetails]);
 
   useEffect(() => {
-    if(eventDetails?.enable_registration === false) {
-      setIsRegistrationClosed(true)
-    } else {
-      const countdownInterval = setInterval(() => {
-        const now = new Date().getTime();
-        const distanceToStart = eventdates - now;
-        const distanceToEnd = eventEnddates ? eventEnddates - now : null;
-  
-        // Check if the event has started
-        if (distanceToStart > 0) {
-          // Event hasn't started yet
-          setIsEventStarted(false);
-          setIsRegistrationClosed(false); // Registration is open
-  
-          const days = Math.floor(distanceToStart / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((distanceToStart % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((distanceToStart % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((distanceToStart % (1000 * 60)) / 1000);
-  
-          setTimeRemaining({ days, hours, minutes, seconds });
-        } else if (distanceToEnd && distanceToEnd > 0) {
-          // Event has started and is ongoing
-          setIsEventStarted(true);
-          setIsRegistrationClosed(false); // Registration is still open
-  
-          const days = Math.floor(distanceToEnd / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((distanceToEnd % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((distanceToEnd % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((distanceToEnd % (1000 * 60)) / 1000);
-  
-          setTimeRemaining({ days, hours, minutes, seconds });
-        } else if(eventDetails?.enable_registration === false) {
-          setIsRegistrationClosed(true)
-        } else {
-          // Event has ended
-          setIsEventStarted(false);
-          setIsRegistrationClosed(true); // Close registration
-          clearInterval(countdownInterval);
-        }
-      }, 1000);
-  
-      return () => clearInterval(countdownInterval);
+    if (eventDetails?.enable_registration === false) {
+      setIsRegistrationClosed(true);
     }
+
+    const countdownInterval = setInterval(() => {
+      const now = new Date().getTime();
+      const distanceToStart = eventdates - now;
+      const distanceToEnd = eventEnddates ? eventEnddates - now : null;
+
+      // Check if the event has started
+      if (distanceToStart > 0) {
+        // Event hasn't started yet
+        setIsEventStarted(false);
+        setIsRegistrationClosed(false); // Registration is open
+
+        const days = Math.floor(distanceToStart / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (distanceToStart % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor(
+          (distanceToStart % (1000 * 60 * 60)) / (1000 * 60)
+        );
+        const seconds = Math.floor((distanceToStart % (1000 * 60)) / 1000);
+
+        setTimeRemaining({ days, hours, minutes, seconds });
+      } else if (distanceToEnd && distanceToEnd > 0) {
+        // Event has started and is ongoing
+        setIsEventStarted(true);
+        setIsRegistrationClosed(false); // Registration is still open
+
+        const days = Math.floor(distanceToEnd / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (distanceToEnd % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor(
+          (distanceToEnd % (1000 * 60 * 60)) / (1000 * 60)
+        );
+        const seconds = Math.floor((distanceToEnd % (1000 * 60)) / 1000);
+
+        setTimeRemaining({ days, hours, minutes, seconds });
+      } else if (eventDetails?.enable_registration === false) {
+        setIsRegistrationClosed(true);
+      } else {
+        // Event has ended
+        setIsEventStarted(false);
+        setIsRegistrationClosed(true); // Close registration
+        clearInterval(countdownInterval);
+      }
+      if (eventDetails?.enable_registration === false) {
+        setIsRegistrationClosed(true); // Close registration
+      } else {
+        setIsRegistrationClosed(false);
+      }
+    }, 1000);
+
+    return () => clearInterval(countdownInterval);
   }, [eventDate, eventEndDate]);
-
-
 
   const title = (
     <div className="flex-center gap-2">
@@ -418,9 +429,9 @@ const EventDetail = () => {
                 </div>
               </div>
               {twitterLink?.url ||
-                instagramLink?.url ||
-                websiteLink?.url ||
-                facebookLink?.url ? (
+              instagramLink?.url ||
+              websiteLink?.url ||
+              facebookLink?.url ? (
                 <div className="flex gap-3 items-center">
                   <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
                     <Image
@@ -523,7 +534,7 @@ const EventDetail = () => {
                   centered
                   style={{
                     borderRadius: "15px",
-                    padding: "20px"  // Include padding here instead of using bodyStyle
+                    padding: "20px", // Include padding here instead of using bodyStyle
                   }}
                 >
                   <ShareModalContent url={eventUrl} title={eventTitle} />
@@ -541,8 +552,6 @@ const EventDetail = () => {
 
                   {/* Countdown beside the image */}
                   <div className="p-6">
-
-
                     <div className="flex justify-center gap-8">
                       <div className="flex flex-col items-center">
                         <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
@@ -583,36 +592,87 @@ const EventDetail = () => {
                   </div>
                 </div>
 
-                <ReadMoreHTML htmlContent={eventDetails?.eventDetails || ""} maxLength={250} />
+                <ReadMoreHTML
+                  htmlContent={eventDetails?.eventDetails || ""}
+                  maxLength={250}
+                />
                 <div className="flex justify-center mt-12">
-                  <Dropdown
-                    disabled={isRegistrationClosed} // Disable if registration is closed
-                    menu={{ items: RegistrationTypes, onClick: handleMenuClick }}
-                  >
-                    <Button
-                      type={pathname.includes("register") ? "primary" : "text"}
-                      className="primary-btn w-full"
-                      style={{
-                        borderRadius: "25px",
-                        fontFamily: "BricolageGrotesqueMedium",
-                        backgroundColor: isRegistrationClosed ? "#cccccc" : "#e20000", // Gray for disabled, red for active
-                        color: isRegistrationClosed ? "#666666" : "white",
-                        height: "50px", // Adjust height as needed
-                        fontSize: "16px", // Increase text size
-                        border: "none", // Remove border if needed
-                      }}
-                      title={isRegistrationClosed ? "Registration Closed" : ""}
-                      disabled={isRegistrationClosed} // Disable button when registration is closed
-                    >
-                      <Space>
-                        Get Tickets
-                        <IoChevronDown />
-                      </Space>
-                    </Button>
-                  </Dropdown>
+                  {eventDetails?.vendor_registration === true ? (
+                    <>
+                      <Dropdown
+                        disabled={isRegistrationClosed} // Disable if registration is closed
+                        menu={{
+                          items: RegistrationTypes,
+                          onClick: handleMenuClick,
+                        }}
+                      >
+                        <Button
+                          type={
+                            pathname.includes("register") ? "primary" : "text"
+                          }
+                          className="primary-btn w-full"
+                          style={{
+                            borderRadius: "25px",
+                            fontFamily: "BricolageGrotesqueMedium",
+                            backgroundColor: isRegistrationClosed
+                              ? "#cccccc"
+                              : "#e20000", // Gray for disabled, red for active
+                            color: isRegistrationClosed ? "#666666" : "white",
+                            height: "50px", // Adjust height as needed
+                            fontSize: "16px", // Increase text size
+                            border: "none", // Remove border if needed
+                          }}
+                          title={
+                            isRegistrationClosed ? "Registration Closed" : ""
+                          }
+                          disabled={isRegistrationClosed} // Disable button when registration is closed
+                        >
+                          <Space>
+                            {eventDetails?.enable_registration === false
+                              ? "Registration Closed"
+                              : "Get Tickets"}
+                            <IoChevronDown />
+                          </Space>
+                        </Button>
+                      </Dropdown>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        type={
+                          pathname.includes("register") ? "primary" : "text"
+                        }
+                        className="primary-btn w-full"
+                        style={{
+                          borderRadius: "25px",
+                          fontFamily: "BricolageGrotesqueMedium",
+                          backgroundColor: isRegistrationClosed
+                            ? "#cccccc"
+                            : "#e20000", // Gray for disabled, red for active
+                          color: isRegistrationClosed ? "#666666" : "white",
+                          height: "50px", // Adjust height as needed
+                          fontSize: "16px", // Increase text size
+                          border: "none", // Remove border if needed
+                        }}
+                        title={
+                          isRegistrationClosed ? "Registration Closed" : ""
+                        }
+                        disabled={isRegistrationClosed} // Disable button when registration is closed
+                      >
+                        <Space>
+                          {eventDetails?.enable_registration === false
+                            ? "Registration Closed"
+                            : "Get Tickets"}
+                          <IoChevronDown />
+                        </Space>
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
-            </div></div></div>
+            </div>
+          </div>
+        </div>
 
         <br />
         <br />
