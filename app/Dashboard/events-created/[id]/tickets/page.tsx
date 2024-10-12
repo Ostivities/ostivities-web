@@ -205,8 +205,13 @@ const EventTickets = () => {
       },
     },
     {
-      title: <Label content="Ticket Entity" />,
+      title: 
+      <Label 
+      content="Ticket Entity" 
+      className="font-semibold text-OWANBE_TABLE_TITLE"
+      />,
       dataIndex: "ticketEntity",
+      sorter: (a, b) => (a.ticketEntity ?? "").localeCompare(b.ticketEntity ?? ""),
       render: (text, record: ITicketDetails) => {
         return (
           <>

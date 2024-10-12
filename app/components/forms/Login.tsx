@@ -78,24 +78,29 @@ function LoginForm(): JSX.Element {
       style={{ fontFamily: "BricolageGrotesqueRegular" }}
     >
       <Form.Item
-        label="Email Address"
-        style={{ fontFamily: "BricolageGrotesqueRegular" }}
-        className="font-BricolageGrotesqueRegular"
-      >
-        <Form.Item
-          name={"email"}
-          noStyle
-          rules={[{ required: true, message: "Please input your email" }]}
-        >
-          <Input
-            type="email"
-            placeholder="Enter your email"
-            className="placeholder:font-BricolageGrotesqueRegular"
-            autoComplete="off"
-            defaultValue={cookies?.user_email}
-          />
-        </Form.Item>
-      </Form.Item>
+  label="Email Address"
+  style={{ fontFamily: "BricolageGrotesqueRegular" }}
+  className="font-BricolageGrotesqueRegular"
+>
+  <Form.Item
+    name="email"
+    noStyle
+    rules={[{ required: true, message: "Please input your email" }]}
+  >
+    <Input
+      type="email"
+      placeholder="Enter your email"
+      className="placeholder:font-BricolageGrotesqueRegular"
+      autoComplete="off"
+      defaultValue={cookies?.user_email}
+      onChange={(e) => {
+        const email = e.target.value.toLowerCase(); // Convert input to lowercase
+        form.setFieldsValue({ email }); // Update the form field value
+      }}
+    />
+  </Form.Item>
+</Form.Item>
+
 
       <Form.Item
         label="Password"

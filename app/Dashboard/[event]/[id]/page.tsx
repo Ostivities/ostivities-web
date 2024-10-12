@@ -27,6 +27,8 @@ import {
 } from "react-share";
 import { ShareAltOutlined, CopyOutlined } from "@ant-design/icons";
 import ReadMoreHTML from "@/app/components/ReadMoreHTML";
+import start from "@/public/Startsin.svg";
+import end from "@/public/Endsin.svg";
 
 
 const ShareModalContent: React.FC<{ url: string; title: string }> = ({
@@ -493,53 +495,54 @@ const EventDetail = () => {
                 </Modal>
               </div>
 
-              <div className="mt-8">
-                <div className="flex justify-center gap-12">
-                  <div className="flex flex-col items-center">
-                    <div className="flex items-center justify-center w-16 h-16 border-2 border-[#e20000] rounded-full">
-                      <div className="text-2xl font-semibold">
-                        {timeRemaining.days}
-                      </div>
-                    </div>
-                    <div className="text-xs capitalize mt-2">Days</div>
-                  </div>
+              <div className="mt-2">
+                <div className="rounded-lg overflow-hidden flex flex-row items-center justify-center text-center p-4">
+                  {/* Image on the left side */}
+                  <Image src={start} alt="Start" className="w-20 h-auto" />
 
-                  <div className="flex flex-col items-center">
-                    <div className="flex items-center justify-center w-16 h-16 border-2 border-[#e20000] rounded-full">
-                      <div className="text-2xl font-semibold">
-                        {timeRemaining.hours}
+                  {/* Countdown beside the image */}
+                  <div className="p-6">
+                    <div className="flex justify-center gap-8">
+                      <div className="flex flex-col items-center">
+                        <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                          <div className="text-2xl font-semibold">
+                            {timeRemaining.days}
+                          </div>
+                        </div>
+                        <div className="text-xs capitalize mt-2">Days</div>
                       </div>
-                    </div>
-                    <div className="text-xs capitalize mt-2">Hours</div>
-                  </div>
 
-                  <div className="flex flex-col items-center">
-                    <div className="flex items-center justify-center w-16 h-16 border-2 border-[#e20000] rounded-full">
-                      <div className="text-2xl font-semibold">
-                        {timeRemaining.minutes}
+                      <div className="flex flex-col items-center">
+                        <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                          <div className="text-2xl font-semibold">
+                            {timeRemaining.hours}
+                          </div>
+                        </div>
+                        <div className="text-xs capitalize mt-2">Hours</div>
                       </div>
-                    </div>
-                    <div className="text-xs capitalize mt-2">Minutes</div>
-                  </div>
 
-                  <div className="flex flex-col items-center">
-                    <div className="flex items-center justify-center w-16 h-16 border-2 border-[#e20000] rounded-full">
-                      <div className="text-2xl font-semibold">
-                        {timeRemaining.seconds}
+                      <div className="flex flex-col items-center">
+                        <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                          <div className="text-2xl font-semibold">
+                            {timeRemaining.minutes}
+                          </div>
+                        </div>
+                        <div className="text-xs capitalize mt-2">Minutes</div>
+                      </div>
+
+                      <div className="flex flex-col items-center">
+                        <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                          <div className="text-2xl font-semibold">
+                            {timeRemaining.seconds}
+                          </div>
+                        </div>
+                        <div className="text-xs capitalize mt-2">Seconds</div>
                       </div>
                     </div>
-                    <div className="text-xs capitalize mt-2">Seconds</div>
                   </div>
                 </div>
-              </div>
-            </div>
-            {/* <div
-              className="font-BricolageGrotesqueRegular flex-1 h-fit px-1"
-              dangerouslySetInnerHTML={{
-                __html: eventDetails?.eventDetails as string,
-              }}
-            ></div> */}
-            <ReadMoreHTML htmlContent={eventDetails?.eventDetails || ""} maxLength={400} /> 
+                
+            <ReadMoreHTML htmlContent={eventDetails?.eventDetails || ""} maxLength={400} />
             <div className="flex justify-center mt-12">
               <Dropdown
                 disabled={eventdates < new Date().getTime()}
@@ -568,6 +571,7 @@ const EventDetail = () => {
               </Dropdown>
             </div>
           </div>
+        </div></div>
         </div>
         <br />
         <br />

@@ -11,7 +11,9 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import { IoChevronDown } from "react-icons/io5";
 import React, { useEffect, useState } from "react";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
-import { useGetUserEvent } from "@/app/hooks/event/event.hook";
+import { useGetUserEvent, usePublishEvent } from "@/app/hooks/event/event.hook";
+import { useCookies } from "react-cookie";
+import useFetch from "@/app/components/forms/create-events/auth";
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -24,6 +26,10 @@ import {
   XIcon,
 } from "react-share";
 import { ShareAltOutlined, CopyOutlined } from "@ant-design/icons";
+import ReadMoreHTML from "@/app/components/ReadMoreHTML";
+import start from "@/public/Startsin.svg";
+import end from "@/public/Endsin.svg";
+
 
 const ShareModalContent: React.FC<{ url: string; title: string }> = ({
   url,
@@ -177,7 +183,7 @@ const EventDetail = () => {
   // console.log(params, 'params');
   const { getUserEvent } = useGetUserEvent(params?.id);
   const eventDetails = getUserEvent?.data?.data?.data;
-  console.log(eventDetails, "eventDetails");
+  // console.log(eventDetails, "eventDetails");
 
   const handleMenuClick: MenuProps["onClick"] = (e) => {
     return e;
@@ -190,11 +196,10 @@ const EventDetail = () => {
   const eventUrl = eventDetails?.eventURL;
   const eventTitle = eventDetails?.eventName;
 
-  const { profile } = useProfile();
   const userFullName =
-    profile?.data?.data?.data?.firstName +
+    (eventDetails?.user?.firstName || "") +
     " " +
-    profile?.data?.data?.data?.lastName;
+    (eventDetails?.user?.lastName || "");
 
   const socialLinks = eventDetails?.socials;
   const twitterLink = socialLinks?.find(
@@ -213,7 +218,7 @@ const EventDetail = () => {
   // Countdown logic
   const eventDate = eventDetails?.startDate;
   const eventdates = new Date(eventDate).getTime();
-  console.log(eventdates, "eventdates");
+  // console.log(eventdates, "eventdates");
   const [timeRemaining, setTimeRemaining] = useState({
     days: 0,
     hours: 0,
@@ -224,7 +229,7 @@ const EventDetail = () => {
   useEffect(() => {
     const countdownInterval = setInterval(() => {
       const now = new Date().getTime();
-      console.log(now, "now");
+      // console.log(now, "now");
       const distance = new Date(eventDate).getTime() - now;
       //  console.log(distance)
 
@@ -263,7 +268,7 @@ const EventDetail = () => {
     {
       label: (
         <Link
-          href={`/Dashboard/tickets`}
+          href={`/Dashboard/${params?.event}/${params?.id}/tickets`}
           className="font-BricolageGrotesqueRegular font-normal text-md text-OWANBE_DARK"
         >
           Register as a guest
@@ -287,13 +292,13 @@ const EventDetail = () => {
   return (
     <DashboardLayout title={title} isLoggedIn>
       <section>
-        <div className="flex gap-12">
-          <div className="relative w-fit rounded-[3.125rem] overflow-hidden">
+        <div className="flex gap-10">
+          <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
             <Image
-              src="/images/placeholder-6.png"
-              alt=""
-              height={520}
-              width={390}
+              src={eventDetails?.eventImage}
+              alt="Event Image"
+              fill
+              style={{ objectFit: "cover" }}
               className=""
             />
             <div className="absolute inset-0 bg-image-card"></div>
@@ -466,7 +471,7 @@ const EventDetail = () => {
           <div className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-6">
             <div className="py-8">
               <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between items-center">
-                <h2 className="text-2xl font-BricolageGrotesqueMedium">
+                <h2 className="text-xl font-BricolageGrotesqueMedium">
                   {eventDetails?.eventName}
                 </h2>
 
@@ -490,54 +495,57 @@ const EventDetail = () => {
                 </Modal>
               </div>
 
-              <div className="mt-8">
-                <div className="flex justify-center gap-12">
-                  <div className="flex flex-col items-center">
-                    <div className="flex items-center justify-center w-16 h-16 border-2 border-[#e20000] rounded-full">
-                      <div className="text-2xl font-semibold">
-                        {timeRemaining.days}
-                      </div>
-                    </div>
-                    <div className="text-xs capitalize mt-2">Days</div>
-                  </div>
+              <div className="mt-2">
+                <div className="rounded-lg overflow-hidden flex flex-row items-center justify-center text-center p-4">
+                  {/* Image on the left side */}
+                  <Image src={start} alt="Start" className="w-20 h-auto" />
 
-                  <div className="flex flex-col items-center">
-                    <div className="flex items-center justify-center w-16 h-16 border-2 border-[#e20000] rounded-full">
-                      <div className="text-2xl font-semibold">
-                        {timeRemaining.hours}
+                  {/* Countdown beside the image */}
+                  <div className="p-6">
+                    <div className="flex justify-center gap-8">
+                      <div className="flex flex-col items-center">
+                        <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                          <div className="text-2xl font-semibold">
+                            {timeRemaining.days}
+                          </div>
+                        </div>
+                        <div className="text-xs capitalize mt-2">Days</div>
                       </div>
-                    </div>
-                    <div className="text-xs capitalize mt-2">Hours</div>
-                  </div>
 
-                  <div className="flex flex-col items-center">
-                    <div className="flex items-center justify-center w-16 h-16 border-2 border-[#e20000] rounded-full">
-                      <div className="text-2xl font-semibold">
-                        {timeRemaining.minutes}
+                      <div className="flex flex-col items-center">
+                        <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                          <div className="text-2xl font-semibold">
+                            {timeRemaining.hours}
+                          </div>
+                        </div>
+                        <div className="text-xs capitalize mt-2">Hours</div>
                       </div>
-                    </div>
-                    <div className="text-xs capitalize mt-2">Minutes</div>
-                  </div>
 
-                  <div className="flex flex-col items-center">
-                    <div className="flex items-center justify-center w-16 h-16 border-2 border-[#e20000] rounded-full">
-                      <div className="text-2xl font-semibold">
-                        {timeRemaining.seconds}
+                      <div className="flex flex-col items-center">
+                        <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                          <div className="text-2xl font-semibold">
+                            {timeRemaining.minutes}
+                          </div>
+                        </div>
+                        <div className="text-xs capitalize mt-2">Minutes</div>
+                      </div>
+
+                      <div className="flex flex-col items-center">
+                        <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                          <div className="text-2xl font-semibold">
+                            {timeRemaining.seconds}
+                          </div>
+                        </div>
+                        <div className="text-xs capitalize mt-2">Seconds</div>
                       </div>
                     </div>
-                    <div className="text-xs capitalize mt-2">Seconds</div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div
-              className="font-BricolageGrotesqueRegular flex-1 h-fit px-1"
-              dangerouslySetInnerHTML={{
-                __html: eventDetails?.eventDetails as string,
-              }}
-            ></div>
+                
+            <ReadMoreHTML htmlContent={eventDetails?.eventDetails || ""} maxLength={400} />
             <div className="flex justify-center mt-12">
               <Dropdown
+                disabled={eventdates < new Date().getTime()}
                 menu={{ items: RegistrationTypes, onClick: handleMenuClick }}
               >
                 <Button
@@ -546,12 +554,13 @@ const EventDetail = () => {
                   style={{
                     borderRadius: "25px",
                     fontFamily: "BricolageGrotesqueMedium",
-                    backgroundColor: "#e20000", // Button color
-                    color: "white", // Text color
+                    backgroundColor: eventdates < new Date().getTime() ? "#cccccc" : "#e20000", // Gray for disabled, red for active
+                    color: eventdates < new Date().getTime() ? "#666666" : "white",
                     height: "50px", // Adjust height as needed
                     fontSize: "16px", // Increase text size
                     border: "none", // Remove border if needed
                   }}
+                  title={eventdates < new Date().getTime() ? "Registration Closed" : ""}
                   disabled={eventdates < new Date().getTime()}
                 >
                   <Space>
@@ -562,6 +571,7 @@ const EventDetail = () => {
               </Dropdown>
             </div>
           </div>
+        </div></div>
         </div>
         <br />
         <br />

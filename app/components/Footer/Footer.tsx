@@ -128,7 +128,7 @@ function Footer(): JSX.Element {
     className="cursor-pointer"
   />
 </a>
-<a href="https://wa.me/2348101218257" target="_blank" rel="noopener noreferrer">
+<a href="https://whatsapp.com/channel/0029ValuXFsC6Zvq6enUQe1z" target="_blank" rel="noopener noreferrer">
   <Image
     src={Whatsapp}
     alt="Whatsapp"
