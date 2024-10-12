@@ -10,7 +10,7 @@ function ComingSoon(): JSX.Element {
 
   const handleBackToDiscovery = () => {
     // Add the route you want to navigate to
-    router.push("/Discover");
+    router.push("/discover");
   };
 
   const title = (

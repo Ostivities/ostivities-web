@@ -168,7 +168,7 @@ const EventsCreatedTable: React.FC = () => {
             padding: "4px",
           }}
           onClick={() =>
-            router.push(`/Discover/events-created/${record?.key}/about`)
+            router.push(`/discover/events-created/${record?.key}/about`)
           }
         >
           View

@@ -413,7 +413,7 @@ const TicketsSelection = () => {
           eventName={eventDetails?.eventName}
           ticketDetails={ticketDetails}
           continueBtn
-          to={`/Discover/${params?.event}/${params?.id}/contact-form`}
+          to={`/discover/${params?.event}/${params?.id}/contact-form`}
         />
       </section>
     </DashboardLayout>

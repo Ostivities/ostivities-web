@@ -48,7 +48,7 @@ function Dashboard(): JSX.Element {
     // Example: setSearchResults([]) or setSearchResults([{...}])
 
     if (searchResults.length === 0) {
-      route.push("/Discover/event-not-found");
+      route.push("/discover/event-not-found");
     } else {
       // Handle the case where search results are available
       console.log("Search results found:", searchResults);
@@ -61,7 +61,7 @@ function Dashboard(): JSX.Element {
 
       {isLoggedIn && (
         <button
-          onClick={() => route.push("/Discover/create-events")}
+          onClick={() => route.push("/discover/create-events")}
           className="bg-OWANBE_PRY rounded-full px-4 py-2 text-xs font-semibold text-white"
         >
           <PlusOutlined /> <span className="pl-1">Create New Event</span>

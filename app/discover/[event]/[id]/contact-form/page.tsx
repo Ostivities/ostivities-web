@@ -263,7 +263,7 @@ const ContactForm = () => {
             </Form>
           </div>
         </section>
-        <Summary continueBtn to={"/Discover/payment"} />
+        <Summary continueBtn to={"/discover/payment"} />
       </section>
     </DashboardLayout>
   );

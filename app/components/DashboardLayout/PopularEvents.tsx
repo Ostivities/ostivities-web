@@ -18,7 +18,7 @@ const PopularEvents = () => {
         fontSize: "20px",
         fontFamily: "Bricolage Grotesque, font-semibold",
       }} // Inline style
-      uri="/Discover/popular"
+      uri="/discover/popular"
     >
       {isPending ? (
         <>
@@ -42,7 +42,7 @@ const PopularEvents = () => {
             about={event?.eventType}
             status="Get Tickets"
             image={event?.eventImage}
-            url={`/Discover/${event?.eventName}/${event?.id}`}
+            url={`/discover/${event?.eventName}/${event?.id}`}
             titleClass="font-bricolage-grotesque font-medium"
             aboutClass="font-bricolage-grotesque"
             statusClass="font-bricolage-grotesque font-medium"

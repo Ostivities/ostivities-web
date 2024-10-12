@@ -292,7 +292,7 @@ const EventDetail = () => {
     {
       label: (
         <Link
-          href={`/Discover/${params?.event}/${params?.id}/tickets`}
+          href={`/discover/${params?.event}/${params?.id}/tickets`}
           className="font-BricolageGrotesqueRegular font-normal text-md text-OWANBE_DARK"
         >
           Register as a guest
@@ -303,7 +303,7 @@ const EventDetail = () => {
     {
       label: (
         <Link
-          href={`/Discover/vendorsregistration`}
+          href={`/discover/vendorsregistration`}
           className="font-BricolageGrotesqueRegular font-normal text-md text-OWANBE_DARK"
         >
           Register as a vendor

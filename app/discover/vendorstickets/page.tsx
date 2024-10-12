@@ -110,7 +110,7 @@ const SpaceSelection = () => {
             ))}
           </div>
         </section>
-        <Summary continueBtn to={"/Discover/vendorspayment"} />
+        <Summary continueBtn to={"/discover/vendorspayment"} />
       </section>
     </DashboardLayout>
   );

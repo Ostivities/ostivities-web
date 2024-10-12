@@ -43,19 +43,19 @@ const items1: MenuProps["items"] = [
 ];
 
 const items2: MenuProps["items"] = [
-  { icon: CompassOutlined, title: "Discovery", link: "/Discover" },
+  { icon: CompassOutlined, title: "Discovery", link: "/discover" },
   {
     icon: PlusCircleOutlined,
     title: "Create Event",
-    link: "/Discover/create-events",
+    link: "/discover/create-events",
   },
   {
     icon: FileSearchOutlined,
     title: "Events Created",
-    link: "/Discover/events-created",
+    link: "/discover/events-created",
   },
-  { icon: SettingOutlined, title: "Settings", link: "/Discover/settings" },
-  // { icon: FieldTimeOutlined, title: "Coming Soon", link: "/Discover/coming-soon" },
+  { icon: SettingOutlined, title: "Settings", link: "/discover/settings" },
+  // { icon: FieldTimeOutlined, title: "Coming Soon", link: "/discover/coming-soon" },
 ].map((item) => {
   const key = item.link;
   return {
@@ -70,7 +70,7 @@ const items2: MenuProps["items"] = [
 });
 
 const items3: MenuProps["items"] = [
-  { icon: CompassOutlined, title: "Discovery", link: "/Discover" },
+  { icon: CompassOutlined, title: "Discovery", link: "/discover" },
 ].map((item) => {
   const key = item.link;
 
@@ -175,7 +175,7 @@ function DashboardLayout({
 
   const path = confirmIndex ? `/${index}` : "";
 
-  const [currentPah, setCurrentPah] = useState(`/Discover${path}`);
+  const [currentPah, setCurrentPah] = useState(`/discover${path}`);
 
   const onClick: MenuProps["onClick"] = (e: any) => {
     setCurrentPah(e?.key);

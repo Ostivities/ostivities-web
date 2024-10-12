@@ -14,12 +14,12 @@ import { createElement } from "react";
 import React from "react";
 
 const items2: MenuProps['items'] = [
-  { icon: CompassOutlined, title: 'Discovery', link: '/Discover' },
-  { icon: PlusCircleOutlined, title: 'Create Event', link: '/Discover/create-events' },
-  { icon: FileSearchOutlined, title: 'Events Created', link: '/Discover/events-created' },
-  // { icon: UsergroupAddOutlined, title: 'Vendors Management', link: '/Discover/vendors-management' },
-  { icon: SettingOutlined, title: 'Settings', link: '/Discover/settings' },
-  // { icon: FieldTimeOutlined, title: 'Coming Soon', link: '/Discover/coming-soon' },
+  { icon: CompassOutlined, title: 'Discovery', link: '/discover' },
+  { icon: PlusCircleOutlined, title: 'Create Event', link: '/discover/create-events' },
+  { icon: FileSearchOutlined, title: 'Events Created', link: '/discover/events-created' },
+  // { icon: UsergroupAddOutlined, title: 'Vendors Management', link: '/discover/vendors-management' },
+  { icon: SettingOutlined, title: 'Settings', link: '/discover/settings' },
+  // { icon: FieldTimeOutlined, title: 'Coming Soon', link: '/discover/coming-soon' },
 ].map((item) => {
   const key = item.link;
 

@@ -33,13 +33,13 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk }: IModal): JSX.Ele
           </p>
           <div className="flex flex-col items-center space-y-4">
             <button
-              onClick={() => router.push("/Discover/payment")} 
+              onClick={() => router.push("/discover/payment")} 
               className="block primary-btn font-normal text-base mt-10 w-[20rem]" // Set same width for both buttons
             >
               Download ticket
             </button>
             <button
-              onClick={() => router.push("/Discover/tickets")} 
+              onClick={() => router.push("/discover/tickets")} 
               className="block primary-btn font-normal continue cursor-pointer text-base mt-10 w-[20rem]" // Set same width for both buttons
             >
               Buy Again

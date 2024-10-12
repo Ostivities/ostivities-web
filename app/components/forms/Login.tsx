@@ -37,7 +37,7 @@ function LoginForm(): JSX.Element {
         setCookie("is_registered", "registered");
         successFormatter(response);
         form.resetFields();
-        router.push("/Discover");
+        router.push("/discover");
       }
     }
   };

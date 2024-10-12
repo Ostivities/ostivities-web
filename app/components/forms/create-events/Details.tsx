@@ -219,7 +219,7 @@ function Details(): JSX.Element {
   // console.log(pathname, "pathname");
   useEffect(() => {
     // Check if the pathname matches the specified path when the component mounts or page reloads
-    if (pathname === "/Discover/create-events") {
+    if (pathname === "/discover/create-events") {
       // Clear the localStorage for the key 'uploadedFiles'
       localStorage.removeItem("uploadedFiles");
       setFileList([]); // Clear the fileList state
@@ -287,7 +287,7 @@ function Details(): JSX.Element {
         setCookie("stage_two", "process");
         setCookie("stage_three", "wait");
         router.push(
-          `/Discover/create-events/${response?.data?.data?.id}/event_appearance`
+          `/discover/create-events/${response?.data?.data?.id}/event_appearance`
         );
       }
     } catch (error) {
@@ -1315,7 +1315,7 @@ function Details(): JSX.Element {
             type="default"
             size={"large"}
             className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
-            onClick={() => router.push("/Discover")}
+            onClick={() => router.push("/discover")}
           >
             Cancel
           </Button>

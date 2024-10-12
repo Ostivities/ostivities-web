@@ -46,7 +46,7 @@ const PublishSuccessModal = ({
               onClick={() => {
                 onOk();
                 router.push(
-                  `/Discover/events-created/${params?.id}/about`
+                  `/discover/events-created/${params?.id}/about`
                 )
               }}
               className="block primary-btn font-normal text-base mt-10 px-32"

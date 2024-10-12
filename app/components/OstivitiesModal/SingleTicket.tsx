@@ -119,8 +119,8 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
           // linkRef.current?.click();
           onOk && onOk();
           setLoading(false);
-          if(pathname.startsWith("/Discover/create-events")) {
-            router.push(`/Discover/create-events/${params?.id}/tickets_created`);
+          if(pathname.startsWith("/discover/create-events")) {
+            router.push(`/discover/create-events/${params?.id}/tickets_created`);
           }
         }
       }
@@ -142,8 +142,8 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
           setCookies("ticket_created", "yes");
           setCookies("stage_three", "processing");
           setLoading(false);
-          if(pathname.startsWith("/Discover/create-events")) {
-            router.push(`/Discover/create-events/${params?.id}/tickets_created`);
+          if(pathname.startsWith("/discover/create-events")) {
+            router.push(`/discover/create-events/${params?.id}/tickets_created`);
           }
         }
       }

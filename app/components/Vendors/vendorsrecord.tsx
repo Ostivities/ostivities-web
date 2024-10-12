@@ -17,8 +17,8 @@ import {
   getRandomName,
 } from "@/app/utils/helper";
 import { VendorDataType } from "@/app/utils/interface";
-import VendorsDetails from "@/app/Discover/events-created/[id]/coordinators/vendors/vendorsdetails/page";
-import NewVendorsDetails from "@/app/Discover/events-created/[id]/coordinators/vendors/newvendorsdetails/page";
+import VendorsDetails from "@/app/discover/events-created/[id]/coordinators/vendors/vendorsdetails/page";
+import NewVendorsDetails from "@/app/discover/events-created/[id]/coordinators/vendors/newvendorsdetails/page";
 
 const { Search } = Input;
 

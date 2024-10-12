@@ -77,7 +77,7 @@ const DiscountCode = (): JSX.Element => {
     })
 
     if(response.status === 201) {
-      router.push(`/Discover/events-created/${params?.id}/tickets/discounts`);
+      router.push(`/discover/events-created/${params?.id}/tickets/discounts`);
     }
   };
 
@@ -349,7 +349,7 @@ const DiscountCode = (): JSX.Element => {
               borderRadius: "16px",
               fontFamily: "BricolageGrotesqueMedium",
             }}
-            onClick={() => router.push(`/Discover/events-created/${params?.id}/tickets/discounts`)}
+            onClick={() => router.push(`/discover/events-created/${params?.id}/tickets/discounts`)}
           >
             Cancel
           </Button>

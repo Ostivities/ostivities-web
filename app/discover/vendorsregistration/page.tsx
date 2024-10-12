@@ -363,7 +363,7 @@ const Vendorsregistration = () => {
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
               style={{ marginBottom: '20px' }}
               
-  onClick={() => router.push('/Discover/vendorstickets')}
+  onClick={() => router.push('/discover/vendorstickets')}
             >
               Continue
             </Button>

@@ -70,7 +70,7 @@ function CreateTicketPage(): JSX.Element {
               setCookie("stage_two", "process");
               setCookie("stage_three", "wait");
               router.push(
-                `/Discover/create-events/${params?.id}/event_appearance`
+                `/discover/create-events/${params?.id}/event_appearance`
               );
             }}
           >
@@ -116,7 +116,7 @@ function CreateTicketPage(): JSX.Element {
               size={"large"}
               className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
               onClick={() => {
-                router.push(`/Discover/create-events/${params?.id}/incomplete-publish-event`);
+                router.push(`/discover/create-events/${params?.id}/incomplete-publish-event`);
               }}
             >
               Skip & do this later
@@ -127,7 +127,7 @@ function CreateTicketPage(): JSX.Element {
               size="large"
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
               onClick={() => {
-                router.push(`/Discover/create-events/${params?.id}/publish-events`);
+                router.push(`/discover/create-events/${params?.id}/publish-events`);
               }}
               disabled={true}
               title="This button is disabled until the user creates a ticket"

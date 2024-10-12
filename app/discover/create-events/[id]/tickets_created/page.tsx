@@ -72,7 +72,7 @@ function CreateTicketPage(): JSX.Element {
               setCookie("stage_three", "wait");
               setCookie("ticket_created", "yes");
               router.push(
-                `/Discover/create-events/${params?.id}/event_appearance`
+                `/discover/create-events/${params?.id}/event_appearance`
               );
             }}
           >
@@ -91,7 +91,7 @@ function CreateTicketPage(): JSX.Element {
               className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
               onClick={() => {
                 router.push(
-                  `/Discover/create-events/${params?.id}/incomplete-publish-event`
+                  `/discover/create-events/${params?.id}/incomplete-publish-event`
                 );
               }}
             >
@@ -104,7 +104,7 @@ function CreateTicketPage(): JSX.Element {
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
               onClick={() => {
                 router.push(
-                  `/Discover/create-events/${params?.id}/publish-events`
+                  `/discover/create-events/${params?.id}/publish-events`
                 );
               }}
             >

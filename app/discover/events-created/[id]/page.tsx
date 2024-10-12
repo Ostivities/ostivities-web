@@ -29,7 +29,7 @@ export default function Page(): JSX.Element {
       {
         label: (
           <Link
-            href={`/Discover/events-created/${params?.id}/tickets`}
+            href={`/discover/events-created/${params?.id}/tickets`}
             className={`font-BricolageGrotesqueRegular font-normal text-sm ${
               pathname.includes("tickets")
                 ? "text-OWANBE_PRY"
@@ -44,7 +44,7 @@ export default function Page(): JSX.Element {
       {
         label: (
           <Link
-            href={`/Discover/events-created/${params?.id}/tickets/discounts`}
+            href={`/discover/events-created/${params?.id}/tickets/discounts`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
             Discounts
@@ -55,7 +55,7 @@ export default function Page(): JSX.Element {
       // {
       //   label: (
       //     <Link
-      //       href={`/Discover/events-created/${params?.id}/tickets/email`}
+      //       href={`/discover/events-created/${params?.id}/tickets/email`}
       //       className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
       //     >
       //       Ticket E-mail
@@ -69,7 +69,7 @@ export default function Page(): JSX.Element {
       {
         label: (
           <Link
-            href={`/Discover/events-created/${params?.id}/guestlist`}
+            href={`/discover/events-created/${params?.id}/guestlist`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
             Guestlist
@@ -80,7 +80,7 @@ export default function Page(): JSX.Element {
       {
         label: (
           <Link
-            href={`/Discover/events-created/${params?.id}/guestlist/email`}
+            href={`/discover/events-created/${params?.id}/guestlist/email`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
             Email Guestlist
@@ -91,7 +91,7 @@ export default function Page(): JSX.Element {
       {
         label: (
           <Link
-            href={`/Discover/events-created/${params?.id}/guestlist/summary`}
+            href={`/discover/events-created/${params?.id}/guestlist/summary`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
             Check in Summary
@@ -114,7 +114,7 @@ export default function Page(): JSX.Element {
             fontFamily: "BricolageGrotesqueMedium",
           }}
           onClick={() => {
-            router.push(`/Discover/events-created/${params?.id}/about`);
+            router.push(`/discover/events-created/${params?.id}/about`);
           }}
         >
           About
@@ -158,7 +158,7 @@ export default function Page(): JSX.Element {
           }}
           onClick={() => {
             router.push(
-              `/Discover/events-created/${params?.id}/event_page_view`
+              `/discover/events-created/${params?.id}/event_page_view`
             );
           }}
         >
@@ -192,7 +192,7 @@ export default function Page(): JSX.Element {
             fontFamily: "BricolageGrotesqueMedium",
           }}
           onClick={() => {
-            router.push(`/Discover/events-created/${params?.id}/sales`);
+            router.push(`/discover/events-created/${params?.id}/sales`);
           }}
         >
           Sales
@@ -210,7 +210,7 @@ export default function Page(): JSX.Element {
         height={25}
         width={25}
           onClick={() => {
-            router.push(`/Discover/events-created`);
+            router.push(`/discover/events-created`);
           }}
         />
         <h1 style={{ fontSize: "24px" }}>Events Details</h1>
