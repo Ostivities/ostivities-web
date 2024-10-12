@@ -11,7 +11,7 @@ import GuestDetail from "@/app/components/OstivitiesModal/GuestDetail";
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 import { ColumnsType } from "antd/es/table";
 
-import {
+import { 
   generateRandomString,
   getRandomEventName,
   getRandomName,
