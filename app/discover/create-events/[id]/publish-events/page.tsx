@@ -51,14 +51,14 @@ export default function PublishEvent(): JSX.Element {
 
   const handlePublishEvent = async () => {
     const response = await publishEvent.mutateAsync({
-      id: params?.id, 
+      ids: [params?.id], 
       mode: PUBLISH_TYPE.ACTIVE
     });
 
     console.log(response, "response");
     if (response.status === 200) {
        await addEventToDiscovery.mutateAsync({
-        id: params?.id,
+        ids: [params?.id],
         discover: true,
       });
 

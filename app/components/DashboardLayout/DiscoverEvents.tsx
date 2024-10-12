@@ -84,7 +84,7 @@ const DiscoverEvents = () => {
               about={event?.eventType}
               status="Get Tickets"
               image={event?.eventImage}
-              url={`/discover/${event?.eventName}/${event?.id}`}
+              url={`/discover/${event?.unique_key}`}
               titleClass="font-bricolage-grotesque font-medium"
               aboutClass="font-bricolage-grotesque"
               statusClass="font-bricolage-grotesque font-medium"

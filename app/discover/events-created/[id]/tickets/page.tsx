@@ -19,10 +19,9 @@ import { Button, Dropdown, Menu, Space, Table, Input, message } from "antd";
 import { ColumnsType } from "antd/es/table";
 import React, { useState, useEffect, useMemo } from "react";
 import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
-import { useCookies } from "react-cookie";
+import { useEnableEventRegistration, useGetUserEvent } from "@/app/hooks/event/event.hook"
 import { useParams, useRouter } from "next/navigation";
 import { TICKET_ENTITY, TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
-import useFetch from "@/app/components/forms/create-events/auth";
 import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
 
 // Currency formatter for Naira (₦)
@@ -62,6 +61,9 @@ const EventTickets = () => {
 
   const { getTickets } = useGetEventTickets(params?.id);
   const ticketData = getTickets?.data?.data?.data;
+  const { enableEventRegistration } = useEnableEventRegistration()
+  const { getUserEvent } = useGetUserEvent(params?.id)
+  const eventDetails = getUserEvent?.data?.data?.data
   // const {id, ...rest} = ticketData;
   // console.log(ticketData, "ticketData")
   // console.log(duplicateData, "duplicateData")
@@ -271,8 +273,36 @@ const EventTickets = () => {
 
   const [isToggled, setIsToggled] = useState(false);
 
-  const onChange = () => {
-    setIsToggled(!isToggled);
+  useEffect(() => {
+    if(eventDetails?.enable_registration === true) {
+      setIsToggled(true)
+    } else{
+      setIsToggled(false)
+    }
+  },[eventDetails])
+
+  const onChange = async () => {
+    if (isToggled === false) {
+      const response = await enableEventRegistration.mutateAsync({
+        id: params?.id,
+        enable_registration: !isToggled
+      })
+      if(response.status === 200) {
+        getUserEvent.refetch()
+        message.success("Registration started")
+        setIsToggled(!isToggled)
+      }
+    } else {
+      const response = await enableEventRegistration.mutateAsync({
+        id: params?.id,
+        enable_registration: false
+      })
+      if(response.status === 200) {
+        setIsToggled(!isToggled);
+        getUserEvent.refetch()
+        message.success("Registration stopped")
+      }
+    }
   };
 
   return (

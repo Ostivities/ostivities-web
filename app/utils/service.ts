@@ -115,6 +115,12 @@ export class API_SERVICE {
       method: HttpMethod.GET,
     });
   }
+  static async _getUserEventByUniqueKey(id: string) : Promise<AxiosResponse> {
+    return await instance({
+      url: `/events/get_user_event_by_unique_key/${id}`,
+      method: HttpMethod.GET,
+    })
+  }
 
   static async _updateEvent(data: IUpdateEvent): Promise<AxiosResponse> {
     const { id, ...rest } = data;
@@ -125,21 +131,19 @@ export class API_SERVICE {
     });
   }
 
-  static async _publishEvent(data: { mode: string, id: string; } ): Promise<AxiosResponse> {
-    const { id, mode } = data
+  static async _publishEvent(data: { mode: string, ids: string[] } ): Promise<AxiosResponse> {
     return await instance({
-      url: `/events/update_event_mode/${id}`,
+      url: `/events/update_event_mode/`,
       method: HttpMethod.PUT,
-      data: { mode },
+      data,
     });
   }
 
-  static async _addEventToDiscovery(data: { discover: boolean, id: string }): Promise<AxiosResponse> {
-    const { id, discover } = data;
+  static async _addEventToDiscovery(data: { discover: boolean, ids: string[] }): Promise<AxiosResponse> {
     return await instance({
-      url: `/events/update_event_discovery/${id}`,
+      url: `/events/update_event_discovery/`,
       method: HttpMethod.PUT,
-      data: { discover }
+      data,
     });
   }
 
@@ -149,6 +153,14 @@ export class API_SERVICE {
       method: HttpMethod.GET,
       params: { page, limit },
     });
+  }
+
+  static async _getUpdateEventRegistration(data: { id: string, enable_registration: boolean}): Promise<AxiosResponse> {
+    return await instance({
+      url: `/events/update_event_registration`,
+      method: HttpMethod.PUT,
+      data,
+    })
   }
 
   static async _createTicket(data: ITicketCreate): Promise<AxiosResponse> {

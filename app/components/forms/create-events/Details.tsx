@@ -75,6 +75,7 @@ function Details(): JSX.Element {
   const router = useRouter();
   const [formStep, setFormStep] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [eventUrl, setEventUrl] = useState("");
   const [loader, setLoader] = useState(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const { profile } = useProfile();
@@ -88,7 +89,9 @@ function Details(): JSX.Element {
   ]);
   const [vendorRegRadio, setVendorRegRadio] = useState(false);
   const [showRadio, setShowRadio] = useState(false);
-  const [editorContent, setEditorContent] = useState("<p>Enter event details!</p>");
+  const [editorContent, setEditorContent] = useState(
+    "<p>Enter event details!</p>"
+  );
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
@@ -138,6 +141,11 @@ function Details(): JSX.Element {
     }
   }, [vendorRegRadio]);
 
+  useEffect(() => {
+    if (eventUrl) {
+      setValue("eventURL", eventUrl.toLocaleLowerCase()); // Manually set eventURL field
+    }
+  }, [eventUrl, setValue]);
 
   const props: UploadProps = {
     name: "image",
@@ -216,11 +224,9 @@ function Details(): JSX.Element {
   };
 
   const pathname = usePathname();
-  // console.log(pathname, "pathname");
   useEffect(() => {
     // Check if the pathname matches the specified path when the component mounts or page reloads
     if (pathname === "/discover/create-events") {
-      // Clear the localStorage for the key 'uploadedFiles'
       localStorage.removeItem("uploadedFiles");
       setFileList([]); // Clear the fileList state
     }
@@ -266,17 +272,19 @@ function Details(): JSX.Element {
         { name: "website", url: websiteUrl },
       ].filter((social) => social.url);
 
-      // console.log(twitterUrl);
-
+      const randomNumber = Math.floor(Math.random() * 100).toString();
+      const unique_key = eventURL.replace(/\s+/g, "_").toLocaleLowerCase() + `${randomNumber}`
+      // return console.log(`${discovery_url}${unique_key}${randomNumber}`);
       const response = await createEvent.mutateAsync({
         ...rest,
         supportingDocument: {
           fileName: data.eventDocumentName || "",
           fileUrl: data.eventDocument,
         },
-        eventURL: `${discovery_url}${eventURL.replace(/\s+/g, "")}`,
+        eventURL: `${discovery_url}${unique_key}`,
+        unique_key,
         eventDetails: editorContent,
-        socials
+        socials,
       });
 
       if (response.status === 201) {
@@ -375,7 +383,14 @@ function Details(): JSX.Element {
                     className=""
                     htmlFor="eventName"
                   />
-                  <Input {...field} placeholder="Enter Event Name" />
+                  <Input 
+                    {...field}
+                    onChange={((e) => {
+                      field.onChange(e.target.value)
+                      setEventUrl(e.target.value);
+                    })}
+                   placeholder="Enter Event Name" 
+                  />
                   {errors.eventName && (
                     <span style={{ color: "red" }}>
                       {errors.eventName.message}
@@ -504,75 +519,82 @@ function Details(): JSX.Element {
               />
             )}
 
-{showRadio &&
-  (watch("exhibition_space_booking") === EXHIBITION_SPACE.PAID || 
-  watch("exhibition_space_booking") === EXHIBITION_SPACE.FREE) && (
-    <Space direction="horizontal" size="large">
-      <Form.Item
-        label={
-          <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
-            Space Available
-          </span>
-        }
-      >
-        <Controller
-          name="space_available"
-          rules={{ required: "Space Available is required!" }}
-          control={control}
-          render={({ field }) => (
-            <>
-              <InputNumber
-                {...field}
-                style={{ width: "80%" }}
-                placeholder="Enter number of spaces"
-              />
-              {errors.space_available && (
-                <span style={{ color: "red" }}>
-                  {errors.space_available.message}
-                </span>
-              )}
-            </>
-          )}
-        />
-      </Form.Item>
+            {showRadio &&
+              (watch("exhibition_space_booking") === EXHIBITION_SPACE.PAID ||
+                watch("exhibition_space_booking") ===
+                  EXHIBITION_SPACE.FREE) && (
+                <Space direction="horizontal" size="large">
+                  <Form.Item
+                    label={
+                      <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
+                        Space Available
+                      </span>
+                    }
+                  >
+                    <Controller
+                      name="space_available"
+                      rules={{ required: "Space Available is required!" }}
+                      control={control}
+                      render={({ field }) => (
+                        <>
+                          <InputNumber
+                            {...field}
+                            style={{ width: "80%" }}
+                            placeholder="Enter number of spaces"
+                          />
+                          {errors.space_available && (
+                            <span style={{ color: "red" }}>
+                              {errors.space_available.message}
+                            </span>
+                          )}
+                        </>
+                      )}
+                    />
+                  </Form.Item>
 
-      {watch("exhibition_space_booking") === EXHIBITION_SPACE.PAID && (
-        <Form.Item
-          label={
-            <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
-              Space Fee
-            </span>
-          }
-        >
-          <Controller
-            name="space_fee"
-            rules={{ required: "Space Fee is required!" }}
-            control={control}
-            render={({ field }) => (
-              <>
-                <InputNumber
-                  {...field}
-                  placeholder="Enter space fee"
-                  style={{ width: "80%" }}
-                  min={0}
-                  formatter={(value) =>
-                    `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  }
-                  parser={(value) =>
-                    value?.replace(/\₦\s?|(,*)/g, "") as any
-                  }
-                />
-                {errors.space_fee && (
-                  <span style={{ color: "red" }}>
-                    {errors.space_fee.message}
-                  </span>
-                )}
-              </>
-            )}
-          />
-        </Form.Item>
-      )}
-    </Space>
+                  {watch("exhibition_space_booking") ===
+                    EXHIBITION_SPACE.PAID && (
+                    <Form.Item
+                      label={
+                        <span
+                          style={{ fontFamily: "Bricolage Grotesque Light" }}
+                        >
+                          Space Fee
+                        </span>
+                      }
+                    >
+                      <Controller
+                        name="space_fee"
+                        rules={{ required: "Space Fee is required!" }}
+                        control={control}
+                        render={({ field }) => (
+                          <>
+                            <InputNumber
+                              {...field}
+                              placeholder="Enter space fee"
+                              style={{ width: "80%" }}
+                              min={0}
+                              formatter={(value) =>
+                                `₦ ${value}`.replace(
+                                  /\B(?=(\d{3})+(?!\d))/g,
+                                  ","
+                                )
+                              }
+                              parser={(value) =>
+                                value?.replace(/\₦\s?|(,*)/g, "") as any
+                              }
+                            />
+                            {errors.space_fee && (
+                              <span style={{ color: "red" }}>
+                                {errors.space_fee.message}
+                              </span>
+                            )}
+                          </>
+                        )}
+                      />
+                    </Form.Item>
+                  )}
+                </Space>
               )}
 
             <Controller
@@ -678,16 +700,19 @@ function Details(): JSX.Element {
                       disabled
                     />
                     <Input
+                      readOnly
                       style={{
                         width: "52%",
                         borderTopLeftRadius: "0px !important",
                         borderBottomLeftRadius: "0px !important",
                       }}
+                      defaultValue={eventUrl}
+                      // value={eventUrl}
                       {...field}
                       placeholder="Enter your desired name"
-                      onChange={(e) => {
-                        field.onChange(e.target.value.replace(/\s+/g, "")); // Remove spaces as the user types
-                      }}
+                      // onChange={(e) => {
+                      //   field.onChange(e.target.value.replace(/\s+/g, "")); // Remove spaces as the user types
+                      // }}
                     />
                   </Space.Compact>
                   {errors.eventURL && (

@@ -58,7 +58,6 @@ import { useCookies } from "react-cookie";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useProfile } from "../../../hooks/auth/auth.hook";
 import {
-  useCreateEvent,
   useGetUserEvent,
   useUpdateEvent,
 } from "../../../hooks/event/event.hook";
@@ -79,10 +78,10 @@ function EventDetailsEdit(): JSX.Element {
   const [formStep, setFormStep] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [eventUrl, setEventUrl] = useState("");
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const { updateEvent } = useUpdateEvent();
   const { profile } = useProfile();
-  const { createEvent } = useCreateEvent();
   const [cookies, setCookie] = useCookies([
     "event_id",
     "form_stage",
@@ -98,7 +97,7 @@ function EventDetailsEdit(): JSX.Element {
     setEditorContent(content);
   };
 
-  console.log(showRadio, "showradio")
+  // console.log(showRadio, "showradio")
   dayjs.extend(customParseFormat);
 
   const { RangePicker } = DatePicker;
@@ -107,8 +106,9 @@ function EventDetailsEdit(): JSX.Element {
 
   const { getUserEvent } = useGetUserEvent(params?.id || cookies.event_id);
   const eventDetails: IEventDetails = getUserEvent?.data?.data?.data;
-  console.log(eventDetails);
+  // console.log(eventDetails);
   const { Option } = Select;
+
 
   const userName =
     accountType === ACCOUNT_TYPE.PERSONAL
@@ -143,6 +143,12 @@ function EventDetailsEdit(): JSX.Element {
   }, [watch]);
 
   useEffect(() => {
+    if (eventUrl) {
+      setValue("eventURL", eventUrl); // Manually set eventURL field
+    }
+  }, [eventUrl, setValue]);
+
+  useEffect(() => {
     const socialLinks = eventDetails?.socials;
     const twitterLink = socialLinks?.find(
       (link: any) => link?.name.toLowerCase() === "twitter"
@@ -160,7 +166,8 @@ function EventDetailsEdit(): JSX.Element {
       setValue("eventName", eventDetails?.eventName);
       setValue("state", eventDetails?.state);
       setValue("address", eventDetails?.address);
-      setValue("eventURL", getUsernameFromUrl(eventDetails?.eventURL));
+      setValue("eventURL", getUsernameFromUrl(eventDetails?.eventURL).replace(/_/g, " "));
+      setEventUrl(getUsernameFromUrl(eventDetails?.eventURL).replace(/_/g, " "));
       setValue("eventDocumentName", eventDetails?.supportingDocument?.fileName);
       setValue("eventType", eventDetails?.eventType);
       setValue("eventInfo", eventDetails?.eventInfo);
@@ -232,7 +239,7 @@ function EventDetailsEdit(): JSX.Element {
           const urlString: string | any =
             response?.data?.secure_url || response?.data?.url;
           setValue("eventDocument", urlString);
-          console.log(urlString);
+          // console.log(urlString);
         }
         setLoader(false);
       } catch (error) {}
@@ -248,7 +255,7 @@ function EventDetailsEdit(): JSX.Element {
     showUploadList: false,
     fileList,
   };
-  console.log(fileList);
+  // console.log(fileList);
 
   useEffect(() => {
     const storedFiles = localStorage.getItem("uploadedFiles");
@@ -323,7 +330,6 @@ function EventDetailsEdit(): JSX.Element {
         { name: "website", url: websiteUrl },
       ].filter((social) => social.url);
 
-      setLoader(true);
       const response = await updateEvent.mutateAsync({
         id: params?.id || cookies.event_id,
         ...rest,
@@ -331,7 +337,7 @@ function EventDetailsEdit(): JSX.Element {
           fileName: data.eventDocumentName || "",
           fileUrl: data.eventDocument,
         },
-        eventURL: `${discovery_url}${eventURL.replace(/\s+/g, "")}`,
+        eventURL: `${discovery_url}${eventURL.replace(/\s+/g, "_")}`,
         eventDetails: editorContent,
         socials,
       });
@@ -344,10 +350,8 @@ function EventDetailsEdit(): JSX.Element {
         setCookie("stage_two", "process");
         setCookie("stage_three", "wait");
         router.push(`/discover/create-events/${params?.id}/event_appearance`);
-        setLoader(false);
       }
     } catch (error) {
-      setLoader(false);
       return error;
     }
   };
@@ -436,6 +440,10 @@ function EventDetailsEdit(): JSX.Element {
                     {...field}
                     placeholder="Enter Event Name"
                     name="eventName"
+                    onChange={((e) => {
+                      field.onChange(e.target.value)
+                      setEventUrl(e.target.value);
+                    })}
                   />
                   {errors.eventName && (
                     <span style={{ color: "red" }}>
@@ -744,16 +752,18 @@ function EventDetailsEdit(): JSX.Element {
                       readOnly
                     />
                     <Input
+                      readOnly
                       style={{
                         width: "52%",
                         borderTopLeftRadius: "0px !important",
                         borderBottomLeftRadius: "0px !important",
                       }}
                       {...field}
+                      defaultValue={eventUrl}
                       placeholder="Enter your desired name"
-                      onChange={(e) => {
-                        field.onChange(e.target.value.replace(/\s+/g, "")); // Remove spaces as the user types
-                      }}
+                      // onChange={(e) => {
+                      //   field.onChange(e.target.value.replace(/\s+/g, "")); // Remove spaces as the user types
+                      // }}
                     />
                   </Space.Compact>
                   {errors.eventURL && (

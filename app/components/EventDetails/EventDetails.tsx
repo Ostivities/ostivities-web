@@ -59,17 +59,17 @@ export default function EventDetailsComponent({
   const handlePublishEvent = async () => {
     if (eventDetails?.mode === PUBLISH_TYPE.ACTIVE) {
       const response = await publishEvent.mutateAsync({
-        id: params?.id,
+        ids: [params?.id],
         mode: PUBLISH_TYPE.INACTIVE
       });
 
       if (response.status === 200) {
         setIsPublished(!isPublished);
         getUserEvent.refetch()
-        await addEventToDiscovery.mutateAsync({
-          id: params?.id,
-          discover: false
-        })
+        // await addEventToDiscovery.mutateAsync({
+        //   ids: [params?.id],
+        //   discover: false
+        // })
         setIsDiscover(false)
         message.success('Event unpublished successfully');
         // console.log(response, 'response inactive')
@@ -80,7 +80,7 @@ export default function EventDetailsComponent({
         return;
       }
       const response = await publishEvent.mutateAsync({
-        id: params?.id,
+        ids: [params?.id],
         mode: PUBLISH_TYPE.ACTIVE
       });
       if (response.status === 200) {
@@ -106,7 +106,7 @@ export default function EventDetailsComponent({
   const handleSwitchChange = async (checked: boolean) => {
     if (eventDetails?.discover === false) {
       const res = await addEventToDiscovery.mutateAsync({
-        id: params?.id,
+        ids: [params?.id],
         discover: true,
       })
 
@@ -118,7 +118,7 @@ export default function EventDetailsComponent({
       }
     } else if (eventDetails?.discover === true) {
       const res = await addEventToDiscovery.mutateAsync({
-        id: params?.id,
+        ids: [params?.id],
         discover: false
       })
       if (res.status === 200) {
@@ -138,7 +138,7 @@ export default function EventDetailsComponent({
     const checkEventStatus = async () => {
       if (eventdates < new Date().getTime() && eventDetails?.eventInfo === EVENT_INFO.SINGLE_EVENT) {
         const response = await publishEvent.mutateAsync({
-          id: params?.id,
+          ids: [params?.id],
           mode: PUBLISH_TYPE.INACTIVE
         });
         if (response.status === 200) {
@@ -148,7 +148,7 @@ export default function EventDetailsComponent({
     };
 
     checkEventStatus();
-  }, [eventDetails?.frequency, eventdates])
+  }, [eventDetails?.eventInfo, eventDetails?.frequency, eventdates, params?.id, publishEvent])
 
   useEffect(() => {
     const fetchInitialState = async () => {

@@ -67,12 +67,10 @@ const event_supporting_docs: any =
 const AboutEvent = () => {
   const { isLoggedIn, loading } = useFetch();
   const router = useRouter();
-  console.log(isLoggedIn, "isLoggedIn");
 
   useEffect(() => {
     if (!loading) { // Wait for loading to complete
       if (!isLoggedIn) {
-        console.log("User not logged in, redirecting to login...");
         router.push("/login"); // Only redirect after loading completes
       }
     }
@@ -84,10 +82,10 @@ const AboutEvent = () => {
   const [componentDisabled, setComponentDisabled] = useState(true);
   const { Option } = Select;
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [eventUrl, setEventUrl] = useState("");
   const { getUserEvent } = useGetUserEvent(params?.id);
   const [showRadio, setShowRadio] = useState(false);
   const { updateEvent } = useUpdateEvent();
-
   const [editorContent, setEditorContent] = useState("");
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
@@ -136,7 +134,6 @@ const AboutEvent = () => {
           `${cloud_api}/${cloud_name}/auto/upload`,
           formData
         );
-        console.log(response, "fileupload");
         if (response.status === 200) {
           const urlString: string | any =
             response?.data?.secure_url || response?.data?.url;
@@ -144,7 +141,6 @@ const AboutEvent = () => {
         }
         setLoader(false);
       } catch (error) {
-        // console.error(error);
         setLoader(false);
       }
     },
@@ -195,7 +191,8 @@ const AboutEvent = () => {
       setValue("eventName", eventDetails?.eventName);
       setValue("state", eventDetails?.state);
       setValue("address", eventDetails?.address);
-      setValue("eventURL", getUsernameFromUrl(eventDetails?.eventURL));
+      setValue("eventURL", getUsernameFromUrl(eventDetails?.eventURL).replace(/%/g, " "));
+      setEventUrl(getUsernameFromUrl(eventDetails?.eventURL).replace(/%/g, " "));
       setValue("eventDocumentName", eventDetails?.supportingDocument?.fileName);
       setValue("eventType", eventDetails?.eventType);
       setValue("eventInfo", eventDetails?.eventInfo);
@@ -294,7 +291,6 @@ const AboutEvent = () => {
       if (response.status === 200) {
         // reset();
         getUserEvent.refetch();
-        console.log(response, "response");
         // setLoader(false)
         setComponentDisabled(true);
       }
@@ -364,6 +360,10 @@ const AboutEvent = () => {
                   />
                   <Input
                     {...field}
+                    onChange={((e) => {
+                      field.onChange(e.target.value)
+                      setEventUrl(e.target.value);
+                    })}
                     disabled={componentDisabled}
                     placeholder="Enter Event Name"
                   />
@@ -642,11 +642,10 @@ const AboutEvent = () => {
                         borderBottomLeftRadius: "0px !important",
                       }}
                       disabled={componentDisabled}
+                      readOnly
                       {...field}
                       placeholder="Enter your desired name"
-                      onChange={(e) => {
-                        field.onChange(e.target.value.replace(/\s+/g, "")); // Remove spaces as the user types
-                      }}
+                      defaultValue={eventUrl}
                     />
                   </Space.Compact>
                 </Space>

@@ -71,6 +71,7 @@ export interface IFormInput {
   exhibition_space_booking?: EXHIBITION_SPACE;
   space_available?: number;
   space_fee?: string;
+  unique_key: string;
 }
 
 
@@ -142,6 +143,7 @@ export interface IEventDetails {
   space_fee?: string;
   mode?: string;
   eventMode?: string;
+  unique_key: string
 }
 
 export interface IModal {
