@@ -58,7 +58,7 @@ function LoginForm(): JSX.Element {
       return Promise.resolve();
     }
   
-    return Promise.reject(new Error("Password must contain at least one alphabet, one number, and one special character"));
+    return Promise.reject(new Error(""));
   };
   
 

@@ -71,7 +71,12 @@ const DiscoverEvents = () => {
                 key={index}
                 active
                 shape="round"
-                style={{ height: 220, width: 230, margin: "10px" }}
+                style={{
+                  height: '320px',
+                  width: '250px',
+                  margin: '10px',
+                  maxWidth: '100%',
+                }}
               />
             ))}
           </>

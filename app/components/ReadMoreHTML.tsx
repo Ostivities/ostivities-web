@@ -40,7 +40,7 @@ const ReadMoreHTML = ({ htmlContent, maxLength = 100 }: ReadMoreHTMLProps) => {
             marginLeft: "",
           }}
         >
-          {isExpanded ? "Hide" : "Read More"}
+          {isExpanded ? "Read less" : "Read More"}
         </button>
       )}
     </div>

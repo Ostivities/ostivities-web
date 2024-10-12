@@ -330,7 +330,7 @@ const EventDetail = () => {
           <div className="py-8">
             <Heading5 className="text-2xl" content={"About this event"} />
             <div className="mt-14 flex flex-col gap-8">
-              <div className="flex gap-3">
+              <div className="flex items-start">
                 <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
                   <Image
                     src="/icons/calendar.svg"
@@ -339,13 +339,20 @@ const EventDetail = () => {
                     width={25}
                   />
                 </div>
-                <div>
+
+                {/* Text Section */}
+                <div className="ml-2">
                   <div className="text-sm" style={{ fontWeight: 600 }}>
                     Date
                   </div>
-                  <div>
-                    {dateFormat(eventDetails?.startDate)} -{" "}
-                    {dateFormat(eventDetails?.endDate)}
+                  <div
+                    style={{
+                      width: "140px",
+                      whiteSpace: "normal",
+                      wordWrap: "break-word",
+                    }}
+                  >
+                    {dateFormat(eventDetails?.startDate)} - {dateFormat(eventDetails?.endDate)}
                   </div>
                 </div>
               </div>
@@ -495,7 +502,7 @@ const EventDetail = () => {
           <div className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-6">
             <div className="py-8">
               <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between items-center">
-                <h2 className="text-xl font-BricolageGrotesqueMedium">
+                <h2 className="text-xl font-BricolageGrotesqueMedium"> 
                   {eventDetails?.eventName}
                 </h2>
 
@@ -519,20 +526,18 @@ const EventDetail = () => {
                 </Modal>
               </div>
 
-              <div className="mt-2">
+              <div className="mt-1">
                 <div className="rounded-lg overflow-hidden flex flex-row items-center justify-center text-center p-4">
                   {/* Image on the left side */}
                   <Image
                     src={isEventStarted ? end : start}
                     alt={isEventStarted ? "Ends" : "Starts"}
-                    className="w-20 h-auto"
+                    className="w-20 h-auto flex-shrink-0"
                   />
 
                   {/* Countdown beside the image */}
-                  <div className="p-6">
-
-
-                    <div className="flex justify-center gap-8">
+                  <div className="p-4">
+                    <div className="flex justify-center gap-5">
                       <div className="flex flex-col items-center">
                         <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
                           <div className="text-2xl font-semibold">
