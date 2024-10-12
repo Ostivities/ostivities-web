@@ -1,4 +1,5 @@
 import OtherInfoCard from './OtherInfoCard';
+import { Skeleton } from "antd";
 import EventSection from './OtherEventSection';
 import { useGetDiscoveryEvents } from '@/app/hooks/event/event.hook';
 import { useParams } from 'next/navigation';
@@ -13,6 +14,7 @@ const DiscoverEvents = () => {
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
   // console.log(discoveryEvents, 'discoveryEvents');
 
+  const isPending = getDiscoveryEvents?.isLoading;
 
   return (
     <EventSection 
@@ -20,6 +22,22 @@ const DiscoverEvents = () => {
       titleClass="custom-title-class"
       style={{ fontSize: '20px', fontFamily: 'Bricolage Grotesque, font-medium' }}  // Inline style
     >
+      {isPending ? (
+        <>
+          {Array(4)
+            .fill(null)
+            .map((_, index) => (
+              <Skeleton.Button
+                key={index}
+                active
+                shape="round"
+                style={{ height: 200, width: 200, margin: "10px", maxWidth: '100%' }}
+              />
+            ))}
+        </>
+      ) : (
+        <></>
+      )}
       {/* {discoveryEvents?.map((event: any) => (
         <OtherInfoCard 
           key={event?.id}

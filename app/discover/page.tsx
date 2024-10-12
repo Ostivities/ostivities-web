@@ -72,9 +72,9 @@ function Dashboard(): JSX.Element {
 
   return (
     <DashboardLayout title={header}>
-      <div className="flex flex-col gap-7">
+      <div className="flex flex-col gap-10">
         <DiscoverEvents />
-        <div className="border-[1px] border-[#FADEDE] rounded-[24px] p-8 shadow-md">
+        <div className="border-[1px]  rounded-[24px] p-8 shadow-md">
           <h3 className="font-semibold mb-3">
             Find events happening around you.
           </h3>
@@ -84,7 +84,13 @@ function Dashboard(): JSX.Element {
               className="flex flex-wrap gap-4"
             >
               <label htmlFor="name" className="flex-1 min-w-[200px]">
-                <span className="text-OWANBE_PRY mb-1 block font-bricolage">
+                <span
+                  style={{
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                    fontWeight: '300',
+                  }}
+                  className="text-OWANBE_PRY mb-1 block"
+                >
                   Event Name (optional)
                 </span>
                 <Input
@@ -95,7 +101,13 @@ function Dashboard(): JSX.Element {
               </label>
 
               <label htmlFor="state" className="flex-1 min-w-[200px]">
-                <span className="text-OWANBE_PRY mb-1 block font-bricolage">
+              <span
+                  style={{
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                    fontWeight: '300',
+                  }}
+                  className="text-OWANBE_PRY mb-1 block"
+                >
                   Event State (optional)
                 </span>
                 <Select
@@ -107,7 +119,13 @@ function Dashboard(): JSX.Element {
               </label>
 
               <label htmlFor="category" className="flex-1 min-w-[200px]">
-                <span className="text-OWANBE_PRY mb-1 block font-bricolage">
+              <span
+                  style={{
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                    fontWeight: '300',
+                  }}
+                  className="text-OWANBE_PRY mb-1 block"
+                >
                   Event Category
                 </span>
                 <Select
@@ -122,11 +140,17 @@ function Dashboard(): JSX.Element {
               </label>
 
               <label htmlFor="type" className="flex-1 min-w-[200px]">
-                <span className="text-OWANBE_PRY mb-1 block font-bricolage">
+              <span
+                  style={{
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                    fontWeight: '300',
+                  }}
+                  className="text-OWANBE_PRY mb-1 block"
+                >
                   Event Type
                 </span>
                 <Select
-                 placeholder="select event type"
+                  placeholder="select event type"
                   onChange={(value) => setSearchText(value)}
                   className="w-full"
                   options={[
@@ -158,13 +182,12 @@ function Dashboard(): JSX.Element {
             </form>
           </div>
         </div>
- {/* Tab Navigation */}
- <div className="flex space-x-8 mb-1">
-          
+        {/* Tab Navigation */}
+        <div className="flex space-x-8 mb-1">
+
           <button
-            className={`relative font-semibold pb-2 ${
-              activeTab === 'all' ? 'text-red-600' : 'text-gray-500'
-            }`}
+            className={`relative font-semibold pb-2 ${activeTab === 'all' ? 'text-red-600' : 'text-gray-500'
+              }`}
             onClick={() => setActiveTab('all')}
           >
             All Events
@@ -173,9 +196,8 @@ function Dashboard(): JSX.Element {
             )}
           </button>
           <button
-            className={`relative font-semibold pb-2 ${
-              activeTab === 'popular' ? 'text-red-600' : 'text-gray-500'
-            }`}
+            className={`relative font-semibold pb-2 ${activeTab === 'popular' ? 'text-red-600' : 'text-gray-500'
+              }`}
             onClick={() => setActiveTab('popular')}
           >
             Popular Events
@@ -188,10 +210,10 @@ function Dashboard(): JSX.Element {
 
 
         {/* Popular Events Content */}
-           {/* Tab Content */}
-           {activeTab === 'popular' && <PopularEvents />}
+        {/* Tab Content */}
+        {activeTab === 'popular' && <PopularEvents />}
         {activeTab === 'all' && <AllEvents />}
-    
+
       </div>
     </DashboardLayout>
   );

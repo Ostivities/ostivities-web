@@ -134,7 +134,7 @@ const Event = ({ params }: { params: { event: string } }) => {
                     key={index}
                     active
                     shape="round"
-                    style={{ height: 200, width: 200, margin: "10px" }}
+                    style={{ height: 200, width: 200, margin: "10px", maxWidth: '100%' }}
                   />
                 ))}
             </>
