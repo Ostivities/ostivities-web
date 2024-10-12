@@ -16,6 +16,7 @@ const useFetch = () => {
         "/",
         "/Dashboard",
         "/discover",
+        // "/discover/discovery",
         "/forgot-password",
         "/password-reset",
         "/login",

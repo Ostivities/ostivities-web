@@ -572,7 +572,7 @@ const EventDetail = () => {
                   </div>
                 </div>
 
-                <ReadMoreHTML htmlContent={eventDetails?.eventDetails || ""} maxLength={400} />
+                <ReadMoreHTML htmlContent={eventDetails?.eventDetails || ""} maxLength={250} />
                 <div className="flex justify-center mt-12">
                   <Dropdown
                     disabled={isRegistrationClosed} // Disable if registration is closed
@@ -594,7 +594,7 @@ const EventDetail = () => {
                       disabled={isRegistrationClosed} // Disable button when registration is closed
                     >
                       <Space>
-                        Register
+                        Get Tickets
                         <IoChevronDown />
                       </Space>
                     </Button>
