@@ -70,7 +70,7 @@ export interface IFormInput {
   exhibitionspace?: boolean;
   exhibition_space_booking?: EXHIBITION_SPACE;
   space_available?: number;
-  space_fee?: string;
+  space_fee?: number;
   unique_key: string;
 }
 
@@ -140,7 +140,7 @@ export interface IEventDetails {
   exhibitionspace?: boolean;
   exhibition_space_booking?: EXHIBITION_SPACE;
   space_available?: number;
-  space_fee?: string;
+  space_fee?: number;
   mode?: string;
   eventMode?: string;
   unique_key: string

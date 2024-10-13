@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useLayoutEffect, useMemo, useState } from "react";
 import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
 import { Button, Skeleton } from "antd";
+import { IEventDetails } from "@/app/utils/interface";
 
 interface PropsI {
   event: "popular" | "all" | "paid" | "free";
@@ -13,8 +14,8 @@ interface PropsI {
 
 const Event = ({ params }: { params: { event: string } }) => {
   const router = useRouter();
-  const [pageSize, setPage] = useState(1);
-  const [limit, setLimit] = useState(12);
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(12)
 
   // Mapping event types to titles and subtitles
   const eventTitles = {
@@ -37,7 +38,7 @@ const Event = ({ params }: { params: { event: string } }) => {
     eventSubtitles[params.event as keyof typeof eventSubtitles] ||
     "Explore Events";
 
-  const { getDiscoveryEvents } = useGetDiscoveryEvents(pageSize, limit);
+  const { getDiscoveryEvents } = useGetDiscoveryEvents(page, pageSize);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data || []; // Ensure this is always an array
   console.log(discoveryEvents.length, "Number of Discovery Events"); // Log the length
 
@@ -64,11 +65,11 @@ const Event = ({ params }: { params: { event: string } }) => {
     []
   );
 
-  useLayoutEffect(() => {
-    if (!uri.includes(params.event)) {
-      router.push("/discover");
-    }
-  }, [params.event, router, uri]);
+  // useLayoutEffect(() => {
+  //   if (!uri.includes(params.event)) {
+  //     router.push("/discover");
+  //   }
+  // }, [params.event, router, uri]);
 
   return (
     <DashboardLayout title={title} isLoggedIn>
@@ -86,7 +87,7 @@ const Event = ({ params }: { params: { event: string } }) => {
             {pageSize > 1 && ( // Conditionally render Back button
               <Button
                 onClick={() => {
-                  setPage(pageSize - 1); // Go back to the previous page
+                  setPageSize(pageSize - 12); // Go back to the previous page
                 }}
                 style={{
                   backgroundColor: "#fff", // Default background
@@ -105,7 +106,7 @@ const Event = ({ params }: { params: { event: string } }) => {
 
             <Button
               onClick={() => {
-                setPage(pageSize + 1);
+                setPageSize(pageSize + 12);
               }}
               style={{
                 backgroundColor: "#fadede", // Background color
@@ -140,14 +141,14 @@ const Event = ({ params }: { params: { event: string } }) => {
             </>
           ) : (
             // Once data is loaded, map through discoveryEvents and render InfoCard components
-            discoveryEvents?.map((event: any) => (
+            discoveryEvents?.map((event: IEventDetails) => (
               <InfoCard
                 key={event?.id}
                 title={event?.eventName}
                 about={event?.eventType}
                 status="Get Tickets"
                 image={event?.eventImage}
-                url={`/discover/${event?.eventName}/${event?.id}`}
+                url={`/discover/${event?.unique_key}`}
                 titleClass="font-bricolage-grotesque font-medium"
                 aboutClass="font-bricolage-grotesque"
                 statusClass="font-bricolage-grotesque font-medium"

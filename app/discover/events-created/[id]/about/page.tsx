@@ -69,13 +69,14 @@ const AboutEvent = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading) { // Wait for loading to complete
+    if (!loading) {
+      // Wait for loading to complete
       if (!isLoggedIn) {
         router.push("/login"); // Only redirect after loading completes
       }
     }
   }, [isLoggedIn, loading, router]);
-  
+
   const params = useParams<{ id: string }>();
   const [form] = Form.useForm();
   const [loader, setLoader] = useState(false);
@@ -191,8 +192,17 @@ const AboutEvent = () => {
       setValue("eventName", eventDetails?.eventName);
       setValue("state", eventDetails?.state);
       setValue("address", eventDetails?.address);
-      setValue("eventURL", getUsernameFromUrl(eventDetails?.eventURL).replace(/%/g, " "));
-      setEventUrl(getUsernameFromUrl(eventDetails?.eventURL).replace(/%/g, " "));
+      setValue(
+        "eventURL",
+        getUsernameFromUrl(
+          (eventDetails?.eventName).toLowerCase().replace(/_/g, " ")
+        )
+      );
+      setEventUrl(
+        getUsernameFromUrl(
+          (eventDetails?.eventName).toLowerCase().replace(/_/g, " ")
+        )
+      );
       setValue("eventDocumentName", eventDetails?.supportingDocument?.fileName);
       setValue("eventType", eventDetails?.eventType);
       setValue("eventInfo", eventDetails?.eventInfo);
@@ -245,16 +255,22 @@ const AboutEvent = () => {
       instagramUrl,
       facebookUrl,
       websiteUrl,
-      vendor_registration,
       eventDocument,
       eventURL,
       ...rest
     } = data;
     try {
+      if (data.vendor_registration === false) {
+        data.exhibitionspace = false;
+        rest.exhibition_space_booking = EXHIBITION_SPACE.FREE;
+        rest.space_available = 0;
+        rest.space_fee = 0;
+      }
+
       if (exhibitionspace === false) {
-        delete rest.exhibition_space_booking;
-        delete rest.space_available;
-        delete rest.space_fee;
+        rest.exhibition_space_booking = EXHIBITION_SPACE.FREE;
+        rest.space_available = 0;
+        rest.space_fee = 0;
       }
 
       if (
@@ -275,7 +291,11 @@ const AboutEvent = () => {
         { name: "instagram", url: instagramUrl },
         { name: "website", url: websiteUrl },
       ].filter((social) => social.url);
+
+      const randomNumber = Math.floor(Math.random() * 100).toString();
+      const unique_key = eventURL.replace(/\s+/g, "_").toLocaleLowerCase() + `${randomNumber}`
       // setLoader(true);
+      console.log(rest, "rest")
       const response = await updateEvent.mutateAsync({
         id: params?.id,
         ...rest,
@@ -283,8 +303,9 @@ const AboutEvent = () => {
           fileName: data.eventDocumentName || "",
           fileUrl: data.eventDocument,
         },
-        eventURL: `${discovery_url}${eventURL}`,
+        eventURL: `${discovery_url}${unique_key}`,
         eventDetails: editorContent,
+        unique_key,
         socials,
       });
 
@@ -324,6 +345,12 @@ const AboutEvent = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (eventUrl) {
+      setValue("eventURL", eventUrl.toLocaleLowerCase().replace(/_/g, " ")); // Manually set eventURL field
+    }
+  }, [eventUrl, setValue]);
+
   const content = (
     <div style={{ padding: 10 }} ref={popoverRef}>
       <LocationSearch onSelectLocation={handleSelectLocation} />
@@ -360,10 +387,10 @@ const AboutEvent = () => {
                   />
                   <Input
                     {...field}
-                    onChange={((e) => {
-                      field.onChange(e.target.value)
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
                       setEventUrl(e.target.value);
-                    })}
+                    }}
                     disabled={componentDisabled}
                     placeholder="Enter Event Name"
                   />
@@ -474,7 +501,7 @@ const AboutEvent = () => {
               />
             )}
 
-            {showRadio && (
+            {vendorRegRadio && showRadio && (
               <Controller
                 name="exhibition_space_booking"
                 control={control}
@@ -492,8 +519,10 @@ const AboutEvent = () => {
               />
             )}
 
-            {showRadio &&
-              watch("exhibition_space_booking") === EXHIBITION_SPACE.PAID && (
+            {vendorRegRadio && showRadio &&
+              (watch("exhibition_space_booking") === EXHIBITION_SPACE.PAID ||
+                watch("exhibition_space_booking") ===
+                  EXHIBITION_SPACE.FREE) && (
                 <Space direction="horizontal" size="large">
                   <Form.Item
                     label={
@@ -515,33 +544,39 @@ const AboutEvent = () => {
                       )}
                     />
                   </Form.Item>
-                  <Form.Item
-                    label={
-                      <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
-                        Space Fee
-                      </span>
-                    }
-                  >
-                    <Controller
-                      name="space_fee"
-                      control={control}
-                      render={({ field }) => (
-                        <InputNumber
-                          {...field}
-                          disabled={componentDisabled}
-                          placeholder="Enter space fee"
-                          style={{ width: "80%" }}
-                          min={0}
-                          formatter={(value) =>
-                            `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                          }
-                          parser={(value) =>
-                            value?.replace(/\₦\s?|(,*)/g, "") as any
-                          }
-                        />
-                      )}
-                    />
-                  </Form.Item>
+
+                  {watch("exhibition_space_booking") ===
+                    EXHIBITION_SPACE.PAID && (
+                    <Form.Item
+                      label={
+                        <span
+                          style={{ fontFamily: "Bricolage Grotesque Light" }}
+                        >
+                          Space Fee
+                        </span>
+                      }
+                    >
+                      <Controller
+                        name="space_fee"
+                        control={control}
+                        render={({ field }) => (
+                          <InputNumber
+                            {...field}
+                            disabled={componentDisabled}
+                            placeholder="Enter space fee"
+                            style={{ width: "80%" }}
+                            min={0}
+                            formatter={(value) =>
+                              `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            }
+                            parser={(value) =>
+                              value?.replace(/\₦\s?|(,*)/g, "") as any
+                            }
+                          />
+                        )}
+                      />
+                    </Form.Item>
+                  )}
                 </Space>
               )}
 
@@ -621,7 +656,7 @@ const AboutEvent = () => {
               control={control}
               render={({ field }) => (
                 <Space direction="vertical" size="small">
-                  <Label content="Event URL" className="" htmlFor="eventURL" /> 
+                  <Label content="Event URL" className="" htmlFor="eventURL" />
 
                   <Space.Compact className="w-full">
                     <Input
@@ -662,7 +697,7 @@ const AboutEvent = () => {
                       content={
                         <span>
                           Upload Supporting Doc{" "}
-                          <span className="optional-text">(optional)</span> 
+                          <span className="optional-text">(optional)</span>
                         </span>
                       }
                       htmlFor="supportingDocument"

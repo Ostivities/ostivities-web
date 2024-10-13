@@ -114,11 +114,11 @@ export const useAddEventToDiscovery = () => {
   return { addEventToDiscovery };
 }
 
-export const useGetDiscoveryEvents = (page: number, limit: number) => {
+export const useGetDiscoveryEvents = (page: number, pageSize: number) => {
   const getDiscoveryEvents = useQuery({
-    queryKey: [DISCOVERY_EVENTS, page, limit],
+    queryKey: [DISCOVERY_EVENTS, page, pageSize],
     queryFn: () => {
-      return API_SERVICE._getDiscoveryEvents(page, limit);
+      return API_SERVICE._getDiscoveryEvents(page, pageSize);
     },
   });
   return { getDiscoveryEvents };

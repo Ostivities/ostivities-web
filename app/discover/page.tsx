@@ -14,7 +14,7 @@ import { EVENT_TYPES } from "../utils/data";
 import useFetch from "../components/forms/create-events/auth";
 
 function Dashboard(): JSX.Element {
-  const route = useRouter();
+  const router = useRouter();
   const { isLoggedIn } = useFetch();
   const [activeTab, setActiveTab] = useState("all");
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -48,7 +48,7 @@ function Dashboard(): JSX.Element {
     // Example: setSearchResults([]) or setSearchResults([{...}])
 
     if (searchResults.length === 0) {
-      route.push("/discover/event-not-found");
+      router.push("/discover/event-not-found");
     } else {
       // Handle the case where search results are available
       console.log("Search results found:", searchResults);
@@ -61,7 +61,7 @@ function Dashboard(): JSX.Element {
 
       {isLoggedIn && (
         <button
-          onClick={() => route.push("/discover/create-events")}
+          onClick={() => router.push("/discover/create-events")}
           className="bg-OWANBE_PRY rounded-full px-4 py-2 text-xs font-semibold text-white"
         >
           <PlusOutlined /> <span className="pl-1">Create New Event</span>
@@ -79,15 +79,12 @@ function Dashboard(): JSX.Element {
             Find events happening around you.
           </h3>
           <div>
-            <form
-              onSubmit={handleSearch}
-              className="flex flex-wrap gap-4"
-            >
+            <form onSubmit={handleSearch} className="flex flex-wrap gap-4">
               <label htmlFor="name" className="flex-1 min-w-[200px]">
                 <span
                   style={{
                     fontFamily: "'Bricolage Grotesque', sans-serif",
-                    fontWeight: '300',
+                    fontWeight: "300",
                   }}
                   className="text-OWANBE_PRY mb-1 block"
                 >
@@ -101,10 +98,10 @@ function Dashboard(): JSX.Element {
               </label>
 
               <label htmlFor="state" className="flex-1 min-w-[200px]">
-              <span
+                <span
                   style={{
                     fontFamily: "'Bricolage Grotesque', sans-serif",
-                    fontWeight: '300',
+                    fontWeight: "300",
                   }}
                   className="text-OWANBE_PRY mb-1 block"
                 >
@@ -119,10 +116,10 @@ function Dashboard(): JSX.Element {
               </label>
 
               <label htmlFor="category" className="flex-1 min-w-[200px]">
-              <span
+                <span
                   style={{
                     fontFamily: "'Bricolage Grotesque', sans-serif",
-                    fontWeight: '300',
+                    fontWeight: "300",
                   }}
                   className="text-OWANBE_PRY mb-1 block"
                 >
@@ -140,10 +137,10 @@ function Dashboard(): JSX.Element {
               </label>
 
               <label htmlFor="type" className="flex-1 min-w-[200px]">
-              <span
+                <span
                   style={{
                     fontFamily: "'Bricolage Grotesque', sans-serif",
-                    fontWeight: '300',
+                    fontWeight: "300",
                   }}
                   className="text-OWANBE_PRY mb-1 block"
                 >
@@ -184,36 +181,43 @@ function Dashboard(): JSX.Element {
         </div>
         {/* Tab Navigation */}
         <div className="flex space-x-8 mb-1">
-
           <button
-            className={`relative font-semibold pb-2 ${activeTab === 'all' ? 'text-red-600' : 'text-gray-500'
-              }`}
-            onClick={() => setActiveTab('all')}
+            className={`relative font-semibold pb-2 ${
+              activeTab === "all" ? "text-red-600" : "text-gray-500"
+            }`}
+            onClick={() => {
+              setActiveTab("all")
+              router.push('/discover/all')
+            }}
           >
             All Events
-            {activeTab === 'all' && (
-              <div className="absolute left-0 bottom-[-2px] w-full h-[4px] bg-red-600 rounded-full" style={{ borderRadius: '25px' }} />
+            {activeTab === "all" && (
+              <div
+                className="absolute left-0 bottom-[-2px] w-full h-[4px] bg-red-600 rounded-full"
+                style={{ borderRadius: "25px" }}
+              />
             )}
           </button>
           <button
-            className={`relative font-semibold pb-2 ${activeTab === 'popular' ? 'text-red-600' : 'text-gray-500'
-              }`}
-            onClick={() => setActiveTab('popular')}
+            className={`relative font-semibold pb-2 ${
+              activeTab === "popular" ? "text-red-600" : "text-gray-500"
+            }`}
+            onClick={() => setActiveTab("popular")}
           >
             Popular Events
-            {activeTab === 'popular' && (
-              <div className="absolute left-0 bottom-[-2px] w-full h-[4px] bg-red-600 rounded-full" style={{ borderRadius: '25px' }} />
+            {activeTab === "popular" && (
+              <div
+                className="absolute left-0 bottom-[-2px] w-full h-[4px] bg-red-600 rounded-full"
+                style={{ borderRadius: "25px" }}
+              />
             )}
           </button>
         </div>
 
-
-
         {/* Popular Events Content */}
         {/* Tab Content */}
-        {activeTab === 'popular' && <PopularEvents />}
-        {activeTab === 'all' && <AllEvents />}
-
+        {activeTab === "popular" && <PopularEvents />}
+        {activeTab === "all" && <AllEvents />}
       </div>
     </DashboardLayout>
   );

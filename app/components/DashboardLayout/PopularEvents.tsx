@@ -2,6 +2,7 @@ import EventSection from "./PopularEventSection";
 import InfoCard from "./OtherInfoCard";
 import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
 import { Skeleton } from "antd";
+import { IEventDetails } from "@/app/utils/interface";
 
 const PopularEvents = () => {
   const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 5);
@@ -35,14 +36,14 @@ const PopularEvents = () => {
         </>
       ) : (
         // Once data is loaded, map through discoveryEvents and render InfoCard components
-        discoveryEvents?.map((event: any) => (
+        discoveryEvents?.map((event: IEventDetails) => (
           <InfoCard
             key={event?.id}
             title={event?.eventName}
             about={event?.eventType}
             status="Get Tickets"
             image={event?.eventImage}
-            url={`/discover/${event?.eventName}/${event?.id}`}
+            url={`/discover/${event?.unique_key}`}
             titleClass="font-bricolage-grotesque font-medium"
             aboutClass="font-bricolage-grotesque"
             statusClass="font-bricolage-grotesque font-medium"

@@ -109,7 +109,6 @@ function EventDetailsEdit(): JSX.Element {
   // console.log(eventDetails);
   const { Option } = Select;
 
-
   const userName =
     accountType === ACCOUNT_TYPE.PERSONAL
       ? profile?.data?.data?.data?.firstName
@@ -142,11 +141,11 @@ function EventDetailsEdit(): JSX.Element {
     return () => subscription.unsubscribe();
   }, [watch]);
 
-  useEffect(() => {
-    if (eventUrl) {
-      setValue("eventURL", eventUrl); // Manually set eventURL field
-    }
-  }, [eventUrl, setValue]);
+  // useEffect(() => {
+  //   if (eventUrl) {
+  //     setValue("eventURL", eventUrl); // Manually set eventURL field
+  //   }
+  // }, [eventUrl, setValue]);
 
   useEffect(() => {
     const socialLinks = eventDetails?.socials;
@@ -166,8 +165,12 @@ function EventDetailsEdit(): JSX.Element {
       setValue("eventName", eventDetails?.eventName);
       setValue("state", eventDetails?.state);
       setValue("address", eventDetails?.address);
-      setValue("eventURL", getUsernameFromUrl(eventDetails?.eventURL).replace(/_/g, " "));
-      setEventUrl(getUsernameFromUrl(eventDetails?.eventURL).replace(/_/g, " "));
+      setValue(
+        "eventURL",
+        getUsernameFromUrl(eventDetails?.eventURL)
+          .toLocaleLowerCase()
+          .replace(/_/g, " ").replace(/\d+$/, "") 
+      );
       setValue("eventDocumentName", eventDetails?.supportingDocument?.fileName);
       setValue("eventType", eventDetails?.eventType);
       setValue("eventInfo", eventDetails?.eventInfo);
@@ -182,8 +185,6 @@ function EventDetailsEdit(): JSX.Element {
       setVendorRegRadio(eventDetails?.vendor_registration ?? false);
       setValue("vendor_registration", eventDetails?.vendor_registration);
     }
-
-
   }, [eventDetails, setValue]);
 
   useEffect(() => {
@@ -195,7 +196,7 @@ function EventDetailsEdit(): JSX.Element {
           eventDetails?.exhibition_space_booking
         );
         setValue("space_available", eventDetails?.space_available);
-        setValue("space_fee", eventDetails?.space_fee);  
+        setValue("space_fee", eventDetails?.space_fee);
       }, 1000);
     }
   }, [eventDetails, setValue]);
@@ -299,7 +300,6 @@ function EventDetailsEdit(): JSX.Element {
       instagramUrl,
       facebookUrl,
       websiteUrl,
-      vendor_registration,
       eventDocument,
       eventURL,
       ...rest
@@ -337,7 +337,6 @@ function EventDetailsEdit(): JSX.Element {
           fileName: data.eventDocumentName || "",
           fileUrl: data.eventDocument,
         },
-        eventURL: `${discovery_url}${eventURL.replace(/\s+/g, "_")}`,
         eventDetails: editorContent,
         socials,
       });
@@ -440,10 +439,9 @@ function EventDetailsEdit(): JSX.Element {
                     {...field}
                     placeholder="Enter Event Name"
                     name="eventName"
-                    onChange={((e) => {
-                      field.onChange(e.target.value)
-                      setEventUrl(e.target.value);
-                    })}
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
+                    }}
                   />
                   {errors.eventName && (
                     <span style={{ color: "red" }}>
@@ -552,7 +550,7 @@ function EventDetailsEdit(): JSX.Element {
               />
             )}
 
-            {showRadio && (
+            {vendorRegRadio && showRadio && (
               <Controller
                 name="exhibition_space_booking"
                 control={control}
@@ -577,75 +575,83 @@ function EventDetailsEdit(): JSX.Element {
               />
             )}
 
-{showRadio &&
-  (watch("exhibition_space_booking") === EXHIBITION_SPACE.PAID || 
-  watch("exhibition_space_booking") === EXHIBITION_SPACE.FREE) && (
-    <Space direction="horizontal" size="large">
-      <Form.Item
-        label={
-          <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
-            Space Available
-          </span>
-        }
-      >
-        <Controller
-          name="space_available"
-          rules={{ required: "Space Available is required!" }}
-          control={control}
-          render={({ field }) => (
-            <>
-              <InputNumber
-                {...field}
-                style={{ width: "80%" }}
-                placeholder="Enter number of space"
-              />
-              {errors.space_available && (
-                <span style={{ color: "red" }}>
-                  {errors.space_available.message}
-                </span>
-              )}
-            </>
-          )}
-        />
-      </Form.Item>
+            {vendorRegRadio &&
+              showRadio &&
+              (watch("exhibition_space_booking") === EXHIBITION_SPACE.PAID ||
+                watch("exhibition_space_booking") ===
+                  EXHIBITION_SPACE.FREE) && (
+                <Space direction="horizontal" size="large">
+                  <Form.Item
+                    label={
+                      <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
+                        Space Available
+                      </span>
+                    }
+                  >
+                    <Controller
+                      name="space_available"
+                      rules={{ required: "Space Available is required!" }}
+                      control={control}
+                      render={({ field }) => (
+                        <>
+                          <InputNumber
+                            {...field}
+                            style={{ width: "80%" }}
+                            placeholder="Enter number of space"
+                          />
+                          {errors.space_available && (
+                            <span style={{ color: "red" }}>
+                              {errors.space_available.message}
+                            </span>
+                          )}
+                        </>
+                      )}
+                    />
+                  </Form.Item>
 
-      {watch("exhibition_space_booking") === EXHIBITION_SPACE.PAID && (
-        <Form.Item
-          label={
-            <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
-              Space Fee
-            </span>
-          }
-        >
-          <Controller
-            name="space_fee"
-            rules={{ required: "Space Fee is required!" }}
-            control={control}
-            render={({ field }) => (
-              <>
-                <InputNumber
-                  {...field}
-                  placeholder="Enter space fee"
-                  style={{ width: "80%" }}
-                  min={0}
-                  formatter={(value) =>
-                    `₦ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  }
-                  parser={(value) =>
-                    value?.replace(/\₦\s?|(,*)/g, "") as any
-                  }
-                />
-                {errors.space_fee && (
-                  <span style={{ color: "red" }}>
-                    {errors.space_fee.message}
-                  </span>
-                )}
-              </>
-            )}
-          />
-        </Form.Item>
-      )}
-    </Space>
+                  {watch("exhibition_space_booking") ===
+                    EXHIBITION_SPACE.PAID && (
+                    <Form.Item
+                      label={
+                        <span
+                          style={{ fontFamily: "Bricolage Grotesque Light" }}
+                        >
+                          Space Fee
+                        </span>
+                      }
+                    >
+                      <Controller
+                        name="space_fee"
+                        rules={{ required: "Space Fee is required!" }}
+                        control={control}
+                        render={({ field }) => (
+                          <>
+                            <InputNumber
+                              {...field}
+                              placeholder="Enter space fee"
+                              style={{ width: "80%" }}
+                              min={0}
+                              formatter={(value) =>
+                                `₦ ${value}`.replace(
+                                  /\B(?=(\d{3})+(?!\d))/g,
+                                  ","
+                                )
+                              }
+                              parser={(value) =>
+                                value?.replace(/\₦\s?|(,*)/g, "") as any
+                              }
+                            />
+                            {errors.space_fee && (
+                              <span style={{ color: "red" }}>
+                                {errors.space_fee.message}
+                              </span>
+                            )}
+                          </>
+                        )}
+                      />
+                    </Form.Item>
+                  )}
+                </Space>
               )}
 
             <Controller
@@ -757,13 +763,11 @@ function EventDetailsEdit(): JSX.Element {
                         width: "52%",
                         borderTopLeftRadius: "0px !important",
                         borderBottomLeftRadius: "0px !important",
+                        cursor: "not-allowed",
                       }}
                       {...field}
                       defaultValue={eventUrl}
                       placeholder="Enter your desired name"
-                      // onChange={(e) => {
-                      //   field.onChange(e.target.value.replace(/\s+/g, "")); // Remove spaces as the user types
-                      // }}
                     />
                   </Space.Compact>
                   {errors.eventURL && (

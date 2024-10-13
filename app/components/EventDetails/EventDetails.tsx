@@ -46,7 +46,7 @@ export default function EventDetailsComponent({
     } else if (eventDetails?.mode && eventDetails?.mode === PUBLISH_TYPE.INACTIVE) {
       setTimeout(() => {
         setIsPublished(false)
-      })
+      }, 2000)
     }
     if (eventDetails?.discover === true) {
       setIsDiscover(true)
@@ -66,10 +66,6 @@ export default function EventDetailsComponent({
       if (response.status === 200) {
         setIsPublished(!isPublished);
         getUserEvent.refetch()
-        // await addEventToDiscovery.mutateAsync({
-        //   ids: [params?.id],
-        //   discover: false
-        // })
         setIsDiscover(false)
         message.success('Event unpublished successfully');
         // console.log(response, 'response inactive')

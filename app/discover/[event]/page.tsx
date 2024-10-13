@@ -11,10 +11,7 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import { IoChevronDown } from "react-icons/io5";
 import React, { useEffect, useState } from "react";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
-import {
-  useGetUserEvent,
-  useGetUserEventByUniqueKey,
-} from "@/app/hooks/event/event.hook";
+import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { useCookies } from "react-cookie";
 import useFetch from "@/app/components/forms/create-events/auth";
 import {
@@ -293,7 +290,7 @@ const EventDetail = () => {
     }, 1000);
 
     return () => clearInterval(countdownInterval);
-  }, [eventDate, eventEndDate]);
+  }, [eventDate, eventDetails, eventEndDate, eventEnddates, eventdates]);
 
   const title = (
     <div className="flex-center gap-2">
@@ -352,33 +349,34 @@ const EventDetail = () => {
           <div className="py-8">
             <Heading5 className="text-2xl" content={"About this event"} />
             <div className="mt-14 flex flex-col gap-8">
-            <div className="flex items-start">
-  {/* Image Section */}
-  <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
-    <Image
-      src="/icons/calendar.svg"
-      alt=""
-      height={25}
-      width={25}
-    />
-  </div>
+              <div className="flex items-start">
+                {/* Image Section */}
+                <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+                  <Image
+                    src="/icons/calendar.svg"
+                    alt=""
+                    height={25}
+                    width={25}
+                  />
+                </div>
 
-  {/* Text Section */}
-  <div className="ml-2">
-    <div className="text-sm" style={{ fontWeight: 600 }}>
-      Date
-    </div>
-    <div
-      style={{
-        width: "140px",
-        whiteSpace: "normal",
-        wordWrap: "break-word",
-      }}
-    >
-      {dateFormat(eventDetails?.startDate)} - {dateFormat(eventDetails?.endDate)}
-    </div>
-  </div>
-</div>
+                {/* Text Section */}
+                <div className="ml-2">
+                  <div className="text-sm" style={{ fontWeight: 600 }}>
+                    Date
+                  </div>
+                  <div
+                    style={{
+                      width: "140px",
+                      whiteSpace: "normal",
+                      wordWrap: "break-word",
+                    }}
+                  >
+                    {dateFormat(eventDetails?.startDate)} -{" "}
+                    {dateFormat(eventDetails?.endDate)}
+                  </div>
+                </div>
+              </div>
               <div className="flex gap-3">
                 <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
                   <Image src="/icons/time.svg" alt="" height={25} width={25} />
@@ -650,6 +648,7 @@ const EventDetail = () => {
                         type={
                           pathname.includes("register") ? "primary" : "text"
                         }
+                        onClick={() => router.push(`/discover/${params?.event}/tickets`)}
                         className="primary-btn w-full"
                         style={{
                           borderRadius: "25px",
@@ -671,7 +670,6 @@ const EventDetail = () => {
                           {eventDetails?.enable_registration === false
                             ? "Registration Closed"
                             : "Get Tickets"}
-                          <IoChevronDown />
                         </Space>
                       </Button>
                     </>

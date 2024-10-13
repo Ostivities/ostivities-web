@@ -11,7 +11,7 @@ import {
 } from "@/app/utils/interface";
 import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
 import { useRouter, useParams } from "next/navigation";
-import { useGetUserEvent } from "@/app/hooks/event/event.hook";
+import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
 import "@/app/globals.css";
 import "@/app/scroll.css";
@@ -20,12 +20,12 @@ import { TICKET_ENTITY } from "@/app/utils/enums";
 
 const TicketsSelection = () => {
   const router = useRouter();
-  const params = useParams<{ event: string; id: string }>();
-  const { getUserEvent } = useGetUserEvent(params?.id);
+  const params = useParams<{ event: string; }>();
+  const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalFee, setTotalFee] = useState(0);
-  const eventDetails = getUserEvent?.data?.data?.data;
-  const { getTickets } = useGetEventTickets(params?.id);
+  const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
+  const { getTickets } = useGetEventTickets(eventDetails?.id);
   const ticketData = getTickets?.data?.data?.data;
 
   const title = (
@@ -477,7 +477,7 @@ const TicketsSelection = () => {
           eventName={eventDetails?.eventName}
           ticketDetails={ticketDetails}
           continueBtn
-          to={`/discover/${params?.event}/${params?.id}/contact-form`}
+          to={`/discover/${params?.event}/contact-form`}
         />
       </section>
     </DashboardLayout>
