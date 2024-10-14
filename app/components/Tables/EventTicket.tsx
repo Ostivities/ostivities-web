@@ -9,7 +9,7 @@ import { SalesDataType } from "@/app/utils/interface";
 import { MenuOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Menu, MenuProps, Space, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EventDetailsComponent from "../EventDetails/EventDetails";
 import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
 import { useCookies } from "react-cookie";
@@ -27,7 +27,7 @@ const formatCurrency = (amount: number) => {
   return formatter.format(amount);
 };
 
-const EventTicketTable = () => {
+const EventTicketTable = ({ onTicketDataCount }: { onTicketDataCount: (count: number) => void }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -45,12 +45,16 @@ const EventTicketTable = () => {
     string | undefined
   >("");
 
+
+
   const { getTickets } = useGetEventTickets(params?.id);
   const ticketData = getTickets?.data?.data?.data;
-  // const {id, ...rest} = ticketData;
-  // console.log(ticketData, "ticketData")
-  // console.log(duplicateData, "duplicateData")
 
+  useEffect(() => {
+    // Pass the ticket count to the parent component when data changes
+    onTicketDataCount(ticketData?.length || 0);
+  }, [ticketData]);
+  
   interface MenuItemType {
     label: React.ReactNode;
     key: string;
