@@ -253,25 +253,34 @@ const EventPageAppearance: React.FC = () => {
         <div className="py-8">
           <Heading5 className="text-2xl" content={"About this event"} />
               <div className="mt-14 flex flex-col gap-8">
-                <div className="flex gap-3">
-                  <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
-                    <Image
-                      src="/icons/calendar.svg"
-                      alt=""
-                      height={25}
-                      width={25}
-                    />
+              <div className="flex items-start">
+                {/* Image Section */}
+                <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+                  <Image
+                    src="/icons/calendar.svg"
+                    alt=""
+                    height={25}
+                    width={25}
+                  />
+                </div>
+
+                {/* Text Section */}
+                <div className="ml-2">
+                  <div className="text-sm" style={{ fontWeight: 600 }}>
+                    Date
                   </div>
-                  <div>
-                    <div className="text-sm" style={{ fontWeight: 600 }}>
-                      Date
-                    </div>
-                    <div>
-                      {dateFormat(eventDetails?.startDate)} -{" "}
-                      {dateFormat(eventDetails?.endDate)}
-                    </div>
+                  <div
+                    style={{
+                      width: "140px",
+                      whiteSpace: "normal",
+                      wordWrap: "break-word",
+                    }}
+                  >
+                    {dateFormat(eventDetails?.startDate)} -{" "}
+                    {dateFormat(eventDetails?.endDate)}
                   </div>
                 </div>
+              </div>
                 <div className="flex gap-3">
                   <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
                     <Image
