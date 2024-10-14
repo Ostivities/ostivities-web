@@ -36,6 +36,14 @@ function CreateTicketPage(): JSX.Element {
       <div className="flex space-x-4"></div>
     </div>
   );
+
+  const [hasTickets, setHasTickets] = useState(false); // Track if there are any tickets
+
+  // This function will receive the ticket data count from the EventTicketTable
+  const handleTicketDataCount = (ticketCount: number) => {
+    setHasTickets(ticketCount > 0);
+  };
+
   return (
     <>
       <AddTicketModal
@@ -82,7 +90,7 @@ function CreateTicketPage(): JSX.Element {
         <div className="w-full mx-auto flex flex-col space-y-5 py-6">
           <br />
           <br />
-          <EventTicketTable /> <br />
+          <EventTicketTable onTicketDataCount={handleTicketDataCount} /> <br />
           <br />
           <Space className="flex flex-row justify-center space-x-4 mt-8">
             <Button
@@ -107,6 +115,9 @@ function CreateTicketPage(): JSX.Element {
                   `/discover/create-events/${params?.id}/publish-events`
                 );
               }}
+              disabled={!hasTickets}
+              // title="This button is disabled until the user creates a ticket"
+              title={!hasTickets ? "Please create a ticket" : ""}
             >
               Save & continue
             </Button>

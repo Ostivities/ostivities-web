@@ -149,22 +149,26 @@ const Summary = ({
                         </div>
                         <div>₦{ticket?.ticketPrice?.toLocaleString()}</div>
                       </div>
-                      <div className="flex-center justify-between">
-                        <div>Fee</div>
-                        <div>₦{ticket?.ticketFee?.toLocaleString()}</div>
-                      </div>
-                      <div className="flex-center justify-between">
-                        <div>Subtotal</div>
-                        <div>
-                          ₦
-                          {(
-                            ticket?.ticketPrice + ticket?.ticketFee
-                          ).toLocaleString()}
-                        </div>{" "}
-                        {/* Adjust this based on your calculation */}
-                      </div>
                     </>
                   ))}
+                <div className="flex-center justify-between">
+                  <div>Fee</div>
+                  <div>
+                    ₦
+                    {ticketDetails
+                      ?.reduce((acc, ticket) => acc + ticket?.ticketFee, 0)
+                      ?.toLocaleString()}
+                  </div>
+                </div>
+                <div className="flex-center justify-between">
+                  <div>Subtotal</div>
+                  <div>
+                    ₦
+                    {ticketDetails
+                      ?.reduce((acc, ticket) => acc + ticket?.subTotal, 0)
+                      ?.toLocaleString()}{" "}
+                  </div>
+                </div>
               </div>
               {discountApplied && (
                 <div className="flex-center justify-between">
@@ -180,7 +184,7 @@ const Summary = ({
             <div>
               ₦{" "}
               {ticketDetails
-                ?.reduce((acc, ticket) => acc + ticket?.subTotal, 0)
+                ?.reduce((acc, ticket) => acc + (ticket?.ticketPrice + ticket?.ticketFee), 0)
                 ?.toLocaleString()}
             </div>{" "}
             {/* Adjust this based on your calculation */}

@@ -4,11 +4,7 @@ import { useEffect, useState } from "react";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import Summary from "@/app/components/Discovery/Summary";
 import Image from "next/image";
-import {
-  ITicketCreate,
-  ITicketDetails,
-  SalesDataType,
-} from "@/app/utils/interface";
+import { ITicketCreate, ITicketDetails } from "@/app/utils/interface";
 import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
 import { useRouter, useParams } from "next/navigation";
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
@@ -43,11 +39,9 @@ const TicketsSelection = () => {
   );
 
   // State to manage selected ticket counts
-  const [selectedTickets, setSelectedTickets] = useState<number[]>(
-    new Array(ticketData?.length).fill(0)
-  );
+  const [selectedTickets, setSelectedTickets] = useState<{ [key: string]: number }>({});
 
-  // console.log(selectedTickets, "selectedTickets");
+  console.log(selectedTickets, "selectedTickets");
   const [ticketDetails, setTicketDetails] = useState<
     {
       ticketName: string;
@@ -58,12 +52,16 @@ const TicketsSelection = () => {
     }[]
   >([]);
 
-  // console.log(ticketDetails, "ticketDetails");
+  console.log(ticketDetails, "ticketDetails");
 
   useEffect(() => {
     // When ticketData is updated, re-initialize selectedTickets
     if (ticketData?.length) {
-      setSelectedTickets(new Array(ticketData.length).fill(0));
+      const initialSelectedTickets = ticketData.reduce((acc: { [key: string]: number }, ticket: ITicketDetails) => {
+        acc[ticket.id] = 0;
+        return acc;
+      }, {});
+      setSelectedTickets(initialSelectedTickets);
     }
   }, [ticketData]);
 
@@ -72,113 +70,100 @@ const TicketsSelection = () => {
     setTicketDetails((prevDetails) => prevDetails.filter((ticket) => ticket.ticketNumber > 0));
   }, [ticketDetails]); 
 
-  // Function to handle ticket increment
-  const handleIncrement = (index: number) => {
-    // Check if the index is valid and if ticketData exists
-    if (index >= 0 && index < ticketData?.length) {
-      const ticket = ticketData[index];
-  
-      setTicketDetails((prevDetails) => {
-        // Check if the ticket already exists in the details
-        const existingTicketIndex = prevDetails.findIndex(
-          (item) => item?.ticketName === ticket?.ticketName
-        );
-  
-        const updatedDetails = [...prevDetails];
-  
-        if (existingTicketIndex > -1) {
-          // If the ticket exists, update its quantity, price, and subtotal
-          const existingTicket = updatedDetails[existingTicketIndex];
-          const newTicketNumber = existingTicket?.ticketNumber + 1;
-          const price = ticket?.ticketEntity === TICKET_ENTITY.SINGLE
-            ? ticket?.ticketPrice
-            : ticket?.groupPrice || 0;
-  
+const handleIncrement = (ticketId: string) => {
+  const ticket = ticketData?.find((ticket: ITicketDetails) => ticket.id === ticketId);
+
+  if (ticket) {
+    setTicketDetails((prevDetails) => {
+      const existingTicketIndex = prevDetails.findIndex(
+        (item) => item.ticketName === ticket.ticketName
+      );
+
+      const updatedDetails = [...prevDetails];
+
+      if (existingTicketIndex > -1) {
+        const existingTicket = updatedDetails[existingTicketIndex];
+        const newTicketNumber = existingTicket.ticketNumber + 1;
+        const price = ticket.ticketEntity === TICKET_ENTITY.SINGLE
+          ? ticket.ticketPrice
+          : ticket.groupPrice || 0;
+
+        updatedDetails[existingTicketIndex] = {
+          ...existingTicket,
+          ticketPrice: price * newTicketNumber,
+          ticketNumber: newTicketNumber,
+          subTotal: (price * newTicketNumber) + ticket.ticketPrice,
+        };
+      } else {
+        const price = ticket.ticketEntity === TICKET_ENTITY.SINGLE
+          ? ticket.ticketPrice
+          : ticket.groupPrice || 0;
+
+        updatedDetails.push({
+          ticketName: ticket.ticketName,
+          ticketPrice: price,
+          ticketFee: ticket.ticketPrice || 0,
+          ticketNumber: 1,
+          subTotal: price + (ticket.ticketPrice || 0),
+        });
+      }
+
+      return updatedDetails;
+    });
+
+    // Update the selected tickets count by ticket ID
+    setSelectedTickets((prevTickets) => ({
+      ...prevTickets,
+      [ticketId]: (prevTickets[ticketId] || 0) + 1,
+    }));
+  }
+};
+
+// Function to handle ticket decrement
+const handleDecrement = (ticketId: string) => {
+  const ticket = ticketData?.find((ticket: ITicketDetails) => ticket.id === ticketId);
+
+  if (ticket && (selectedTickets[ticketId] ?? 0) > 0) {
+    setTicketDetails((prevDetails) => {
+      const existingTicketIndex = prevDetails.findIndex(
+        (item) => item.ticketName === ticket.ticketName
+      );
+
+      const updatedDetails = [...prevDetails];
+
+      if (existingTicketIndex > -1) {
+        const existingTicket = updatedDetails[existingTicketIndex];
+        const newTicketNumber = existingTicket.ticketNumber - 1;
+
+        if (newTicketNumber >= 0) {
+          const price = ticket.ticketEntity === TICKET_ENTITY.SINGLE
+            ? ticket.ticketPrice
+            : ticket.groupPrice || 0;
+
           updatedDetails[existingTicketIndex] = {
             ...existingTicket,
             ticketPrice: price * newTicketNumber,
             ticketNumber: newTicketNumber,
-            subTotal: (price * newTicketNumber) + ticket?.ticketPrice,
+            subTotal: (price * newTicketNumber) + ticket.ticketPrice,
           };
-        } else {
-          // If the ticket doesn't exist, add a new one
-          const price = ticket?.ticketEntity === TICKET_ENTITY.SINGLE
-            ? ticket?.ticketPrice
-            : ticket?.groupPrice || 0;
-  
-          updatedDetails.push({
-            ticketName: ticket?.ticketName,
-            ticketPrice: price,
-            ticketFee: ticket?.ticketPrice  || 0, // Default fee or 0
-            ticketNumber: 1, // Starting count at 1 for a new entry
-            subTotal: price + (ticket?.ticketPrice  || 0), // Subtotal = price + fee
-          });
         }
-  
-        return updatedDetails;
-      });
-  
-      // Update the selected tickets count
-      setSelectedTickets((prevTickets) =>
-        prevTickets.map((count: number, i: number) =>
-          i === index ? count + 1 : count
-        )
-      );
-    }
-  };
-  
-  
+      }
 
-  // Function to handle ticket decrement
-  const handleDecrement = (index: number) => {
-    // Check if the ticket count is greater than 0 before decrementing
-    if (selectedTickets[index] > 0 && index >= 0 && index < ticketData.length) {
-      const ticket = ticketData[index];
-  
-      setTicketDetails((prevDetails) => {
-        // Check if the ticket already exists in the details
-        const existingTicketIndex = prevDetails.findIndex(
-          (item) => item?.ticketName === ticket?.ticketName
-        );
-  
-        const updatedDetails = [...prevDetails];
-  
-        if (existingTicketIndex > -1) {
-          const existingTicket = updatedDetails[existingTicketIndex];
-          const newTicketNumber = existingTicket.ticketNumber - 1;
-  
-          // Only update if ticketNumber is greater than 0
-          if (newTicketNumber >= 0) {
-            const price = ticket?.ticketEntity === TICKET_ENTITY.SINGLE
-              ? ticket?.ticketPrice
-              : ticket?.groupPrice || 0;
-  
-            updatedDetails[existingTicketIndex] = {
-              ...existingTicket,
-              ticketPrice: price * newTicketNumber,
-              ticketNumber: newTicketNumber,
-              subTotal: (price * newTicketNumber) + ticket?.ticketPrice,
-            };
-          }
-        }
-  
-        return updatedDetails;
-      });
-  
-      // Update the selected tickets count and ensure it doesn't go below 0
-      setSelectedTickets((prevTickets) =>
-        prevTickets.map((count, i) =>
-          i === index && count > 0 ? count - 1 : count
-        )
-      );
-    }
-  };
-  
+      return updatedDetails;
+    });
+
+    // Update the selected tickets count by ticket ID
+    setSelectedTickets((prevTickets) => ({
+      ...prevTickets,
+      [ticketId]: Math.max((prevTickets[ticketId] ?? 0) - 1, 0),
+    }));
+  }
+};
+
 
   return (
     <DashboardLayout title={title} isLoggedIn>
       <section className="flex gap-12">
-        {/* Scrollable content container */}
         <section className="flex-1 pr-1 pl-3 pb-4 scrollable-content shadow-none">
           <div className="flex-center justify-between">
             <div className="flex-center gap-3">
@@ -219,84 +204,49 @@ const TicketsSelection = () => {
               experience!
             </h3>
           </div>
-          {/* Add Single Ticket Button before the first ticket */}
+
+          {/* Single Ticket Section */}
           <div className="mb-4">
             <button
               className="bg-OWANBE_PRY text-white px-3 py-1 rounded-md text-sm font-BricolageGrotesqueMedium"
-              style={{ borderRadius: "20px", fontSize: "12px" }} // Adjusted text size
+              style={{ borderRadius: "20px", fontSize: "12px" }}
             >
-              All Tickets
+              Single Ticket
             </button>
             <div>
-              {ticketData?.map((ticket: ITicketDetails, index: any) => (
-                <div key={index}>
-                  <div className="card-shadow flex justify-between items-start">
+              {ticketData
+                ?.filter(
+                  (ticket: ITicketDetails) =>
+                    ticket?.ticketEntity === TICKET_ENTITY.SINGLE
+                )
+                .map((ticket: ITicketDetails, index: any) => (
+                  <div
+                    key={index}
+                    className="card-shadow flex justify-between items-start"
+                  >
                     <div>
-                    {ticket?.groupSize ? (
-                        <h2
-                          className="text-lg font-BricolageGrotesqueMedium"
-                          style={{ fontWeight: 500, fontSize: "18px" }}
-                        >
-                          Group Of {ticket?.groupSize} - {ticket.ticketName}
-                        </h2>
-                      ) : (
-                        <h2
-                          className="text-lg font-BricolageGrotesqueMedium"
-                          style={{ fontWeight: 500, fontSize: "18px" }}
-                        >
-                          {ticket.ticketName}
-                        </h2>
-                      )}
-
+                      <h2
+                        className="text-lg font-BricolageGrotesqueMedium"
+                        style={{ fontWeight: 500, fontSize: "18px" }}
+                      >
+                        {ticket?.ticketName}
+                      </h2>
                       <h3>
-                        {ticket?.ticketPrice || ticket?.groupPrice ? (
+                        {ticket?.ticketPrice ? (
                           <>
-                            {ticket?.ticketEntity ===
-                            TICKET_ENTITY.COLLECTIVE ? (
-                              <>
-                                <span
-                                  className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
-                                  style={{
-                                    fontWeight: 600,
-                                    fontSize: "17px",
-                                  }}
-                                >
-                                  ₦{(ticket?.groupPrice ?? 0).toLocaleString()}
-                                </span>{" "}
-                                <span
-                                  className="text-s font-BricolageGrotesqueRegular"
-                                  style={{
-                                    fontWeight: 400,
-                                    fontSize: "12px",
-                                  }}
-                                >
-                                  Including ₦
-                                  {(ticket?.groupPrice ?? 0).toLocaleString()} fee
-                                </span>
-                              </>
-                            ) : (
-                              <>
-                                <span
-                                  className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
-                                  style={{
-                                    fontWeight: 600,
-                                    fontSize: "17px",
-                                  }}
-                                >
-                                  ₦{(ticket?.ticketPrice ?? 0).toLocaleString()}
-                                </span>{" "}
-                                <span
-                                  className="text-s font-BricolageGrotesqueRegular"
-                                  style={{
-                                    fontWeight: 400,
-                                    fontSize: "12px",
-                                  }}
-                                >
-                                  Including ₦
-                                  {(ticket?.ticketPrice ?? 0).toLocaleString()} fee
-                                </span>
-                              </>
-                            )}
+                            <span
+                              className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                              style={{ fontWeight: 600, fontSize: "17px" }}
+                            >
+                              ₦{ticket.ticketPrice.toLocaleString()}
+                            </span>{" "}
+                            <span
+                              className="text-s font-BricolageGrotesqueRegular"
+                              style={{ fontWeight: 400, fontSize: "12px" }}
+                            >
+                              Including ₦{ticket.ticketPrice.toLocaleString()}{" "}
+                              fee
+                            </span>
                           </>
                         ) : (
                           <span
@@ -327,152 +277,113 @@ const TicketsSelection = () => {
                     >
                       <button
                         className="w-8 h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
-                        onClick={() => handleDecrement(index)}
-                        disabled={selectedTickets[index] === 0}
+                        onClick={() => handleDecrement(ticket?.id)}
+                        disabled={selectedTickets[ticket?.id] === 0}
                         style={{ backgroundColor: "#FADEDE" }}
                       >
                         -
                       </button>
                       <span className="text-lg mx-2">
-                        {selectedTickets[index]}
+                        {selectedTickets[ticket?.id] || 0}
                       </span>
                       <button
                         className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
-                        onClick={() => handleIncrement(index)}
-                        style={{
-                          color: "#e20000",
-                          backgroundColor: "#FADEDE",
-                        }}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* <div className="mt-5 flex flex-col gap-6">
-            <div className="mb-4">
-              <button
-                className="bg-OWANBE_PRY text-white px-3 py-1 rounded-md text-sm font-BricolageGrotesqueMedium"
-                style={{ borderRadius: "20px", fontSize: "12px" }} // Adjusted text size
-              >
-                Collective Ticket
-              </button>
-            </div>
-            {ticketData
-              ?.filter((ticket: ITicketDetails) => {
-                return ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE;
-              })
-              .map((ticket: ITicketDetails, index: any) => (
-                <div key={index}>
-                  <div className="card-shadow flex justify-between items-start">
-                    <div>
-                      {ticket?.groupSize ? (
-                        <h2
-                          className="text-lg font-BricolageGrotesqueMedium"
-                          style={{ fontWeight: 500, fontSize: "18px" }}
-                        >
-                          Group Of {ticket?.groupSize} - {ticket.ticketName}
-                        </h2>
-                      ) : (
-                        <h2
-                          className="text-lg font-BricolageGrotesqueMedium"
-                          style={{ fontWeight: 500, fontSize: "18px" }}
-                        >
-                          {ticket.ticketName}
-                        </h2>
-                      )}
-                      <h3>
-                        {ticket.ticketPrice ? (
-                          <>
-                            {ticket.groupPrice ? (
-                              <>
-                                <span
-                                  className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
-                                  style={{ fontWeight: 600, fontSize: "17px" }}
-                                >
-                                  ₦{ticket.groupPrice.toLocaleString()}
-                                </span>{" "}
-                                <span
-                                  className="text-s font-BricolageGrotesqueRegular"
-                                  style={{ fontWeight: 400, fontSize: "12px" }}
-                                >
-                                  Including ₦
-                                  {ticket.groupPrice.toLocaleString()} fee
-                                </span>
-                              </>
-                            ) : (
-                              <>
-                                <span
-                                  className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
-                                  style={{ fontWeight: 600, fontSize: "17px" }}
-                                >
-                                  ₦{ticket.ticketPrice.toLocaleString()}
-                                </span>{" "}
-                                <span
-                                  className="text-s font-BricolageGrotesqueRegular"
-                                  style={{ fontWeight: 400, fontSize: "12px" }}
-                                >
-                                  Including ₦
-                                  {ticket.ticketPrice.toLocaleString()} fee
-                                </span>
-                              </>
-                            )}
-                          </>
-                        ) : (
-                          <span
-                            className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
-                            style={{ fontWeight: 600, fontSize: "17px" }}
-                          >
-                            Free
-                          </span>
-                        )}
-                      </h3>
-                      <p
-                        className="text-s font-BricolageGrotesqueRegular"
-                        style={{
-                          fontSize: "13px",
-                          color: "black",
-                          marginTop: "17px",
-                        }}
-                      >
-                        <ReadMoreHTML
-                          htmlContent={ticket.ticketDescription || ""}
-                          maxLength={100}
-                        />
-                      </p>
-                    </div>
-                    <div
-                      className="flex items-start gap-2"
-                      style={{ marginBlockStart: "10px" }}
-                    >
-                      <button
-                        className="w-8 h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
-                        onClick={() => handleDecrement(index)}
-                        disabled={selectedTickets[index] === 0}
-                        style={{ backgroundColor: "#FADEDE" }}
-                      >
-                        -
-                      </button>
-                      <span className="text-lg mx-2">
-                        {selectedTickets[index]}
-                      </span>
-                      <button
-                        className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
-                        onClick={() => handleIncrement(index)}
+                        onClick={() => handleIncrement(ticket?.id)}
                         style={{ color: "#e20000", backgroundColor: "#FADEDE" }}
                       >
                         +
                       </button>
                     </div>
                   </div>
-                </div>
-              ))}
-          </div> */}
+                ))}
+            </div>
+          </div>
+
+          {/* Collective Ticket Section */}
+          <div className="mb-4">
+            <button
+              className="bg-OWANBE_PRY text-white px-3 py-1 rounded-md text-sm font-BricolageGrotesqueMedium"
+              style={{ borderRadius: "20px", fontSize: "12px" }}
+            >
+              Collective Ticket
+            </button>
+            <div>
+              {ticketData
+                ?.filter(
+                  (ticket: ITicketDetails) =>
+                    ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE
+                )
+                .map((ticket: ITicketDetails, index: any) => (
+                  <div
+                    key={index}
+                    className="card-shadow flex justify-between items-start"
+                  >
+                    <div>
+                      <h2
+                        className="text-lg font-BricolageGrotesqueMedium"
+                        style={{ fontWeight: 500, fontSize: "18px" }}
+                      >
+                        {ticket?.ticketName}
+                      </h2>
+                      <h3>
+                        <span
+                          className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                          style={{ fontWeight: 600, fontSize: "17px" }}
+                        >
+                          ₦{(ticket?.ticketPrice ?? 0).toLocaleString()}
+                        </span>{" "}
+                        <span
+                          className="text-s font-BricolageGrotesqueRegular"
+                          style={{ fontWeight: 400, fontSize: "12px" }}
+                        >
+                          Including ₦
+                          {(ticket?.ticketPrice ?? 0).toLocaleString()} fee
+                        </span>
+                      </h3>
+                      <p
+                        className="text-s font-BricolageGrotesqueRegular"
+                        style={{
+                          fontSize: "13px",
+                          color: "black",
+                          marginTop: "17px",
+                        }}
+                      >
+                        <ReadMoreHTML
+                          htmlContent={ticket?.ticketDescription || ""}
+                          maxLength={100}
+                        />
+                      </p>
+                    </div>
+                    <div
+                      className="flex items-start gap-2"
+                      style={{ marginBlockStart: "10px" }}
+                    >
+                      <button
+                        className="w-8 h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
+                        onClick={() => handleDecrement(ticket?.id)}
+                        disabled={selectedTickets[ticket?.id] === 0}
+                        style={{ backgroundColor: "#FADEDE" }}
+                      >
+                        -
+                      </button>
+                      <span className="text-lg mx-2">
+                        {selectedTickets[ticket?.id] || 0}
+                      </span>
+                      <button
+                        className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
+                        onClick={() => handleIncrement(ticket?.id)}
+                        style={{ color: "#e20000", backgroundColor: "#FADEDE" }}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
         </section>
+
+        {/* Summary Section with Correct Props */}
         <Summary
           eventName={eventDetails?.eventName}
           ticketDetails={ticketDetails}

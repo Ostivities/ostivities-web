@@ -230,8 +230,6 @@ const EventDetail = () => {
   const [isEventStarted, setIsEventStarted] = useState(false);
   const [isRegistrationClosed, setIsRegistrationClosed] = useState(false);
 
-  console.log(isRegistrationClosed, "isRegistrationClosed");
-  useEffect(() => {}, [eventDetails]);
 
   useEffect(() => {
     if (eventDetails?.enable_registration === false) {
