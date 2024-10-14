@@ -47,7 +47,7 @@ const TicketsSelection = () => {
     new Array(ticketData?.length).fill(0)
   );
 
-  console.log(selectedTickets, "selectedTickets");
+  // console.log(selectedTickets, "selectedTickets");
   const [ticketDetails, setTicketDetails] = useState<
     {
       ticketName: string;
@@ -58,7 +58,7 @@ const TicketsSelection = () => {
     }[]
   >([]);
 
-  console.log(ticketDetails, "ticketDetails");
+  // console.log(ticketDetails, "ticketDetails");
 
   useEffect(() => {
     // When ticketData is updated, re-initialize selectedTickets

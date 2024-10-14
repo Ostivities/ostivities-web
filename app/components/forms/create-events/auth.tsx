@@ -14,9 +14,7 @@ const useFetch = () => {
       // Static public paths
       const publicPaths = [
         "/",
-        "/Dashboard",
         "/discover",
-        // "/discover/discovery",
         "/forgot-password",
         "/password-reset",
         "/login",
@@ -30,25 +28,23 @@ const useFetch = () => {
         "/discover/event-not-found",
       ];
 
-      // Updated regex patterns for dynamic public paths
+      // Regex pattern for dynamic public paths
+      // const dynamicPublicPaths = [
+      //   /^\/discover\/[a-zA-Z0-9-_]+(\/(tickets|contact-form))?$/,  // Matches paths like `/discover/event_name/tickets`, `/discover/event_name/contact-form`, or `/discover/event_name`
+      // ];
       const dynamicPublicPaths = [
-        /^\/discover\/[a-zA-Z0-9\s\-:.]+\/[a-zA-Z0-9\s\-:.]+$/,  // Matches paths like `/discover/Sunset Vibes: A Night of Chill Beats/670072d1aae36ba5c6a155e2`
+        /^\/discover\/[a-zA-Z0-9-_]+$/,  // Matches only `/discover/event_name`
       ];
 
       // Function to check if the current path is public
       const isPublicPath = (path: string) => {
-        const decodedPath = decodeURIComponent(path);  // Decode the path
-        console.log("Decoded path:", decodedPath);
+        const decodedPath = decodeURIComponent(path); // Decode the path for safety
 
         // Check if it's a static public path
         if (publicPaths.includes(decodedPath)) return true;
 
         // Check if it matches any dynamic public path pattern
-        return dynamicPublicPaths.some((pattern) => {
-          const isMatch = pattern.test(decodedPath);
-          console.log(`Testing pattern: ${pattern}, Path: ${decodedPath}, Match: ${isMatch}`);
-          return isMatch;
-        });
+        return dynamicPublicPaths.some((pattern) => pattern.test(decodedPath));
       };
 
       if (token) {
@@ -56,12 +52,9 @@ const useFetch = () => {
       } else {
         setIsLoggedIn(false);
 
-        // Check if the current path is public
+        // Redirect to login if the path is not public
         if (!isPublicPath(pathname)) {
-          console.log("Private path detected, redirecting to /login");
           router.push("/login");
-        } else {
-          console.log("Public path, no redirection needed.");
         }
       }
       setLoading(false);
