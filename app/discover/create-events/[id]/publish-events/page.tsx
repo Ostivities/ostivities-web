@@ -7,7 +7,7 @@ import { Heading5 } from "../../../../components/typography/Typography";
 import PublishSuccess from "@/app/components/OstivitiesModal/PublishSuccessModal";
 import CantPublish from "@/app/components/OstivitiesModal/CantPublishModal";
 import { useState } from "react";
-import { useGetUserEvent, usePublishEvent, useAddEventToDiscovery } from "@/app/hooks/event/event.hook";
+import { useGetUserEvent, usePublishEvent, useAddEventToDiscovery, useEnableEventRegistration } from "@/app/hooks/event/event.hook";
 import { useProfile } from "@/app/hooks/auth/auth.hook";
 import { useCookies } from "react-cookie";
 
@@ -40,6 +40,7 @@ export default function PublishEvent(): JSX.Element {
   const { profile } = useProfile();
   const { publishEvent } = usePublishEvent();
   const { addEventToDiscovery } = useAddEventToDiscovery();
+  const { enableEventRegistration } = useEnableEventRegistration();
   const userFullName =
     profile?.data?.data?.data?.firstName +
     " " +
@@ -57,9 +58,13 @@ export default function PublishEvent(): JSX.Element {
 
     console.log(response, "response");
     if (response.status === 200) {
-       await addEventToDiscovery.mutateAsync({
+      await addEventToDiscovery.mutateAsync({
         ids: [params?.id],
         discover: true,
+      });
+      await enableEventRegistration.mutateAsync({
+        id: params?.id,
+        enable_registration: true,
       });
 
       localStorage.removeItem("uploadedFiles")

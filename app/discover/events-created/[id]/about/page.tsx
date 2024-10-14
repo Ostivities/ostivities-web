@@ -194,14 +194,9 @@ const AboutEvent = () => {
       setValue("address", eventDetails?.address);
       setValue(
         "eventURL",
-        getUsernameFromUrl(
-          (eventDetails?.eventName).toLowerCase().replace(/_/g, " ")
-        )
-      );
-      setEventUrl(
-        getUsernameFromUrl(
-          (eventDetails?.eventName).toLowerCase().replace(/_/g, " ")
-        )
+        getUsernameFromUrl(eventDetails?.eventURL)
+          .toLocaleLowerCase()
+          .replace(/_/g, " ").replace(/\d+$/, "") 
       );
       setValue("eventDocumentName", eventDetails?.supportingDocument?.fileName);
       setValue("eventType", eventDetails?.eventType);
@@ -292,9 +287,6 @@ const AboutEvent = () => {
         { name: "website", url: websiteUrl },
       ].filter((social) => social.url);
 
-      const randomNumber = Math.floor(Math.random() * 100).toString();
-      const unique_key = eventURL.replace(/\s+/g, "_").toLocaleLowerCase() + `${randomNumber}`
-      // setLoader(true);
       console.log(rest, "rest")
       const response = await updateEvent.mutateAsync({
         id: params?.id,
@@ -303,9 +295,7 @@ const AboutEvent = () => {
           fileName: data.eventDocumentName || "",
           fileUrl: data.eventDocument,
         },
-        eventURL: `${discovery_url}${unique_key}`,
         eventDetails: editorContent,
-        unique_key,
         socials,
       });
 
@@ -345,11 +335,11 @@ const AboutEvent = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (eventUrl) {
-      setValue("eventURL", eventUrl.toLocaleLowerCase().replace(/_/g, " ")); // Manually set eventURL field
-    }
-  }, [eventUrl, setValue]);
+  // useEffect(() => {
+  //   if (eventUrl) {
+  //     setValue("eventURL", eventUrl.toLocaleLowerCase().replace(/_/g, " ")); // Manually set eventURL field
+  //   }
+  // }, [eventUrl, setValue]);
 
   const content = (
     <div style={{ padding: 10 }} ref={popoverRef}>
@@ -389,7 +379,6 @@ const AboutEvent = () => {
                     {...field}
                     onChange={(e) => {
                       field.onChange(e.target.value);
-                      setEventUrl(e.target.value);
                     }}
                     disabled={componentDisabled}
                     placeholder="Enter Event Name"

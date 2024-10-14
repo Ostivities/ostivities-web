@@ -5,10 +5,10 @@ import { useGetDiscoveryEvents } from '@/app/hooks/event/event.hook';
 import { useParams } from 'next/navigation';
 import { IEventDetails } from '@/app/utils/interface';
 const DiscoverEvents = () => {
-  const params = useParams<{ event: string; id: string }>();
+  const params = useParams<{ event: string }>();
 
   const currentEvent = (value: string) => {
-    return value !== params?.id;
+    return value !== params?.event;
   }
 
   const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 10);
