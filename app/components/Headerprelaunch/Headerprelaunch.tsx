@@ -174,7 +174,7 @@ function Header(): JSX.Element {
                   <Button
                     variant="outline"
                     label="Sign in"
-                    onClick={() => router.push("/login")}
+                    onClick={() => router.push("")}
                   />
                 ) : (
                   // Show both Sign In and Sign Up buttons if user is not registered
@@ -182,11 +182,11 @@ function Header(): JSX.Element {
                     <Button
                       variant="outline"
                       label="Sign in"
-                      onClick={() => router.push("/login")}
+                      onClick={() => router.push("")}
                     />
                     <Button
                       label="Sign Up"
-                      onClick={() => router.push("/signup")}
+                      onClick={() => router.push("")}
                     />
                   </>
                 )
@@ -194,7 +194,7 @@ function Header(): JSX.Element {
                 // Show My Account button if user is logged in
                 <Button
                   label="My Account"
-                  onClick={() => router.push("/discover")}
+                  onClick={() => router.push("")}
                 />
               )}
               </>
