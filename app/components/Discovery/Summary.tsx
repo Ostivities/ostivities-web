@@ -184,7 +184,7 @@ const Summary = ({
             <div>
               ₦{" "}
               {ticketDetails
-                ?.reduce((acc, ticket) => acc + (ticket?.ticketPrice + ticket?.ticketFee), 0)
+                ?.reduce((acc, ticket) => acc + (ticket?.subTotal + ticket?.ticketFee ), 0)
                 ?.toLocaleString()}
             </div>{" "}
             {/* Adjust this based on your calculation */}
