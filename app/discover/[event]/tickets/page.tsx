@@ -71,40 +71,41 @@ const TicketsSelection = () => {
   }, [ticketDetails]); 
 
 const handleIncrement = (ticketId: string) => {
-  const ticket = ticketData?.find((ticket: ITicketDetails) => ticket.id === ticketId);
+  const ticket = ticketData?.find((ticket: ITicketDetails) => ticket?.id === ticketId);
 
   if (ticket) {
     setTicketDetails((prevDetails) => {
       const existingTicketIndex = prevDetails.findIndex(
-        (item) => item.ticketName === ticket.ticketName
+        (item) => item?.ticketName === ticket?.ticketName
       );
 
       const updatedDetails = [...prevDetails];
 
       if (existingTicketIndex > -1) {
         const existingTicket = updatedDetails[existingTicketIndex];
-        const newTicketNumber = existingTicket.ticketNumber + 1;
-        const price = ticket.ticketEntity === TICKET_ENTITY.SINGLE
-          ? ticket.ticketPrice
-          : ticket.groupPrice || 0;
+        const newTicketNumber = existingTicket?.ticketNumber + 1;
+        const price = ticket?.ticketEntity === TICKET_ENTITY.SINGLE
+          ? ticket?.ticketPrice
+          : ticket?.groupPrice || 0;
 
         updatedDetails[existingTicketIndex] = {
           ...existingTicket,
           ticketPrice: price * newTicketNumber,
+          ticketFee: newTicketNumber * price,
           ticketNumber: newTicketNumber,
-          subTotal: (price * newTicketNumber) + ticket.ticketPrice,
+          subTotal: (price * newTicketNumber) * 2,
         };
       } else {
-        const price = ticket.ticketEntity === TICKET_ENTITY.SINGLE
-          ? ticket.ticketPrice
-          : ticket.groupPrice || 0;
+        const price = ticket?.ticketEntity === TICKET_ENTITY.SINGLE
+          ? ticket?.ticketPrice
+          : ticket?.groupPrice || 0;
 
         updatedDetails.push({
-          ticketName: ticket.ticketName,
+          ticketName: ticket?.ticketName,
           ticketPrice: price,
-          ticketFee: ticket.ticketPrice || 0,
+          ticketFee: ticket?.ticketPrice || 0,
           ticketNumber: 1,
-          subTotal: price + (ticket.ticketPrice || 0),
+          subTotal: price + (ticket?.ticketPrice || 0),
         });
       }
 
@@ -266,7 +267,7 @@ const handleDecrement = (ticketId: string) => {
                         }}
                       >
                         <ReadMoreHTML
-                          htmlContent={ticket.ticketDescription || ""}
+                          htmlContent={ticket?.ticketDescription || ""}
                           maxLength={100}
                         />
                       </p>
@@ -289,6 +290,7 @@ const handleDecrement = (ticketId: string) => {
                       <button
                         className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
                         onClick={() => handleIncrement(ticket?.id)}
+                        disabled={selectedTickets[ticket?.id] === ticket?.purchaseLimit}
                         style={{ color: "#e20000", backgroundColor: "#FADEDE" }}
                       >
                         +
@@ -323,14 +325,14 @@ const handleDecrement = (ticketId: string) => {
                         className="text-lg font-BricolageGrotesqueMedium"
                         style={{ fontWeight: 500, fontSize: "18px" }}
                       >
-                        {ticket?.ticketName}
+                        Group Of {ticket?.groupSize} - {ticket.ticketName}
                       </h2>
                       <h3>
                         <span
                           className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
                           style={{ fontWeight: 600, fontSize: "17px" }}
                         >
-                          ₦{(ticket?.ticketPrice ?? 0).toLocaleString()}
+                          ₦{(ticket?.groupPrice ?? 0).toLocaleString()}
                         </span>{" "}
                         <span
                           className="text-s font-BricolageGrotesqueRegular"
@@ -372,7 +374,11 @@ const handleDecrement = (ticketId: string) => {
                       <button
                         className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
                         onClick={() => handleIncrement(ticket?.id)}
-                        style={{ color: "#e20000", backgroundColor: "#FADEDE" }}
+                        disabled={selectedTickets[ticket?.id] === ticket?.purchaseLimit}
+                        style={{ 
+                          color: selectedTickets[ticket?.id] === ticket?.purchaseLimit ? "white" : "#e20000", 
+                          backgroundColor: selectedTickets[ticket?.id] === ticket?.purchaseLimit ? "#cccccc" : "#FADEDE" 
+                        }}
                       >
                         +
                       </button>
