@@ -1,7 +1,7 @@
 'use client';
 
 import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
-import Summary from '@/app/components/Discovery/Summary';
+// import Summary from '@/app/components/Discovery/Summary';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Form, Input, Select, Row, Col } from 'antd';
@@ -263,7 +263,7 @@ const ContactForm = () => {
             </Form>
           </div>
         </section>
-        <Summary continueBtn to={"/discover/payment"} />
+        {/* <Summary continueBtn to={"/discover/payment"} /> */}
       </section>
     </DashboardLayout>
   );

@@ -30,12 +30,12 @@ const useFetch = () => {
       ];
 
       // Regex pattern for dynamic public paths
-      // const dynamicPublicPaths = [
-      //   /^\/discover\/[a-zA-Z0-9-_]+(\/(tickets|contact-form))?$/,  // Matches paths like `/discover/event_name/tickets`, `/discover/event_name/contact-form`, or `/discover/event_name`
-      // ];
       const dynamicPublicPaths = [
-        /^\/discover\/[a-zA-Z0-9-_]+$/,  // Matches only `/discover/event_name`
+        /^\/discover\/[a-zA-Z0-9-_]+(\/(tickets|contact-form))?$/,  // Matches paths like `/discover/event_name/tickets`, `/discover/event_name/contact-form`, or `/discover/event_name`
       ];
+      // const dynamicPublicPaths = [
+      //   /^\/discover\/[a-zA-Z0-9-_]+$/,  // Matches only `/discover/event_name`
+      // ];
 
       // Function to check if the current path is public
       const isPublicPath = (path: string) => {

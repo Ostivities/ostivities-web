@@ -8,6 +8,8 @@ import { Heading5 } from "../typography/Typography";
 import PaymentSuccess from "@/app/components/OstivitiesModal/PaymentSuccessModal";
 import { PlusSquareOutlined } from "@ant-design/icons";
 import { ITicketDetails } from "@/app/utils/interface";
+import { useRouter, useParams } from "next/navigation";
+import { Button } from "antd";
 
 interface SummaryProps {
   continueBtn?: boolean;
@@ -36,6 +38,9 @@ const Summary = ({
   const [subTotal, setSubTotal] = useState(false);
   const [discountCode, setDiscountCode] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const params = useParams<{ event: string; }>();
+  const router = useRouter();
+  console.log(to, "to");
 
   const handleAddDiscountClick = () => {
     setShowInput(true);
@@ -191,12 +196,16 @@ const Summary = ({
           </div>
           {continueBtn && (
             <div className="flex justify-center mt-12 mb-6 w-full">
-              <Link
-                href={to}
+              <Button
+                // href={to}
+                onClick={() => { 
+                  console.log("here")
+                  router.push(`/discover/${params?.event}/contact-form`) 
+                }}
                 className="primary-btn hover:none w-full text-center"
               >
                 Continue
-              </Link>
+              </Button>
             </div>
           )}
           {paymentBtn && (
