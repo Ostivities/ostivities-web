@@ -88,12 +88,12 @@ function Hero(): JSX.Element {
           </p>
           
           {/* Flex container for button and countdown */}
-          <div className="flex flex-col items-center lg:flex-row lg:space-x-8 lg:items-center">
+          <div className="flex flex-col items-center lg:flex-row lg:space-x-6 lg:items-center">
             <Link
               href=""
-              className=" bg-OWANBE_SECONDARY hover:!bg-OWANBE_PRY transition-all duration-300 rounded-full hover:!text-white text-white px-5 py-3"
+              className=" bg-OWANBE_SECONDARY hover:!bg-OWANBE_PRY transition-all duration-300 rounded-full hover:!text-white text-white px-6 py-3"
             >
-              <span className=" pr-1">Coming Soon</span>
+              <span className=" pr-1">Launching In</span>
             </Link>
 
             {/* Countdown Timer */}

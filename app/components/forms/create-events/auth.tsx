@@ -25,6 +25,7 @@ const useFetch = () => {
         "/privacy-policy",
         "/refund-policy",
         "/feedback",
+        "/not-found",
         "/discover/event-not-found",
       ];
 

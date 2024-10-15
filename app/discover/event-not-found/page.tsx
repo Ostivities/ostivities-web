@@ -20,29 +20,30 @@ function EventNotFound(): JSX.Element {
   );
 
   return (
-    <DashboardLayout title={title} isLoggedIn>
-      <div className="w-full mx-auto flex flex-row items-center justify-between space-y-5 py-6">
-        <div className="w-1/2 flex flex-col gap-2 p-[8rem] justify-center">
-          <h2 className="w-full md:w-full font-BricolageGrotesqueMedium text-3xl font-bold mb-4">Oops.... event not found!</h2>
-          <p className="w-full md:w-full font-BricolageGrotesqueMedium text-md mb-6">This Page doesn`t exist or was removed!
+    <DashboardLayout>
+      <div className="w-full mx-auto flex flex-col md:flex-row items-center justify-between space-y-5 py-6">
+        <div className="w-full md:w-1/2 flex items-center justify-center md:order-2">
+          <Image
+            src={notfound}
+            alt="Event not found"
+            className="ms-1"
+            width={530}
+            height={530}
+            style={{ objectFit: 'contain' }}
+          />
+        </div>
+        <div className="w-full md:w-1/2 flex flex-col gap-2 p-8 md:p-[8rem] justify-center md:order-1">
+          <h2 className="w-full font-BricolageGrotesqueMedium text-3xl font-bold mb-4">Oops.... page not found!</h2>
+          <p className="w-full font-BricolageGrotesqueMedium text-md mb-6">This Page doesn`t exist or was removed!
           We suggest you confirm the search parameters is correct and try again.</p>
           <button
             onClick={handleBackToDiscovery}
-            className="primary-btn hover:none w-80 text-center text-white py-2 px-6 rounded-full text-lg font-bricolage"
-            style={{ borderRadius: '25px' }} // Apply corner radius
+            className="primary-btn w-full md:w-80 text-center text-white py-2 px-6 rounded-full text-lg font-bricolage"
+            style={{ borderRadius: '25px' }}
           >
             Back to discovery
           </button>
-        </div>
-        <div className="w-1/2 flex items-center justify-center">
-          <Image 
-            src={notfound} 
-            alt="Event not found" 
-            className="ms-1" 
-            width={530} // Adjust the width as needed
-            height={530} // Adjust the height as needed
-            style={{ objectFit: 'contain' }} // Maintain aspect ratio
-          />
+
         </div>
       </div>
     </DashboardLayout>

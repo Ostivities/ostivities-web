@@ -197,7 +197,7 @@ function DashboardLayout({
             <>
              
 
-              {/* Show buttons based on isRegistered status */}
+              {/* Show buttons based on isRegistered status
               <div className="flex flex-row items-end justify-end space-x-3">
                 {isRegistered ? (
                   // If user is registered but not logged in, show only Sign In button
@@ -220,7 +220,7 @@ function DashboardLayout({
                     />
                   </>
                 )}
-              </div>
+              </div> */}
             </>
           )}
 
@@ -300,7 +300,7 @@ function DashboardLayout({
                     </div>
                   </div>
                 </div> */}
-                <Dropdown menu={{ items }} trigger={["click", "hover"]}>
+                {/* <Dropdown menu={{ items }} trigger={["click", "hover"]}>
                   <div className="flex-center gap-4 cursor-pointer">
                     <Avatar
                       size={40}
@@ -324,7 +324,7 @@ function DashboardLayout({
                       <CaretDownFilled />
                     </div>
                   </div>
-                </Dropdown>
+                </Dropdown> */}
               </Space>
             </>
           )}
