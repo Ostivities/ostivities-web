@@ -79,7 +79,7 @@ function Hero(): JSX.Element {
         <div className="flex flex-col items-center space-y-8 md:space-y-4 lg:items-start lg:w-1/2">
           <H3
             content="Celebrate, Connect and Create Memories."
-            className="text-center text-lg lg:text-3xl lg:text-left lg:w-3/4"
+            className="text-center text-xl lg:text-3xl lg:text-left lg:w-3/4"
           />
 
           <p className="font-BricolageGrotesqueMedium text-center lg:text-left lg:w-[89%] text-OWANBE_ASH text-lg">
