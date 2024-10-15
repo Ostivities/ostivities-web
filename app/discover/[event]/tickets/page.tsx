@@ -13,6 +13,7 @@ import "@/app/globals.css";
 import "@/app/scroll.css";
 import ReadMoreHTML from "@/app/components/ReadMoreHTML";
 import { TICKET_ENTITY } from "@/app/utils/enums";
+import { Skeleton } from "antd";
 
 const TicketsSelection = () => {
   const router = useRouter();
@@ -161,6 +162,7 @@ const handleDecrement = (ticketId: string) => {
   }
 };
 
+const isPending = getTickets?.isLoading;
 
   return (
     <DashboardLayout title={title} isLoggedIn>
@@ -209,11 +211,27 @@ const handleDecrement = (ticketId: string) => {
           {/* Single Ticket Section */}
           <div className="mb-4">
             <button
-              className="bg-OWANBE_PRY text-white px-3 py-1 rounded-md text-sm font-BricolageGrotesqueMedium"
+              className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
               style={{ borderRadius: "20px", fontSize: "12px" }}
             >
               Single Ticket
             </button>
+            
+            {isPending ? (
+        <>
+          {Array(2)
+            .fill(null)
+            .map((_, index) => (
+              <Skeleton.Button
+                key={index}
+                active
+                shape="round"
+                style={{ height: 160, width:600, margin: "6px", maxWidth: '100%' }}
+              />
+            ))}
+        </>
+      ) : (
+
             <div>
               {ticketData
                 ?.filter(
@@ -223,7 +241,7 @@ const handleDecrement = (ticketId: string) => {
                 .map((ticket: ITicketDetails, index: any) => (
                   <div
                     key={index}
-                    className="card-shadow flex justify-between items-start"
+                    className="card-shadow flex justify-between items-start mb-6"
                   >
                     <div>
                       <h2
@@ -302,17 +320,34 @@ const handleDecrement = (ticketId: string) => {
                   </div>
                 ))}
             </div>
+            )}
           </div>
 
           {/* Collective Ticket Section */}
           <div className="mb-4">
             <button
-              className="bg-OWANBE_PRY text-white px-3 py-1 rounded-md text-sm font-BricolageGrotesqueMedium"
+              className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
               style={{ borderRadius: "20px", fontSize: "12px" }}
             >
               Collective Ticket
             </button>
-            <div>
+
+            {isPending ? (
+              <>
+                {Array(1)
+                  .fill(null)
+                  .map((_, index) => (
+                    <Skeleton.Button
+                      key={index}
+                      active
+                      shape="round"
+                      style={{ height: 160, width: 600, margin: "6px", maxWidth: "100%" }}
+                    />
+                  ))}
+              </>
+            ) : (
+              <div>
+              
               {ticketData
                 ?.filter(
                   (ticket: ITicketDetails) =>
@@ -321,7 +356,7 @@ const handleDecrement = (ticketId: string) => {
                 .map((ticket: ITicketDetails, index: any) => (
                   <div
                     key={index}
-                    className="card-shadow flex justify-between items-start"
+                    className="card-shadow flex justify-between items-start mb-6"
                   >
                     <div>
                       <h2
@@ -389,6 +424,7 @@ const handleDecrement = (ticketId: string) => {
                   </div>
                 ))}
             </div>
+            )}
           </div>
         </section>
 

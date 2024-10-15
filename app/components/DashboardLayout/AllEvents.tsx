@@ -14,7 +14,7 @@ const AllEvents = () => {
 
   const isPending = getDiscoveryEvents?.isLoading;
 
-  return (
+  return ( 
     <EventSection
       title="All Events"
       titleClass="custom-title-class"
