@@ -175,7 +175,7 @@ function AboutUs(): JSX.Element {
             </h1>
             <p
               style={{
-                fontSize: "18px",
+                fontSize: "16px",
                 marginBottom: "24px",
                 maxWidth: "950px",
                 margin: "0 auto",
