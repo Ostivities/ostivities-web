@@ -13,7 +13,7 @@ function Feedback(): JSX.Element {
         <Image
           src={soon}
           alt="RefundPolicy"
-          style={{ width: "100%", height: "auto", marginTop: "60px" }}
+          style={{ width: "100%", height: "auto", marginTop: "40px" }}
         />
         
         <div className="flex flex-col space-y-8">

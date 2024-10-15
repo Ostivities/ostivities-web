@@ -9,12 +9,12 @@ function RefundPolicy(): JSX.Element {
             <Image
               src={soon}
               alt="RefundPolicy"
-              style={{ width: "100%", height: "auto", marginTop: "60px" }}
+              style={{ width: "100%", height: "auto", marginTop: "20px" }}
             />
             <div className="md:container md:mx-auto lg:container lg:mx-auto xl:container xl:mx-auto xxl:container xxl:mx-auto px-5 relative pt-6">
               <div
                 style={{
-                  marginTop: "40px",
+                  marginTop: "20px",
                   fontFamily: "BricolageGrotesqueMedium",
                   lineHeight: "1.8",
                   color: "#000",
