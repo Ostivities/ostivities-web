@@ -291,7 +291,10 @@ const handleDecrement = (ticketId: string) => {
                         className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
                         onClick={() => handleIncrement(ticket?.id)}
                         disabled={selectedTickets[ticket?.id] === ticket?.purchaseLimit}
-                        style={{ color: "#e20000", backgroundColor: "#FADEDE" }}
+                        style={{ 
+                          color: selectedTickets[ticket?.id] === ticket?.purchaseLimit ? "white" : "#e20000", 
+                          backgroundColor: selectedTickets[ticket?.id] === ticket?.purchaseLimit ? "#cccccc" : "#FADEDE" 
+                        }}
                       >
                         +
                       </button>
