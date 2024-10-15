@@ -20,7 +20,7 @@ const Heading3 = ({ content, className, styles }: ITypography) => {
 const Heading5 = ({ content, className }: ITypography) => {
   return (
     <h5
-      className={`font-BricolageGrotesqueMedium font-bold text-2xl text-OWANBE_H5 ${className}`}
+      className={`font-BricolageGrotesqueMedium font-bold text-xl text-OWANBE_H5 ${className}`}
     >
       {content}
     </h5>
