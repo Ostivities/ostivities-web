@@ -26,10 +26,10 @@ function AboutUs(): JSX.Element {
               color: "#000",
             }}
           >
-            <h1 style={{ fontSize: "32px", fontWeight: "bold" }}>
+            <h1 style={{ fontSize: "28px", fontWeight: "bold" }}>
               The Story And Vision Behind Ostivities
             </h1>
-            <p style={{ fontSize: "16px", marginBottom: "24px" }}>
+            <p style={{ fontSize: "16px", marginBottom: "24px", marginTop: "18px"  }}>
               At Ostivities, we believe in the power of events to bring people
               together, create lasting memories, and inspire change. Our mission
               is to simplify and enhance the event management experience, making
@@ -165,7 +165,8 @@ function AboutUs(): JSX.Element {
 
             <h1
               style={{
-                fontSize: "40px",
+                fontSize: "28px",
+                marginBottom: "18px",
                 fontWeight: "bold",
                 textAlign: "center",
               }}
