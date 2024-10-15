@@ -196,16 +196,14 @@ const Summary = ({
           </div>
           {continueBtn && (
             <div className="flex justify-center mt-12 mb-6 w-full">
-              <Button
-                // href={to}
-                onClick={() => { 
-                  console.log("here")
-                  router.push(`/discover/${params?.event}/contact-form`) 
-                }}
+              <a
+                // htmlType="button"
+                // style={{ zIndex: 1000 }}
+                href={`/discover/${params?.event}/contact-form`}
                 className="primary-btn hover:none w-full text-center"
               >
                 Continue
-              </Button>
+              </a>
             </div>
           )}
           {paymentBtn && (
