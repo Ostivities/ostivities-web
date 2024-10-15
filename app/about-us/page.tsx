@@ -22,7 +22,7 @@ function AboutUs(): JSX.Element {
             style={{
               marginTop: "40px",
               fontFamily: "BricolageGrotesqueMedium",
-              lineHeight: "1.8",
+              lineHeight: "1.5",
               color: "#000",
             }}
           >
