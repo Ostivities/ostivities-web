@@ -7,7 +7,7 @@ import Section from './Section';
 import H3 from '@/app/ui/atoms/H3';
 import Link from 'next/link';
 import dynamic from "next/dynamic";
-import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 // Dynamic import of react-slick
@@ -78,15 +78,15 @@ function Hero(): JSX.Element {
       <div className="flex flex-col space-y-5 pt-5 mt-3 md:pt-8 md:mt-5 lg:pt-0 lg:mt-0 lg:space-y-0 lg:flex-row lg:space-x-8 lg:items-center">
         <div className="flex flex-col items-center space-y-8 md:space-y-4 lg:items-start lg:w-1/2">
           <H3
-            content="Celebrate, Connect and Create Memories"
-            className="text-center lg:text-left lg:w-3/4"
+            content="Celebrate, Connect and Create Memories."
+            className="text-center text-lg lg:text-3xl lg:text-left lg:w-3/4"
           />
 
           <p className="font-BricolageGrotesqueMedium text-center lg:text-left lg:w-[89%] text-OWANBE_ASH text-lg">
-            Join Ostivities and make every celebration unforgettable! Connect, discover, 
+            Join Ostivities and make every celebration unforgettable! Connect, discover,
             and create lasting memories with ease. Dive into a world of vibrant events today!
           </p>
-          
+
           {/* Flex container for button and countdown */}
           <div className="flex flex-col items-center lg:flex-row lg:space-x-6 lg:items-center">
             <Link
@@ -141,10 +141,10 @@ function Hero(): JSX.Element {
 
         <br /><br /><br />
         <div className="w-full md:w-full lg:w-1/2 flex justify-center">
-          <Image src={FeatureBg} alt="hero" className="w-full max-w-lg"/>
+          <Image src={FeatureBg} alt="hero" className="w-full max-w-lg" />
         </div>
       </div>
-      
+
       <div className="hidden lg:block lg:w-full pt-8 lg:pt-0">
         <br /><br /><br />
         <Slider {...settings}>
