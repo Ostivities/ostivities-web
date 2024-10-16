@@ -84,7 +84,7 @@ function Hero(): JSX.Element {
 
           <p className="font-BricolageGrotesqueMedium text-center lg:text-left lg:w-[89%] text-OWANBE_ASH text-lg">
             Join Ostivities and make every celebration unforgettable! Connect, discover,
-            and create lasting memories with ease. Dive into a world of vibrant events today!
+            and create lasting memories with ease. Dive into a world of vibrant events management today!
           </p>
 
           {/* Flex container for button and countdown */}
