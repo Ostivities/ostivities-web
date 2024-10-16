@@ -24,7 +24,7 @@ function Footer(): JSX.Element {
           <div className="grid grid-cols-1 gap-12 md:gap-10 lg:gap-0 xl:gap-0 md:grid md:grid-cols-2 lg:grid lg:grid-cols-4 xl:grid xl:grid-cols-4 pb-3">
             {/* 1 */}
             <div className="flex flex-col space-y-4">
-              <Image src={OwanbeLogo} alt="Owanbe Logo" />
+              <Image src={OwanbeLogo} alt="Ostivities Logo" />
               <div className="flex flex-row items-center space-x-5">
                 <Image src={Mail} alt="icon" />
                 <Small

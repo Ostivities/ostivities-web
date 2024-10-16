@@ -50,7 +50,7 @@ function Header2(): JSX.Element {
             <Link href="/" className="" shallow>
               <Image
                 src={OwanbeLogo}
-                alt="Owanbe Logo"
+                alt="Ostivities Logo"
                 style={{ height: '40px' }}
                 className="w-[110px]"
               />
@@ -100,7 +100,7 @@ function Header2(): JSX.Element {
           <Link href="/" className="" shallow>
             <Image
               src={OwanbeLogo}
-              alt="Owanbe Logo"
+              alt="Ostivities Logo"
               style={{ width: '80px', height: '40px' }}
             />
           </Link>
@@ -111,14 +111,14 @@ function Header2(): JSX.Element {
           closeIcon={
             <Image
               src={OwanbeLogo}
-              alt="Owanbe Logo"
+              alt="Ostivities Logo"
               style={{ width: '80px', height: '40px' }}
             />
           }
           extra={
             <Image
               src={CloseIcon}
-              alt="Owanbe Logo"
+              alt="Ostivities Logo"
               style={{ width: '40px', height: '35px' }}
               onClick={onClose}
             />

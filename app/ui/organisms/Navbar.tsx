@@ -56,7 +56,7 @@ const Navbar = ({ setCollapsed }: { setCollapsed: () => void }) => {
         <Link href="/" passHref>
           <Image
             src={OwanbeLogo}
-            alt="Owanbe Logo"
+            alt="Ostivities Logo"
             style={{ height: "40px" }}
             className="w-[110px] cursor-pointer"
           />
@@ -64,7 +64,7 @@ const Navbar = ({ setCollapsed }: { setCollapsed: () => void }) => {
 
           <Image
             src={Hamburger}
-            alt="Owanbe Logo"
+            alt="Hamburger Menu"
             style={{ width: "40px", height: "35px", borderRadius: '10px' }}
             className="cursor-pointer"
             onClick={setCollapsed}

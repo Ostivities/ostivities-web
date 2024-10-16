@@ -238,7 +238,7 @@ function DashboardLayout({
           <div className="demo-logo flex flex-row items-center space-x-12">
             <Image
               src={OwanbeLogo}
-              alt="Owanbe Logo"
+              alt="Ostivities Logo"
               style={{ height: "40px" }}
               className="w-[110px] cursor-pointer"
               onClick={() => {
@@ -416,7 +416,7 @@ function DashboardLayout({
           >
             <Image
               src={Hamburger}
-              alt="Owanbe Logo"
+              alt="Hamburger Menu"
               style={{
                 width: "40px",
                 height: "35px",
