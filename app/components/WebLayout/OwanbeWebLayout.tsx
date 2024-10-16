@@ -2,7 +2,7 @@ import RootLayout from "@/app/layout";
 import Script from 'next/script'
 import React from "react";
 import Footer from "../Footer/Footer";
-import Header from "../Headerprelaunch/Headerprelaunch";
+import Header from "../Header/Header";
 import ScrollToTopButton from "@/app/ScrollToTopButton";
 
 function OwanbeWebLayout({

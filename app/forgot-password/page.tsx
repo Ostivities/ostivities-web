@@ -14,11 +14,12 @@ function ForgotPassword() {
         />
         <div className="md:w-4/5 md:mx-auto flex flex-col space-y-8">
         <Space direction="vertical" size={'small'} className="w-5/6">
-          <Heading3 content={'Forgot Password'} className="" />
+          <Heading5 content={'Forgot Password?'} className="" />
           <Paragraph
-            content="Please provide the email address associated with your account, and we will send you instructions on how to reset your password."
-            className=""
-          />
+  content="Please provide the email address associated with your account, and we will send you instructions on how to reset your password."
+  className="text-sm" // Replace with the desired class for font size
+/>
+
         </Space>
         <ForgotPasswordForm />
         </div>
