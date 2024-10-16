@@ -4,13 +4,16 @@ import { MenuOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Space, Table } from "antd";
 import { MenuItemType } from "antd/es/menu/interface";
 import { ColumnsType } from "antd/es/table";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
 import { useGetEventDiscount } from "@/app/hooks/discount/discount.hook"; 
 import { useRouter, useParams } from "next/navigation";
 import DeleteDiscount from "../OstivitiesModal/DeleteDiscount";
 import { Heading5, Label, Paragraph } from "../typography/Typography";
 import { USAGE_LIMIT } from "@/app/utils/enums";
+import { useQueryClient } from "@tanstack/react-query"
+import { GET_EVENT_DISCOUNT } from "@/app/utils/constants";
+
 
 const DiscountRecord = (): JSX.Element => {
   const [searchText, setSearchText] = useState("");
@@ -18,12 +21,20 @@ const DiscountRecord = (): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [isShown, setIsShown] = useState(false);
+  const queryClient = useQueryClient()
   const [actionType, setActionType] = useState<"delete" | "warning">();
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const { getEventDiscount } = useGetEventDiscount(params?.id);
   console.log(selectedRowKeys, "selectedRowKeys");
   const eventDiscountDetails = getEventDiscount?.data?.data?.data;
+
+  useEffect(() => {
+    if (params?.id) {
+      queryClient.invalidateQueries({ queryKey: [GET_EVENT_DISCOUNT, params.id] });
+    }
+  }, [params?.id]);
+
   const GuestItems: MenuItemType[] = [
     {
       label: (
