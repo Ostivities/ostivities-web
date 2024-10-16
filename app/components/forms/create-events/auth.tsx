@@ -95,7 +95,7 @@ const useFetch = () => {
 
       // Regex pattern for dynamic private paths
       const dynamicPrivatePaths = [
-        /^\/discover\/[a-zA-Z0-9-_]+(\/(manage|edit|delete))?$/, // Matches paths like `/discover/event_name/manage`, `/discover/event_name/edit`, or `/discover/event_name/delete`
+        /^\/discover\/create-events\/[a-zA-Z0-9-_]+(\/(manage|edit|delete))?$/, // Matches paths like `/discover/event_name/manage`, `/discover/event_name/edit`, or `/discover/event_name/delete`
       ];
 
       // Function to check if the current path is private

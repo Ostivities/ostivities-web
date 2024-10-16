@@ -13,7 +13,6 @@ import React, { useEffect, useState } from "react";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { useCookies } from "react-cookie";
-import useFetch from "@/app/components/forms/create-events/auth";
 import {
   FacebookShareButton,
   TwitterShareButton,

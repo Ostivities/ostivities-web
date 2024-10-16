@@ -23,6 +23,7 @@ interface SummaryProps {
     subTotal: number;
   }[];
   eventName?: string;
+  onClick?: () => void;
 }
 
 const Summary = ({
@@ -31,6 +32,7 @@ const Summary = ({
   paymentBtn,
   ticketDetails,
   eventName,
+  onClick,
 }: SummaryProps) => {
   const [showInput, setShowInput] = useState(false);
   const [discountApplied, setDiscountApplied] = useState(false);
@@ -59,6 +61,9 @@ const Summary = ({
     setDiscountApplied(false);
     setShowInput(false); // Disable input after clearing
   };
+  const handleClick = () => {
+    onClick && onClick()
+  }
 
   // useEffect(() => {
   //   if (ticketDetails) {
@@ -195,15 +200,18 @@ const Summary = ({
             {/* Adjust this based on your calculation */}
           </div>
           {continueBtn && (
-            <div className="flex justify-center mt-12 mb-6 w-full">
-              <a
+            <div  className="flex justify-center mt-12 mb-6 w-full">
+              <Button
                 // htmlType="button"
                 // style={{ zIndex: 1000 }}
-                href={`/discover/${params?.event}/contact-form`}
+                onClick={() => {
+                  handleClick()
+                }}
+                // href={`/discover/${params?.event}/contact-form`}
                 className="primary-btn hover:none w-full text-center"
               >
                 Continue
-              </a>
+              </Button>
             </div>
           )}
           {paymentBtn && (
