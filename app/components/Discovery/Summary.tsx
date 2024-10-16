@@ -79,7 +79,7 @@ const Summary = ({
 
   return (
     <section className="flex-1">
-      <Heading5 className="text-3xl text-center" content={"Summary"} />
+      <Heading5 className="text-4xl text-center" content={"Summary"} />
       <section className="mt-14 px-20 h-4/5 border-l border-[#525252]">
         <div>
           <h3 className="text-OWANBE_PRY text-lg font-BricolageGrotesqueRegular">

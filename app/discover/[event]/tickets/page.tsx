@@ -393,7 +393,7 @@ const TicketsSelection = () => {
                       className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
                       style={{ borderRadius: "20px", fontSize: "12px" }}
                     >
-                      Single Ticket
+                      Collective Ticket
                     </button>
                   )}
 

@@ -54,7 +54,7 @@ const ContactForm = () => {
   };
 
   return (
-    <DashboardLayout title={title} isLoggedIn>
+    // <DashboardLayout title={title} isLoggedIn>
       <section className="flex gap-12">
         {/* Scrollable content container */}
         <section className="flex-1 pr-1 scrollable-content">
@@ -264,7 +264,7 @@ const ContactForm = () => {
           </div>
         </section>
       </section>
-    </DashboardLayout>
+    // </DashboardLayout>
   );
 };
 
