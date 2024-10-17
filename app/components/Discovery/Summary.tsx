@@ -17,6 +17,7 @@ interface SummaryProps {
   paymentBtn?: boolean;
   ticketDetails?: {
     ticketName: string;
+    ticketId: string;
     ticketPrice: number;
     ticketFee: number;
     ticketNumber: number;
@@ -203,12 +204,20 @@ const Summary = ({
             <div  className="flex justify-center mt-12 mb-6 w-full">
               <Button
                 // htmlType="button"
-                // style={{ zIndex: 1000 }}
                 onClick={() => {
                   handleClick()
                 }}
                 // href={`/discover/${params?.event}/contact-form`}
                 className="primary-btn hover:none w-full text-center"
+                style={{
+                  borderRadius: "25px",
+                  fontFamily: "BricolageGrotesqueMedium",
+                  backgroundColor: "#e20000", // Gray for disabled, red for active
+                  color: "white",
+                  height: "50px", // Adjust height as needed
+                  fontSize: "16px", // Increase text size
+                  border: "none", // Remove border if needed
+                }}
               >
                 Continue
               </Button>

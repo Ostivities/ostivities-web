@@ -21,7 +21,18 @@ interface Inputs {
   additionalField3: string;
 }
 
-const ContactForm = () => {
+interface InfoNeeded{
+  ticketDetails?: {
+    ticketName: string;
+    ticketId: string;
+    ticketPrice: number;
+    ticketFee: number;
+    ticketNumber: number;
+    subTotal: number;
+  }[];
+}
+
+const ContactForm = (ticketDetails: InfoNeeded) => {
   const router = useRouter();
   const title = (
     <div className="flex-center gap-2">
@@ -36,6 +47,7 @@ const ContactForm = () => {
       <h1 style={{ fontSize: '24px' }}>Contact Information</h1>
     </div>
   );
+  console.log(ticketDetails, "ticketDetails from contact page")
 
   const [form] = Form.useForm();
   const [isFormValid, setIsFormValid] = useState(false);

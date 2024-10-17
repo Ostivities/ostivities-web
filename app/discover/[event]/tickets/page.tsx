@@ -36,10 +36,16 @@ const TicketsSelection = () => {
         alt=""
         height={25}
         width={25}
-        onClick={() => router.back()}
+        onClick={() =>{
+          if(currentPage === "tickets") {
+            router.back()
+          }else if(currentPage === "contactform") {
+            setCurrentPage("tickets")
+          }
+        }}
         className="cursor-pointer"
       />
-      <h1 style={{ fontSize: "24px" }}>Choose your tickets</h1>
+      <h1 style={{ fontSize: "24px" }}>{currentPage === "tickets" ? "Choose your tickets" : "Contact Information"} </h1>
     </div>
   );
 
@@ -57,6 +63,7 @@ const TicketsSelection = () => {
       ticketPrice: number;
       ticketFee: number;
       ticketNumber: number;
+      ticketId: string;
       subTotal: number;
     }[]
   >([]);
@@ -124,6 +131,7 @@ const TicketsSelection = () => {
             ticketFee: ticket?.ticketPrice || 0,
             ticketNumber: 1,
             subTotal: price + (ticket?.ticketPrice || 0),
+            ticketId: ticket?.id
           });
         }
 
@@ -387,7 +395,7 @@ const TicketsSelection = () => {
                 <div>
                   {ticketData?.some(
                     (ticket: ITicketDetails) =>
-                      ticket?.ticketEntity === TICKET_ENTITY.SINGLE
+                      ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE
                   ) && (
                     <button
                       className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
@@ -488,7 +496,7 @@ const TicketsSelection = () => {
             </div>
           </section>
         ) : (
-          <ContactForm />
+          <ContactForm ticketDetails={ticketDetails} />
         )}
         {/* Summary Section with Correct Props */}
         <Summary
