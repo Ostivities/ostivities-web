@@ -6,6 +6,7 @@ import { INavLinks } from "@/app/utils/interface";
 import CloseIcon from "@/public/close.svg";
 import Hamburger from "@/public/hamburger.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
+import blank from "@/public/blank.svg";
 import { ConfigProvider, Drawer } from "antd";
 import Image from "next/image";
 import Link from "next/link";
@@ -60,7 +61,7 @@ function Header(): JSX.Element {
                 src={OwanbeLogo}
                 alt="Ostivities Logo"
                 style={{ height: "40px" }}
-                className="w-[110px]"
+                className="w-[140px]"
               />
             </Link>
           </div>
@@ -115,12 +116,12 @@ function Header(): JSX.Element {
         </nav>
 
         {/* SM AND MD SCREENS */}
-        <div className="flex flex-row items-center justify-between px-5 py-3 lg:hidden">
+        <div className="flex flex-row items-center justify-between px-2 py-3 lg:hidden">
           <Link href="/" className="" shallow>
             <Image
               src={OwanbeLogo}
               alt="Ostivities Logo"
-              style={{ width: "80px", height: "40px" }}
+              style={{ width: "130px", height: "50px" }}
             />
           </Link>
 
@@ -132,13 +133,14 @@ function Header(): JSX.Element {
           />
         </div>
         <Drawer
-          closeIcon={
-            <Image
-              src={OwanbeLogo}
-              alt="Ostivities Logo"
-              style={{ width: "80px", height: "40px" }}
-            />
-          }
+        closeIcon={
+          <Image
+            src={blank}
+            alt="Owanbe Logo"
+            style={{ width: "130px", height: "50px" }}
+          />
+        }
+         
           extra={
             <Image
               src={CloseIcon}
