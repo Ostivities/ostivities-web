@@ -3,7 +3,7 @@
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import Summary from "@/app/components/Discovery/Summary";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { Form, Input, Select, Row, Col } from "antd";
 import {
   AwaitedReactNode,
@@ -18,6 +18,8 @@ import "@/app/globals.css";
 import "@/app/scroll.css";
 import { Heading5 } from "@/app/components/typography/Typography";
 import { TICKET_ENTITY } from "@/app/utils/enums";
+import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
+import { dateFormat, timeFormat } from "@/app/utils/helper";
 
 interface Inputs {
   firstName: string;
@@ -63,6 +65,10 @@ interface InfoNeeded {
 
 const ContactForm = (ticketDetails: InfoNeeded) => {
   const router = useRouter();
+  const params = useParams<{ event: string }>();
+  const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
+  const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
+
   const title = (
     <div className="flex-center gap-2">
       <Image
@@ -98,7 +104,7 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
     // <DashboardLayout title={title} isLoggedIn>
     <section className="flex gap-12">
       {/* Scrollable content container */}
-      <section className="flex-1 pr-1 scrollable-content">
+      <section className="flex-1 pr-1 pl-3 pb-4 scrollable-content">
         <div className="flex-center justify-between">
           <div className="flex-center gap-3">
             <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
@@ -108,7 +114,7 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
               <h3 className="text-sm" style={{ fontWeight: 600 }}>
                 Date
               </h3>
-              <span>14 December, 2023</span>
+              <span>{dateFormat(eventDetails?.startDate)}</span>
             </div>
           </div>
           <div className="flex-center gap-3">
@@ -119,12 +125,15 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
               <h3 className="text-sm" style={{ fontWeight: 600 }}>
                 Time
               </h3>
-              <span>5:00PM - 10:00PM WAT</span>
+              <span>
+                {timeFormat(eventDetails?.startDate)} -{" "}
+                {timeFormat(eventDetails?.endDate)} {eventDetails?.timeZone}
+              </span>
             </div>
           </div>
         </div>
         <div className="pr-full mt-16">
-          <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueMedium my-4 custom-font-size">
+          <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueMedium my-8 custom-font-size">
             Please fill out the form below with your information so we can send
             you your ticket.
           </h3>
@@ -223,11 +232,11 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                       rules={
                         infoDetails?.is_compulsory
                           ? [
-                              {
-                                required: true,
-                                message: "Please provide answers",
-                              },
-                            ]
+                            {
+                              required: true,
+                              message: "Please provide answers",
+                            },
+                          ]
                           : []
                       }
                     >

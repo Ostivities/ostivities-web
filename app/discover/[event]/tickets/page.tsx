@@ -36,10 +36,10 @@ const TicketsSelection = () => {
         alt=""
         height={25}
         width={25}
-        onClick={() =>{
-          if(currentPage === "tickets") {
+        onClick={() => {
+          if (currentPage === "tickets") {
             router.back()
-          }else if(currentPage === "contactform") {
+          } else if (currentPage === "contactform") {
             setCurrentPage("tickets")
           }
         }}
@@ -67,7 +67,7 @@ const TicketsSelection = () => {
       subTotal: number;
       ticketEntity: string;
       groupSize: string;
-      additionalInformation: {question:string; is_compulsory: boolean}[]
+      additionalInformation: { question: string; is_compulsory: boolean }[]
     }[]
   >([]);
 
@@ -138,7 +138,7 @@ const TicketsSelection = () => {
             ticketEntity: ticket?.ticketEntity,
             groupSize: ticket?.groupSize,
             additionalInformation: ticket?.ticketQuestions?.map((questionDetails: { question: string; is_compulsory: boolean; }) => {
-              return {question: questionDetails?.question, is_compulsory: questionDetails?.is_compulsory}
+              return { question: questionDetails?.question, is_compulsory: questionDetails?.is_compulsory }
             })
           });
         }
@@ -270,13 +270,13 @@ const TicketsSelection = () => {
                     (ticket: ITicketDetails) =>
                       ticket?.ticketEntity === TICKET_ENTITY.SINGLE
                   ) && (
-                    <button
-                      className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
-                      style={{ borderRadius: "20px", fontSize: "12px" }}
-                    >
-                      Single Ticket
-                    </button>
-                  )}
+                      <button
+                        className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
+                        style={{ borderRadius: "20px", fontSize: "12px" }}
+                      >
+                        Single Ticket
+                      </button>
+                    )}
                   {ticketData
                     ?.filter(
                       (ticket: ITicketDetails) =>
@@ -359,12 +359,12 @@ const TicketsSelection = () => {
                             style={{
                               color:
                                 selectedTickets[ticket?.id] ===
-                                ticket?.purchaseLimit
+                                  ticket?.purchaseLimit
                                   ? "white"
                                   : "#e20000",
                               backgroundColor:
                                 selectedTickets[ticket?.id] ===
-                                ticket?.purchaseLimit
+                                  ticket?.purchaseLimit
                                   ? "#cccccc"
                                   : "#FADEDE",
                             }}
@@ -404,13 +404,13 @@ const TicketsSelection = () => {
                     (ticket: ITicketDetails) =>
                       ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE
                   ) && (
-                    <button
-                      className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
-                      style={{ borderRadius: "20px", fontSize: "12px" }}
-                    >
-                      Collective Ticket
-                    </button>
-                  )}
+                      <button
+                        className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
+                        style={{ borderRadius: "20px", fontSize: "12px" }}
+                      >
+                        Collective Ticket
+                      </button>
+                    )}
 
                   {ticketData
                     ?.filter(
@@ -483,12 +483,12 @@ const TicketsSelection = () => {
                             style={{
                               color:
                                 selectedTickets[ticket?.id] ===
-                                ticket?.purchaseLimit
+                                  ticket?.purchaseLimit
                                   ? "white"
                                   : "#e20000",
                               backgroundColor:
                                 selectedTickets[ticket?.id] ===
-                                ticket?.purchaseLimit
+                                  ticket?.purchaseLimit
                                   ? "#cccccc"
                                   : "#FADEDE",
                             }}
@@ -511,7 +511,7 @@ const TicketsSelection = () => {
           onClick={() => setCurrentPage("contactform")}
           ticketDetails={ticketDetails}
           continueBtn
-          // to={`/discover/${params?.event}/contact-form`}
+        // to={`/discover/${params?.event}/contact-form`}
         />
       </section>
     </DashboardLayout>

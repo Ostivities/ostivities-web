@@ -473,12 +473,12 @@ const TicketsSelection = () => {
               ))}
           </div> */}
         </section>
-        <Summary
+        {/* <Summary
           eventName={eventDetails?.eventName}
           ticketDetails={ticketDetails}
           continueBtn
           to={`/discover/${params?.event}/contact-form`}
-        />
+        /> */}
       </section>
     </DashboardLayout>
   );

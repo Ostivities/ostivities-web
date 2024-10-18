@@ -57,7 +57,6 @@ const Summary = ({
     }
   };
 
-  // console.log(ticketDetails, "ticketDetails")
   const handleClearDiscount = () => {
     setDiscountCode("");
     setDiscountApplied(false);
@@ -66,18 +65,6 @@ const Summary = ({
   const handleClick = () => {
     onClick && onClick();
   };
-
-  // useEffect(() => {
-  //   if (ticketDetails) {
-  //     const total = ticketDetails.reduce((acc, ticket) => {
-  //       const subtotal =
-  //         ticket?.ticketNumber * (ticket?.ticketPrice + ticket?.ticketFee);
-  //       return acc + subtotal;
-  //     }, 0);
-  //     console.log(total, "total");
-  //     setTotalTicketPrice(total);
-  //   }
-  // }, [ticketDetails]);
 
   return (
     <section className="flex-1">
@@ -116,9 +103,8 @@ const Summary = ({
                   <button
                     onClick={handleApplyDiscount}
                     disabled={!discountCode.trim()} // Disable button if discountCode is empty or only whitespace
-                    className={`py-1 px-7 rounded-full bg-OWANBE_PRY font-semibold text-white ${
-                      !discountCode.trim() && "opacity-50 cursor-not-allowed"
-                    }`}
+                    className={`py-1 px-7 rounded-full bg-OWANBE_PRY font-semibold text-white ${!discountCode.trim() && "opacity-50 cursor-not-allowed"
+                      }`}
                   >
                     Apply
                   </button>
@@ -154,32 +140,21 @@ const Summary = ({
                     );
                   })
                   .map((ticket: any, index: any) => (
-                    <>
+                    <div key={index} className="flex-center justify-between">
                       {ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE ? (
                         // Render something different when ticketEntity is "collective"
-                        <div
-                          key={index}
-                          className="flex-center justify-between"
-                        >
-                          <div>
-                            Group of {ticket?.groupSize} -{" "}
-                            {ticket?.ticketName} x {ticket?.ticketNumber}
-                          </div>
-                          <div>₦{ticket?.ticketPrice?.toLocaleString()}</div>
+                        <div>
+                          Group of {ticket?.groupSize} -{" "}
+                          {ticket?.ticketName} x {ticket?.ticketNumber}
                         </div>
                       ) : (
                         // Default rendering for non-collective ticketEntity
-                        <div
-                          key={index}
-                          className="flex-center justify-between"
-                        >
-                          <div>
-                            {ticket?.ticketName} x {ticket?.ticketNumber}
-                          </div>
-                          <div>₦{ticket?.ticketPrice?.toLocaleString()}</div>
+                        <div>
+                          {ticket?.ticketName} x {ticket?.ticketNumber}
                         </div>
                       )}
-                    </>
+                      <div>₦{ticket?.ticketPrice?.toLocaleString()}{".00 "}</div>
+                    </div>
                   ))}
                 <div className="flex-center justify-between">
                   <div>Fee</div>
@@ -187,26 +162,26 @@ const Summary = ({
                     ₦
                     {ticketDetails
                       ?.reduce((acc, ticket) => acc + ticket?.ticketFee, 0)
-                      ?.toLocaleString()}
+                      ?.toLocaleString()}{".00 "}
                   </div>
                 </div>
+                {discountApplied && (
+                  <div className="flex-center justify-between">
+                    <div>Discount</div>
+                    <div>-₦100.00</div>{" "}
+                    {/* Adjust this based on your discount logic */}
+                  </div>
+                )}
                 <div className="flex-center justify-between">
                   <div>Subtotal</div>
                   <div>
                     ₦
                     {ticketDetails
                       ?.reduce((acc, ticket) => acc + ticket?.subTotal, 0)
-                      ?.toLocaleString()}{" "}
+                      ?.toLocaleString()}{".00 "}
                   </div>
                 </div>
               </div>
-              {discountApplied && (
-                <div className="flex-center justify-between">
-                  <div>Discount</div>
-                  <div>-₦100.00</div>{" "}
-                  {/* Adjust this based on your discount logic */}
-                </div>
-              )}
             </div>
           </div>
           <div className="flex-center justify-between font-BricolageGrotesqueMedium text-2xl text-OWANBE_PRY my-6">
@@ -215,17 +190,16 @@ const Summary = ({
               ₦{" "}
               {ticketDetails
                 ?.reduce(
-                  (acc, ticket) => acc + (ticket?.subTotal + ticket?.ticketFee),
+                  (acc, ticket) => acc + ticket?.subTotal,
                   0
                 )
-                ?.toLocaleString()}
-            </div>{" "}
+                ?.toLocaleString()}{".00 "}
+            </div>
             {/* Adjust this based on your calculation */}
           </div>
           {continueBtn && (
             <div className="flex justify-center mt-12 mb-6 w-full">
               <Button
-                // htmlType="button"
                 onClick={() => {
                   handleClick();
                 }}
@@ -265,13 +239,6 @@ const Summary = ({
               </button>
             </div>
           )}
-          {isModalOpen && (
-            <PaymentSuccess
-              open={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-            />
-          )}
-
           {isModalOpen && (
             <PaymentSuccess
               open={isModalOpen}
