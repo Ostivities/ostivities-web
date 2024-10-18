@@ -86,18 +86,43 @@
 import FeatureBg from "@/public/feature.svg";
 import { ArrowRightOutlined } from '@ant-design/icons';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Section from './Section';
 import H3 from '@/app/ui/atoms/H3';
 import Link from 'next/link';
 import dynamic from "next/dynamic";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { IoChevronDown } from 'react-icons/io5'; // Importing the icon
 
 // Dynamic import of react-slick
 const Slider = dynamic(() => import("react-slick"), { ssr: false });
 
 function Hero(): JSX.Element {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  // Define the type for the ref as HTMLDivElement | null
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  // Toggle the dropdown on button click
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const settings = {
     dots: false,
     infinite: true,
@@ -173,12 +198,39 @@ function Hero(): JSX.Element {
 
           {/* Flex container for button and countdown */}
           <div className="flex flex-col items-center lg:flex-row lg:space-x-6 lg:items-center">
-            <Link
-              href=""
-              className=" bg-OWANBE_SECONDARY hover:!bg-OWANBE_PRY transition-all duration-300 rounded-full hover:!text-white text-white px-6 py-3"
+            <div
+              className="relative"
+              ref={dropdownRef} // Reference for dropdown
             >
-              <span className=" pr-1">Launching In</span>
-            </Link>
+              <button
+                onClick={toggleDropdown}
+                className="bg-OWANBE_SECONDARY hover:!bg-OWANBE_PRY transition-all duration-300 rounded-full hover:!text-white text-white px-6 py-3 flex items-center"
+              >
+                <span className="pr-1">Launching In</span>
+                <IoChevronDown className="w-5 h-5 ml-2" />
+              </button>
+
+              {/* Dropdown */}
+              {isOpen && (
+                <div
+                  className="absolute mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10"
+                  style={{
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                  }}
+                >
+                  <div className="py-1">
+                    <Link
+                      href="https://ostivities.substack.com/subscribe"
+                      target="_blank"
+                      className="block px-5 py-2 text-sm text-gray-700 "
+                    >
+                      Subscribe to our Newsletter
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Countdown Timer */}
             <div className="p-4 lg:mt-0 mt-6">
@@ -244,3 +296,4 @@ function Hero(): JSX.Element {
 }
 
 export default Hero;
+
