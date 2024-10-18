@@ -10,6 +10,7 @@ import { PlusSquareOutlined } from "@ant-design/icons";
 import { ITicketDetails } from "@/app/utils/interface";
 import { useRouter, useParams } from "next/navigation";
 import { Button } from "antd";
+import { TICKET_ENTITY } from "@/app/utils/enums";
 
 interface SummaryProps {
   continueBtn?: boolean;
@@ -41,7 +42,7 @@ const Summary = ({
   const [subTotal, setSubTotal] = useState(false);
   const [discountCode, setDiscountCode] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const params = useParams<{ event: string; }>();
+  const params = useParams<{ event: string }>();
   const router = useRouter();
   console.log(to, "to");
 
@@ -63,8 +64,8 @@ const Summary = ({
     setShowInput(false); // Disable input after clearing
   };
   const handleClick = () => {
-    onClick && onClick()
-  }
+    onClick && onClick();
+  };
 
   // useEffect(() => {
   //   if (ticketDetails) {
@@ -154,12 +155,30 @@ const Summary = ({
                   })
                   .map((ticket: any, index: any) => (
                     <>
-                      <div className="flex-center justify-between">
-                        <div key={index}>
-                          {ticket?.ticketName} x {ticket?.ticketNumber}
+                      {ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE ? (
+                        // Render something different when ticketEntity is "collective"
+                        <div
+                          key={index}
+                          className="flex-center justify-between"
+                        >
+                          <div>
+                            Group of {ticket?.groupSize} -{" "}
+                            {ticket?.ticketName} x {ticket?.ticketNumber}
+                          </div>
+                          <div>₦{ticket?.ticketPrice?.toLocaleString()}</div>
                         </div>
-                        <div>₦{ticket?.ticketPrice?.toLocaleString()}</div>
-                      </div>
+                      ) : (
+                        // Default rendering for non-collective ticketEntity
+                        <div
+                          key={index}
+                          className="flex-center justify-between"
+                        >
+                          <div>
+                            {ticket?.ticketName} x {ticket?.ticketNumber}
+                          </div>
+                          <div>₦{ticket?.ticketPrice?.toLocaleString()}</div>
+                        </div>
+                      )}
                     </>
                   ))}
                 <div className="flex-center justify-between">
@@ -195,29 +214,42 @@ const Summary = ({
             <div>
               ₦{" "}
               {ticketDetails
-                ?.reduce((acc, ticket) => acc + (ticket?.subTotal + ticket?.ticketFee ), 0)
+                ?.reduce(
+                  (acc, ticket) => acc + (ticket?.subTotal + ticket?.ticketFee),
+                  0
+                )
                 ?.toLocaleString()}
             </div>{" "}
             {/* Adjust this based on your calculation */}
           </div>
           {continueBtn && (
-            <div  className="flex justify-center mt-12 mb-6 w-full">
+            <div className="flex justify-center mt-12 mb-6 w-full">
               <Button
                 // htmlType="button"
                 onClick={() => {
-                  handleClick()
+                  handleClick();
                 }}
-                // href={`/discover/${params?.event}/contact-form`}
                 className="primary-btn hover:none w-full text-center"
                 style={{
                   borderRadius: "25px",
                   fontFamily: "BricolageGrotesqueMedium",
-                  backgroundColor: "#e20000", // Gray for disabled, red for active
-                  color: "white",
+                  backgroundColor:
+                    ticketDetails && ticketDetails?.length === 0
+                      ? "#cccccc"
+                      : "#e20000", // Gray for disabled, red for active
+                  color:
+                    ticketDetails && ticketDetails?.length === 0
+                      ? "#666666"
+                      : "white",
                   height: "50px", // Adjust height as needed
                   fontSize: "16px", // Increase text size
                   border: "none", // Remove border if needed
                 }}
+                title={
+                  ticketDetails && ticketDetails?.length === 0
+                    ? "Add Ticket"
+                    : "Continue"
+                }
               >
                 Continue
               </Button>

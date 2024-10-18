@@ -1,14 +1,23 @@
-'use client';
+"use client";
 
-import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
-import Summary from '@/app/components/Discovery/Summary';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { Form, Input, Select, Row, Col } from 'antd';
-import { useState } from 'react';
+import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
+import Summary from "@/app/components/Discovery/Summary";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Form, Input, Select, Row, Col } from "antd";
+import {
+  AwaitedReactNode,
+  JSXElementConstructor,
+  Key,
+  ReactElement,
+  ReactNode,
+  ReactPortal,
+  useState,
+} from "react";
 import "@/app/globals.css";
 import "@/app/scroll.css";
-import { Heading5 } from '@/app/components/typography/Typography';
+import { Heading5 } from "@/app/components/typography/Typography";
+import { TICKET_ENTITY } from "@/app/utils/enums";
 
 interface Inputs {
   firstName: string;
@@ -21,7 +30,7 @@ interface Inputs {
   additionalField3: string;
 }
 
-interface InfoNeeded{
+interface InfoNeeded {
   ticketDetails?: {
     ticketName: string;
     ticketId: string;
@@ -29,8 +38,28 @@ interface InfoNeeded{
     ticketFee: number;
     ticketNumber: number;
     subTotal: number;
+    ticketEntity: string;
+    additionalInformation?: {
+      question: string;
+      is_compulsory: boolean;
+    }[];
   }[];
 }
+
+// interface InfoNeeded {
+//   ticketName: string;
+//   ticketId: string;
+//   ticketPrice: number;
+//   ticketFee: number;
+//   ticketNumber: number;
+//   subTotal: number;
+//   ticketEntity: string;
+//   additionalInformation?: {
+//     question: string;
+//     is_compulsory: boolean;
+//   }[];
+// }
+// [];
 
 const ContactForm = (ticketDetails: InfoNeeded) => {
   const router = useRouter();
@@ -44,10 +73,10 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
         onClick={() => router.back()}
         className="cursor-pointer"
       />
-      <h1 style={{ fontSize: '24px' }}>Contact Information</h1>
+      <h1 style={{ fontSize: "24px" }}>Contact Information</h1>
     </div>
   );
-  console.log(ticketDetails, "ticketDetails from contact page")
+  console.log(ticketDetails, "ticketDetails from contact page");
 
   const [form] = Form.useForm();
   const [isFormValid, setIsFormValid] = useState(false);
@@ -67,149 +96,254 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
 
   return (
     // <DashboardLayout title={title} isLoggedIn>
-      <section className="flex gap-12">
-        {/* Scrollable content container */}
-        <section className="flex-1 pr-1 scrollable-content">
-          <div className="flex-center justify-between">
-            <div className="flex-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
-                <Image
-                  src="/icons/calendar.svg"
-                  alt=""
-                  height={25}
-                  width={25}
-                />
-              </div>
-              <div>
-                <h3 className="text-sm" style={{ fontWeight: 600 }}>Date</h3> 
-                <span>14 December, 2023</span>
-              </div>
+    <section className="flex gap-12">
+      {/* Scrollable content container */}
+      <section className="flex-1 pr-1 scrollable-content">
+        <div className="flex-center justify-between">
+          <div className="flex-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
+              <Image src="/icons/calendar.svg" alt="" height={25} width={25} />
             </div>
-            <div className="flex-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
-                <Image src="/icons/time.svg" alt="" height={25} width={25} />
-              </div>
-              <div>
-                <h3 className="text-sm" style={{ fontWeight: 600 }}>Time</h3>
-                <span>5:00PM - 10:00PM WAT</span>
-              </div>
+            <div>
+              <h3 className="text-sm" style={{ fontWeight: 600 }}>
+                Date
+              </h3>
+              <span>14 December, 2023</span>
             </div>
           </div>
-          <div className="pr-full mt-16">
-            <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueMedium my-4 custom-font-size">
-              Please fill out the form below with your information so we can send you your ticket.
-            </h3> 
-            <Form
-              form={form}
-              onFinish={onFinish}
-              layout="vertical"
-              className="form-spacing"
-              onValuesChange={validateForm}
+          <div className="flex-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
+              <Image src="/icons/time.svg" alt="" height={25} width={25} />
+            </div>
+            <div>
+              <h3 className="text-sm" style={{ fontWeight: 600 }}>
+                Time
+              </h3>
+              <span>5:00PM - 10:00PM WAT</span>
+            </div>
+          </div>
+        </div>
+        <div className="pr-full mt-16">
+          <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueMedium my-4 custom-font-size">
+            Please fill out the form below with your information so we can send
+            you your ticket.
+          </h3>
+          <Form
+            form={form}
+            onFinish={onFinish}
+            layout="vertical"
+            className="form-spacing"
+            onValuesChange={validateForm}
+          >
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  label="First Name"
+                  name="firstName"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please provide your first name",
+                    },
+                  ]}
+                >
+                  <Input placeholder="Enter First Name" />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label="Last Name"
+                  name="lastName"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please provide your last name",
+                    },
+                  ]}
+                >
+                  <Input placeholder="Enter Last Name" />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Form.Item
+              label="Email Address"
+              name="email"
+              rules={[{ required: true, message: "Please provide your email" }]}
             >
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item
-                    label="First Name"
-                    name="firstName"
-                    rules={[{ required: true, message: 'Please provide your first name' }]}
-                  >
-                    <Input placeholder="Enter First Name" />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item
-                    label="Last Name"
-                    name="lastName"
-                    rules={[{ required: true, message: 'Please provide your last name' }]}
-                  >
-                    <Input placeholder="Enter Last Name" />
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Form.Item
-                label="Email Address"
-                name="email"
-                rules={[{ required: true, message: 'Please provide your email' }]}
-              >
-                <Input type="email" placeholder="Enter Email Address" />
-              </Form.Item>
-              <Form.Item
-                label="Confirm Email"
-                name="confirmEmail"
-                rules={[{ required: true, message: 'Please confirm your email' }]}
-              >
-                <Input type="email" placeholder="Confirm Email Address" />
-              </Form.Item>
-              <Form.Item 
-                label="Phone Number"
-                name="phoneNumber"
-                rules={[{ required: true, message: 'Please provide your phone number' }]}
-              >
-                <Input
-                  addonBefore={
-                    <Select defaultValue="234">
-                      {Array.from({ length: 1 }, (_, index) => (
-                        <Select.Option key={index} value={`23${index + 4}`}>
-                          +23{index + 4}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  }
-                  placeholder="Enter Phone Number"
-                />
-              </Form.Item>
+              <Input type="email" placeholder="Enter Email Address" />
+            </Form.Item>
+            <Form.Item
+              label="Confirm Email"
+              name="confirmEmail"
+              rules={[{ required: true, message: "Please confirm your email" }]}
+            >
+              <Input type="email" placeholder="Confirm Email Address" />
+            </Form.Item>
+            <Form.Item
+              label="Phone Number"
+              name="phoneNumber"
+              rules={[
+                { required: true, message: "Please provide your phone number" },
+              ]}
+            >
+              <Input
+                addonBefore={
+                  <Select defaultValue="234">
+                    {Array.from({ length: 1 }, (_, index) => (
+                      <Select.Option key={index} value={`23${index + 4}`}>
+                        +23{index + 4}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                }
+                placeholder="Enter Phone Number"
+              />
+            </Form.Item>
+            {ticketDetails?.ticketDetails &&
+              ticketDetails?.ticketDetails?.length > 0 && (
+                <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-4 custom-font-size">
+                  Additional Information
+                </h3>
+              )}
 
-             
-              <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-4 custom-font-size">
-              Additional Information.
-              </h3> 
-              <Form.Item
+            {ticketDetails?.ticketDetails?.map((ticketDetail, ticketIndex) => {
+              return ticketDetail?.additionalInformation?.map(
+                (
+                  infoDetails: {
+                    question: string | number | ReactNode;
+                    is_compulsory: boolean;
+                  },
+                  infoIndex: Key | null | undefined
+                ) => {
+                  return (
+                    <Form.Item
+                      key={`${ticketIndex}-${infoIndex}`} // Unique key combining ticketIndex and infoIndex
+                      label={infoDetails?.question}
+                      name={`additionalField${ticketIndex}-${infoIndex}`} // Unique name to avoid conflicts
+                      rules={
+                        infoDetails?.is_compulsory
+                          ? [
+                              {
+                                required: true,
+                                message: "Please provide answers",
+                              },
+                            ]
+                          : []
+                      }
+                    >
+                      <Input type="text" placeholder="Enter your answer" />{" "}
+                      {/* Use type="text" instead of type="name" */}
+                    </Form.Item>
+                  );
+                }
+              );
+            })}
+
+            {/* <Form.Item
                   label="Information 1"
                   name="name"
                   rules={[{ required: true, message: 'Please provide answers' }]}
                 >
                   <Input type="name" placeholder="Enter" />
-                </Form.Item>
-                <Form.Item
-                  label="Information 2"
-                  name="name"
-                  rules={[{ required: true, message: 'Please provide answers' }]}
-                >
-                  <Input type="name" placeholder="Enter" />
-                </Form.Item>
+            </Form.Item> */}
+            {/* <Form.Item
+              label="Information 2"
+              name="name"
+              rules={[{ required: true, message: "Please provide answers" }]}
+            >
+              <Input type="name" placeholder="Enter" />
+            </Form.Item> */}
 
-              <br/>
-              <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size">
+            <br />
+
+            {ticketDetails?.ticketDetails?.map((ticketDetail, ticketIndex) => {
+              return (
+                ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE && (
+                  <>
+                    <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size">
+                      Ticket 1 - Collective of 2- Regular. Dynamic
+                    </h3>
+
+                    <Form
+                      form={form}
+                      onValuesChange={validateForm}
+                      onFinish={onFinish}
+                    >
+                      <Row gutter={16}>
+                        <Col span={12}>
+                          <Form.Item
+                            layout="vertical"
+                            className="form-spacing"
+                            label="Attendee First Name"
+                            name="AttendeefirstName"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please provide attendee first name",
+                              },
+                            ]}
+                          >
+                            <Input placeholder="Enter Attendee First Name" />
+                          </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                          <Form.Item
+                            label="Attendee Last Name"
+                            name="AttendeelastName"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please provide attendee last name",
+                              },
+                            ]}
+                          >
+                            <Input placeholder="Enter Attendee Last Name" />
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                    </Form>
+                  </>
+                )
+              );
+            })}
+
+            <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size">
               Ticket 1 - Collective of 2- Regular.
-              </h3> 
-              <Form
-                form={form}
-                onFinish={onFinish}
-                layout="vertical"
-                className="form-spacing"
-                onValuesChange={validateForm}
-              >
-                <Row gutter={16}>
-                  <Col span={12}>
-                    <Form.Item
-                      label="Attendee First Name"
-                      name="AttendeefirstName"
-                      rules={[{ required: true, message: 'Please provide attendee first name' }]}
-                    >
-                      <Input placeholder="Enter Attendee First Name" />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item
-                      label="Attendee Last Name"
-                      name="AttendeelastName"
-                      rules={[{ required: true, message: 'Please provide attendee last name' }]}
-                    >
-                      <Input placeholder="Enter Attendee Last Name" />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                {/* <Form.Item
+            </h3>
+            <Form form={form} onValuesChange={validateForm} onFinish={onFinish}>
+              <Row gutter={16}>
+                <Col span={12}>
+                  <Form.Item
+                    layout="vertical"
+                    className="form-spacing"
+                    label="Attendee First Name"
+                    name="AttendeefirstName"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please provide attendee first name",
+                      },
+                    ]}
+                  >
+                    <Input placeholder="Enter Attendee First Name" />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item
+                    label="Attendee Last Name"
+                    name="AttendeelastName"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please provide attendee last name",
+                      },
+                    ]}
+                  >
+                    <Input placeholder="Enter Attendee Last Name" />
+                  </Form.Item>
+                </Col>
+              </Row>
+              {/* <Form.Item
                   label="Attendee Email Address"
                   name="Attendeeemail"
                   rules={[{ required: true, message: 'Please provide attendee email' }]}
@@ -224,10 +358,10 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                   <Input type="email" placeholder="Confirm Attendee Email Address" />
                 </Form.Item> */}
 
-                <br/>
+              <br />
               <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size">
-              Ticket 2 - Collective of 2- Regular.
-              </h3> 
+                Ticket 2 - Collective of 2- Regular.
+              </h3>
               <Form
                 form={form}
                 onFinish={onFinish}
@@ -240,7 +374,12 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                     <Form.Item
                       label="Attendee First Name"
                       name="AttendeeFirstName"
-                      rules={[{ required: true, message: 'Please provide attendee first name' }]}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please provide attendee first name",
+                        },
+                      ]}
                     >
                       <Input placeholder="Enter Attendee First Name" />
                     </Form.Item>
@@ -249,7 +388,12 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                     <Form.Item
                       label="Attendee Last Name"
                       name="AttendeeLastName"
-                      rules={[{ required: true, message: 'Please provide attendee last name' }]}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please provide attendee last name",
+                        },
+                      ]}
                     >
                       <Input placeholder="Enter Attendee Last Name" />
                     </Form.Item>
@@ -269,13 +413,12 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                 >
                   <Input type="email" placeholder="Confirm Attendee Email Address" />
                 </Form.Item> */}
-
-              </Form>
               </Form>
             </Form>
-          </div>
-        </section>
+          </Form>
+        </div>
       </section>
+    </section>
     // </DashboardLayout>
   );
 };

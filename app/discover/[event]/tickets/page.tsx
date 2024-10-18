@@ -65,6 +65,9 @@ const TicketsSelection = () => {
       ticketNumber: number;
       ticketId: string;
       subTotal: number;
+      ticketEntity: string;
+      groupSize: string;
+      additionalInformation: {question:string; is_compulsory: boolean}[]
     }[]
   >([]);
 
@@ -131,10 +134,14 @@ const TicketsSelection = () => {
             ticketFee: ticket?.ticketPrice || 0,
             ticketNumber: 1,
             subTotal: price + (ticket?.ticketPrice || 0),
-            ticketId: ticket?.id
+            ticketId: ticket?.id,
+            ticketEntity: ticket?.ticketEntity,
+            groupSize: ticket?.groupSize,
+            additionalInformation: ticket?.ticketQuestions?.map((questionDetails: { question: string; is_compulsory: boolean; }) => {
+              return {question: questionDetails?.question, is_compulsory: questionDetails?.is_compulsory}
+            })
           });
         }
-
         return updatedDetails;
       });
 
@@ -504,7 +511,7 @@ const TicketsSelection = () => {
           onClick={() => setCurrentPage("contactform")}
           ticketDetails={ticketDetails}
           continueBtn
-          to={`/discover/${params?.event}/contact-form`}
+          // to={`/discover/${params?.event}/contact-form`}
         />
       </section>
     </DashboardLayout>
