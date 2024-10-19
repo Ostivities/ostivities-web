@@ -29,7 +29,7 @@ function CreateAccount(): JSX.Element {
   const onFinish: FormProps<IUser>["onFinish"] = async (values) => {
     if (values) {
       const response = await registerUser.mutateAsync(values);
-      console.log(response)
+      // console.log(response)
       if (response.status === 201) {
         form.resetFields();
         linkRef.current?.click();
@@ -49,12 +49,16 @@ function CreateAccount(): JSX.Element {
     const hasAlphabet = /[a-zA-Z]/.test(value);
     const hasNumber = /[0-9]/.test(value);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
-    
+
     if (hasAlphabet && hasNumber && hasSpecialChar) {
       return Promise.resolve();
     }
-  
-    return Promise.reject(new Error("Password must contain at least one alphabet, one number, and one special character"));
+
+    return Promise.reject(
+      new Error(
+        "Password must contain at least one alphabet, one number, and one special character"
+      )
+    );
   };
 
   return (
@@ -208,51 +212,53 @@ function CreateAccount(): JSX.Element {
       </Form.Item>
 
       <Row gutter={4}>
-  {/* Password Field */}
-  <Col xs={24} sm={12}style={{ marginBottom: '0.5px' }}>{/* Full width on mobile (xs), half width on small screens (sm) */}
-    <Form.Item<IUser>
-      label="Password"
-      name="password"
-      hasFeedback
-      rules={[{ required: true, validator: validatePassword }]}
-    >
-      <Input.Password
-        placeholder="Enter your password"
-        className="placeholder:font-BricolageGrotesqueRegular"
-      />
-    </Form.Item>
-  </Col>
+        {/* Password Field */}
+        <Col xs={24} sm={12} style={{ marginBottom: "0.5px" }}>
+          {/* Full width on mobile (xs), half width on small screens (sm) */}
+          <Form.Item<IUser>
+            label="Password"
+            name="password"
+            hasFeedback
+            rules={[{ required: true, validator: validatePassword }]}
+          >
+            <Input.Password
+              placeholder="Enter your password"
+              className="placeholder:font-BricolageGrotesqueRegular"
+            />
+          </Form.Item>
+        </Col>
 
-  {/* Confirm Password Field */}
-  <Col xs={24} sm={12}> {/* Full width on mobile (xs), half width on small screens (sm) */}
-    <Form.Item<IUser>
-      name="confirmPassword"
-      label="Confirm Password"
-      dependencies={["password"]}
-      hasFeedback
-      rules={[
-        {
-          required: true,
-          message: "Please confirm your password!",
-        },
-        ({ getFieldValue }) => ({
-          validator(_, value) {
-            if (!value || getFieldValue("password") === value) {
-              return Promise.resolve();
-            }
-            return Promise.reject(new Error("Passwords do not match!"));
-          },
-        }),
-      ]}
-    >
-      <Input.Password
-        placeholder="Re-enter your password"
-        className="placeholder:font-BricolageGrotesqueRegular"
-      />
-    </Form.Item>
-  </Col>
-</Row>
-
+        {/* Confirm Password Field */}
+        <Col xs={24} sm={12}>
+          {" "}
+          {/* Full width on mobile (xs), half width on small screens (sm) */}
+          <Form.Item<IUser>
+            name="confirmPassword"
+            label="Confirm Password"
+            dependencies={["password"]}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: "Please confirm your password!",
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error("Passwords do not match!"));
+                },
+              }),
+            ]}
+          >
+            <Input.Password
+              placeholder="Re-enter your password"
+              className="placeholder:font-BricolageGrotesqueRegular"
+            />
+          </Form.Item>
+        </Col>
+      </Row>
 
       <Form.Item<IUser>
         name="terms_and_condition"
