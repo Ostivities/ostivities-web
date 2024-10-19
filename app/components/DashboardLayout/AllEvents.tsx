@@ -1,20 +1,20 @@
 import { IEventDetails } from "@/app/utils/interface";
-import EventSection from "./AllEventSection";
-import InfoCard from "./OtherInfoCard";
-import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
 import { Skeleton } from "antd";
 import { useState } from "react";
+import { useGetDiscoveryEvents } from "../../hooks/event/event.hook";
+import EventSection from "./AllEventSection";
+import InfoCard from "./OtherInfoCard";
 
 const AllEvents = () => {
-  const [page, setPage] = useState(1)
-  const [pageSize, setpageSize] = useState(12)
+  const [page, setPage] = useState(1);
+  const [pageSize, setpageSize] = useState(12);
   const { getDiscoveryEvents } = useGetDiscoveryEvents(page, pageSize);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
   // console.log(discoveryEvents, "discoveryEvents");
 
   const isPending = getDiscoveryEvents?.isLoading;
 
-  return ( 
+  return (
     <EventSection
       title="All Events"
       titleClass="custom-title-class"
@@ -33,7 +33,12 @@ const AllEvents = () => {
                 key={index}
                 active
                 shape="round"
-                style={{ height: 200, width: 200, margin: "10px", maxWidth: '100%' }}
+                style={{
+                  height: 200,
+                  width: 200,
+                  margin: "10px",
+                  maxWidth: "100%",
+                }}
               />
             ))}
         </>

@@ -1,10 +1,14 @@
-import InfoCard from "./InfoCard";
-import EventSection from "./DiscoverEventSection";
-import { useGetDiscoveryEvents, useAddEventToDiscovery, usePublishEvent } from "@/app/hooks/event/event.hook";
+import { IEventDetails } from "@/app/utils/interface";
 import { Skeleton } from "antd";
 import { useEffect, useState } from "react";
-import { IEventDetails } from "@/app/utils/interface";
-import { EVENT_INFO, PUBLISH_TYPE } from "@/app/utils/enums";
+import {
+  useAddEventToDiscovery,
+  useGetDiscoveryEvents,
+  usePublishEvent,
+} from "../../hooks/event/event.hook";
+import { EVENT_INFO, PUBLISH_TYPE } from "../../utils/enums";
+import EventSection from "./DiscoverEventSection";
+import InfoCard from "./InfoCard";
 
 const DiscoverEvents = () => {
   const [searchText, setSearchText] = useState("");
@@ -20,23 +24,31 @@ const DiscoverEvents = () => {
   const allEventsDate = discoveryEvents?.map((event: IEventDetails) => {
     return {
       id: event?.id,
-      endDate: event?.endDate
+      endDate: event?.endDate,
     };
   });
-  const expiredEvents = allEventsDate?.filter((event: IEventDetails) => new Date(event?.endDate).getTime() < new Date().getTime());
-  const expiredEventsIdList = expiredEvents?.map((event: IEventDetails) => event?.id);
-  const filteredEvents = discoveryEvents?.filter((event: IEventDetails) => new Date(event.endDate).getTime() > new Date().getTime());
+  const expiredEvents = allEventsDate?.filter(
+    (event: IEventDetails) =>
+      new Date(event?.endDate).getTime() < new Date().getTime()
+  );
+  const expiredEventsIdList = expiredEvents?.map(
+    (event: IEventDetails) => event?.id
+  );
+  const filteredEvents = discoveryEvents?.filter(
+    (event: IEventDetails) =>
+      new Date(event.endDate).getTime() > new Date().getTime()
+  );
   useEffect(() => {
     const checkEventStatus = async () => {
-      const response =  await publishEvent.mutateAsync({
+      const response = await publishEvent.mutateAsync({
         ids: [...expiredEventsIdList],
-        mode: PUBLISH_TYPE.INACTIVE
-      })
-    }
-    if(expiredEventsIdList?.length > 0) {
+        mode: PUBLISH_TYPE.INACTIVE,
+      });
+    };
+    if (expiredEventsIdList?.length > 0) {
       checkEventStatus();
     }
-  },[expiredEventsIdList, publishEvent])
+  }, [expiredEventsIdList, publishEvent]);
 
   return (
     <>
@@ -51,19 +63,21 @@ const DiscoverEvents = () => {
         {isPending ? (
           // Display 5 skeleton buttons as placeholders while loading
           <>
-            {Array(5).fill(null).map((_, index) => (
-              <Skeleton.Button
-                key={index}
-                active
-                shape="round"
-                style={{
-                  height: '320px',
-                  width: '250px',
-                  margin: '10px',
-                  maxWidth: '100%',
-                }}
-              />
-            ))}
+            {Array(5)
+              .fill(null)
+              .map((_, index) => (
+                <Skeleton.Button
+                  key={index}
+                  active
+                  shape="round"
+                  style={{
+                    height: "320px",
+                    width: "250px",
+                    margin: "10px",
+                    maxWidth: "100%",
+                  }}
+                />
+              ))}
           </>
         ) : (
           // Once data is loaded, map through discoveryEvents and render InfoCard components
