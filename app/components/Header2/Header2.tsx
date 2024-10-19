@@ -123,12 +123,12 @@ function Header2(): JSX.Element {
             />
           </Link>
 
-          <Image
+          {/* <Image
             src={Hamburger}
             alt="Hamburger Menu"
             style={{ width: "40px", height: "35px" }}
             onClick={showDrawer}
-          />
+          /> */}
         </div>
         <Drawer
           closeIcon={
