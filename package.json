@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "build:digitalocean": "pnpm install --production=false && pnpm run build && rm -rf node_modules && pnpm install --production --frozen-lockfile"
+    "lint": "next lint"
   },
   "dependencies": {
     "@ant-design/cssinjs": "^1.18.0",
