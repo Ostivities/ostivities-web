@@ -25,7 +25,7 @@ const profile_pictures: any = process.env.NEXT_PUBLIC_OSTIVITIES_USER_PROFILE_PI
 const OrganizationProfile = () => {
   const [fields, setFields] = useState<any>();
   const [profileImage, setProfileImage] = useState<string>(
-    "/images/emptyimage.png"
+    "/empty.svg"
   ); // State for profile image URL
   const [uploadButton, setUploadButton] = useState<string>("Update"); // State for button text
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false); // State to track if image is uploaded
@@ -97,7 +97,7 @@ const OrganizationProfile = () => {
       title: "Are you sure you want to remove your profile picture?",
       icon: null,
       onOk() {
-        setProfileImage("/images/emptyimage.png"); // Reset profile image to default
+        setProfileImage("/empty.svg"); // Reset profile image to default
         setUploadButton("Update"); // Change button text back to "Update"
         setIsImageUploaded(false); // Set image upload state to false
         message.success("Profile picture removed successfully");
@@ -145,7 +145,7 @@ const OrganizationProfile = () => {
         {/* Flex container for profile picture and buttons */}
         <div className="relative profile-image-container">
           <Image
-            src={profile?.data?.data?.data?.image || "/images/emptyimage.png"} // Display the profile image dynamically
+            src={profile?.data?.data?.data?.image || "/empty.svg"} // Display the profile image dynamically
             alt="Profile Picture"
             width={96} // Equivalent to w-24
             height={96} // Equivalent to h-24
