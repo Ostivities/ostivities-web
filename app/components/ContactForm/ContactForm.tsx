@@ -2,9 +2,15 @@
 
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import Summary from "@/app/components/Discovery/Summary";
+import { Heading5 } from "@/app/components/typography/Typography";
+import "@/app/globals.css";
+import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
+import "@/app/scroll.css";
+import { TICKET_ENTITY } from "@/app/utils/enums";
+import { dateFormat, timeFormat } from "@/app/utils/helper";
+import { Col, Form, Input, Row, Select } from "antd";
 import Image from "next/image";
-import { useRouter, useParams } from "next/navigation";
-import { Form, Input, Select, Row, Col } from "antd";
+import { useParams, useRouter } from "next/navigation";
 import {
   AwaitedReactNode,
   JSXElementConstructor,
@@ -14,12 +20,6 @@ import {
   ReactPortal,
   useState,
 } from "react";
-import "@/app/globals.css";
-import "@/app/scroll.css";
-import { Heading5 } from "@/app/components/typography/Typography";
-import { TICKET_ENTITY } from "@/app/utils/enums";
-import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
-import { dateFormat, timeFormat } from "@/app/utils/helper";
 
 interface Inputs {
   firstName: string;
@@ -82,13 +82,14 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
       <h1 style={{ fontSize: "24px" }}>Contact Information</h1>
     </div>
   );
-  console.log(ticketDetails, "ticketDetails from contact page");
+  // console.log(ticketDetails, "ticketDetails from contact page");
 
   const [form] = Form.useForm();
   const [isFormValid, setIsFormValid] = useState(false);
 
   const onFinish = (values: Inputs) => {
-    console.log(values);
+    // console.log(values);
+    return values;
   };
 
   const validateForm = async () => {
@@ -232,11 +233,11 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                       rules={
                         infoDetails?.is_compulsory
                           ? [
-                            {
-                              required: true,
-                              message: "Please provide answers",
-                            },
-                          ]
+                              {
+                                required: true,
+                                message: "Please provide answers",
+                              },
+                            ]
                           : []
                       }
                     >

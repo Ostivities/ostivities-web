@@ -10,7 +10,7 @@ const AllEvents = () => {
   const [pageSize, setpageSize] = useState(12)
   const { getDiscoveryEvents } = useGetDiscoveryEvents(page, pageSize);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
-  console.log(discoveryEvents, "discoveryEvents");
+  // console.log(discoveryEvents, "discoveryEvents");
 
   const isPending = getDiscoveryEvents?.isLoading;
 

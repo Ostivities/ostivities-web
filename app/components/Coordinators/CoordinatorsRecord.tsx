@@ -49,7 +49,7 @@ const CoordinatorsList = () => {
 
 
   const coordinatorsPhoneNumber = getRandomNigerianPhoneNumber();
-  console.log(coordinatorsPhoneNumber);
+  // console.log(coordinatorsPhoneNumber);
 
   const handleSearch = (value: string) => {
     setSearchText(value.toLowerCase());

@@ -193,7 +193,7 @@ function DashboardLayout({
     pathname.split("/").includes("create-events");
 
   const toggleSidebar = () => {
-    console.log(collapsed);
+    // console.log(collapsed);
     setCollapsed((prevValues) => !prevValues);
   };
 

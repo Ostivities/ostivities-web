@@ -112,7 +112,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({ onSelectLocation }) => 
           .then((response) => {
             if (response.data.status === 'OK') {
               const results = response.data.predictions.map((prediction: any) => prediction.description);
-              console.log(results);
+              // console.log(results);
               setLocations(results);
             } else {
               message.error('Failed to fetch locations.');
