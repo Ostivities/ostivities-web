@@ -31,6 +31,7 @@ import useLocalStorage from "use-local-storage";
 import { useProfile } from "../../hooks/auth/auth.hook";
 import useFetch from "../forms/create-events/auth";
 import { useLogout } from "@/app/hooks/auth/auth.hook";
+import emptyImage from "@/public/empty.svg";
 
 
 const items1: MenuProps["items"] = [
@@ -214,7 +215,7 @@ function DashboardLayout({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, []); 
 
   return (
     <FormProvider>
@@ -236,12 +237,12 @@ function DashboardLayout({
           }}
         >
           <div className="demo-logo flex flex-row items-center space-x-12">
-          <Link href="/" shallow>
-            <Image
-              src={OwanbeLogo}
-              alt="Ostivities Logo"
-              style={{ height: "40px" }}
-              className="w-[110px] cursor-pointer"
+            <Link href="/" shallow>
+              <Image
+                src={OwanbeLogo}
+                alt="Ostivities Logo"
+                style={{ height: "40px" }}
+                className="w-[110px] cursor-pointer"
               />
             </Link>
           </div>
@@ -366,16 +367,17 @@ function DashboardLayout({
                 </div> */}
                 <Dropdown menu={{ items }} trigger={["click", "hover"]}>
                   <div className="flex-center gap-4 cursor-pointer">
-                    <Avatar
-                      size={40}
-                      style={{
-                        background: "#E20000",
-                        fontFamily: "BricolageGrotesqueMedium",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {avatarName}
-                    </Avatar>
+                  <Image
+  src={profile?.data?.data?.data?.image || emptyImage}  // Fallback to imported empty image
+  alt="Profile Picture"
+  width={40}  // Adjust this to match the previous avatar size if needed
+  height={40} // Adjust this to match the previous avatar size if needed
+  className="object-cover rounded-full"
+  style={{
+    cursor: "pointer",  // Keep the cursor style for interaction
+  }}
+/>
+
                     <div className="h-fit flex gap-4">
                       <div className="flex flex-col justify-start">
                         <h3 className=" text-sm text-OWANBE_TABLE_CELL">
