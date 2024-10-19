@@ -153,7 +153,17 @@ function Header(): JSX.Element {
                   key={link.link + link.name}
                   className="font-BricolageGrotesqueMedium py-3 text-center"
                 >
-                  <Link href={link.link} onClick={onClose}>
+                  <Link href={link.link} onClick={onClose}
+                  style={{
+                    color: window.innerWidth <= 768 ? '#000000' : '#000000', 
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.target as HTMLElement).style.color = '#E20000'; // Change to red on hover
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.target as HTMLElement).style.color = window.innerWidth <= 768 ? '#000000' : '#000000'; // Revert back on hover out
+                  }}
+                >
                     {link.name}
                   </Link>
                 </p>
