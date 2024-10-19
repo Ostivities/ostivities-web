@@ -155,13 +155,15 @@ function Header(): JSX.Element {
                 >
                   <Link href={link.link} onClick={onClose}
                   style={{
-                    color: window.innerWidth <= 768 ? '#000000' : '#000000', 
+                    color: typeof window !== 'undefined' && window.innerWidth <= 768 ? '#000000' : '#000000', // Check if window is defined
                   }}
                   onMouseEnter={(e) => {
                     (e.target as HTMLElement).style.color = '#E20000'; // Change to red on hover
                   }}
                   onMouseLeave={(e) => {
-                    (e.target as HTMLElement).style.color = window.innerWidth <= 768 ? '#000000' : '#000000'; // Revert back on hover out
+                    if (typeof window !== 'undefined') {
+                      (e.target as HTMLElement).style.color = window.innerWidth <= 768 ? '#000000' : '#000000'; 
+                    }
                   }}
                 >
                     {link.name}
