@@ -1,38 +1,50 @@
-"use client";
-
 import { IModal } from "@/app/utils/interface";
 import { useRouter, useParams } from "next/navigation";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
-import { Button } from "antd"; // Import only Button now
+import { Button } from "antd";
+
+interface PreviewEmailProps extends IModal {
+  messageContent: string;
+  guestName: string;
+  eventName: string;
+}
+
 
 const PreviewEmail = ({
   open,
   onCancel,
   onClose,
   onOk,
-}: IModal): JSX.Element => {
+  messageContent,
+  guestName,
+  eventName,
+}: PreviewEmailProps): JSX.Element => {
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const [cookies, setCookie, removeCookie] = useCookies(["event_id"]);
   const [htmlContent, setHtmlContent] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true); // Loading state
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchHtmlContent = async () => {
-      // Delay fetching and modal appearance by 2 seconds
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const response = await fetch("/guestmail.html");
-      const text = await response.text();
+      let text = await response.text();
+
+      text = text
+        .replace("{{message}}", messageContent)
+        .replace("{{guest_name}}", guestName)
+        .replace("{{event_name}}", eventName);
+
       setHtmlContent(text);
-      setLoading(false); // Set loading to false after content is fetched
+      setLoading(false);
     };
 
     fetchHtmlContent();
-  }, []);
+  }, [messageContent, guestName, eventName]);
 
-  // Only render the modal after loading is done
   if (loading) {
     return (
       <div className="fixed inset-0 bg-black/20 grid place-items-center">
@@ -62,39 +74,58 @@ const PreviewEmail = ({
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    onCancel(); // Close modal when clicking outside
+    onCancel();
   };
 
   return (
     <div
       className="fixed inset-0 bg-black/20 grid place-items-center"
-      onClick={handleBackdropClick} // Click outside closes modal
+      onClick={handleBackdropClick}
     >
       <div
-        onClick={(e) => e.stopPropagation()} // Prevent clicks inside the modal from closing it
-        className="bg-white rounded-2xl px-6 py-8 lg:min-w-[10rem]" // Decrease width
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white rounded-2xl px-6 py-8 lg:min-w-[10rem]"
+        style={{
+          maxHeight: '800px', // Set the maximum height for the modal
+          overflow: 'hidden', // Hide overflow for the modal
+        }}
       >
         <div className="flex justify-between items-center">
           <h2 className="font-bricolage-grotesque font-regular">Email Preview</h2>
           <Button
             onClick={onCancel}
             style={{
-              backgroundColor: "#e20000", // Background color
-              borderRadius: "25px",       // Corner radius
-              border: "none",             // Optional: remove border
-              color: "#fff",              // Text color for contrast
-              fontFamily: "'Bricolage Grotesque', sans-serif", // Set custom font
-              width: "100px",             // Adjust the width
-              height: "40px", 
-              fontSize: "16px",           // Adjust the height
+              backgroundColor: "#e20000",
+              borderRadius: "25px",
+              border: "none",
+              color: "#fff",
+              fontFamily: "'Bricolage Grotesque', sans-serif",
+              width: "100px",
+              height: "40px",
+              fontSize: "16px",
             }}
           >
             Close
           </Button>
         </div>
-        <div className="mt-8 text-center">
+
+        {/* Scrollable content with inline styles */}
+        <div
+          className="mt-8 text-aligned"
+          style={{
+            overflowY: 'auto', // Enable vertical scrolling
+            maxHeight: '600px', // Set the maximum height for content
+            scrollbarWidth: 'none', // Hide scrollbar for Firefox
+            WebkitOverflowScrolling: 'touch', // Enable momentum scrolling on iOS
+          }}
+          onScroll={(e) => {
+            // Hide scrollbar for Chrome, Safari, Edge and Opera
+            const target = e.currentTarget;
+            target.style.overflowY = target.scrollHeight > target.clientHeight ? 'scroll' : 'hidden';
+          }}
+        >
           <div
-            className="flex justify-center"
+            className="w-full text-aligned"
             dangerouslySetInnerHTML={{ __html: htmlContent }}
           />
         </div>

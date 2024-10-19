@@ -1,163 +1,692 @@
 "use client";
+
+import AvailableEvents from "@/app/components/DashboardLayout/OtherEvents";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
-import InfoCard from "@/app/components/DashboardLayout/OtherInfoCard";
+import { Heading5 } from "@/app/components/typography/Typography";
+import { Button, Dropdown, MenuProps, Space, Modal } from "antd";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useLayoutEffect, useMemo, useState } from "react";
-import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
-import { Button, Skeleton } from "antd";
+import Link from "next/link";
+import { useProfile } from "@/app/hooks/auth/auth.hook";
+import { useParams, usePathname, useRouter } from "next/navigation";
+import { IoChevronDown } from "react-icons/io5";
+import React, { useEffect, useState } from "react";
+import { dateFormat, timeFormat } from "@/app/utils/helper";
+import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
+import { useCookies } from "react-cookie";
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  LinkedinShareButton,
+  WhatsappShareButton,
+  FacebookIcon,
+  WhatsappIcon,
+  TwitterIcon,
+  LinkedinIcon,
+  XIcon,
+} from "react-share";
+import { ShareAltOutlined, CopyOutlined } from "@ant-design/icons";
+import ReadMoreHTML from "@/app/components/ReadMoreHTML";
+import start from "@/public/Startsin.svg";
+import end from "@/public/Endsin.svg";
 
-interface PropsI {
-  event: "popular" | "all" | "paid" | "free";
-}
+const ShareModalContent: React.FC<{ url: string; title: string }> = ({
+  url,
+  title,
+}) => {
+  const [copySuccess, setCopySuccess] = useState("");
 
-const Event = ({ params }: { params: { event: string } }) => {
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(url);
+    setCopySuccess("Copied!");
+    setTimeout(() => setCopySuccess(""), 2000);
+  };
+
+  return (
+    <div style={{ textAlign: "center" }}>
+      <h2
+        style={{
+          marginBottom: "20px",
+          fontWeight: 600,
+          fontFamily: "Bricolage Grotesque",
+        }}
+      >
+        Share Event
+      </h2>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-around",
+          marginBottom: "20px",
+          fontFamily: "Bricolage Grotesque",
+        }}
+      >
+        <FacebookShareButton url={url}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <FacebookIcon size={50} round />
+            <p
+              style={{
+                marginTop: "5px",
+                marginBottom: "0",
+                textAlign: "center",
+              }}
+            >
+              Facebook
+            </p>
+          </div>
+        </FacebookShareButton>
+
+        <TwitterShareButton url={url}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <XIcon size={50} round />
+            <p
+              style={{
+                marginTop: "5px",
+                marginBottom: "0",
+                textAlign: "center",
+              }}
+            >
+              Twitter
+            </p>
+          </div>
+        </TwitterShareButton>
+
+        <WhatsappShareButton url={url}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <WhatsappIcon size={50} round />
+            <p
+              style={{
+                marginTop: "5px",
+                marginBottom: "0",
+                textAlign: "center",
+              }}
+            >
+              Whatsapp
+            </p>
+          </div>
+        </WhatsappShareButton>
+
+        <LinkedinShareButton url={url}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <LinkedinIcon size={50} round />
+            <p
+              style={{
+                marginTop: "5px",
+                marginBottom: "0",
+                textAlign: "center",
+              }}
+            >
+              LinkedIn
+            </p>
+          </div>
+        </LinkedinShareButton>
+      </div>
+
+      <div style={{ borderTop: "1px solid #ddd", paddingTop: "20px" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <input
+            style={{
+              width: "80%",
+              padding: "5px",
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+            }}
+            value={url}
+            readOnly
+          />
+          <Button onClick={copyToClipboard} icon={<CopyOutlined />}></Button>
+        </div>
+        {copySuccess && (
+          <p style={{ color: "green", marginTop: "10px" }}>{copySuccess}</p>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const EventDetail = () => {
   const router = useRouter();
-  const [pageSize, setPage] = useState(1);
-  const [limit, setLimit] = useState(12);
+  const pathname = usePathname();
+  const params = useParams<{ event: string }>();
+  // console.log(params, 'params');
+  const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
+  console.log(getUserEventByUniqueKey, "getUserEventByUniqueKey");
 
-  // Mapping event types to titles and subtitles
-  const eventTitles = {
-    popular: "Popular Events",
-    all: "All Events",
-    paid: "Paid Events",
-    free: "Free Events",
+  const eventDetails = getUserEventByUniqueKey?.data?.data?.data === null ? router.push('/not-found') : getUserEventByUniqueKey?.data?.data?.data;
+  // console.log(eventDetails, "eventDetails");
+
+  const handleMenuClick: MenuProps["onClick"] = (e) => {
+    return e;
   };
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const eventSubtitles = {
-    popular: "Explore Popular Events",
-    all: "Explore All Events",
-    paid: "Explore Paid Events",
-    free: "Explore Free Events",
-  };
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
 
-  const currentTitle =
-    eventTitles[params.event as keyof typeof eventTitles] || "Events";
-  const currentSubtitle =
-    eventSubtitles[params.event as keyof typeof eventSubtitles] ||
-    "Explore Events";
+  const eventUrl = eventDetails?.eventURL;
+  const eventTitle = eventDetails?.eventName;
 
-  const { getDiscoveryEvents } = useGetDiscoveryEvents(pageSize, limit);
-  const discoveryEvents = getDiscoveryEvents?.data?.data?.data || []; // Ensure this is always an array
-  console.log(discoveryEvents.length, "Number of Discovery Events"); // Log the length
+  const userFullName =
+    (eventDetails?.user?.firstName || "") +
+    " " +
+    (eventDetails?.user?.lastName || "");
 
-  const isPending = getDiscoveryEvents?.isLoading;
-  const skeletonCount = Math.max(12, discoveryEvents.length);
+  const socialLinks = eventDetails?.socials;
+  const twitterLink = socialLinks?.find(
+    (link: any) => link?.name.toLowerCase() === "twitter"
+  );
+  const instagramLink = socialLinks?.find(
+    (link: any) => link?.name.toLowerCase() === "instagram"
+  );
+  const websiteLink = socialLinks?.find(
+    (link: any) => link?.name.toLowerCase() === "website"
+  );
+  const facebookLink = socialLinks?.find(
+    (link: any) => link?.name.toLowerCase() === "facebook"
+  );
+
+  // Countdown logic
+  const eventDate = eventDetails?.startDate;
+  const eventEndDate = eventDetails?.endDate; // End date if needed
+  const eventdates = new Date(eventDate).getTime();
+  const eventEnddates = eventEndDate ? new Date(eventEndDate).getTime() : null;
+
+  const [timeRemaining, setTimeRemaining] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  const [isEventStarted, setIsEventStarted] = useState(false);
+  const [isRegistrationClosed, setIsRegistrationClosed] = useState(false);
+
+
+  useEffect(() => {
+    if (eventDetails?.enable_registration === false) {
+      setIsRegistrationClosed(true);
+    }
+
+    const countdownInterval = setInterval(() => {
+      const now = new Date().getTime();
+      const distanceToStart = eventdates - now;
+      const distanceToEnd = eventEnddates ? eventEnddates - now : null;
+
+      // Check if the event has started
+      if (distanceToStart > 0) {
+        // Event hasn't started yet
+        setIsEventStarted(false);
+        setIsRegistrationClosed(false); // Registration is open
+
+        const days = Math.floor(distanceToStart / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (distanceToStart % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor(
+          (distanceToStart % (1000 * 60 * 60)) / (1000 * 60)
+        );
+        const seconds = Math.floor((distanceToStart % (1000 * 60)) / 1000);
+
+        setTimeRemaining({ days, hours, minutes, seconds });
+      } else if (distanceToEnd && distanceToEnd > 0) {
+        // Event has started and is ongoing
+        setIsEventStarted(true);
+        setIsRegistrationClosed(false); // Registration is still open
+
+        const days = Math.floor(distanceToEnd / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (distanceToEnd % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor(
+          (distanceToEnd % (1000 * 60 * 60)) / (1000 * 60)
+        );
+        const seconds = Math.floor((distanceToEnd % (1000 * 60)) / 1000);
+
+        setTimeRemaining({ days, hours, minutes, seconds });
+      } else if (eventDetails?.enable_registration === false) {
+        setIsRegistrationClosed(true);
+      } else {
+        // Event has ended
+        setIsEventStarted(false);
+        setIsRegistrationClosed(true); // Close registration
+        clearInterval(countdownInterval);
+      }
+      if (eventDetails?.enable_registration === false) {
+        setIsRegistrationClosed(true); // Close registration
+      } else {
+        setIsRegistrationClosed(false);
+      }
+    }, 1000);
+
+    return () => clearInterval(countdownInterval);
+  }, [eventDate, eventDetails, eventEndDate, eventEnddates, eventdates]);
 
   const title = (
     <div className="flex-center gap-2">
       <Image
         src="/icons/back-arrow.svg"
-        alt="Back"
+        alt=""
         height={25}
         width={25}
         onClick={() => router.back()}
         className="cursor-pointer"
       />
-      <h1 style={{ fontSize: "24px" }}>{currentTitle}</h1>
+
+      <h1 style={{ fontSize: "24px" }}>{eventTitle}</h1>
     </div>
   );
 
-  // Memoize uri array
-  const uri = useMemo(
-    () => ["popular", "discovery", "paid", "free", "all"],
-    []
-  );
-
-  useLayoutEffect(() => {
-    if (!uri.includes(params.event)) {
-      router.push("/Dashboard");
-    }
-  }, [params.event, router, uri]);
+  const RegistrationTypes: MenuProps["items"] = [
+    {
+      label: (
+        <Link
+          href={`/discover/${params?.event}/tickets`}
+          className="font-BricolageGrotesqueRegular font-normal text-md text-OWANBE_DARK"
+        >
+          Register as a guest
+        </Link>
+      ),
+      key: "1",
+    },
+    {
+      label: (
+        <Link
+          href={`/discover/vendorsregistration`}
+          className="font-BricolageGrotesqueRegular font-normal text-md text-OWANBE_DARK"
+        >
+          Register as a vendor
+        </Link>
+      ),
+      key: "2",
+    },
+  ];
 
   return (
     <DashboardLayout title={title} isLoggedIn>
       <section>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "60px" }}>
-          <h2
-            style={{
-              fontSize: "24px",
-              fontFamily: "Bricolage Grotesque, font-semibold",
-            }}
-          >
-            {currentSubtitle}
-          </h2>
-          <div style={{ display: "flex", gap: "10px"}}>
-            {pageSize > 1 && ( // Conditionally render Back button
-              <Button
-                onClick={() => {
-                  setPage(pageSize - 1); // Go back to the previous page
-                }}
-                style={{
-                  backgroundColor: "#fff", // Default background
-                  borderRadius: "25px",    // Corner radius
-                  border: "1px solid #ccc", // Border for default button
-                  color: "#000",           // Default text color
-                  fontFamily: "'Bricolage Grotesque', sans-serif", // Set custom font
-                  width: "100px",          // Adjust the width
-                  height: "40px",          // Adjust the height
-                  fontSize: "16px",
-                }}
-              >
-                Back
-              </Button>
-            )}
+        <div className="flex gap-10">
+          <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
+            <Image
+              src={eventDetails?.eventImage}
+              alt="Event Image"
+              fill
+              style={{ objectFit: "cover" }}
+              className=""
+            />
+            <div className="absolute inset-0 bg-image-card"></div>
+          </div>
+          <div className="py-8">
+            <Heading5 className="text-2xl" content={"About this event"} />
+            <div className="mt-14 flex flex-col gap-8">
+              <div className="flex items-start">
+                {/* Image Section */}
+                <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+                  <Image
+                    src="/icons/calendar.svg"
+                    alt=""
+                    height={25}
+                    width={25}
+                  />
+                </div>
 
-            <Button
-              onClick={() => {
-                setPage(pageSize + 1);
-              }}
-              style={{
-                backgroundColor: "#fadede", // Background color
-                borderRadius: "25px",       // Corner radius
-                border: "none",             // Optional: remove border
-                color: "#e20000",           // Text color for contrast
-                fontFamily: "'Bricolage Grotesque', sans-serif", // Set custom font
-                width: "100px",             // Adjust the width
-                height: "40px", 
-                fontSize: "16px",           // Adjust the height
-              }}
-            >
-              Next
-            </Button>
+                {/* Text Section */}
+                <div className="ml-2">
+                  <div className="text-sm" style={{ fontWeight: 600 }}>
+                    Date
+                  </div>
+                  <div
+                    style={{
+                      width: "140px",
+                      whiteSpace: "normal",
+                      wordWrap: "break-word",
+                    }}
+                  >
+                    {dateFormat(eventDetails?.startDate)} -{" "}
+                    {dateFormat(eventDetails?.endDate)}
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+                  <Image src="/icons/time.svg" alt="" height={25} width={25} />
+                </div>
+                <div>
+                  <div className="text-sm" style={{ fontWeight: 600 }}>
+                    Time
+                  </div>
+                  <div>
+                    {timeFormat(eventDetails?.startDate)} -{" "}
+                    {timeFormat(eventDetails?.endDate)} {eventDetails?.timeZone}
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+                  <Image
+                    src="/icons/location.svg"
+                    alt=""
+                    height={25}
+                    width={25}
+                  />
+                </div>
+                <div>
+                  <div className="text-sm" style={{ fontWeight: 600 }}>
+                    Location
+                  </div>
+                  <div
+                    style={{
+                      width: "190px",
+                      whiteSpace: "normal",
+                      wordWrap: "break-word",
+                    }}
+                  >
+                    <a
+                      href="https://maps.app.goo.gl/jBmgQ5EFxngj2ffS6"
+                      style={{ color: "#e20000", textDecoration: "none" }}
+                      target="_blank"
+                    >
+                      {eventDetails?.address}
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+                  <Image src="/icons/host.svg" alt="" height={25} width={25} />
+                </div>
+                <div>
+                  <div className="text-sm" style={{ fontWeight: 600 }}>
+                    Host
+                  </div>
+                  <div>
+                    <div>{userFullName}</div>
+                  </div>
+                </div>
+              </div>
+              {twitterLink?.url ||
+              instagramLink?.url ||
+              websiteLink?.url ||
+              facebookLink?.url ? (
+                <div className="flex gap-3 items-center">
+                  <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
+                    <Image
+                      src="/icons/phone.svg"
+                      alt=""
+                      height={25}
+                      width={25}
+                    />
+                  </div>
+                  <div>
+                    <div className="text-sm" style={{ fontWeight: 600 }}>
+                      Contact Us
+                    </div>
+                    <div className="flex items-center gap-4 mt-1">
+                      <div className="flex items-center gap-4 mt-1">
+                        {websiteLink && websiteLink?.url && (
+                          <Link
+                            href={websiteLink?.url}
+                            className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <Image
+                              src="/icons/link.svg"
+                              alt=""
+                              height={14}
+                              width={14}
+                            />
+                          </Link>
+                        )}
+                        {twitterLink && twitterLink?.url && (
+                          <Link
+                            href={twitterLink?.url}
+                            className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <Image
+                              src="/icons/x.svg"
+                              alt=""
+                              height={14}
+                              width={14}
+                            />
+                          </Link>
+                        )}
+                        {facebookLink && facebookLink?.url && (
+                          <Link
+                            href={facebookLink?.url}
+                            className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <Image
+                              src="/icons/facebook.svg"
+                              alt=""
+                              height={10}
+                              width={10}
+                            />
+                          </Link>
+                        )}
+                        {instagramLink && instagramLink?.url && (
+                          <Link
+                            href={instagramLink?.url}
+                            className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <Image
+                              src="/icons/instagram.svg"
+                              alt=""
+                              height={16}
+                              width={16}
+                            />
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          </div>
+          <div className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-6">
+            <div className="py-8">
+              <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between items-center">
+                <h2 className="text-xl font-BricolageGrotesqueMedium">
+                  {eventDetails?.eventName}
+                </h2>
+
+                <Button
+                  icon={<ShareAltOutlined className="text-black text-2xl" />}
+                  onClick={handleOpenModal}
+                  className="bg-white border-none p-0"
+                />
+
+                <Modal
+                  open={isModalOpen}
+                  onCancel={handleCloseModal}
+                  footer={null}
+                  centered
+                  style={{
+                    borderRadius: "15px",
+                    padding: "20px", // Include padding here instead of using bodyStyle
+                  }}
+                >
+                  <ShareModalContent url={eventUrl} title={eventTitle} />
+                </Modal>
+              </div>
+
+              <div className="mt-1">
+                <div className="rounded-lg overflow-hidden flex flex-row items-center justify-center text-center p-4">
+                  {/* Image on the left side */}
+                  <Image
+                    src={isEventStarted ? end : start}
+                    alt={isEventStarted ? "Ends" : "Starts"}
+                    className="w-20 h-auto flex-shrink-0"
+                  />
+
+                  {/* Countdown beside the image */}
+                  <div className="p-4">
+                    <div className="flex justify-center gap-5">
+                      <div className="flex flex-col items-center">
+                        <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                          <div className="text-2xl font-semibold">
+                            {timeRemaining.days}
+                          </div>
+                        </div>
+                        <div className="text-xs capitalize mt-2">Days</div>
+                      </div>
+
+                      <div className="flex flex-col items-center">
+                        <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                          <div className="text-2xl font-semibold">
+                            {timeRemaining.hours}
+                          </div>
+                        </div>
+                        <div className="text-xs capitalize mt-2">Hours</div>
+                      </div>
+
+                      <div className="flex flex-col items-center">
+                        <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                          <div className="text-2xl font-semibold">
+                            {timeRemaining.minutes}
+                          </div>
+                        </div>
+                        <div className="text-xs capitalize mt-2">Minutes</div>
+                      </div>
+
+                      <div className="flex flex-col items-center">
+                        <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                          <div className="text-2xl font-semibold">
+                            {timeRemaining.seconds}
+                          </div>
+                        </div>
+                        <div className="text-xs capitalize mt-2">Seconds</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <ReadMoreHTML
+                  htmlContent={eventDetails?.eventDetails || ""}
+                  maxLength={250}
+                />
+                <div className="flex justify-center mt-12">
+                  {eventDetails?.vendor_registration === true ? (
+                    <>
+                      <Dropdown
+                        disabled={isRegistrationClosed} // Disable if registration is closed
+                        menu={{
+                          items: RegistrationTypes,
+                          onClick: handleMenuClick,
+                        }}
+                      >
+                        <Button
+                          type={
+                            pathname.includes("register") ? "primary" : "text"
+                          }
+                          className="primary-btn w-full"
+                          style={{
+                            borderRadius: "25px",
+                            fontFamily: "BricolageGrotesqueMedium",
+                            backgroundColor: isRegistrationClosed
+                              ? "#cccccc"
+                              : "#e20000", // Gray for disabled, red for active
+                            color: isRegistrationClosed ? "#666666" : "white",
+                            height: "50px", // Adjust height as needed
+                            fontSize: "16px", // Increase text size
+                            border: "none", // Remove border if needed
+                          }}
+                          title={
+                            isRegistrationClosed ? "Registration Closed" : ""
+                          }
+                          disabled={isRegistrationClosed} // Disable button when registration is closed
+                        >
+                          <Space>
+                            {eventDetails?.enable_registration === false
+                              ? "Registration Closed"
+                              : "Get Tickets"}
+                            <IoChevronDown />
+                          </Space>
+                        </Button>
+                      </Dropdown>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        type={
+                          pathname.includes("register") ? "primary" : "text"
+                        }
+                        onClick={() => router.push(`/discover/${params?.event}/tickets`)}
+                        className="primary-btn w-full"
+                        style={{
+                          borderRadius: "25px",
+                          fontFamily: "BricolageGrotesqueMedium",
+                          backgroundColor: isRegistrationClosed
+                            ? "#cccccc"
+                            : "#e20000", // Gray for disabled, red for active
+                          color: isRegistrationClosed ? "#666666" : "white",
+                          height: "50px", // Adjust height as needed
+                          fontSize: "16px", // Increase text size
+                          border: "none", // Remove border if needed
+                        }}
+                        title={
+                          isRegistrationClosed ? "Registration Closed" : ""
+                        }
+                        disabled={isRegistrationClosed} // Disable button when registration is closed
+                      >
+                        <Space>
+                          {eventDetails?.enable_registration === false
+                            ? "Registration Closed"
+                            : "Get Tickets"}
+                        </Space>
+                      </Button>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-6 gap-6 gap-y-10 mt-7">
-          {isPending ? (
-            // Display skeleton buttons dynamically based on the data length or fallback to 5
-            <>
-              {Array(skeletonCount)
-                .fill(null)
-                .map((_, index) => (
-                  <Skeleton.Button
-                    key={index}
-                    active
-                    shape="round"
-                    style={{ height: 200, width: 200, margin: "10px" }}
-                  />
-                ))}
-            </>
-          ) : (
-            // Once data is loaded, map through discoveryEvents and render InfoCard components
-            discoveryEvents?.map((event: any) => (
-              <InfoCard
-                key={event?.id}
-                title={event?.eventName}
-                about={event?.eventType}
-                status="Get Tickets"
-                image={event?.eventImage}
-                url={`/Dashboard/${event?.eventName}/${event?.id}`}
-                titleClass="font-bricolage-grotesque font-medium"
-                aboutClass="font-bricolage-grotesque"
-                statusClass="font-bricolage-grotesque font-medium"
-              />
-            ))
-          )}
-        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <AvailableEvents />
       </section>
     </DashboardLayout>
   );
 };
 
-export default Event;
+export default EventDetail;

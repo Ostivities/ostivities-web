@@ -4,7 +4,7 @@ import FormProvider from "@/app/contexts/form-context/FormContext";
 import Button from "@/app/ui/atoms/Button";
 import { NAV_LINKS } from "@/app/utils/data";
 import { ACCOUNT_TYPE } from "@/app/utils/enums";
-import { IDashboard, INavLinks } from "@/app/utils/interface"; 
+import { IDashboard, INavLinks } from "@/app/utils/interface";
 import Hamburger from "@/public/hamburger.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
 import {
@@ -30,6 +30,8 @@ import { useCookies } from "react-cookie";
 import useLocalStorage from "use-local-storage";
 import { useProfile } from "../../hooks/auth/auth.hook";
 import useFetch from "../forms/create-events/auth";
+import { useLogout } from "@/app/hooks/auth/auth.hook";
+
 
 const items1: MenuProps["items"] = [
   {
@@ -43,19 +45,19 @@ const items1: MenuProps["items"] = [
 ];
 
 const items2: MenuProps["items"] = [
-  { icon: CompassOutlined, title: "Discovery", link: "/Dashboard" },
+  { icon: CompassOutlined, title: "Discovery", link: "/discover" },
   {
     icon: PlusCircleOutlined,
     title: "Create Event",
-    link: "/Dashboard/create-events",
+    link: "/discover/create-events",
   },
   {
     icon: FileSearchOutlined,
     title: "Events Created",
-    link: "/Dashboard/events-created",
+    link: "/discover/events-created",
   },
-  { icon: SettingOutlined, title: "Settings", link: "/Dashboard/settings" },
-  // { icon: FieldTimeOutlined, title: "Coming Soon", link: "/Dashboard/coming-soon" },
+  { icon: SettingOutlined, title: "Settings", link: "/discover/settings" },
+  // { icon: FieldTimeOutlined, title: "Coming Soon", link: "/discover/coming-soon" },
 ].map((item) => {
   const key = item.link;
   return {
@@ -70,7 +72,7 @@ const items2: MenuProps["items"] = [
 });
 
 const items3: MenuProps["items"] = [
-  { icon: CompassOutlined, title: "Discovery", link: "/Dashboard" },
+  { icon: CompassOutlined, title: "Discovery", link: "/discover" },
 ].map((item) => {
   const key = item.link;
 
@@ -91,6 +93,7 @@ function DashboardLayout({
   const pathname = usePathname();
 
   const { profile } = useProfile();
+  const { logoutUser } = useLogout()
   const [cookies, setCookie, removeCookie] = useCookies([
     "forgot_email",
     "is_registered",
@@ -123,6 +126,7 @@ function DashboardLayout({
       label: <Label className="cursor-pointer" content="Sign out" />,
       key: "sign-out",
       onClick: () => {
+        // logoutUser.mutateAsync()
         sessionStorage.removeItem("token");
         removeCookie("forgot_email");
         removeCookie("event_id");
@@ -153,29 +157,29 @@ function DashboardLayout({
   const userName =
     accountType === ACCOUNT_TYPE.PERSONAL
       ? userProfile?.data?.data?.data?.firstName +
-        " " +
-        userProfile?.data?.data?.data?.lastName
+      " " +
+      userProfile?.data?.data?.data?.lastName
       : userProfile?.data?.data?.data?.businessName || "";
 
   // setCookie("user_fullname", userName) 
   const avatarName =
     accountType === ACCOUNT_TYPE.PERSONAL
       ? userProfile?.data?.data?.data?.firstName?.charAt(0) +
-        userProfile?.data?.data?.data?.lastName?.charAt(0)
+      userProfile?.data?.data?.data?.lastName?.charAt(0)
       : userProfile?.data?.data?.data?.businessName?.charAt(0).toUpperCase() +
-          userProfile?.data?.data?.data?.businessName
-            ?.charAt(1)
-            .toUpperCase() || "";
+      userProfile?.data?.data?.data?.businessName
+        ?.charAt(1)
+        .toUpperCase() || "";
 
   const account_type =
-    accountType === ACCOUNT_TYPE.PERSONAL ? "User" : "Organisation" || "";
+    accountType === ACCOUNT_TYPE.PERSONAL ? "User" : "Organisation";
   const index = pathname.split("/")[2];
 
   const confirmIndex = endpoints.includes(index);
 
   const path = confirmIndex ? `/${index}` : "";
 
-  const [currentPah, setCurrentPah] = useState(`/Dashboard${path}`);
+  const [currentPah, setCurrentPah] = useState(`/discover${path}`);
 
   const onClick: MenuProps["onClick"] = (e: any) => {
     setCurrentPah(e?.key);
@@ -232,15 +236,14 @@ function DashboardLayout({
           }}
         >
           <div className="demo-logo flex flex-row items-center space-x-12">
+          <Link href="/" shallow>
             <Image
               src={OwanbeLogo}
-              alt="Owanbe Logo"
+              alt="Ostivities Logo"
               style={{ height: "40px" }}
               className="w-[110px] cursor-pointer"
-              onClick={() => {
-                router.push(`/`);
-              }}
-            />
+              />
+            </Link>
           </div>
           {!isLoggedIn && (
             <>
@@ -261,23 +264,24 @@ function DashboardLayout({
               <div className="flex flex-row items-end justify-end space-x-3">
                 {isRegistered ? (
                   // If user is registered but not logged in, show only Sign In button
-                  <Button
-                    variant="outline"
-                    label="Sign in"
-                    onClick={() => router.push("/login")}
-                  />
-                ) : (
-                  // If user is not registered, show both Sign In and Sign Up buttons
-                  <>
+                  <Link href="/login" passHref>
                     <Button
                       variant="outline"
                       label="Sign in"
-                      onClick={() => router.push("/login")}
-                    />
-                    <Button
-                      label="Sign Up"
-                      onClick={() => router.push("/signup")}
-                    />
+                      className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold" />
+                  </Link>
+                ) : (
+                  // If user is not registered, show both Sign In and Sign Up buttons
+                  <>
+                    <Link href="/login" passHref>
+                      <Button
+                        variant="outline"
+                        label="Sign in"
+                        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold" />
+                    </Link>
+                    <Link href="/signup" passHref>
+                      <Button label="Sign Up" />
+                    </Link>
                   </>
                 )}
               </div>
@@ -412,7 +416,7 @@ function DashboardLayout({
           >
             <Image
               src={Hamburger}
-              alt="Owanbe Logo"
+              alt="Hamburger Menu"
               style={{
                 width: "40px",
                 height: "35px",
@@ -435,9 +439,8 @@ function DashboardLayout({
               items={isLoggedIn ? items2 : items3}
               onClick={onClick}
               selectedKeys={[currentPah]}
-              className={`${
-                collapsed === true ? "collapsed-side-nav" : "side-nav"
-              }`}
+              className={`${collapsed === true ? "collapsed-side-nav" : "side-nav"
+                }`}
             />
           </Sider>
           <Layout
@@ -482,9 +485,8 @@ function DashboardLayout({
               <Content className="flex flex-col space-y-8 py-8">
                 {steppers && (
                   <div
-                    className={`mx-auto text-center flex flex-row items-center justify-center pb-3 ${
-                      !isValidElement(steppers) ? "hidden" : ""
-                    }`}
+                    className={`mx-auto text-center flex flex-row items-center justify-center pb-3 ${!isValidElement(steppers) ? "hidden" : ""
+                      }`}
                   >
                     {steppers}
                   </div>

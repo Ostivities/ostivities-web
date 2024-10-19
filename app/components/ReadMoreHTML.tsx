@@ -34,13 +34,13 @@ const ReadMoreHTML = ({ htmlContent, maxLength = 100 }: ReadMoreHTMLProps) => {
           style={{
             border: "none",
             background: "transparent",
-            color: "#0070f3",
+            color: "#e20000",
             cursor: "pointer",
             padding: "0",
-            marginLeft: "5px",
+            marginLeft: "",
           }}
         >
-          {isExpanded ? "Hide" : "Read More"}
+          {isExpanded ? "Read less" : "Read More"}
         </button>
       )}
     </div>

@@ -22,6 +22,7 @@ import { dateFormat, timeFormat } from "@/app/utils/helper";
 import { PUBLISH_TYPE } from "@/app/utils/enums";
 
 
+
 const { Search } = Input;
 
 const EventsCreatedTable: React.FC = () => {
@@ -167,7 +168,7 @@ const EventsCreatedTable: React.FC = () => {
             padding: "4px",
           }}
           onClick={() =>
-            router.push(`/Dashboard/events-created/${record?.key}/about`)
+            router.push(`/discover/events-created/${record?.key}/about`)
           }
         >
           View

@@ -41,7 +41,11 @@ export const useUpdateTicket = () => {
 export const useGetEventTickets = (id: string) => {
   const getTickets = useQuery({
     queryKey: [GET_EVENT_TICKETS, id],
-    queryFn: () => API_SERVICE._getAllEventTickets(id),
+    queryFn: () => {
+      if (id) {
+        return API_SERVICE._getAllEventTickets(id);
+      }
+    },
   });
   return { getTickets };
 }

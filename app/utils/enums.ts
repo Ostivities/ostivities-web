@@ -16,6 +16,11 @@ export enum TICKET_TYPE {
   FREE = "FREE",
 }
 
+export enum TICKET_ENTITY {
+  SINGLE = "SINGLE",
+  COLLECTIVE = "COLLECTIVE"
+}
+
 export enum TICKET_STOCK {
   UNLIMITED = "UN_LIMITED",
   LIMITED = "LIMITED",
@@ -65,5 +70,11 @@ export enum DISCOUNT_TYPE {
 
 export enum USAGE_LIMIT {
   ONCE = 'ONCE',
-  MULTIPLE = 'MULTIPLE',
+  MULTIPLE = 'UN_LIMITED',
+}
+
+export enum PAYMENT_METHOD {
+  CARD = 'CARD',
+  TRANSFER = 'TRANSFER',
+  CASH = 'CASH',
 }

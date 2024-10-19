@@ -1,5 +1,5 @@
 import React, { HTMLAttributeAnchorTarget } from "react";
-import { EXHIBITION_SPACE, TICKET_STOCK, USAGE_LIMIT, DISCOUNT_TYPE } from "./enums";
+import { EXHIBITION_SPACE, TICKET_STOCK, USAGE_LIMIT, DISCOUNT_TYPE, PAYMENT_METHOD } from "./enums";
 export enum ACCOUNT_TYPE {
   PERSONAL = "PERSONAL",
   ORGANISATION = "ORGANISATION",
@@ -70,7 +70,8 @@ export interface IFormInput {
   exhibitionspace?: boolean;
   exhibition_space_booking?: EXHIBITION_SPACE;
   space_available?: number;
-  space_fee?: string;
+  space_fee?: number;
+  unique_key: string;
 }
 
 
@@ -139,9 +140,10 @@ export interface IEventDetails {
   exhibitionspace?: boolean;
   exhibition_space_booking?: EXHIBITION_SPACE;
   space_available?: number;
-  space_fee?: string;
+  space_fee?: number;
   mode?: string;
   eventMode?: string;
+  unique_key: string
 }
 
 export interface IModal {
@@ -431,12 +433,43 @@ export interface ITicketQuestions {
   is_compulsory: boolean;
 }
 
-export interface IDiscountDetails {
+export interface IDiscountData {
+  key?: string;
+  id: string;
   discountCode: string;
-  discountType: DISCOUNT_TYPE;  // Assuming you have multiple types like PERCENTAGE, FIXED, etc.
+  discountType: DISCOUNT_TYPE;
+  discountValue?: number;
+  uses?: string;
   ticket: string[];  // Array of strings
   usageLimit: USAGE_LIMIT;  // Assuming usage can be "ONCE" or "MULTIPLE"
   startDateAndTime: string;  // Assuming it's an ISO string date, but consider using `Date` if you want stricter typing
   endDateAndTime: string;    // Same as above
+  ticketApplicable: string;  // Assuming it's a string, but consider using a more specific type
   event: string;
+}
+
+export interface IDiscountCreate extends Partial<IDiscountData> {
+  // event: string;
+  eventId: string;
+  user: string;
+}
+
+export interface IGuestData {
+  ticket: string;
+  personal_information: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    terms_and_condition: boolean;
+    phoneNumber: boolean;
+  };
+  fees: number;
+  total_amount_paid: number;
+  discountCode?: string; // Optional field (fixed typo from original "disocuntCode")
+  quantity: number;
+  payment_method: PAYMENT_METHOD;
+}
+
+export interface IGuestCreate extends Partial<IGuestData> {
+  eventId: string;
 }

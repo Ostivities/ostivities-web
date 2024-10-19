@@ -1,16 +1,20 @@
+import { IEventDetails } from "@/app/utils/interface";
 import EventSection from "./AllEventSection";
 import InfoCard from "./OtherInfoCard";
 import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
 import { Skeleton } from "antd";
+import { useState } from "react";
 
 const AllEvents = () => {
-  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 5);
+  const [page, setPage] = useState(1)
+  const [pageSize, setpageSize] = useState(12)
+  const { getDiscoveryEvents } = useGetDiscoveryEvents(page, pageSize);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
   console.log(discoveryEvents, "discoveryEvents");
 
   const isPending = getDiscoveryEvents?.isLoading;
 
-  return (
+  return ( 
     <EventSection
       title="All Events"
       titleClass="custom-title-class"
@@ -18,7 +22,7 @@ const AllEvents = () => {
         fontSize: "20px",
         fontFamily: "Bricolage Grotesque, font-semibold",
       }} // Inline style
-      uri="/Dashboard/all"
+      uri="/discover/all"
     >
       {isPending ? (
         <>
@@ -29,20 +33,20 @@ const AllEvents = () => {
                 key={index}
                 active
                 shape="round"
-                style={{ height: 200, width: 200, margin: "10px" }}
+                style={{ height: 200, width: 200, margin: "10px", maxWidth: '100%' }}
               />
             ))}
         </>
       ) : (
         // Once data is loaded, map through discoveryEvents and render InfoCard components
-        discoveryEvents?.map((event: any) => (
+        discoveryEvents?.map((event: IEventDetails) => (
           <InfoCard
             key={event?.id}
             title={event?.eventName}
             about={event?.eventType}
             status="Get Tickets"
             image={event?.eventImage}
-            url={`/Dashboard/${event?.eventName}/${event?.id}`}
+            url={`/discover/${event?.unique_key}`}
             titleClass="font-bricolage-grotesque font-medium"
             aboutClass="font-bricolage-grotesque"
             statusClass="font-bricolage-grotesque font-medium"

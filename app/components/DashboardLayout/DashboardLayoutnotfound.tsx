@@ -119,14 +119,14 @@ function DashboardLayout({
             .toUpperCase() || "";
 
   const account_type =
-    accountType === ACCOUNT_TYPE.PERSONAL ? "User" : "Organisation" || "";
+    accountType === ACCOUNT_TYPE.PERSONAL ? "User" : "Organisation";
   const index = pathname.split("/")[2];
 
   const confirmIndex = endpoints.includes(index);
 
   const path = confirmIndex ? `/${index}` : "";
 
-  const [currentPah, setCurrentPah] = useState(`/Dashboard${path}`);
+  const [currentPah, setCurrentPah] = useState(`/discover${path}`);
 
   const onClick: MenuProps["onClick"] = (e: any) => {
     setCurrentPah(e?.key);
@@ -185,7 +185,7 @@ function DashboardLayout({
           <div className="demo-logo flex flex-row items-center space-x-12">
             <Image
               src={OwanbeLogo}
-              alt="Owanbe Logo"
+              alt="Ostivities Logo"
               style={{ height: "40px" }}
               className="w-[110px] cursor-pointer"
               onClick={() => {
@@ -197,7 +197,7 @@ function DashboardLayout({
             <>
              
 
-              {/* Show buttons based on isRegistered status */}
+              {/* Show buttons based on isRegistered status
               <div className="flex flex-row items-end justify-end space-x-3">
                 {isRegistered ? (
                   // If user is registered but not logged in, show only Sign In button
@@ -220,7 +220,7 @@ function DashboardLayout({
                     />
                   </>
                 )}
-              </div>
+              </div> */}
             </>
           )}
 
@@ -300,7 +300,7 @@ function DashboardLayout({
                     </div>
                   </div>
                 </div> */}
-                <Dropdown menu={{ items }} trigger={["click", "hover"]}>
+                {/* <Dropdown menu={{ items }} trigger={["click", "hover"]}>
                   <div className="flex-center gap-4 cursor-pointer">
                     <Avatar
                       size={40}
@@ -324,7 +324,7 @@ function DashboardLayout({
                       <CaretDownFilled />
                     </div>
                   </div>
-                </Dropdown>
+                </Dropdown> */}
               </Space>
             </>
           )}
