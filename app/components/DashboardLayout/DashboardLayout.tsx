@@ -4,7 +4,7 @@ import FormProvider from "@/app/contexts/form-context/FormContext";
 import Button from "@/app/ui/atoms/Button";
 import { NAV_LINKS } from "@/app/utils/data";
 import { ACCOUNT_TYPE } from "@/app/utils/enums";
-import { IDashboard, INavLinks } from "@/app/utils/interface"; 
+import { IDashboard, INavLinks } from "@/app/utils/interface";
 import Hamburger from "@/public/hamburger.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
 import {
@@ -157,22 +157,22 @@ function DashboardLayout({
   const userName =
     accountType === ACCOUNT_TYPE.PERSONAL
       ? userProfile?.data?.data?.data?.firstName +
-        " " +
-        userProfile?.data?.data?.data?.lastName
+      " " +
+      userProfile?.data?.data?.data?.lastName
       : userProfile?.data?.data?.data?.businessName || "";
 
   // setCookie("user_fullname", userName) 
   const avatarName =
     accountType === ACCOUNT_TYPE.PERSONAL
       ? userProfile?.data?.data?.data?.firstName?.charAt(0) +
-        userProfile?.data?.data?.data?.lastName?.charAt(0)
+      userProfile?.data?.data?.data?.lastName?.charAt(0)
       : userProfile?.data?.data?.data?.businessName?.charAt(0).toUpperCase() +
-          userProfile?.data?.data?.data?.businessName
-            ?.charAt(1)
-            .toUpperCase() || "";
+      userProfile?.data?.data?.data?.businessName
+        ?.charAt(1)
+        .toUpperCase() || "";
 
   const account_type =
-      accountType === ACCOUNT_TYPE.PERSONAL ? "User" : "Organisation";
+    accountType === ACCOUNT_TYPE.PERSONAL ? "User" : "Organisation";
   const index = pathname.split("/")[2];
 
   const confirmIndex = endpoints.includes(index);
@@ -236,15 +236,14 @@ function DashboardLayout({
           }}
         >
           <div className="demo-logo flex flex-row items-center space-x-12">
+          <Link href="/" shallow>
             <Image
               src={OwanbeLogo}
               alt="Ostivities Logo"
               style={{ height: "40px" }}
               className="w-[110px] cursor-pointer"
-              onClick={() => {
-                router.push(`/`);
-              }}
-            />
+              />
+            </Link>
           </div>
           {!isLoggedIn && (
             <>
@@ -265,23 +264,24 @@ function DashboardLayout({
               <div className="flex flex-row items-end justify-end space-x-3">
                 {isRegistered ? (
                   // If user is registered but not logged in, show only Sign In button
-                  <Button
-                    variant="outline"
-                    label="Sign in"
-                    onClick={() => router.push("/login")}
-                  />
-                ) : (
-                  // If user is not registered, show both Sign In and Sign Up buttons
-                  <>
+                  <Link href="/login" passHref>
                     <Button
                       variant="outline"
                       label="Sign in"
-                      onClick={() => router.push("/login")}
-                    />
-                    <Button
-                      label="Sign Up"
-                      onClick={() => router.push("/signup")}
-                    />
+                      className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold" />
+                  </Link>
+                ) : (
+                  // If user is not registered, show both Sign In and Sign Up buttons
+                  <>
+                    <Link href="/login" passHref>
+                      <Button
+                        variant="outline"
+                        label="Sign in"
+                        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold" />
+                    </Link>
+                    <Link href="/signup" passHref>
+                      <Button label="Sign Up" />
+                    </Link>
                   </>
                 )}
               </div>
@@ -439,9 +439,8 @@ function DashboardLayout({
               items={isLoggedIn ? items2 : items3}
               onClick={onClick}
               selectedKeys={[currentPah]}
-              className={`${
-                collapsed === true ? "collapsed-side-nav" : "side-nav"
-              }`}
+              className={`${collapsed === true ? "collapsed-side-nav" : "side-nav"
+                }`}
             />
           </Sider>
           <Layout
@@ -486,9 +485,8 @@ function DashboardLayout({
               <Content className="flex flex-col space-y-8 py-8">
                 {steppers && (
                   <div
-                    className={`mx-auto text-center flex flex-row items-center justify-center pb-3 ${
-                      !isValidElement(steppers) ? "hidden" : ""
-                    }`}
+                    className={`mx-auto text-center flex flex-row items-center justify-center pb-3 ${!isValidElement(steppers) ? "hidden" : ""
+                      }`}
                   >
                     {steppers}
                   </div>

@@ -240,7 +240,7 @@ const TicketsSelection = () => {
             <div className="pr-full mt-16">
               <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueMedium my-8 custom-font-size">
                 Choose one or more tickets and prepare for an extraordinary
-                experience!
+                experience! 
               </h3>
             </div>
 
