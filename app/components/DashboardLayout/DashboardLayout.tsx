@@ -61,7 +61,10 @@ const items2: MenuProps["items"] = [
 ].map((item) => {
   const key = item.link;
   return {
-    key: `${key}`,
+    key: key,
+    link: (
+      <a href={item.link}></a>
+    ),
     icon: React.createElement(item.icon),
     label: (
       <span style={{ fontFamily: "bricolagegrotesqueRegular" }}>
@@ -181,9 +184,13 @@ function DashboardLayout({
 
   const [currentPah, setCurrentPah] = useState(`/discover${path}`);
 
+  // const onClick: MenuProps["onClick"] = (e: any) => {
+  //   setCurrentPah(e?.key);
+  //   router.push(e?.key);
+  // };
   const onClick: MenuProps["onClick"] = (e: any) => {
-    setCurrentPah(e?.key);
-    router.push(e?.key);
+    setCurrentPah(e?.key); // Update the current selected path
+    router.push(e?.key); // Navigate to the new route
   };
 
   const pathCheck =
@@ -428,8 +435,8 @@ function DashboardLayout({
             />
             <Menu
               mode="inline"
-              defaultSelectedKeys={["1"]}
-              defaultOpenKeys={["sub1"]}
+              defaultSelectedKeys={[currentPah]}
+              // defaultOpenKeys={["sub1"]}
               style={{
                 height: "100%",
                 borderRight: 0,
