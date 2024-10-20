@@ -49,21 +49,6 @@ interface InfoNeeded {
   }[];
 }
 
-// interface InfoNeeded {
-//   ticketName: string;
-//   ticketId: string;
-//   ticketPrice: number;
-//   ticketFee: number;
-//   ticketNumber: number;
-//   subTotal: number;
-//   ticketEntity: string;
-//   additionalInformation?: {
-//     question: string;
-//     is_compulsory: boolean;
-//   }[];
-// }
-// [];
-
 const ContactForm = (ticketDetails: InfoNeeded) => {
   const router = useRouter();
   const params = useParams<{ event: string }>();
@@ -273,7 +258,7 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                     {/* Loop through the groupSize to create the required number of forms */}
                     {[...Array(ticketDetail?.groupSize)].map((_, index) => (
                       <div key={index}>
-                        <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size">
+                        <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size mt-4">
                           Ticket {index + 1} - Collective of{" "}
                           {ticketDetail?.groupSize} - {ticketDetail?.ticketName}
                         </h3>
@@ -282,6 +267,7 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                           form={form}
                           onValuesChange={validateForm}
                           onFinish={onFinish}
+                          className="form-spacing"
                         >
                           <Row gutter={16}>
                             <Col span={12}>
@@ -315,6 +301,30 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                               >
                                 <Input placeholder="Enter Attendee Last Name" />
                               </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                              <Form.Item
+                                className="form-spacing"
+                                label="Attendee Email Address"
+                                name={`AttendeEmail-${index}`}
+                              >
+                                <Input
+                                  type="email"
+                                  placeholder="Enter Attendee Email Address"
+                                />
+                              </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                              <Form.Item
+                                // className="mb-4"
+                                label="Confirm Attendee Email"
+                                name={`ConfirmAttendeeEmail-${index}`}
+                              >
+                                <Input
+                                  type="email"
+                                  placeholder="Confirm Attendee Email Address"
+                                />
+                              </Form.Item>                   
                             </Col>
                           </Row>
                         </Form>

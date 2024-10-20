@@ -43,7 +43,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
   const [form] = Form.useForm(); // Initialize form instance
   const { getSingleTicket } = useGetSingleTicket(id);
   const ticketDetails = getSingleTicket?.data?.data?.data;
-  const [editorContent, setEditorContent] = useState("" || ticketDetails?.ticketDescription);
+  const [editorContent, setEditorContent] = useState(ticketDetails?.ticketDescription);
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
@@ -378,7 +378,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         />
       </Form.Item>
 
-      <Form.Item<ITicketData>
+      {/* <Form.Item<ITicketData>
         label="Purchase limit"
         name="purchaseLimit"
         rules={[
@@ -394,7 +394,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
           style={{ width: "100%" }}
           min={0}
         />
-      </Form.Item>
+      </Form.Item> */}
 
       <Paragraph
         className="text-OWANBE_DARK text-sm font-normal font-BricolageGrotesqueRegular"
