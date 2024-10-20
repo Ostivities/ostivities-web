@@ -39,6 +39,7 @@ interface InfoNeeded {
     ticketPrice: number;
     ticketFee: number;
     ticketNumber: number;
+    groupSize: number;
     subTotal: number;
     ticketEntity: string;
     additionalInformation?: {
@@ -232,11 +233,11 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                       rules={
                         infoDetails?.is_compulsory
                           ? [
-                            {
-                              required: true,
-                              message: "Please provide answers",
-                            },
-                          ]
+                              {
+                                required: true,
+                                message: "Please provide answers",
+                              },
+                            ]
                           : []
                       }
                     >
@@ -269,161 +270,60 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
               return (
                 ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE && (
                   <>
-                    <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size">
-                      Ticket 1 - Collective of 2- Regular. Dynamic
-                    </h3>
+                    {/* Loop through the groupSize to create the required number of forms */}
+                    {[...Array(ticketDetail?.groupSize)].map((_, index) => (
+                      <div key={index}>
+                        <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size">
+                          Ticket {index + 1} - Collective of{" "}
+                          {ticketDetail?.groupSize} - {ticketDetail?.ticketName}
+                        </h3>
 
-                    <Form
-                      form={form}
-                      onValuesChange={validateForm}
-                      onFinish={onFinish}
-                    >
-                      <Row gutter={16}>
-                        <Col span={12}>
-                          <Form.Item
-                            layout="vertical"
-                            className="form-spacing"
-                            label="Attendee First Name"
-                            name="AttendeefirstName"
-                            rules={[
-                              {
-                                required: true,
-                                message: "Please provide attendee first name",
-                              },
-                            ]}
-                          >
-                            <Input placeholder="Enter Attendee First Name" />
-                          </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                          <Form.Item
-                            label="Attendee Last Name"
-                            name="AttendeelastName"
-                            rules={[
-                              {
-                                required: true,
-                                message: "Please provide attendee last name",
-                              },
-                            ]}
-                          >
-                            <Input placeholder="Enter Attendee Last Name" />
-                          </Form.Item>
-                        </Col>
-                      </Row>
-                    </Form>
+                        <Form
+                          form={form}
+                          onValuesChange={validateForm}
+                          onFinish={onFinish}
+                        >
+                          <Row gutter={16}>
+                            <Col span={12}>
+                              <Form.Item
+                                layout="vertical"
+                                className="form-spacing"
+                                label="Attendee First Name"
+                                name={`AttendeefirstName-${index}`} // Unique name for each form
+                                rules={[
+                                  {
+                                    required: true,
+                                    message:
+                                      "Please provide attendee first name",
+                                  },
+                                ]}
+                              >
+                                <Input placeholder="Enter Attendee First Name" />
+                              </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                              <Form.Item
+                                label="Attendee Last Name"
+                                name={`AttendeelastName-${index}`} // Unique name for each form
+                                rules={[
+                                  {
+                                    required: true,
+                                    message:
+                                      "Please provide attendee last name",
+                                  },
+                                ]}
+                              >
+                                <Input placeholder="Enter Attendee Last Name" />
+                              </Form.Item>
+                            </Col>
+                          </Row>
+                        </Form>
+                      </div>
+                    ))}
                   </>
                 )
               );
             })}
-
-            <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size">
-              Ticket 1 - Collective of 2- Regular.
-            </h3>
-            <Form form={form} onValuesChange={validateForm} onFinish={onFinish}>
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item
-                    layout="vertical"
-                    className="form-spacing"
-                    label="Attendee First Name"
-                    name="AttendeefirstName"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please provide attendee first name",
-                      },
-                    ]}
-                  >
-                    <Input placeholder="Enter Attendee First Name" />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item
-                    label="Attendee Last Name"
-                    name="AttendeelastName"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please provide attendee last name",
-                      },
-                    ]}
-                  >
-                    <Input placeholder="Enter Attendee Last Name" />
-                  </Form.Item>
-                </Col>
-              </Row>
-              {/* <Form.Item
-                  label="Attendee Email Address"
-                  name="Attendeeemail"
-                  rules={[{ required: true, message: 'Please provide attendee email' }]}
-                >
-                  <Input type="email" placeholder="Enter Attendee Email Address" />
-                </Form.Item>
-                <Form.Item
-                  label="Confirm Attendee Email"
-                  name="confirmAttendeeEmail"
-                  rules={[{ required: true, message: 'Please confirm provide attendee email' }]}
-                >
-                  <Input type="email" placeholder="Confirm Attendee Email Address" />
-                </Form.Item> */}
-
-              <br />
-              <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size">
-                Ticket 2 - Collective of 2- Regular.
-              </h3>
-              <Form
-                form={form}
-                onFinish={onFinish}
-                layout="vertical"
-                className="form-spacing"
-                onValuesChange={validateForm}
-              >
-                <Row gutter={16}>
-                  <Col span={12}>
-                    <Form.Item
-                      label="Attendee First Name"
-                      name="AttendeeFirstName"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please provide attendee first name",
-                        },
-                      ]}
-                    >
-                      <Input placeholder="Enter Attendee First Name" />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item
-                      label="Attendee Last Name"
-                      name="AttendeeLastName"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please provide attendee last name",
-                        },
-                      ]}
-                    >
-                      <Input placeholder="Enter Attendee Last Name" />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                {/* <Form.Item
-                  label="Attendee Email Address"
-                  name="AttendeEmail"
-                  rules={[{ required: true, message: 'Please provide attendee email' }]}
-                >
-                  <Input type="email" placeholder="Enter Attendee Email Address" />
-                </Form.Item>
-                <Form.Item
-                  label="Confirm Attendee Email"
-                  name="ConfirmAttendeeEmail"
-                  rules={[{ required: true, message: 'Please confirm provide attendee email' }]}
-                >
-                  <Input type="email" placeholder="Confirm Attendee Email Address" />
-                </Form.Item> */}
-              </Form>
-            </Form>
           </Form>
         </div>
       </section>

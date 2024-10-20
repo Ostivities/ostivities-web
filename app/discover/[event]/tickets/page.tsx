@@ -66,7 +66,7 @@ const TicketsSelection = () => {
       ticketId: string;
       subTotal: number;
       ticketEntity: string;
-      groupSize: string;
+      groupSize: number;
       additionalInformation: { question: string; is_compulsory: boolean }[]
     }[]
   >([]);
@@ -478,17 +478,17 @@ const TicketsSelection = () => {
                             onClick={() => handleIncrement(ticket?.id)}
                             disabled={
                               selectedTickets[ticket?.id] ===
-                              ticket?.purchaseLimit
+                              1
                             }
                             style={{
                               color:
                                 selectedTickets[ticket?.id] ===
-                                  ticket?.purchaseLimit
+                                  1
                                   ? "white"
                                   : "#e20000",
                               backgroundColor:
                                 selectedTickets[ticket?.id] ===
-                                  ticket?.purchaseLimit
+                                  1
                                   ? "#cccccc"
                                   : "#FADEDE",
                             }}

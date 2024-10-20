@@ -63,13 +63,12 @@ const items2: MenuProps["items"] = [
   const key = item.link;
   return {
     key: key,
-    link: (
-      <a href={item.link}></a>
-    ),
     icon: React.createElement(item.icon),
     label: (
       <span style={{ fontFamily: "bricolagegrotesqueRegular" }}>
-        {item.title}
+        <a href={item.link}>
+         {item.title}
+        </a>
       </span>
     ),
   };
@@ -244,14 +243,14 @@ function DashboardLayout({
           }}
         >
           <div className="demo-logo flex flex-row items-center space-x-12">
-            <Link href="/" shallow>
+            <a href="/">
               <Image
                 src={OwanbeLogo}
                 alt="Ostivities Logo"
                 style={{ height: "40px" }}
                 className="w-[110px] cursor-pointer"
               />
-            </Link>
+            </a>
           </div>
           {!isLoggedIn && (
             <>
