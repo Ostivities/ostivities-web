@@ -22,7 +22,7 @@ const AllEvents = () => {
         fontSize: "20px",
         fontFamily: "Bricolage Grotesque, font-semibold",
       }} // Inline style
-      uri="/discover/all"
+      uri="/discover/allevents"
     >
       {isPending ? (
         <>
