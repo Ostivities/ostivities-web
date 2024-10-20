@@ -19,7 +19,7 @@ const PopularEvents = () => {
         fontSize: "20px",
         fontFamily: "Bricolage Grotesque, font-semibold",
       }} // Inline style
-      uri="/discover/popular"
+      uri="/discover/popularevents"
     >
       {isPending ? (
         <>
