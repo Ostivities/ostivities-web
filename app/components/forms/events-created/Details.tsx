@@ -22,6 +22,7 @@ import { dateFormat, timeFormat } from "@/app/utils/helper";
 import { PUBLISH_TYPE } from "@/app/utils/enums";
 
 
+
 const { Search } = Input;
 
 const EventsCreatedTable: React.FC = () => {
@@ -37,7 +38,7 @@ const EventsCreatedTable: React.FC = () => {
   // console.log(getAllUserEvents,"getAllUserEvents")
 
   const totalEvents = getAllUserEvents?.data?.data?.data?.total;
-  console.log(selectedRowKeys)
+  // console.log(selectedRowKeys)
 
   const allUserEventDetails = getAllUserEvents?.data?.data?.data?.data;
 
@@ -167,7 +168,7 @@ const EventsCreatedTable: React.FC = () => {
             padding: "4px",
           }}
           onClick={() =>
-            router.push(`/Dashboard/events-created/${record?.key}/about`)
+            router.push(`/discover/events-created/${record?.key}/about`)
           }
         >
           View
@@ -279,7 +280,7 @@ const EventsCreatedTable: React.FC = () => {
         )}
       </div>
       <Table
-        loading={getAllUserEvents.isFetching}
+        loading={getAllUserEvents?.isFetching}
 
         rowSelection={{
           selectedRowKeys,

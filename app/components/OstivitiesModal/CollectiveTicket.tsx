@@ -15,7 +15,7 @@ import EmailEditor from "../QuillEditor/EmailEditor";
 import { ITicketCreate, ITicketData } from "@/app/utils/interface";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { useProfile } from "@/app/hooks/auth/auth.hook";
-import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
+import { TICKET_ENTITY, TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
 import { useCookies } from "react-cookie";
 
 
@@ -50,7 +50,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
   };
   const [cookies, setCookies] = useCookies(["ticket_id", "stage_three"]);
 
-  // const pathname = usePathname()
+  const pathname = usePathname()
   // console.log(pathname)
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form); // Watch ticketType changes
@@ -85,12 +85,12 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
         ticketQuestions: reducedTicketQuestions,
         ticketDescription: editorContent,
         event: params?.id,
-        ticketEntity: "COLLECTIVE",
+        ticketEntity: TICKET_ENTITY.COLLECTIVE,
         user: profile?.data?.data?.data?.id,
         groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
         ticketType
       };
-      console.log(payload, "kk");
+      // console.log(payload, "kk");
 
       // make api call here
 
@@ -104,7 +104,9 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
           getTickets.refetch()
           onOk && onOk();
           setLoading(false);
-          router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+          if(pathname.startsWith("/discover/create-events")) {
+            router.push(`/discover/create-events/${params?.id}/tickets_created`);
+          }
         }
       } else{
         setLoading(false);
@@ -115,7 +117,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
         ...rest,
         ticketDescription: editorContent,
         event: params?.id,
-        ticketEntity: "COLLECTIVE",
+        ticketEntity: TICKET_ENTITY.COLLECTIVE,
         user: profile?.data?.data?.data?.id,
         groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
         ticketType
@@ -130,7 +132,9 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
           setLoading(false);
           getTickets.refetch()
           // linkRef.current?.click();
-          router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+          if(pathname.startsWith("/discover/create-events")) {
+            router.push(`/discover/create-events/${params?.id}/tickets_created`);
+          }
         }
       }
       setLoading(false);

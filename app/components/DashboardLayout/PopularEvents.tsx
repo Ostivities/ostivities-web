@@ -2,9 +2,10 @@ import EventSection from "./PopularEventSection";
 import InfoCard from "./OtherInfoCard";
 import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
 import { Skeleton } from "antd";
+import { IEventDetails } from "@/app/utils/interface";
 
 const PopularEvents = () => {
-  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 20);
+  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 5);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
   console.log(discoveryEvents, "discoveryEvents");
 
@@ -18,7 +19,7 @@ const PopularEvents = () => {
         fontSize: "20px",
         fontFamily: "Bricolage Grotesque, font-semibold",
       }} // Inline style
-      uri="/Dashboard/popular"
+      uri="/discover/popularevents"
     >
       {isPending ? (
         <>
@@ -29,20 +30,20 @@ const PopularEvents = () => {
                 key={index}
                 active
                 shape="round"
-                style={{ height: 200, width: 200, margin: "10px" }}
+                style={{ height: 200, width: 200, margin: "10px", maxWidth: '100%' }}
               />
             ))}
         </>
       ) : (
         // Once data is loaded, map through discoveryEvents and render InfoCard components
-        discoveryEvents?.map((event: any) => (
+        discoveryEvents?.map((event: IEventDetails) => (
           <InfoCard
             key={event?.id}
             title={event?.eventName}
             about={event?.eventType}
             status="Get Tickets"
             image={event?.eventImage}
-            url={`/Dashboard/${event?.eventName}/${event?.id}`}
+            url={`/discover/${event?.unique_key}`}
             titleClass="font-bricolage-grotesque font-medium"
             aboutClass="font-bricolage-grotesque"
             statusClass="font-bricolage-grotesque font-medium"

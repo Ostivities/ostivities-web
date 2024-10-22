@@ -17,6 +17,11 @@ export enum TICKET_TYPE {
   FREE = "FREE",
 }
 
+export enum TICKET_ENTITY {
+  SINGLE = "SINGLE",
+  COLLECTIVE = "COLLECTIVE"
+}
+
 export enum TICKET_STOCK {
   UNLIMITED = "UN_LIMITED",
   LIMITED = "LIMITED",
@@ -56,4 +61,21 @@ export enum EVENT_TYPE {
   CARNIVAL = "Carnival",
   HOLIDAY_CAMP = "Holiday Camp",
   OTHERS = 'Others',
+}
+
+
+export enum DISCOUNT_TYPE {
+  PERCENTAGE = 'PERCENTAGE',
+  FIXED = 'FIXED',
+}
+
+export enum USAGE_LIMIT {
+  ONCE = 'ONCE',
+  MULTIPLE = 'UN_LIMITED',
+}
+
+export enum PAYMENT_METHOD {
+  CARD = 'CARD',
+  TRANSFER = 'TRANSFER',
+  CASH = 'CASH',
 }

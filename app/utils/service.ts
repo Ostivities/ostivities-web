@@ -3,7 +3,10 @@ import { HttpMethod } from "./enums";
 import { instance } from "./instance";
 import {
   ICreateEvent,
+  IDiscountCreate,
+  IDiscountData,
   IFormInput,
+  IGuestCreate,
   ILogin,
   IResetPassword,
   IResetToken,
@@ -32,6 +35,13 @@ export class API_SERVICE {
       method: HttpMethod.POST,
       data,
     });
+  }
+
+  static async _logoutUser(): Promise<AxiosResponse> {
+    return await instance({
+      url: `/auth/logout`,
+      method: HttpMethod.POST,
+    })
   }
 
   static async _userProfile(): Promise<AxiosResponse> {
@@ -105,6 +115,12 @@ export class API_SERVICE {
       method: HttpMethod.GET,
     });
   }
+  static async _getUserEventByUniqueKey(id: string) : Promise<AxiosResponse> {
+    return await instance({
+      url: `/events/get_user_event_by_unique_key/${id}`,
+      method: HttpMethod.GET,
+    })
+  }
 
   static async _updateEvent(data: IUpdateEvent): Promise<AxiosResponse> {
     const { id, ...rest } = data;
@@ -115,30 +131,36 @@ export class API_SERVICE {
     });
   }
 
-  static async _publishEvent(data: { mode: string, id: string; } ): Promise<AxiosResponse> {
-    const { id, mode } = data
+  static async _publishEvent(data: { mode: string, ids: string[] } ): Promise<AxiosResponse> {
     return await instance({
-      url: `/events/update_event_mode/${id}`,
+      url: `/events/update_event_mode/`,
       method: HttpMethod.PUT,
-      data: { mode },
+      data,
     });
   }
 
-  static async _addEventToDiscovery(data: { discover: boolean, id: string }): Promise<AxiosResponse> {
-    const { id, discover } = data;
+  static async _addEventToDiscovery(data: { discover: boolean, ids: string[] }): Promise<AxiosResponse> {
     return await instance({
-      url: `/events/update_event_discovery/${id}`,
+      url: `/events/update_event_discovery/`,
       method: HttpMethod.PUT,
-      data: { discover }
+      data,
     });
   }
 
-  static async _getDiscoveryEvents(page: number, limit: number, search?: string): Promise<AxiosResponse> {
+  static async _getDiscoveryEvents(page: number, pageSize: number): Promise<AxiosResponse> {
     return await instance({
       url: `/events/discovery`,
       method: HttpMethod.GET,
-      params: { page, limit, search: search ?? "" },
+      params: { page, pageSize },
     });
+  }
+
+  static async _getUpdateEventRegistration(data: { id: string, enable_registration: boolean}): Promise<AxiosResponse> {
+    return await instance({
+      url: `/events/update_event_registration`,
+      method: HttpMethod.PUT,
+      data,
+    })
   }
 
   static async _createTicket(data: ITicketCreate): Promise<AxiosResponse> {
@@ -176,6 +198,59 @@ export class API_SERVICE {
     return await instance({
       url: `/ticket/delete_ticket/${id}`,
       method: HttpMethod.DELETE,
+    });
+  }
+
+  static async _createDiscount(data: IDiscountCreate): Promise<AxiosResponse> {
+    const { eventId, ...rest } = data;
+    return await instance({
+      url: `/discount/create/${eventId}`,
+      method: HttpMethod.POST,
+      data: { ...rest },
+    });
+  }
+
+  static async _deleteDiscount(id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/discount/delete/${id}`,
+      method: HttpMethod.DELETE,
+    });
+  }
+
+  static async _getEventDiscount(id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/discount/event/${id}`,
+      method: HttpMethod.GET,
+    });
+  }
+
+  static async _getTicketDiscount(id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/discount/ticket/${id}`,
+      method: HttpMethod.GET,
+    });
+  }
+
+  static async _registerGuest(data: IGuestCreate): Promise<AxiosResponse> {
+    const {eventId, ...rest} = data;
+    return await instance({
+      url: `/guest/register/${eventId}`,
+      method: HttpMethod.POST,
+      data: { ...rest }
+    });
+  }
+
+  static async _getEventGuests(id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/guest/event/${id}`,
+      method: HttpMethod.GET,
+    });
+  }
+
+  static async _getTicketGuestd(id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/guest/ticket/${id}`,
+      method: HttpMethod.GET,
     });
   }
 }

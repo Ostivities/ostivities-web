@@ -47,7 +47,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
-  // const pathname = usePathname()
+  const pathname = usePathname()
   // console.log(pathname)
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form); // Watch ticketType changes
@@ -135,7 +135,9 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
           // console.log(response);
           form.resetFields();
           // linkRef.current?.click();
-          router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+          if(pathname.startsWith("/discover/create-events")) {
+            router.push(`/discover/create-events/${params?.id}/tickets_created`);
+          }
           onOk();
       
         }
@@ -158,7 +160,9 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
           // console.log(response);
           form.resetFields();
           // linkRef.current?.click();
-          router.push(`/Dashboard/create-events/${params?.id}/tickets_created`);
+          if(pathname.startsWith("/discover/create-events")) {
+            router.push(`/discover/create-events/${params?.id}/tickets_created`);
+          }
           onOk();
         }
       }

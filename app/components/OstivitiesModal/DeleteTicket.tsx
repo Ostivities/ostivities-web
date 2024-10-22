@@ -4,14 +4,11 @@ import { IModal } from "@/app/utils/interface";
 import { Button, message, Modal, Space } from "antd";
 import React from "react";
 import { Paragraph } from "../typography/Typography";
-import { useDeleteTicket, useGetSingleTicket, useCreateTicket } from "@/app/hooks/ticket/ticket.hook";
-import { useCookies } from "react-cookie";
+import { useDeleteTicket, useCreateTicket } from "@/app/hooks/ticket/ticket.hook";
 
 const DeleteTicket = ({ open, onCancel, onOk, actionType, id, data }: IModal) => {
-  // const [cookies, setCookie] = useCookies(["ticket_id"]);
   const { deleteTicket } = useDeleteTicket();
   const { createTicket } = useCreateTicket();
-  console.log(data)
 
   const handleDeleteClick = async () => {
     const response = await deleteTicket.mutateAsync(id);

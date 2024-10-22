@@ -1,9 +1,84 @@
+// import { useEffect, useState } from "react";
+// import { useRouter, usePathname } from "next/navigation";
+
+// const useFetch = () => {
+//   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+//   const [loading, setLoading] = useState<boolean>(true);
+//   const router = useRouter();
+//   const pathname = usePathname();
+
+//   useEffect(() => {
+//     if (typeof window !== "undefined" && window.sessionStorage) {
+//       const token = sessionStorage.getItem("token");
+
+//       // Static public paths
+//       const publicPaths = [
+//         "/",
+//         "/discover",
+//         "/forgot-password",
+//         "/password-reset",
+//         "/login",
+//         "/signup",
+//         "/about-us",
+//         "/faqs",
+//         "/terms-and-condition",
+//         "/privacy-policy",
+//         "/refund-policy",
+//         "/feedback",
+//         "/not-found",
+//         "/discover/event-not-found",
+//       ];
+//       const privatePaths = [
+//         "/discover/create-events",
+//         "/discover/settings",
+//         "/discover/events-created"
+//       ]
+
+//       // Regex pattern for dynamic public paths
+//       const dynamicPublicPaths = [
+//         /^\/discover\/[a-zA-Z0-9-_]+(\/(tickets|contact-form))?$/,  // Matches paths like `/discover/event_name/tickets`, `/discover/event_name/contact-form`, or `/discover/event_name`
+//       ];
+//       // const dynamicPublicPaths = [
+//       //   /^\/discover\/[a-zA-Z0-9-_]+$/,  // Matches only `/discover/event_name`
+//       // ];
+
+//       // Function to check if the current path is public
+//       const isPublicPath = (path: string) => {
+//         const decodedPath = decodeURIComponent(path); // Decode the path for safety
+
+//         // Check if it's a static public path
+//         if (publicPaths.includes(decodedPath)) return true;
+
+//         // Check if it matches any dynamic public path pattern
+//         return dynamicPublicPaths.some((pattern) => pattern.test(decodedPath));
+//       };
+
+//       if (token) {
+//         setIsLoggedIn(true);
+//       } else {
+//         setIsLoggedIn(false);
+
+//         // Redirect to login if the path is not public
+//         if (!isPublicPath(pathname)) {
+//           router.push("/login");
+//         }
+//       }
+//       setLoading(false);
+//     }
+//   }, [pathname, router]);
+
+//   return { isLoggedIn, loading };
+// };
+
+// export default useFetch;
+
+
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 
 const useFetch = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-
+  const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -11,43 +86,27 @@ const useFetch = () => {
     if (typeof window !== "undefined" && window.sessionStorage) {
       const token = sessionStorage.getItem("token");
 
-      // Static public paths
-      const publicPaths = [
-        "/",
-        "/Dashboard",
-        "/discover",
-        "/forgot-password",
-        "/password-reset",
-        "/login",
-        "/signup",
-        "/about-us",
-        "/faqs",
-        "/terms-and-condition",
-        "/privacy-policy",
-        "/refund-policy",
-        "/feedback",
-        "/Dashboard/event-not-found",
+      // Static private paths
+      const privatePaths = [
+        "/discover/create-events",
+        "/discover/settings",
+        "/discover/events-created"
       ];
 
-      // Updated regex patterns for dynamic public paths
-      const dynamicPublicPaths = [
-        /^\/Dashboard\/[a-zA-Z0-9\s\-:.]+\/[a-zA-Z0-9\s\-:.]+$/,  // Matches paths like `/Dashboard/Sunset Vibes: A Night of Chill Beats/670072d1aae36ba5c6a155e2`
+      // Regex pattern for dynamic private paths
+      const dynamicPrivatePaths = [
+        /^\/discover\/create-events\/[a-zA-Z0-9-_]+(\/(manage|edit|delete))?$/, // Matches paths like `/discover/event_name/manage`, `/discover/event_name/edit`, or `/discover/event_name/delete`
       ];
 
-      // Function to check if the current path is public
-      const isPublicPath = (path: string) => {
-        const decodedPath = decodeURIComponent(path);  // Decode the path
-        console.log("Decoded path:", decodedPath);
+      // Function to check if the current path is private
+      const isPrivatePath = (path: string) => {
+        const decodedPath = decodeURIComponent(path); // Decode the path for safety
 
-        // Check if it's a static public path
-        if (publicPaths.includes(decodedPath)) return true;
+        // Check if it's a static private path
+        if (privatePaths.includes(decodedPath)) return true;
 
-        // Check if it matches any dynamic public path pattern
-        return dynamicPublicPaths.some((pattern) => {
-          const isMatch = pattern.test(decodedPath);
-          console.log(`Testing pattern: ${pattern}, Path: ${decodedPath}, Match: ${isMatch}`);
-          return isMatch;
-        });
+        // Check if it matches any dynamic private path pattern
+        return dynamicPrivatePaths.some((pattern) => pattern.test(decodedPath));
       };
 
       if (token) {
@@ -55,18 +114,16 @@ const useFetch = () => {
       } else {
         setIsLoggedIn(false);
 
-        // Check if the current path is public
-        if (!isPublicPath(pathname)) {
-          console.log("Private path detected, redirecting to /login");
+        // Redirect to login if the path is private and no token is found
+        if (isPrivatePath(pathname)) {
           router.push("/login");
-        } else {
-          console.log("Public path, no redirection needed.");
         }
       }
+      setLoading(false);
     }
   }, [pathname, router]);
 
-  return { isLoggedIn };
+  return { isLoggedIn, loading };
 };
 
 export default useFetch;

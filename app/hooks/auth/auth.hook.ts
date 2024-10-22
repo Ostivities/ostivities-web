@@ -5,6 +5,7 @@ import {
   USER_PROFILE,
   VERIFY_OTP,
   UPDATE_PROFILE,
+  LOGOUT_USER,
 } from "@/app/utils/constants";
 import { errorFormatter, successFormatter } from "@/app/utils/helper";
 import {
@@ -55,6 +56,22 @@ export const useLogin = () => {
   });
   return { loginUser };
 };
+
+export const useLogout = () => {
+  const logoutUser = useMutation({
+    mutationFn: () => {
+      return API_SERVICE._logoutUser()
+    },
+    mutationKey: [LOGOUT_USER],
+    onSuccess: (data: AxiosResponse) => {
+      successFormatter(data)
+    },
+    onError: (error: AxiosError) => {
+      errorFormatter(error);
+    }
+  });
+  return { logoutUser }
+}
 
 export const useVerifyOtp = () => {
   const verifyOtp = useMutation({

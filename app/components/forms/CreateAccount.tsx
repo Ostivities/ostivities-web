@@ -214,47 +214,51 @@ function CreateAccount(): JSX.Element {
       </Form.Item>
 
       <Row gutter={4}>
-        <Col span={12}>
-          <Form.Item<IUser>
-            label="Password"
-            name="password"
-            hasFeedback
-            rules={[{ required: true, validator: validatePassword }]}
-          >
-            <Input.Password
-              placeholder="Enter your password"
-              className="placeholder:font-BricolageGrotesqueRegular"
-            />
-          </Form.Item>
-        </Col>
-        <Col span={12}>
-          <Form.Item<IUser>
-            name="confirmPassword"
-            label="Confirm Password"
-            dependencies={["password"]}
-            hasFeedback
-            rules={[
-              {
-                required: true,
-                message: "Please confirm your password!",
-              },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue("password") === value) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject(new Error("Passwords do not match!"));
-                },
-              }),
-            ]}
-          >
-            <Input.Password
-              placeholder="Re-enter your password"
-              className="placeholder:font-BricolageGrotesqueRegular"
-            />
-          </Form.Item>
-        </Col>
-      </Row>
+  {/* Password Field */}
+  <Col xs={24} sm={12}style={{ marginBottom: '0.5px' }}>{/* Full width on mobile (xs), half width on small screens (sm) */}
+    <Form.Item<IUser>
+      label="Password"
+      name="password"
+      hasFeedback
+      rules={[{ required: true, validator: validatePassword }]}
+    >
+      <Input.Password
+        placeholder="Enter your password"
+        className="placeholder:font-BricolageGrotesqueRegular"
+      />
+    </Form.Item>
+  </Col>
+
+  {/* Confirm Password Field */}
+  <Col xs={24} sm={12}> {/* Full width on mobile (xs), half width on small screens (sm) */}
+    <Form.Item<IUser>
+      name="confirmPassword"
+      label="Confirm Password"
+      dependencies={["password"]}
+      hasFeedback
+      rules={[
+        {
+          required: true,
+          message: "Please confirm your password!",
+        },
+        ({ getFieldValue }) => ({
+          validator(_, value) {
+            if (!value || getFieldValue("password") === value) {
+              return Promise.resolve();
+            }
+            return Promise.reject(new Error("Passwords do not match!"));
+          },
+        }),
+      ]}
+    >
+      <Input.Password
+        placeholder="Re-enter your password"
+        className="placeholder:font-BricolageGrotesqueRegular"
+      />
+    </Form.Item>
+  </Col>
+</Row>
+
 
       <Form.Item<IUser>
         name="terms_and_condition"

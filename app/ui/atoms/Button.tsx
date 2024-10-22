@@ -9,6 +9,7 @@ const Button = ({
   size,
   className,
   prefixIcon,
+  onClick,
   suffixIcon,
   ...props
 }: ButtonAttributes) => {

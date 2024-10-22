@@ -15,21 +15,21 @@ function AboutUs(): JSX.Element {
         <Image
           src={soon}
           alt="About us" 
-          style={{ width: "w-full", height: "auto", marginTop: "60px" }}
+          style={{ width: "w-full", height: "auto", marginTop: "20px" }}
         />
         <div className="md:container md:mx-auto lg:container lg:mx-auto xl:container xl:mx-auto xxl:container xxl:mx-auto px-5 relative pt-6">
           <div
             style={{
-              marginTop: "40px",
+              marginTop: "20px",
               fontFamily: "BricolageGrotesqueMedium",
-              lineHeight: "1.8",
+              lineHeight: "1.5",
               color: "#000",
             }}
           >
-            <h1 style={{ fontSize: "32px", fontWeight: "bold" }}>
+            <h1 style={{ fontSize: "28px", fontWeight: "bold" }}>
               The Story And Vision Behind Ostivities
             </h1>
-            <p style={{ fontSize: "16px", marginBottom: "24px" }}>
+            <p style={{ fontSize: "16px", marginBottom: "24px", marginTop: "18px"  }}>
               At Ostivities, we believe in the power of events to bring people
               together, create lasting memories, and inspire change. Our mission
               is to simplify and enhance the event management experience, making
@@ -165,7 +165,8 @@ function AboutUs(): JSX.Element {
 
             <h1
               style={{
-                fontSize: "40px",
+                fontSize: "28px",
+                marginBottom: "18px",
                 fontWeight: "bold",
                 textAlign: "center",
               }}
@@ -174,7 +175,7 @@ function AboutUs(): JSX.Element {
             </h1>
             <p
               style={{
-                fontSize: "18px",
+                fontSize: "16px",
                 marginBottom: "24px",
                 maxWidth: "950px",
                 margin: "0 auto",
@@ -210,7 +211,7 @@ function AboutUs(): JSX.Element {
 
               <div className="w-full sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
               <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-4">
-                  <Image src={empty} alt="Nafisat" className="w-full h-auto" />
+                  <Image src={pm} alt="Nafisat" className="w-full h-auto" />
                   <div className="p-6">
                     <h2 className="text-md font-bold">Nafisat Gbadegeshin</h2>
                     <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Product Manager</p>
@@ -232,15 +233,34 @@ function AboutUs(): JSX.Element {
               <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-4">
                   <Image src={empty} alt="John" className="w-full h-auto" />
                   <div className="p-6">
-                    <h2 className="text-md font-bold">-----</h2>
-                    <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Finance</p>
+                    <h2 className="text-md font-bold">xxxxx</h2>
+                    <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Engineering</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
+              <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-4">
+                  <Image src={empty} alt="John" className="w-full h-auto" />
+                  <div className="p-6">
+                    <h2 className="text-md font-bold">xxxxx</h2>
+                    <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Operations</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
+              <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-4">
+                  <Image src={empty} alt="John" className="w-full h-auto" />
+                  <div className="p-6">
+                    <h2 className="text-md font-bold">xxxxx</h2>
+                    <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Growth</p>
                   </div>
                 </div>
               </div>
 
 
-            </div>
-
+              </div>
             <br />
             <br />
           </div>

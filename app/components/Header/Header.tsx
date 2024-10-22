@@ -6,16 +6,16 @@ import { INavLinks } from "@/app/utils/interface";
 import CloseIcon from "@/public/close.svg";
 import Hamburger from "@/public/hamburger.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
+import blank from "@/public/blank.svg";
 import { ConfigProvider, Drawer } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 import useFetch from "../forms/create-events/auth";
 
 function Header(): JSX.Element {
-  const router = useRouter();
   const pathname = usePathname();
   const [open, setOpen] = useState<boolean>(false);
   const { isLoggedIn } = useFetch();
@@ -34,8 +34,7 @@ function Header(): JSX.Element {
     pathname === "/signup";
 
   // Check if NAV_LINKS should be displayed
-  const showNavLinks = !pathCheck && pathname !== "/Dashboard"; // Add other pages as needed
-
+  const showNavLinks = !pathCheck && pathname !== "/discover"; // Add other pages as needed
 
   const showDrawer = () => {
     setOpen(true);
@@ -55,12 +54,12 @@ function Header(): JSX.Element {
         {/* LG && XL SCREENS */}
         <nav className="bg-white shadow-sm fixed top-0 left-0 w-full z-50 px-8 py-5 hidden md:hidden lg:grid lg:grid-cols-3 lg:items-center">
           <div>
-            <Link href="/" className="" shallow>
+            <Link href="/" shallow>
               <Image
                 src={OwanbeLogo}
-                alt="Owanbe Logo"
+                alt="Ostivities Logo"
                 style={{ height: "40px" }}
-                className="w-[110px]"
+                className="w-[140px]"
               />
             </Link>
           </div>
@@ -84,49 +83,45 @@ function Header(): JSX.Element {
               {!isLoggedIn ? (
                 isRegistered ? (
                   // Show only Sign In button if user is registered but not logged in
-                  <Button
-                    variant="outline"
-                    label="Sign in"
-                    onClick={() => router.push("/login")}
-                  />
+                  <Link href="/login" passHref>
+                    <Button variant="outline" label="Sign in"
+                      className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold" />
+                  </Link>
                 ) : (
                   // Show both Sign In and Sign Up buttons if user is not registered
                   <>
-                    <Button
-                      variant="outline"
-                      label="Sign in"
-                      onClick={() => router.push("/login")}
-                    />
-                    <Button
-                      label="Sign Up"
-                      onClick={() => router.push("/signup")}
-                    />
+                    <Link href="/login" passHref>
+                      <Button variant="outline" label="Sign in"
+                        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold" />
+                    </Link>
+                    <Link href="/signup" passHref>
+                      <Button label="Sign Up" />
+                    </Link>
                   </>
                 )
               ) : (
                 // Show My Account button if user is logged in
-                <Button
-                  label="My Account"
-                  onClick={() => router.push("/Dashboard")}
-                />
+                <Link href="/discover" passHref>
+                  <Button label="My Account" />
+                </Link>
               )}
             </div>
           )}
         </nav>
 
         {/* SM AND MD SCREENS */}
-        <div className="flex flex-row items-center justify-between px-5 py-3 lg:hidden">
-          <Link href="/" className="" shallow>
+        <div className="flex flex-row items-center justify-between px-2 py-3 lg:hidden">
+          <Link href="/" shallow>
             <Image
               src={OwanbeLogo}
-              alt="Owanbe Logo"
-              style={{ width: "80px", height: "40px" }}
+              alt="Ostivities Logo"
+              style={{ width: "130px", height: "50px" }}
             />
           </Link>
 
           <Image
             src={Hamburger}
-            alt="Owanbe Logo"
+            alt="Hamburger Menu"
             style={{ width: "40px", height: "35px" }}
             onClick={showDrawer}
           />
@@ -134,15 +129,15 @@ function Header(): JSX.Element {
         <Drawer
           closeIcon={
             <Image
-              src={OwanbeLogo}
+              src={blank}
               alt="Owanbe Logo"
-              style={{ width: "80px", height: "40px" }}
+              style={{ width: "130px", height: "50px" }}
             />
           }
           extra={
             <Image
               src={CloseIcon}
-              alt="Owanbe Logo"
+              alt="Ostivities Logo"
               style={{ width: "40px", height: "35px" }}
               onClick={onClose}
             />
@@ -158,7 +153,19 @@ function Header(): JSX.Element {
                   key={link.link + link.name}
                   className="font-BricolageGrotesqueMedium py-3 text-center"
                 >
-                  <Link href={link.link} onClick={onClose}>
+                  <Link href={link.link} onClick={onClose}
+                  style={{
+                    color: typeof window !== 'undefined' && window.innerWidth <= 768 ? '#000000' : '#000000', // Check if window is defined
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.target as HTMLElement).style.color = '#E20000'; // Change to red on hover
+                  }}
+                  onMouseLeave={(e) => {
+                    if (typeof window !== 'undefined') {
+                      (e.target as HTMLElement).style.color = window.innerWidth <= 768 ? '#000000' : '#000000'; 
+                    }
+                  }}
+                >
                     {link.name}
                   </Link>
                 </p>
@@ -168,35 +175,31 @@ function Header(): JSX.Element {
           <div className="flex flex-col items-center justify-center space-y-4 mt-7 mx-auto w-3/5 md:w-1/5">
             {!pathCheck && (
               <>
-              {!isLoggedIn ? (
-                isRegistered ? (
-                  // Show only Sign In button if user is registered but not logged in
-                  <Button
-                    variant="outline"
-                    label="Sign in"
-                    onClick={() => router.push("/login")}
-                  />
+                {!isLoggedIn ? (
+                  isRegistered ? (
+                    // Show only Sign In button if user is registered but not logged in
+                    <Link href="/login" passHref>
+                      <Button variant="outline" label="Sign in"
+                        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold" />
+                    </Link>
+                  ) : (
+                    // Show both Sign In and Sign Up buttons if user is not registered
+                    <>
+                      <Link href="/login" passHref>
+                        <Button variant="outline" label="Sign in"
+                          className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold" />
+                      </Link>
+                      <Link href="/signup" passHref>
+                        <Button label="Sign Up" />
+                      </Link>
+                    </>
+                  )
                 ) : (
-                  // Show both Sign In and Sign Up buttons if user is not registered
-                  <>
-                    <Button
-                      variant="outline"
-                      label="Sign in"
-                      onClick={() => router.push("/login")}
-                    />
-                    <Button
-                      label="Sign Up"
-                      onClick={() => router.push("/signup")}
-                    />
-                  </>
-                )
-              ) : (
-                // Show My Account button if user is logged in
-                <Button
-                  label="My Account"
-                  onClick={() => router.push("/Dashboard")}
-                />
-              )}
+                  // Show My Account button if user is logged in
+                  <Link href="/discover" passHref>
+                    <Button label="My Account" />
+                  </Link>
+                )}
               </>
             )}
           </div>

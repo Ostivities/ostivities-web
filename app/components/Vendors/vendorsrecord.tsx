@@ -11,14 +11,14 @@ import GuestDetail from "@/app/components/OstivitiesModal/GuestDetail";
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 import { ColumnsType } from "antd/es/table";
 
-import {
+import { 
   generateRandomString,
   getRandomEventName,
   getRandomName,
 } from "@/app/utils/helper";
 import { VendorDataType } from "@/app/utils/interface";
-import VendorsDetails from "@/app/Dashboard/events-created/[id]/coordinators/vendors/vendorsdetails/page";
-import NewVendorsDetails from "@/app/Dashboard/events-created/[id]/coordinators/vendors/newvendorsdetails/page";
+import VendorsDetails from "@/app/discover/events-created/[id]/coordinators/vendors/vendorsdetails/page";
+import NewVendorsDetails from "@/app/discover/events-created/[id]/coordinators/vendors/newvendorsdetails/page";
 
 const { Search } = Input;
 

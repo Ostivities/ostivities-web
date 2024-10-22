@@ -1,22 +1,39 @@
-import { useDiscount } from "@/app/contexts/discount-context/DiscountContext";
 import { getRandomName } from "@/app/utils/helper";
-import { DiscountDataType } from "@/app/utils/interface"; // Import the new interface
+import { DiscountDataType, IDiscountData } from "@/app/utils/interface"; // Import the new interface
 import { MenuOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Space, Table } from "antd";
 import { MenuItemType } from "antd/es/menu/interface";
 import { ColumnsType } from "antd/es/table";
-import React, { useState } from "react";
-import DeleteTicket from "../OstivitiesModal/DeleteTicket";
-import { Heading5, Label } from "../typography/Typography";
+import React, { useEffect, useState } from "react";
+import { dateFormat, timeFormat } from "@/app/utils/helper";
+import { useGetEventDiscount } from "@/app/hooks/discount/discount.hook"; 
+import { useRouter, useParams } from "next/navigation";
+import DeleteDiscount from "../OstivitiesModal/DeleteDiscount";
+import { Heading5, Label, Paragraph } from "../typography/Typography";
+import { USAGE_LIMIT } from "@/app/utils/enums";
+import { useQueryClient } from "@tanstack/react-query"
+import { GET_EVENT_DISCOUNT } from "@/app/utils/constants";
+
 
 const DiscountRecord = (): JSX.Element => {
-  const { toggleDiscount } = useDiscount();
   const [searchText, setSearchText] = useState("");
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [isShown, setIsShown] = useState(false);
+  const queryClient = useQueryClient()
   const [actionType, setActionType] = useState<"delete" | "warning">();
+  const router = useRouter();
+  const params = useParams<{ id: string }>();
+  const { getEventDiscount } = useGetEventDiscount(params?.id);
+  console.log(selectedRowKeys, "selectedRowKeys");
+  const eventDiscountDetails = getEventDiscount?.data?.data?.data;
+
+  useEffect(() => {
+    if (params?.id) {
+      queryClient.invalidateQueries({ queryKey: [GET_EVENT_DISCOUNT, params.id] });
+    }
+  }, [params?.id]);
 
   const GuestItems: MenuItemType[] = [
     {
@@ -33,31 +50,29 @@ const DiscountRecord = (): JSX.Element => {
             setActionType("delete");
           }}
         >
-          Delete 
+          Delete
         </Button>
       ),
       key: "3",
     },
   ];
 
-  const data: DiscountDataType[] = Array.from({ length: 50 }, (_, index) => ({
-    key: `${index + 1}`,
-    discountCode: `DISCOUNT${index + 1}`,
-    uses: `${Math.floor(Math.random() * 100)} uses`,
-    dateEnding: `2023-10-${(index + 1)
-      .toString()
-      .padStart(2, "0")}, ${Math.floor(Math.random() * 12)}:${Math.floor(
-      Math.random() * 60
-    )
-      .toString()
-      .padStart(2, "0")}${Math.random() > 0.5 ? "am" : "pm"}`,
-  }));
-
-  const filteredData = data.filter((item) =>
-    item.discountCode.toLowerCase().includes(searchText.toLowerCase())
+  const data: IDiscountData[] = eventDiscountDetails?.map(
+    (item: IDiscountData) => {
+      return {
+        key: item?.id,
+        discountCode: item?.discountCode,
+        uses: item?.usageLimit,
+        dateEnding: item?.endDateAndTime,
+      };
+    }
   );
 
-  const columns: ColumnsType<DiscountDataType> = [
+  const filteredData = data?.filter((item) =>
+    item?.discountCode?.toLowerCase()?.includes(searchText.toLowerCase())
+  );
+
+  const columns: ColumnsType<IDiscountData> = [
     {
       title: (
         <Label
@@ -66,7 +81,7 @@ const DiscountRecord = (): JSX.Element => {
         />
       ),
       dataIndex: "discountCode",
-      sorter: (a, b) => a.discountCode.localeCompare(b.discountCode),
+      sorter: (a, b) => a?.discountCode?.localeCompare(b?.discountCode),
     },
     {
       title: (
@@ -76,7 +91,10 @@ const DiscountRecord = (): JSX.Element => {
         />
       ),
       dataIndex: "uses",
-      sorter: (a, b) => a.uses.localeCompare(b.uses),
+      render: (text, record: IDiscountData) => {
+        return record?.uses === USAGE_LIMIT.MULTIPLE ? "Unlimited" : "Once";
+      }
+      // sorter: (a, b) => a.uses.localeCompare(b.uses),
     },
     {
       title: (
@@ -86,8 +104,11 @@ const DiscountRecord = (): JSX.Element => {
         />
       ),
       dataIndex: "dateEnding",
-      sorter: (a, b) =>
-        new Date(a.dateEnding).getTime() - new Date(b.dateEnding).getTime(),
+      render: (text) => {
+        return `${dateFormat(text)} ${timeFormat(text)}`;
+      },
+      // sorter: (a, b) =>
+      //   new Date(a.dateEnding).getTime() - new Date(b.dateEnding).getTime(),
     },
     {
       title: (
@@ -98,7 +119,7 @@ const DiscountRecord = (): JSX.Element => {
       ),
       dataIndex: "action",
       key: "action",
-      render: (text: any, record: DiscountDataType) => (
+      render: (text: any, record: IDiscountData) => (
         <Space direction="vertical" size="small">
           <Dropdown
             menu={{
@@ -119,14 +140,24 @@ const DiscountRecord = (): JSX.Element => {
 
   return (
     <React.Fragment>
-      <DeleteTicket
+      <DeleteDiscount
         open={isShown}
         onCancel={() => setIsShown(false)}
-        onOk={() => setIsShown(false)}
+        onOk={() => {
+          setIsShown(false);
+          getEventDiscount.refetch();
+        }}
+        id={selectedRowKeys}
         actionType={actionType}
       />
-      <Space direction="vertical" size={"large"} className="w-full">
-        <Heading5 className="pb-5" content={"Discount Code"} />
+
+      <Space direction="vertical" size={"small"}>
+        <Heading5 className="" content={"Discounts "} />
+        <Paragraph
+          className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
+          content={"Generate discount codes and implement automatic discounts."}
+          styles={{ fontWeight: "normal !important" }}
+        />
 
         <Space direction="vertical" size={"large"} className="w-full">
           <div className="flex flex-row items-center justify-end">
@@ -135,16 +166,31 @@ const DiscountRecord = (): JSX.Element => {
               size={"large"}
               htmlType="submit"
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
-              onClick={() => toggleDiscount("Discount_Code")}
+              onClick={() =>
+                router.push(
+                  `/discover/events-created/${params?.id}/tickets/create-discount`
+                )
+              }
             >
               Create Discount
             </Button>
           </div>
 
           <Table
+          loading={getEventDiscount?.isFetching} 
+
             rowSelection={{
               selectedRowKeys,
               onChange: (keys) => setSelectedRowKeys(keys),
+            }}
+            onRow={(record, rowIndex) => {
+              return {
+                onClick: () => {
+                  if (record?.key !== undefined) {
+                    setSelectedRowKeys([record.key]);
+                  }
+                },
+              };
             }}
             columns={columns}
             dataSource={filteredData}
@@ -152,7 +198,7 @@ const DiscountRecord = (): JSX.Element => {
             pagination={{
               current: currentPage,
               pageSize: pageSize,
-              total: filteredData.length,
+              total: filteredData?.length,
               onChange: (page, size) => {
                 setCurrentPage(page);
                 setPageSize(size);

@@ -1,4 +1,4 @@
-import { CREATE_EVENT, DISCOVERY_EVENTS, GET_EVENT, UPDATE_EVENT, GET_ALL_USER_EVENTS } from "@/app/utils/constants";
+import { CREATE_EVENT, DISCOVERY_EVENTS, GET_EVENT, UPDATE_EVENT, GET_ALL_USER_EVENTS, GET_EVENT_BY_UNIQUE_KEY } from "@/app/utils/constants";
 import { errorFormatter, successFormatter } from "@/app/utils/helper";
 import { ICreateEvent, IFormInput, IUpdateEvent } from "@/app/utils/interface";
 import { API_SERVICE } from "@/app/utils/service";
@@ -58,6 +58,16 @@ export const useGetUserEvent = (id: string) => {
   return { getUserEvent };
 };
 
+export const useGetUserEventByUniqueKey = (id: string) => {
+  const getUserEventByUniqueKey = useQuery({
+    queryKey: [GET_EVENT_BY_UNIQUE_KEY, id],
+    queryFn: () => {
+      return API_SERVICE._getUserEventByUniqueKey(id)
+    }
+  })
+  return { getUserEventByUniqueKey }
+}
+
 export const useUpdateEvent = () => {
   const updateEvent = useMutation({
     mutationFn: (data: IUpdateEvent) => {
@@ -76,7 +86,7 @@ export const useUpdateEvent = () => {
 
 export const usePublishEvent = () => {
   const publishEvent = useMutation({
-    mutationFn: (data: { id: string; mode: string;}) => {
+    mutationFn: (data: { ids: string[]; mode: string;}) => {
       return API_SERVICE._publishEvent(data);
     },
     onSuccess: (data: AxiosResponse) => {
@@ -91,7 +101,7 @@ export const usePublishEvent = () => {
 
 export const useAddEventToDiscovery = () => {
   const addEventToDiscovery = useMutation({
-    mutationFn: (data: { discover: boolean, id: string }) => {
+    mutationFn: (data: { discover: boolean, ids: string[] }) => {
       return API_SERVICE._addEventToDiscovery(data);
     },
     onSuccess: (data: AxiosResponse) => {
@@ -104,12 +114,28 @@ export const useAddEventToDiscovery = () => {
   return { addEventToDiscovery };
 }
 
-export const useGetDiscoveryEvents = (page: number, limit: number, search?: string) => {
+export const useGetDiscoveryEvents = (page: number, pageSize: number) => {
   const getDiscoveryEvents = useQuery({
-    queryKey: [DISCOVERY_EVENTS, page, limit, search],
+    queryKey: [DISCOVERY_EVENTS, page, pageSize],
     queryFn: () => {
-      return API_SERVICE._getDiscoveryEvents(page, limit, search);
+      return API_SERVICE._getDiscoveryEvents(page, pageSize);
     },
   });
   return { getDiscoveryEvents };
+}
+
+export const useEnableEventRegistration = () => {
+  const enableEventRegistration = useMutation({
+    mutationFn: (data: { id: string, enable_registration: boolean}) => {
+      return API_SERVICE._getUpdateEventRegistration(data);
+    },
+    onSuccess: (data: AxiosResponse) => {
+      successFormatter(data);
+    },
+    onError: (error: AxiosError | any) => {
+      errorFormatter(error);
+    },
+  })
+  return { enableEventRegistration };
+
 }

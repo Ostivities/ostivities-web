@@ -1,15 +1,42 @@
 import InfoCard from "./InfoCard";
 import EventSection from "./DiscoverEventSection";
-import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
+import { useGetDiscoveryEvents, useAddEventToDiscovery, usePublishEvent } from "@/app/hooks/event/event.hook";
 import { Skeleton } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { IEventDetails } from "@/app/utils/interface";
+import { EVENT_INFO, PUBLISH_TYPE } from "@/app/utils/enums";
 
 const DiscoverEvents = () => {
   const [searchText, setSearchText] = useState("");
-  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 10, searchText);
+  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 4);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
+  const { addEventToDiscovery } = useAddEventToDiscovery();
+  const [expiredEventsId, setExpiredEventsId] = useState<string[]>([]);
+  // console.log(discoveryEvents, "discoveryEvents")
+  const { publishEvent } = usePublishEvent();
 
   const isPending = getDiscoveryEvents?.isLoading;
+
+  const allEventsDate = discoveryEvents?.map((event: IEventDetails) => {
+    return {
+      id: event?.id,
+      endDate: event?.endDate
+    };
+  });
+  const expiredEvents = allEventsDate?.filter((event: IEventDetails) => new Date(event?.endDate).getTime() < new Date().getTime());
+  const expiredEventsIdList = expiredEvents?.map((event: IEventDetails) => event?.id);
+  const filteredEvents = discoveryEvents?.filter((event: IEventDetails) => new Date(event.endDate).getTime() > new Date().getTime());
+  useEffect(() => {
+    const checkEventStatus = async () => {
+      const response =  await publishEvent.mutateAsync({
+        ids: [...expiredEventsIdList],
+        mode: PUBLISH_TYPE.INACTIVE
+      })
+    }
+    if(expiredEventsIdList?.length > 0) {
+      checkEventStatus();
+    }
+  },[expiredEventsIdList, publishEvent])
 
   return (
     <>
@@ -29,20 +56,25 @@ const DiscoverEvents = () => {
                 key={index}
                 active
                 shape="round"
-                style={{ height: 220, width: 230, margin: "10px" }}
+                style={{
+                  height: '320px',
+                  width: '250px',
+                  margin: '10px',
+                  maxWidth: '100%',
+                }}
               />
             ))}
           </>
         ) : (
           // Once data is loaded, map through discoveryEvents and render InfoCard components
-          discoveryEvents?.map((event: any) => (
+          filteredEvents?.map((event: IEventDetails) => (
             <InfoCard
               key={event?.id}
               title={event?.eventName}
               about={event?.eventType}
               status="Get Tickets"
               image={event?.eventImage}
-              url={`/Dashboard/${event?.eventName}/${event?.id}`}
+              url={`/discover/${event?.unique_key}`}
               titleClass="font-bricolage-grotesque font-medium"
               aboutClass="font-bricolage-grotesque"
               statusClass="font-bricolage-grotesque font-medium"

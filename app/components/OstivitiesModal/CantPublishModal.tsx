@@ -40,7 +40,7 @@ const CantPublishModal = ({ open, onCancel, onClose, onOk }: IModal): JSX.Elemen
             <button
               onClick={() =>
                 router.push(
-                  `/Dashboard/events-created/${params?.id}/about`
+                  `/discover/events-created/${params?.id}/about`
                 )
               }
               className="block primary-btn font-normal text-base mt-10 px-32"

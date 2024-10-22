@@ -14,7 +14,7 @@ const Discount = (): JSX.Element => {
         <Paragraph
           className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
           content={"Generate discount codes and implement automatic discounts."}
-          styles={{ fontWeight: "normal !important" }}
+          styles={{ fontWeight: "normal !important" }} 
         />
       </Space>
 

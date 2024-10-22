@@ -4,7 +4,7 @@ import FormProvider from "@/app/contexts/form-context/FormContext";
 import Button from "@/app/ui/atoms/Button";
 import { NAV_LINKS } from "@/app/utils/data";
 import { ACCOUNT_TYPE } from "@/app/utils/enums";
-import { IDashboard, INavLinks } from "@/app/utils/interface"; 
+import { IDashboard, INavLinks } from "@/app/utils/interface";
 import Hamburger from "@/public/hamburger.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
 import {
@@ -31,6 +31,9 @@ import { useCookies } from "react-cookie";
 import useLocalStorage from "use-local-storage";
 import { useProfile } from "../../hooks/auth/auth.hook";
 import useFetch from "../forms/create-events/auth";
+import { useLogout } from "@/app/hooks/auth/auth.hook";
+import emptyImage from "@/public/empty.svg";
+
 
 const items1: MenuProps["items"] = [
   {
@@ -44,16 +47,16 @@ const items1: MenuProps["items"] = [
 ];
 
 const items2: MenuProps["items"] = [
-  { icon: CompassOutlined, title: "Discovery", link: "/Dashboard" },
+  { icon: CompassOutlined, title: "Discovery", link: "/discover" },
   {
     icon: PlusCircleOutlined,
     title: "Create Event",
-    link: "/Dashboard/create-events",
+    link: "/discover/create-events",
   },
   {
     icon: FileSearchOutlined,
     title: "Events Created",
-    link: "/Dashboard/events-created",
+    link: "/discover/events-created",
   },
   { icon: ShopOutlined, title: 'Venue Hub', link: '/Dashboard/venue-hub' },
   { icon: SettingOutlined, title: "Settings", link: "/Dashboard/settings" },
@@ -73,7 +76,7 @@ const items2: MenuProps["items"] = [
 });
 
 const items3: MenuProps["items"] = [
-  { icon: CompassOutlined, title: "Discovery", link: "/Dashboard" },
+  { icon: CompassOutlined, title: "Discovery", link: "/discover" },
 ].map((item) => {
   const key = item.link;
 
@@ -94,6 +97,7 @@ function DashboardLayout({
   const pathname = usePathname();
 
   const { profile } = useProfile();
+  const { logoutUser } = useLogout()
   const [cookies, setCookie, removeCookie] = useCookies([
     "forgot_email",
     "is_registered",
@@ -102,6 +106,7 @@ function DashboardLayout({
     "stage_one",
     "stage_two",
     "stage_three",
+    "user_fullname"
   ]);
 
   // const accountType = profile?.data?.data?.data?.accountType
@@ -125,6 +130,7 @@ function DashboardLayout({
       label: <Label className="cursor-pointer" content="Sign out" />,
       key: "sign-out",
       onClick: () => {
+        // logoutUser.mutateAsync()
         sessionStorage.removeItem("token");
         removeCookie("forgot_email");
         removeCookie("event_id");
@@ -156,28 +162,29 @@ function DashboardLayout({
   const userName =
     accountType === ACCOUNT_TYPE.PERSONAL
       ? userProfile?.data?.data?.data?.firstName +
-        " " +
-        userProfile?.data?.data?.data?.lastName
+      " " +
+      userProfile?.data?.data?.data?.lastName
       : userProfile?.data?.data?.data?.businessName || "";
 
+  // setCookie("user_fullname", userName) 
   const avatarName =
     accountType === ACCOUNT_TYPE.PERSONAL
       ? userProfile?.data?.data?.data?.firstName?.charAt(0) +
-        userProfile?.data?.data?.data?.lastName?.charAt(0)
+      userProfile?.data?.data?.data?.lastName?.charAt(0)
       : userProfile?.data?.data?.data?.businessName?.charAt(0).toUpperCase() +
-          userProfile?.data?.data?.data?.businessName
-            ?.charAt(1)
-            .toUpperCase() || "";
+      userProfile?.data?.data?.data?.businessName
+        ?.charAt(1)
+        .toUpperCase() || "";
 
   const account_type =
-    accountType === ACCOUNT_TYPE.PERSONAL ? "User" : "Organisation" || "";
+    accountType === ACCOUNT_TYPE.PERSONAL ? "User" : "Organisation";
   const index = pathname.split("/")[2];
 
   const confirmIndex = endpoints.includes(index);
 
   const path = confirmIndex ? `/${index}` : "";
 
-  const [currentPah, setCurrentPah] = useState(`/Dashboard${path}`);
+  const [currentPah, setCurrentPah] = useState(`/discover${path}`);
 
   const onClick: MenuProps["onClick"] = (e: any) => {
     setCurrentPah(e?.key);
@@ -213,7 +220,7 @@ function DashboardLayout({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, []); 
 
   return (
     <FormProvider>
@@ -235,15 +242,14 @@ function DashboardLayout({
           }}
         >
           <div className="demo-logo flex flex-row items-center space-x-12">
-            <Image
-              src={OwanbeLogo}
-              alt="Owanbe Logo"
-              style={{ height: "40px" }}
-              className="w-[110px] cursor-pointer"
-              onClick={() => {
-                router.push(`/`);
-              }}
-            />
+            <Link href="/" shallow>
+              <Image
+                src={OwanbeLogo}
+                alt="Ostivities Logo"
+                style={{ height: "40px" }}
+                className="w-[110px] cursor-pointer"
+              />
+            </Link>
           </div>
           {!isLoggedIn && (
             <>
@@ -264,23 +270,24 @@ function DashboardLayout({
               <div className="flex flex-row items-end justify-end space-x-3">
                 {isRegistered ? (
                   // If user is registered but not logged in, show only Sign In button
-                  <Button
-                    variant="outline"
-                    label="Sign in"
-                    onClick={() => router.push("/login")}
-                  />
-                ) : (
-                  // If user is not registered, show both Sign In and Sign Up buttons
-                  <>
+                  <Link href="/login" passHref>
                     <Button
                       variant="outline"
                       label="Sign in"
-                      onClick={() => router.push("/login")}
-                    />
-                    <Button
-                      label="Sign Up"
-                      onClick={() => router.push("/signup")}
-                    />
+                      className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold" />
+                  </Link>
+                ) : (
+                  // If user is not registered, show both Sign In and Sign Up buttons
+                  <>
+                    <Link href="/login" passHref>
+                      <Button
+                        variant="outline"
+                        label="Sign in"
+                        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold" />
+                    </Link>
+                    <Link href="/signup" passHref>
+                      <Button label="Sign Up" />
+                    </Link>
                   </>
                 )}
               </div>
@@ -365,16 +372,17 @@ function DashboardLayout({
                 </div> */}
                 <Dropdown menu={{ items }} trigger={["click", "hover"]}>
                   <div className="flex-center gap-4 cursor-pointer">
-                    <Avatar
-                      size={40}
-                      style={{
-                        background: "#E20000",
-                        fontFamily: "BricolageGrotesqueMedium",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {avatarName}
-                    </Avatar>
+                  <Image
+  src={profile?.data?.data?.data?.image || emptyImage}  // Fallback to imported empty image
+  alt="Profile Picture"
+  width={40}  // Adjust this to match the previous avatar size if needed
+  height={40} // Adjust this to match the previous avatar size if needed
+  className="object-cover rounded-full"
+  style={{
+    cursor: "pointer",  // Keep the cursor style for interaction
+  }}
+/>
+
                     <div className="h-fit flex gap-4">
                       <div className="flex flex-col justify-start">
                         <h3 className=" text-sm text-OWANBE_TABLE_CELL">
@@ -415,7 +423,7 @@ function DashboardLayout({
           >
             <Image
               src={Hamburger}
-              alt="Owanbe Logo"
+              alt="Hamburger Menu"
               style={{
                 width: "40px",
                 height: "35px",
@@ -438,9 +446,8 @@ function DashboardLayout({
               items={isLoggedIn ? items2 : items3}
               onClick={onClick}
               selectedKeys={[currentPah]}
-              className={`${
-                collapsed === true ? "collapsed-side-nav" : "side-nav"
-              }`}
+              className={`${collapsed === true ? "collapsed-side-nav" : "side-nav"
+                }`}
             />
           </Sider>
           <Layout
@@ -485,9 +492,8 @@ function DashboardLayout({
               <Content className="flex flex-col space-y-8 py-8">
                 {steppers && (
                   <div
-                    className={`mx-auto text-center flex flex-row items-center justify-center pb-3 ${
-                      !isValidElement(steppers) ? "hidden" : ""
-                    }`}
+                    className={`mx-auto text-center flex flex-row items-center justify-center pb-3 ${!isValidElement(steppers) ? "hidden" : ""
+                      }`}
                   >
                     {steppers}
                   </div>

@@ -6,7 +6,6 @@ import { Button, Card, Dropdown, message, Space, Switch } from "antd";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { HiMiniArrowLongLeft } from "react-icons/hi2"; 
 import { IoChevronDown } from "react-icons/io5";
 import { LiaExternalLinkAltSolid } from "react-icons/lia";
 import PaymentDetails from "../OstivitiesModal/PaymentDetails";
@@ -14,7 +13,7 @@ import Image from 'next/image';
 import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
 // import { useGetUserEvent, usePublishEvent } from "@/app/hooks/event/event.hook";
 import { useGetUserEvent, useAddEventToDiscovery, usePublishEvent } from "@/app/hooks/event/event.hook";
-import { PUBLISH_TYPE } from "@/app/utils/enums";
+import { EVENT_INFO, PUBLISH_TYPE } from "@/app/utils/enums";
 
 
 export default function EventDetailsComponent({
@@ -30,64 +29,54 @@ export default function EventDetailsComponent({
   const { getUserEvent } = useGetUserEvent(params?.id);
   const { addEventToDiscovery } = useAddEventToDiscovery();
   const { publishEvent } = usePublishEvent();
-  const onToggle = (checked: boolean) => {
-    console.log(`Switch to ${checked}`);
-  };
   const eventDetails = getUserEvent?.data?.data?.data;
   const [isPublished, setIsPublished] = useState(false); // State to track publish status
   const [isDiscover, setIsDiscover] = useState(false); // State to track discovery status
   // console.log(isDiscover, "isDiscover")
   // console.log(isPublished, "isPublished")
 
-  // const handleButtonClick = () => {
-
-  //   setIsPublished(!isPublished);
-  //   if (isPublished) {
-  //     message.success('Event published successfully');
-  //   } else {
-  //     message.success('Event unpublished successfully');
-  //   }
-  // };
+  const eventDate = eventDetails?.endDate;
+  const eventdates = new Date(eventDate).getTime();
 
   useEffect(() => {
-    if(eventDetails?.mode && eventDetails?.mode === PUBLISH_TYPE.ACTIVE) {
+    if (eventDetails?.mode && eventDetails?.mode === PUBLISH_TYPE.ACTIVE) {
       setTimeout(() => {
         setIsPublished(true)
       }, 2000)
-    } else if(eventDetails?.mode && eventDetails?.mode === PUBLISH_TYPE.INACTIVE) {
+    } else if (eventDetails?.mode && eventDetails?.mode === PUBLISH_TYPE.INACTIVE) {
       setTimeout(() => {
         setIsPublished(false)
-      })
+      }, 2000)
     }
-    if(eventDetails?.discover === true) {
+    if (eventDetails?.discover === true) {
       setIsDiscover(true)
     }
   }, [eventDetails])
 
 
 
-  
+
   const handlePublishEvent = async () => {
     if (eventDetails?.mode === PUBLISH_TYPE.ACTIVE) {
       const response = await publishEvent.mutateAsync({
-        id: params?.id, 
+        ids: [params?.id],
         mode: PUBLISH_TYPE.INACTIVE
       });
 
       if (response.status === 200) {
         setIsPublished(!isPublished);
         getUserEvent.refetch()
-        await addEventToDiscovery.mutateAsync({
-          id: params?.id,
-          discover: false
-        })
         setIsDiscover(false)
         message.success('Event unpublished successfully');
         // console.log(response, 'response inactive')
       }
-    } else if (eventDetails?.mode === PUBLISH_TYPE.INACTIVE || !eventDetails?.mode){
+    } else if (eventDetails?.mode === PUBLISH_TYPE.INACTIVE || !eventDetails?.mode) {
+      if (eventdates < new Date().getTime() && eventDetails?.eventInfo === EVENT_INFO.SINGLE_EVENT) {
+        message.error('The event has ended and cannot be published. Please update the event details to republish.');
+        return;
+      }
       const response = await publishEvent.mutateAsync({
-        id: params?.id, 
+        ids: [params?.id],
         mode: PUBLISH_TYPE.ACTIVE
       });
       if (response.status === 200) {
@@ -109,61 +98,53 @@ export default function EventDetailsComponent({
 
   const [activeToggle, setActiveToggle] = useState<string | null>(null);
   const [isActive, setIsActive] = useState<boolean>(false);
-  
+
   const handleSwitchChange = async (checked: boolean) => {
     if (eventDetails?.discover === false) {
       const res = await addEventToDiscovery.mutateAsync({
-        id: params?.id,
+        ids: [params?.id],
         discover: true,
-      }) 
+      })
 
       if (res.status === 200) {
         message.success('Event added to discovery successfully');
         setIsDiscover(true)
         getUserEvent.refetch()
-        console.log(res, 'res discover true') 
+        // console.log(res, 'res discover true') 
       }
-    } else if(eventDetails?.discover === true) {
+    } else if (eventDetails?.discover === true) {
       const res = await addEventToDiscovery.mutateAsync({
-        id: params?.id,
+        ids: [params?.id],
         discover: false
       })
-      if(res.status === 200) {
+      if (res.status === 200) {
         setIsDiscover(false)
         getUserEvent.refetch()
         message.success('Event removed from discovery successfully');
       }
     }
-
-    // try {
-    //   if (res.status === 200) {
-    //     console.log(res)
-    //     // setIsActive(checked);
-    //     if(checked) {
-    //       setIsDiscover(true)
-    //       message.success('Event added to discovery');
-    //     } else{
-    //       setIsDiscover(false)
-    //       message.success('Event removed from discovery');
-    //     }
-    //   } else {
-    //     // setIsDiscover(false)
-    //     message.error('Failed to update discovery status');
-    //   }
-    // } catch (error) {
-    //   message.error('An error occurred while updating discovery status');
-    // }
-    // if (checked) {
-    //   message.success('Event added to discovery');
-    // } else {
-    //   message.success('Event removed from discovery');
-    // }
   };
-  
+
   const handleToggle = (label: string) => {
     setActiveToggle((prev: string | null) => (prev === label ? null : label));
     setIsActive(!isActive);
   };
+
+  useEffect(() => {
+    const checkEventStatus = async () => {
+      if (eventdates < new Date().getTime() && eventDetails?.eventInfo === EVENT_INFO.SINGLE_EVENT) {
+        const response = await publishEvent.mutateAsync({
+          ids: [params?.id],
+          mode: PUBLISH_TYPE.INACTIVE
+        });
+        if (response.status === 200) {
+          setIsPublished(false)
+        }
+      }
+    };
+
+    checkEventStatus();
+  }, [eventDetails?.eventInfo, eventDetails?.frequency, eventdates, params?.id, publishEvent])
 
   useEffect(() => {
     const fetchInitialState = async () => {
@@ -175,7 +156,7 @@ export default function EventDetailsComponent({
         console.error('Failed to fetch event details', error);
       }
     };
-    
+
     fetchInitialState();
   }, [eventDetails]);
 
@@ -188,12 +169,11 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/Dashboard/events-created/${params?.id}/tickets`}
-            className={`font-BricolageGrotesqueRegular font-normal text-sm ${
-              pathname.includes("tickets")
+            href={`/discover/events-created/${params?.id}/tickets`}
+            className={`font-BricolageGrotesqueRegular font-normal text-sm ${pathname.includes("tickets")
                 ? "text-OWANBE_PRY"
                 : "text-OWANBE_DARK"
-            }`}
+              }`}
           >
             Tickets
           </Link>
@@ -203,7 +183,7 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/Dashboard/events-created/${params?.id}/tickets/discounts`}
+            href={`/discover/events-created/${params?.id}/tickets/discounts`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
             Discounts
@@ -214,7 +194,7 @@ export default function EventDetailsComponent({
       // {
       //   label: (
       //     <Link
-      //       href={`/Dashboard/events-created/${params?.id}/tickets/email`}
+      //       href={`/discover/events-created/${params?.id}/tickets/email`}
       //       className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
       //     >
       //       Ticket E-mail
@@ -228,7 +208,7 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/Dashboard/events-created/${params?.id}/guestlist`}
+            href={`/discover/events-created/${params?.id}/guestlist`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
             Guestlist
@@ -239,7 +219,7 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/Dashboard/events-created/${params?.id}/guestlist/email`}
+            href={`/discover/events-created/${params?.id}/guestlist/email`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
             Email Guestlist
@@ -250,7 +230,7 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/Dashboard/events-created/${params?.id}/guestlist/summary`}
+            href={`/discover/events-created/${params?.id}/guestlist/summary`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
             Check in Summary
@@ -264,7 +244,7 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/Dashboard/events-created/${params?.id}/coordinators`}
+            href={`/discover/events-created/${params?.id}/coordinators`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
             Coordinators
@@ -275,7 +255,7 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/Dashboard/events-created/${params?.id}/coordinators/vendors`}
+            href={`/discover/events-created/${params?.id}/coordinators/vendors`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
             Vendors Management
@@ -291,15 +271,14 @@ export default function EventDetailsComponent({
           <Button
             type={pathname.includes("about") ? "primary" : "text"}
             size={"large"}
-            className={`font-BricolageGrotesqueRegular ${
-              pathname.includes("about") ? "sign-up" : ""
-            } cursor-pointer font-medium w-32 rounded-2xl`}
+            className={`font-BricolageGrotesqueRegular ${pathname.includes("about") ? "sign-up" : ""
+              } cursor-pointer font-medium w-32 rounded-2xl`}
             style={{
               borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
             }}
             onClick={() => {
-              router.push(`/Dashboard/events-created/${params?.id}/about`);
+              router.push(`/discover/events-created/${params?.id}/about`);
             }}
           >
             About
@@ -312,9 +291,8 @@ export default function EventDetailsComponent({
           >
             <Button
               type={pathname.includes("tickets") ? "primary" : "text"}
-              className={`font-BricolageGrotesqueRegular cursor-pointer font-medium w-32 rounded-2xl ${
-                pathname.includes("tickets") ? "sign-up" : ""
-              }`}
+              className={`font-BricolageGrotesqueRegular cursor-pointer font-medium w-32 rounded-2xl ${pathname.includes("tickets") ? "sign-up" : ""
+                }`}
               style={{
                 borderRadius: "25px",
                 fontFamily: "BricolageGrotesqueMedium",
@@ -324,9 +302,8 @@ export default function EventDetailsComponent({
               <Space>
                 Tickets
                 <IoChevronDown
-                  color={`${
-                    pathname.includes("tickets") ? "#ffffff" : "#000000"
-                  }`}
+                  color={`${pathname.includes("tickets") ? "#ffffff" : "#000000"
+                    }`}
                 />
               </Space>
             </Button>
@@ -335,16 +312,15 @@ export default function EventDetailsComponent({
           <Button
             type={pathname.includes("event_page_view") ? "primary" : "text"}
             size="large"
-            className={`font-BricolageGrotesqueRegular ${
-              pathname.includes("event_page_view") ? "sign-up" : ""
-            } cursor-pointer font-medium w-40 rounded-2xl`}
+            className={`font-BricolageGrotesqueRegular ${pathname.includes("event_page_view") ? "sign-up" : ""
+              } cursor-pointer font-medium w-40 rounded-2xl`}
             style={{
               borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
             }}
             onClick={() => {
               router.push(
-                `/Dashboard/events-created/${params?.id}/event_page_view`
+                `/discover/events-created/${params?.id}/event_page_view`
               );
             }}
           >
@@ -388,15 +364,14 @@ export default function EventDetailsComponent({
           <Button
             type={pathname.includes("sales") ? "primary" : "text"}
             size="large"
-            className={`font-BricolageGrotesqueRegular ${
-              pathname.includes("sales") ? "sign-up" : ""
-            } cursor-pointer font-medium w-32 rounded-2xl`}
+            className={`font-BricolageGrotesqueRegular ${pathname.includes("sales") ? "sign-up" : ""
+              } cursor-pointer font-medium w-32 rounded-2xl`}
             style={{
               borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
             }}
             onClick={() => {
-              router.push(`/Dashboard/events-created/${params?.id}/sales`);
+              router.push(`/discover/events-created/${params?.id}/sales`);
             }}
           >
             Sales
@@ -468,33 +443,33 @@ export default function EventDetailsComponent({
         </Card>
       );
     };
-  
+
     const cardStyle = {
       width: 'full', // Adjust card width
       height: '150px', // Adjust card height
     };
-  
+
     const titleStyle = {
       fontSize: '20px', // Adjust title text size
     };
-  
+
     const valueStyle = {
       fontSize: '19px', // Adjust value text size
     };
-  
+
     const containerStyle = {
       gap: '4px', // Adjust the spacing between title and value (you can customize this)
     };
 
     const salesRevenue = 250000;
 
-const formattedRevenue = new Intl.NumberFormat('en-NG', {
-  style: 'currency',
-  currency: 'NGN',
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-}).format(salesRevenue);
-  
+    const formattedRevenue = new Intl.NumberFormat('en-NG', {
+      style: 'currency',
+      currency: 'NGN',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(salesRevenue);
+
     return (
       <div className="grid grid-cols-4 gap-x-6">
         <CardMetrics
@@ -514,13 +489,13 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
           containerStyle={containerStyle}
         />
         <CardMetrics
-  title="Total Sales Revenue"
-  value={formattedRevenue}
-  cardStyle={cardStyle}
-  titleStyle={titleStyle}
-  valueStyle={valueStyle}
-  containerStyle={containerStyle}
-/>
+          title="Total Sales Revenue"
+          value={formattedRevenue}
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
         <CardMetrics
           title="Next Payout Date"
           value={"2024-04-07"}
@@ -532,7 +507,7 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
       </div>
     );
   };
-  
+
   const title = (
     <div className="flex items-center w-full relative pb-2 space-x-8">
       <div className="flex flex-row items-center space-x-2 cursor-pointer">
@@ -542,12 +517,12 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
           height={25}
           width={25}
           onClick={() => {
-            router.push(`/Dashboard/events-created`);
+            router.push(`/discover/events-created`);
           }}
         />
         <h1 style={{ fontSize: "24px" }}>Event Details</h1>
       </div>
-  
+
       <div className="flex flex-row items-center space-x-4">
         {isPublished && (
           <div className="flex flex-row items-center space-x-2">
@@ -560,13 +535,13 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
               label="Add to discovery page"
             />
             <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
-              {isDiscover ? 'Remove from discovery' : 'Add to discovery'  }
+              {isDiscover ? 'Remove from discovery' : 'Add to discovery'} 
               {/* Add to discovery page */}
             </span>
           </div>
         )}
       </div>
-  
+
       <Button
         type="primary"
         size={"middle"}
@@ -580,13 +555,13 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
       >
         {isPublished ? 'Unpublish Event' : 'Publish Event'}
       </Button>
-  
+
       {isPublished && (
         <div className="flex flex-row items-center space-x-1">
           <Button
             type="text"
             target="_self"
-            className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK cursor-pointer"
+            className="font-BricolageGrotesqueMedium text-sm text-OWANBE_DARK cursor-pointer"
             onClick={copyToClipBoard}
           >
             <LiaExternalLinkAltSolid
@@ -595,13 +570,14 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
               height={14}
               className="cursor-pointer text-lg"
             />
-            Copy Link
+            <span className="font-BricolageGrotesqueMedium">Copy Link</span>
           </Button>
+
         </div>
       )}
     </div>
   );
-  
+
 
   return (
     <React.Fragment>
@@ -615,9 +591,8 @@ const formattedRevenue = new Intl.NumberFormat('en-NG', {
         isLoggedIn
         extraComponents={
           <div
-            className={`flex flex-col ${
-              pathname.includes("sales") ? "space-y-8" : ""
-            }`}
+            className={`flex flex-col ${pathname.includes("sales") ? "space-y-8" : ""
+              }`}
           >
             <ExtraTab />
             {pathname.includes("sales") && <SalesMetrics />}

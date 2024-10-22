@@ -1,4 +1,4 @@
-import { Button, Form, FormProps, Input, Select, Modal, Space } from "antd";
+import { Button, Form, FormProps, Input, Select, Modal, Space, Row, Col } from "antd";
 import React, { useState } from "react";
 
 // Define the props expected by the modal component
@@ -14,10 +14,13 @@ interface FieldType {
   coordinatorsEmail: string;
   coordinatorsphoneNumber: string;
   coordinatorsRole: string;
+  password?: string;
 }
 
 const AddEventCoordinatorModal: React.FC<AddEventCoordinatorModalProps> = ({ open, onCancel, onOk }) => {
   const { Option } = Select;
+  const [role, setRole] = useState<string | null>(null); // State to track selected role
+  const [form] = Form.useForm(); // Use Ant Design's form instance
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     // handle form submission
@@ -27,6 +30,21 @@ const AddEventCoordinatorModal: React.FC<AddEventCoordinatorModalProps> = ({ ope
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
     console.log('Failed:', errorInfo);
+  };
+
+  // Function to generate a random password with uppercase, lowercase, numbers, and special characters
+  const generatePassword = () => {
+    const length = 12;
+    const charset =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
+    let password = "";
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * charset.length);
+      password += charset[randomIndex];
+    }
+
+    // Set the generated password into the form's password field
+    form.setFieldsValue({ password });
   };
 
   return (
@@ -65,6 +83,7 @@ const AddEventCoordinatorModal: React.FC<AddEventCoordinatorModalProps> = ({ ope
     >
       <Form<FieldType>
         id="add-event-coordinator-form"
+        form={form} // Connect form instance
         name="basic"
         initialValues={{ remember: true }}
         onFinish={onFinish}
@@ -72,45 +91,84 @@ const AddEventCoordinatorModal: React.FC<AddEventCoordinatorModalProps> = ({ ope
         autoComplete="off"
         layout="vertical"
       >
-        <Form.Item<FieldType>
-          label="Coordinator's Name"
-          name="coordinatorsName"
-          rules={[{ required: true, message: "Please input coordinator's name!" }]}
-          style={{ marginBottom: '8px' }}
-        >
-          <Input placeholder="Enter coordinator's name" />
-        </Form.Item>
+        <Row gutter={[16, 16]}>
+          <Col span={12}>
+            <Form.Item<FieldType>
+              label="Coordinator's Name"
+              name="coordinatorsName"
+              rules={[{ required: true, message: "Please input coordinator's name!" }]}
+              style={{ marginBottom: '8px' }}
+            >
+              <Input placeholder="Enter coordinator's name" />
+            </Form.Item>
+          </Col>
 
-        <Form.Item<FieldType>
-          label="Coordinator's Email"
-          name="coordinatorsEmail"
-          rules={[{ required: true, message: "Please input coordinator's email!" }]}
-          style={{ marginBottom: '8px' }}
-        >
-          <Input placeholder="Enter coordinator's email" />
-        </Form.Item>
+          <Col span={12}>
+            <Form.Item<FieldType>
+              label="Coordinator's Email"
+              name="coordinatorsEmail"
+              rules={[{ required: true, message: "Please input coordinator's email!" }]}
+              style={{ marginBottom: '8px' }}
+            >
+              <Input placeholder="Enter coordinator's email" />
+            </Form.Item>
+          </Col>
 
-        <Form.Item<FieldType>
-          label="Coordinator's Phone Number"
-          name="coordinatorsphoneNumber"
-          rules={[{ required: true, message: "Please input coordinator's phone number!" }]}
-          style={{ marginBottom: '8px' }}
-        >
-          <Input placeholder="Enter coordinator's phone number" />
-        </Form.Item>
+          <Col span={12}>
+            <Form.Item<FieldType>
+              label="Coordinator's Phone Number"
+              name="coordinatorsphoneNumber"
+              rules={[{ required: true, message: "Please input coordinator's phone number!" }]}
+              style={{ marginBottom: '8px' }}
+            >
+              <Input placeholder="Enter coordinator's phone number" />
+            </Form.Item>
+          </Col>
 
-        <Form.Item<FieldType>
-          label="Coordinator's Role"
-          name="coordinatorsRole"
-          rules={[{ required: true, message: "Please select coordinator's role!" }]}
-          style={{ marginBottom: '8px' }}
-        >
-          <Select placeholder="Select role type">
-            <Option value="Ticketing Agent">Ticketing Agent</Option>
-            <Option value="Auditor">Auditor</Option>
-            <Option value="Usher">Usher</Option>
-          </Select>
-        </Form.Item>
+          <Col span={12}>
+            <Form.Item<FieldType>
+              label="Coordinator's Role"
+              name="coordinatorsRole"
+              rules={[{ required: true, message: "Please select coordinator's role!" }]}
+              style={{ marginBottom: '8px' }}
+            >
+              <Select
+                placeholder="Select role type"
+                onChange={(value) => setRole(value)} // Update role state on selection
+              >
+                <Option value="Ticketing Agent">Ticketing Agent</Option>
+                <Option value="Auditor">Auditor</Option>
+                <Option value="Usher">Usher</Option>
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
+
+        {/* Conditionally render the password field if "Ticketing Agent" is selected */}
+        {role === "Ticketing Agent" && (
+          <Row gutter={[16, 16]}>
+            <Col span={24}>
+              <Form.Item<FieldType>
+                label="Password"
+                name="password"
+                rules={[{ required: true, message: "Please generate a password for the Ticketing Agent!" }]}
+                style={{ marginBottom: '8px' }}
+              >
+                <Input.Group compact>
+                  <Input.Password
+                    placeholder="Generated password"
+                    style={{ width: 'calc(100% - 140px)' }}
+                    value={form.getFieldValue('password')}
+                    readOnly
+                  />
+                  <Button type="default" onClick={generatePassword} style={{ width: '140px' }}>
+                    Generate Password
+                  </Button>
+                </Input.Group>
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
       </Form>
     </Modal>
   );
