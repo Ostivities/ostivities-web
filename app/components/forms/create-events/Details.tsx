@@ -835,7 +835,7 @@ function Details(): JSX.Element {
               />
             </Space>
 
-            <Controller
+            {/* <Controller
               name="eventInfo"
               control={control}
               rules={{ required: "Event Info is required!" }}
@@ -872,7 +872,7 @@ function Details(): JSX.Element {
               )}
             />
 
-            {watchEventInfo === EVENT_INFO.SINGLE_EVENT && (
+            {watchEventInfo === EVENT_INFO.SINGLE_EVENT && ( */}
               <>
                 <Controller
                   name="timeZone"
@@ -1102,7 +1102,7 @@ function Details(): JSX.Element {
                   </Row>
                 </Space>
               </>
-            )}
+            {/* )} -remove this sentence only later when activating the radio button- */}
 
             {watchEventInfo === EVENT_INFO.RECURRING_EVENT && (
               <>
