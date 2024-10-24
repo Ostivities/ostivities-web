@@ -85,6 +85,8 @@ const useFetch = () => {
   useEffect(() => {
     if (typeof window !== "undefined" && window.sessionStorage) {
       const token = sessionStorage.getItem("token");
+      const tokenTimestamp = sessionStorage.getItem("tokenTimestamp");
+      const currentTime = Date.now();
 
       // Static private paths
       const privatePaths = [
@@ -109,10 +111,20 @@ const useFetch = () => {
         return dynamicPrivatePaths.some((pattern) => pattern.test(decodedPath));
       };
 
-      if (token) {
+      const isTokenValid = () => {
+        if (token && tokenTimestamp) {
+          const expiryTime = parseInt(tokenTimestamp) + 24 * 60 * 60 * 1000; // 24 hours
+          return currentTime < expiryTime;
+        }
+        return false;
+      };
+
+      if (isTokenValid()) {
         setIsLoggedIn(true);
       } else {
         setIsLoggedIn(false);
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("tokenTimestamp");
 
         // Redirect to login if the path is private and no token is found
         if (isPrivatePath(pathname)) {
