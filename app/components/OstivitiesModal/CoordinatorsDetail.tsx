@@ -15,7 +15,7 @@ interface FieldType {
 const CoordinatorsDetail = ({ open, onCancel, onOk, data }: IModal) => {
   const { Option } = Select;
   const [role, setRole] = useState<string | null>('Ticketing Agent'); // Preselect "Ticketing Agent"
-  const [form] = Form.useForm(); // Use Ant Design's form instance
+  const [form] = Form.useForm(); 
 
   const onFinish = (values: FieldType) => {
     // handle form submission
@@ -50,7 +50,7 @@ const CoordinatorsDetail = ({ open, onCancel, onOk, data }: IModal) => {
     >
       <Form<FieldType>
         id="add-event-coordinator-form"
-        form={form} // Connect form instance
+        form={form}
         name="basic"
         initialValues={{ coordinatorsRole: 'Ticketing Agent' }} // Set initial value for role
         onFinish={onFinish}

@@ -40,7 +40,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
   const [showAdditionalField, setShowAdditionalField] =
     useState<boolean>(false);
   const [counter, setCounter] = useState<number>(0); // Counter for unique keys
-  const [form] = Form.useForm(); // Initialize form instance
+  const [form] = Form.useForm(); 
   const { getSingleTicket } = useGetSingleTicket(id);
   const ticketDetails = getSingleTicket?.data?.data?.data;
   const [editorContent, setEditorContent] = useState(ticketDetails?.ticketDescription);
@@ -266,7 +266,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
 
   return (
     <Form<ITicketData>
-      form={form} // Bind form instance
+      form={form}
       name="basic"
       initialValues={{ remember: true }}
       onFinish={onFinish}

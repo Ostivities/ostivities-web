@@ -67,7 +67,7 @@ const DiscountCode = (): JSX.Element => {
 
   const onFinish: FormProps<IDiscountData>["onFinish"] = async (values) => {
     // return console.log(values, "values");
-    const { discountValue, ticketApplicable, ...rest } = values;
+    const { ticketApplicable, ...rest } = values;
 
     const response = await createDiscount.mutateAsync({
       ...rest,
@@ -155,7 +155,7 @@ const DiscountCode = (): JSX.Element => {
             {discountType === DISCOUNT_TYPE.PERCENTAGE && (
               <Form.Item
                 label={<Label content="Discount Value" />} // Correct usage of Label component
-                name="discountValue"
+                name="discount_value"
                 rules={[
                   {
                     required: true,
@@ -177,7 +177,7 @@ const DiscountCode = (): JSX.Element => {
             {discountType === DISCOUNT_TYPE.FIXED && (
               <Form.Item
                 label={<Label content="Discount Value" />} // Correct usage of Label component
-                name="discountValue"
+                name="discount_value"
                 rules={[
                   {
                     required: true,

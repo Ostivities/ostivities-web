@@ -28,11 +28,9 @@ import { relative } from "path";
 import React, { isValidElement, useEffect, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
 import useLocalStorage from "use-local-storage";
-import { useProfile } from "../../hooks/auth/auth.hook";
+import { useProfile, useLogout } from "../../hooks/auth/auth.hook";
 import useFetch from "../forms/create-events/auth";
-import { useLogout } from "@/app/hooks/auth/auth.hook";
 import emptyImage from "@/public/empty.svg";
-
 
 const items1: MenuProps["items"] = [
   {
@@ -66,9 +64,7 @@ const items2: MenuProps["items"] = [
     icon: React.createElement(item.icon),
     label: (
       <span style={{ fontFamily: "bricolagegrotesqueRegular" }}>
-        <a href={item.link}>
-         {item.title}
-        </a>
+        <a href={item.link}>{item.title}</a>
       </span>
     ),
   };
@@ -96,7 +92,7 @@ function DashboardLayout({
   const pathname = usePathname();
 
   const { profile } = useProfile();
-  const { logoutUser } = useLogout()
+  const { logoutUser } = useLogout();
   const [cookies, setCookie, removeCookie] = useCookies([
     "forgot_email",
     "is_registered",
@@ -105,7 +101,7 @@ function DashboardLayout({
     "stage_one",
     "stage_two",
     "stage_three",
-    "user_fullname"
+    "user_fullname",
   ]);
 
   // const accountType = profile?.data?.data?.data?.accountType
@@ -129,7 +125,7 @@ function DashboardLayout({
       label: <Label className="cursor-pointer" content="Sign out" />,
       key: "sign-out",
       onClick: () => {
-        // logoutUser.mutateAsync()
+        logoutUser.mutateAsync();
         sessionStorage.removeItem("token");
         removeCookie("forgot_email");
         removeCookie("event_id");
@@ -160,19 +156,19 @@ function DashboardLayout({
   const userName =
     accountType === ACCOUNT_TYPE.PERSONAL
       ? userProfile?.data?.data?.data?.firstName +
-      " " +
-      userProfile?.data?.data?.data?.lastName
+        " " +
+        userProfile?.data?.data?.data?.lastName
       : userProfile?.data?.data?.data?.businessName || "";
 
-  // setCookie("user_fullname", userName) 
+  // setCookie("user_fullname", userName)
   const avatarName =
     accountType === ACCOUNT_TYPE.PERSONAL
       ? userProfile?.data?.data?.data?.firstName?.charAt(0) +
-      userProfile?.data?.data?.data?.lastName?.charAt(0)
+        userProfile?.data?.data?.data?.lastName?.charAt(0)
       : userProfile?.data?.data?.data?.businessName?.charAt(0).toUpperCase() +
-      userProfile?.data?.data?.data?.businessName
-        ?.charAt(1)
-        .toUpperCase() || "";
+          userProfile?.data?.data?.data?.businessName
+            ?.charAt(1)
+            .toUpperCase() || "";
 
   const account_type =
     accountType === ACCOUNT_TYPE.PERSONAL ? "User" : "Organisation";
@@ -221,7 +217,7 @@ function DashboardLayout({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []); 
+  }, []);
 
   return (
     <FormProvider>
@@ -275,7 +271,8 @@ function DashboardLayout({
                     <Button
                       variant="outline"
                       label="Sign in"
-                      className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold" />
+                      className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                    />
                   </Link>
                 ) : (
                   // If user is not registered, show both Sign In and Sign Up buttons
@@ -284,7 +281,8 @@ function DashboardLayout({
                       <Button
                         variant="outline"
                         label="Sign in"
-                        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold" />
+                        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                      />
                     </Link>
                     <Link href="/signup" passHref>
                       <Button label="Sign Up" />
@@ -373,16 +371,16 @@ function DashboardLayout({
                 </div> */}
                 <Dropdown menu={{ items }} trigger={["click", "hover"]}>
                   <div className="flex-center gap-4 cursor-pointer">
-                  <Image
-  src={profile?.data?.data?.data?.image || emptyImage}  // Fallback to imported empty image
-  alt="Profile Picture"
-  width={40}  // Adjust this to match the previous avatar size if needed
-  height={40} // Adjust this to match the previous avatar size if needed
-  className="object-cover rounded-full"
-  style={{
-    cursor: "pointer",  // Keep the cursor style for interaction
-  }}
-/>
+                    <Image
+                      src={profile?.data?.data?.data?.image || emptyImage} // Fallback to imported empty image
+                      alt="Profile Picture"
+                      width={40} // Adjust this to match the previous avatar size if needed
+                      height={40} // Adjust this to match the previous avatar size if needed
+                      className="object-cover rounded-full"
+                      style={{
+                        cursor: "pointer", // Keep the cursor style for interaction
+                      }}
+                    />
 
                     <div className="h-fit flex gap-4">
                       <div className="flex flex-col justify-start">
@@ -447,8 +445,9 @@ function DashboardLayout({
               items={isLoggedIn ? items2 : items3}
               onClick={onClick}
               selectedKeys={[currentPah]}
-              className={`${collapsed === true ? "collapsed-side-nav" : "side-nav"
-                }`}
+              className={`${
+                collapsed === true ? "collapsed-side-nav" : "side-nav"
+              }`}
             />
           </Sider>
           <Layout
@@ -493,8 +492,9 @@ function DashboardLayout({
               <Content className="flex flex-col space-y-8 py-8">
                 {steppers && (
                   <div
-                    className={`mx-auto text-center flex flex-row items-center justify-center pb-3 ${!isValidElement(steppers) ? "hidden" : ""
-                      }`}
+                    className={`mx-auto text-center flex flex-row items-center justify-center pb-3 ${
+                      !isValidElement(steppers) ? "hidden" : ""
+                    }`}
                   >
                     {steppers}
                   </div>

@@ -20,7 +20,7 @@ interface FieldType {
 const AddEventCoordinatorModal: React.FC<AddEventCoordinatorModalProps> = ({ open, onCancel, onOk }) => {
   const { Option } = Select;
   const [role, setRole] = useState<string | null>(null); // State to track selected role
-  const [form] = Form.useForm(); // Use Ant Design's form instance
+  const [form] = Form.useForm(); 
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     // handle form submission
@@ -83,7 +83,7 @@ const AddEventCoordinatorModal: React.FC<AddEventCoordinatorModalProps> = ({ ope
     >
       <Form<FieldType>
         id="add-event-coordinator-form"
-        form={form} // Connect form instance
+        form={form} 
         name="basic"
         initialValues={{ remember: true }}
         onFinish={onFinish}
