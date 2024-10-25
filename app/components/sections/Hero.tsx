@@ -186,14 +186,14 @@ function Hero(): JSX.Element {
     <Section>
       <div className="flex flex-col space-y-5 pt-5 mt-3 md:pt-8 md:mt-5 lg:pt-0 lg:mt-0 lg:space-y-0 lg:flex-row lg:space-x-8 lg:items-center">
         <div className="flex flex-col items-center space-y-8 md:space-y-4 lg:items-start lg:w-1/2">
-          <H3
-            content="Celebrate, Connect and Create Memories."
+        <H3
+            content="Connecting You to the Events That Matter Most "
             className="text-center text-xl lg:text-3xl lg:text-left lg:w-3/4"
           />
 
           <p className="font-BricolageGrotesqueMedium text-center lg:text-left lg:w-[89%] text-OWANBE_ASH text-lg">
-            Join Ostivities and make every celebration unforgettable! Connect, discover,
-            and create lasting memories with ease. Dive into a world of vibrant event creation and management!
+          Discover Events and Elevate Your Celebrations with Ostivities! Craft unforgettable 
+          memories through seamless planning and management. Start your journey with us today!
           </p>
 
           {/* Flex container for button and countdown */}
