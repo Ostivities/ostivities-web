@@ -35,7 +35,7 @@ const config: Config = {
         OWANBE_INFO: "#A6264C",
         OWANBE_BACKGROUND: "#F7F7F7",
         OWANBE_BORDER: "#D0D4D4",
-        OWANBE_ASH: "#989C9F",
+        OWANBE_ASH: "#707070",
         OWANBE_TEXT: "#000000",
         OWANBE_H5: "#1B1C20",
         OWANBE_H4: "#383A47",

@@ -24,7 +24,7 @@ function Faqs(): JSX.Element {
             Welcome to Ostivities Frequently Asked Questions (FAQs) section. 
             Here, you&apos;ll find answers to common questions about our services, policies, and 
             how to make the most of your experience with us. If you have a question that isn&apos;t answered here, 
-            please feel free to contact us at <a href="mailto:support@ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support@ostivities.com</a>.
+            please feel free to contact us at <a href="mailto:support&#64;ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support&#64;ostivities.com</a>.
             </p>
 
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
@@ -273,7 +273,7 @@ function Faqs(): JSX.Element {
               }}
             >
               <li style={{ marginBottom: "10px" }}>
-                1. Email: <a href="mailto:support@ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support@ostivities.com</a>.
+                1. Email: <a href="mailto:support&#64;ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support&#64;ostivities.com</a>.
               </li>
               <li style={{ marginBottom: "10px" }}>
                 2. Chat with us via our social platforms.
@@ -394,7 +394,7 @@ function Faqs(): JSX.Element {
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
             If you encounter a problem with an event or another user, 
-            please report it to us immediately by contacting <a href="mailto:support@ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support@ostivities.com</a>. and 
+            please report it to us immediately by contacting <a href="mailto:support&#64;ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support&#64;ostivities.com</a>. and 
             provide as much detail as possible so we can investigate and take appropriate action.
             </p>
             
