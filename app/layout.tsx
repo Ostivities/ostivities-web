@@ -4,6 +4,7 @@ import "react-alice-carousel/lib/alice-carousel.css";
 import "./globals.css";
 import StyledComponentsRegistry from "./lib/Registry";
 import Providers from "./providers";
+import { Analytics } from "@vercel/analytics/react"
 
 // const inter = Bricolage_Grotesque({
 //   subsets: ["latin"],
@@ -28,7 +29,9 @@ export default function RootLayout({
       </head>
       <body className={`bg-white overflow-y-auto min-h-screen`}>
         <Providers>
-          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+          <StyledComponentsRegistry>{children}
+          </StyledComponentsRegistry>
+          <Analytics />
         </Providers>
       </body>
     </html>
