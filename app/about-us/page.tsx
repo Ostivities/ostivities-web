@@ -195,7 +195,7 @@ function AboutUs(): JSX.Element {
               <div className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
                 <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-3">
                   <Image src={ceo} alt="Ayatullah" className="w-full h-auto" />
-                  <div className="p-6">
+                  <div className="p-4">
                     <h2 className="text-md font-bold">Ayatullah Olowu</h2>
                     <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Co-Founder & CEO</p>
                   </div>
@@ -205,7 +205,7 @@ function AboutUs(): JSX.Element {
               <div className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
                 <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-3">
                   <Image src={cto} alt="Idris" className="w-full h-auto" />
-                  <div className="p-6">
+                  <div className="p-4">
                     <h2 className="text-md font-bold">Idris Bankole</h2>
                     <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Co-Founder & CTO</p>
                   </div>
@@ -215,7 +215,7 @@ function AboutUs(): JSX.Element {
               <div className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
                 <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-3">
                   <Image src={pm} alt="Nafisat" className="w-full h-auto" />
-                  <div className="p-6">
+                  <div className="p-4">
                     <h2 className="text-md font-bold">Nafisat Gbadegeshin</h2>
                     <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Product Manager</p>
                   </div>
@@ -225,7 +225,7 @@ function AboutUs(): JSX.Element {
               <div className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
                 <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-3">
                   <Image src={qa} alt="Hafizah" className="w-full h-auto" />
-                  <div className="p-6">
+                  <div className="p-4">
                     <h2 className="text-md font-bold">Hafizah Muhyideen</h2>
                     <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Quality Assurance</p>
                   </div>
