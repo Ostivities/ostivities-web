@@ -9,12 +9,12 @@ import Image from "next/image";
 
 function AboutUs(): JSX.Element {
   return (
-    
+
     <OwanbeWebLayout>
       <section className="overflow-hidden">
         <Image
           src={soon}
-          alt="About us" 
+          alt="About us"
           style={{ width: "w-full", height: "auto", marginTop: "20px" }}
         />
         <div className="md:container md:mx-auto lg:container lg:mx-auto xl:container xl:mx-auto xxl:container xxl:mx-auto px-5 relative pt-6">
@@ -29,12 +29,15 @@ function AboutUs(): JSX.Element {
             <h1 style={{ fontSize: "28px", fontWeight: "bold" }}>
               The Story And Vision Behind Ostivities
             </h1>
-            <p style={{ fontSize: "16px", marginBottom: "24px", marginTop: "18px"  }}>
-              At Ostivities, we believe in the power of events to bring people
-              together, create lasting memories, and inspire change. Our mission
-              is to simplify and enhance the event management experience, making
-              it easier for organizers to plan, promote, and execute successful
-              events.
+            <p style={{ fontSize: "16px", marginBottom: "24px", marginTop: "18px" }}>
+              Ostivities was built with a clear mission: to simplify and enhance 
+              event management for everyone. We believe in the power of events 
+              to bring people together, create lasting memories, and inspire change. 
+              Our platform enables organizers to seamlessly plan, promote, and execute 
+              events—all in one place. With a team experienced in technology, event 
+              planning, and marketing, we understand the challenges of managing all 
+              the details, so we set out to build a tool that&apos;s intuitive, efficient, 
+              and enjoyable to use!
             </p>
 
             <h2
@@ -152,13 +155,13 @@ function AboutUs(): JSX.Element {
               Join Us: Be Part Of The Ostivities Journey
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
-  The journey of Ostivities is just beginning, and we invite you to join us.
-  Whether you&apos;re an event organizer looking for a better way to manage
-  your events or an attendee seeking memorable experiences, we&apos;re here to
-  support you.
-  <br />
-  <br />
-</p>
+              The journey of Ostivities is just beginning, and we invite you to join us.
+              Whether you&apos;re an event organizer looking for a better way to manage
+              your events or an attendee seeking memorable experiences, we&apos;re here to
+              support you.
+              <br />
+              <br />
+            </p>
 
             <br />
             <br />
@@ -179,18 +182,18 @@ function AboutUs(): JSX.Element {
                 marginBottom: "24px",
                 maxWidth: "950px",
                 margin: "0 auto",
-                textAlign: "center", 
+                textAlign: "center",
               }}
             >
-              We&apos;re a collaborative and adaptable team, dedicated to learning and continuous improvement. 
+              We&apos;re a collaborative and adaptable team, dedicated to learning and continuous improvement.
               Each member is keenly attentive, observing your every gesture and listening to your every word.
             </p>
             <br />
             <br />
 
             <div className="flex flex-wrap -mx-2">
-              <div className="w-full sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
-              <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-4">
+              <div className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
+                <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-3">
                   <Image src={ceo} alt="Ayatullah" className="w-full h-auto" />
                   <div className="p-6">
                     <h2 className="text-md font-bold">Ayatullah Olowu</h2>
@@ -199,8 +202,8 @@ function AboutUs(): JSX.Element {
                 </div>
               </div>
 
-              <div className="w-full sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
-              <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-4">
+              <div className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
+                <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-3">
                   <Image src={cto} alt="Idris" className="w-full h-auto" />
                   <div className="p-6">
                     <h2 className="text-md font-bold">Idris Bankole</h2>
@@ -209,8 +212,8 @@ function AboutUs(): JSX.Element {
                 </div>
               </div>
 
-              <div className="w-full sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
-              <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-4">
+              <div className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
+                <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-3">
                   <Image src={pm} alt="Nafisat" className="w-full h-auto" />
                   <div className="p-6">
                     <h2 className="text-md font-bold">Nafisat Gbadegeshin</h2>
@@ -219,8 +222,8 @@ function AboutUs(): JSX.Element {
                 </div>
               </div>
 
-              <div className="w-full sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
-              <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-4">
+              <div className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
+                <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-3">
                   <Image src={qa} alt="Hafizah" className="w-full h-auto" />
                   <div className="p-6">
                     <h2 className="text-md font-bold">Hafizah Muhyideen</h2>
@@ -229,38 +232,9 @@ function AboutUs(): JSX.Element {
                 </div>
               </div>
 
-              <div className="w-full sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
-              <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-4">
-                  <Image src={empty} alt="John" className="w-full h-auto" />
-                  <div className="p-6">
-                    <h2 className="text-md font-bold">xxxxx</h2>
-                    <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Engineering</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="w-full sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
-              <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-4">
-                  <Image src={empty} alt="John" className="w-full h-auto" />
-                  <div className="p-6">
-                    <h2 className="text-md font-bold">xxxxx</h2>
-                    <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Operations</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="w-full sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 mb-4">
-              <div className="rounded-lg overflow-hidden flex flex-col items-center justify-center text-center p-4">
-                  <Image src={empty} alt="John" className="w-full h-auto" />
-                  <div className="p-6">
-                    <h2 className="text-md font-bold">xxxxx</h2>
-                    <p className="text-gray-600 text-sm" style={{ color: '#e20000' }}>Growth</p>
-                  </div>
-                </div>
-              </div>
 
 
-              </div>
+            </div>
             <br />
             <br />
           </div>

@@ -890,7 +890,7 @@ function EventDetailsEdit(): JSX.Element {
               />
             </Space>
 
-            <Controller
+            {/* <Controller
               name="eventInfo"
               control={control}
               rules={{ required: "Event Info is required!" }}
@@ -927,7 +927,7 @@ function EventDetailsEdit(): JSX.Element {
               )}
             />
 
-            {watchEventInfo === EVENT_INFO.SINGLE_EVENT && (
+            {watchEventInfo === EVENT_INFO.SINGLE_EVENT && ( */}
               <>
                 <Controller
                   name="timeZone"
@@ -1157,7 +1157,7 @@ function EventDetailsEdit(): JSX.Element {
                   </Row>
                 </Space>
               </>
-            )}
+            {/* )} */}
 
             {watchEventInfo === EVENT_INFO.RECURRING_EVENT && (
               <>

@@ -357,10 +357,10 @@ const AboutEvent = () => {
       <form
         name="basic"
         autoComplete="off"
-        className="flex flex-col space-y-16 pb-5"
+        className="flex flex-col space-y-8 pb-5"
       >
         <Space direction="vertical">
-          <Heading5 className="pb-8" content={"Event Details"} />
+          <Heading5 className="pb-0" content={"Event Details"} />
         </Space>
 
         <div className="grid grid-cols-2 gap-x-4">
@@ -790,7 +790,7 @@ const AboutEvent = () => {
               />
             </Space>
 
-            <Controller
+            {/* <Controller
               name="eventInfo"
               control={control}
               render={({ field }) => (
@@ -824,7 +824,7 @@ const AboutEvent = () => {
               )}
             />
 
-            {watchEventInfo === EVENT_INFO.SINGLE_EVENT && (
+            {watchEventInfo === EVENT_INFO.SINGLE_EVENT && ( */}
               <>
                 <Controller
                   name="timeZone"
@@ -1030,7 +1030,7 @@ const AboutEvent = () => {
                   </Row>
                 </Space>
               </>
-            )}
+            {/* )} */}
 
             {watchEventInfo === EVENT_INFO.RECURRING_EVENT && (
               <>
@@ -1290,7 +1290,7 @@ const AboutEvent = () => {
               style={{
                 borderRadius: "20px",
                 fontFamily: "BricolageGrotesqueMedium",
-                marginTop: "60px",
+                marginTop: "20px",
               }}
               onClick={(e) => {
                 e.preventDefault(); // Prevent form default submission behavior
@@ -1309,7 +1309,7 @@ const AboutEvent = () => {
               style={{
                 borderRadius: "20px",
                 fontFamily: "BricolageGrotesqueMedium",
-                marginTop: "60px",
+                marginTop: "20px",
               }}
               onClick={(e) => {
                 e.preventDefault();

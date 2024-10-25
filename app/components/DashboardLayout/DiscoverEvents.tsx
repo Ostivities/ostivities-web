@@ -48,7 +48,7 @@ const DiscoverEvents = () => {
     if (expiredEventsIdList?.length > 0) {
       checkEventStatus();
     }
-  }, [expiredEventsIdList, publishEvent]);
+  },[expiredEventsIdList])
 
   return (
     <>

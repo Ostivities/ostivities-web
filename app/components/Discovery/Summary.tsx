@@ -224,6 +224,7 @@ const Summary = ({
                     ? "Add Ticket"
                     : "Continue"
                 }
+                disabled={ticketDetails && ticketDetails?.length === 0}
               >
                 Continue
               </Button>

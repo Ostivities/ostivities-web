@@ -438,7 +438,7 @@ export interface IDiscountData {
   id: string;
   discountCode: string;
   discountType: DISCOUNT_TYPE;
-  discountValue?: number;
+  discount_value?: number;
   uses?: string;
   ticket: string[];  // Array of strings
   usageLimit: USAGE_LIMIT;  // Assuming usage can be "ONCE" or "MULTIPLE"

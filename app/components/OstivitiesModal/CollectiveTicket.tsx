@@ -42,7 +42,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
   const [showAdditionalField, setShowAdditionalField] =
     useState<boolean>(false);
   const [counter, setCounter] = useState<number>(0); // Counter for unique keys
-  const [form] = Form.useForm(); // Initialize form instance
+  const [form] = Form.useForm();
   const [editorContent, setEditorContent] = useState("");
   const [loading, setLoading] = useState(false);
   const handleEditorChange = (content: React.SetStateAction<string>) => {
@@ -88,7 +88,8 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
         ticketEntity: TICKET_ENTITY.COLLECTIVE,
         user: profile?.data?.data?.data?.id,
         groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
-        ticketType
+        ticketType,
+        purchaseLimit: 1
       };
       // console.log(payload, "kk");
 
@@ -120,7 +121,8 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
         ticketEntity: TICKET_ENTITY.COLLECTIVE,
         user: profile?.data?.data?.data?.id,
         groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
-        ticketType
+        ticketType,
+        purchaseLimit: 1
       };
       if (payload) {
         const response = await createTicket.mutateAsync(payload);
@@ -235,7 +237,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
 
   return (
     <Form<ITicketData>
-      form={form} // Bind form instance
+      form={form} 
       name="basic"
       initialValues={{ remember: true, guestAsChargeBearer: true }}
       onFinish={onFinish}
@@ -346,7 +348,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
         />
       </Form.Item>
 
-      <Form.Item<ITicketData>
+      {/* <Form.Item<ITicketData>
         label="Purchase limit"
         name="purchaseLimit"
         rules={[
@@ -362,7 +364,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, }) 
           style={{ width: "100%" }}
           min={0}
         />
-      </Form.Item>
+      </Form.Item> */}
 
       <Paragraph
         className="text-OWANBE_DARK text-sm font-normal font-BricolageGrotesqueRegular"

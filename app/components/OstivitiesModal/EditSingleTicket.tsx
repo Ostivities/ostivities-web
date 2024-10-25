@@ -54,9 +54,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
     useState<boolean>(false);
   const [counter, setCounter] = useState<number>(0); // Counter for unique keys
   const ticketDetails = getSingleTicket?.data?.data?.data;
-  const [editorContent, setEditorContent] = useState(
-    ticketDetails?.ticketDescription || ""
-  );
+  const [editorContent, setEditorContent] = useState(ticketDetails?.ticketDescription);
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };

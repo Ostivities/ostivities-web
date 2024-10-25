@@ -287,7 +287,7 @@ function PrivacyPolicy(): JSX.Element {
               </li>
             </ul>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
-            To exercise any of these rights, please contact us at <a href="mailto:support@ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support@ostivities.com</a>
+            To exercise any of these rights, please contact us at <a href="mailto:support&#64;ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support&#64;ostivities.com</a>
                   <br />
                 </p>
 
@@ -357,7 +357,7 @@ function PrivacyPolicy(): JSX.Element {
                 If you have any questions or concerns about this Privacy Policy or our data practices, please contact us at:
                 </p>
                 <p style={{ fontSize: "16px", marginBottom: "24px" }}>
-                <strong>Email:</strong> <a href="mailto:support@ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support@ostivities.com</a>
+                <strong>Email:</strong> <a href="mailto:support&#64;ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support&#64;ostivities.com</a>
                 </p>
 
                 <p style={{ fontSize: "16px", marginBottom: "24px" }}>

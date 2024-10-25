@@ -47,14 +47,14 @@ const Input = ({
           className
         )}
       >
-        <input
+        {/* <input
           className="flex-1 bg-transparent font-light placeholder:font-light placeholder:text-[0.9375rem] focus:outline-none"
           type={type}
           name={name}
           id={name}
           disabled={disabled} // Apply disabled prop here
           {...rest}
-        />
+        /> */}
         {suffix ? (
           suffix
         ) : type === "password" ? (

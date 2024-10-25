@@ -33,10 +33,10 @@ const Event = ({ params }: { params: { event: string } }) => {
   };
 
   const currentTitle =
-    eventTitles[params.event as keyof typeof eventTitles] || "Events";
+    eventTitles[params.event as keyof typeof eventTitles] || "Popular Events";
   const currentSubtitle =
     eventSubtitles[params.event as keyof typeof eventSubtitles] ||
-    "Explore Events";
+    "Explore Popular Events";
 
   const { getDiscoveryEvents } = useGetDiscoveryEvents(page, pageSize);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data || []; // Ensure this is always an array

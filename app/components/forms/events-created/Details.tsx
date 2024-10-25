@@ -14,9 +14,9 @@ import type { ColumnsType } from "antd/es/table";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
-import { useGetAllUserEvents } from "@/app/hooks/event/event.hook";
+import { useGetAllUserEvents, usePublishEvent } from "@/app/hooks/event/event.hook";
 import { IEventDetails } from "@/app/utils/interface";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
 import { PUBLISH_TYPE } from "@/app/utils/enums";
@@ -36,11 +36,34 @@ const EventsCreatedTable: React.FC = () => {
   const [actionType, setActionType] = useState<"delete" | "warning">();
   const { getAllUserEvents } = useGetAllUserEvents(currentPage, pageSize, searchText);
   // console.log(getAllUserEvents,"getAllUserEvents")
+  const { publishEvent } = usePublishEvent();
+
 
   const totalEvents = getAllUserEvents?.data?.data?.data?.total;
   // console.log(selectedRowKeys)
 
   const allUserEventDetails = getAllUserEvents?.data?.data?.data?.data;
+
+  const allEventsDate = allUserEventDetails?.map((event: IEventDetails) => {
+    return {
+      id: event?.id,
+      endDate: event?.endDate
+    };
+  });
+  const expiredEvents = allEventsDate?.filter((event: IEventDetails) => new Date(event?.endDate).getTime() < new Date().getTime());
+  const expiredEventsIdList = expiredEvents?.map((event: IEventDetails) => event?.id);
+  const filteredEvents = allUserEventDetails?.filter((event: IEventDetails) => new Date(event.endDate).getTime() > new Date().getTime());
+  // useEffect(() => {
+  //   const checkEventStatus = async () => {
+  //     const response =  await publishEvent.mutateAsync({
+  //       ids: [...expiredEventsIdList],
+  //       mode: PUBLISH_TYPE.INACTIVE
+  //     })
+  //   }
+  //   if(expiredEventsIdList?.length > 0) {
+  //     checkEventStatus();
+  //   }
+  // },[expiredEventsIdList, publishEvent])
 
   const data: IEventDetails[] = allUserEventDetails?.map((item: IEventDetails) => {
     return {
