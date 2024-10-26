@@ -124,23 +124,27 @@ function DashboardLayout({
     {
       label: <Label className="cursor-pointer" content="Sign out" />,
       key: "sign-out",
-      onClick: () => {
-        logoutUser.mutateAsync();
-        sessionStorage.removeItem("token");
-        removeCookie("forgot_email");
-        removeCookie("event_id");
-        removeCookie("form_stage");
-        removeCookie("stage_one");
-        removeCookie("stage_two");
-        removeCookie("stage_three");
-        router.push("/login");
+      onClick: async () => {
+        const res = await logoutUser.mutateAsync();
+        if(res.status === 200) {
+          sessionStorage.removeItem("token");
+          removeCookie("forgot_email");
+          removeCookie("event_id");
+          removeCookie("form_stage");
+          removeCookie("stage_one");
+          removeCookie("stage_two");
+          removeCookie("stage_three");
+          router.push("/login");
+        }
       },
     },
   ];
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useLocalStorage<boolean>("sidebar", true);
   const { isLoggedIn } = useFetch();
+  console.log(isLoggedIn, "isoggedIN")
   const userProfile = isLoggedIn ? profile : null;
+  console.log(profile)
   const accountType = userProfile?.data?.data?.data?.accountType;
   const {
     token: { colorBgContainer },
