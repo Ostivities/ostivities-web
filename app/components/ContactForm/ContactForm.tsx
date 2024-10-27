@@ -218,11 +218,11 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                       rules={
                         infoDetails?.is_compulsory
                           ? [
-                              {
-                                required: true,
-                                message: "Please provide answers",
-                              },
-                            ]
+                            {
+                              required: true,
+                              message: "Please provide answers",
+                            },
+                          ]
                           : []
                       }
                     >
@@ -234,21 +234,6 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
               );
             })}
 
-            {/* <Form.Item
-                  label="Information 1"
-                  name="name"
-                  rules={[{ required: true, message: 'Please provide answers' }]}
-                >
-                  <Input type="name" placeholder="Enter" />
-            </Form.Item> */}
-            {/* <Form.Item
-              label="Information 2"
-              name="name"
-              rules={[{ required: true, message: "Please provide answers" }]}
-            >
-              <Input type="name" placeholder="Enter" />
-            </Form.Item> */}
-
             <br />
 
             {ticketDetails?.ticketDetails?.map((ticketDetail, ticketIndex) => {
@@ -258,7 +243,7 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                     {/* Loop through the groupSize to create the required number of forms */}
                     {[...Array(ticketDetail?.groupSize)].map((_, index) => (
                       <div key={index}>
-                        <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size mt-4">
+                        <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-2 custom-font-size mt-2">
                           Ticket {index + 1} - Collective of{" "}
                           {ticketDetail?.groupSize} - {ticketDetail?.ticketName}
                         </h3>
@@ -267,20 +252,19 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                           form={form}
                           onValuesChange={validateForm}
                           onFinish={onFinish}
-                          className="form-spacing"
+                          className="form-spacing my-1"
                         >
-                          <Row gutter={16}>
+                          <Row gutter={16} className="mb-6"> {/* Add bottom margin to the row */}
                             <Col span={12}>
                               <Form.Item
                                 layout="vertical"
-                                className="form-spacing"
+                                className="my-4"
                                 label="Attendee First Name"
                                 name={`AttendeefirstName-${index}`} // Unique name for each form
                                 rules={[
                                   {
                                     required: true,
-                                    message:
-                                      "Please provide attendee first name",
+                                    message: "Please provide attendee first name",
                                   },
                                 ]}
                               >
@@ -289,45 +273,44 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                             </Col>
                             <Col span={12}>
                               <Form.Item
+                                className="my-4"
                                 label="Attendee Last Name"
                                 name={`AttendeelastName-${index}`} // Unique name for each form
                                 rules={[
                                   {
                                     required: true,
-                                    message:
-                                      "Please provide attendee last name",
+                                    message: "Please provide attendee last name",
                                   },
                                 ]}
                               >
                                 <Input placeholder="Enter Attendee Last Name" />
                               </Form.Item>
                             </Col>
+                          </Row>
+
+                          {/* New Row with space between rows */}
+                          <Row gutter={16} className="mb-12"> {/* Add bottom margin to the row */}
                             <Col span={12}>
                               <Form.Item
-                                className="form-spacing"
+                                className="my-4"
                                 label="Attendee Email Address"
                                 name={`AttendeEmail-${index}`}
                               >
-                                <Input
-                                  type="email"
-                                  placeholder="Enter Attendee Email Address"
-                                />
+                                <Input type="email" placeholder="Enter Attendee Email Address" />
                               </Form.Item>
                             </Col>
                             <Col span={12}>
                               <Form.Item
-                                // className="mb-4"
+                                className="my-4"
                                 label="Confirm Attendee Email"
                                 name={`ConfirmAttendeeEmail-${index}`}
                               >
-                                <Input
-                                  type="email"
-                                  placeholder="Confirm Attendee Email Address"
-                                />
-                              </Form.Item>                   
+                                <Input type="email" placeholder="Confirm Attendee Email Address" />
+                              </Form.Item>
                             </Col>
                           </Row>
                         </Form>
+
                       </div>
                     ))}
                   </>

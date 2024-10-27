@@ -198,6 +198,7 @@ export interface DataType {
 }
 
 export interface SalesDataType {
+  chargeBearer: any;
   eventType: any;
   dateCreated: any;
   key: React.Key;
@@ -214,6 +215,7 @@ export interface SalesDataType {
 }
 
 export interface ExhibitionDataType {
+  chargeBearer: any;
   dateCreated: any;
   key: React.Key;
   eventName: string;
