@@ -195,12 +195,13 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                 }
                 placeholder="Enter Phone Number"
               />
-            </Form.Item>
+
+            </Form.Item><br/>
 
             {ticketDetails?.ticketDetails?.some(
               (ticket) => ticket?.additionalInformation && ticket?.additionalInformation?.length > 0
             ) && (
-              <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-4 custom-font-size">
+              <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-2 custom-font-size">
                 Additional Information
               </h3>
             )}
@@ -260,13 +261,13 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                             form={form}
                             onValuesChange={validateForm}
                             onFinish={onFinish}
-                            className="form-spacing"
+                            className="form-spacing my-1"
                           >
-                            <Row gutter={16}>
+                            <Row gutter={16} className="mb-6">
                               <Col span={12}>
                                 <Form.Item
                                   layout="vertical"
-                                  className="form-spacing"
+                                  className="my-4"
                                   label="Attendee First Name"
                                   name={`AttendeefirstName-${ticketCounter}`} // Unique name for each form
                                   rules={[
@@ -282,6 +283,7 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                               </Col>
                               <Col span={12}>
                                 <Form.Item
+                                className="my-4"
                                   label="Attendee Last Name"
                                   name={`AttendeelastName-${ticketCounter}`} // Unique name for each form
                                   rules={[
@@ -295,9 +297,12 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                                   <Input placeholder="Enter Attendee Last Name" />
                                 </Form.Item>
                               </Col>
+                              </Row>
+
+                              <Row gutter={16} className="mb-12">
                               <Col span={12}>
                                 <Form.Item
-                                  className="form-spacing"
+                                  className="my-4"
                                   label="Attendee Email Address"
                                   name={`AttendeEmail-${ticketCounter}`}
                                 >
@@ -309,6 +314,7 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                               </Col>
                               <Col span={12}>
                                 <Form.Item
+                                className="my-4"
                                   label="Confirm Attendee Email"
                                   name={`ConfirmAttendeeEmail-${ticketCounter}`}
                                 >
