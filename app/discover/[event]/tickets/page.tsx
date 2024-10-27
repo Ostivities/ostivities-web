@@ -27,7 +27,6 @@ const TicketsSelection = () => {
   const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
   const { getTickets } = useGetEventTickets(eventDetails?.id);
   const ticketData = getTickets?.data?.data?.data;
-  console.log(currentPage, "currentPage")
 
   const title = (
     <div className="flex-center gap-2">
@@ -38,14 +37,18 @@ const TicketsSelection = () => {
         width={25}
         onClick={() => {
           if (currentPage === "tickets") {
-            router.back()
+            router.back();
           } else if (currentPage === "contactform") {
-            setCurrentPage("tickets")
+            setCurrentPage("tickets");
           }
         }}
         className="cursor-pointer"
       />
-      <h1 style={{ fontSize: "24px" }}>{currentPage === "tickets" ? "Choose your tickets" : "Contact Information"} </h1>
+      <h1 style={{ fontSize: "24px" }}>
+        {currentPage === "tickets"
+          ? "Choose your tickets"
+          : "Contact Information"}{" "}
+      </h1>
     </div>
   );
 
@@ -56,7 +59,7 @@ const TicketsSelection = () => {
     [key: string]: number;
   }>({});
 
-  console.log(selectedTickets, "selectedTickets");
+  // console.log(selectedTickets, "selectedTickets");
   const [ticketDetails, setTicketDetails] = useState<
     {
       ticketName: string;
@@ -67,11 +70,11 @@ const TicketsSelection = () => {
       subTotal: number;
       ticketEntity: string;
       groupSize: number;
-      additionalInformation: { question: string; is_compulsory: boolean }[]
+      additionalInformation: { question: string; is_compulsory: boolean }[];
     }[]
   >([]);
 
-  console.log(ticketDetails, "ticketDetails");
+  // console.log(ticketDetails, "ticketDetails");
 
   useEffect(() => {
     // When ticketData is updated, re-initialize selectedTickets
@@ -106,40 +109,51 @@ const TicketsSelection = () => {
         );
 
         const updatedDetails = [...prevDetails];
-
+        const price =
+          ticket?.ticketEntity === TICKET_ENTITY.SINGLE
+            ? ticket?.ticketPrice
+            : ticket?.groupPrice || 0;
+        const currentFee =
+          price < 10000 && price > 0
+            ? price * 0.05 + 150
+            : price >= 10000 && price < 25000
+            ? price * 0.045 + 150 // For ticketPrice between 10000 and 24999
+            : price >= 25000
+            ? price * 0.035 + 150 // For ticketPrice 25000 and above
+            : 0;
         if (existingTicketIndex > -1) {
           const existingTicket = updatedDetails[existingTicketIndex];
           const newTicketNumber = existingTicket?.ticketNumber + 1;
-          const price =
-            ticket?.ticketEntity === TICKET_ENTITY.SINGLE
-              ? ticket?.ticketPrice
-              : ticket?.groupPrice || 0;
-
+          const newTicketPrice = existingTicket?.ticketPrice;
+          const newTicketFee = existingTicket?.ticketFee;
           updatedDetails[existingTicketIndex] = {
             ...existingTicket,
             ticketPrice: price * newTicketNumber,
-            ticketFee: newTicketNumber * price,
+            ticketFee: newTicketNumber * currentFee,
             ticketNumber: newTicketNumber,
-            subTotal: price * newTicketNumber * 2,
+            subTotal: price * newTicketNumber + newTicketNumber * currentFee,
           };
         } else {
-          const price =
-            ticket?.ticketEntity === TICKET_ENTITY.SINGLE
-              ? ticket?.ticketPrice
-              : ticket?.groupPrice || 0;
-
           updatedDetails.push({
             ticketName: ticket?.ticketName,
             ticketPrice: price,
-            ticketFee: ticket?.ticketPrice || 0,
+            ticketFee: currentFee,
             ticketNumber: 1,
-            subTotal: price + (ticket?.ticketPrice || 0),
+            subTotal: price + currentFee,
             ticketId: ticket?.id,
             ticketEntity: ticket?.ticketEntity,
             groupSize: ticket?.groupSize,
-            additionalInformation: ticket?.ticketQuestions?.map((questionDetails: { question: string; is_compulsory: boolean; }) => {
-              return { question: questionDetails?.question, is_compulsory: questionDetails?.is_compulsory }
-            })
+            additionalInformation: ticket?.ticketQuestions?.map(
+              (questionDetails: {
+                question: string;
+                is_compulsory: boolean;
+              }) => {
+                return {
+                  question: questionDetails?.question,
+                  is_compulsory: questionDetails?.is_compulsory,
+                };
+              }
+            ),
           });
         }
         return updatedDetails;
@@ -169,7 +183,15 @@ const TicketsSelection = () => {
 
         if (existingTicketIndex > -1) {
           const existingTicket = updatedDetails[existingTicketIndex];
-          const newTicketNumber = existingTicket.ticketNumber - 1;
+          const newTicketNumber = existingTicket?.ticketNumber - 1;
+          const currentFee =
+            ticket?.ticketPrice < 10000 && ticket?.ticketPrice > 0
+              ? ticket?.ticketPrice * 0.05 + 150
+              : ticket?.ticketPrice >= 10000 && ticket?.ticketPrice < 25000
+              ? ticket?.ticketPrice * 0.045 + 150
+              : ticket?.ticketPrice >= 25000
+              ? ticket?.ticketPrice * 0.035 + 150
+              : 0;
 
           if (newTicketNumber >= 0) {
             const price =
@@ -180,8 +202,9 @@ const TicketsSelection = () => {
             updatedDetails[existingTicketIndex] = {
               ...existingTicket,
               ticketPrice: price * newTicketNumber,
+              ticketFee: currentFee * newTicketNumber,
               ticketNumber: newTicketNumber,
-              subTotal: price * newTicketNumber + ticket.ticketPrice,
+              subTotal: price * newTicketNumber + currentFee * newTicketNumber,
             };
           }
         }
@@ -240,7 +263,7 @@ const TicketsSelection = () => {
             <div className="pr-full mt-16">
               <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueMedium my-8 custom-font-size">
                 Choose one or more tickets and prepare for an extraordinary
-                experience! 
+                experience!
               </h3>
             </div>
 
@@ -270,13 +293,13 @@ const TicketsSelection = () => {
                     (ticket: ITicketDetails) =>
                       ticket?.ticketEntity === TICKET_ENTITY.SINGLE
                   ) && (
-                      <button
-                        className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
-                        style={{ borderRadius: "20px", fontSize: "12px" }}
-                      >
-                        Single Ticket
-                      </button>
-                    )}
+                    <button
+                      className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
+                      style={{ borderRadius: "20px", fontSize: "12px" }}
+                    >
+                      Single Ticket
+                    </button>
+                  )}
                   {ticketData
                     ?.filter(
                       (ticket: ITicketDetails) =>
@@ -297,19 +320,103 @@ const TicketsSelection = () => {
                           <h3>
                             {ticket?.ticketPrice ? (
                               <>
-                                <span
-                                  className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
-                                  style={{ fontWeight: 600, fontSize: "17px" }}
-                                >
-                                  ₦{ticket.ticketPrice.toLocaleString()}
-                                </span>{" "}
-                                <span
-                                  className="text-s font-BricolageGrotesqueRegular"
-                                  style={{ fontWeight: 400, fontSize: "12px" }}
-                                >
-                                  Including ₦
-                                  {ticket.ticketPrice.toLocaleString()} fee
-                                </span>
+                                {ticket?.ticketPrice < 10000 && (
+                                  <>
+                                    <span
+                                      className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                      style={{
+                                        fontWeight: 600,
+                                        fontSize: "17px",
+                                      }}
+                                    >
+                                      ₦
+                                      {(
+                                        ticket?.ticketPrice * 0.05 +
+                                        150 +
+                                        ticket?.ticketPrice
+                                      ).toLocaleString()}
+                                    </span>{" "}
+                                    <span
+                                      className="text-s font-BricolageGrotesqueRegular"
+                                      style={{
+                                        fontWeight: 400,
+                                        fontSize: "12px",
+                                      }}
+                                    >
+                                      Including ₦
+                                      {(
+                                        ticket?.ticketPrice * 0.05 +
+                                        150
+                                      ).toLocaleString()}{" "}
+                                      fee
+                                    </span>
+                                  </>
+                                )}
+                                {ticket?.ticketPrice >= 10000 &&
+                                  ticket?.ticketPrice < 25000 && (
+                                    <>
+                                      <span
+                                        className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                        style={{
+                                          fontWeight: 600,
+                                          fontSize: "17px",
+                                        }}
+                                      >
+                                        ₦
+                                        {(
+                                          ticket?.ticketPrice * 0.045 +
+                                          150 +
+                                          ticket?.ticketPrice
+                                        ).toLocaleString()}
+                                      </span>{" "}
+                                      <span
+                                        className="text-s font-BricolageGrotesqueRegular"
+                                        style={{
+                                          fontWeight: 400,
+                                          fontSize: "12px",
+                                        }}
+                                      >
+                                        Including ₦
+                                        {(
+                                          ticket?.ticketPrice * 0.045 +
+                                          150
+                                        ).toLocaleString()}{" "}
+                                        fee
+                                      </span>
+                                    </>
+                                  )}
+                                {ticket?.ticketPrice >= 25000 && (
+                                  <>
+                                    <span
+                                      className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                      style={{
+                                        fontWeight: 600,
+                                        fontSize: "17px",
+                                      }}
+                                    >
+                                      ₦
+                                      {(
+                                        ticket?.ticketPrice * 0.035 +
+                                        150 +
+                                        ticket?.ticketPrice
+                                      ).toLocaleString()}
+                                    </span>{" "}
+                                    <span
+                                      className="text-s font-BricolageGrotesqueRegular"
+                                      style={{
+                                        fontWeight: 400,
+                                        fontSize: "12px",
+                                      }}
+                                    >
+                                      Including ₦
+                                      {(
+                                        ticket?.ticketPrice * 0.035 +
+                                        150
+                                      ).toLocaleString()}{" "}
+                                      fee
+                                    </span>
+                                  </>
+                                )}
                               </>
                             ) : (
                               <span
@@ -359,12 +466,12 @@ const TicketsSelection = () => {
                             style={{
                               color:
                                 selectedTickets[ticket?.id] ===
-                                  ticket?.purchaseLimit
+                                ticket?.purchaseLimit
                                   ? "white"
                                   : "#e20000",
                               backgroundColor:
                                 selectedTickets[ticket?.id] ===
-                                  ticket?.purchaseLimit
+                                ticket?.purchaseLimit
                                   ? "#cccccc"
                                   : "#FADEDE",
                             }}
@@ -404,13 +511,13 @@ const TicketsSelection = () => {
                     (ticket: ITicketDetails) =>
                       ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE
                   ) && (
-                      <button
-                        className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
-                        style={{ borderRadius: "20px", fontSize: "12px" }}
-                      >
-                        Collective Ticket
-                      </button>
-                    )}
+                    <button
+                      className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
+                      style={{ borderRadius: "20px", fontSize: "12px" }}
+                    >
+                      Collective Ticket
+                    </button>
+                  )}
 
                   {ticketData
                     ?.filter(
@@ -430,7 +537,115 @@ const TicketsSelection = () => {
                             Group Of {ticket?.groupSize} - {ticket.ticketName}
                           </h2>
                           <h3>
-                            <span
+                            {ticket?.groupPrice ? (
+                              <>
+                                {ticket?.groupPrice < 10000 && (
+                                  <>
+                                    <span
+                                      className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                      style={{
+                                        fontWeight: 600,
+                                        fontSize: "17px",
+                                      }}
+                                    >
+                                      ₦
+                                      {(
+                                        ticket?.groupPrice * 0.05 +
+                                        150 +
+                                        ticket?.groupPrice
+                                      ).toLocaleString()}
+                                    </span>{" "}
+                                    <span
+                                      className="text-s font-BricolageGrotesqueRegular"
+                                      style={{
+                                        fontWeight: 400,
+                                        fontSize: "12px",
+                                      }}
+                                    >
+                                      Including ₦
+                                      {(
+                                        ticket?.groupPrice * 0.05 +
+                                        150
+                                      ).toLocaleString()}{" "}
+                                      fee
+                                    </span>
+                                  </>
+                                )}
+                                {ticket?.groupPrice >= 10000 &&
+                                  ticket?.groupPrice < 25000 && (
+                                    <>
+                                      <span
+                                        className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                        style={{
+                                          fontWeight: 600,
+                                          fontSize: "17px",
+                                        }}
+                                      >
+                                        ₦
+                                        {(
+                                          ticket?.groupPrice * 0.045 +
+                                          150 +
+                                          ticket?.groupPrice
+                                        ).toLocaleString()}
+                                      </span>{" "}
+                                      <span
+                                        className="text-s font-BricolageGrotesqueRegular"
+                                        style={{
+                                          fontWeight: 400,
+                                          fontSize: "12px",
+                                        }}
+                                      >
+                                        Including ₦
+                                        {(
+                                          ticket?.groupPrice * 0.045 +
+                                          150
+                                        ).toLocaleString()}{" "}
+                                        fee
+                                      </span>
+                                    </>
+                                  )}
+                                {ticket?.groupPrice >= 25000 && (
+                                  <>
+                                    <span
+                                      className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                      style={{
+                                        fontWeight: 600,
+                                        fontSize: "17px",
+                                      }}
+                                    >
+                                      ₦
+                                      {(
+                                        ticket?.groupPrice * 0.035 +
+                                        150 +
+                                        ticket?.groupPrice
+                                      ).toLocaleString()}
+                                    </span>{" "}
+                                    <span
+                                      className="text-s font-BricolageGrotesqueRegular"
+                                      style={{
+                                        fontWeight: 400,
+                                        fontSize: "12px",
+                                      }}
+                                    >
+                                      Including ₦
+                                      {(
+                                        ticket?.groupPrice * 0.035 +
+                                        150
+                                      ).toLocaleString()}{" "}
+                                      fee
+                                    </span>
+                                  </>
+                                )}
+                              </>
+                            ) : (
+                              <span
+                                className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                style={{ fontWeight: 600, fontSize: "17px" }}
+                              >
+                                Free
+                              </span>
+                            )}
+                            {/* <span
                               className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
                               style={{ fontWeight: 600, fontSize: "17px" }}
                             >
@@ -442,7 +657,7 @@ const TicketsSelection = () => {
                             >
                               Including ₦
                               {(ticket?.ticketPrice ?? 0).toLocaleString()} fee
-                            </span>
+                            </span> */}
                           </h3>
                           <p
                             className="text-s font-BricolageGrotesqueRegular"
@@ -476,19 +691,14 @@ const TicketsSelection = () => {
                           <button
                             className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
                             onClick={() => handleIncrement(ticket?.id)}
-                            disabled={
-                              selectedTickets[ticket?.id] ===
-                              1
-                            }
+                            disabled={selectedTickets[ticket?.id] === 1}
                             style={{
                               color:
-                                selectedTickets[ticket?.id] ===
-                                  1
+                                selectedTickets[ticket?.id] === 1
                                   ? "white"
                                   : "#e20000",
                               backgroundColor:
-                                selectedTickets[ticket?.id] ===
-                                  1
+                                selectedTickets[ticket?.id] === 1
                                   ? "#cccccc"
                                   : "#FADEDE",
                             }}
@@ -511,7 +721,7 @@ const TicketsSelection = () => {
           onClick={() => setCurrentPage("contactform")}
           ticketDetails={ticketDetails}
           continueBtn
-        // to={`/discover/${params?.event}/contact-form`}
+          // to={`/discover/${params?.event}/contact-form`}
         />
       </section>
     </DashboardLayout>

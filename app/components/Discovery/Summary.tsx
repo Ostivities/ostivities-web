@@ -44,7 +44,6 @@ const Summary = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const params = useParams<{ event: string }>();
   const router = useRouter();
-  console.log(to, "to");
 
   const handleAddDiscountClick = () => {
     setShowInput(true);
