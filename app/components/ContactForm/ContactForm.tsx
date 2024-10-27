@@ -222,11 +222,11 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                       rules={
                         infoDetails?.is_compulsory
                           ? [
-                              {
-                                required: true,
-                                message: "Please provide answers",
-                              },
-                            ]
+                            {
+                              required: true,
+                              message: "Please provide answers",
+                            },
+                          ]
                           : []
                       }
                     >
@@ -237,21 +237,6 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                 }
               );
             })}
-
-            {/* <Form.Item
-                  label="Information 1"
-                  name="name"
-                  rules={[{ required: true, message: 'Please provide answers' }]}
-                >
-                  <Input type="name" placeholder="Enter" />
-            </Form.Item> */}
-            {/* <Form.Item
-              label="Information 2"
-              name="name"
-              rules={[{ required: true, message: "Please provide answers" }]}
-            >
-              <Input type="name" placeholder="Enter" />
-            </Form.Item> */}
 
             <br />
 
