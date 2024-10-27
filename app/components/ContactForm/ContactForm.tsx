@@ -135,7 +135,11 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
-                  label="First Name"
+                    label={
+                      <span>
+                        First Name <span style={{ color: 'red' }}>*</span>
+                      </span>
+                    }
                   name="firstName"
                   rules={[
                     {
@@ -143,13 +147,21 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                       message: "Please provide your first name",
                     },
                   ]}
+                  style={{
+                    
+                  }}
+                  // className=""
                 >
                   <Input placeholder="Enter First Name" />
                 </Form.Item>
               </Col>
               <Col span={12}>
                 <Form.Item
-                  label="Last Name"
+                  label={
+                    <span>
+                      Last Name <span style={{ color: 'red' }}>*</span>
+                    </span>
+                  }
                   name="lastName"
                   rules={[
                     {
@@ -163,21 +175,47 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
               </Col>
             </Row>
             <Form.Item
-              label="Email Address"
+              label={
+                <span>
+                  Email Address <span style={{ color: 'red' }}>*</span>
+                </span>
+              }
               name="email"
               rules={[{ required: true, message: "Please provide your email" }]}
             >
               <Input type="email" placeholder="Enter Email Address" />
             </Form.Item>
             <Form.Item
-              label="Confirm Email"
+              label={
+                <span>
+                  Confirm Email <span style={{ color: 'red' }}>*</span>
+                </span>
+              }
               name="confirmEmail"
-              rules={[{ required: true, message: "Please confirm your email" }]}
+              dependencies={["email"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please confirm your email!",
+                },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue("email") === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error("Emails do not match!"));
+                  },
+                }),
+              ]}
             >
               <Input type="email" placeholder="Confirm Email Address" />
             </Form.Item>
             <Form.Item
-              label="Phone Number"
+              label={
+                <span>
+                  Phone Number <span style={{ color: 'red' }}>*</span>
+                </span>
+              }
               name="phoneNumber"
               rules={[
                 { required: true, message: "Please provide your phone number" },
@@ -195,11 +233,13 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                 }
                 placeholder="Enter Phone Number"
               />
-
-            </Form.Item><br/>
+            </Form.Item>
+            <br />
 
             {ticketDetails?.ticketDetails?.some(
-              (ticket) => ticket?.additionalInformation && ticket?.additionalInformation?.length > 0
+              (ticket) =>
+                ticket?.additionalInformation &&
+                ticket?.additionalInformation?.length > 0
             ) && (
               <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-2 custom-font-size">
                 Additional Information
@@ -218,16 +258,21 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                   return (
                     <Form.Item
                       key={`${ticketIndex}-${infoIndex}`} // Unique key combining ticketIndex and infoIndex
-                      label={infoDetails?.question}
+                      label={
+                        <span>
+                          {infoDetails?.question} {infoDetails?.is_compulsory === true ? <span style={{ color: 'red' }}>*</span> : null }
+                        </span>
+                      }
+    
                       name={`additionalField${ticketIndex}-${infoIndex}`} // Unique name to avoid conflicts
                       rules={
-                        infoDetails?.is_compulsory
+                        infoDetails?.is_compulsory === true
                           ? [
-                            {
-                              required: true,
-                              message: "Please provide answers",
-                            },
-                          ]
+                              {
+                                required: true,
+                                message: "This question is required",
+                              },
+                            ]
                           : []
                       }
                     >
@@ -268,7 +313,11 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                                 <Form.Item
                                   layout="vertical"
                                   className="my-4"
-                                  label="Attendee First Name"
+                                  label={
+                                    <span>
+                                      Attendee First Name <span style={{ color: 'red' }}>*</span>
+                                    </span>
+                                  }
                                   name={`AttendeefirstName-${ticketCounter}`} // Unique name for each form
                                   rules={[
                                     {
@@ -283,8 +332,12 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                               </Col>
                               <Col span={12}>
                                 <Form.Item
-                                className="my-4"
-                                  label="Attendee Last Name"
+                                  className="my-4"
+                                  label={
+                                    <span>
+                                      Attendee Last Name <span style={{ color: 'red' }}>*</span>
+                                    </span>
+                                  }
                                   name={`AttendeelastName-${ticketCounter}`} // Unique name for each form
                                   rules={[
                                     {
@@ -297,13 +350,17 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                                   <Input placeholder="Enter Attendee Last Name" />
                                 </Form.Item>
                               </Col>
-                              </Row>
+                            </Row>
 
-                              <Row gutter={16} className="mb-12">
+                            <Row gutter={16} className="mb-12">
                               <Col span={12}>
                                 <Form.Item
                                   className="my-4"
-                                  label="Attendee Email Address"
+                                  label={
+                                    <span>
+                                      Attendee Email Address <span style={{ color: 'red' }}>*</span>
+                                    </span>
+                                  }
                                   name={`AttendeEmail-${ticketCounter}`}
                                 >
                                   <Input
@@ -314,9 +371,29 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                               </Col>
                               <Col span={12}>
                                 <Form.Item
-                                className="my-4"
-                                  label="Confirm Attendee Email"
+                                  className="my-4"
+                                  label={
+                                    <span>
+                                      Confirm Attendee Email <span style={{ color: 'red' }}>*</span>
+                                    </span>
+                                  }
                                   name={`ConfirmAttendeeEmail-${ticketCounter}`}
+                                  dependencies={[`AttendeEmail-${ticketCounter}`]}
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message: "Please confirm your email!",
+                                    },
+                                    ({ getFieldValue }) => ({
+                                      validator(_, value) {
+                                        if (!value || getFieldValue(`AttendeEmail-${ticketCounter}`) === value) {
+                                          return Promise.resolve();
+                                        }
+                                        return Promise.reject(new Error("Emails do not match!"));
+                                      },
+                                    }),
+                                  ]}
+                    
                                 >
                                   <Input
                                     type="email"
