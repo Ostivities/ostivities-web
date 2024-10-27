@@ -20,6 +20,7 @@ import { Heading5 } from "@/app/components/typography/Typography";
 import { TICKET_ENTITY } from "@/app/utils/enums";
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
+import { ITicketDetails } from "@/app/utils/interface";
 
 interface Inputs {
   firstName: string;
@@ -85,6 +86,7 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
       setIsFormValid(false);
     }
   };
+  let ticketCounter = 0;
 
   return (
     // <DashboardLayout title={title} isLoggedIn>
@@ -193,13 +195,16 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                 }
                 placeholder="Enter Phone Number"
               />
-            </Form.Item>
-            {ticketDetails?.ticketDetails &&
-              ticketDetails?.ticketDetails?.length > 0 && (
-                <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-4 custom-font-size">
-                  Additional Information
-                </h3>
-              )}
+
+            </Form.Item><br/>
+
+            {ticketDetails?.ticketDetails?.some(
+              (ticket) => ticket?.additionalInformation && ticket?.additionalInformation?.length > 0
+            ) && (
+              <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-2 custom-font-size">
+                Additional Information
+              </h3>
+            )}
 
             {ticketDetails?.ticketDetails?.map((ticketDetail, ticketIndex) => {
               return ticketDetail?.additionalInformation?.map(
@@ -241,78 +246,89 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                 ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE && (
                   <>
                     {/* Loop through the groupSize to create the required number of forms */}
-                    {[...Array(ticketDetail?.groupSize)].map((_, index) => (
-                      <div key={index}>
-                        <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-2 custom-font-size mt-2">
-                          Ticket {index + 1} - Collective of{" "}
-                          {ticketDetail?.groupSize} - {ticketDetail?.ticketName}
-                        </h3>
+                    {[...Array(ticketDetail?.groupSize)].map((_, index) => {
+                      ticketCounter++; // Increment the counter for each ticket
 
-                        <Form
-                          form={form}
-                          onValuesChange={validateForm}
-                          onFinish={onFinish}
-                          className="form-spacing my-1"
-                        >
-                          <Row gutter={16} className="mb-6"> {/* Add bottom margin to the row */}
-                            <Col span={12}>
-                              <Form.Item
-                                layout="vertical"
-                                className="my-4"
-                                label="Attendee First Name"
-                                name={`AttendeefirstName-${index}`} // Unique name for each form
-                                rules={[
-                                  {
-                                    required: true,
-                                    message: "Please provide attendee first name",
-                                  },
-                                ]}
-                              >
-                                <Input placeholder="Enter Attendee First Name" />
-                              </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                              <Form.Item
-                                className="my-4"
-                                label="Attendee Last Name"
-                                name={`AttendeelastName-${index}`} // Unique name for each form
-                                rules={[
-                                  {
-                                    required: true,
-                                    message: "Please provide attendee last name",
-                                  },
-                                ]}
-                              >
-                                <Input placeholder="Enter Attendee Last Name" />
-                              </Form.Item>
-                            </Col>
-                          </Row>
+                      return (
+                        <div key={index}>
+                          <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size mt-4">
+                            Ticket {ticketCounter} - Collective of{" "}
+                            {ticketDetail?.groupSize} -{" "}
+                            {ticketDetail?.ticketName}
+                          </h3>
 
-                          {/* New Row with space between rows */}
-                          <Row gutter={16} className="mb-12"> {/* Add bottom margin to the row */}
-                            <Col span={12}>
-                              <Form.Item
+                          <Form
+                            form={form}
+                            onValuesChange={validateForm}
+                            onFinish={onFinish}
+                            className="form-spacing my-1"
+                          >
+                            <Row gutter={16} className="mb-6">
+                              <Col span={12}>
+                                <Form.Item
+                                  layout="vertical"
+                                  className="my-4"
+                                  label="Attendee First Name"
+                                  name={`AttendeefirstName-${ticketCounter}`} // Unique name for each form
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message:
+                                        "Please provide attendee first name",
+                                    },
+                                  ]}
+                                >
+                                  <Input placeholder="Enter Attendee First Name" />
+                                </Form.Item>
+                              </Col>
+                              <Col span={12}>
+                                <Form.Item
                                 className="my-4"
-                                label="Attendee Email Address"
-                                name={`AttendeEmail-${index}`}
-                              >
-                                <Input type="email" placeholder="Enter Attendee Email Address" />
-                              </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                              <Form.Item
-                                className="my-4"
-                                label="Confirm Attendee Email"
-                                name={`ConfirmAttendeeEmail-${index}`}
-                              >
-                                <Input type="email" placeholder="Confirm Attendee Email Address" />
-                              </Form.Item>
-                            </Col>
-                          </Row>
-                        </Form>
+                                  label="Attendee Last Name"
+                                  name={`AttendeelastName-${ticketCounter}`} // Unique name for each form
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message:
+                                        "Please provide attendee last name",
+                                    },
+                                  ]}
+                                >
+                                  <Input placeholder="Enter Attendee Last Name" />
+                                </Form.Item>
+                              </Col>
+                              </Row>
 
-                      </div>
-                    ))}
+                              <Row gutter={16} className="mb-12">
+                              <Col span={12}>
+                                <Form.Item
+                                  className="my-4"
+                                  label="Attendee Email Address"
+                                  name={`AttendeEmail-${ticketCounter}`}
+                                >
+                                  <Input
+                                    type="email"
+                                    placeholder="Enter Attendee Email Address"
+                                  />
+                                </Form.Item>
+                              </Col>
+                              <Col span={12}>
+                                <Form.Item
+                                className="my-4"
+                                  label="Confirm Attendee Email"
+                                  name={`ConfirmAttendeeEmail-${ticketCounter}`}
+                                >
+                                  <Input
+                                    type="email"
+                                    placeholder="Confirm Attendee Email Address"
+                                  />
+                                </Form.Item>
+                              </Col>
+                            </Row>
+                          </Form>
+                        </div>
+                      );
+                    })}
                   </>
                 )
               );
