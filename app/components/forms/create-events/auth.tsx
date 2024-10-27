@@ -59,12 +59,12 @@ const useFetch = () => {
           router.push("/login");
         }
       }
-      if(profile?.isSuccess === false) {
+      if(profile?.isFetching === false && profile?.isSuccess === false) {
         setIsLoggedIn(false);
       }
       setLoading(false);
     }
-  }, [pathname, profile?.isSuccess, router]);
+  }, [pathname, profile, router]);
 
   return { isLoggedIn, loading };
 };
