@@ -57,12 +57,12 @@ const PaymentSetting = () => {
     <form className="px-12 py-5 min-h-[60vh] flex flex-col items-center justify-between">
       <div className="self-start">
         <>
-          <H4 content="Payment Setting" style={{ fontSize: '24px' }} />
+          <H4 content="Payment Setting" style={{ fontSize: '22px' }} />
           <p
             style={{
               fontFamily: "Bricolage Grotesque, sans-serif",
-              fontWeight: "400",
-              fontSize: '15px',
+              fontWeight: "350",
+              fontSize: '14px',
             }}
             className="text-OWANBE_PRY mt-1 mb-5"
           >
@@ -87,16 +87,16 @@ const PaymentSetting = () => {
         </div>
 
         <div className="mt-12">
-          <H4 content="Account Details" style={{ fontSize: '24px' }} />
+          <H4 content="Account Details" style={{ fontSize: '22px' }} />
           <p
             style={{
               fontFamily: "Bricolage Grotesque, sans-serif",
-              fontWeight: "400",
-              fontSize: '15px',
+              fontWeight: "350",
+              fontSize: '14px',
             }}
             className="text-OWANBE_PRY mt-1 mb-3"
           >
-            Update your account details here. Please note that changes can only be made up to 2 days before your next payout date.
+            Update your account details here. Please note that changes can only be made up to 2 days before your next payout date. 
           </p>
 
           <Form layout="vertical" form={form} className="flex flex-col gap-y-1 mt-5">

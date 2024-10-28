@@ -259,10 +259,10 @@ function DashboardLayout({
             <>
               <Skeleton.Button
                 active
-                shape="round"
+                shape="circle"
                 style={{
-                  height: "10px",
-                  width: "50px",
+                  height: "60px",
+                  width: "60px",
                   maxWidth: "100%",
                 }}
               />
