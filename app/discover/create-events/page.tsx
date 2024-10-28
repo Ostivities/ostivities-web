@@ -6,12 +6,12 @@ import useFetch from "@/app/components/forms/create-events/auth";
 import { useRouter } from "next/navigation";
 
 function CreateEvents(): JSX.Element {
+  const router = useRouter()
+  const { isLoggedIn, loading } = useFetch();
 
-  // const { isLoggedIn } = useFetch();
-
-  // if(!isLoggedIn) {
-  //   return <></>;
-  // }
+  if(!loading && !isLoggedIn) {
+    router.push('/login')
+  }
 
   const title = (
     <div className="flex justify-between items-center w-full relative pb-2">

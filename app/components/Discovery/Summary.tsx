@@ -229,6 +229,7 @@ const Summary = ({
               </Button>
             </div>
           )}
+          
           {paymentBtn && (
             <div className="flex justify-center mt-12 mb-6 w-full">
               <button
