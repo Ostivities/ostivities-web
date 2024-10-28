@@ -22,6 +22,8 @@ import { TICKET_ENTITY } from "@/app/utils/enums";
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
 import { ITicketDetails } from "@/app/utils/interface";
+import { useTimer } from '@/app/hooks/countdown';
+import TimerModal from '@/app/components/OstivitiesModal/TimerModal';
 
 interface Inputs {
   firstName: string;
@@ -49,11 +51,12 @@ interface InfoNeeded {
       is_compulsory: boolean;
     }[];
   }[];
-  onSubmit?:  () => void;
+  onSubmit?: () => void;
 }
 
 const ContactForm = (ticketDetails: InfoNeeded) => {
   const router = useRouter();
+  const [modal, setModal] = useState(false);
   const params = useParams<{ event: string }>();
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
   const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
@@ -83,11 +86,25 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
   };
   let ticketCounter = 0;
 
+  const { minutes, remainingSeconds, timer } = useTimer();
+
+  useEffect(() => {
+    if (minutes === 0 && remainingSeconds === 0) {
+      setModal(true);
+    }
+  }, [minutes, remainingSeconds]);
+
   return (
     <section className="flex gap-12">
       {/* Scrollable content container */}
-      <section className="flex-1 pr-1 pl-3 pb-4 scrollable-content">
-        <div className="flex-center justify-between">
+      <section className="flex-1 pr-1 pl-3 pb-4 scrollable-content overflow-y-auto scroll-smooth h-full">
+        <div className="bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem] w-[570px]">
+          We have reserved your tickets, please complete checkout within{' '}
+          <span className="text-OWANBE_PRY text-s font-BricolageGrotesqueRegular">{timer}</span>
+          minutes to secure your tickets.
+        </div>
+
+        {/* <div className="flex-center justify-between">
           <div className="flex-center gap-3">
             <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
               <Image src="/icons/calendar.svg" alt="" height={25} width={25} />
@@ -113,10 +130,10 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
               </span>
             </div>
           </div>
-        </div>
-        <div className="pr-full mt-16">
-          <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueMedium my-8 custom-font-size">
-            Please fill out the form below with your information so we can send 
+        </div> */}
+        <div className="pr-full mt-12">
+          <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueMedium my-5 custom-font-size">
+            Please fill out the form below with your information so we can send
             you your ticket.
           </h3>
           <Form
@@ -129,11 +146,11 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
-                    label={
-                      <span>
-                        First Name <span style={{ color: 'red' }}>*</span>
-                      </span>
-                    }
+                  label={
+                    <span>
+                      First Name <span style={{ color: 'red' }}>*</span>
+                    </span>
+                  }
                   name="firstName"
                   rules={[
                     {
@@ -142,9 +159,9 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                     },
                   ]}
                   style={{
-                    
+
                   }}
-                  // className=""
+                // className=""
                 >
                   <Input placeholder="Enter First Name" />
                 </Form.Item>
@@ -235,10 +252,10 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                 ticket?.additionalInformation &&
                 ticket?.additionalInformation?.length > 0
             ) && (
-              <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-2 custom-font-size">
-                Additional Information
-              </h3>
-            )}
+                <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-2 custom-font-size">
+                  Additional Information
+                </h3>
+              )}
 
             {ticketDetails?.ticketDetails?.map((ticketDetail, ticketIndex) => {
               return ticketDetail?.additionalInformation?.map(
@@ -254,19 +271,19 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                       key={`${ticketIndex}-${infoIndex}`} // Unique key combining ticketIndex and infoIndex
                       label={
                         <span>
-                          {infoDetails?.question} {infoDetails?.is_compulsory === true ? <span style={{ color: 'red' }}>*</span> : null }
+                          {infoDetails?.question} {infoDetails?.is_compulsory === true ? <span style={{ color: 'red' }}>*</span> : null}
                         </span>
                       }
-    
+
                       name={`additionalField${ticketIndex}-${infoIndex}`} // Unique name to avoid conflicts
                       rules={
                         infoDetails?.is_compulsory === true
                           ? [
-                              {
-                                required: true,
-                                message: "This question is required",
-                              },
-                            ]
+                            {
+                              required: true,
+                              message: "This question is required",
+                            },
+                          ]
                           : []
                       }
                     >
@@ -393,7 +410,7 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                                       },
                                     }),
                                   ]}
-                    
+
                                 >
                                   <Input
                                     type="email"

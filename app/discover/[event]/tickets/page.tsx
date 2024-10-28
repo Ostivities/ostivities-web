@@ -127,10 +127,10 @@ const TicketsSelection = () => {
           price < 10000 && price > 0
             ? price * 0.05 + 150
             : price >= 10000 && price < 25000
-            ? price * 0.045 + 150 // For ticketPrice between 10000 and 24999
-            : price >= 25000
-            ? price * 0.035 + 150 // For ticketPrice 25000 and above
-            : 0;
+              ? price * 0.045 + 150 // For ticketPrice between 10000 and 24999
+              : price >= 25000
+                ? price * 0.035 + 150 // For ticketPrice 25000 and above
+                : 0;
         if (existingTicketIndex > -1) {
           const existingTicket = updatedDetails[existingTicketIndex];
           const newTicketNumber = existingTicket?.ticketNumber + 1;
@@ -198,10 +198,10 @@ const TicketsSelection = () => {
             ticket?.ticketPrice < 10000 && ticket?.ticketPrice > 0
               ? ticket?.ticketPrice * 0.05 + 150
               : ticket?.ticketPrice >= 10000 && ticket?.ticketPrice < 25000
-              ? ticket?.ticketPrice * 0.045 + 150
-              : ticket?.ticketPrice >= 25000
-              ? ticket?.ticketPrice * 0.035 + 150
-              : 0;
+                ? ticket?.ticketPrice * 0.045 + 150
+                : ticket?.ticketPrice >= 25000
+                  ? ticket?.ticketPrice * 0.035 + 150
+                  : 0;
 
           if (newTicketNumber >= 0) {
             const price =
@@ -303,13 +303,13 @@ const TicketsSelection = () => {
                     (ticket: ITicketDetails) =>
                       ticket?.ticketEntity === TICKET_ENTITY.SINGLE
                   ) && (
-                    <button
-                      className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
-                      style={{ borderRadius: "20px", fontSize: "12px" }}
-                    >
-                      Single Ticket
-                    </button>
-                  )}
+                      <button
+                        className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
+                        style={{ borderRadius: "20px", fontSize: "12px" }}
+                      >
+                        Single Ticket
+                      </button>
+                    )}
                   {ticketData
                     ?.filter(
                       (ticket: ITicketDetails) =>
@@ -476,12 +476,12 @@ const TicketsSelection = () => {
                             style={{
                               color:
                                 selectedTickets[ticket?.id] ===
-                                ticket?.purchaseLimit
+                                  ticket?.purchaseLimit
                                   ? "white"
                                   : "#e20000",
                               backgroundColor:
                                 selectedTickets[ticket?.id] ===
-                                ticket?.purchaseLimit
+                                  ticket?.purchaseLimit
                                   ? "#cccccc"
                                   : "#FADEDE",
                             }}
@@ -521,13 +521,13 @@ const TicketsSelection = () => {
                     (ticket: ITicketDetails) =>
                       ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE
                   ) && (
-                    <button
-                      className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
-                      style={{ borderRadius: "20px", fontSize: "12px" }}
-                    >
-                      Collective Ticket
-                    </button>
-                  )}
+                      <button
+                        className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
+                        style={{ borderRadius: "20px", fontSize: "12px" }}
+                      >
+                        Collective Ticket
+                      </button>
+                    )}
 
                   {ticketData
                     ?.filter(
@@ -710,15 +710,14 @@ const TicketsSelection = () => {
             </div>
           </section>
         ) : (
-          <ContactForm 
-            // formRef={formRef} 
-            ticketDetails={ticketDetails}
-          />
+            <ContactForm
+              ticketDetails={ticketDetails}
+            />
         )}
         {/* Summary Section with Correct Props */}
         <Summary
           eventName={eventDetails?.eventName}
-          onClick={currentPage === "tickets" ? () => setCurrentPage("contactform") : () => handleSubmit }
+          onClick={currentPage === "tickets" ? () => setCurrentPage("contactform") : () => handleSubmit}
           ticketDetails={ticketDetails}
           continueBtn
         />

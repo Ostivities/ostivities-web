@@ -261,8 +261,8 @@ function DashboardLayout({
                 active
                 shape="round"
                 style={{
-                  height: "100px",
-                  width: "250px",
+                  height: "10px",
+                  width: "50px",
                   maxWidth: "100%",
                 }}
               />
