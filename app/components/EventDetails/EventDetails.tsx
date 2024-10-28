@@ -390,7 +390,7 @@ export default function EventDetailsComponent({
               }}
               onClick={() => setIsModalOpen(true)}
             >
-              Add Payment Details
+              Add Account Details
             </Button>
           </div>
         )}
