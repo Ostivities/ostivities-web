@@ -429,6 +429,7 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
             })}
           </Form>
         </div>
+        {modal && <TimerModal />}
       </section>
     </section>
     // </DashboardLayout>
