@@ -12,6 +12,7 @@ import {
   ReactElement,
   ReactNode,
   ReactPortal,
+  useEffect,
   useState,
 } from "react";
 import "@/app/globals.css";
@@ -48,6 +49,7 @@ interface InfoNeeded {
       is_compulsory: boolean;
     }[];
   }[];
+  onSubmit?:  () => void;
 }
 
 const ContactForm = (ticketDetails: InfoNeeded) => {
@@ -56,23 +58,16 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
   const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
 
-  const title = (
-    <div className="flex-center gap-2">
-      <Image
-        src="/icons/back-arrow.svg"
-        alt=""
-        height={25}
-        width={25}
-        onClick={() => router.back()}
-        className="cursor-pointer"
-      />
-      <h1 style={{ fontSize: "24px" }}>Contact Information</h1>
-    </div>
-  );
   console.log(ticketDetails, "ticketDetails from contact page");
 
   const [form] = Form.useForm();
   const [isFormValid, setIsFormValid] = useState(false);
+
+  // useEffect(() => {
+  //   if (formRef) {
+  //     formRef.current = form;
+  //   }
+  // }, [formRef]);
 
   const onFinish = (values: Inputs) => {
     console.log(values);
@@ -89,7 +84,6 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
   let ticketCounter = 0;
 
   return (
-    // <DashboardLayout title={title} isLoggedIn>
     <section className="flex gap-12">
       {/* Scrollable content container */}
       <section className="flex-1 pr-1 pl-3 pb-4 scrollable-content">

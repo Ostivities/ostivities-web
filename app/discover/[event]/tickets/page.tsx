@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, MutableRefObject } from "react";
+import { FormInstance } from "antd";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import Summary from "@/app/components/Discovery/Summary";
 import Image from "next/image";
@@ -51,6 +52,15 @@ const TicketsSelection = () => {
       </h1>
     </div>
   );
+
+  const formRef = useRef<FormInstance | null>(null);
+  // const formRef = useRef<HTMLFormElement>(null);
+
+  const handleSubmit = () => {
+    if (formRef.current) {
+      formRef.current.submit(); // This will trigger the onFinish method in ContactForm
+    }
+  };
 
   // const ticketEnt = ticketEntity === TICKET_ENTITY.SINGLE ? "Single Ticket" : "Collective Ticket";
 
@@ -645,19 +655,6 @@ const TicketsSelection = () => {
                                 Free
                               </span>
                             )}
-                            {/* <span
-                              className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
-                              style={{ fontWeight: 600, fontSize: "17px" }}
-                            >
-                              ₦{(ticket?.groupPrice ?? 0).toLocaleString()}
-                            </span>{" "}
-                            <span
-                              className="text-s font-BricolageGrotesqueRegular"
-                              style={{ fontWeight: 400, fontSize: "12px" }}
-                            >
-                              Including ₦
-                              {(ticket?.ticketPrice ?? 0).toLocaleString()} fee
-                            </span> */}
                           </h3>
                           <p
                             className="text-s font-BricolageGrotesqueRegular"
@@ -713,15 +710,17 @@ const TicketsSelection = () => {
             </div>
           </section>
         ) : (
-          <ContactForm ticketDetails={ticketDetails} />
+          <ContactForm 
+            // formRef={formRef} 
+            ticketDetails={ticketDetails}
+          />
         )}
         {/* Summary Section with Correct Props */}
         <Summary
           eventName={eventDetails?.eventName}
-          onClick={() => setCurrentPage("contactform")}
+          onClick={currentPage === "tickets" ? () => setCurrentPage("contactform") : () => handleSubmit }
           ticketDetails={ticketDetails}
           continueBtn
-          // to={`/discover/${params?.event}/contact-form`}
         />
       </section>
     </DashboardLayout>
