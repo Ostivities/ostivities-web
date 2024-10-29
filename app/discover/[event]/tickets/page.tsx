@@ -13,7 +13,7 @@ import { dateFormat, timeFormat } from "@/app/utils/helper";
 import "@/app/globals.css";
 import "@/app/scroll.css";
 import ReadMoreHTML from "@/app/components/ReadMoreHTML";
-import { TICKET_ENTITY } from "@/app/utils/enums";
+import { DISCOUNT_TYPE, TICKET_ENTITY } from "@/app/utils/enums";
 import { Skeleton } from "antd";
 import ContactForm from "@/app/components/ContactForm/ContactForm";
 
@@ -25,10 +25,11 @@ const TicketsSelection = () => {
     "tickets"
   );
   const [totalFee, setTotalFee] = useState(0);
+  const [discountApplied, setDiscountApplied] = useState(false);
   const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
   const { getTickets } = useGetEventTickets(eventDetails?.id);
   const ticketData = getTickets?.data?.data?.data;
-
+  // console.log(discountApplied, "discountApplied")
   const title = (
     <div className="flex-center gap-2">
       <Image
@@ -74,7 +75,12 @@ const TicketsSelection = () => {
     {
       ticketName: string;
       ticketPrice: number;
+      discountedTicketPrice?: number;
+      discountToDeduct?: number;
       ticketFee: number;
+      ticketDiscountType: string;
+      ticketDiscountCode: string;
+      ticketDiscountValue: number;
       ticketNumber: number;
       ticketId: string;
       subTotal: number;
@@ -107,6 +113,10 @@ const TicketsSelection = () => {
     );
   }, [ticketDetails]);
 
+  const handleDiscountApplied = (applied: boolean) => {
+    setDiscountApplied(applied === true);
+  };
+
   const handleIncrement = (ticketId: string) => {
     const ticket = ticketData?.find(
       (ticket: ITicketDetails) => ticket?.id === ticketId
@@ -119,37 +129,72 @@ const TicketsSelection = () => {
         );
 
         const updatedDetails = [...prevDetails];
-        const price =
+        const discountedPrice = (() => {
+          if (ticket?.ticketEntity === TICKET_ENTITY.SINGLE) {
+            if (ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE) {
+              return (
+                ticket?.ticketPrice -
+                ((ticket?.discount?.discount_value / 100) * ticket?.ticketPrice)
+              );
+            } else if (ticket?.discount?.discountType === DISCOUNT_TYPE.FIXED) {
+              return ticket.ticketPrice - ticket.discount.discount_value;
+            }
+            return ticket.ticketPrice; // No discount
+          } else if (ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE) {
+            if (ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE) {
+              return (
+                ticket.groupPrice -
+                ((ticket.discount.discount_value / 100) * ticket.groupPrice)
+              );
+            } else if (ticket?.discount?.discountType === DISCOUNT_TYPE.FIXED) {
+              return ticket.groupPrice - ticket.discount.discount_value;
+            }
+            return ticket.groupPrice; // No discount
+          }
+          return 0; // Default if no conditions are met
+        })();
+        const realPrice =
           ticket?.ticketEntity === TICKET_ENTITY.SINGLE
             ? ticket?.ticketPrice
             : ticket?.groupPrice || 0;
         const currentFee =
-          price < 10000 && price > 0
-            ? price * 0.05 + 150
-            : price >= 10000 && price < 25000
-              ? price * 0.045 + 150 // For ticketPrice between 10000 and 24999
-              : price >= 25000
-                ? price * 0.035 + 150 // For ticketPrice 25000 and above
-                : 0;
+          realPrice < 10000 && realPrice > 0
+            ? realPrice * 0.05 + 150
+            : realPrice >= 10000 && realPrice < 25000
+            ? realPrice * 0.045 + 150 // For ticketrealPrice between 10000 and 24999
+            : realPrice >= 25000
+            ? realPrice * 0.035 + 150 // For ticketPrice 25000 and above
+            : 0;
         if (existingTicketIndex > -1) {
           const existingTicket = updatedDetails[existingTicketIndex];
           const newTicketNumber = existingTicket?.ticketNumber + 1;
-          const newTicketPrice = existingTicket?.ticketPrice;
-          const newTicketFee = existingTicket?.ticketFee;
           updatedDetails[existingTicketIndex] = {
             ...existingTicket,
-            ticketPrice: price * newTicketNumber,
+            ticketPrice: realPrice * newTicketNumber,
+            discountToDeduct: ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE 
+            ? (realPrice * (ticket?.discount?.discount_value / 100)) * newTicketNumber : ticket?.discount?.discount_value * newTicketNumber,
+            discountedTicketPrice: discountedPrice * newTicketNumber,
             ticketFee: newTicketNumber * currentFee,
             ticketNumber: newTicketNumber,
-            subTotal: price * newTicketNumber + newTicketNumber * currentFee,
+            subTotal: discountApplied
+              ? discountedPrice * newTicketNumber + newTicketNumber * currentFee
+              : realPrice * newTicketNumber + newTicketNumber * currentFee,
           };
         } else {
           updatedDetails.push({
             ticketName: ticket?.ticketName,
-            ticketPrice: price,
+            ticketPrice: realPrice,
+            discountedTicketPrice: discountedPrice,
+            discountToDeduct: ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE 
+              ? realPrice * (ticket?.discount?.discount_value / 100) : ticket?.discount?.discount_value,
             ticketFee: currentFee,
             ticketNumber: 1,
-            subTotal: price + currentFee,
+            ticketDiscountCode: ticket?.discountCode,
+            ticketDiscountType: ticket?.discount?.discountType,
+            ticketDiscountValue: ticket?.discount?.discount_value,
+            subTotal: discountApplied
+              ? discountedPrice + currentFee
+              : realPrice + currentFee,
             ticketId: ticket?.id,
             ticketEntity: ticket?.ticketEntity,
             groupSize: ticket?.groupSize,
@@ -177,6 +222,7 @@ const TicketsSelection = () => {
     }
   };
 
+
   // Function to handle ticket decrement
   const handleDecrement = (ticketId: string) => {
     const ticket = ticketData?.find(
@@ -198,10 +244,10 @@ const TicketsSelection = () => {
             ticket?.ticketPrice < 10000 && ticket?.ticketPrice > 0
               ? ticket?.ticketPrice * 0.05 + 150
               : ticket?.ticketPrice >= 10000 && ticket?.ticketPrice < 25000
-                ? ticket?.ticketPrice * 0.045 + 150
-                : ticket?.ticketPrice >= 25000
-                  ? ticket?.ticketPrice * 0.035 + 150
-                  : 0;
+              ? ticket?.ticketPrice * 0.045 + 150
+              : ticket?.ticketPrice >= 25000
+              ? ticket?.ticketPrice * 0.035 + 150
+              : 0;
 
           if (newTicketNumber >= 0) {
             const price =
@@ -212,9 +258,12 @@ const TicketsSelection = () => {
             updatedDetails[existingTicketIndex] = {
               ...existingTicket,
               ticketPrice: price * newTicketNumber,
+              discountedTicketPrice: discountApplied ? existingTicket?.discountedTicketPrice : undefined,
+              discountToDeduct: ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE 
+              ? (price * (ticket?.discount?.discount_value / 100)) * newTicketNumber : ticket?.discount?.discount_value * newTicketNumber,
               ticketFee: currentFee * newTicketNumber,
               ticketNumber: newTicketNumber,
-              subTotal: price * newTicketNumber + currentFee * newTicketNumber,
+              subTotal: (price * newTicketNumber + currentFee * newTicketNumber) - (ticket?.discountToDeduct * newTicketNumber),
             };
           }
         }
@@ -229,6 +278,38 @@ const TicketsSelection = () => {
       }));
     }
   };
+
+  //   useEffect(() => {
+  //   // Recalculate ticket prices when discountApplied changes
+  //   setTicketDetails((prevDetails) =>
+  //     prevDetails.map((ticket) => {
+  //       const {
+  //         ticketPrice,
+  //         ticketFee,
+  //         ticketDiscountValue,
+  //         ticketDiscountType,
+  //         discountedTicketPrice,
+  //         ticketNumber,
+  //       } = ticket;
+  //       const realPrice = ticketPrice;
+  //       const priceWithDiscount =
+  //         ticketDiscountType === DISCOUNT_TYPE.PERCENTAGE
+  //           ? realPrice - ((ticketDiscountValue / 100) * realPrice)
+  //           : ticketDiscountType === DISCOUNT_TYPE.FIXED
+  //           ? realPrice - ticketDiscountValue
+  //           : realPrice;
+
+  //       const price = discountApplied === true ? priceWithDiscount : realPrice;
+
+  //       return {
+  //         ...ticket,
+  //         ticketPrice: price * ticketNumber,
+  //         ticketFee: ticketFee,
+  //         subTotal: price * ticketNumber + ticketFee * ticketNumber,
+  //       };
+  //     })
+  //   );
+  // }, [discountApplied]);
 
   const isPending: boolean = getTickets?.isLoading;
 
@@ -303,13 +384,13 @@ const TicketsSelection = () => {
                     (ticket: ITicketDetails) =>
                       ticket?.ticketEntity === TICKET_ENTITY.SINGLE
                   ) && (
-                      <button
-                        className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
-                        style={{ borderRadius: "20px", fontSize: "12px" }}
-                      >
-                        Single Ticket
-                      </button>
-                    )}
+                    <button
+                      className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
+                      style={{ borderRadius: "20px", fontSize: "12px" }}
+                    >
+                      Single Ticket
+                    </button>
+                  )}
                   {ticketData
                     ?.filter(
                       (ticket: ITicketDetails) =>
@@ -344,7 +425,9 @@ const TicketsSelection = () => {
                                         ticket?.ticketPrice * 0.05 +
                                         150 +
                                         ticket?.ticketPrice
-                                      ).toLocaleString()}
+                                      )
+                                        .toFixed(0)
+                                        .toLocaleString()}
                                     </span>{" "}
                                     <span
                                       className="text-s font-BricolageGrotesqueRegular"
@@ -354,10 +437,9 @@ const TicketsSelection = () => {
                                       }}
                                     >
                                       Including ₦
-                                      {(
-                                        ticket?.ticketPrice * 0.05 +
-                                        150
-                                      ).toLocaleString()}{" "}
+                                      {(ticket?.ticketPrice * 0.05 + 150)
+                                        .toFixed(0)
+                                        .toLocaleString()}{" "}
                                       fee
                                     </span>
                                   </>
@@ -377,7 +459,9 @@ const TicketsSelection = () => {
                                           ticket?.ticketPrice * 0.045 +
                                           150 +
                                           ticket?.ticketPrice
-                                        ).toLocaleString()}
+                                        )
+                                          .toFixed(0)
+                                          .toLocaleString()}
                                       </span>{" "}
                                       <span
                                         className="text-s font-BricolageGrotesqueRegular"
@@ -387,10 +471,9 @@ const TicketsSelection = () => {
                                         }}
                                       >
                                         Including ₦
-                                        {(
-                                          ticket?.ticketPrice * 0.045 +
-                                          150
-                                        ).toLocaleString()}{" "}
+                                        {(ticket?.ticketPrice * 0.045 + 150)
+                                          .toFixed(0)
+                                          .toLocaleString()}{" "}
                                         fee
                                       </span>
                                     </>
@@ -409,7 +492,9 @@ const TicketsSelection = () => {
                                         ticket?.ticketPrice * 0.035 +
                                         150 +
                                         ticket?.ticketPrice
-                                      ).toLocaleString()}
+                                      )
+                                        .toFixed(0)
+                                        .toLocaleString()}
                                     </span>{" "}
                                     <span
                                       className="text-s font-BricolageGrotesqueRegular"
@@ -419,10 +504,9 @@ const TicketsSelection = () => {
                                       }}
                                     >
                                       Including ₦
-                                      {(
-                                        ticket?.ticketPrice * 0.035 +
-                                        150
-                                      ).toLocaleString()}{" "}
+                                      {(ticket?.ticketPrice * 0.035 + 150)
+                                        .toFixed(0)
+                                        .toLocaleString()}{" "}
                                       fee
                                     </span>
                                   </>
@@ -476,12 +560,12 @@ const TicketsSelection = () => {
                             style={{
                               color:
                                 selectedTickets[ticket?.id] ===
-                                  ticket?.purchaseLimit
+                                ticket?.purchaseLimit
                                   ? "white"
                                   : "#e20000",
                               backgroundColor:
                                 selectedTickets[ticket?.id] ===
-                                  ticket?.purchaseLimit
+                                ticket?.purchaseLimit
                                   ? "#cccccc"
                                   : "#FADEDE",
                             }}
@@ -521,13 +605,13 @@ const TicketsSelection = () => {
                     (ticket: ITicketDetails) =>
                       ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE
                   ) && (
-                      <button
-                        className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
-                        style={{ borderRadius: "20px", fontSize: "12px" }}
-                      >
-                        Collective Ticket
-                      </button>
-                    )}
+                    <button
+                      className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
+                      style={{ borderRadius: "20px", fontSize: "12px" }}
+                    >
+                      Collective Ticket
+                    </button>
+                  )}
 
                   {ticketData
                     ?.filter(
@@ -710,14 +794,18 @@ const TicketsSelection = () => {
             </div>
           </section>
         ) : (
-            <ContactForm
-              ticketDetails={ticketDetails}
-            />
+          <ContactForm ticketDetails={ticketDetails} />
         )}
         {/* Summary Section with Correct Props */}
         <Summary
+          onDiscountApplied={handleDiscountApplied}
+          eventId={eventDetails?.id}
           eventName={eventDetails?.eventName}
-          onClick={currentPage === "tickets" ? () => setCurrentPage("contactform") : () => handleSubmit}
+          onClick={
+            currentPage === "tickets"
+              ? () => setCurrentPage("contactform")
+              : () => handleSubmit
+          }
           ticketDetails={ticketDetails}
           continueBtn
         />

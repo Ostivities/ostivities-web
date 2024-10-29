@@ -143,9 +143,9 @@ function DashboardLayout({
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useLocalStorage<boolean>("sidebar", true);
   const { isLoggedIn } = useFetch();
-  console.log(isLoggedIn, "isLoggedIn");
+  // console.log(isLoggedIn, "isLoggedIn");
   const userProfile = isLoggedIn ? profile : null;
-  console.log(userProfile, "userProfile");
+  // console.log(userProfile, "userProfile");
   const accountType = userProfile?.data?.data?.data?.accountType;
   const {
     token: { colorBgContainer },

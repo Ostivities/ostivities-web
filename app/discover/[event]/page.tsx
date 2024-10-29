@@ -180,7 +180,7 @@ const EventDetail = () => {
   const params = useParams<{ event: string }>();
   // console.log(params, 'params');
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
-  console.log(getUserEventByUniqueKey, "getUserEventByUniqueKey");
+  // console.log(getUserEventByUniqueKey, "getUserEventByUniqueKey");
 
   const eventDetails = getUserEventByUniqueKey?.data?.data?.data === null ? router.push('/not-found') : getUserEventByUniqueKey?.data?.data?.data;
   // console.log(eventDetails, "eventDetails");
