@@ -248,10 +248,13 @@ const TicketsSelection = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="text-sm" style={{ fontWeight: 600 }}>
+                  <h3 className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
                     Date
                   </h3>
-                  <span>{dateFormat(eventDetails?.startDate)}</span>
+                  <span style={{ fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                    {dateFormat(eventDetails?.startDate)}
+                  </span>
+
                 </div>
               </div>
               <div className="flex-center gap-3">
@@ -259,10 +262,11 @@ const TicketsSelection = () => {
                   <Image src="/icons/time.svg" alt="" height={25} width={25} />
                 </div>
                 <div>
-                  <h3 className="text-sm" style={{ fontWeight: 600 }}>
+                  <h3 className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
                     Time
                   </h3>
-                  <span>
+
+                  <span style={{ fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
                     {timeFormat(eventDetails?.startDate)} -{" "}
                     {timeFormat(eventDetails?.endDate)} {eventDetails?.timeZone}
                   </span>
@@ -710,9 +714,9 @@ const TicketsSelection = () => {
             </div>
           </section>
         ) : (
-            <ContactForm
-              ticketDetails={ticketDetails}
-            />
+          <ContactForm
+            ticketDetails={ticketDetails}
+          />
         )}
         {/* Summary Section with Correct Props */}
         <Summary

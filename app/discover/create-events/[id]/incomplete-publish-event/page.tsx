@@ -99,34 +99,35 @@ export default function PublishEvent(): JSX.Element {
             <div className="py-8">
               <Heading5 className="text-2xl" content={"About this event"} />
               <div className="mt-14 flex flex-col gap-8">
-              <div className="flex items-start">
-                {/* Image Section */}
-                <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
-                  <Image
-                    src="/icons/calendar.svg"
-                    alt=""
-                    height={25}
-                    width={25}
-                  />
-                </div>
+                <div className="flex items-start">
+                  {/* Image Section */}
+                  <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+                    <Image
+                      src="/icons/calendar.svg"
+                      alt=""
+                      height={25}
+                      width={25}
+                    />
+                  </div>
 
-                {/* Text Section */}
-                <div className="ml-2">
-                  <div className="text-sm" style={{ fontWeight: 600 }}>
-                    Date
-                  </div>
-                  <div
-                    style={{
-                      width: "140px",
-                      whiteSpace: "normal",
-                      wordWrap: "break-word",
-                    }}
-                  >
-                    {dateFormat(eventDetails?.startDate)} -{" "}
-                    {dateFormat(eventDetails?.endDate)}
+                  {/* Text Section */}
+                  <div className="ml-2">
+                    <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                      Date
+                    </div>
+                    <div
+                      style={{
+                        width: "140px",
+                        whiteSpace: "normal",
+                        wordWrap: "break-word",
+                        fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif"
+                      }}
+                    >
+                      {dateFormat(eventDetails?.startDate)} -{" "}
+                      {dateFormat(eventDetails?.endDate)}
+                    </div>
                   </div>
                 </div>
-              </div>
                 <div className="flex gap-3">
                   <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
                     <Image
@@ -137,10 +138,10 @@ export default function PublishEvent(): JSX.Element {
                     />
                   </div>
                   <div>
-                    <div className="text-sm" style={{ fontWeight: 600 }}>
+                    <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
                       Time
                     </div>
-                    <div>
+                    <div style={{ fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
                       {timeFormat(eventDetails?.startDate)} -{" "}
                       {timeFormat(eventDetails?.endDate)}
                     </div>
@@ -156,7 +157,7 @@ export default function PublishEvent(): JSX.Element {
                     />
                   </div>
                   <div>
-                    <div className="text-sm" style={{ fontWeight: 600 }}>
+                    <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
                       Location
                     </div>
                     <div
@@ -168,7 +169,7 @@ export default function PublishEvent(): JSX.Element {
                     >
                       <a
                         href="https://maps.app.goo.gl/jBmgQ5EFxngj2ffS6"
-                        style={{ color: "#e20000", textDecoration: "none" }}
+                        style={{ color: "#e20000", textDecoration: "none", fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}
                         target="_blank"
                       >
                         {eventDetails?.address}
@@ -187,7 +188,7 @@ export default function PublishEvent(): JSX.Element {
                     />
                   </div>
                   <div>
-                    <div className="text-sm" style={{ fontWeight: 600 }}>
+                    <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
                       Host
                     </div>
                     <div>{userFullName}</div>
@@ -195,9 +196,9 @@ export default function PublishEvent(): JSX.Element {
                 </div>
 
                 {twitterLink?.url ||
-                instagramLink?.url ||
-                websiteLink?.url ||
-                facebookLink?.url ? (
+                  instagramLink?.url ||
+                  websiteLink?.url ||
+                  facebookLink?.url ? (
                   <div className="flex gap-3 items-center">
                     <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
                       <Image
@@ -318,7 +319,7 @@ export default function PublishEvent(): JSX.Element {
       {isModalOpen && (
         <PublishSuccess
           open={isModalOpen}
-          onClose={() => setIsModalOpen(false)} 
+          onClose={() => setIsModalOpen(false)}
         />
       )}
     </React.Fragment>
