@@ -668,7 +668,7 @@ const AboutEvent = () => {
                       disabled={componentDisabled}
                       readOnly
                       {...field}
-                      placeholder="Enter your desired name"
+                      placeholder="your event url name will show here"
                       defaultValue={eventUrl}
                     />
                   </Space.Compact>
