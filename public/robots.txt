@@ -1,5 +1,6 @@
 # *
 User-agent: *
+Allow: /Favicon.ico/
 Disallow: /discover/all
 Disallow: /discover/coming-soon
 Disallow: /discover/create-events
