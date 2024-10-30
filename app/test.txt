@@ -304,7 +304,7 @@
                           borderBottomLeftRadius: "0px !important",
                         }}
                         {...field}
-                        placeholder="Enter your desired name"
+                        placeholder="your event url name will show here"
                       />
                     </Space.Compact>
                   </Space>

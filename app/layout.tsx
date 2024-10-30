@@ -4,7 +4,7 @@ import "react-alice-carousel/lib/alice-carousel.css";
 import "./globals.css";
 import StyledComponentsRegistry from "./lib/Registry";
 import Providers from "./providers";
-import { Analytics } from "@vercel/analytics/react"
+import { Analytics } from '@vercel/analytics/react';
 
 // const inter = Bricolage_Grotesque({
 //   subsets: ["latin"],
@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/Favicon.png" type="image/x-icon" sizes="any" />
+        <link rel="icon" href="/Favicon.ico" type="image/x-icon" sizes="any" /> 
       </head>
       <body className={`bg-white overflow-y-auto min-h-screen`}>
         <Providers>

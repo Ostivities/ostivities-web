@@ -13,7 +13,7 @@ function Page() {
   // const { isLoggedIn } = useFetch();
 
   // if(!isLoggedIn) {
-  //   return null;
+  //   return router.push('/login');
   // }
 
   const title = (

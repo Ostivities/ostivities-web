@@ -7,6 +7,7 @@ import { ACCOUNT_TYPE } from "@/app/utils/enums";
 import { IDashboard, INavLinks } from "@/app/utils/interface";
 import Hamburger from "@/public/hamburger.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
+import { Skeleton } from "antd";
 import {
   BellFilled,
   CaretDownFilled,
@@ -124,23 +125,27 @@ function DashboardLayout({
     {
       label: <Label className="cursor-pointer" content="Sign out" />,
       key: "sign-out",
-      onClick: () => {
-        logoutUser.mutateAsync();
-        sessionStorage.removeItem("token");
-        removeCookie("forgot_email");
-        removeCookie("event_id");
-        removeCookie("form_stage");
-        removeCookie("stage_one");
-        removeCookie("stage_two");
-        removeCookie("stage_three");
-        router.push("/login");
+      onClick: async () => {
+        const res = await logoutUser.mutateAsync();
+        if (res.status === 200) {
+          sessionStorage.removeItem("token");
+          removeCookie("forgot_email");
+          removeCookie("event_id");
+          removeCookie("form_stage");
+          removeCookie("stage_one");
+          removeCookie("stage_two");
+          removeCookie("stage_three");
+          router.push("/login");
+        }
       },
     },
   ];
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useLocalStorage<boolean>("sidebar", true);
   const { isLoggedIn } = useFetch();
+  console.log(isLoggedIn, "isLoggedIn");
   const userProfile = isLoggedIn ? profile : null;
+  console.log(userProfile, "userProfile");
   const accountType = userProfile?.data?.data?.data?.accountType;
   const {
     token: { colorBgContainer },
@@ -248,7 +253,21 @@ function DashboardLayout({
               />
             </a>
           </div>
-          {!isLoggedIn && (
+
+
+          {profile?.isFetching === true ? (
+            <>
+              <Skeleton.Button
+                active
+                shape="circle"
+                style={{
+                  height: "60px",
+                  width: "60px",
+                  maxWidth: "100%",
+                }}
+              />
+            </>
+          ) : profile?.isFetching === false && !isLoggedIn ? (
             <>
               {/* Show NAV_LINKS when user is not logged in */}
               <div className="flex flex-row items-center space-x-8">
@@ -291,17 +310,17 @@ function DashboardLayout({
                 )}
               </div>
             </>
-          )}
-
-          {isLoggedIn && (
-            <>
-              <Space
-                direction="horizontal"
-                className="space-x-8 items-center justify-center"
-                align="center"
-                size={"small"}
-              >
-                {/* <div className="mt-5 relative">
+          ) : (
+            profile?.isFetching === false &&
+            isLoggedIn && (
+              <>
+                <Space
+                  direction="horizontal"
+                  className="space-x-8 items-center justify-center"
+                  align="center"
+                  size={"small"}
+                >
+                  {/* <div className="mt-5 relative">
                   <Badge count={2}>
                     <BellFilled
                       className="cursor-pointer"
@@ -369,35 +388,37 @@ function DashboardLayout({
                     </div>
                   </div>
                 </div> */}
-                <Dropdown menu={{ items }} trigger={["click", "hover"]}>
-                  <div className="flex-center gap-4 cursor-pointer">
-                    <Image
-                      src={profile?.data?.data?.data?.image || emptyImage} // Fallback to imported empty image
-                      alt="Profile Picture"
-                      width={40} // Adjust this to match the previous avatar size if needed
-                      height={40} // Adjust this to match the previous avatar size if needed
-                      className="object-cover rounded-full"
-                      style={{
-                        cursor: "pointer", // Keep the cursor style for interaction
-                      }}
-                    />
+                  <Dropdown menu={{ items }} trigger={["click", "hover"]}>
+                    <div className="flex-center gap-4 cursor-pointer">
+                      <Image
+                        src={profile?.data?.data?.data?.image || emptyImage} // Fallback to imported empty image
+                        alt="Profile Picture"
+                        width={40} // Adjust this to match the previous avatar size if needed
+                        height={40} // Adjust this to match the previous avatar size if needed
+                        className="object-cover rounded-full"
+                        style={{
+                          cursor: "pointer", // Keep the cursor style for interaction
+                        }}
+                      />
 
-                    <div className="h-fit flex gap-4">
-                      <div className="flex flex-col justify-start">
-                        <h3 className=" text-sm text-OWANBE_TABLE_CELL">
-                          {userName}
-                        </h3>
-                        <span className="text-xs text-[#8C95A1]">
-                          {account_type}
-                        </span>
+                      <div className="h-fit flex gap-4">
+                        <div className="flex flex-col justify-start">
+                          <h3 className=" text-sm text-OWANBE_TABLE_CELL">
+                            {userName}
+                          </h3>
+                          <span className="text-xs text-[#8C95A1]">
+                            {account_type}
+                          </span>
+                        </div>
+                        <CaretDownFilled />
                       </div>
-                      <CaretDownFilled />
                     </div>
-                  </div>
-                </Dropdown>
-              </Space>
-            </>
+                  </Dropdown>
+                </Space>
+              </>
+            )
           )}
+
         </Header>
         <Layout>
           <Sider

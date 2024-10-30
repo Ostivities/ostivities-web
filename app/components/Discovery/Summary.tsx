@@ -11,6 +11,7 @@ import { ITicketDetails } from "@/app/utils/interface";
 import { useRouter, useParams } from "next/navigation";
 import { Button } from "antd";
 import { TICKET_ENTITY } from "@/app/utils/enums";
+import { MdOutlineDiscount } from "react-icons/md";
 
 interface SummaryProps {
   continueBtn?: boolean;
@@ -44,7 +45,6 @@ const Summary = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const params = useParams<{ event: string }>();
   const router = useRouter();
-  console.log(to, "to");
 
   const handleAddDiscountClick = () => {
     setShowInput(true);
@@ -84,7 +84,7 @@ const Summary = ({
               onClick={handleAddDiscountClick}
               className="flex-center gap-2 text-OWANBE_PRY text-lg font-BricolageGrotesqueRegular cursor-pointer"
             >
-              <h3>Add discount code</h3> {<PlusSquareOutlined />}
+              <h3>Add discount code</h3> {<MdOutlineDiscount />} 
             </div>
           )}
           {showInput && (
@@ -187,7 +187,7 @@ const Summary = ({
           <div className="flex-center justify-between font-BricolageGrotesqueMedium text-2xl text-OWANBE_PRY my-6">
             <div>Total</div>
             <div>
-              ₦{" "}
+              ₦{""}
               {ticketDetails
                 ?.reduce(
                   (acc, ticket) => acc + ticket?.subTotal,
@@ -230,6 +230,7 @@ const Summary = ({
               </Button>
             </div>
           )}
+          
           {paymentBtn && (
             <div className="flex justify-center mt-12 mb-6 w-full">
               <button

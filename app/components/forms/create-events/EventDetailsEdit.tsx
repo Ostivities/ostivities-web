@@ -767,7 +767,7 @@ function EventDetailsEdit(): JSX.Element {
                       }}
                       {...field}
                       defaultValue={eventUrl}
-                      placeholder="Enter your desired name"
+                      placeholder="your event url name will show here"
                     />
                   </Space.Compact>
                   {errors.eventURL && (

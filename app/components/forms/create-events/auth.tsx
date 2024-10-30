@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { useProfile, useLogout } from "../../../hooks/auth/auth.hook";
+
 
 const useFetch = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
   const pathname = usePathname();
+  const { profile } = useProfile();
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.sessionStorage) {
@@ -56,9 +59,12 @@ const useFetch = () => {
           router.push("/login");
         }
       }
+      if(profile?.isFetching === false && profile?.isSuccess === false) {
+        setIsLoggedIn(false);
+      }
       setLoading(false);
     }
-  }, [pathname, router]);
+  }, [pathname, profile, router]);
 
   return { isLoggedIn, loading };
 };

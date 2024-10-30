@@ -1,5 +1,5 @@
 import React, { HTMLAttributeAnchorTarget } from "react";
-import { EXHIBITION_SPACE, TICKET_STOCK, USAGE_LIMIT, DISCOUNT_TYPE, PAYMENT_METHOD } from "./enums";
+import { EXHIBITION_SPACE, TICKET_STOCK, USAGE_LIMIT, DISCOUNT_TYPE, PAYMENT_METHODS } from "./enums";
 export enum ACCOUNT_TYPE {
   PERSONAL = "PERSONAL",
   ORGANISATION = "ORGANISATION",
@@ -198,6 +198,7 @@ export interface DataType {
 }
 
 export interface SalesDataType {
+  chargeBearer: any;
   eventType: any;
   dateCreated: any;
   key: React.Key;
@@ -214,6 +215,7 @@ export interface SalesDataType {
 }
 
 export interface ExhibitionDataType {
+  chargeBearer: any;
   dateCreated: any;
   key: React.Key;
   eventName: string;
@@ -454,21 +456,60 @@ export interface IDiscountCreate extends Partial<IDiscountData> {
   user: string;
 }
 
+// export interface IGuestData {
+//   ticket: string;
+//   personal_information: {
+//     firstName: string;
+//     lastName: string;
+//     email: string;
+//     terms_and_condition: boolean;
+//     phoneNumber: boolean;
+//   };
+//   fees: number;
+//   total_amount_paid: number;
+//   discountCode?: string; // Optional field (fixed typo from original "disocuntCode")
+//   quantity: number;
+//   payment_method: PAYMENT_METHOD;
+// }
+
 export interface IGuestData {
-  ticket: string;
+  event: string,
+  event_unique_code: string,
+  ticket_information: [
+    {
+      ticket_id: string,
+      ticket_name: string,
+      quantity: number,
+      total_amount: number
+    }
+  ],
   personal_information: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    terms_and_condition: boolean;
-    phoneNumber: boolean;
-  };
-  fees: number;
-  total_amount_paid: number;
-  discountCode?: string; // Optional field (fixed typo from original "disocuntCode")
-  quantity: number;
-  payment_method: PAYMENT_METHOD;
+    firstName: string,
+    lastName: string,
+    email: string,
+    phoneNumber: string
+  },
+  attendees_information: [
+    {
+      firstName: string,
+      lastName: string,
+      email: string,
+      phoneNumber: string
+    }
+  ],
+  additional_information: [
+    {
+      question: string,
+      answer: string
+    }
+  ],
+  fees: number,
+  total_amount_paid: number,
+  discountCode: string,
+  total_purchased: number,
+  payment_method: PAYMENT_METHODS
 }
+
 
 export interface IGuestCreate extends Partial<IGuestData> {
   eventId: string;
