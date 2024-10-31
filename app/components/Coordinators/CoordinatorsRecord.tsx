@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Input, Space, Table } from "antd";
+import { Button, Input, Space, Table, Tabs } from "antd";
 import { FileExcelOutlined, FilePdfOutlined, MenuOutlined } from "@ant-design/icons";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -23,7 +23,7 @@ const { Search } = Input;
 
 const CoordinatorsList = () => {
   const router = useRouter(); // Initialize useRouter
-
+  const [activeKey, setActiveKey] = useState("1");
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -37,14 +37,23 @@ const CoordinatorsList = () => {
 
   const roles = ["Ticketing Agent", "Auditor", "Usher"]; // Define the roles
 
+
   const data: CoordinatorsDataType[] = Array.from({ length: 50 }, (_, index) => ({
-    id: `${index + 1}`, // Add the required 'id' field
-    key: `${index + 1}`, // Add a key if used in the Table component
+    id: `${index + 1}`,
+    key: `${index + 1}`,
     coordinatorsName: getRandomName(),
-    coordinatorsEmail: getRandomName(), // Use the correct field name
-    coordinatorsphoneNumber:getRandomNigerianPhoneNumber(),
+    coordinatorsEmail: getRandomName(),
+    coordinatorsphoneNumber: getRandomNigerianPhoneNumber(),
     coordinatorsRole: roles[Math.floor(Math.random() * roles.length)],
     dateAdded: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
+  }));
+
+  const auditTrailData = Array.from({ length: 50 }, (_, index) => ({
+    key: index + 1,
+    userRole: roles[Math.floor(Math.random() * roles.length)],
+    actionDescription: "Action performed",
+    actionDoneBy: getRandomName(),
+    actionDateTime: new Date().toLocaleString(),
   }));
 
 
@@ -55,12 +64,10 @@ const CoordinatorsList = () => {
     setSearchText(value.toLowerCase());
   };
 
-
   const handleAction = (record: CoordinatorsDataType) => {
     setIsModalOpen(true);
     setModalData(record);
   };
-
 
   const filteredData = data.filter(
     (item) =>
@@ -70,8 +77,8 @@ const CoordinatorsList = () => {
 
   const columns: ColumnsType<CoordinatorsDataType> = [
     {
-      title: "Coordinator's Name", // Correct title if needed
-      dataIndex: "coordinatorsName", // Ensure dataIndex matches
+      title: "Coordinator's Name",
+      dataIndex: "coordinatorsName",
       sorter: (a, b) => a.coordinatorsName.localeCompare(b.coordinatorsName),
     },
     {
@@ -116,21 +123,21 @@ const CoordinatorsList = () => {
 
   const GuestItems: MenuItemType[] = [
     {
-    label: (
-      <Button
-        type="link"
-        className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
-        style={{ color: "#000000", fontFamily: "BricolageGrotesqueRegular" }}
-        onClick={() => {
-          setIsModalOpen(true);
-          setActionType("detail");
-        }}
-      >
-        View
-      </Button>
-    ),
-    key: "1",
-  },
+      label: (
+        <Button
+          type="link"
+          className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          style={{ color: "#000000", fontFamily: "BricolageGrotesqueRegular" }}
+          onClick={() => {
+            setIsModalOpen(true);
+            setActionType("detail");
+          }}
+        >
+          View
+        </Button>
+      ),
+      key: "1",
+    },
 
     {
       label: (
@@ -151,7 +158,6 @@ const CoordinatorsList = () => {
       ),
       key: "3",
 
-      
     },
   ];
 
@@ -183,9 +189,68 @@ const CoordinatorsList = () => {
     }
   };
 
+
+  const auditData = [
+    {
+      key: "1",
+      userRole: "Ticketing Agent",
+      actionDescription: "User checked in",
+      actionDoneBy: "John Doe",
+      actionDateTime: "2024-10-31 10:30 AM",
+    },
+    {
+      key: "2",
+      userRole: "Auditor",
+      actionDescription: "Ticket scanned",
+      actionDoneBy: "Jane Smith",
+      actionDateTime: "2024-10-31 11:00 AM",
+    },
+  ];
+
+  const auditTrailColumns: ColumnsType<any> = [
+    {
+      title: "User Role",
+      dataIndex: "userRole",
+      key: "userRole",
+    },
+    {
+      title: "Action Description",
+      dataIndex: "actionDescription",
+      key: "actionDescription",
+    },
+    {
+      title: "Action Done By",
+      dataIndex: "actionDoneBy",
+      key: "actionDoneBy",
+    },
+    {
+      title: "Action Date and Time",
+      dataIndex: "actionDateTime",
+      key: "actionDateTime",
+    },
+  ];
+
+  const { TabPane } = Tabs;
+
+  const tabStyle = {
+    fontFamily: 'Bricolage Grotesque',
+    fontWeight: 500,
+  };
+
+  const activeTabStyle = {
+    ...tabStyle, // Include common styles
+    color: '#e20000', // Active color
+    position: 'relative',
+  };
+
+  const inactiveTabStyle = {
+    ...tabStyle, // Include common styles
+    color: 'grey', // Inactive color
+  };
+
   return (
     <React.Fragment>
-        {isModalOpen && actionType === "detail" && (
+      {isModalOpen && actionType === "detail" && (
         <CoordinatorsDetail
           open={isModalOpen}
           onCancel={() => setIsModalOpen(false)}
@@ -212,93 +277,145 @@ const CoordinatorsList = () => {
           // handle modal OK action if needed
         }}
       />
-
       <Space direction="vertical" size={"large"}>
-        <Space direction="vertical" size={"middle"} style={{ width: "100%" }}>
-          <div
-            style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}
-          >
-            <Heading5 className="" content={"Coordinators"} />
-            <Button
-              type="primary"
-              size="large"
-              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl float-end"
-              style={{
-                borderRadius: "20px",
-                fontFamily: "BricolageGrotesqueMedium",
-                margin: '10px'
-              }}
-              onClick={() => setShowNewVendorDetails(true)}
-            >
-              Add Coordinators
-            </Button>
+        <Space direction="vertical" size={"small"} style={{ width: "100%" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+            <Heading5 content={"Coordinators"} />
           </div>
           <Paragraph
             className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
             content={"Add and manage coordinators for your event."}
             styles={{ fontWeight: "normal !important" }}
           />
+          <Button
+            type="primary"
+            size="large"
+            className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl float-end"
+            style={{
+              borderRadius: "20px",
+              fontFamily: "BricolageGrotesqueMedium",
+              margin: '10px'
+            }}
+            onClick={() => setShowNewVendorDetails(true)}
+          >
+            Add Coordinators
+          </Button>
           <Paragraph
             className="text-OWANBE_PRY font-normal font-BricolageGrotesqueRegular text-center mx-auto border border-OWANBE_PRY bg-OWANBE_PRY2 rounded-lg w-[500px] h-14 flex flex-row items-center justify-center text-3xl py-8 place-self-center"
             content={`${filteredData.length} Coordinators`}
             styles={{ fontWeight: "normal !important" }}
           />
         </Space>
-
-        <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-          <Space
-            direction="horizontal"
-            align="center"
-            size="middle"
-            style={{ width: "100%" }}
-            className="justify-between pt-5"
+        <Tabs defaultActiveKey="1" className="w-full" onChange={setActiveKey}>
+          <TabPane
+            tab={
+              <span style={activeKey === "1" ? activeTabStyle : inactiveTabStyle}>
+                Coordinators
+                {activeKey === "1" && <span />}
+              </span>
+            }
+            key="1"
           >
-            <Search
-              placeholder="Search Coordinators Name"
-              onSearch={handleSearch}
-              onChange={(e) => handleSearch(e.target.value)}
-              style={{ width: 300 }}
-            />
-            {selectedRowKeys.length > 0 && (
-              <Space>
-                <Button
-                    type="default"
-                    className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
-                    style={{ borderRadius: 15, marginRight: 8 }}
-                    onClick={() => handleExport("excel")}
-                  >
-                    <FileExcelOutlined />
-                  </Button>
-                  <Button
-                    type="default"
-                    className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
-                    style={{ borderRadius: 15 }}
-                    onClick={() => handleExport("pdf")}
-                  >
-                    <FilePdfOutlined />
-                  </Button>
+            <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+              <Space
+                direction="horizontal"
+                align="center"
+                size="middle"
+                style={{ width: "100%" }}
+                className="justify-between pt-5"
+              >
+                <Search
+                  placeholder="Search Coordinators Name"
+                  onSearch={handleSearch}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  style={{ width: 300 }}
+                />
+                {selectedRowKeys.length > 0 && (
+                  <Space>
+                    <Button
+                      type="default"
+                      className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                      style={{ borderRadius: 15, marginRight: 8 }}
+                      onClick={() => handleExport("excel")}
+                    >
+                      <FileExcelOutlined />
+                    </Button>
+                    <Button
+                      type="default"
+                      className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                      style={{ borderRadius: 15 }}
+                      onClick={() => handleExport("pdf")}
+                    >
+                      <FilePdfOutlined />
+                    </Button>
+                  </Space>
+                )}
               </Space>
-            )}
-          </Space>
-          <Table
-            rowSelection={{
-              selectedRowKeys,
-              onChange: (keys) => setSelectedRowKeys(keys),
-            }}
-            columns={columns}
-            dataSource={filteredData}
-            pagination={{
-              current: currentPage,
-              pageSize: pageSize,
-              total: filteredData.length,
-              onChange: (page, size) => {
-                setCurrentPage(page);
-                setPageSize(size);
-              },
-            }}
-            scroll={{ x: 1000 }}
-          />
-        </Space>
+              <Table
+                rowSelection={{
+                  selectedRowKeys,
+                  onChange: (keys) => setSelectedRowKeys(keys),
+                }}
+                columns={columns}
+                dataSource={filteredData}
+                pagination={{
+                  current: currentPage,
+                  pageSize: pageSize,
+                  total: filteredData.length,
+                  onChange: (page, size) => {
+                    setCurrentPage(page);
+                    setPageSize(size);
+                  },
+                }}
+                scroll={{ x: 1000 }}
+              />
+            </Space>
+          </TabPane>
+          <TabPane
+            tab={
+              <span style={activeKey === "2" ? activeTabStyle : inactiveTabStyle}>
+                Audit Trail
+                {activeKey === "2" && <span />}
+              </span>
+            }
+            key="2"
+          >
+            <Space direction="vertical" size="middle" style={{ width: "100%" }} >
+            <Space
+              direction="horizontal"
+              align="center"
+              size="middle"
+              style={{ width: "100%" }}
+              className="justify-between pt-5"
+            >
+              <Search
+                placeholder="Search Audit Trail"
+                onSearch={handleSearch}
+                onChange={(e) => handleSearch(e.target.value)}
+                style={{ width: 300 }}
+              />
+              {selectedRowKeys.length > 0 && (
+                <Space>
+                </Space>
+              )}
+            </Space>
+            <Table
+              columns={auditTrailColumns}
+              dataSource={auditData}
+              pagination={{
+                current: currentPage,
+                pageSize: pageSize,
+                total: auditTrailData.length,
+                onChange: (page, size) => {
+                  setCurrentPage(page);
+                  setPageSize(size);
+                },
+              }}
+              scroll={{ x: 1000 }}
+            />
+             </Space>
+          </TabPane>
+        </Tabs>
       </Space>
     </React.Fragment>
   );
