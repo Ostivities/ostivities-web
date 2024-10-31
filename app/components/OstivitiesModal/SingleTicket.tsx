@@ -55,7 +55,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
   const ticketType: string = Form.useWatch("ticketType", form);
   const guestAsChargeBearer = Form.useWatch("guestAsChargeBearer", form);
   const ticketQty = Form.useWatch("ticketQty", form);
-  console.log(additionalFields, "additionalFields");
+  // console.log(additionalFields, "additionalFields");
 
   useEffect(() => {
     if (ticketStock === TICKET_STOCK.UNLIMITED) {

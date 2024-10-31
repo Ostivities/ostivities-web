@@ -381,6 +381,18 @@ export interface ITicketDetails {
   ticketStock: string
   ticketType: string
   createdAt: string
+  discount?: {
+    createdAt: string
+    discountCode: string 
+    discountType: DISCOUNT_TYPE 
+    discount_value: number 
+    endDateAndTime: string 
+    event: string 
+    id: string 
+    startDateAndTime: string
+    ticket: any
+  }
+  discountCode: string 
   guestAsChargeBearer: boolean
   ticketQuestions?: {
     question?: string;
@@ -471,43 +483,54 @@ export interface IDiscountCreate extends Partial<IDiscountData> {
 //   quantity: number;
 //   payment_method: PAYMENT_METHOD;
 // }
+export interface InfoNeeded {
+  ticketDetails?: {
+    ticketName: string;
+    ticketId: string;
+    ticketPrice: number;
+    ticketFee: number;
+    ticketNumber: number;
+    groupSize: number;
+    subTotal: number;
+    ticketEntity: string;
+    additionalInformation?: {
+      question: string;
+      is_compulsory: boolean;
+    }[];
+  }[];
+}
+
 
 export interface IGuestData {
-  event: string,
-  event_unique_code: string,
-  ticket_information: [
-    {
-      ticket_id: string,
-      ticket_name: string,
-      quantity: number,
-      total_amount: number
-    }
-  ],
-  personal_information: {
+  event?: string,
+  event_unique_code?: string,
+  ticket_information?:{
+    ticket_id: string,
+    ticket_name: string,
+    quantity: number,
+    total_amount: number
+  }[],
+  personal_information?: {
     firstName: string,
     lastName: string,
     email: string,
     phoneNumber: string
   },
-  attendees_information: [
-    {
-      firstName: string,
-      lastName: string,
-      email: string,
-      phoneNumber: string
-    }
-  ],
-  additional_information: [
-    {
-      question: string,
-      answer: string
-    }
-  ],
-  fees: number,
-  total_amount_paid: number,
-  discountCode: string,
-  total_purchased: number,
-  payment_method: PAYMENT_METHODS
+  attendees_information?: {
+    firstName: string,
+    lastName: string,
+    email: string,
+    phoneNumber: string
+  }[],
+  additional_information?:{
+    question: string,
+    answer: string
+  }[],
+  fees?: number,
+  total_amount_paid?: number,
+  discountCode?: string,
+  total_purchased?: number,
+  payment_method?: PAYMENT_METHODS
 }
 
 

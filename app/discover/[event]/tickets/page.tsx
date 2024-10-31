@@ -5,7 +5,7 @@ import { FormInstance } from "antd";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import Summary from "@/app/components/Discovery/Summary";
 import Image from "next/image";
-import { ITicketCreate, ITicketDetails } from "@/app/utils/interface";
+import { ITicketCreate, ITicketDetails, InfoNeeded } from "@/app/utils/interface";
 import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
 import { useRouter, useParams } from "next/navigation";
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
@@ -24,6 +24,7 @@ const TicketsSelection = () => {
   const [currentPage, setCurrentPage] = useState<"tickets" | "contactform">(
     "tickets"
   );
+  const [externalTrigger, setExternalTrigger] = useState<() => void | undefined>();
   const [totalFee, setTotalFee] = useState(0);
   const [discountApplied, setDiscountApplied] = useState(false);
   const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
@@ -57,11 +58,22 @@ const TicketsSelection = () => {
   const formRef = useRef<FormInstance | null>(null);
   // const formRef = useRef<HTMLFormElement>(null);
 
+  // const handleSubmit = () => {
+  //   console.log("its time to submit the form")
+  //   if (formRef.current) {
+  //     formRef.current.submit(); // This will trigger the onFinish method in ContactForm
+  //   }
+  // };
+
   const handleSubmit = () => {
-    if (formRef.current) {
-      formRef.current.submit(); // This will trigger the onFinish method in ContactForm
+    if (externalTrigger) {
+      externalTrigger(); // Trigger the `onFinish` function in ContactForm
     }
   };
+
+  const tiral = () => {
+    console.log('here')
+  }
 
   // const ticketEnt = ticketEntity === TICKET_ENTITY.SINGLE ? "Single Ticket" : "Collective Ticket";
 
@@ -794,7 +806,11 @@ const TicketsSelection = () => {
             </div>
           </section>
         ) : (
-          <ContactForm ticketDetails={ticketDetails} />
+          <ContactForm 
+          ticketDetails={ticketDetails}
+           onSubmit={handleSubmit}
+           onExternalFinishTrigger={(trigger) => setExternalTrigger(() => trigger)} 
+          />
         )}
         {/* Summary Section with Correct Props */}
         <Summary
@@ -804,7 +820,8 @@ const TicketsSelection = () => {
           onClick={
             currentPage === "tickets"
               ? () => setCurrentPage("contactform")
-              : () => handleSubmit
+              : currentPage === "contactform"
+              ? () => handleSubmit() : undefined
           }
           ticketDetails={ticketDetails}
           continueBtn

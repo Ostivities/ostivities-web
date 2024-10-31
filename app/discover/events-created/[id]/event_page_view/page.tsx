@@ -71,7 +71,7 @@ const EventPageView = () => {
           const urlString: string | any =
             response?.data?.secure_url || response?.data?.url;
           const res = await updateEvent.mutateAsync({
-            id: eventDetails?._id,
+            id: eventDetails?.id,
             eventImage: urlString,
           });
           if (res.status === 200) {

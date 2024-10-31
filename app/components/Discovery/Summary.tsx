@@ -50,6 +50,7 @@ const Summary = ({
 }: SummaryProps) => {
   const [showInput, setShowInput] = useState(false);
   const [discountApplied, setDiscountApplied] = useState(false);
+  const [ticketWithDiscount, setTicketWithDiscount] = useState<{[key: string]: number}>({})
   const [discountMessage, setDiscountMessage] = useState("")
   const [totalTicketPrice, setTotalTicketPrice] = useState<number>();
   const [subTotal, setSubTotal] = useState(false);
