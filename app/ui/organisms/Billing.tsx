@@ -95,7 +95,7 @@ const Billing = () => {
   return (
     <div className="mx-auto md:max-w-[95%] flex flex-col h-[60dvh]">
       <div className="flex justify-between items-center px-4 my-6">
-        <H4 content="Your Invoices" style={{ fontSize: '24px' }} />
+        <H4 content="Your Invoices" style={{ fontSize: '22px' }} />
       </div>
       <div className="flex justify-between items-center px-4 mb-6">
         <Search

@@ -329,7 +329,7 @@ const TicketsSelection = () => {
     <DashboardLayout title={title} isLoggedIn>
       <section className="flex gap-12">
         {currentPage === "tickets" ? (
-          <section className="flex-1 pr-1 pl-3 pb-4 scrollable-content shadow-none">
+          <section className="flex-1 pr-1 pl-3 pb-4 scrollable-content overflow-y-auto scroll-smooth h-full">
             <div className="flex-center justify-between">
               <div className="flex-center gap-3">
                 <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
@@ -341,10 +341,13 @@ const TicketsSelection = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="text-sm" style={{ fontWeight: 600 }}>
+                  <h3 className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
                     Date
                   </h3>
-                  <span>{dateFormat(eventDetails?.startDate)}</span>
+                  <span style={{ fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                    {dateFormat(eventDetails?.startDate)}
+                  </span>
+
                 </div>
               </div>
               <div className="flex-center gap-3">
@@ -352,10 +355,11 @@ const TicketsSelection = () => {
                   <Image src="/icons/time.svg" alt="" height={25} width={25} />
                 </div>
                 <div>
-                  <h3 className="text-sm" style={{ fontWeight: 600 }}>
+                  <h3 className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
                     Time
                   </h3>
-                  <span>
+
+                  <span style={{ fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
                     {timeFormat(eventDetails?.startDate)} -{" "}
                     {timeFormat(eventDetails?.endDate)} {eventDetails?.timeZone}
                   </span>

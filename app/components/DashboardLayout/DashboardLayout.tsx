@@ -262,7 +262,7 @@ function DashboardLayout({
                 shape="round"
                 style={{
                   height: "10px",
-                  width: "50px",
+                  width: "10px",
                   maxWidth: "100%",
                 }}
               />

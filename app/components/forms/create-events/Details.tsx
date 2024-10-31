@@ -682,7 +682,6 @@ function Details(): JSX.Element {
             <Controller
               name="eventURL"
               control={control}
-              rules={{ required: "Event URL is required!" }}
               render={({ field }) => (
                 <Space direction="vertical" size="small">
                   <Label content="Event URL" className="" htmlFor="eventURL" />
@@ -709,7 +708,7 @@ function Details(): JSX.Element {
                       defaultValue={eventUrl}
                       // value={eventUrl}
                       {...field}
-                      placeholder="Enter your desired name"
+                      placeholder="your event url name will show here"
                       // onChange={(e) => {
                       //   field.onChange(e.target.value.replace(/\s+/g, "")); // Remove spaces as the user types
                       // }}

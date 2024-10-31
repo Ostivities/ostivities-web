@@ -739,7 +739,6 @@ function EventDetailsEdit(): JSX.Element {
             <Controller
               name="eventURL"
               control={control}
-              rules={{ required: "Event URL is required!" }}
               render={({ field }) => (
                 <Space direction="vertical" size="small">
                   <Label content="Event URL" className="" htmlFor="eventURL" />
@@ -767,7 +766,7 @@ function EventDetailsEdit(): JSX.Element {
                       }}
                       {...field}
                       defaultValue={eventUrl}
-                      placeholder="Enter your desired name"
+                      placeholder="your event url name will show here"
                     />
                   </Space.Compact>
                   {errors.eventURL && (
