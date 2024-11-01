@@ -23,10 +23,10 @@ function TermsAndCondition(): JSX.Element {
                 
 
                 <p style={{ fontSize: "16px", marginBottom: "15px" }}>
-                <strong>Effective Date:</strong> November 5, 2024  
+                <strong>Effective Date:</strong> January 1, 2025 
                 </p>
                 <p style={{ fontSize: "16px", marginBottom: "24px" }}>
-                <strong>Last Updated:</strong> November 5, 2024     
+                <strong>Last Updated:</strong> November 1, 2024     
                 </p>
 
                 <p style={{ fontSize: "16px", marginBottom: "24px" }}>
@@ -258,7 +258,7 @@ function TermsAndCondition(): JSX.Element {
                 <strong>7.2 Refunds</strong>
                 </p>
                 <p style={{ fontSize: "16px", marginBottom: "24px" }}>
-                Refunds are governed by our <a href="/refund-policy">Refund Policy</a>. 
+                Refunds are governed by our <a href="/refund-policy"style={{ color: "#e20000", textDecoration: "none" }}>Refund Policy</a>. 
                 Please review our Refund Policy for more information.
                   <br />
                   </p>

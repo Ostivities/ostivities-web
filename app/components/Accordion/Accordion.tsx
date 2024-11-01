@@ -43,8 +43,11 @@ const Accordion: React.FC = () => {
       ),
       children: (
         <p>
-          Ostivities is a platform designed to help users discover, organize, and participate in events and activities. 
-          Whether you&apos;re hosting an event, attending one, or just exploring options, Ostivities makes it easy to connect and engage with others. 
+         Ostivities is a one-stop event management platform created to 
+         streamline and enhance the planning experience for any occasion. 
+         Ostivities provides organizers with the tools and resources to 
+         seamlessly oversee every aspect of their event, from conception 
+         to execution, all in a user-friendly and efficient manner. 
         </p>
       ),
     },
