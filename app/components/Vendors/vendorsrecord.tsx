@@ -186,9 +186,15 @@ const VendorsList = () => {
               data={modalData}
             />
             <Space direction="vertical" size={"large"}>
-              <Space direction="vertical" size={"middle"} style={{ width: "100%" }}>
+              <Space direction="vertical" size={"small"} style={{ width: "100%" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
                   <Heading5 className="" content={"Vendors"} />
+                  </div>
+                <Paragraph
+                  className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
+                  content={"Add and manage vendors for your event."}
+                  styles={{ fontWeight: "normal !important" }}
+                />
                   <Button
                     type="primary"
                     size="large"
@@ -201,12 +207,6 @@ const VendorsList = () => {
                   >
                     Add Vendor
                   </Button>
-                </div>
-                <Paragraph
-                  className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
-                  content={"Add and manage vendors for your event."}
-                  styles={{ fontWeight: "normal !important" }}
-                />
                 <Paragraph
                   className="text-OWANBE_PRY font-normal font-BricolageGrotesqueRegular text-center mx-auto border border-OWANBE_PRY bg-OWANBE_PRY2 rounded-lg w-[500px] h-14 flex flex-row items-center justify-center text-3xl py-8 place-self-center"
                   content={`${filteredData.length} Vendors`}

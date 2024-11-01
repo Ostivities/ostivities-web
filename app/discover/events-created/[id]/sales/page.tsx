@@ -12,8 +12,6 @@ import React, { useState } from "react";
 import { ColumnsType } from "antd/es/table";
 
 const { Search } = Input;
-const { TabPane } = Tabs;
-
 
 const EventSales = () => {
   const [activeKey, setActiveKey] = useState("1");
@@ -404,7 +402,7 @@ const inactiveTabStyle = {
           <TabPane
             tab={
               <span style={activeKey === "2" ? activeTabStyle : inactiveTabStyle}>
-                Exhibition Space Booked Sales
+                Exhibition Space Booked Sales 
                 {activeKey === "2" && <span />}
               </span>
             }

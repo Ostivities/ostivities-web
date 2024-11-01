@@ -132,7 +132,7 @@ const EventPageView = () => {
           <Paragraph
             className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
             content={
-              "Update your event image here by clicking the camera icon (File size should not be more than 10MB)."
+              "Update your event image here by clicking the camera icon (File size should not be more than 10MB)." 
             }
             styles={{ fontWeight: "normal !important" }}
           /><br />
