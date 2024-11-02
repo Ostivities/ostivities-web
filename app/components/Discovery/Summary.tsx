@@ -17,7 +17,9 @@ import { useGetEventDiscount, useGetTicketDiscount } from "@/app/hooks/discount/
 
 interface SummaryProps {
   continueBtn?: boolean;
+  allInfo?: any;
   to?: string | any;
+  loading?: boolean;
   paymentBtn?: boolean;
   ticketDetails?: {
     ticketName: string;
@@ -33,17 +35,19 @@ interface SummaryProps {
     subTotal: number;
   }[];
   eventName?: string;
-  eventId: string;
+  eventId?: string;
   onClick?: () => void;
-  onDiscountApplied: (applied: boolean) => void
+  onDiscountApplied?: (applied: boolean) => void
 }
 
 const Summary = ({
   continueBtn,
   to,
+  allInfo,
   paymentBtn,
   ticketDetails,
   eventName,
+  loading,
   eventId,
   onDiscountApplied,
   onClick,
@@ -60,44 +64,44 @@ const Summary = ({
   const router = useRouter();
 
   // const { getTicketDiscount } = useGetTicketDiscount(ticketDetails?.map)
-  const { getEventDiscount } = useGetEventDiscount(eventId)
+  const { getEventDiscount } = useGetEventDiscount(eventId ?? "")
   const discountDetails = getEventDiscount?.data?.data?.data
   // console.log(discountDetails)
 
   useEffect(() => {
-    onDiscountApplied(discountApplied)
-  },[discountApplied])
+    onDiscountApplied && onDiscountApplied(discountApplied)
+  },[discountApplied, onDiscountApplied])
 
-  useEffect(() => {
-    const checkDiscountCode = async () => {
-      // Ensure `discountCode` and `discountDetails` are defined
-      if (!discountCode || !discountDetails || !ticketDetails) return;
+  // useEffect(() => {
+  //   const checkDiscountCode = async () => {
+  //     // Ensure `discountCode` and `discountDetails` are defined
+  //     if (!discountCode || !discountDetails || !ticketDetails) return;
   
-      const discount = discountDetails?.find(
-        (discount: any) => discount?.discountCode === discountCode
-      );
+  //     const discount = discountDetails?.find(
+  //       (discount: any) => discount?.discountCode === discountCode
+  //     );
       
-      const ticketApplicable = discount?.ticket
+  //     const ticketApplicable = discount?.ticket
       
-      const ticketIds = ticketApplicable?.map((tickets: any) => tickets?.id);
-      const discountPresent = ticketDetails?.map((ticket: any) => ticket?.ticketId);
+  //     const ticketIds = ticketApplicable?.map((tickets: any) => tickets?.id);
+  //     const discountPresent = ticketDetails?.map((ticket: any) => ticket?.ticketId);
 
-      const discountChecks = discountPresent?.map(ticketId => ticketIds?.includes(ticketId));
+  //     const discountChecks = discountPresent?.map(ticketId => ticketIds?.includes(ticketId));
 
-      // console.log(discountChecks);
-      // console.log(ticketIds, "ticketIds", ticketApplicable)
-      console.log(ticketDetails, "ticketDetails")
-      // const discountApplicable = ticketApplicable?.map((tickets: any) => tickets?.map((ticket: ITicketDetails) => ticket?.id))
-      // console.log(discount)
-      if (!discount) {
-        setDiscountMessage("Discount Code isn't valid");
-      } else if (discount) {
-        setDiscountMessage("Discount code has been applied to checkout!");
-      }
-    };
+  //     // console.log(discountChecks);
+  //     // console.log(ticketIds, "ticketIds", ticketApplicable)
+  //     console.log(ticketDetails, "ticketDetails")
+  //     // const discountApplicable = ticketApplicable?.map((tickets: any) => tickets?.map((ticket: ITicketDetails) => ticket?.id))
+  //     // console.log(discount)
+  //     if (!discount) {
+  //       setDiscountMessage("Discount Code isn't valid");
+  //     } else if (discount) {
+  //       setDiscountMessage("Discount code has been applied to checkout!");
+  //     }
+  //   };
   
-    checkDiscountCode();
-  }, [discountCode, discountDetails]);
+  //   checkDiscountCode();
+  // }, [discountCode, discountDetails, ticketDetails]);
   // console.log(discountCode)
 
   const handleAddDiscountClick = () => {
@@ -252,13 +256,14 @@ const Summary = ({
                   (acc, ticket) => acc + ticket?.subTotal,
                   0
                 )
-                .toFixed(0).toLocaleString()}{".00 "}
+                .toLocaleString()}{".00 "}
             </div>
             {/* Adjust this based on your calculation */}
           </div>
           {continueBtn && (
             <div className="flex justify-center mt-12 mb-6 w-full">
               <Button
+                loading={loading}
                 onClick={() => {
                   handleClick();
                 }}

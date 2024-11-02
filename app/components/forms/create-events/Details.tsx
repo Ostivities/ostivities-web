@@ -285,6 +285,7 @@ function Details(): JSX.Element {
         unique_key,
         eventDetails: editorContent,
         socials,
+        eventInfo: EVENT_INFO.SINGLE_EVENT,
       });
 
       if (response.status === 201) {

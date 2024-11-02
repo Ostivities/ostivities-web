@@ -119,7 +119,7 @@ const Payment = () => {
             </div>
           </div>
         </section>
-        <Summary paymentBtn to={"/discover/payment"} />
+        <Summary paymentBtn to={"/discover/payment"} eventId={''} />
         {modal && <TimerModal />}
       </section>
     </DashboardLayout>

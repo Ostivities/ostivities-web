@@ -520,7 +520,7 @@ export interface IGuestData {
     firstName: string,
     lastName: string,
     email: string,
-    phoneNumber: string
+    phoneNumber?: string
   }[],
   additional_information?:{
     question: string,
