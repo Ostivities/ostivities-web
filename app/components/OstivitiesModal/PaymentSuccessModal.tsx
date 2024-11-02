@@ -12,7 +12,7 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
 
   // Check for event details
   const eventDetails = getUserEventByUniqueKey?.data?.data?.data === null ? router.push('/not-found') : getUserEventByUniqueKey?.data?.data?.data;
-  
+
 
   // Function to sync event to calendar
   const handleSyncToCalendar = () => {
@@ -29,7 +29,7 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
     const details = encodeURIComponent(`Event Details: ${eventDetails.eventDetails || 'No details provided'}`); // Get event details for calendar
 
     const eventLink = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${eventName}&dates=${startFormatted}/${endFormatted}&details=${details}&location=${location}&ctz=${timeZone}`;
-    
+
     window.open(eventLink, '_blank');
   };
 
@@ -54,13 +54,13 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
             Success!
           </h2>
           <p className="font-bricolage-grotesque font-semibold text-OWAMBE_FADE_TEXT w-[35rem] mx-auto mt-5">
-            Your order was successful. We&apos;ve also sent a copy to your email address. If you do not receive your ticket, 
+            Your order was successful. We&apos;ve also sent a copy to your email address. If you do not receive your ticket,
             please email us at <a href="mailto:sales&#64;ostivities.com" style={{ color: "#e20000", textDecoration: "none" }} >(Host email will be here)</a>.
           </p>
           <div className="flex flex-col items-center space-y-4 mt-10">
             <div className="flex items-center space-x-4 w-[20rem]">
               <button
-                onClick={() => router.push("/discover/payment")} 
+                onClick={() => router.push("/discover/payment")}
                 className="primary-btn font-normal text-base flex-1 whitespace-nowrap px-3 py-2"
               >
                 Download Ticket
@@ -72,7 +72,7 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
                 aria-label="Sync to Calendar"
               >
                 <Image
-                  src="/icons/calendar.svg"  // Replace with the path to your calendar icon
+                  src="/icons/calendar.svg"
                   alt="Calendar Icon"
                   height={24}
                   width={24}
@@ -80,7 +80,7 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
               </button>
             </div>
             <button
-              onClick={() => router.push("/discover/tickets")} 
+              onClick={() => router.push("/discover/tickets")}
               className="primary-btn font-normal continue cursor-pointer text-base w-[20rem]"
             >
               Buy Again

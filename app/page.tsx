@@ -7,6 +7,7 @@ import Features from '@/app/components/sections/Features';
 import Hero from '@/app/components/sections/Hero';
 import theme from '@/app/theme/theme.config';
 import { ConfigProvider } from 'antd';
+import Script from 'next/script'
 
 export default function Home() { 
   return (
@@ -28,6 +29,10 @@ export default function Home() {
         <AdvantagesTwo />
         <Faqs />
         <ComingSoon />
+        <Script
+          src="https://embed.tawk.to/66aa1bcd32dca6db2cb7f021/1i447p70n"
+          strategy="afterInteractive"
+        />
       </ConfigProvider>
     </OwanbeWebLayout>
   );
