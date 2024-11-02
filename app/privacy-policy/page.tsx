@@ -1,6 +1,7 @@
 import OwanbeWebLayout from "@/app/components/WebLayout/OwanbeWebLayout";
 import soon from "@/public/privacypolicy.svg";
 import Image from "next/image";
+import Script from 'next/script'
 
 function PrivacyPolicy(): JSX.Element {
     return (
@@ -389,6 +390,10 @@ function PrivacyPolicy(): JSX.Element {
               </div>
             </div>
           </section>
+          <Script
+          src="https://embed.tawk.to/66aa1bcd32dca6db2cb7f021/1i447p70n"
+          strategy="afterInteractive"
+        />
         </OwanbeWebLayout>
       );
     }

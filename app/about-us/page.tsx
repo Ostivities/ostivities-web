@@ -7,6 +7,7 @@ import pm from "@/public/PM.svg";
 import eng1 from "@/public/ENG1.svg";
 import empty from "@/public/empty.svg";
 import Image from "next/image";
+import Script from 'next/script'
 
 function AboutUs(): JSX.Element {
   return (
@@ -252,6 +253,10 @@ function AboutUs(): JSX.Element {
           </div>
         </div>
       </section>
+      <Script
+          src="https://embed.tawk.to/66aa1bcd32dca6db2cb7f021/1i447p70n"
+          strategy="afterInteractive"
+        />
     </OwanbeWebLayout>
   );
 }
