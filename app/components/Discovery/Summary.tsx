@@ -126,7 +126,7 @@ const Summary = ({
 
   return (
     <section className="flex-1">
-      <Heading5 className="text-4xl text-center" content={"Summary"} />
+      <Heading5 className="text-4xl text-center" content={"Order Summary"} />
       <section className="mt-14 px-20 h-4/5 border-l border-[#525252]">
         <div>
           <h3 className="text-OWANBE_PRY text-lg font-BricolageGrotesqueRegular">
@@ -216,21 +216,21 @@ const Summary = ({
                           {ticket?.ticketName} x {ticket?.ticketNumber}
                         </div>
                       )}
-                      <div>₦{ticket?.ticketPrice?.toFixed().toLocaleString()}{".00 "}</div>
+                      <div>₦{ticket?.ticketPrice?.toLocaleString()}{".00 "}</div>
                     </div>
                   ))}
                 <div className="flex-center justify-between">
                   <div>Fee</div>
                   <div>
                     ₦
-                    {ticketDetails?.reduce((acc, ticket) => acc + ticket?.ticketFee, 0).toFixed(0).toLocaleString()}{".00 "}
+                    {ticketDetails?.reduce((acc, ticket) => acc + ticket?.ticketFee, 0) .toLocaleString()}{".00 "}
                   </div>
                 </div>
                 {discountApplied && (
                   <div className="flex-center justify-between">
                     <div>Discount</div>
                     <div>-₦
-                    {ticketDetails?.reduce((acc, ticket) => acc + (ticket?.discountToDeduct ?? 0), 0).toFixed(0).toLocaleString()}{".00 "}
+                    {ticketDetails?.reduce((acc, ticket) => acc + (ticket?.discountToDeduct ?? 0), 0) .toLocaleString()}{".00 "}
                     </div>{" "}
                     {/* Adjust this based on your discount logic */}
                   </div>
@@ -241,7 +241,7 @@ const Summary = ({
                     ₦
                     {ticketDetails
                       ?.reduce((acc, ticket) => acc + ticket?.subTotal, 0)
-                      .toFixed(0).toLocaleString()}{".00 "}
+                       .toLocaleString()}{".00 "}
                   </div>
                 </div>
               </div>

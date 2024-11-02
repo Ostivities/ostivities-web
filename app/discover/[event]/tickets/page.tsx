@@ -751,7 +751,7 @@ const TicketsSelection = () => {
                                         150 +
                                         ticket?.ticketPrice
                                       )
-                                        .toFixed(0)
+                                         
                                         .toLocaleString()}
                                     </span>{" "}
                                     <span
@@ -763,7 +763,7 @@ const TicketsSelection = () => {
                                     >
                                       Including ₦
                                       {(ticket?.ticketPrice * 0.05 + 150)
-                                        .toFixed(0)
+                                         
                                         .toLocaleString()}{" "}
                                       fee
                                     </span>
@@ -785,7 +785,7 @@ const TicketsSelection = () => {
                                           150 +
                                           ticket?.ticketPrice
                                         )
-                                          .toFixed(0)
+                                           
                                           .toLocaleString()}
                                       </span>{" "}
                                       <span
@@ -797,7 +797,7 @@ const TicketsSelection = () => {
                                       >
                                         Including ₦
                                         {(ticket?.ticketPrice * 0.045 + 150)
-                                          .toFixed(0)
+                                           
                                           .toLocaleString()}{" "}
                                         fee
                                       </span>
@@ -818,7 +818,7 @@ const TicketsSelection = () => {
                                         150 +
                                         ticket?.ticketPrice
                                       )
-                                        .toFixed(0)
+                                         
                                         .toLocaleString()}
                                     </span>{" "}
                                     <span
@@ -830,7 +830,7 @@ const TicketsSelection = () => {
                                     >
                                       Including ₦
                                       {(ticket?.ticketPrice * 0.035 + 150)
-                                        .toFixed(0)
+                                         
                                         .toLocaleString()}{" "}
                                       fee
                                     </span>
