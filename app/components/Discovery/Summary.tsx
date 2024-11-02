@@ -12,8 +12,10 @@ import { useRouter, useParams } from "next/navigation";
 import { Button } from "antd";
 import { TICKET_ENTITY } from "@/app/utils/enums";
 import { MdOutlineDiscount } from "react-icons/md";
-import { useGetEventDiscount, useGetTicketDiscount } from "@/app/hooks/discount/discount.hook";
-
+import {
+  useGetEventDiscount,
+  useGetTicketDiscount,
+} from "@/app/hooks/discount/discount.hook";
 
 interface SummaryProps {
   continueBtn?: boolean;
@@ -35,9 +37,11 @@ interface SummaryProps {
     subTotal: number;
   }[];
   eventName?: string;
+  currentPage: string;
   eventId?: string;
+  isFormValid?: boolean;
   onClick?: () => void;
-  onDiscountApplied?: (applied: boolean) => void
+  onDiscountApplied?: (applied: boolean) => void;
 }
 
 const Summary = ({
@@ -48,14 +52,18 @@ const Summary = ({
   ticketDetails,
   eventName,
   loading,
+  isFormValid,
   eventId,
+  currentPage,
   onDiscountApplied,
   onClick,
 }: SummaryProps) => {
   const [showInput, setShowInput] = useState(false);
   const [discountApplied, setDiscountApplied] = useState(false);
-  const [ticketWithDiscount, setTicketWithDiscount] = useState<{[key: string]: number}>({})
-  const [discountMessage, setDiscountMessage] = useState("")
+  const [ticketWithDiscount, setTicketWithDiscount] = useState<{
+    [key: string]: number;
+  }>({});
+  const [discountMessage, setDiscountMessage] = useState("");
   const [totalTicketPrice, setTotalTicketPrice] = useState<number>();
   const [subTotal, setSubTotal] = useState(false);
   const [discountCode, setDiscountCode] = useState("");
@@ -64,25 +72,25 @@ const Summary = ({
   const router = useRouter();
 
   // const { getTicketDiscount } = useGetTicketDiscount(ticketDetails?.map)
-  const { getEventDiscount } = useGetEventDiscount(eventId ?? "")
-  const discountDetails = getEventDiscount?.data?.data?.data
+  const { getEventDiscount } = useGetEventDiscount(eventId ?? "");
+  const discountDetails = getEventDiscount?.data?.data?.data;
   // console.log(discountDetails)
 
   useEffect(() => {
-    onDiscountApplied && onDiscountApplied(discountApplied)
-  },[discountApplied, onDiscountApplied])
+    onDiscountApplied && onDiscountApplied(discountApplied);
+  }, [discountApplied, onDiscountApplied]);
 
   // useEffect(() => {
   //   const checkDiscountCode = async () => {
   //     // Ensure `discountCode` and `discountDetails` are defined
   //     if (!discountCode || !discountDetails || !ticketDetails) return;
-  
+
   //     const discount = discountDetails?.find(
   //       (discount: any) => discount?.discountCode === discountCode
   //     );
-      
+
   //     const ticketApplicable = discount?.ticket
-      
+
   //     const ticketIds = ticketApplicable?.map((tickets: any) => tickets?.id);
   //     const discountPresent = ticketDetails?.map((ticket: any) => ticket?.ticketId);
 
@@ -99,7 +107,7 @@ const Summary = ({
   //       setDiscountMessage("Discount code has been applied to checkout!");
   //     }
   //   };
-  
+
   //   checkDiscountCode();
   // }, [discountCode, discountDetails, ticketDetails]);
   // console.log(discountCode)
@@ -142,7 +150,7 @@ const Summary = ({
               onClick={handleAddDiscountClick}
               className="flex-center gap-2 text-OWANBE_PRY text-lg font-BricolageGrotesqueRegular cursor-pointer"
             >
-              <h3>Add discount code</h3> {<MdOutlineDiscount />} 
+              <h3>Add discount code</h3> {<MdOutlineDiscount />}
             </div>
             // <Button
             //   disabled={ticketDetails && ticketDetails?.length === 0}
@@ -166,8 +174,9 @@ const Summary = ({
                   <button
                     onClick={handleApplyDiscount}
                     disabled={!discountCode.trim()} // Disable button if discountCode is empty or only whitespace
-                    className={`py-1 px-7 rounded-full bg-OWANBE_PRY font-semibold text-white ${!discountCode.trim() && "opacity-50 cursor-not-allowed"
-                      }`}
+                    className={`py-1 px-7 rounded-full bg-OWANBE_PRY font-semibold text-white ${
+                      !discountCode.trim() && "opacity-50 cursor-not-allowed"
+                    }`}
                   >
                     Apply
                   </button>
@@ -207,8 +216,8 @@ const Summary = ({
                       {ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE ? (
                         // Render something different when ticketEntity is "collective"
                         <div>
-                          Group of {ticket?.groupSize} -{" "}
-                          {ticket?.ticketName} x {ticket?.ticketNumber}
+                          Group of {ticket?.groupSize} - {ticket?.ticketName} x{" "}
+                          {ticket?.ticketNumber}
                         </div>
                       ) : (
                         // Default rendering for non-collective ticketEntity
@@ -216,21 +225,35 @@ const Summary = ({
                           {ticket?.ticketName} x {ticket?.ticketNumber}
                         </div>
                       )}
-                      <div>₦{ticket?.ticketPrice?.toLocaleString()}{".00 "}</div>
+                      <div>
+                        ₦{ticket?.ticketPrice?.toLocaleString()}
+                        {".00 "}
+                      </div>
                     </div>
                   ))}
                 <div className="flex-center justify-between">
                   <div>Fee</div>
                   <div>
                     ₦
-                    {ticketDetails?.reduce((acc, ticket) => acc + ticket?.ticketFee, 0) .toLocaleString()}{".00 "}
+                    {ticketDetails
+                      ?.reduce((acc, ticket) => acc + ticket?.ticketFee, 0)
+                      .toLocaleString()}
+                    {".00 "}
                   </div>
                 </div>
                 {discountApplied && (
                   <div className="flex-center justify-between">
                     <div>Discount</div>
-                    <div>-₦
-                    {ticketDetails?.reduce((acc, ticket) => acc + (ticket?.discountToDeduct ?? 0), 0) .toLocaleString()}{".00 "}
+                    <div>
+                      -₦
+                      {ticketDetails
+                        ?.reduce(
+                          (acc, ticket) =>
+                            acc + (ticket?.discountToDeduct ?? 0),
+                          0
+                        )
+                        .toLocaleString()}
+                      {".00 "}
                     </div>{" "}
                     {/* Adjust this based on your discount logic */}
                   </div>
@@ -241,7 +264,8 @@ const Summary = ({
                     ₦
                     {ticketDetails
                       ?.reduce((acc, ticket) => acc + ticket?.subTotal, 0)
-                       .toLocaleString()}{".00 "}
+                      .toLocaleString()}
+                    {".00 "}
                   </div>
                 </div>
               </div>
@@ -252,15 +276,13 @@ const Summary = ({
             <div>
               ₦{""}
               {ticketDetails
-                ?.reduce(
-                  (acc, ticket) => acc + ticket?.subTotal,
-                  0
-                )
-                .toLocaleString()}{".00 "}
+                ?.reduce((acc, ticket) => acc + ticket?.subTotal, 0)
+                .toLocaleString()}
+              {".00 "}
             </div>
             {/* Adjust this based on your calculation */}
           </div>
-          {continueBtn && (
+          {/* {continueBtn && (
             <div className="flex justify-center mt-12 mb-6 w-full">
               <Button
                 loading={loading}
@@ -288,13 +310,51 @@ const Summary = ({
                     ? "Add Ticket"
                     : "Continue"
                 }
-                disabled={ticketDetails && ticketDetails?.length === 0}
+                disabled={!isFormValid ||(ticketDetails && ticketDetails?.length === 0)}
               >
                 Continue
               </Button>
             </div>
+          )} */}
+          {continueBtn && (
+            <div className="flex justify-center mt-12 mb-6 w-full">
+              <Button
+                loading={loading}
+                onClick={onClick}
+                className="primary-btn hover:none w-full text-center"
+                style={{
+                  borderRadius: "25px",
+                  fontFamily: "BricolageGrotesqueMedium",
+                  backgroundColor:
+                  (currentPage === "tickets" && ticketDetails?.length === 0) ||
+                  (currentPage === "contactform" && !isFormValid)
+                      ? "#cccccc" // Active red if valid
+                      : "#e20000", // Gray if disabled
+                  color:
+                  (currentPage === "tickets" && ticketDetails?.length === 0) ||
+                  (currentPage === "contactform" && !isFormValid)
+                      ? "#666666"
+                      : "white",
+                  height: "50px",
+                  fontSize: "16px",
+                  border: "none",
+                }}
+                title={
+                  currentPage === "tickets"
+                    ? "Add Ticket"
+                    : currentPage === "contactform" && !isFormValid
+                    ? "Complete Form"
+                    : "Continue"
+                }
+                disabled={
+                  (currentPage === "tickets" && ticketDetails?.length === 0) ||
+                  (currentPage === "contactform" && !isFormValid)
+                }
+              >
+               {currentPage === "tickets" ? "Add Ticket" : currentPage === "contactform" ? "Complete Form" : "Make Payment"}
+              </Button>
+            </div>
           )}
-
           {paymentBtn && (
             <div className="flex justify-center mt-12 mb-6 w-full">
               <button

@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState, MutableRefObject } from "react";
-import { Col, Form, FormInstance, Input, Row, Select, Checkbox } from "antd";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Col, Form, FormInstance, Input, Row, Select, Checkbox, FormProps } from "antd";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import Summary from "@/app/components/Discovery/Summary";
 import Image from "next/image";
@@ -27,6 +28,7 @@ import { useTimer } from "@/app/hooks/countdown";
 import { useRegisterGuest } from "@/app/hooks/guest/guest.hook";
 
 import TimerModal from "@/app/components/OstivitiesModal/TimerModal";
+import PaymentSuccessModal from "@/app/components/OstivitiesModal/PaymentSuccessModal";
 import ContactForm from "@/app/components/ContactForm/ContactForm";
 
 const TicketsSelection = () => {
@@ -346,6 +348,17 @@ const TicketsSelection = () => {
   // }, [discountApplied]);
 
   const [form] = Form.useForm();
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    setValue,
+    watch,
+    trigger,
+    reset,
+  } = useForm({
+    mode: "all", // Use your preferred validation mode
+  });
   // ! contactform
   const [additionalFields, setAdditionalFields] = useState<
     { id: number; question: string; answer: string }[]
@@ -407,8 +420,9 @@ const TicketsSelection = () => {
   >([]);
   // console.log(additionalFields, "additionalFields");
   const [modal, setModal] = useState(false);
+  const [successModal, setSuccessModal] = useState(false)
   const [isFormValid, setIsFormValid] = useState(false);
-  // console.log(isFormValid, "isFormValid")
+  console.log(isFormValid, "isFormValid")
   const validateForm = async () => {
     try {
       await form.validateFields();
@@ -486,8 +500,14 @@ const TicketsSelection = () => {
   }, [allInfo]);
 
   const [loading, setLoading] = useState(false)
-  const onFinish = async(values: any) => {
+  const onFinish: FormProps<any>["onFinish"] = async (values: any) => {
     console.log(values);
+    const validateFields = await form.validateFields();
+    if (!validateFields) {
+      return
+      console.log("Form is valid");
+    }
+    // return
     console.log(ticketDetails, "ticketDetails");
     const {
       firstName,
@@ -584,7 +604,7 @@ const TicketsSelection = () => {
         });
 
         if(response.status === 201) {
-          setModal(true);
+          setSuccessModal(true);
           setLoading(false)
         }
         // setTimeout( async() => {
@@ -596,12 +616,36 @@ const TicketsSelection = () => {
     // router.push(`discover/${params?.event}/payment`);
 
   };
+  const onFinishFailed: FormProps<any>["onFinishFailed"] = (
+    errorInfo
+  ) => {
+    console.log(errorInfo);
+    return errorInfo;
+  };
 
-  const handleSubmit = () => {
-    // if (externalTrigger) {
-    //   externalTrigger(); // Trigger the `onFinish` function in ContactForm
-    // }
-    onFinish(form.getFieldsValue());
+  useEffect(() => {
+    validateForm(); // Initial validation on load
+  }, []);
+
+  const handleSubmitForm = () => {
+    // validateForm()
+    if(isFormValid === true) {
+      onFinish(form.getFieldsValue());
+    } else return
+  };
+
+  const handleButtonClick = () => {
+    if (currentPage === "tickets") {
+      // Check if tickets are selected
+      if (ticketDetails?.length > 0) {
+        setCurrentPage("contactform"); // Move to contact form page
+      }
+    } else if (currentPage === "contactform") {
+      // Check if the form is valid
+      if (isFormValid) {
+        handleSubmitForm(); // Proceed to payment or next step
+      }
+    }
   };
 
   const isPending: boolean = getTickets?.isLoading;
@@ -1168,9 +1212,17 @@ const TicketsSelection = () => {
               <Form
                 form={form}
                 onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
                 layout="vertical"
                 className="form-spacing"
-                onValuesChange={validateForm}
+                onValuesChange={async () => {
+                  const validateFields = await form.validateFields();
+                  try {
+                    if (validateFields) setIsFormValid(true); // No errors, so form is valid
+                  } catch (error) {
+                    setIsFormValid(false); // Errors found, form is invalid
+                  }
+                }}              
               >
                 <Row gutter={16}>
                   <Col span={12}>
@@ -1541,6 +1593,7 @@ const TicketsSelection = () => {
               </Form>
             </div>
             {modal && <TimerModal />}
+            {successModal && <PaymentSuccessModal data={eventDetails?.user?.firstName} />}
           </section>
         ) : (
           <section className="flex-1">
@@ -1644,14 +1697,17 @@ const TicketsSelection = () => {
           onDiscountApplied={handleDiscountApplied}
           eventId={eventDetails?.id}
           loading={loading}
+          currentPage={currentPage}
           eventName={eventDetails?.eventName}
           allInfo={allInfo}
+          isFormValid={isFormValid}
           onClick={
-            currentPage === "tickets"
-              ? () => setCurrentPage("contactform")
-              : currentPage === "contactform"
-              ? () => handleSubmit()
-              : undefined
+            handleButtonClick
+            // currentPage === "tickets"
+            //   ? () => setCurrentPage("contactform")
+            //   : currentPage === "contactform"
+            //   ? () =>  handleSubmitForm()
+            //   : undefined
           }
           ticketDetails={ticketDetails}
           continueBtn

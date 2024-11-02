@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { useParams, useRouter } from "next/navigation";
 
-const PaymentSuccessModal = ({ open, onCancel, onClose, onOk }: IModal): JSX.Element => {
+const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): JSX.Element => {
   const router = useRouter();
   const params = useParams<{ event: string }>();
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
