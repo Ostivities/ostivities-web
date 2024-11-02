@@ -1269,6 +1269,6 @@ form .error-message {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #fadede; /* Scrollbar color */
+  background-color: #e20000; /* Scrollbar color */
   border-radius: 25px; /* Rounded scrollbar ends */
 }
