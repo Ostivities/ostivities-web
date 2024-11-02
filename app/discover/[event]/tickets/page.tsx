@@ -2,7 +2,16 @@
 
 import { useEffect, useRef, useState, MutableRefObject } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { Col, Form, FormInstance, Input, Row, Select, Checkbox, FormProps } from "antd";
+import {
+  Col,
+  Form,
+  FormInstance,
+  Input,
+  Row,
+  Select,
+  Checkbox,
+  FormProps,
+} from "antd";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import Summary from "@/app/components/Discovery/Summary";
 import Image from "next/image";
@@ -41,10 +50,10 @@ const TicketsSelection = () => {
   >("tickets");
   const [externalTrigger, setExternalTrigger] =
     useState<() => void | undefined>();
-    const [discountApplied, setDiscountApplied] = useState(false);
-    const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
-    const { getTickets } = useGetEventTickets(eventDetails?.id);
-    const ticketData = getTickets?.data?.data?.data;
+  const [discountApplied, setDiscountApplied] = useState(false);
+  const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
+  const { getTickets } = useGetEventTickets(eventDetails?.id);
+  const ticketData = getTickets?.data?.data?.data;
   // console.log(eventDetails?.eventName, "eventName")
   // console.log(eventDetails?.id, "eventID")
   const title = (
@@ -68,8 +77,9 @@ const TicketsSelection = () => {
       <h1 style={{ fontSize: "24px" }}>
         {currentPage === "tickets"
           ? "Choose your tickets"
-          : currentPage === "contactform" 
-          ? "Contact Information" : "Payment Options"}{" "}
+          : currentPage === "contactform"
+          ? "Contact Information"
+          : "Payment Options"}{" "}
       </h1>
     </div>
   );
@@ -420,9 +430,9 @@ const TicketsSelection = () => {
   >([]);
   // console.log(additionalFields, "additionalFields");
   const [modal, setModal] = useState(false);
-  const [successModal, setSuccessModal] = useState(false)
+  const [successModal, setSuccessModal] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
-  console.log(isFormValid, "isFormValid")
+  // console.log(isFormValid, "isFormValid");
   const validateForm = async () => {
     try {
       await form.validateFields();
@@ -499,13 +509,13 @@ const TicketsSelection = () => {
     console.log(allInfo, "Updated allInfo");
   }, [allInfo]);
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const onFinish: FormProps<any>["onFinish"] = async (values: any) => {
     console.log(values);
     const validateFields = await form.validateFields();
     if (!validateFields) {
-      return
-      console.log("Form is valid");
+      console.log("Form is not valid");
+      return;
     }
     // return
     console.log(ticketDetails, "ticketDetails");
@@ -561,7 +571,7 @@ const TicketsSelection = () => {
       ticket_information,
       additional_information: additionalFields,
       attendees_information,
-      event: eventDetails && eventDetails?.id || ticketData?.event?.id,
+      event: (eventDetails && eventDetails?.id) || ticketData?.event?.id,
       fees: ticketDetails
         ?.map((ticket) => ticket?.ticketFee)
         .reduce((acc, curr) => acc + curr, 0),
@@ -579,7 +589,7 @@ const TicketsSelection = () => {
         ticket_information,
         additional_information: additionalFields,
         attendees_information,
-        event: eventDetails && eventDetails?.id || ticketData?.event?.id,
+        event: (eventDetails && eventDetails?.id) || ticketData?.event?.id,
         fees: ticketDetails
           ?.map((ticket) => ticket?.ticketFee)
           .reduce((acc, curr) => acc + curr, 0),
@@ -593,45 +603,52 @@ const TicketsSelection = () => {
     });
     // return console.log(allInfo, "allInfo")
 
-    if(ticketDetails
-      ?.map((ticket) => ticket?.subTotal)
-      .reduce((acc, curr) => acc + curr, 0) === 0 ) {
-        setLoading(true)
-        const response = await registerGuest.mutateAsync({
-          ...updatedInfo,
-          payment_method: PAYMENT_METHODS.FREE,
-          eventId: eventDetails && eventDetails?.id
-        });
+    if (
+      ticketDetails
+        ?.map((ticket) => ticket?.subTotal)
+        .reduce((acc, curr) => acc + curr, 0) === 0
+    ) {
+      setLoading(true);
+      const response = await registerGuest.mutateAsync({
+        ...updatedInfo,
+        payment_method: PAYMENT_METHODS.FREE,
+        eventId: eventDetails && eventDetails?.id,
+      });
 
-        if(response.status === 201) {
-          setSuccessModal(true);
-          setLoading(false)
-        }
-        // setTimeout( async() => {
-        // }, 2000)
-
-      } else {
-        setCurrentPage("payment");
+      if (response.status === 201) {
+        setSuccessModal(true);
+        setLoading(false);
       }
+      // setTimeout( async() => {
+      // }, 2000)
+    } else {
+      setCurrentPage("payment");
+    }
     // router.push(`discover/${params?.event}/payment`);
-
   };
-  const onFinishFailed: FormProps<any>["onFinishFailed"] = (
-    errorInfo
-  ) => {
-    console.log(errorInfo);
+  const onFinishFailed: FormProps<any>["onFinishFailed"] = (errorInfo) => {
+    console.log(errorInfo, "errorInfo");
     return errorInfo;
   };
 
   useEffect(() => {
-    validateForm(); // Initial validation on load
-  }, []);
+    if(currentPage === "contactform" && form.getFieldsValue() && form.getFieldsValue().confirmEmail === form.getFieldsValue().email ){
+      console.log("it is equal")
+    }
+    // form.validateFields()
+    // .then((values: any) => {
+    //   console.log(values, "values")
+    // })
+    // .catch((errorInfo) => {
+    //   console.log(errorInfo, "errorInfo")
+    // });
+}, [form]);
 
   const handleSubmitForm = () => {
     // validateForm()
-    if(isFormValid === true) {
+    if (isFormValid === true) {
       onFinish(form.getFieldsValue());
-    } else return
+    } else return;
   };
 
   const handleButtonClick = () => {
@@ -794,9 +811,7 @@ const TicketsSelection = () => {
                                         ticket?.ticketPrice * 0.05 +
                                         150 +
                                         ticket?.ticketPrice
-                                      )
-                                         
-                                        .toLocaleString()}
+                                      ).toLocaleString()}
                                     </span>{" "}
                                     <span
                                       className="text-s font-BricolageGrotesqueRegular"
@@ -806,9 +821,10 @@ const TicketsSelection = () => {
                                       }}
                                     >
                                       Including ₦
-                                      {(ticket?.ticketPrice * 0.05 + 150)
-                                         
-                                        .toLocaleString()}{" "}
+                                      {(
+                                        ticket?.ticketPrice * 0.05 +
+                                        150
+                                      ).toLocaleString()}{" "}
                                       fee
                                     </span>
                                   </>
@@ -828,9 +844,7 @@ const TicketsSelection = () => {
                                           ticket?.ticketPrice * 0.045 +
                                           150 +
                                           ticket?.ticketPrice
-                                        )
-                                           
-                                          .toLocaleString()}
+                                        ).toLocaleString()}
                                       </span>{" "}
                                       <span
                                         className="text-s font-BricolageGrotesqueRegular"
@@ -840,9 +854,10 @@ const TicketsSelection = () => {
                                         }}
                                       >
                                         Including ₦
-                                        {(ticket?.ticketPrice * 0.045 + 150)
-                                           
-                                          .toLocaleString()}{" "}
+                                        {(
+                                          ticket?.ticketPrice * 0.045 +
+                                          150
+                                        ).toLocaleString()}{" "}
                                         fee
                                       </span>
                                     </>
@@ -861,9 +876,7 @@ const TicketsSelection = () => {
                                         ticket?.ticketPrice * 0.035 +
                                         150 +
                                         ticket?.ticketPrice
-                                      )
-                                         
-                                        .toLocaleString()}
+                                      ).toLocaleString()}
                                     </span>{" "}
                                     <span
                                       className="text-s font-BricolageGrotesqueRegular"
@@ -873,9 +886,10 @@ const TicketsSelection = () => {
                                       }}
                                     >
                                       Including ₦
-                                      {(ticket?.ticketPrice * 0.035 + 150)
-                                         
-                                        .toLocaleString()}{" "}
+                                      {(
+                                        ticket?.ticketPrice * 0.035 +
+                                        150
+                                      ).toLocaleString()}{" "}
                                       fee
                                     </span>
                                   </>
@@ -1215,14 +1229,16 @@ const TicketsSelection = () => {
                 onFinishFailed={onFinishFailed}
                 layout="vertical"
                 className="form-spacing"
-                onValuesChange={async () => {
-                  const validateFields = await form.validateFields();
-                  try {
-                    if (validateFields) setIsFormValid(true); // No errors, so form is valid
-                  } catch (error) {
-                    setIsFormValid(false); // Errors found, form is invalid
-                  }
-                }}              
+                onValuesChange={async (changedValues: any, values: any) => {
+
+                  // form.validateFields()
+                  //   .then((values: any) => {
+                  //     console.log(values, "values")
+                  //   })
+                  //   .catch((errorInfo) => {
+                  //     console.log(errorInfo, "errorInfo")
+                  //   });
+                }}
               >
                 <Row gutter={16}>
                   <Col span={12}>
@@ -1380,41 +1396,43 @@ const TicketsSelection = () => {
                   }
                 );
               })} */}
-                <Form.List name="additional_information">
-                  {(fields, { add, remove }) => (
-                    <>
-                      {additionalFields.map(({ id, question }) => (
-                        <div key={id}>
-                          <Form.Item
-                            name={[id, "question"]}
-                            initialValue={question}
-                            hidden
-                          >
-                            <Input />
-                          </Form.Item>
-                          <Form.Item
-                            key={id}
-                            label={
-                              <span>
-                                {question}{" "}
-                                <span style={{ color: "red" }}>*</span>
-                              </span>
-                            }
-                            name={[id, "answer"]}
-                            rules={[
-                              {
-                                required: true,
-                                message: "Please provide an answer",
-                              },
-                            ]}
-                          >
-                            <Input placeholder="Enter your answer" />
-                          </Form.Item>
-                        </div>
-                      ))}
-                    </>
-                  )}
-                </Form.List>
+                {additionalFields?.length > 0 && (
+                  <Form.List rules={[]} name="additional_information">
+                    {(fields, { add, remove }) => (
+                      <>
+                        {additionalFields.map(({ id, question }) => (
+                          <div key={id}>
+                            <Form.Item
+                              name={[id, "question"]}
+                              initialValue={question}
+                              hidden
+                            >
+                              <Input />
+                            </Form.Item>
+                            <Form.Item
+                              key={id}
+                              label={
+                                <span>
+                                  {question}{" "}
+                                  <span style={{ color: "red" }}>*</span>
+                                </span>
+                              }
+                              name={[id, "answer"]}
+                              rules={[
+                                {
+                                  required: false,
+                                  message: "Please provide an answer",
+                                },
+                              ]}
+                            >
+                              <Input placeholder="Enter your answer" />
+                            </Form.Item>
+                          </div>
+                        ))}
+                      </>
+                    )}
+                  </Form.List>
+                )}
                 <br />
                 {ticketDetails?.map((ticketDetail, ticketIndex) => {
                   return (
@@ -1593,7 +1611,9 @@ const TicketsSelection = () => {
               </Form>
             </div>
             {modal && <TimerModal />}
-            {successModal && <PaymentSuccessModal data={eventDetails?.user?.firstName} />}
+            {successModal && (
+              <PaymentSuccessModal data={eventDetails?.user?.firstName} />
+            )}
           </section>
         ) : (
           <section className="flex-1">
