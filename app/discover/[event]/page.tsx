@@ -180,7 +180,7 @@ const EventDetail = () => {
   const params = useParams<{ event: string }>();
   // console.log(params, 'params');
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
-  console.log(getUserEventByUniqueKey, "getUserEventByUniqueKey");
+  // console.log(getUserEventByUniqueKey, "getUserEventByUniqueKey");
 
   const eventDetails = getUserEventByUniqueKey?.data?.data?.data === null ? router.push('/not-found') : getUserEventByUniqueKey?.data?.data?.data;
   // console.log(eventDetails, "eventDetails");
@@ -361,7 +361,7 @@ const EventDetail = () => {
 
                 {/* Text Section */}
                 <div className="ml-2">
-                  <div className="text-sm" style={{ fontWeight: 600 }}>
+                  <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
                     Date
                   </div>
                   <div
@@ -369,6 +369,7 @@ const EventDetail = () => {
                       width: "140px",
                       whiteSpace: "normal",
                       wordWrap: "break-word",
+                      fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif"
                     }}
                   >
                     {dateFormat(eventDetails?.startDate)} -{" "}
@@ -381,10 +382,10 @@ const EventDetail = () => {
                   <Image src="/icons/time.svg" alt="" height={25} width={25} />
                 </div>
                 <div>
-                  <div className="text-sm" style={{ fontWeight: 600 }}>
+                  <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
                     Time
                   </div>
-                  <div>
+                  <div style={{ fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
                     {timeFormat(eventDetails?.startDate)} -{" "}
                     {timeFormat(eventDetails?.endDate)} {eventDetails?.timeZone}
                   </div>
@@ -400,7 +401,7 @@ const EventDetail = () => {
                   />
                 </div>
                 <div>
-                  <div className="text-sm" style={{ fontWeight: 600 }}>
+                  <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
                     Location
                   </div>
                   <div
@@ -412,7 +413,7 @@ const EventDetail = () => {
                   >
                     <a
                       href="https://maps.app.goo.gl/jBmgQ5EFxngj2ffS6"
-                      style={{ color: "#e20000", textDecoration: "none" }}
+                      style={{ color: "#e20000", textDecoration: "none", fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}
                       target="_blank"
                     >
                       {eventDetails?.address}
@@ -425,18 +426,21 @@ const EventDetail = () => {
                   <Image src="/icons/host.svg" alt="" height={25} width={25} />
                 </div>
                 <div>
-                  <div className="text-sm" style={{ fontWeight: 600 }}>
+                  <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
                     Host
                   </div>
                   <div>
-                    <div>{userFullName}</div>
+                    <div style={{ fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                      {userFullName}
+                    </div>
+
                   </div>
                 </div>
               </div>
               {twitterLink?.url ||
-              instagramLink?.url ||
-              websiteLink?.url ||
-              facebookLink?.url ? (
+                instagramLink?.url ||
+                websiteLink?.url ||
+                facebookLink?.url ? (
                 <div className="flex gap-3 items-center">
                   <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
                     <Image
@@ -447,7 +451,7 @@ const EventDetail = () => {
                     />
                   </div>
                   <div>
-                    <div className="text-sm" style={{ fontWeight: 600 }}>
+                    <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
                       Contact Us
                     </div>
                     <div className="flex items-center gap-4 mt-1">

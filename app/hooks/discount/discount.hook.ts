@@ -26,7 +26,9 @@ export const useGetEventDiscount = (id: string) => {
     const getEventDiscount = useQuery({
         queryKey: [GET_EVENT_DISCOUNT, id],
         queryFn: () => {
-        return API_SERVICE._getEventDiscount(id);
+            if(id) {
+                return API_SERVICE._getEventDiscount(id);
+            }
         },
     });
     return { getEventDiscount };

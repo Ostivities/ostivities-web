@@ -134,7 +134,7 @@ export const Answers: IFeatures[] = [
   {
     title: "What is Ostivities?",
     content:
-      " Ostivities is a platform designed to help users discover, organize, and participate in events and activities. Whether you’re hosting an event, attending one, or just exploring options, Ostivities makes it easy to connect and engage with others.",
+      "Ostivities is a one-stop event management platform created to streamline and enhance the planning experience for any occasion. Ostivities provides organizers with the tools and resources to seamlessly oversee every aspect of their event, from conception to execution, all in a user-friendly and efficient manner.",
   },
   {
     title: "How do I find events near me?",

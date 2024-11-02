@@ -1258,3 +1258,17 @@ form .error-message {
 .custom-font-size {
   font-size: 16px;
 }
+
+/* Slim scrollbar with custom color */
+::-webkit-scrollbar {
+  width: 8px; /* Adjust the width to make it slimmer */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Optional: Track color */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #e20000; /* Scrollbar color */
+  border-radius: 25px; /* Rounded scrollbar ends */
+}

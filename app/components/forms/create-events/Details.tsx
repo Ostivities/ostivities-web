@@ -285,6 +285,7 @@ function Details(): JSX.Element {
         unique_key,
         eventDetails: editorContent,
         socials,
+        eventInfo: EVENT_INFO.SINGLE_EVENT,
       });
 
       if (response.status === 201) {
@@ -682,7 +683,6 @@ function Details(): JSX.Element {
             <Controller
               name="eventURL"
               control={control}
-              rules={{ required: "Event URL is required!" }}
               render={({ field }) => (
                 <Space direction="vertical" size="small">
                   <Label content="Event URL" className="" htmlFor="eventURL" />
