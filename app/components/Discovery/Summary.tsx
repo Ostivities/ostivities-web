@@ -341,9 +341,9 @@ const Summary = ({
                 }}
                 title={
                   currentPage === "tickets"
-                    ? "Add Ticket"
+                    ? "Continue"
                     : currentPage === "contactform" && !isFormValid
-                    ? "Complete Form"
+                    ? "Continue"
                     : "Continue"
                 }
                 
@@ -352,7 +352,7 @@ const Summary = ({
                   (currentPage === "contactform" && !isFormValid)
                 }
               >
-               {currentPage === "tickets" ? "Add Ticket" : currentPage === "contactform" ? "Complete Form" : "Make Payment"}
+               {currentPage === "tickets" ? "Continue" : currentPage === "contactform" ? "Continue" : "Make Payment"}
               </Button>
             </div>
           )}
