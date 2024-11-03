@@ -347,10 +347,10 @@ const Summary = ({
                     : "Continue"
                 }
                 
-                // disabled={
-                //   (currentPage === "tickets" && ticketDetails?.length === 0) ||
-                //   (currentPage === "contactform" && !isFormValid)
-                // }
+                disabled={
+                  (currentPage === "tickets" && ticketDetails?.length === 0) ||
+                  (currentPage === "contactform" && !isFormValid)
+                }
               >
                {currentPage === "tickets" ? "Add Ticket" : currentPage === "contactform" ? "Complete Form" : "Make Payment"}
               </Button>

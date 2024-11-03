@@ -10,6 +10,7 @@ import {
   Row,
   Select,
   Checkbox,
+  Radio,
   FormProps,
 } from "antd";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
@@ -358,17 +359,6 @@ const TicketsSelection = () => {
   // }, [discountApplied]);
 
   const [form] = Form.useForm();
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-    setValue,
-    watch,
-    trigger,
-    reset,
-  } = useForm({
-    mode: "all", // Use your preferred validation mode
-  });
   // ! contactform
   const [additionalFields, setAdditionalFields] = useState<
     { id: number; question: string; answer: string }[]
@@ -631,21 +621,39 @@ const TicketsSelection = () => {
     return errorInfo;
   };
 
-  useEffect(() => {
-    if(currentPage === "contactform" && form.getFieldsValue() && form.getFieldsValue().confirmEmail === form.getFieldsValue().email ){
-      console.log("it is equal")
+  const handleFinalSubmit = async () => {
+    setLoading(true);
+    const response = await registerGuest.mutateAsync({
+      ...allInfo,
+      payment_method: PAYMENT_METHODS.CARD,
+      eventId: eventDetails && eventDetails?.id,
+    });
+
+    if (response.status === 201) {
+      setSuccessModal(true);
+      setLoading(false);
     }
-    // form.validateFields()
-    // .then((values: any) => {
-    //   console.log(values, "values")
-    // })
-    // .catch((errorInfo) => {
-    //   console.log(errorInfo, "errorInfo")
-    // });
-}, [form]);
+  };
+
+  useEffect(() => {
+    const checkFormValidity = async () => {
+      try {
+        // Run validation and set `isFormValid` based on result
+        await form.validateFields();
+        console.log("Valid values");
+        setIsFormValid(true);
+      } catch (errorInfo) {
+        console.log(errorInfo, "Validation error info");
+        setIsFormValid(false);
+      }
+    };
+
+    if (currentPage === "contactform") {
+      checkFormValidity();
+    }
+  }, [currentPage, form.getFieldsValue()]);
 
   const handleSubmitForm = () => {
-    // validateForm()
     if (isFormValid === true) {
       onFinish(form.getFieldsValue());
     } else return;
@@ -662,6 +670,8 @@ const TicketsSelection = () => {
       if (isFormValid) {
         handleSubmitForm(); // Proceed to payment or next step
       }
+    } else if (currentPage === "payment") {
+      handleFinalSubmit();
     }
   };
 
@@ -674,6 +684,12 @@ const TicketsSelection = () => {
     }
   }, [minutes, remainingSeconds]);
 
+  const [termsAndCondition, setTermsAndCondition] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<
+    PAYMENT_METHODS.CARD | PAYMENT_METHODS.TRANSFER | ""
+  >("");
+
+  // console.log(termsAndCondition, paymentMethod);
   return (
     <DashboardLayout title={title} isLoggedIn>
       <section className="flex gap-12">
@@ -1229,16 +1245,7 @@ const TicketsSelection = () => {
                 onFinishFailed={onFinishFailed}
                 layout="vertical"
                 className="form-spacing"
-                onValuesChange={async (changedValues: any, values: any) => {
-
-                  // form.validateFields()
-                  //   .then((values: any) => {
-                  //     console.log(values, "values")
-                  //   })
-                  //   .catch((errorInfo) => {
-                  //     console.log(errorInfo, "errorInfo")
-                  //   });
-                }}
+                onValuesChange={async (changedValues: any, values: any) => {}}
               >
                 <Row gutter={16}>
                   <Col span={12}>
@@ -1625,44 +1632,66 @@ const TicketsSelection = () => {
               minutes to secure your tickets.
             </div>
             <div className="pr-full mt-16">
-              <div className="flex flex-col gap-8">
-                <div className="card-shadow flex justify-between">
-                  <div className="flex gap-3 items-start">
-                    <div className="pt-1">
-                      <input type="checkbox" name="" id="" />
+              <Radio.Group>
+                <div className="flex flex-col gap-8">
+                  <div className="card-shadow flex justify-between">
+                    <div className="flex gap-3 items-start">
+                      <div className="pt-1">
+                        <Radio
+                          onChange={() =>
+                            setPaymentMethod(PAYMENT_METHODS.CARD)
+                          }
+                          value={PAYMENT_METHODS.CARD}
+                        />
+                      </div>
+                      <div>
+                        <h2 className="text-lg font-BricolageGrotesqueRegular text-OWANBE_PRY">
+                          Pay with Card
+                        </h2>
+                        {/* Add default styles to check visibility */}
+                        <span
+                          className="text-s font-BricolageGrotesqueRegular"
+                          style={{ fontSize: "14px", color: "#000" }}
+                        >
+                          Pay with a MasterCard, Visa, Verve Card, or directly
+                          with your bank.
+                        </span>
+                      </div>
                     </div>
-                    <div>
-                      <h2 className="text-lg font-BricolageGrotesqueRegular text-OWANBE_PRY">
-                        Pay with Card
-                      </h2>
-                      <span className="text-s font-BricolageGrotesqueRegular">
-                        Pay with a MasterCard, Visa, Verve Card or directly with
-                        your bank.
-                      </span>
+                  </div>
+                  <div className="card-shadow flex justify-between">
+                    <div className="flex gap-3 items-start">
+                      <div className="pt-1">
+                        <Radio
+                          onChange={() =>
+                            setPaymentMethod(PAYMENT_METHODS.TRANSFER)
+                          }
+                          value={PAYMENT_METHODS.TRANSFER}
+                        />
+                      </div>
+                      <div>
+                        <h2 className="text-lg font-BricolageGrotesqueRegular text-OWANBE_PRY">
+                          Pay with Bank Transfer
+                        </h2>
+                        <span
+                          className="text-s font-BricolageGrotesqueRegular"
+                          style={{ fontSize: "14px", color: "#000" }}
+                        >
+                          Make payment by transferring to our dedicated account
+                          number.
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="card-shadow flex justify-between">
-                  <div className="flex gap-3 items-start">
-                    <div className="pt-1">
-                      <input type="checkbox" name="" id="" />
-                    </div>
-                    <div>
-                      <h2 className="text-lg font-BricolageGrotesqueRegular text-OWANBE_PRY">
-                        Pay with Bank Transfer
-                      </h2>
-                      <span className="text-s font-BricolageGrotesqueRegular">
-                        Make payment by transferring to our dedicated account
-                        number.
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              </Radio.Group>
               <div className="flex-center gap-2 mt-7 [&>p>a]:text-OWANBE_PRY">
                 <div className=""></div>
 
-                <Checkbox>
+                <Checkbox
+                  checked={termsAndCondition}
+                  onChange={(e) => setTermsAndCondition(e.target.checked)}
+                >
                   <span
                     style={{ fontFamily: "Bricolage Grotesque, sans-serif" }}
                   >
