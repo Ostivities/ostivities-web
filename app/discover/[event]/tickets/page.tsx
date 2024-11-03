@@ -1634,7 +1634,7 @@ const TicketsSelection = () => {
             <div className="pr-full mt-16">
               <Radio.Group>
                 <div className="flex flex-col gap-8">
-                  <div className="card-shadow flex justify-between">
+                  <div className="card-shadow flex justify-between" style={{ width: '120%' }}>
                     <div className="flex gap-3 items-start">
                       <div className="pt-1">
                         <Radio
@@ -1659,7 +1659,7 @@ const TicketsSelection = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="card-shadow flex justify-between">
+                  <div className="card-shadow flex justify-between"style={{ width: '120%' }}>
                     <div className="flex gap-3 items-start">
                       <div className="pt-1">
                         <Radio
@@ -1671,7 +1671,7 @@ const TicketsSelection = () => {
                       </div>
                       <div>
                         <h2 className="text-lg font-BricolageGrotesqueRegular text-OWANBE_PRY">
-                          Pay with Bank Transfer
+                          Pay with Bank Transfer 
                         </h2>
                         <span
                           className="text-s font-BricolageGrotesqueRegular"
@@ -1761,6 +1761,7 @@ const TicketsSelection = () => {
           ticketDetails={ticketDetails}
           continueBtn
         />
+        {modal && <TimerModal />}
       </section>
     </DashboardLayout>
   );
