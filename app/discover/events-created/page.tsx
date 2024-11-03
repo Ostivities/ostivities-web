@@ -9,6 +9,7 @@ import React, { useEffect } from 'react';
 function EventsCreated(): JSX.Element {
   const router = useRouter();
   const {isLoggedIn, loading} = useFetch() // Update this based on your authentication logic
+  console.log(isLoggedIn, "isLoed")
 
   useEffect(() => {
     // Only attempt redirect if not loading

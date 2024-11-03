@@ -6,7 +6,8 @@ import { MenuItemType } from "antd/es/menu/interface";
 import { ColumnsType } from "antd/es/table";
 import React, { useEffect, useState } from "react";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
-import { useGetEventDiscount } from "@/app/hooks/discount/discount.hook"; 
+import { useGetEventDiscount } from "@/app/hooks/discount/discount.hook";
+import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
 import { useRouter, useParams } from "next/navigation";
 import DeleteDiscount from "../OstivitiesModal/DeleteDiscount";
 import { Heading5, Label, Paragraph } from "../typography/Typography";
@@ -26,12 +27,14 @@ const DiscountRecord = (): JSX.Element => {
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const { getEventDiscount } = useGetEventDiscount(params?.id);
-  console.log(selectedRowKeys, "selectedRowKeys");
+  const { getTickets } = useGetEventTickets(params?.id);
+  const ticketData = getTickets?.data?.data?.data;
+  // console.log(selectedRowKeys, "selectedRowKeys");
   const eventDiscountDetails = getEventDiscount?.data?.data?.data;
 
   useEffect(() => {
     if (params?.id) {
-      queryClient.invalidateQueries({ queryKey: [GET_EVENT_DISCOUNT, params.id] });
+      queryClient.invalidateQueries({ queryKey: [GET_EVENT_DISCOUNT, params?.id] });
     }
   }, [params?.id]);
 
@@ -64,6 +67,9 @@ const DiscountRecord = (): JSX.Element => {
         discountCode: item?.discountCode,
         uses: item?.usageLimit,
         dateEnding: item?.endDateAndTime,
+        ticketApplicable: item?.ticket?.map((ticketDetails: any) => { 
+          return ticketDetails?.ticketName
+        }).join(', ')
       };
     }
   );
@@ -82,6 +88,20 @@ const DiscountRecord = (): JSX.Element => {
       ),
       dataIndex: "discountCode",
       sorter: (a, b) => a?.discountCode?.localeCompare(b?.discountCode),
+    },
+    {
+      title: (
+        <Label 
+          content="Ticket Applicable"
+          className="font-semibold text-OWANBE_TABLE_TITLE"
+        />
+      ),
+      dataIndex: "ticketApplicable",
+      render: (text: string, record: any) => {        
+        const ticketApplicableArray = record?.ticketApplicable.split(',')
+        const allTicketsSelected = ticketApplicableArray?.length === ticketData?.length; 
+        return allTicketsSelected ? "All Tickets" : text;
+      },
     },
     {
       title: (

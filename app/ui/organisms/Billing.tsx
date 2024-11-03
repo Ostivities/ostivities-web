@@ -7,6 +7,7 @@ import * as XLSX from "xlsx";
 import React, { useState } from "react";
 import H4 from "../atoms/H4";
 import data from "@/app/lib/data/index.json";
+import H3 from "../atoms/H3";
 
 const { Search } = Input;
 
@@ -94,7 +95,7 @@ const Billing = () => {
   return (
     <div className="mx-auto md:max-w-[95%] flex flex-col h-[60dvh]">
       <div className="flex justify-between items-center px-4 my-6">
-        <H4 content="Your Invoices" />
+        <H4 content="Your Invoices" style={{ fontSize: '22px' }} />
       </div>
       <div className="flex justify-between items-center px-4 mb-6">
         <Search

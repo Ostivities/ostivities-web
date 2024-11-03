@@ -117,8 +117,32 @@ const EventsGuestListSummary = () => {
 
   return (
     <EventDetailsComponent>
-      <Space direction="vertical" size="middle" className="w-full">
-        <Heading5 className="pb-5" content={"Checked In Summary"} />
+      <Space direction="vertical" size={"small"} style={{ width: "100%" }}>
+          <div
+            style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}
+          >
+        <Heading5 className="" content={"Checked In Summary"} />
+        </div>
+          <Paragraph
+            className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
+            content={"This displays a record of guests whose tickets have been scanned and checked in by the ticketing agent."}
+            styles={{ fontWeight: "normal !important" }}
+          />
+          
+        <Button
+              type="primary"
+              size="large"
+              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl float-end"
+              style={{
+                borderRadius: "20px",
+                fontFamily: "BricolageGrotesqueMedium",
+                margin: '10px'
+              }}
+              // onClick={() => setShowNewVendorDetails(true)}
+            >
+              Refresh
+            </Button> 
+
         <Paragraph
               className="text-OWANBE_PRY font-normal font-BricolageGrotesqueRegular text-center mx-auto border border-OWANBE_PRY bg-OWANBE_PRY2 rounded-lg w-[500px] h-14 flex flex-row items-center justify-center text-3xl py-8 place-self-center"
               content={`${filteredData.length} Checked In Guests`}

@@ -52,7 +52,7 @@ const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
       title={
         <>
           <Heading5
-            content={"Add Payment Details"} 
+            content={"Add Account Details"} 
             className=""
             styles={{ fontSize: "16px" }} // Adjust font size here
           />
@@ -127,7 +127,7 @@ const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
           <Input
             type="text"
             value={accountName}
-            placeholder=""
+            placeholder="Account name will appear here"
             className="placeholder:font-BricolageGrotesqueRegular"
             autoComplete="off"
             readOnly
@@ -164,7 +164,7 @@ const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
               htmlType="submit"
               className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
             >
-              Save
+              Add
             </Button>
           </Form.Item>
         </Space>

@@ -739,7 +739,6 @@ function EventDetailsEdit(): JSX.Element {
             <Controller
               name="eventURL"
               control={control}
-              rules={{ required: "Event URL is required!" }}
               render={({ field }) => (
                 <Space direction="vertical" size="small">
                   <Label content="Event URL" className="" htmlFor="eventURL" />
@@ -767,7 +766,7 @@ function EventDetailsEdit(): JSX.Element {
                       }}
                       {...field}
                       defaultValue={eventUrl}
-                      placeholder="Enter your desired name"
+                      placeholder="your event url name will show here"
                     />
                   </Space.Compact>
                   {errors.eventURL && (
@@ -890,7 +889,7 @@ function EventDetailsEdit(): JSX.Element {
               />
             </Space>
 
-            <Controller
+            {/* <Controller
               name="eventInfo"
               control={control}
               rules={{ required: "Event Info is required!" }}
@@ -927,7 +926,7 @@ function EventDetailsEdit(): JSX.Element {
               )}
             />
 
-            {watchEventInfo === EVENT_INFO.SINGLE_EVENT && (
+            {watchEventInfo === EVENT_INFO.SINGLE_EVENT && ( */}
               <>
                 <Controller
                   name="timeZone"
@@ -1157,7 +1156,7 @@ function EventDetailsEdit(): JSX.Element {
                   </Row>
                 </Space>
               </>
-            )}
+            {/* )} */}
 
             {watchEventInfo === EVENT_INFO.RECURRING_EVENT && (
               <>

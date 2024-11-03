@@ -12,8 +12,6 @@ import React, { useState } from "react";
 import { ColumnsType } from "antd/es/table";
 
 const { Search } = Input;
-const { TabPane } = Tabs;
-
 
 const EventSales = () => {
   const [activeKey, setActiveKey] = useState("1");
@@ -41,6 +39,7 @@ const EventSales = () => {
     revenue: Math.floor(Math.random() * 10000),
     fees: Math.floor(Math.random() * 1000),
     dateCreated: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
+    chargeBearer: ["Guest", "Organizer"][Math.floor(Math.random() * 2)],
     status: ["Active", "Closed", "Pending"][Math.floor(Math.random() * 3)] as
       | "Active"
       | "Closed"
@@ -57,7 +56,6 @@ const EventSales = () => {
     paymentDate: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
   }));
 
-
   const exhibitionData: ExhibitionDataType[] = Array.from({ length: 50 }, (_, index) => ({
     key: `${index + 1}`,
     eventName: getRandomEventName(),
@@ -66,6 +64,7 @@ const EventSales = () => {
     revenue: Math.floor(Math.random() * 10000),
     fees: Math.floor(Math.random() * 1000),
     dateCreated: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
+    chargeBearer: ["Vendor", "Organizer"][Math.floor(Math.random() * 2)],
     id: generateRandomString(10),
   })).slice(0, 1);
 
@@ -116,6 +115,21 @@ const EventSales = () => {
     {
       title: (
         <Label
+          content="Charge Bearer"
+          className="font-semibold text-OWANBE_TABLE_TITLE"
+        />
+      ),
+      dataIndex: "chargeBearer",
+      filters: [
+        { text: "Guest", value: "Guest" },
+        { text: "Organizer", value: "Organizer" },
+      ],
+      onFilter: (value, record) => record.chargeBearer.includes(value as string), // Ensure property name matches
+      sorter: (a, b) => a.chargeBearer.localeCompare(b.chargeBearer), // Ensure property name matches
+    },
+    {
+      title: (
+        <Label
           content="Net Sales Revenue"
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
@@ -158,6 +172,21 @@ const EventSales = () => {
       dataIndex: "fees",
       sorter: (a, b) => (a.fees ?? 0) - (b.fees ?? 0),
       render: text => `₦${text.toLocaleString()}`,
+    },
+    {
+      title: (
+        <Label
+          content="Charge Bearer"
+          className="font-semibold text-OWANBE_TABLE_TITLE"
+        />
+      ),
+      dataIndex: "chargeBearer",
+      filters: [
+        { text: "Guest", value: "Guest" },
+        { text: "Organizer", value: "Organizer" },
+      ],
+      onFilter: (value, record) => record.chargeBearer.includes(value as string), // Ensure property name matches
+      sorter: (a, b) => a.chargeBearer.localeCompare(b.chargeBearer), // Ensure property name matches
     },
     {
       title: (
@@ -373,7 +402,7 @@ const inactiveTabStyle = {
           <TabPane
             tab={
               <span style={activeKey === "2" ? activeTabStyle : inactiveTabStyle}>
-                Exhibition Space Booked Sales
+                Exhibition Space Booked Sales 
                 {activeKey === "2" && <span />}
               </span>
             }

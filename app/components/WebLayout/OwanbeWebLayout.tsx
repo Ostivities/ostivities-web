@@ -32,12 +32,11 @@ function OwanbeWebLayout({
 
       {/* Scroll to Top Button */}
       <ScrollToTopButton />
-
-      {/* <NextScript /> */}
-        <Script
+      
+        {/* <Script
           src="https://embed.tawk.to/66aa1bcd32dca6db2cb7f021/1i447p70n"
           strategy="afterInteractive"
-        />
+        /> */}
 
          <Script 
          src="https://ostivities.statuspage.io/embed/script.js"

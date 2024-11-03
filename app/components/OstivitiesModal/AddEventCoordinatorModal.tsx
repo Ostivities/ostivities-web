@@ -1,12 +1,7 @@
-import { Button, Form, FormProps, Input, Select, Modal, Space, Row, Col } from "antd";
+import { IModal } from "@/app/utils/interface";
+import { Button, Input, Modal, Space, Form, Row, Col, Select } from "antd";
 import React, { useState } from "react";
-
-// Define the props expected by the modal component
-interface AddEventCoordinatorModalProps {
-  open: boolean;
-  onCancel: () => void;
-  onOk: () => void;
-}
+import { Heading5 } from "../typography/Typography"; // Assuming this is a custom component
 
 // Define the field types for the form
 interface FieldType {
@@ -17,75 +12,69 @@ interface FieldType {
   password?: string;
 }
 
-const AddEventCoordinatorModal: React.FC<AddEventCoordinatorModalProps> = ({ open, onCancel, onOk }) => {
+const AddCoordinators = ({ open, onCancel, onOk, data }: IModal) => {
   const { Option } = Select;
-  const [role, setRole] = useState<string | null>(null); // State to track selected role
-  const [form] = Form.useForm(); // Use Ant Design's form instance
+  const [role, setRole] = useState<string | null>('Ticketing Agent'); // Preselect "Ticketing Agent"
+  const [form] = Form.useForm(); 
 
-  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+  const onFinish = (values: FieldType) => {
     // handle form submission
     console.log('Form Values:', values);
     onOk(); // Close the modal on successful submission
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
+  const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
-  };
-
-  // Function to generate a random password with uppercase, lowercase, numbers, and special characters
-  const generatePassword = () => {
-    const length = 12;
-    const charset =
-      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
-    let password = "";
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * charset.length);
-      password += charset[randomIndex];
-    }
-
-    // Set the generated password into the form's password field
-    form.setFieldsValue({ password });
   };
 
   return (
     <Modal
+      title={
+        <>
+          <Heading5
+            content={"Add Event Coordinator"}  
+            className=""
+            styles={{ fontSize: "16px" }} // Adjust font size here
+          />
+          <br />
+        </>
+      }
       open={open}
       onCancel={onCancel}
       onOk={onOk}
-      title={<div style={{ fontSize: '24px', marginBottom: '16px', fontFamily: 'Bricolage Grotesque Medium' }}>Add Event Coordinator</div>}
       footer={[
-        <div key="footer-buttons" className="flex flex-row items-center justify-center py-6">
+        <div key="footer-buttons" className="flex flex-row items-center justify-center py-6"> 
           <Space>
-            <Button
-              key="cancel"
-              type="default"
-              size="large"
-              className="font-BricolageGrotesqueSemiBold button-styles sign-in cursor-pointer font-bold"
-              onClick={onCancel}
-            >
-              Cancel
-            </Button>
-            <Button
-              key="submit"
-              type="primary"
-              size="large"
-              form="add-event-coordinator-form"
-              htmlType="submit"
-              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
-              style={{ width: '190px' }} // Adjust the width as needed
-            >
-              Add Coordinator
-            </Button>
-          </Space>
-        </div>
-      ]}
-      width={600}
+      <Button
+      key="cancel"
+      type="default"
+      size="large"
+      className="font-BricolageGrotesqueSemiBold button-styles sign-in cursor-pointer font-bold"
+      onClick={onCancel}
     >
+      Cancel
+    </Button>
+    <Button
+      key="submit"
+      type="primary"
+      size="large"
+      form="add-event-coordinator-form"
+      htmlType="submit"
+      className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"
+      style={{ width: '190px' }} // Adjust the width as needed
+    >
+      Add Coordinator
+    </Button>
+  </Space>
+</div>
+]}
+width={700}
+>
       <Form<FieldType>
         id="add-event-coordinator-form"
-        form={form} // Connect form instance
+        form={form}
         name="basic"
-        initialValues={{ remember: true }}
+        initialValues={{ coordinatorsRole: 'Ticketing Agent' }} // Set initial value for role
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
@@ -99,7 +88,7 @@ const AddEventCoordinatorModal: React.FC<AddEventCoordinatorModalProps> = ({ ope
               rules={[{ required: true, message: "Please input coordinator's name!" }]}
               style={{ marginBottom: '8px' }}
             >
-              <Input placeholder="Enter coordinator's name" />
+              <Input placeholder="Enter coordinator's name"  />
             </Form.Item>
           </Col>
 
@@ -135,6 +124,8 @@ const AddEventCoordinatorModal: React.FC<AddEventCoordinatorModalProps> = ({ ope
               <Select
                 placeholder="Select role type"
                 onChange={(value) => setRole(value)} // Update role state on selection
+                
+                value={role}
               >
                 <Option value="Ticketing Agent">Ticketing Agent</Option>
                 <Option value="Auditor">Auditor</Option>
@@ -152,19 +143,13 @@ const AddEventCoordinatorModal: React.FC<AddEventCoordinatorModalProps> = ({ ope
                 label="Password"
                 name="password"
                 rules={[{ required: true, message: "Please generate a password for the Ticketing Agent!" }]}
-                style={{ marginBottom: '8px' }}
+                style={{ marginBottom: '24px' }} // Add margin bottom to the last form item
               >
-                <Input.Group compact>
-                  <Input.Password
-                    placeholder="Generated password"
-                    style={{ width: 'calc(100% - 140px)' }}
-                    value={form.getFieldValue('password')}
-                    readOnly
-                  />
-                  <Button type="default" onClick={generatePassword} style={{ width: '140px' }}>
-                    Generate Password
-                  </Button>
-                </Input.Group>
+                <Input.Password
+                  placeholder="Enter password"
+                  style={{ width: '100%' }}
+                 
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -174,4 +159,4 @@ const AddEventCoordinatorModal: React.FC<AddEventCoordinatorModalProps> = ({ ope
   );
 };
 
-export default AddEventCoordinatorModal;
+export default AddCoordinators;

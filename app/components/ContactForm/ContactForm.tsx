@@ -12,6 +12,7 @@ import {
   ReactElement,
   ReactNode,
   ReactPortal,
+  useEffect,
   useState,
 } from "react";
 import "@/app/globals.css";
@@ -19,7 +20,11 @@ import "@/app/scroll.css";
 import { Heading5 } from "@/app/components/typography/Typography";
 import { TICKET_ENTITY } from "@/app/utils/enums";
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
+import { useRegisterGuest } from "@/app/hooks/guest/guest.hook";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
+import { IGuestData, ITicketDetails } from "@/app/utils/interface";
+import { useTimer } from "@/app/hooks/countdown";
+import TimerModal from "@/app/components/OstivitiesModal/TimerModal";
 
 interface Inputs {
   firstName: string;
@@ -33,12 +38,15 @@ interface Inputs {
 }
 
 interface InfoNeeded {
+  onSubmit?: (values: any) => void;
+  onExternalFinishTrigger?: (trigger: () => void) => void;
   ticketDetails?: {
     ticketName: string;
     ticketId: string;
     ticketPrice: number;
     ticketFee: number;
     ticketNumber: number;
+    groupSize: number;
     subTotal: number;
     ticketEntity: string;
     additionalInformation?: {
@@ -48,48 +56,105 @@ interface InfoNeeded {
   }[];
 }
 
-// interface InfoNeeded {
-//   ticketName: string;
-//   ticketId: string;
-//   ticketPrice: number;
-//   ticketFee: number;
-//   ticketNumber: number;
-//   subTotal: number;
-//   ticketEntity: string;
-//   additionalInformation?: {
-//     question: string;
-//     is_compulsory: boolean;
-//   }[];
-// }
-// [];
-
-const ContactForm = (ticketDetails: InfoNeeded) => {
+const ContactForm = ({
+  ticketDetails,
+  onSubmit,
+  onExternalFinishTrigger,
+}: InfoNeeded) => {
   const router = useRouter();
+  const [modal, setModal] = useState(false);
   const params = useParams<{ event: string }>();
+  const { registerGuest } = useRegisterGuest();
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
   const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
 
-  const title = (
-    <div className="flex-center gap-2">
-      <Image
-        src="/icons/back-arrow.svg"
-        alt=""
-        height={25}
-        width={25}
-        onClick={() => router.back()}
-        className="cursor-pointer"
-      />
-      <h1 style={{ fontSize: "24px" }}>Contact Information</h1>
-    </div>
-  );
-  console.log(ticketDetails, "ticketDetails from contact page");
+  // console.log(ticketDetails, "ticketDetails from contact page");
 
   const [form] = Form.useForm();
   const [isFormValid, setIsFormValid] = useState(false);
+  const [counter, setCounter] = useState(0);
+  const [attendeesInformation, setAttendeesInformation] = useState<
+    {
+      id: number;
+      firstName: string;
+      lastName: string;
+      email: string;
+      confirmEmail: string;
+    }[]
+  >([]);
+  const [additionalFields, setAdditionalFields] = useState<
+    { id: number; question: string; answer: string }[]
+  >([]);
+  // console.log(attendeesInformation);
+
+  // Function to handle attendee information updates
+  const handleInputChange = (
+    value: string,
+    attendeeId: number,
+    field: "firstName" | "lastName" | "attendeeEmail" | "confirmAttendeeEmail"
+  ) => {
+    setAttendeesInformation((prevInfo) => {
+      const updatedInfo = [...prevInfo];
+
+      // Map 'attendeeEmail' and 'confirmAttendeeEmail' to 'email' and 'confirmEmail'
+      const stateFieldMap: Record<string, "email" | "confirmEmail"> = {
+        attendeeEmail: "email",
+        confirmAttendeeEmail: "confirmEmail",
+      };
+
+      // Determine the actual field name in the state
+      const actualField = stateFieldMap[field] || field;
+
+      // Find index based on attendee ID; if not found, add a new attendee
+      let attendeeIndex = updatedInfo.findIndex(
+        (attendee) => attendee.id === attendeeId
+      );
+
+      if (attendeeIndex === -1) {
+        // If attendee doesn't exist, add a new entry with default values
+        updatedInfo.push({
+          id: attendeeId,
+          firstName: "",
+          lastName: "",
+          email: "",
+          confirmEmail: "",
+        });
+        attendeeIndex = updatedInfo.length - 1;
+      }
+
+      // Update the specified field for this attendee
+      updatedInfo[attendeeIndex] = {
+        ...updatedInfo[attendeeIndex],
+        [actualField]: value,
+      };
+
+      return updatedInfo;
+    });
+  };
+
+  const handleFirstNameChange = (ticketIndex: number, firstName: string) => {
+    setAttendeesInformation(
+      attendeesInformation.map((field) =>
+        field.id === ticketIndex ? { ...field, firstName } : field
+      )
+    );
+  };
 
   const onFinish = (values: Inputs) => {
-    console.log(values);
+    // Do any additional handling if needed
+    if (onSubmit) {
+      const {firstName, lastName, } = values;
+      console.log(values, "values from contact page");
+      onSubmit(values);
+    }
   };
+
+  // Bind `onFinish` to an external trigger
+  // useEffect(() => {
+  //   if (onExternalFinishTrigger) {
+  //     onExternalFinishTrigger(() => form.submit());
+  //   }
+  // }, [onExternalFinishTrigger]);
 
   const validateForm = async () => {
     try {
@@ -99,13 +164,29 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
       setIsFormValid(false);
     }
   };
+  let ticketCounter = 0;
+
+  const { minutes, remainingSeconds, timer } = useTimer();
+
+  // useEffect(() => {
+  //   if (minutes === 0 && remainingSeconds === 0) {
+  //     setModal(true);
+  //   }
+  // }, [minutes, remainingSeconds]);
 
   return (
-    // <DashboardLayout title={title} isLoggedIn>
     <section className="flex gap-12">
       {/* Scrollable content container */}
-      <section className="flex-1 pr-1 pl-3 pb-4 scrollable-content">
-        <div className="flex-center justify-between">
+      <section className="flex-1 pr-1 pl-3 pb-4 scrollable-content overflow-y-auto scroll-smooth h-full">
+        <div className="bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem] w-[570px]">
+          We have reserved your tickets, please complete checkout within{" "}
+          <span className="text-OWANBE_PRY text-s font-BricolageGrotesqueRegular">
+            {timer}
+          </span>
+          minutes to secure your tickets.
+        </div>
+
+        {/* <div className="flex-center justify-between">
           <div className="flex-center gap-3">
             <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
               <Image src="/icons/calendar.svg" alt="" height={25} width={25} />
@@ -131,9 +212,9 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
               </span>
             </div>
           </div>
-        </div>
-        <div className="pr-full mt-16">
-          <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueMedium my-8 custom-font-size">
+        </div> */}
+        <div className="pr-full mt-12">
+          <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueMedium my-5 custom-font-size">
             Please fill out the form below with your information so we can send
             you your ticket.
           </h3>
@@ -147,7 +228,11 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
-                  label="First Name"
+                  label={
+                    <span>
+                      First Name <span style={{ color: "red" }}>*</span>
+                    </span>
+                  }
                   name="firstName"
                   rules={[
                     {
@@ -155,13 +240,19 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                       message: "Please provide your first name",
                     },
                   ]}
+                  style={{}}
+                  // className=""
                 >
                   <Input placeholder="Enter First Name" />
                 </Form.Item>
               </Col>
               <Col span={12}>
                 <Form.Item
-                  label="Last Name"
+                  label={
+                    <span>
+                      Last Name <span style={{ color: "red" }}>*</span>
+                    </span>
+                  }
                   name="lastName"
                   rules={[
                     {
@@ -175,21 +266,47 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
               </Col>
             </Row>
             <Form.Item
-              label="Email Address"
+              label={
+                <span>
+                  Email Address <span style={{ color: "red" }}>*</span>
+                </span>
+              }
               name="email"
               rules={[{ required: true, message: "Please provide your email" }]}
             >
               <Input type="email" placeholder="Enter Email Address" />
             </Form.Item>
             <Form.Item
-              label="Confirm Email"
+              label={
+                <span>
+                  Confirm Email <span style={{ color: "red" }}>*</span>
+                </span>
+              }
               name="confirmEmail"
-              rules={[{ required: true, message: "Please confirm your email" }]}
+              dependencies={["email"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please confirm your email!",
+                },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue("email") === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error("Emails do not match!"));
+                  },
+                }),
+              ]}
             >
               <Input type="email" placeholder="Confirm Email Address" />
             </Form.Item>
             <Form.Item
-              label="Phone Number"
+              label={
+                <span>
+                  Phone Number <span style={{ color: "red" }}>*</span>
+                </span>
+              }
               name="phoneNumber"
               rules={[
                 { required: true, message: "Please provide your phone number" },
@@ -208,14 +325,17 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                 placeholder="Enter Phone Number"
               />
             </Form.Item>
-            {ticketDetails?.ticketDetails &&
-              ticketDetails?.ticketDetails?.length > 0 && (
-                <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-4 custom-font-size">
-                  Additional Information
-                </h3>
-              )}
-
-            {ticketDetails?.ticketDetails?.map((ticketDetail, ticketIndex) => {
+            <br />
+            {ticketDetails?.some(
+              (ticket) =>
+                ticket?.additionalInformation &&
+                ticket?.additionalInformation?.length > 0
+            ) && (
+              <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-2 custom-font-size">
+                Additional Information
+              </h3>
+            )}
+            {/* {ticketDetails?.map((ticketDetail, ticketIndex) => {
               return ticketDetail?.additionalInformation?.map(
                 (
                   infoDetails: {
@@ -227,208 +347,229 @@ const ContactForm = (ticketDetails: InfoNeeded) => {
                   return (
                     <Form.Item
                       key={`${ticketIndex}-${infoIndex}`} // Unique key combining ticketIndex and infoIndex
-                      label={infoDetails?.question}
+                      label={
+                        <span>
+                          {infoDetails?.question}{" "}
+                          {infoDetails?.is_compulsory ? (
+                            <span style={{ color: "red" }}>*</span>
+                          ) : null}
+                        </span>
+                      }
                       name={`additionalField${ticketIndex}-${infoIndex}`} // Unique name to avoid conflicts
                       rules={
                         infoDetails?.is_compulsory
                           ? [
-                            {
-                              required: true,
-                              message: "Please provide answers",
-                            },
-                          ]
+                              {
+                                required: true,
+                                message: "This question is required",
+                              },
+                            ]
                           : []
                       }
+                      validateTrigger={["onChange", "onBlur"]} // Validate on change and blur
                     >
-                      <Input type="text" placeholder="Enter your answer" />{" "}
-                      {/* Use type="text" instead of type="name" */}
+                      <Input type="text" placeholder="Enter your answer" />
                     </Form.Item>
                   );
                 }
               );
-            })}
-
-            {/* <Form.Item
-                  label="Information 1"
-                  name="name"
-                  rules={[{ required: true, message: 'Please provide answers' }]}
-                >
-                  <Input type="name" placeholder="Enter" />
-            </Form.Item> */}
-            {/* <Form.Item
-              label="Information 2"
-              name="name"
-              rules={[{ required: true, message: "Please provide answers" }]}
-            >
-              <Input type="name" placeholder="Enter" />
-            </Form.Item> */}
-
+            })} */}
+            <Form.List name="additional_information">
+              {(fields, { add, remove }) => (
+                <>
+                  {additionalFields.map(({ id, question }) => (
+                    <div key={id}>
+                      <Form.Item
+                        name={[id, "question"]}
+                        initialValue={question}
+                        hidden
+                      >
+                        <Input />
+                      </Form.Item>
+                      <Form.Item
+                        key={id}
+                        label={
+                          <span>
+                            {question} <span style={{ color: "red" }}>*</span>
+                          </span>
+                        }
+                        name={[id, "answer"]}
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please provide an answer",
+                          },
+                        ]}
+                      >
+                        <Input placeholder="Enter your answer" />
+                      </Form.Item>
+                    </div>
+                  ))}
+                </>
+              )}
+            </Form.List>
             <br />
-
-            {ticketDetails?.ticketDetails?.map((ticketDetail, ticketIndex) => {
+            {ticketDetails?.map((ticketDetail, ticketIndex) => {
               return (
                 ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE && (
-                  <>
-                    <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size">
-                      Ticket 1 - Collective of 2- Regular. Dynamic
-                    </h3>
+                  <div key={ticketIndex}>
+                    {[...Array(ticketDetail?.groupSize)]?.map((_, index) => {
+                      ticketCounter++; // Increment ticketCounter globally
+                      const attendeeId = ticketCounter;
 
-                    <Form
-                      form={form}
-                      onValuesChange={validateForm}
-                      onFinish={onFinish}
-                    >
-                      <Row gutter={16}>
-                        <Col span={12}>
-                          <Form.Item
-                            layout="vertical"
-                            className="form-spacing"
-                            label="Attendee First Name"
-                            name="AttendeefirstName"
-                            rules={[
-                              {
-                                required: true,
-                                message: "Please provide attendee first name",
-                              },
-                            ]}
-                          >
-                            <Input placeholder="Enter Attendee First Name" />
-                          </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                          <Form.Item
-                            label="Attendee Last Name"
-                            name="AttendeelastName"
-                            rules={[
-                              {
-                                required: true,
-                                message: "Please provide attendee last name",
-                              },
-                            ]}
-                          >
-                            <Input placeholder="Enter Attendee Last Name" />
-                          </Form.Item>
-                        </Col>
-                      </Row>
-                    </Form>
-                  </>
+                      return (
+                        <div key={index}>
+                          <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size mt-4">
+                            Ticket {ticketCounter} - Collective of{" "}
+                            {ticketDetail?.groupSize} -{" "}
+                            {ticketDetail?.ticketName}
+                          </h3>
+                          <Row gutter={16} className="mb-6">
+                            <Col span={12}>
+                              <Form.Item
+                                name={[attendeeId, "firstName"]}
+                                label={
+                                  <span>
+                                    Attendee First Name{" "}
+                                    <span style={{ color: "red" }}>*</span>
+                                  </span>
+                                }
+                                rules={[
+                                  {
+                                    required: true,
+                                    message:
+                                      "Please provide attendee first name",
+                                  },
+                                ]}
+                              >
+                                <Input
+                                  placeholder="Enter Attendee First Name"
+                                  onChange={(e) =>
+                                    handleInputChange(
+                                      e.target.value,
+                                      attendeeId,
+                                      "firstName"
+                                    )
+                                  }
+                                />
+                              </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                              <Form.Item
+                                name={[attendeeId, "lastName"]}
+                                label={
+                                  <span>
+                                    Attendee Last Name{" "}
+                                    <span style={{ color: "red" }}>*</span>
+                                  </span>
+                                }
+                                rules={[
+                                  {
+                                    required: true,
+                                    message:
+                                      "Please provide attendee last name",
+                                  },
+                                ]}
+                              >
+                                <Input
+                                  placeholder="Enter Attendee Last Name"
+                                  onChange={(e) =>
+                                    handleInputChange(
+                                      e.target.value,
+                                      attendeeId,
+                                      "lastName"
+                                    )
+                                  }
+                                />
+                              </Form.Item>
+                            </Col>
+                          </Row>
+                          <Row gutter={16} className="mb-12">
+                            <Col span={12}>
+                              <Form.Item
+                                name={[attendeeId, "attendeeEmail"]}
+                                label={
+                                  <span>
+                                    Attendee Email Address{" "}
+                                    <span style={{ color: "red" }}>*</span>
+                                  </span>
+                                }
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Please provide attendee email",
+                                  },
+                                ]}
+                              >
+                                <Input
+                                  type="email"
+                                  placeholder="Enter Attendee Email Address"
+                                  onChange={(e) =>
+                                    handleInputChange(
+                                      e.target.value,
+                                      attendeeId,
+                                      "attendeeEmail"
+                                    )
+                                  }
+                                />
+                              </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                              <Form.Item
+                                name={[attendeeId, "confirmAttendeeEmail"]}
+                                label={
+                                  <span>
+                                    Confirm Attendee Email{" "}
+                                    <span style={{ color: "red" }}>*</span>
+                                  </span>
+                                }
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Please confirm attendee email",
+                                  },
+                                  ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                      const emailValue = getFieldValue([
+                                        attendeeId,
+                                        "attendeeEmail",
+                                      ]); // Get the value of the email field
+                                      if (!value || emailValue === value) {
+                                        return Promise.resolve();
+                                      }
+                                      return Promise.reject(
+                                        new Error("Emails do not match!")
+                                      );
+                                    },
+                                  }),
+                                ]}
+                              >
+                                <Input
+                                  type="email"
+                                  placeholder="Confirm Attendee Email Address"
+                                  onChange={(e) =>
+                                    handleInputChange(
+                                      e.target.value,
+                                      attendeeId,
+                                      "confirmAttendeeEmail"
+                                    )
+                                  }
+                                />
+                              </Form.Item>
+                            </Col>
+                          </Row>
+                        </div>
+                      );
+                    })}
+                  </div>
                 )
               );
-            })}
-
-            <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size">
-              Ticket 1 - Collective of 2- Regular.
-            </h3>
-            <Form form={form} onValuesChange={validateForm} onFinish={onFinish}>
-              <Row gutter={16}>
-                <Col span={12}>
-                  <Form.Item
-                    layout="vertical"
-                    className="form-spacing"
-                    label="Attendee First Name"
-                    name="AttendeefirstName"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please provide attendee first name",
-                      },
-                    ]}
-                  >
-                    <Input placeholder="Enter Attendee First Name" />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item
-                    label="Attendee Last Name"
-                    name="AttendeelastName"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please provide attendee last name",
-                      },
-                    ]}
-                  >
-                    <Input placeholder="Enter Attendee Last Name" />
-                  </Form.Item>
-                </Col>
-              </Row>
-              {/* <Form.Item
-                  label="Attendee Email Address"
-                  name="Attendeeemail"
-                  rules={[{ required: true, message: 'Please provide attendee email' }]}
-                >
-                  <Input type="email" placeholder="Enter Attendee Email Address" />
-                </Form.Item>
-                <Form.Item
-                  label="Confirm Attendee Email"
-                  name="confirmAttendeeEmail"
-                  rules={[{ required: true, message: 'Please confirm provide attendee email' }]}
-                >
-                  <Input type="email" placeholder="Confirm Attendee Email Address" />
-                </Form.Item> */}
-
-              <br />
-              <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size">
-                Ticket 2 - Collective of 2- Regular.
-              </h3>
-              <Form
-                form={form}
-                onFinish={onFinish}
-                layout="vertical"
-                className="form-spacing"
-                onValuesChange={validateForm}
-              >
-                <Row gutter={16}>
-                  <Col span={12}>
-                    <Form.Item
-                      label="Attendee First Name"
-                      name="AttendeeFirstName"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please provide attendee first name",
-                        },
-                      ]}
-                    >
-                      <Input placeholder="Enter Attendee First Name" />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item
-                      label="Attendee Last Name"
-                      name="AttendeeLastName"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please provide attendee last name",
-                        },
-                      ]}
-                    >
-                      <Input placeholder="Enter Attendee Last Name" />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                {/* <Form.Item
-                  label="Attendee Email Address"
-                  name="AttendeEmail"
-                  rules={[{ required: true, message: 'Please provide attendee email' }]}
-                >
-                  <Input type="email" placeholder="Enter Attendee Email Address" />
-                </Form.Item>
-                <Form.Item
-                  label="Confirm Attendee Email"
-                  name="ConfirmAttendeeEmail"
-                  rules={[{ required: true, message: 'Please confirm provide attendee email' }]}
-                >
-                  <Input type="email" placeholder="Confirm Attendee Email Address" />
-                </Form.Item> */}
-              </Form>
-            </Form>
+            })}{" "}
           </Form>
         </div>
+        {modal && <TimerModal />}
       </section>
     </section>
-    // </DashboardLayout>
   );
 };
 

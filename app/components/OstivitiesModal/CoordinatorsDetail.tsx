@@ -15,7 +15,7 @@ interface FieldType {
 const CoordinatorsDetail = ({ open, onCancel, onOk, data }: IModal) => {
   const { Option } = Select;
   const [role, setRole] = useState<string | null>('Ticketing Agent'); // Preselect "Ticketing Agent"
-  const [form] = Form.useForm(); // Use Ant Design's form instance
+  const [form] = Form.useForm(); 
 
   const onFinish = (values: FieldType) => {
     // handle form submission
@@ -50,7 +50,7 @@ const CoordinatorsDetail = ({ open, onCancel, onOk, data }: IModal) => {
     >
       <Form<FieldType>
         id="add-event-coordinator-form"
-        form={form} // Connect form instance
+        form={form}
         name="basic"
         initialValues={{ coordinatorsRole: 'Ticketing Agent' }} // Set initial value for role
         onFinish={onFinish}
@@ -66,7 +66,7 @@ const CoordinatorsDetail = ({ open, onCancel, onOk, data }: IModal) => {
               rules={[{ required: true, message: "Please input coordinator's name!" }]}
               style={{ marginBottom: '8px' }}
             >
-              <Input placeholder="Enter coordinator's name" readOnly value={data?.coordinatorsName} />
+              <Input placeholder="Coordinator's name" readOnly value={data?.coordinatorsName} />
             </Form.Item>
           </Col>
 
@@ -77,7 +77,7 @@ const CoordinatorsDetail = ({ open, onCancel, onOk, data }: IModal) => {
               rules={[{ required: true, message: "Please input coordinator's email!" }]}
               style={{ marginBottom: '8px' }}
             >
-              <Input placeholder="Enter coordinator's email" readOnly value={data?.coordinatorsEmail} />
+              <Input placeholder="Coordinator's email" readOnly value={data?.coordinatorsEmail} />
             </Form.Item>
           </Col>
 
@@ -88,7 +88,7 @@ const CoordinatorsDetail = ({ open, onCancel, onOk, data }: IModal) => {
               rules={[{ required: true, message: "Please input coordinator's phone number!" }]}
               style={{ marginBottom: '8px' }}
             >
-              <Input placeholder="Enter coordinator's phone number" readOnly value={data?.coordinatorsphoneNumber} />
+              <Input placeholder="Coordinator's phone number" readOnly value={data?.coordinatorsphoneNumber} />
             </Form.Item>
           </Col>
 
@@ -124,7 +124,7 @@ const CoordinatorsDetail = ({ open, onCancel, onOk, data }: IModal) => {
                 style={{ marginBottom: '24px' }} // Add margin bottom to the last form item
               >
                 <Input.Password
-                  placeholder="Generated password"
+                  placeholder="password"
                   style={{ width: '100%' }}
                   readOnly
                   value={data?.password}

@@ -34,6 +34,7 @@ const EventsGuestList = () => {
     revenue: Math.floor(Math.random() * 10000),
     fees: Math.floor(Math.random() * 1000),
     dateCreated: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
+    chargeBearer: ["Guest", "Organizer"][Math.floor(Math.random() * 2)],
     status: ["Active", "Closed", "Pending"][Math.floor(Math.random() * 3)] as
       | "Active"
       | "Closed"

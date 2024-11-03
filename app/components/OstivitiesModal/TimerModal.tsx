@@ -1,10 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 const TimerModal = () => {
   const router = useRouter();
+  const params = useParams<{ event: string }>();
+
   return (
     <div className="fixed inset-0 bg-black/20 grid place-items-center">
       <div
@@ -32,7 +34,7 @@ const TimerModal = () => {
           </p>
           <div className="flex justify-center">
             <button
-              onClick={() => router.push("/discover/tickets")}
+              onClick={() => router.push(`/discover/${params?.event}/tickets`)}
               className="block primary-btn font-normal text-base mt-12 px-32"
             >
               Initiate order again

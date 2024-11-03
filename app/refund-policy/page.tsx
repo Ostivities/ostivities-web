@@ -1,6 +1,7 @@
 import OwanbeWebLayout from "@/app/components/WebLayout/OwanbeWebLayout";
 import soon from "@/public/refundpolicy.svg";
 import Image from "next/image";
+import Script from 'next/script'
 
 function RefundPolicy(): JSX.Element {
     return (
@@ -20,13 +21,11 @@ function RefundPolicy(): JSX.Element {
                   color: "#000",
                 }}
               >
-                
-
                 <p style={{ fontSize: "16px", marginBottom: "15px" }}>
-                <strong>Effective Date:</strong> November 5, 2024  
+                <strong>Effective Date:</strong> January 1, 2025
                 </p>
                 <p style={{ fontSize: "16px", marginBottom: "24px" }}>
-                <strong>Last Updated:</strong> November 5, 2024     
+                <strong>Last Updated:</strong> November 1, 2024     
                 </p>
 
                 <p style={{ fontSize: "16px", marginBottom: "24px" }}>
@@ -263,7 +262,7 @@ function RefundPolicy(): JSX.Element {
                 If you have any questions or concerns about this Refund Policy or your refund request, please contact us at:
                 </p>
                 <p style={{ fontSize: "16px", marginBottom: "24px" }}>
-                <strong>Email:</strong> <a href="mailto:support@ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support@ostivities.com</a>
+                <strong>Email:</strong> <a href="mailto:support&#64;ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support&#64;ostivities.com</a>
                 </p>
 
                 <p style={{ fontSize: "16px", marginBottom: "24px" }}>
@@ -295,6 +294,10 @@ function RefundPolicy(): JSX.Element {
               </div>
             </div>
           </section>
+          <Script
+          src="https://embed.tawk.to/66aa1bcd32dca6db2cb7f021/1i447p70n"
+          strategy="afterInteractive"
+        />
         </OwanbeWebLayout>
       );
     }

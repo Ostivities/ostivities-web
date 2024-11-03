@@ -7,6 +7,7 @@ import { ACCOUNT_TYPE } from "@/app/utils/enums";
 import { IDashboard, INavLinks } from "@/app/utils/interface";
 import Hamburger from "@/public/hamburger.svg";
 import OwanbeLogo from "@/public/owanbe.svg";
+import { Skeleton } from "antd";
 import {
   BellFilled,
   CaretDownFilled,
@@ -29,11 +30,9 @@ import { relative } from "path";
 import React, { isValidElement, useEffect, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
 import useLocalStorage from "use-local-storage";
-import { useProfile } from "../../hooks/auth/auth.hook";
+import { useProfile, useLogout } from "../../hooks/auth/auth.hook";
 import useFetch from "../forms/create-events/auth";
-import { useLogout } from "@/app/hooks/auth/auth.hook";
 import emptyImage from "@/public/empty.svg";
-
 
 const items1: MenuProps["items"] = [
   {
@@ -65,11 +64,11 @@ const items2: MenuProps["items"] = [
 ].map((item) => {
   const key = item.link;
   return {
-    key: `${key}`,
+    key: key,
     icon: React.createElement(item.icon),
     label: (
       <span style={{ fontFamily: "bricolagegrotesqueRegular" }}>
-        {item.title}
+        <a href={item.link}>{item.title}</a>
       </span>
     ),
   };
@@ -97,7 +96,7 @@ function DashboardLayout({
   const pathname = usePathname();
 
   const { profile } = useProfile();
-  const { logoutUser } = useLogout()
+  const { logoutUser } = useLogout();
   const [cookies, setCookie, removeCookie] = useCookies([
     "forgot_email",
     "is_registered",
@@ -106,7 +105,7 @@ function DashboardLayout({
     "stage_one",
     "stage_two",
     "stage_three",
-    "user_fullname"
+    "user_fullname",
   ]);
 
   // const accountType = profile?.data?.data?.data?.accountType
@@ -129,23 +128,27 @@ function DashboardLayout({
     {
       label: <Label className="cursor-pointer" content="Sign out" />,
       key: "sign-out",
-      onClick: () => {
-        // logoutUser.mutateAsync()
-        sessionStorage.removeItem("token");
-        removeCookie("forgot_email");
-        removeCookie("event_id");
-        removeCookie("form_stage");
-        removeCookie("stage_one");
-        removeCookie("stage_two");
-        removeCookie("stage_three");
-        router.push("/login");
+      onClick: async () => {
+        const res = await logoutUser.mutateAsync();
+        if (res.status === 200) {
+          sessionStorage.removeItem("token");
+          removeCookie("forgot_email");
+          removeCookie("event_id");
+          removeCookie("form_stage");
+          removeCookie("stage_one");
+          removeCookie("stage_two");
+          removeCookie("stage_three");
+          router.push("/login");
+        }
       },
     },
   ];
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useLocalStorage<boolean>("sidebar", true);
   const { isLoggedIn } = useFetch();
+  // console.log(isLoggedIn, "isLoggedIn");
   const userProfile = isLoggedIn ? profile : null;
+  // console.log(userProfile, "userProfile");
   const accountType = userProfile?.data?.data?.data?.accountType;
   const {
     token: { colorBgContainer },
@@ -162,19 +165,19 @@ function DashboardLayout({
   const userName =
     accountType === ACCOUNT_TYPE.PERSONAL
       ? userProfile?.data?.data?.data?.firstName +
-      " " +
-      userProfile?.data?.data?.data?.lastName
+        " " +
+        userProfile?.data?.data?.data?.lastName
       : userProfile?.data?.data?.data?.businessName || "";
 
-  // setCookie("user_fullname", userName) 
+  // setCookie("user_fullname", userName)
   const avatarName =
     accountType === ACCOUNT_TYPE.PERSONAL
       ? userProfile?.data?.data?.data?.firstName?.charAt(0) +
-      userProfile?.data?.data?.data?.lastName?.charAt(0)
+        userProfile?.data?.data?.data?.lastName?.charAt(0)
       : userProfile?.data?.data?.data?.businessName?.charAt(0).toUpperCase() +
-      userProfile?.data?.data?.data?.businessName
-        ?.charAt(1)
-        .toUpperCase() || "";
+          userProfile?.data?.data?.data?.businessName
+            ?.charAt(1)
+            .toUpperCase() || "";
 
   const account_type =
     accountType === ACCOUNT_TYPE.PERSONAL ? "User" : "Organisation";
@@ -186,9 +189,13 @@ function DashboardLayout({
 
   const [currentPah, setCurrentPah] = useState(`/discover${path}`);
 
+  // const onClick: MenuProps["onClick"] = (e: any) => {
+  //   setCurrentPah(e?.key);
+  //   router.push(e?.key);
+  // };
   const onClick: MenuProps["onClick"] = (e: any) => {
-    setCurrentPah(e?.key);
-    router.push(e?.key);
+    setCurrentPah(e?.key); // Update the current selected path
+    router.push(e?.key); // Navigate to the new route
   };
 
   const pathCheck =
@@ -220,7 +227,7 @@ function DashboardLayout({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []); 
+  }, []);
 
   return (
     <FormProvider>
@@ -242,16 +249,30 @@ function DashboardLayout({
           }}
         >
           <div className="demo-logo flex flex-row items-center space-x-12">
-            <Link href="/" shallow>
+            <a href="/">
               <Image
                 src={OwanbeLogo}
                 alt="Ostivities Logo"
                 style={{ height: "40px" }}
                 className="w-[110px] cursor-pointer"
               />
-            </Link>
+            </a>
           </div>
-          {!isLoggedIn && (
+
+
+          {profile?.isFetching === true ? (
+            <>
+              <Skeleton.Button
+                active
+                shape="round"
+                style={{
+                  height: "10px",
+                  width: "10px",
+                  maxWidth: "100%",
+                }}
+              />
+            </>
+          ) : profile?.isFetching === false && !isLoggedIn ? (
             <>
               {/* Show NAV_LINKS when user is not logged in */}
               <div className="flex flex-row items-center space-x-8">
@@ -274,7 +295,8 @@ function DashboardLayout({
                     <Button
                       variant="outline"
                       label="Sign in"
-                      className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold" />
+                      className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                    />
                   </Link>
                 ) : (
                   // If user is not registered, show both Sign In and Sign Up buttons
@@ -283,7 +305,8 @@ function DashboardLayout({
                       <Button
                         variant="outline"
                         label="Sign in"
-                        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold" />
+                        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                      />
                     </Link>
                     <Link href="/signup" passHref>
                       <Button label="Sign Up" />
@@ -292,17 +315,17 @@ function DashboardLayout({
                 )}
               </div>
             </>
-          )}
-
-          {isLoggedIn && (
-            <>
-              <Space
-                direction="horizontal"
-                className="space-x-8 items-center justify-center"
-                align="center"
-                size={"small"}
-              >
-                {/* <div className="mt-5 relative">
+          ) : (
+            profile?.isFetching === false &&
+            isLoggedIn && (
+              <>
+                <Space
+                  direction="horizontal"
+                  className="space-x-8 items-center justify-center"
+                  align="center"
+                  size={"small"}
+                >
+                  {/* <div className="mt-5 relative">
                   <Badge count={2}>
                     <BellFilled
                       className="cursor-pointer"
@@ -370,35 +393,37 @@ function DashboardLayout({
                     </div>
                   </div>
                 </div> */}
-                <Dropdown menu={{ items }} trigger={["click", "hover"]}>
-                  <div className="flex-center gap-4 cursor-pointer">
-                  <Image
-  src={profile?.data?.data?.data?.image || emptyImage}  // Fallback to imported empty image
-  alt="Profile Picture"
-  width={40}  // Adjust this to match the previous avatar size if needed
-  height={40} // Adjust this to match the previous avatar size if needed
-  className="object-cover rounded-full"
-  style={{
-    cursor: "pointer",  // Keep the cursor style for interaction
-  }}
-/>
+                  <Dropdown menu={{ items }} trigger={["click", "hover"]}>
+                    <div className="flex-center gap-4 cursor-pointer">
+                      <Image
+                        src={profile?.data?.data?.data?.image || emptyImage} // Fallback to imported empty image
+                        alt="Profile Picture"
+                        width={40} // Adjust this to match the previous avatar size if needed
+                        height={40} // Adjust this to match the previous avatar size if needed
+                        className="object-cover rounded-full"
+                        style={{
+                          cursor: "pointer", // Keep the cursor style for interaction
+                        }}
+                      />
 
-                    <div className="h-fit flex gap-4">
-                      <div className="flex flex-col justify-start">
-                        <h3 className=" text-sm text-OWANBE_TABLE_CELL">
-                          {userName}
-                        </h3>
-                        <span className="text-xs text-[#8C95A1]">
-                          {account_type}
-                        </span>
+                      <div className="h-fit flex gap-4">
+                        <div className="flex flex-col justify-start">
+                          <h3 className=" text-sm text-OWANBE_TABLE_CELL">
+                            {userName}
+                          </h3>
+                          <span className="text-xs text-[#8C95A1]">
+                            {account_type}
+                          </span>
+                        </div>
+                        <CaretDownFilled />
                       </div>
-                      <CaretDownFilled />
                     </div>
-                  </div>
-                </Dropdown>
-              </Space>
-            </>
+                  </Dropdown>
+                </Space>
+              </>
+            )
           )}
+
         </Header>
         <Layout>
           <Sider
@@ -435,8 +460,8 @@ function DashboardLayout({
             />
             <Menu
               mode="inline"
-              defaultSelectedKeys={["1"]}
-              defaultOpenKeys={["sub1"]}
+              defaultSelectedKeys={[currentPah]}
+              // defaultOpenKeys={["sub1"]}
               style={{
                 height: "100%",
                 borderRight: 0,
@@ -446,8 +471,9 @@ function DashboardLayout({
               items={isLoggedIn ? items2 : items3}
               onClick={onClick}
               selectedKeys={[currentPah]}
-              className={`${collapsed === true ? "collapsed-side-nav" : "side-nav"
-                }`}
+              className={`${
+                collapsed === true ? "collapsed-side-nav" : "side-nav"
+              }`}
             />
           </Sider>
           <Layout
@@ -492,8 +518,9 @@ function DashboardLayout({
               <Content className="flex flex-col space-y-8 py-8">
                 {steppers && (
                   <div
-                    className={`mx-auto text-center flex flex-row items-center justify-center pb-3 ${!isValidElement(steppers) ? "hidden" : ""
-                      }`}
+                    className={`mx-auto text-center flex flex-row items-center justify-center pb-3 ${
+                      !isValidElement(steppers) ? "hidden" : ""
+                    }`}
                   >
                     {steppers}
                   </div>

@@ -144,7 +144,7 @@ export default function EventDetailsComponent({
     };
 
     checkEventStatus();
-  }, [eventDetails?.eventInfo, eventDetails?.frequency, eventdates, params?.id, publishEvent])
+  }, [eventDetails, params?.id])
 
   useEffect(() => {
     const fetchInitialState = async () => {
@@ -390,7 +390,7 @@ export default function EventDetailsComponent({
               }}
               onClick={() => setIsModalOpen(true)}
             >
-              Add Payment Details
+              Add Account Details
             </Button>
           </div>
         )}

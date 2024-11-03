@@ -285,6 +285,7 @@ function Details(): JSX.Element {
         unique_key,
         eventDetails: editorContent,
         socials,
+        eventInfo: EVENT_INFO.SINGLE_EVENT,
       });
 
       if (response.status === 201) {
@@ -682,7 +683,6 @@ function Details(): JSX.Element {
             <Controller
               name="eventURL"
               control={control}
-              rules={{ required: "Event URL is required!" }}
               render={({ field }) => (
                 <Space direction="vertical" size="small">
                   <Label content="Event URL" className="" htmlFor="eventURL" />
@@ -709,7 +709,7 @@ function Details(): JSX.Element {
                       defaultValue={eventUrl}
                       // value={eventUrl}
                       {...field}
-                      placeholder="Enter your desired name"
+                      placeholder="your event url name will show here"
                       // onChange={(e) => {
                       //   field.onChange(e.target.value.replace(/\s+/g, "")); // Remove spaces as the user types
                       // }}
@@ -835,7 +835,7 @@ function Details(): JSX.Element {
               />
             </Space>
 
-            <Controller
+            {/* <Controller
               name="eventInfo"
               control={control}
               rules={{ required: "Event Info is required!" }}
@@ -872,7 +872,7 @@ function Details(): JSX.Element {
               )}
             />
 
-            {watchEventInfo === EVENT_INFO.SINGLE_EVENT && (
+            {watchEventInfo === EVENT_INFO.SINGLE_EVENT && ( */}
               <>
                 <Controller
                   name="timeZone"
@@ -1102,7 +1102,7 @@ function Details(): JSX.Element {
                   </Row>
                 </Space>
               </>
-            )}
+            {/* )} -remove this sentence only later when activating the radio button- */}
 
             {watchEventInfo === EVENT_INFO.RECURRING_EVENT && (
               <>

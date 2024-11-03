@@ -1,5 +1,5 @@
 import React, { HTMLAttributeAnchorTarget } from "react";
-import { EXHIBITION_SPACE, TICKET_STOCK, USAGE_LIMIT, DISCOUNT_TYPE, PAYMENT_METHOD } from "./enums";
+import { EXHIBITION_SPACE, TICKET_STOCK, USAGE_LIMIT, DISCOUNT_TYPE, PAYMENT_METHODS } from "./enums";
 export enum ACCOUNT_TYPE {
   PERSONAL = "PERSONAL",
   ORGANISATION = "ORGANISATION",
@@ -201,6 +201,7 @@ export interface DataType {
 
 
 export interface SalesDataType {
+  chargeBearer: any;
   eventType: any;
   dateCreated: any;
   key: React.Key;
@@ -217,6 +218,7 @@ export interface SalesDataType {
 }
 
 export interface ExhibitionDataType {
+  chargeBearer: any;
   dateCreated: any;
   key: React.Key;
   eventName: string;
@@ -383,6 +385,18 @@ export interface ITicketDetails {
   ticketStock: string
   ticketType: string
   createdAt: string
+  discount?: {
+    createdAt: string
+    discountCode: string 
+    discountType: DISCOUNT_TYPE 
+    discount_value: number 
+    endDateAndTime: string 
+    event: string 
+    id: string 
+    startDateAndTime: string
+    ticket: any
+  }
+  discountCode: string 
   guestAsChargeBearer: boolean
   ticketQuestions?: {
     question?: string;
@@ -442,7 +456,7 @@ export interface IDiscountData {
   id: string;
   discountCode: string;
   discountType: DISCOUNT_TYPE;
-  discountValue?: number;
+  discount_value?: number;
   uses?: string;
   ticket: string[];  // Array of strings
   usageLimit: USAGE_LIMIT;  // Assuming usage can be "ONCE" or "MULTIPLE"
@@ -458,21 +472,71 @@ export interface IDiscountCreate extends Partial<IDiscountData> {
   user: string;
 }
 
-export interface IGuestData {
-  ticket: string;
-  personal_information: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    terms_and_condition: boolean;
-    phoneNumber: boolean;
-  };
-  fees: number;
-  total_amount_paid: number;
-  discountCode?: string; // Optional field (fixed typo from original "disocuntCode")
-  quantity: number;
-  payment_method: PAYMENT_METHOD;
+// export interface IGuestData {
+//   ticket: string;
+//   personal_information: {
+//     firstName: string;
+//     lastName: string;
+//     email: string;
+//     terms_and_condition: boolean;
+//     phoneNumber: boolean;
+//   };
+//   fees: number;
+//   total_amount_paid: number;
+//   discountCode?: string; // Optional field (fixed typo from original "disocuntCode")
+//   quantity: number;
+//   payment_method: PAYMENT_METHOD;
+// }
+export interface InfoNeeded {
+  ticketDetails?: {
+    ticketName: string;
+    ticketId: string;
+    ticketPrice: number;
+    ticketFee: number;
+    ticketNumber: number;
+    groupSize: number;
+    subTotal: number;
+    ticketEntity: string;
+    additionalInformation?: {
+      question: string;
+      is_compulsory: boolean;
+    }[];
+  }[];
 }
+
+
+export interface IGuestData {
+  event?: string,
+  event_unique_code?: string,
+  ticket_information?:{
+    ticket_id: string,
+    ticket_name: string,
+    quantity: number,
+    total_amount: number
+  }[],
+  personal_information?: {
+    firstName: string,
+    lastName: string,
+    email: string,
+    phoneNumber: string
+  },
+  attendees_information?: {
+    firstName: string,
+    lastName: string,
+    email: string,
+    phoneNumber?: string
+  }[],
+  additional_information?:{
+    question: string,
+    answer: string
+  }[],
+  fees?: number,
+  total_amount_paid?: number,
+  discountCode?: string,
+  total_purchased?: number,
+  payment_method?: PAYMENT_METHODS
+}
+
 
 export interface IGuestCreate extends Partial<IGuestData> {
   eventId: string;

@@ -47,7 +47,7 @@ export const useLogin = () => {
       if (data) {
         const accessToken = data?.data?.data?.accessToken;
         sessionStorage.setItem("token", accessToken);
-       
+        sessionStorage.setItem("tokenTimestamp", Date.now().toString());
       }
     },
     onError: (error: AxiosError | any) => {

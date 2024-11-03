@@ -1,6 +1,7 @@
 import OwanbeWebLayout from "@/app/components/WebLayout/OwanbeWebLayout";
 import soon from "@/public/faqs.svg";
 import Image from "next/image";
+import Script from 'next/script'
 
 function Faqs(): JSX.Element {
   return (
@@ -24,7 +25,7 @@ function Faqs(): JSX.Element {
             Welcome to Ostivities Frequently Asked Questions (FAQs) section. 
             Here, you&apos;ll find answers to common questions about our services, policies, and 
             how to make the most of your experience with us. If you have a question that isn&apos;t answered here, 
-            please feel free to contact us at <a href="mailto:support@ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support@ostivities.com</a>.
+            please feel free to contact us at <a href="mailto:support&#64;ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support&#64;ostivities.com</a>.
             </p>
 
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
@@ -42,11 +43,11 @@ function Faqs(): JSX.Element {
               1. What is Ostivities?
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
-            Ostivities is a platform designed to help users discover, 
-            organize, and participate in events and activities. 
-            Whether you&apos;re hosting an event, attending one, or just exploring options, 
-            Ostivities makes it easy to connect and engage with others.
-              
+            Ostivities is a one-stop event management platform created to 
+            streamline and enhance the planning experience for any occasion. 
+            Ostivities provides organizers with the tools and resources to 
+            seamlessly oversee every aspect of their event, from conception to 
+            execution, all in a user-friendly and efficient manner.
             </p>
 
             <h2
@@ -273,7 +274,7 @@ function Faqs(): JSX.Element {
               }}
             >
               <li style={{ marginBottom: "10px" }}>
-                1. Email: <a href="mailto:support@ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support@ostivities.com</a>.
+                1. Email: <a href="mailto:support&#64;ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support&#64;ostivities.com</a>.
               </li>
               <li style={{ marginBottom: "10px" }}>
                 2. Chat with us via our social platforms.
@@ -394,7 +395,7 @@ function Faqs(): JSX.Element {
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
             If you encounter a problem with an event or another user, 
-            please report it to us immediately by contacting <a href="mailto:support@ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support@ostivities.com</a>. and 
+            please report it to us immediately by contacting <a href="mailto:support&#64;ostivities.com"style={{ color: "#e20000", textDecoration: "none" }}>support&#64;ostivities.com</a>. and 
             provide as much detail as possible so we can investigate and take appropriate action.
             </p>
             
@@ -426,6 +427,10 @@ function Faqs(): JSX.Element {
           </div>
         </div>
       </section>
+      <Script
+          src="https://embed.tawk.to/66aa1bcd32dca6db2cb7f021/1i447p70n"
+          strategy="afterInteractive"
+        />
     </OwanbeWebLayout>
   );
 }

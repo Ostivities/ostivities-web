@@ -74,8 +74,8 @@ export enum USAGE_LIMIT {
   MULTIPLE = 'UN_LIMITED',
 }
 
-export enum PAYMENT_METHOD {
-  CARD = 'CARD',
+export enum PAYMENT_METHODS {
   TRANSFER = 'TRANSFER',
-  CASH = 'CASH',
+  CARD = 'CARD',
+  FREE='FREE',
 }
