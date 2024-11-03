@@ -261,6 +261,7 @@ export interface CoordinatorsDataType {
 }
 
 export interface SummaryDataType {
+  ticketType: any;
   key: string;
   guestName: string;
   ticketName: string;

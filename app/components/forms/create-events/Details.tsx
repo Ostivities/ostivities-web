@@ -415,7 +415,7 @@ function Details(): JSX.Element {
                 onChange={handleEditorChange}
               />
             </div>
-
+{/* 
             <Controller
               name="vendor_registration"
               control={control}
@@ -509,7 +509,7 @@ function Details(): JSX.Element {
                       <Radio value={EXHIBITION_SPACE.FREE}>Free Space</Radio>
                     </Radio.Group>
 
-                    {/* Conditionally render the error message below the radio group */}
+                   
                     {errors.exhibition_space_booking && (
                       <span style={{ color: "red" }}>
                         {errors.exhibition_space_booking.message}
@@ -596,7 +596,7 @@ function Details(): JSX.Element {
                     </Form.Item>
                   )}
                 </Space>
-              )}
+              )} */}
 
             <Controller
               name="state"
