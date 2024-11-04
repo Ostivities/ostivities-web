@@ -76,5 +76,5 @@ export enum USAGE_LIMIT {
 export enum PAYMENT_METHODS {
   TRANSFER = 'TRANSFER',
   CARD = 'CARD',
-  FREE = 'FREE',
+  FREE='FREE',
 }

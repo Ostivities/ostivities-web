@@ -70,7 +70,7 @@ const Payment = () => {
                   </div>
                   <div>
                     <h2 className="text-lg font-BricolageGrotesqueRegular text-OWANBE_PRY">
-                      Pay with Bank Transfer
+                      Pay with Bank Transfer 
                     </h2>
                     <span className="text-s font-BricolageGrotesqueRegular">
                       Make payment by transferring to our dedicated account number.

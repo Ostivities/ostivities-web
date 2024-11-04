@@ -10,7 +10,7 @@ const options = [
   },
   {
     background:
-      "url(https://res.cloudinary.com/ddgehpmnq/image/upload/v1724391169/placeholder_mr99ha.png)",
+      "url(https://res.cloudinary.com/ddgehpmnq/image/upload/v1730564760/placeholder_byprhe.png)",
     main: "Weddings",
   },
   {
@@ -20,7 +20,7 @@ const options = [
   },
   {
     background:
-      "url(https://res.cloudinary.com/ddgehpmnq/image/upload/v1724391170/Rectangle_34624139_l8e2sy.png)",
+      "url(https://res.cloudinary.com/ddgehpmnq/image/upload/v1730564489/Rectangle_34624140_vnvxhv.png)",
     main: "Hangouts",
   },
   {
@@ -50,7 +50,7 @@ const options = [
   },
   {
     background:
-      "url(https://res.cloudinary.com/ddgehpmnq/image/upload/v1724391178/Rectangle_34624136_fcu8pz.png)",
+      "url(https://res.cloudinary.com/ddgehpmnq/image/upload/v1730564709/placeholder_fpqbv6.png)",
     main: "Other Events",
   },
 ];
