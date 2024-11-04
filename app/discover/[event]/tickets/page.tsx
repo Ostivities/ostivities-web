@@ -1452,12 +1452,12 @@ const TicketsSelection = () => {
 
                             return (
                               <div key={index}>
-                                <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size mt-4">
+                                {/* <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size mt-4">
                                   Ticket {ticketCounter} - Collective of{" "}
                                   {ticketDetail?.groupSize} -{" "}
                                   {ticketDetail?.ticketName}
-                                </h3>
-                                <Row gutter={16} className="mb-6">
+                                </h3> */}
+                                {/* <Row gutter={16} className="mb-6">
                                   <Col span={12}>
                                     <Form.Item
                                       name={[attendeeId, "firstName"]}
@@ -1606,7 +1606,7 @@ const TicketsSelection = () => {
                                       />
                                     </Form.Item>
                                   </Col>
-                                </Row>
+                                </Row> */}
                               </div>
                             );
                           }
