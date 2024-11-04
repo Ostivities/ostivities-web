@@ -17,7 +17,6 @@ const items2: MenuProps['items'] = [
   { icon: CompassOutlined, title: 'Discovery', link: '/discover' },
   { icon: PlusCircleOutlined, title: 'Create Event', link: '/discover/create-events' },
   { icon: FileSearchOutlined, title: 'Events Created', link: '/discover/events-created' },
-  // { icon: UsergroupAddOutlined, title: 'Vendors Management', link: '/discover/vendors-management' },
   { icon: SettingOutlined, title: 'Settings', link: '/discover/settings' },
   // { icon: FieldTimeOutlined, title: 'Coming Soon', link: '/discover/coming-soon' },
 ].map((item) => {

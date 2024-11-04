@@ -222,7 +222,7 @@ const CoordinatorsList = () => {
             </div>
           <Paragraph
             className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
-            content={"Add and manage coordinators for your event."} 
+            content={"Add and manage coordinators for your event."}
             styles={{ fontWeight: "normal !important" }}
           />
             <Button

@@ -23,6 +23,11 @@ function getRandomCheckInName(): string {
   return checkers[Math.floor(Math.random() * checkers.length)];
 }
 
+function getRandomTicketType(): string {
+  const checkers = ["Single", "Collective"];
+  return checkers[Math.floor(Math.random() * checkers.length)];
+}
+
 const EventsGuestListSummary = () => {
   const [searchText, setSearchText] = useState("");
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -33,6 +38,7 @@ const EventsGuestListSummary = () => {
     key: `${index + 1}`,
     guestName: getRandomGuestName(),
     ticketName: `Ticket ${index + 1}`,
+    ticketType: getRandomTicketType(),
     checkedInTime: `2024-07-${(index + 1).toString().padStart(2, "0")}, ${Math.floor(Math.random() * 12)}:${Math.floor(Math.random() * 60).toString().padStart(2, "0")}${Math.random() > 0.5 ? 'am' : 'pm'}`,
     checkedInBy: getRandomCheckInName(), // New field for checked-in by
   }));
@@ -57,6 +63,16 @@ const EventsGuestListSummary = () => {
       ),
       dataIndex: "ticketName",
       sorter: (a, b) => a.ticketName.localeCompare(b.ticketName),
+    },
+    {
+      title: (
+        <Label
+          content="Ticket Type"
+          className="font-semibold text-OWANBE_TABLE_TITLE"
+        />
+      ),
+      dataIndex: "ticketType",
+      sorter: (a, b) => a.ticketType.localeCompare(b.ticketType),
     },
     {
       title: (
@@ -92,6 +108,7 @@ const EventsGuestListSummary = () => {
     const formattedExportData = exportData.map((item) => ({
       "Guest Name": item.guestName,
       "Ticket Name": item.ticketName,
+      "Ticket Type": item.ticketType,
       "Checked in Time": item.checkedInTime,
       "Checked in By": item.checkedInBy, // Include in the export data
     }));
@@ -117,8 +134,32 @@ const EventsGuestListSummary = () => {
 
   return (
     <EventDetailsComponent>
-      <Space direction="vertical" size="middle" className="w-full">
-        <Heading5 className="pb-5" content={"Checked In Summary"} />
+      <Space direction="vertical" size={"small"} style={{ width: "100%" }}>
+          <div
+            style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}
+          >
+        <Heading5 className="" content={"Checked In Summary"} />
+        </div>
+          <Paragraph
+            className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
+            content={"This displays a record of guests whose tickets have been scanned and checked in by the ticketing agent."}
+            styles={{ fontWeight: "normal !important" }}
+          />
+          
+        <Button
+              type="primary"
+              size="large"
+              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl float-end"
+              style={{
+                borderRadius: "20px",
+                fontFamily: "BricolageGrotesqueMedium",
+                margin: '10px'
+              }}
+              // onClick={() => setShowNewVendorDetails(true)}
+            >
+              Refresh
+            </Button> 
+
         <Paragraph
               className="text-OWANBE_PRY font-normal font-BricolageGrotesqueRegular text-center mx-auto border border-OWANBE_PRY bg-OWANBE_PRY2 rounded-lg w-[500px] h-14 flex flex-row items-center justify-center text-3xl py-8 place-self-center"
               content={`${filteredData.length} Checked In Guests`}

@@ -2,7 +2,17 @@
 
 import { useEffect, useRef, useState, MutableRefObject } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { Col, Form, FormInstance, Input, Row, Select, Checkbox, FormProps } from "antd";
+import {
+  Col,
+  Form,
+  FormInstance,
+  Input,
+  Row,
+  Select,
+  Checkbox,
+  Radio,
+  FormProps,
+} from "antd";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import Summary from "@/app/components/Discovery/Summary";
 import Image from "next/image";
@@ -41,10 +51,10 @@ const TicketsSelection = () => {
   >("tickets");
   const [externalTrigger, setExternalTrigger] =
     useState<() => void | undefined>();
-    const [discountApplied, setDiscountApplied] = useState(false);
-    const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
-    const { getTickets } = useGetEventTickets(eventDetails?.id);
-    const ticketData = getTickets?.data?.data?.data;
+  const [discountApplied, setDiscountApplied] = useState(false);
+  const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
+  const { getTickets } = useGetEventTickets(eventDetails?.id);
+  const ticketData = getTickets?.data?.data?.data;
   // console.log(eventDetails?.eventName, "eventName")
   // console.log(eventDetails?.id, "eventID")
   const title = (
@@ -68,8 +78,9 @@ const TicketsSelection = () => {
       <h1 style={{ fontSize: "24px" }}>
         {currentPage === "tickets"
           ? "Choose your tickets"
-          : currentPage === "contactform" 
-          ? "Contact Information" : "Payment Options"}{" "}
+          : currentPage === "contactform"
+          ? "Contact Information"
+          : "Payment Options"}{" "}
       </h1>
     </div>
   );
@@ -348,17 +359,6 @@ const TicketsSelection = () => {
   // }, [discountApplied]);
 
   const [form] = Form.useForm();
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-    setValue,
-    watch,
-    trigger,
-    reset,
-  } = useForm({
-    mode: "all", // Use your preferred validation mode
-  });
   // ! contactform
   const [additionalFields, setAdditionalFields] = useState<
     { id: number; question: string; answer: string }[]
@@ -420,9 +420,9 @@ const TicketsSelection = () => {
   >([]);
   // console.log(additionalFields, "additionalFields");
   const [modal, setModal] = useState(false);
-  const [successModal, setSuccessModal] = useState(false)
+  const [successModal, setSuccessModal] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
-  console.log(isFormValid, "isFormValid")
+  // console.log(isFormValid, "isFormValid");
   const validateForm = async () => {
     try {
       await form.validateFields();
@@ -499,13 +499,13 @@ const TicketsSelection = () => {
     console.log(allInfo, "Updated allInfo");
   }, [allInfo]);
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const onFinish: FormProps<any>["onFinish"] = async (values: any) => {
     console.log(values);
     const validateFields = await form.validateFields();
     if (!validateFields) {
-      return
-      console.log("Form is valid");
+      console.log("Form is not valid");
+      return;
     }
     // return
     console.log(ticketDetails, "ticketDetails");
@@ -561,7 +561,7 @@ const TicketsSelection = () => {
       ticket_information,
       additional_information: additionalFields,
       attendees_information,
-      event: eventDetails && eventDetails?.id || ticketData?.event?.id,
+      event: (eventDetails && eventDetails?.id) || ticketData?.event?.id,
       fees: ticketDetails
         ?.map((ticket) => ticket?.ticketFee)
         .reduce((acc, curr) => acc + curr, 0),
@@ -579,7 +579,7 @@ const TicketsSelection = () => {
         ticket_information,
         additional_information: additionalFields,
         attendees_information,
-        event: eventDetails && eventDetails?.id || ticketData?.event?.id,
+        event: (eventDetails && eventDetails?.id) || ticketData?.event?.id,
         fees: ticketDetails
           ?.map((ticket) => ticket?.ticketFee)
           .reduce((acc, curr) => acc + curr, 0),
@@ -593,45 +593,70 @@ const TicketsSelection = () => {
     });
     // return console.log(allInfo, "allInfo")
 
-    if(ticketDetails
-      ?.map((ticket) => ticket?.subTotal)
-      .reduce((acc, curr) => acc + curr, 0) === 0 ) {
-        setLoading(true)
-        const response = await registerGuest.mutateAsync({
-          ...updatedInfo,
-          payment_method: PAYMENT_METHODS.FREE,
-          eventId: eventDetails && eventDetails?.id
-        });
+    if (
+      ticketDetails
+        ?.map((ticket) => ticket?.subTotal)
+        .reduce((acc, curr) => acc + curr, 0) === 0
+    ) {
+      setLoading(true);
+      const response = await registerGuest.mutateAsync({
+        ...updatedInfo,
+        payment_method: PAYMENT_METHODS.FREE,
+        eventId: eventDetails && eventDetails?.id,
+      });
 
-        if(response.status === 201) {
-          setSuccessModal(true);
-          setLoading(false)
-        }
-        // setTimeout( async() => {
-        // }, 2000)
-
-      } else {
-        setCurrentPage("payment");
+      if (response.status === 201) {
+        setSuccessModal(true);
+        setLoading(false);
       }
+      // setTimeout( async() => {
+      // }, 2000)
+    } else {
+      setCurrentPage("payment");
+    }
     // router.push(`discover/${params?.event}/payment`);
-
   };
-  const onFinishFailed: FormProps<any>["onFinishFailed"] = (
-    errorInfo
-  ) => {
-    console.log(errorInfo);
+  const onFinishFailed: FormProps<any>["onFinishFailed"] = (errorInfo) => {
+    console.log(errorInfo, "errorInfo");
     return errorInfo;
   };
 
+  const handleFinalSubmit = async () => {
+    setLoading(true);
+    const response = await registerGuest.mutateAsync({
+      ...allInfo,
+      payment_method: PAYMENT_METHODS.CARD,
+      eventId: eventDetails && eventDetails?.id,
+    });
+
+    if (response.status === 201) {
+      setSuccessModal(true);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    validateForm(); // Initial validation on load
-  }, []);
+    const checkFormValidity = async () => {
+      try {
+        // Run validation and set `isFormValid` based on result
+        await form.validateFields();
+        console.log("Valid values");
+        setIsFormValid(true);
+      } catch (errorInfo) {
+        console.log(errorInfo, "Validation error info");
+        setIsFormValid(false);
+      }
+    };
+
+    if (currentPage === "contactform") {
+      checkFormValidity();
+    }
+  }, [currentPage, form.getFieldsValue()]);
 
   const handleSubmitForm = () => {
-    // validateForm()
-    if(isFormValid === true) {
+    if (isFormValid === true) {
       onFinish(form.getFieldsValue());
-    } else return
+    } else return;
   };
 
   const handleButtonClick = () => {
@@ -645,6 +670,8 @@ const TicketsSelection = () => {
       if (isFormValid) {
         handleSubmitForm(); // Proceed to payment or next step
       }
+    } else if (currentPage === "payment") {
+      handleFinalSubmit();
     }
   };
 
@@ -657,6 +684,12 @@ const TicketsSelection = () => {
     }
   }, [minutes, remainingSeconds]);
 
+  const [termsAndCondition, setTermsAndCondition] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<
+    PAYMENT_METHODS.CARD | PAYMENT_METHODS.TRANSFER | ""
+  >("");
+
+  // console.log(termsAndCondition, paymentMethod);
   return (
     <DashboardLayout title={title} isLoggedIn>
       <section className="flex gap-12">
@@ -794,9 +827,7 @@ const TicketsSelection = () => {
                                         ticket?.ticketPrice * 0.05 +
                                         150 +
                                         ticket?.ticketPrice
-                                      )
-                                         
-                                        .toLocaleString()}
+                                      ).toLocaleString()}
                                     </span>{" "}
                                     <span
                                       className="text-s font-BricolageGrotesqueRegular"
@@ -806,9 +837,10 @@ const TicketsSelection = () => {
                                       }}
                                     >
                                       Including ₦
-                                      {(ticket?.ticketPrice * 0.05 + 150)
-                                         
-                                        .toLocaleString()}{" "}
+                                      {(
+                                        ticket?.ticketPrice * 0.05 +
+                                        150
+                                      ).toLocaleString()}{" "}
                                       fee
                                     </span>
                                   </>
@@ -828,9 +860,7 @@ const TicketsSelection = () => {
                                           ticket?.ticketPrice * 0.045 +
                                           150 +
                                           ticket?.ticketPrice
-                                        )
-                                           
-                                          .toLocaleString()}
+                                        ).toLocaleString()}
                                       </span>{" "}
                                       <span
                                         className="text-s font-BricolageGrotesqueRegular"
@@ -840,9 +870,10 @@ const TicketsSelection = () => {
                                         }}
                                       >
                                         Including ₦
-                                        {(ticket?.ticketPrice * 0.045 + 150)
-                                           
-                                          .toLocaleString()}{" "}
+                                        {(
+                                          ticket?.ticketPrice * 0.045 +
+                                          150
+                                        ).toLocaleString()}{" "}
                                         fee
                                       </span>
                                     </>
@@ -861,9 +892,7 @@ const TicketsSelection = () => {
                                         ticket?.ticketPrice * 0.035 +
                                         150 +
                                         ticket?.ticketPrice
-                                      )
-                                         
-                                        .toLocaleString()}
+                                      ).toLocaleString()}
                                     </span>{" "}
                                     <span
                                       className="text-s font-BricolageGrotesqueRegular"
@@ -873,9 +902,10 @@ const TicketsSelection = () => {
                                       }}
                                     >
                                       Including ₦
-                                      {(ticket?.ticketPrice * 0.035 + 150)
-                                         
-                                        .toLocaleString()}{" "}
+                                      {(
+                                        ticket?.ticketPrice * 0.035 +
+                                        150
+                                      ).toLocaleString()}{" "}
                                       fee
                                     </span>
                                   </>
@@ -1215,14 +1245,7 @@ const TicketsSelection = () => {
                 onFinishFailed={onFinishFailed}
                 layout="vertical"
                 className="form-spacing"
-                onValuesChange={async () => {
-                  const validateFields = await form.validateFields();
-                  try {
-                    if (validateFields) setIsFormValid(true); // No errors, so form is valid
-                  } catch (error) {
-                    setIsFormValid(false); // Errors found, form is invalid
-                  }
-                }}              
+                onValuesChange={async (changedValues: any, values: any) => {}}
               >
                 <Row gutter={16}>
                   <Col span={12}>
@@ -1380,41 +1403,43 @@ const TicketsSelection = () => {
                   }
                 );
               })} */}
-                <Form.List name="additional_information">
-                  {(fields, { add, remove }) => (
-                    <>
-                      {additionalFields.map(({ id, question }) => (
-                        <div key={id}>
-                          <Form.Item
-                            name={[id, "question"]}
-                            initialValue={question}
-                            hidden
-                          >
-                            <Input />
-                          </Form.Item>
-                          <Form.Item
-                            key={id}
-                            label={
-                              <span>
-                                {question}{" "}
-                                <span style={{ color: "red" }}>*</span>
-                              </span>
-                            }
-                            name={[id, "answer"]}
-                            rules={[
-                              {
-                                required: true,
-                                message: "Please provide an answer",
-                              },
-                            ]}
-                          >
-                            <Input placeholder="Enter your answer" />
-                          </Form.Item>
-                        </div>
-                      ))}
-                    </>
-                  )}
-                </Form.List>
+                {additionalFields?.length > 0 && (
+                  <Form.List rules={[]} name="additional_information">
+                    {(fields, { add, remove }) => (
+                      <>
+                        {additionalFields.map(({ id, question }) => (
+                          <div key={id}>
+                            <Form.Item
+                              name={[id, "question"]}
+                              initialValue={question}
+                              hidden
+                            >
+                              <Input />
+                            </Form.Item>
+                            <Form.Item
+                              key={id}
+                              label={
+                                <span>
+                                  {question}{" "}
+                                  <span style={{ color: "red" }}>*</span>
+                                </span>
+                              }
+                              name={[id, "answer"]}
+                              rules={[
+                                {
+                                  required: false,
+                                  message: "Please provide an answer",
+                                },
+                              ]}
+                            >
+                              <Input placeholder="Enter your answer" />
+                            </Form.Item>
+                          </div>
+                        ))}
+                      </>
+                    )}
+                  </Form.List>
+                )}
                 <br />
                 {ticketDetails?.map((ticketDetail, ticketIndex) => {
                   return (
@@ -1593,7 +1618,9 @@ const TicketsSelection = () => {
               </Form>
             </div>
             {modal && <TimerModal />}
-            {successModal && <PaymentSuccessModal data={eventDetails?.user?.firstName} />}
+            {successModal && (
+              <PaymentSuccessModal data={eventDetails?.user?.firstName} />
+            )}
           </section>
         ) : (
           <section className="flex-1">
@@ -1605,44 +1632,66 @@ const TicketsSelection = () => {
               minutes to secure your tickets.
             </div>
             <div className="pr-full mt-16">
-              <div className="flex flex-col gap-8">
-                <div className="card-shadow flex justify-between">
-                  <div className="flex gap-3 items-start">
-                    <div className="pt-1">
-                      <input type="checkbox" name="" id="" />
+              <Radio.Group>
+                <div className="flex flex-col gap-8">
+                  <div className="card-shadow flex justify-between" style={{ width: '120%' }}>
+                    <div className="flex gap-3 items-start">
+                      <div className="pt-1">
+                        <Radio
+                          onChange={() =>
+                            setPaymentMethod(PAYMENT_METHODS.CARD)
+                          }
+                          value={PAYMENT_METHODS.CARD}
+                        />
+                      </div>
+                      <div>
+                        <h2 className="text-lg font-BricolageGrotesqueRegular text-OWANBE_PRY">
+                          Pay with Card
+                        </h2>
+                        {/* Add default styles to check visibility */}
+                        <span
+                          className="text-s font-BricolageGrotesqueRegular"
+                          style={{ fontSize: "14px", color: "#000" }}
+                        >
+                          Pay with a MasterCard, Visa, Verve Card, or directly
+                          with your bank.
+                        </span>
+                      </div>
                     </div>
-                    <div>
-                      <h2 className="text-lg font-BricolageGrotesqueRegular text-OWANBE_PRY">
-                        Pay with Card
-                      </h2>
-                      <span className="text-s font-BricolageGrotesqueRegular">
-                        Pay with a MasterCard, Visa, Verve Card or directly with
-                        your bank.
-                      </span>
+                  </div>
+                  <div className="card-shadow flex justify-between"style={{ width: '120%' }}>
+                    <div className="flex gap-3 items-start">
+                      <div className="pt-1">
+                        <Radio
+                          onChange={() =>
+                            setPaymentMethod(PAYMENT_METHODS.TRANSFER)
+                          }
+                          value={PAYMENT_METHODS.TRANSFER}
+                        />
+                      </div>
+                      <div>
+                        <h2 className="text-lg font-BricolageGrotesqueRegular text-OWANBE_PRY">
+                          Pay with Bank Transfer 
+                        </h2>
+                        <span
+                          className="text-s font-BricolageGrotesqueRegular"
+                          style={{ fontSize: "14px", color: "#000" }}
+                        >
+                          Make payment by transferring to our dedicated account
+                          number.
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="card-shadow flex justify-between">
-                  <div className="flex gap-3 items-start">
-                    <div className="pt-1">
-                      <input type="checkbox" name="" id="" />
-                    </div>
-                    <div>
-                      <h2 className="text-lg font-BricolageGrotesqueRegular text-OWANBE_PRY">
-                        Pay with Bank Transfer
-                      </h2>
-                      <span className="text-s font-BricolageGrotesqueRegular">
-                        Make payment by transferring to our dedicated account
-                        number.
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              </Radio.Group>
               <div className="flex-center gap-2 mt-7 [&>p>a]:text-OWANBE_PRY">
                 <div className=""></div>
 
-                <Checkbox>
+                <Checkbox
+                  checked={termsAndCondition}
+                  onChange={(e) => setTermsAndCondition(e.target.checked)}
+                >
                   <span
                     style={{ fontFamily: "Bricolage Grotesque, sans-serif" }}
                   >
@@ -1712,6 +1761,7 @@ const TicketsSelection = () => {
           ticketDetails={ticketDetails}
           continueBtn
         />
+        {modal && <TimerModal />}
       </section>
     </DashboardLayout>
   );

@@ -1,6 +1,7 @@
 import OwanbeWebLayout from "@/app/components/WebLayout/OwanbeWebLayout";
 import soon from "@/public/faqs.svg";
 import Image from "next/image";
+import Script from 'next/script'
 
 function Faqs(): JSX.Element {
   return (
@@ -426,6 +427,10 @@ function Faqs(): JSX.Element {
           </div>
         </div>
       </section>
+      <Script
+          src="https://embed.tawk.to/66aa1bcd32dca6db2cb7f021/1i447p70n"
+          strategy="afterInteractive"
+        />
     </OwanbeWebLayout>
   );
 }
