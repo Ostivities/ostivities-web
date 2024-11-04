@@ -60,7 +60,7 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
           <div className="flex flex-col items-center space-y-4 mt-10">
             <div className="flex items-center space-x-4 w-[20rem]">
               <button
-                onClick={() => router.push("/discover/payment")}
+                onClick={() => router.push("")}
                 className="primary-btn font-normal text-base flex-1 whitespace-nowrap px-3 py-2"
               >
                 Download Ticket
@@ -80,7 +80,7 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
               </button>
             </div>
             <button
-              onClick={() => router.push("/discover/tickets")}
+              onClick={() => router.push(`/discover/${params?.event}`)}
               className="primary-btn font-normal continue cursor-pointer text-base w-[20rem]"
             >
               Buy Again
