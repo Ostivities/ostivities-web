@@ -385,10 +385,10 @@ const EventTickets = () => {
             /> */}
             <Table
               loading={getTickets?.isFetching}
-              rowSelection={{
-                selectedRowKeys,
-                onChange: (keys) => setSelectedRowKeys(keys),
-              }}
+              // rowSelection={{
+              //   selectedRowKeys,
+              //   onChange: (keys) => setSelectedRowKeys(keys),
+              // }}
               onRow={(record, rowIndex) => {
                 return {
                   onClick: () => {
