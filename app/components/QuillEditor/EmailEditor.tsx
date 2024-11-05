@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 
 interface EditoProps {
-  initialValue: string;
   onChange: any;
 }
 
@@ -13,11 +12,10 @@ const ReactQuill = dynamic(() => import("react-quill"), {
 });
 
 const EmailEditor = ({
-  initialValue = "",
   onChange,
 }: EditoProps): JSX.Element => {
   const [isClient, setIsClient] = useState(false);
-  const [value, setValue] = useState(initialValue);
+  const [value, setValue] = useState("");
   // "image", "video"
 
   const toolbarOptions = [
@@ -61,7 +59,8 @@ const EmailEditor = ({
   return (
     <React.Fragment>
       {isClient && (
-        <ReactQuill
+        <ReactQuill 
+          placeholder="Enter event details!"
           theme="snow"
           value={value}
           onChange={handleChange}
