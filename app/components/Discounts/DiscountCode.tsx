@@ -271,21 +271,22 @@ const DiscountCode = (): JSX.Element => {
         <Space direction="vertical" size="small" style={{ width: "100%" }}>
           <Heading5 content="Usage Limit" />
           <div className="grid grid-cols-2 gap-x-8">
-            <Form.Item
-              label={<Label content="Usage Limit" />} // Correct usage of Label component
-              name="usageLimit"
+          <Form.Item
+              label={<Label content="Start Date & Time" />} // Correct usage of Label component
+              name="startDateAndTime"
               rules={[
-                { required: true, message: "Please select the usage limit!" },
+                {
+                  required: true,
+                  message: "Please input the start date and time!",
+                },
               ]}
             >
-              <Select placeholder="Select usage limit">
-                <Select.Option value={USAGE_LIMIT.MULTIPLE}>
-                  Unlimited
-                </Select.Option>
-                <Select.Option value={USAGE_LIMIT.ONCE}>
-                  Useable Once
-                </Select.Option>
-              </Select>
+              <DatePicker
+                showTime
+                format="YYYY-MM-DD HH:mm:ss"
+                style={{ width: "100%", height: "33px" }}
+                disabledDate={disabledDate}
+              />
             </Form.Item>
 
             <Form.Item
@@ -307,21 +308,20 @@ const DiscountCode = (): JSX.Element => {
             </Form.Item>
 
             <Form.Item
-              label={<Label content="Start Date & Time" />} // Correct usage of Label component
-              name="startDateAndTime"
+              label={<Label content="Usage Limit" />} // Correct usage of Label component
+              name="usageLimit"
               rules={[
-                {
-                  required: true,
-                  message: "Please input the start date and time!",
-                },
+                { required: true, message: "Please select the usage limit!" },
               ]}
             >
-              <DatePicker
-                showTime
-                format="YYYY-MM-DD HH:mm:ss"
-                style={{ width: "100%", height: "33px" }}
-                disabledDate={disabledDate}
-              />
+              <Select placeholder="Select usage limit">
+                <Select.Option value={USAGE_LIMIT.MULTIPLE}>
+                  Unlimited
+                </Select.Option>
+                <Select.Option value={USAGE_LIMIT.ONCE}>
+                  Useable Once
+                </Select.Option>
+              </Select>
             </Form.Item>
           </div>
         </Space>

@@ -411,7 +411,7 @@ function Details(): JSX.Element {
               style={{ marginBottom: "20px", marginTop: "10px" }}
             >
               <EmailEditor
-                initialValue="<p>Enter event details!</p>"
+              initialValue="<p></p>"
                 onChange={handleEditorChange}
               />
             </div>

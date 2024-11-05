@@ -361,8 +361,9 @@ const TicketsSelection = () => {
   const [form] = Form.useForm();
   // ! contactform
   const [additionalFields, setAdditionalFields] = useState<
-    { id: number; question: string; answer: string }[]
+    { id: number; question: string; answer: string; is_compulsory: boolean }[]
   >([]);
+  // console.log(additionalFields, "additionalFields");
   const [allInfo, setAllInfo] = useState<{
     personal_information: {
       firstName: string;
@@ -387,7 +388,7 @@ const TicketsSelection = () => {
     event_unique_code: string;
     fees: number;
     total_amount_paid: number;
-    disocuntCode?: string;
+    discountCode?: string;
     total_purchased: number;
     payment_method?: PAYMENT_METHODS;
   }>({
@@ -406,7 +407,7 @@ const TicketsSelection = () => {
       ?.map((ticket) => ticket?.ticketFee)
       .reduce((acc, curr) => acc + curr, 0),
     total_amount_paid: 0,
-    disocuntCode: "",
+    discountCode: "",
     total_purchased: 0,
   });
   const [attendeesInformation, setAttendeesInformation] = useState<
@@ -422,7 +423,7 @@ const TicketsSelection = () => {
   const [modal, setModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
-  // console.log(isFormValid, "isFormValid");
+  // console.log(successModal, "successModal");
   const validateForm = async () => {
     try {
       await form.validateFields();
@@ -486,6 +487,7 @@ const TicketsSelection = () => {
           return ticketDetail.additionalInformation.map((info) => ({
             id: counter++,
             question: info.question,
+            is_compulsory: info.is_compulsory,
             answer: "",
           }));
         }
@@ -508,7 +510,7 @@ const TicketsSelection = () => {
       return;
     }
     // return
-    console.log(ticketDetails, "ticketDetails");
+    // console.log(ticketDetails, "ticketDetails");
     const {
       firstName,
       lastName,
@@ -547,6 +549,8 @@ const TicketsSelection = () => {
         quantity: ticket?.ticketNumber,
         ticket_name: ticket?.ticketName,
         total_amount: ticket?.subTotal,
+        ticket_price: ticket?.ticketPrice === null ? 0 : ticket?.ticketPrice,
+        ticket_type: ticket?.ticketEntity,
       };
     });
     console.log(
@@ -605,12 +609,10 @@ const TicketsSelection = () => {
         eventId: eventDetails && eventDetails?.id,
       });
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         setSuccessModal(true);
         setLoading(false);
       }
-      // setTimeout( async() => {
-      // }, 2000)
     } else {
       setCurrentPage("payment");
     }
@@ -629,11 +631,13 @@ const TicketsSelection = () => {
       eventId: eventDetails && eventDetails?.id,
     });
 
-    if (response.status === 201) {
+    if (response.status === 200) {
       setSuccessModal(true);
       setLoading(false);
     }
   };
+
+  const isFieldTouched = useRef(false);
 
   useEffect(() => {
     const checkFormValidity = async () => {
@@ -648,7 +652,7 @@ const TicketsSelection = () => {
       }
     };
 
-    if (currentPage === "contactform") {
+    if (currentPage === "contactform" && isFieldTouched.current) {
       checkFormValidity();
     }
   }, [currentPage, form.getFieldsValue()]);
@@ -672,6 +676,7 @@ const TicketsSelection = () => {
       }
     } else if (currentPage === "payment") {
       handleFinalSubmit();
+      setSuccessModal(true);
     }
   };
 
@@ -685,9 +690,7 @@ const TicketsSelection = () => {
   }, [minutes, remainingSeconds]);
 
   const [termsAndCondition, setTermsAndCondition] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<
-    PAYMENT_METHODS.CARD | PAYMENT_METHODS.TRANSFER | ""
-  >("");
+  const [paymentMethod, setPaymentMethod] = useState<PAYMENT_METHODS | undefined>(undefined);
 
   // console.log(termsAndCondition, paymentMethod);
   return (
@@ -1245,7 +1248,13 @@ const TicketsSelection = () => {
                 onFinishFailed={onFinishFailed}
                 layout="vertical"
                 className="form-spacing"
-                onValuesChange={async (changedValues: any, values: any) => {}}
+                onValuesChange={() => {
+                  // Mark that fields have been touched
+                  isFieldTouched.current = true;
+                  if (currentPage === "contactform") {
+                    validateForm();
+                  }
+                }}
               >
                 <Row gutter={16}>
                   <Col span={12}>
@@ -1355,15 +1364,6 @@ const TicketsSelection = () => {
                   />
                 </Form.Item>
                 <br />
-                {ticketDetails?.some(
-                  (ticket) =>
-                    ticket?.additionalInformation &&
-                    ticket?.additionalInformation?.length > 0
-                ) && (
-                  <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-2 custom-font-size">
-                    Additional Information
-                  </h3>
-                )}
                 {/* {ticketDetails?.map((ticketDetail, ticketIndex) => {
                 return ticketDetail?.additionalInformation?.map(
                   (
@@ -1403,45 +1403,58 @@ const TicketsSelection = () => {
                   }
                 );
               })} */}
-                {additionalFields?.length > 0 && (
-                  <Form.List rules={[]} name="additional_information">
-                    {(fields, { add, remove }) => (
-                      <>
-                        {additionalFields.map(({ id, question }) => (
-                          <div key={id}>
-                            <Form.Item
-                              name={[id, "question"]}
-                              initialValue={question}
-                              hidden
-                            >
-                              <Input />
-                            </Form.Item>
-                            <Form.Item
-                              key={id}
-                              label={
-                                <span>
-                                  {question}{" "}
-                                  <span style={{ color: "red" }}>*</span>
-                                </span>
-                              }
-                              name={[id, "answer"]}
-                              rules={[
-                                {
-                                  required: false,
-                                  message: "Please provide an answer",
-                                },
-                              ]}
-                            >
-                              <Input placeholder="Enter your answer" />
-                            </Form.Item>
-                          </div>
-                        ))}
-                      </>
-                    )}
-                  </Form.List>
+                {additionalFields && additionalFields.length > 0 && (
+                  <>
+                    <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-2 custom-font-size">
+                      Additional Information
+                    </h3>
+                    <Form.List name="additional_information">
+                      {(fields) => (
+                        <>
+                          {additionalFields.map((fieldData, index) => (
+                            <div key={index}>
+                              <Form.Item
+                                name={[index, "question"]}
+                                initialValue={fieldData.question}
+                                hidden
+                              >
+                                <Input />
+                              </Form.Item>
+                              <Form.Item
+                                key={fieldData.id}
+                                label={
+                                  fieldData?.is_compulsory === true ? (
+                                    <span>
+                                      {fieldData.question}{" "}
+                                      <span style={{ color: "red" }}>*</span>
+                                    </span>
+                                  ) : (
+                                    <span>{fieldData.question}</span>
+                                  )
+                                }
+                                name={[index, "answer"]}
+                                rules={
+                                  fieldData?.is_compulsory === true
+                                    ? [
+                                        {
+                                          required: true,
+                                          message: "Please provide an answer",
+                                        },
+                                      ]
+                                    : []
+                                }
+                              >
+                                <Input placeholder="Enter your answer" />
+                              </Form.Item>
+                            </div>
+                          ))}
+                        </>
+                      )}
+                    </Form.List>
+                  </>
                 )}
                 <br />
-                {ticketDetails?.map((ticketDetail, ticketIndex) => {
+                {/* {ticketDetails?.map((ticketDetail, ticketIndex) => {
                   return (
                     ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE && (
                       <div key={ticketIndex}>
@@ -1452,12 +1465,12 @@ const TicketsSelection = () => {
 
                             return (
                               <div key={index}>
-                                {/* <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size mt-4">
+                                <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size mt-4">
                                   Ticket {ticketCounter} - Collective of{" "}
                                   {ticketDetail?.groupSize} -{" "}
                                   {ticketDetail?.ticketName}
-                                </h3> */}
-                                {/* <Row gutter={16} className="mb-6">
+                                </h3>
+                                <Row gutter={16} className="mb-6">
                                   <Col span={12}>
                                     <Form.Item
                                       name={[attendeeId, "firstName"]}
@@ -1606,7 +1619,7 @@ const TicketsSelection = () => {
                                       />
                                     </Form.Item>
                                   </Col>
-                                </Row> */}
+                                </Row>
                               </div>
                             );
                           }
@@ -1614,7 +1627,7 @@ const TicketsSelection = () => {
                       </div>
                     )
                   );
-                })}{" "}
+                })}{" "} */}
               </Form>
             </div>
             {modal && <TimerModal />}
@@ -1634,7 +1647,10 @@ const TicketsSelection = () => {
             <div className="pr-full mt-16">
               <Radio.Group>
                 <div className="flex flex-col gap-8">
-                  <div className="card-shadow flex justify-between" style={{ width: '120%' }}>
+                  <div
+                    className="card-shadow flex justify-between"
+                    style={{ width: "120%" }}
+                  >
                     <div className="flex gap-3 items-start">
                       <div className="pt-1">
                         <Radio
@@ -1659,7 +1675,10 @@ const TicketsSelection = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="card-shadow flex justify-between"style={{ width: '120%' }}>
+                  <div
+                    className="card-shadow flex justify-between"
+                    style={{ width: "120%" }}
+                  >
                     <div className="flex gap-3 items-start">
                       <div className="pt-1">
                         <Radio
@@ -1671,7 +1690,7 @@ const TicketsSelection = () => {
                       </div>
                       <div>
                         <h2 className="text-lg font-BricolageGrotesqueRegular text-OWANBE_PRY">
-                          Pay with Bank Transfer 
+                          Pay with Bank Transfer
                         </h2>
                         <span
                           className="text-s font-BricolageGrotesqueRegular"
@@ -1748,15 +1767,12 @@ const TicketsSelection = () => {
           loading={loading}
           currentPage={currentPage}
           eventName={eventDetails?.eventName}
+          paymentMethod={paymentMethod}
+          termsAndCondition={termsAndCondition}
           allInfo={allInfo}
           isFormValid={isFormValid}
           onClick={
             handleButtonClick
-            // currentPage === "tickets"
-            //   ? () => setCurrentPage("contactform")
-            //   : currentPage === "contactform"
-            //   ? () =>  handleSubmitForm()
-            //   : undefined
           }
           ticketDetails={ticketDetails}
           continueBtn
