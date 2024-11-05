@@ -34,7 +34,7 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
   };
 
   return (
-    <div className="fixed inset-0 bg-black/20 grid place-items-center">
+    <div className="fixed inset-0 bg-black/20 grid place-items-center z-20">
       <div
         onClick={(e) => e.stopPropagation()}
         className="bg-white rounded-2xl px-12 py-12 lg:min-w-[40rem]"

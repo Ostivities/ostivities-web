@@ -10,7 +10,7 @@ import { PlusSquareOutlined } from "@ant-design/icons";
 import { IDiscountData, ITicketDetails } from "@/app/utils/interface";
 import { useRouter, useParams } from "next/navigation";
 import { Button } from "antd";
-import { TICKET_ENTITY } from "@/app/utils/enums";
+import { PAYMENT_METHODS, TICKET_ENTITY } from "@/app/utils/enums";
 import { MdOutlineDiscount } from "react-icons/md";
 import {
   useGetEventDiscount,
@@ -40,6 +40,8 @@ interface SummaryProps {
   currentPage: string;
   eventId?: string;
   isFormValid?: boolean;
+  termsAndCondition?: boolean;
+  paymentMethod?: PAYMENT_METHODS | null;
   onClick?: () => void;
   onDiscountApplied?: (applied: boolean) => void;
 }
@@ -55,6 +57,8 @@ const Summary = ({
   isFormValid,
   eventId,
   currentPage,
+  termsAndCondition,
+  paymentMethod,
   onDiscountApplied,
   onClick,
 }: SummaryProps) => {
@@ -326,18 +330,25 @@ const Summary = ({
                   borderRadius: "25px",
                   fontFamily: "BricolageGrotesqueMedium",
                   backgroundColor:
-                  (currentPage === "tickets" && ticketDetails?.length === 0) ||
-                  (currentPage === "contactform" && !isFormValid)
-                      ? "#cccccc" // Active red if valid
-                      : "#e20000", // Gray if disabled
+                    (currentPage === "tickets" &&
+                      ticketDetails?.length === 0) ||
+                    (currentPage === "contactform" && !isFormValid) ||
+                    (currentPage === "payment" &&
+                      (!termsAndCondition || !paymentMethod))
+                      ? "#cccccc" // Gray for disabled
+                      : "#e20000", // Red for active
                   color:
-                  (currentPage === "tickets" && ticketDetails?.length === 0) ||
-                  (currentPage === "contactform" && !isFormValid)
+                    (currentPage === "tickets" &&
+                      ticketDetails?.length === 0) ||
+                    (currentPage === "contactform" && !isFormValid) ||
+                    (currentPage === "payment" &&
+                      (!termsAndCondition || !paymentMethod))
                       ? "#666666"
                       : "white",
                   height: "50px",
                   fontSize: "16px",
                   border: "none",
+                  zIndex: 10,
                 }}
                 title={
                   currentPage === "tickets"
@@ -346,17 +357,22 @@ const Summary = ({
                     ? "Continue"
                     : "Continue"
                 }
-                
                 disabled={
                   (currentPage === "tickets" && ticketDetails?.length === 0) ||
-                  (currentPage === "contactform" && !isFormValid)
+                  (currentPage === "contactform" && !isFormValid) ||
+                  (currentPage === "payment" &&
+                    (!termsAndCondition || !paymentMethod))
                 }
               >
-               {currentPage === "tickets" ? "Continue" : currentPage === "contactform" ? "Continue" : "Make Payment"}
-              </Button>
+                {currentPage === "tickets"
+                  ? "Continue"
+                  : currentPage === "contactform"
+                  ? "Continue"
+                  : "Make Payment"}
+              </Button>{" "}
             </div>
           )}
-          {paymentBtn && (
+          {/* {paymentBtn && (
             <div className="flex justify-center mt-12 mb-6 w-full">
               <button
                 className="primary-btn w-full"
@@ -365,7 +381,7 @@ const Summary = ({
                 Make Payment
               </button>
             </div>
-          )}
+          )} */}
           {isModalOpen && (
             <PaymentSuccess
               open={isModalOpen}
