@@ -315,7 +315,7 @@ const AboutEvent = () => {
   const popoverRef = useRef<HTMLDivElement>(null);
 
   const handleSelectLocation = (address: string) => {
-    setValue("state", address); // Update the form field value
+    setValue("address", address); // Update the form field value
     setPopoverVisible(false); // Close the popover
   };
 
