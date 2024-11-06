@@ -355,7 +355,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
         styles={{ fontWeight: "bold !important" }}
       />
       <div
-        className="mb-9 pb-16 w-full"
+        className="mb-9 pb-10 w-full"
         style={{ marginBottom: "20px", marginTop: "10px" }}
       >
         {getSingleTicket.isSuccess === true && (
@@ -364,7 +364,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
             onChange={handleEditorChange}
           />
         )}
-      </div><br />
+      </div>
 
       <Form.Item
        style={{ marginBottom: "24px", display: "flex", alignItems: "center", gap: "20px" }}

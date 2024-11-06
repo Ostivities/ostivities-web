@@ -382,11 +382,10 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
         content={"Ticket description"}
         styles={{ fontWeight: "bold !important" }}
       />
-      <Form.Item className="mb-3 pb-16 w-full mt-3">
+      <Form.Item className="mb-20 w-full mt-3">
         <EmailEditor initialValue="" onChange={handleEditorChange} />
       </Form.Item>
-      <br />
-      <br />
+      
 
       <Form.Item
         style={{
