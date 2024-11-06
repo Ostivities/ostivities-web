@@ -301,7 +301,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
       />
       <Form.Item className="mb-3 pb-16 w-full mt-3">
         <EmailEditor
-          initialValue="<p>Enter ticket description!</p>"
+          initialValue=""
           onChange={handleEditorChange}
         />
       </Form.Item>

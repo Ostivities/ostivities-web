@@ -5,6 +5,7 @@ import "react-quill/dist/quill.snow.css";
 
 interface EditoProps {
   onChange: any;
+  initialValue: string;
 }
 
 const ReactQuill = dynamic(() => import("react-quill"), {
@@ -13,9 +14,10 @@ const ReactQuill = dynamic(() => import("react-quill"), {
 
 const EmailEditor = ({
   onChange,
+  initialValue,
 }: EditoProps): JSX.Element => {
   const [isClient, setIsClient] = useState(false);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(initialValue);
   // "image", "video"
 
   const toolbarOptions = [
