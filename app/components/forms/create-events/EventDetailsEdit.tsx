@@ -724,7 +724,7 @@ function EventDetailsEdit(): JSX.Element {
                     />
                     <Popover
                       content={content}
-                      title="Search for a Location"
+                      
                       trigger="click"
                       open={popoverVisible}
                     >
