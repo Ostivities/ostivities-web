@@ -122,15 +122,8 @@ const LocationSearch: React.FC<LocationSearchProps> = ({ onSelectLocation }) => 
       )}
 
       {selectedAddress && (
-        <div>
-          {/* <iframe
-            src={mapSrc}
-            width="100%"
-            height="150"
-            style={{ border: 0 }}
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          /> */}
+        <div style={{ marginTop: "20px" }}>
+         <h3 style={{ color: '#e20000' }}>Selected Location: {selectedAddress}</h3>
         </div>
       )}
     </div>
