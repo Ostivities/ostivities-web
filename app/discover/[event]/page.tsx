@@ -409,15 +409,11 @@ const EventDetail = () => {
                       width: "190px",
                       whiteSpace: "normal",
                       wordWrap: "break-word",
+                      fontWeight: 300,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
                     }}
                   >
-                    <a
-                      href="https://maps.app.goo.gl/jBmgQ5EFxngj2ffS6"
-                      style={{ color: "#e20000", textDecoration: "none", fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}
-                      target="_blank"
-                    >
                       {eventDetails?.address}
-                    </a>
                   </div>
                 </div>
               </div>
@@ -692,9 +688,6 @@ const EventDetail = () => {
             </div>
           </div>
         </div>
-
-        <br />
-        <br />
         <br />
         <br />
         <AvailableEvents />

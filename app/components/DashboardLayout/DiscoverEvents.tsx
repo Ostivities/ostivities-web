@@ -8,7 +8,7 @@ import { EVENT_INFO, PUBLISH_TYPE } from "@/app/utils/enums";
 
 const DiscoverEvents = () => {
   const [searchText, setSearchText] = useState("");
-  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 4);
+  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 5);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
   const { addEventToDiscovery } = useAddEventToDiscovery();
   const [expiredEventsId, setExpiredEventsId] = useState<string[]>([]);

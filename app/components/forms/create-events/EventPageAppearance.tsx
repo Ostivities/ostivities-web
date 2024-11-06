@@ -13,7 +13,7 @@ import { useCookies } from "react-cookie";
 import { useQueryClient } from "@tanstack/react-query"
 import { Heading5, Paragraph } from "../../typography/Typography";
 import { GET_EVENT } from "@/app/utils/constants";
-
+import ReadMoreHTML from "@/app/components/ReadMoreHTML";
 
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
 const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
@@ -315,25 +315,15 @@ const EventPageAppearance: React.FC = () => {
                   Location
                 </div>
                 <div
-                  style={{
-                    maxWidth: "190px", // Adjust this value as needed
-                    wordWrap: "break-word", // Ensures long words wrap to the next line
-                    overflowWrap: "break-word", // Adds further wrapping behavior for better browser support
+                   style={{
+                    width: "190px",
+                    whiteSpace: "normal",
+                    wordWrap: "break-word",
+                    fontWeight: 300,
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
                   }}
                 >
-                  <button
-                    style={{ fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif", color: "#e20000", textDecoration: "none" }}
-                    onClick={mapLocation}
-                  >
                     {eventDetails?.address}
-                  </button>
-                  {/* <a
-                        href={`https://api.geoapify.com/v1/geocode/autocomplete?text=${eventDetails?.address}&format=json&apiKey=${API_KEY}`}
-                        style={{ color: "#e20000", textDecoration: "none" }}
-                        target="_blank"
-                      >
-                        {eventDetails?.address}
-                      </a> */}
                 </div>
               </div>
             </div>
@@ -449,12 +439,19 @@ const EventPageAppearance: React.FC = () => {
               </h2>
             </div>
           </div>
-          <div
-            className="font-BricolageGrotesqueRegular flex-1 h-fit px-1"
-            dangerouslySetInnerHTML={{
-              __html: eventDetails?.eventDetails as string,
-            }}
-          ></div>
+         
+          <ReadMoreHTML
+                  htmlContent={eventDetails?.eventDetails || ""}
+                  maxLength={250}
+                />
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.7465438415493!2d3.427544374805034!3d6.426600593564447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bf5402368b913%3A0xca22600eeec46d00!2sEko%20Hotel%20And%20Suites!5e0!3m2!1sen!2sus!4v1730907605084!5m2!1sen!2sus"
+                  width="100%"
+                  height="150"
+                  style={{ border: 0, marginTop: "20px" }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
           <div className="flex justify-center mt-12">
           </div>
         </div>

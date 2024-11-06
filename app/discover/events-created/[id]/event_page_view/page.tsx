@@ -256,18 +256,14 @@ const EventPageView = () => {
                   </div>
                   <div
                     style={{
-                      maxWidth: "190px", // Adjust this value as needed
-                      wordWrap: "break-word", // Ensures long words wrap to the next line
-                      overflowWrap: "break-word", // Adds further wrapping behavior for better browser support
+                      width: "190px",
+                      whiteSpace: "normal",
+                      wordWrap: "break-word",
+                      fontWeight: 300,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
                     }}
                   >
-                    <a
-                      href="https://maps.app.goo.gl/jBmgQ5EFxngj2ffS6"
-                      style={{ color: "#e20000", textDecoration: "none", fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}
-                      target="_blank"
-                    >
                       {eventDetails?.address}
-                    </a>
                   </div>
                 </div>
               </div>
