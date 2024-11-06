@@ -68,7 +68,7 @@ function PasswordResetForm(): JSX.Element {
       style={{ fontFamily: 'BricolageGrotesqueRegular' }}
     >
       <Title level={5} style={{ fontFamily: 'BricolageGrotesqueLight' }}>
-        Enter Reset Code
+        Enter Reset Code 
       </Title>
 
       <Form.Item

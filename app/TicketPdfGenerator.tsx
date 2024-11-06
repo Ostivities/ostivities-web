@@ -3,180 +3,178 @@ import PdfPrinter from 'pdfmake';
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import  OSTIVITIES_LOGO  from './owanbe.svg';
 import TICKET_BANNER  from './ticketBanner.svg';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
 
 // playground requires you to assign document definition to a variable called dd
+// pdfMake.vfs = pdfFonts.pdfMake.vfs;
+interface PdfDto {
+  content: {
+    order_number: string;
+    order_date: string;
+    event_date_time: string;
+    event_address: string;
+    buyer_name: string;
+    ticket_name: string;
+    ticket_type: string;
+    event_name: string;
+    qr_code: string;
+    ostivities_logo: string;
+    ticket_banner: string;
+  }[];
+  order_number: string;
+}
+export const pdfGenerator = (dto: PdfDto)=>{
 
-const documentDefinitions = {
-  content: [
-    {
-      image: OSTIVITIES_LOGO,
-      margin: [5, 2, 10, 30],
-      fit: [100, 100],
-      style: 'header',
-    },
-    {
-      image: TICKET_BANNER,
-      fit: [500, 500],
-    },
-    { text: '{{event_name}}', margin: [5, 50, 10, 30], style: 'header' },
-    {
-      stack: [
-        //  FIRST ROW
-        {
-          columns: [
-            {
-              // auto-sized columns have their widths based on their content
-              width: '50%',
-              //   text: 'Order Number',
-              stack: [
-                { text: 'Order Number', margin: [5, 2, 10, 8] },
-                {
-                  text: '{{order_number}}',
-                  margin: [5, 2, 10, 8],
-                  color: '#e20000',
-                },
-              ],
-              marginBottom: 25,
-            },
-            {
-              // star-sized columns fill the remaining space
-              // if there's more than one star-column, available width is divided equally
-              width: '50%',
-              text: 'Second column',
-              stack: [
-                { text: 'Order Date', margin: [5, 2, 10, 8] },
-                {
-                  text: '{{order_date}}',
-                  margin: [5, 2, 10, 8],
-                  color: '#e20000',
-                },
-              ],
-            },
-          ],
-        },
+//   const fonts = {
+//     Roboto: {
+//       normal: 'fonts/BricolageGrotesque/BricolageGrotesque-Regular.ttf',
+//       bold: 'fonts/BricolageGrotesque/BricolageGrotesque-Bold-BF648bd57888479.ttf',
+//       italics: 'fonts/BricolageGrotesque/BricolageGrotesque-Regular.ttf',
+//       bolditalics:
+//         'fonts/BricolageGrotesque/BricolageGrotesque-Bold-BF648bd57888479.ttf',
+//     },
+//   };
+  const generatePageContent = (
+    data: PdfDto['content'][0],
+    isLastPage?: boolean,
+  ) => {
+    const pageContent: any = [
+      {
+        image: data.ostivities_logo,
+        margin: [5, 2, 10, 15],
+        fit: [100, 100],
+        style: 'header',
+      },
+      '\n\n',
+      {
+        image: data.ticket_banner,
+        fit: [500, 500],
+      },
+      '\n',
+      { text: data.event_name, margin: [5, 10, 10, 30], style: 'header' },
+      {
+        alignment: 'justify',
+        columns: [
+          {
+            stack: [
+              { text: 'Order Number', margin: [5, 2, 10, 8], bold: true },
+              {
+                text: data.order_number,
+                margin: [5, 2, 10, 8],
+                color: '#e20000',
+              },
+            ],
+          },
+          {
+            stack: [
+              { text: 'Order Date', margin: [5, 2, 10, 8], bold: true },
+              {
+                text: data.order_date,
+                margin: [5, 2, 10, 8],
+                color: '#e20000',
+              },
+            ],
+          },
+        ],
+      },
+      '\n\n',
+      {
+        columns: [
+          {
+            stack: [
+              { text: 'Event Date & Time', margin: [5, 2, 10, 8], bold: true },
+              {
+                text: data.event_date_time,
+                margin: [5, 2, 10, 8],
+                color: '#e20000',
+              },
+            ],
+          },
+          {
+            stack: [
+              { text: 'Event Address', margin: [5, 2, 10, 8], bold: true },
+              {
+                text: data.event_address,
+                margin: [5, 2, 10, 8],
+                color: '#e20000',
+              },
+            ],
+          },
+        ],
+      },
+      '\n\n',
+      {
+        columns: [
+          {
+            stack: [
+              {
+                text: 'Ticket Details',
+                margin: [5, 2, 10, 15],
+                style: 'header',
+              },
+              { text: 'Ticket Name', margin: [5, 2, 10, 8], bold: true },
+              {
+                text: data.ticket_name,
+                margin: [5, 2, 10, 8],
+                color: '#e20000',
+              },
+              {
+                stack: [
+                  { text: 'Order By', margin: [5, 20, 10, 8], bold: true },
+                  {
+                    text: data.buyer_name,
+                    margin: [5, 2, 10, 8],
+                    color: '#e20000',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            stack: [{ qr: data.qr_code, fit: '200' }],
+          },
+        ],
+      },
+    ];
 
-        //  SECOND ROW
-        {
-          columns: [
-            {
-              // auto-sized columns have their widths based on their content
-              width: '50%',
-              //   text: 'Order Number',
-              stack: [
-                { text: 'Event Date & Time', margin: [5, 2, 10, 8] },
-                {
-                  text: '{{event_date_time}}',
-                  margin: [5, 2, 10, 8],
-                  color: '#e20000',
-                },
-              ],
-              marginBottom: 25,
-            },
-            {
-              // star-sized columns fill the remaining space
-              // if there's more than one star-column, available width is divided equally
-              width: '50%',
-              text: 'Second column',
-              stack: [
-                { text: 'Event Address', margin: [5, 2, 10, 8] },
-                {
-                  text: '{{event_address}}',
-                  margin: [5, 2, 10, 8],
-                  color: '#e20000',
-                },
-              ],
-              marginBottom: 25,
-            },
-          ],
-        },
+    if (!isLastPage) {
+      pageContent.push({ text: '', pageBreak: 'after' });
+    }
+    return pageContent;
+  };
+const content = dto.content.flatMap((data, index) =>
+  generatePageContent(data, index === dto.content.length - 1),
+  );
 
-        //  THIRD ROW
-        {
-          columns: [
-            {
-              // auto-sized columns have their widths based on their content
-              width: '50%',
-              //   text: 'Order Number',
-              stack: [
-                {
-                  stack: [
-                    { text: 'Ticket Type', margin: [5, 2, 10, 8] },
-                    {
-                      text: '{{ticket_type}}',
-                      margin: [5, 2, 10, 8],
-                      color: '#e20000',
-                    },
-                  ],
-                  marginBottom: 25,
-                },
-                {
-                  stack: [
-                    { text: 'Order By', margin: [5, 2, 10, 8] },
-                    {
-                      text: '{{buyer_name}}',
-                      margin: [5, 2, 10, 8],
-                      color: '#e20000',
-                    },
-                  ],
-                },
-              ],
-            },
-
-            {
-              // star-sized columns fill the remaining space
-              // if there's more than one star-column, available width is divided equally
-              width: '50%',
-              text: 'Second column',
-              stack: [
-                //   { text: 'QR Code', margin: [ 5, 2, 10, 8 ] },
-                { qr: 'text in QR', fit: '200' },
-              ],
-              marginBottom: 25,
-            },
-          ],
-        },
-      ],
-
-      // optional space between columns
-      columnGap: 30,
-    },
-  ],
-
-  styles: {
-    header: {
-      fontSize: 22,
-      bold: true,
-      marginBottom: 25,
-    },
-    anotherStyle: {
-      italics: true,
-      alignment: 'right',
-    },
-  },
-};
-
-export const pdfGenerator = (): PDFKit.PDFDocument | any => {
-  const fonts = {
-    Roboto: {
-      normal: 'fonts/Roboto-Regular.ttf',
-      bold: 'fonts/Roboto-Medium.ttf',
-      italics: 'fonts/Roboto-Italic.ttf',
-      bolditalics: 'fonts/Roboto-MediumItalic.ttf',
-    },
-  };
-
-  const printer = new PdfPrinter(fonts);
+// const printer = new PdfPrinter(fonts);
 
   const docDefinition = {
-    ...documentDefinitions,
-  } as unknown as TDocumentDefinitions;
+    content,
+    styles: {
+      header: {
+        fontSize: 22,
+        bold: true,
+      },
+      bigger: {
+        fontSize: 15,
+        italics: true,
+      },
+    },
+    defaultStyle: {
+      columnGap: 20,
+    },
+    footer: (currentPage: any, pageCount: any) => {
+      return {
+        text: 'Page ${currentPage} of ${pageCount}',
+        alignment: 'center',
+        margin: [0, 10],
+        fontSize: 12,
+      };
+    },
+  } as any
+  const options = {};
 
-  const options = {
-    // ...
-  };
-
-  const pdfDoc = printer.createPdfKitDocument(docDefinition, options);
-
-  pdfDoc.pipe(createWriteStream('document.pdf'));
-  pdfDoc.end();
-};
+  // const pdfDoc = printer.createPdfKitDocument(docDefinition, options).download();
+  pdfMake.createPdf(docDefinition).download(`${dto.order_number}.pdf`);
+}

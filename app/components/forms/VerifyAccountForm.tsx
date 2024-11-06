@@ -3,7 +3,7 @@ import { useVerifyOtp } from "@/app/hooks/auth/auth.hook";
 import type { GetProps } from "antd";
 import { Button, Form, FormProps, Input, message, Typography } from "antd";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
 const { Title } = Typography;
@@ -47,13 +47,38 @@ function VerificationCodeForm(): JSX.Element {
     onChange,
   };
 
+  const [timer, setTimer] = useState(0); // For countdown timer
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false); // For disabling resend button
+
+   // Handle resend code and timer
+   const resendCode = () => {
+    if (!isButtonDisabled) {
+      message.success('Verification code has been re-sent to your email');
+      setTimer(600); // Start 10-minute timer (600 seconds)
+      setIsButtonDisabled(true); // Disable the button
+    }
+  };
+
+  // Timer countdown logic
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (timer > 0) {
+      interval = setInterval(() => setTimer(timer - 1), 1000);
+    } else if (timer === 0 && isButtonDisabled) {
+      setIsButtonDisabled(false); // Re-enable the button when timer hits 0
+    }
+    return () => clearInterval(interval);
+  }, [timer, isButtonDisabled]);
+
+
+
   return (
     <div
       className="w-full font-BricolageGrotesqueRegular flex flex-col"
       style={{ fontFamily: "BricolageGrotesqueRegular" }}
     >
       <Title level={5} style={{ fontFamily: "BricolageGrotesqueLight" }}>
-        Enter Verification Code
+        Enter Verification Code 
       </Title>
       <Form.Item
         name={"verificationcode"}
@@ -67,6 +92,14 @@ function VerificationCodeForm(): JSX.Element {
             style={{ width: "300px" }}
             {...sharedProps}
           />
+            <button
+            type="button"
+            onClick={resendCode}
+            className="text-OWANBE_PRY text-s font-semibold"
+            disabled={isButtonDisabled}
+          >
+            {isButtonDisabled ? `Request again in ${Math.floor(timer / 60)}:${('0' + (timer % 60)).slice(-2)}` : 'Re-send code'}
+          </button>
         </div>
       </Form.Item>
       <br />

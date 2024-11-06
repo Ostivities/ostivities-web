@@ -18,9 +18,14 @@ function VerifyAccount() {
         <Space direction="vertical" size={"small"} className="w-5/6">
           <Heading3 content={"Account Verification"} className="" />
           <Paragraph
-            content={`Please enter the verification code sent to ${email}. If you can't find it in your inbox, please check your spam box.`}
-            className=""
-          />
+  content={
+    <span>
+      Please enter the verification code sent to <span style={{ color: "#e20000" }}>{email}</span>.
+      If you can't find it in your inbox, please check your spam box.
+    </span>
+  }
+/>
+
         </Space>
         <VerificationCodeSuspense />
         <br />
