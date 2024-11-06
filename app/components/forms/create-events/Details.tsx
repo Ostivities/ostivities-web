@@ -413,16 +413,14 @@ function Details(): JSX.Element {
               styles={{ fontWeight: "bold !important" }}
             />
             <div
-              className="mb-9 pb-16 w-full"
-              style={{ marginBottom: "20px", marginTop: "10px" }}
+              className=" w-full"
+              style={{ marginBottom: "25px", marginTop: "10px" }}
             >
               <EmailEditor
                 initialValue="<p></p>"
                 onChange={handleEditorChange}
               />
             </div>
-            <br />
-            <br />
             <div style={{ color: "red" }}>{editorError}</div>
 {/* 
             <Controller
@@ -606,7 +604,7 @@ function Details(): JSX.Element {
                   )}
                 </Space>
               )} */}
-            <br /> 
+           
             <Controller
               name="state"
               rules={{ required: "State is required!" }}
@@ -616,7 +614,7 @@ function Details(): JSX.Element {
                   direction="vertical"
                   size={"small"}
                   className="w-full"
-                  style={{ marginTop: "16px" }} // Adjust the value as needed
+                  style={{ marginTop: "25px" }} // Adjust the value as needed
                 >
                   <Label content="Event State" className="" htmlFor="state" />
                   <Select

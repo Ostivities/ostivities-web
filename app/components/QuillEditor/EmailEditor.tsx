@@ -18,27 +18,16 @@ const EmailEditor = ({
 }: EditoProps): JSX.Element => {
   const [isClient, setIsClient] = useState(false);
   const [value, setValue] = useState(initialValue);
-  // "image", "video"
+  // "image", "video", "formula", "link", "code-block", "clean", "table"
+
+
 
   const toolbarOptions = [
-    ["bold", "italic", "underline", "strike"],
-    ["blockquote", "code-block"],
-    ["link", "formula"],
-
+    ["bold", "italic", "underline"],
+    ["blockquote"],
     [{ header: 1 }, { header: 2 }],
-    [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
-    [{ script: "sub" }, { script: "super" }],
-    [{ indent: "-1" }, { indent: "+1" }],
-    [{ direction: "rtl" }],
-
-    [{ size: ["small", false, "large", "huge"] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-    [{ color: [] }, { background: [] }],
-    [{ font: [] }],
+    [{ list: "ordered" }, { list: "bullet" }],
     [{ align: [] }],
-
-    ["clean"],
   ];
 
   useEffect(() => {
@@ -62,7 +51,7 @@ const EmailEditor = ({
     <React.Fragment>
       {isClient && (
         <ReactQuill 
-          placeholder="Enter event details!"
+          placeholder="Enter details!"
           theme="snow"
           value={value}
           onChange={handleChange}
