@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 
 interface EditoProps {
-  initialValue: string;
   onChange: any;
+  initialValue: string;
 }
 
 const ReactQuill = dynamic(() => import("react-quill"), {
@@ -13,8 +13,8 @@ const ReactQuill = dynamic(() => import("react-quill"), {
 });
 
 const EmailEditor = ({
-  initialValue = "",
   onChange,
+  initialValue,
 }: EditoProps): JSX.Element => {
   const [isClient, setIsClient] = useState(false);
   const [value, setValue] = useState(initialValue);
@@ -61,7 +61,8 @@ const EmailEditor = ({
   return (
     <React.Fragment>
       {isClient && (
-        <ReactQuill
+        <ReactQuill 
+          placeholder="Enter event details!"
           theme="snow"
           value={value}
           onChange={handleChange}

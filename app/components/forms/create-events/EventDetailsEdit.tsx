@@ -93,6 +93,7 @@ function EventDetailsEdit(): JSX.Element {
   const [showRadio, setShowRadio] = useState(false);
   const [vendorRegRadio, setVendorRegRadio] = useState(false);
   const [editorContent, setEditorContent] = useState("");
+  const [editorError, setEditorError] = useState("");
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
@@ -304,6 +305,14 @@ function EventDetailsEdit(): JSX.Element {
       eventURL,
       ...rest
     } = data;
+
+    if (editorContent === "" || editorContent === "<p><br></p>") {
+      setEditorError("Please provide event details"); // Set error state
+      return; // Prevent form submission if no content
+    } else {
+      setEditorError(""); // Clear error if content is valid
+    }
+
     try {
       if (
         (facebookUrl && !facebookUrl.startsWith("https://")) ||
@@ -468,6 +477,10 @@ function EventDetailsEdit(): JSX.Element {
                 />
               )}
             </div>
+            <br />
+            <br />
+            <div style={{ color: "red" }}>{editorError}</div>
+
 
             <Controller
               name="vendor_registration"
