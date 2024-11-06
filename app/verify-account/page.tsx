@@ -21,7 +21,7 @@ function VerifyAccount() {
   content={
     <span>
       Please enter the verification code sent to <span style={{ color: "#e20000" }}>{email}</span>.
-      If you can't find it in your inbox, please check your spam box.
+      If you can&apos;t find it in your inbox, please check your spam box.
     </span>
   }
 />
