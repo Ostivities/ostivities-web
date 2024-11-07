@@ -4,6 +4,7 @@ import { IModal } from '@/app/utils/interface';
 import Image from 'next/image';
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { useParams, useRouter } from "next/navigation";
+import { pdfGenerator } from "../../TicketPdfGenerator";
 
 const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): JSX.Element => {
   const router = useRouter();
@@ -33,6 +34,51 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
     window.open(eventLink, '_blank');
   };
 
+  const payload = {
+    content: [
+      {
+        order_number: "123456",
+        order_date: "2024-11-01",
+        event_date_time: "2024-12-15 18:00",
+        event_address: "123 Event St, Cityville, CV123",
+        buyer_name: "John Doe",
+        ticket_name: "VIP Pass",
+        ticket_type: "VIP",
+        event_name: "Ostivities Fest 2024",
+        qr_code: "https://example.com/qrcode123456",
+        ostivities_logo: "https://example.com/ostivities-logo.png",
+        ticket_banner: "https://example.com/ticket-banner.png"
+      },
+      {
+        order_number: "789012",
+        order_date: "2024-11-05",
+        event_date_time: "2024-12-20 20:00",
+        event_address: "456 Festival Ave, Townsville, TS456",
+        buyer_name: "Jane Smith",
+        ticket_name: "General Admission",
+        ticket_type: "GA",
+        event_name: "Ostivities Concert Night",
+        qr_code: "https://example.com/qrcode789012",
+        ostivities_logo: "https://example.com/ostivities-logo.png",
+        ticket_banner: "https://example.com/ticket-banner.png"
+      },
+      {
+        order_number: "345678",
+        order_date: "2024-11-10",
+        event_date_time: "2024-12-25 15:00",
+        event_address: "789 Gala Blvd, Metropolis, MP789",
+        buyer_name: "Alice Johnson",
+        ticket_name: "Early Bird",
+        ticket_type: "Early Bird",
+        event_name: "Ostivities Winter Gala",
+        qr_code: "https://example.com/qrcode345678",
+        ostivities_logo: "https://example.com/ostivities-logo.png",
+        ticket_banner: "https://example.com/ticket-banner.png"
+      }
+    ],
+    order_number: "345678",  
+  }
+
   return (
     <div className="fixed inset-0 bg-black/20 grid place-items-center z-20">
       <div
@@ -60,7 +106,7 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
           <div className="flex flex-col items-center space-y-4 mt-10">
             <div className="flex items-center space-x-4 w-[20rem]">
               <button
-                onClick={() => router.push("")}
+                onClick={() => pdfGenerator(payload)}
                 className="primary-btn font-normal text-base flex-1 whitespace-nowrap px-3 py-2"
               >
                 Download Ticket

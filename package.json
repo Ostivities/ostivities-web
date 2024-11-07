@@ -21,6 +21,7 @@
     "clsx": "^2.1.0",
     "country-state-city": "^3.2.1",
     "dayjs": "^1.11.13",
+    "html2canvas": "^1.4.1",
     "icons": "^1.0.0",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
