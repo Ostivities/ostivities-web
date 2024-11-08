@@ -422,8 +422,8 @@ function Details(): JSX.Element {
               />
             </div>
             <div style={{ color: "red" }}>{editorError}</div>
-{/* 
-            <Controller
+
+            {/* <Controller
               name="vendor_registration"
               control={control}
               render={({ field }) => (
