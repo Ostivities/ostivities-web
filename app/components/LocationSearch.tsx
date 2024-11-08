@@ -81,24 +81,30 @@ const LocationSearch: React.FC<LocationSearchProps> = ({ onSelectLocation }) => 
 
   // Handle selecting a location and geocoding it
   const handleSelect = (address: string) => {
-  setSelectedAddress(address);
-  onSelectLocation(address);
-
-  // Use the Geocoding API to get the latitude and longitude of the selected address
-  const geocoder = new google.maps.Geocoder();
-  geocoder.geocode({ address: address }, (results, status) => {
-    if (status === google.maps.GeocoderStatus.OK && results && results.length > 0) {
-      const { lat, lng } = results[0].geometry.location;
-      // Construct the iframe src URL with the latitude and longitude
-      setMapSrc(
-        `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&q=${lat()},${lng()}&zoom=15`
-      );
-    } else {
-      message.error('Failed to geocode the address.');
-    }
-  });
-};
-
+    setSelectedAddress(address);
+    onSelectLocation(address);
+  
+    // Use the Geocoding API to get the latitude and longitude of the selected address
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ address: address }, (results, status) => {
+      if (status === google.maps.GeocoderStatus.OK && results && results.length > 0) {
+        const location = results[0].geometry.location;
+        const lat = location.lat();
+        const lng = location.lng();
+  
+        // Log to verify the coordinates
+        console.log("Latitude:", lat, "Longitude:", lng);
+  
+        // Construct the iframe src URL using both address and coordinates
+        setMapSrc(
+          `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&q=${encodeURIComponent(address)}&center=${lat},${lng}&zoom=15`
+        );      
+      } else {
+        message.error('Failed to geocode the address.');
+      }
+    });
+  };
+  
 
   return (
     <div>
