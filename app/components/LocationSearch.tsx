@@ -133,7 +133,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({ onSelectLocation }) => 
           <iframe
             src={mapSrc}
             width="100%"
-            height="150"
+            height="120"
             style={{ border: 0 }}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
