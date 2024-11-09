@@ -40,6 +40,7 @@ import { useRegisterGuest } from "@/app/hooks/guest/guest.hook";
 import TimerModal from "@/app/components/OstivitiesModal/TimerModal";
 import PaymentSuccessModal from "@/app/components/OstivitiesModal/PaymentSuccessModal";
 import ContactForm from "@/app/components/ContactForm/ContactForm";
+import PaymentValidation from "@/app/components/OstivitiesModal/PaymentValidation";
 
 const TicketsSelection = () => {
   const router = useRouter();
