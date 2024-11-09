@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { useParams, useRouter } from "next/navigation";
 import { pdfGenerator } from "../../TicketPdfGenerator";
+import OwanbeLogo from "@/public/owanbe.svg";
+
 
 const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): JSX.Element => {
   const router = useRouter();
@@ -46,8 +48,8 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
         ticket_type: "VIP",
         event_name: "Ostivities Fest 2024",
         qr_code: "https://example.com/qrcode123456",
-        ostivities_logo: "https://example.com/ostivities-logo.png",
-        ticket_banner: "https://example.com/ticket-banner.png"
+        ostivities_logo: "https://example.com/owanbe-logo.png",
+        ticket_banner: "https://example.com/owanbe-banner.png"
       },
       {
         order_number: "789012",

@@ -389,6 +389,7 @@ const TicketsSelection = () => {
     fees: number;
     total_amount_paid: number;
     discountCode?: string;
+    discount: number;
     total_purchased: number;
     payment_method?: PAYMENT_METHODS;
   }>({
@@ -408,6 +409,7 @@ const TicketsSelection = () => {
       .reduce((acc, curr) => acc + curr, 0),
     total_amount_paid: 0,
     discountCode: "",
+    discount: 0,
     total_purchased: 0,
   });
   const [attendeesInformation, setAttendeesInformation] = useState<
@@ -553,11 +555,11 @@ const TicketsSelection = () => {
         ticket_type: ticket?.ticketEntity,
       };
     });
-    console.log(
-      attendees_information,
-      personal_information,
-      ticket_information
-    );
+    // console.log(
+    //   attendees_information,
+    //   personal_information,
+    //   ticket_information
+    // );
 
     const updatedInfo = {
       ...allInfo,
@@ -1776,6 +1778,7 @@ const TicketsSelection = () => {
           }
           ticketDetails={ticketDetails}
           continueBtn
+          // {currentPage === "tickets" ? continueBtn : paymentBtn}
         />
         {modal && <TimerModal />}
       </section>
