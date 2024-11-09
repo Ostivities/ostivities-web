@@ -309,8 +309,7 @@ const TicketsSelection = () => {
               ticketNumber: newTicketNumber,
               subTotal:
                 price * newTicketNumber +
-                currentFee * newTicketNumber -
-                ticket?.discountToDeduct * newTicketNumber,
+                currentFee * newTicketNumber,
             };
           }
         }
@@ -538,10 +537,10 @@ const TicketsSelection = () => {
       : [];
 
     const personal_information = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      phoneNumber: phoneNumber,
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      email: email.trim(),
+      phoneNumber: phoneNumber.trim(),
     };
     const ticket_information = ticketDetails?.map((ticket) => {
       return {

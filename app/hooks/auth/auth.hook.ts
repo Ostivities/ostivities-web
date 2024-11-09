@@ -20,6 +20,7 @@ import { API_SERVICE } from "@/app/utils/service";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { message } from "antd";
 import { AxiosError, AxiosResponse } from "axios";
+import { useEffect } from "react";
 
 export const useRegister = () => {
   const registerUser = useMutation({
@@ -48,6 +49,9 @@ export const useLogin = () => {
         const accessToken = data?.data?.data?.accessToken;
         sessionStorage.setItem("token", accessToken);
         sessionStorage.setItem("tokenTimestamp", Date.now().toString());
+        localStorage.setItem("token", accessToken);
+        // localStorage.setItem()
+        localStorage.setItem("tokenTimestamp", Date.now().toString());
       }
     },
     onError: (error: AxiosError | any) => {
@@ -129,6 +133,13 @@ export const useProfile = () => {
       return API_SERVICE._userProfile();
     },
   });
+  // useEffect(() => {
+  //   if (profile.isSuccess && profile.data) {
+  //     // Store profile data in localStorage when query is successful
+  //     localStorage.setItem("profile", JSON.stringify(profile.data));
+  //   }
+  // }, [profile.isSuccess, profile.data]);
+
   return { profile };
 }
 

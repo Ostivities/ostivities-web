@@ -94,6 +94,7 @@ function DashboardLayout({
 
   const { profile } = useProfile();
   const { logoutUser } = useLogout();
+  const profileData = localStorage.getItem("profileData");
   const [cookies, setCookie, removeCookie] = useCookies([
     "forgot_email",
     "is_registered",
@@ -142,7 +143,7 @@ function DashboardLayout({
   ];
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useLocalStorage<boolean>("sidebar", true);
-  const { isLoggedIn } = useFetch();
+  const { isLoggedIn, loading } = useFetch();
   // console.log(isLoggedIn, "isLoggedIn");
   const userProfile = isLoggedIn ? profile : null;
   // console.log(userProfile, "userProfile");
