@@ -10,6 +10,8 @@ import dynamic from "next/dynamic";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { IoChevronDown } from 'react-icons/io5'; // Importing the icon
+import { motion } from "framer-motion";
+import '@/app/DynamicHeading.css';
 
 // Dynamic import of react-slick
 const Slider = dynamic(() => import("react-slick"), { ssr: false });
@@ -64,7 +66,6 @@ function Hero(): JSX.Element {
     "/Hangouts.svg",
   ];
 
-<<<<<<< HEAD
   // Countdown logic
   const [timeRemaining, setTimeRemaining] = useState({
     days: 0,
@@ -74,7 +75,7 @@ function Hero(): JSX.Element {
   });
 
   useEffect(() => {
-    const targetDate = new Date("November 30, 2024 00:00:00").getTime();
+    const targetDate = new Date("December 15, 2024 00:00:00").getTime();
 
     const countdownInterval = setInterval(() => {
       const currentDate = new Date().getTime();
@@ -99,15 +100,6 @@ function Hero(): JSX.Element {
     return () => clearInterval(countdownInterval);
   }, []);
 
-  return (
-    <Section>
-      <div className="flex flex-col space-y-5 pt-5 mt-3 md:pt-8 md:mt-5 lg:pt-0 lg:mt-0 lg:space-y-0 lg:flex-row lg:space-x-8 lg:items-center">
-        <div className="flex flex-col items-center space-y-8 md:space-y-4 lg:items-start lg:w-1/2">
-        <H3
-            content="Connecting You to the Events That Matter Most "
-            className="text-center text-xl lg:text-3xl lg:text-left lg:w-3/4"
-          />
-=======
   const words = ["events", "hangouts", "concerts", "seminars"];
   const colors = ["#e20000", "#1834D2", "#FF7700", "#E406B4"];
   const [currentWord, setCurrentWord] = useState(words[0]);
@@ -133,6 +125,7 @@ function Hero(): JSX.Element {
     setCurrentColor(colors[wordIndex % colors.length]);
   }, [wordIndex]);
 
+
   return (
     <Section>
       <motion.div
@@ -157,10 +150,7 @@ function Hero(): JSX.Element {
               memories through seamless planning, ticket selling and event management. Start your journey with us today!
             </p>
           </motion.div>
->>>>>>> 522fbd21ebc71f498cb8fd13997bee873a2b1543
 
-
-<<<<<<< HEAD
           {/* Flex container for button and countdown */}
           <div className="flex flex-col items-center lg:flex-row lg:space-x-6 lg:items-center">
             <div
@@ -238,35 +228,9 @@ function Hero(): JSX.Element {
               </div>
             </div>
           </div>
-=======
-          <Link
-            href="/discover"
-            className="bg-OWANBE_SECONDARY hover:!bg-OWANBE_PRY transition-all duration-300 rounded-full hover:!text-white text-white px-8 py-3"
-          >
-            <span className="pr-1">Explore Events</span>
-          </Link>
->>>>>>> 522fbd21ebc71f498cb8fd13997bee873a2b1543
         </div>
 
         <br /><br /><br />
-<<<<<<< HEAD
-        <div className="w-full md:w-full lg:w-1/2 flex justify-center">
-          <Image src={FeatureBg} alt="hero" className="w-full max-w-lg" />
-        </div>
-      </div>
-
-      <div className="hidden lg:block lg:w-full pt-8 lg:pt-0">
-        <br /><br /><br />
-        <Slider {...settings}>
-          {slides.map((img, index) => (
-            <div key={index} className="slide">
-              <img src={img} alt={`Slide ${index + 1}`} className="rounded-lg" />
-            </div>
-          ))}
-        </Slider>
-      </div>
-=======
-
         {/* Adding framer-motion to the image for a unique animation */}
         <motion.div
           className="w-full md:w-full lg:w-1/2 flex justify-center"
@@ -307,13 +271,9 @@ function Hero(): JSX.Element {
           </Slider>
         </motion.div>
       </motion.div>
->>>>>>> 522fbd21ebc71f498cb8fd13997bee873a2b1543
     </Section>
   );
 }
 
 export default Hero;
-<<<<<<< HEAD
 
-=======
->>>>>>> 522fbd21ebc71f498cb8fd13997bee873a2b1543
