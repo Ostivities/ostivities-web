@@ -5,6 +5,7 @@ import { Skeleton } from "antd";
 import { useEffect, useState } from "react";
 import { IEventDetails } from "@/app/utils/interface";
 import { EVENT_INFO, PUBLISH_TYPE } from "@/app/utils/enums";
+import placeholder from "@/public/placeholder.svg";
 
 const DiscoverEvents = () => {
   const [searchText, setSearchText] = useState("");
@@ -73,7 +74,7 @@ const DiscoverEvents = () => {
               title={event?.eventName}
               about={event?.eventType}
               status= {event?.enable_registration === false ? "Reg Closed" :  "Get Tickets"  }
-              image={event?.eventImage}
+              image={event?.eventImage ? event.eventImage : placeholder}
               url={`/discover/${event?.unique_key}`}
               titleClass="font-bricolage-grotesque font-medium"
               aboutClass="font-bricolage-grotesque"

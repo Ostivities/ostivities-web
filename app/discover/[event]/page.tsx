@@ -28,6 +28,7 @@ import { ShareAltOutlined, CopyOutlined } from "@ant-design/icons";
 import ReadMoreHTML from "@/app/components/ReadMoreHTML";
 import start from "@/public/Startsin.svg";
 import end from "@/public/Endsin.svg";
+import placeholder from "@/public/placeholder.svg";
 
 const ShareModalContent: React.FC<{ url: string; title: string }> = ({
   url,
@@ -347,7 +348,7 @@ const EventDetail = () => {
         <div className="flex gap-10">
           <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
             <Image
-              src={eventDetails?.eventImage}
+              src={eventDetails?.eventImage ? eventDetails.eventImage : placeholder}
               alt="Event Image"
               fill
               style={{ objectFit: "cover" }}
