@@ -1,5 +1,4 @@
 "use client";
-
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import React, { useState } from "react";
 import DiscoverEvents from "../components/DashboardLayout/DiscoverEvents";
