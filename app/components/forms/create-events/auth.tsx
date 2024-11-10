@@ -8,11 +8,11 @@ const useFetch = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { profile } = useProfile();
+  const profileData = localStorage.setItem("profileData", JSON.stringify(profile?.data?.data?.data));
   
   useEffect(() => {
     const token = localStorage.getItem("token");
     const tokenTimestamp = localStorage.getItem("tokenTimestamp");
-    const profileData = localStorage.setItem("profileData", JSON.stringify(profile?.data?.data?.data));
     const currentTime = Date.now();
 
     const privatePaths = [
@@ -72,7 +72,7 @@ const useFetch = () => {
     };
   }, [pathname, profile, router]);
 
-  return { isLoggedIn, loading };
+  return { isLoggedIn, loading, profileData };
 };
 
 export default useFetch;

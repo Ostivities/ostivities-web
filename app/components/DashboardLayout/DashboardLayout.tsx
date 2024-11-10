@@ -92,14 +92,11 @@ function DashboardLayout({
   const router = useRouter();
   const pathname = usePathname();
 
+
+
   const { profile } = useProfile();
   const { logoutUser } = useLogout();
-  const profileData = localStorage.getItem("profileData");
-  const parsedProfileData = profileData && profileData !== "undefined" && profileData !== "null"
-  ? JSON.parse(profileData)
-  : null;
-  const [profileDetails, setProfileDetails] = useState(parsedProfileData);
-  // console.log(profileDetails, "profileDetails");
+  // const profileData = localStorage.getItem("profileData");
   const [cookies, setCookie, removeCookie] = useCookies([
     "forgot_email",
     "is_registered",
@@ -109,8 +106,12 @@ function DashboardLayout({
     "stage_two",
     "stage_three",
     "user_fullname",
+    "profileData",
   ]);
 
+  // if(profile?.isFetched === true && cookies?.profileData === undefined){
+  //   setCookie("profileData", JSON.stringify(profile?.data?.data?.data));
+  // }
   // const accountType = profile?.data?.data?.data?.accountType
 
   const isRegistered = cookies?.is_registered === "registered";
@@ -148,7 +149,7 @@ function DashboardLayout({
   ];
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useLocalStorage<boolean>("sidebar", true);
-  const { isLoggedIn, loading } = useFetch();
+  const { isLoggedIn, loading, profileData } = useFetch();
   // console.log(isLoggedIn, "isLoggedIn");
   const userProfile = isLoggedIn ? profile : null;
   // console.log(userProfile, "userProfile");
@@ -165,12 +166,11 @@ function DashboardLayout({
   ];
 
   const userName =
-  profileDetails?.accountType === ACCOUNT_TYPE.PERSONAL
-    ? `${profileDetails?.firstName || ""} ${
-        profileDetails?.lastName || ""
-      }`.trim() || ""
-    : profileDetails?.businessName || "";
-
+    accountType === ACCOUNT_TYPE.PERSONAL
+      ? userProfile?.data?.data?.data?.firstName +
+        " " +
+        userProfile?.data?.data?.data?.lastName
+      : userProfile?.data?.data?.data?.businessName || "";
 
   // setCookie("user_fullname", userName)
   const avatarName =
@@ -183,7 +183,7 @@ function DashboardLayout({
             .toUpperCase() || "";
 
   const account_type =
-  profileDetails?.accountType === ACCOUNT_TYPE.PERSONAL ? "User" : "Organisation";
+    accountType === ACCOUNT_TYPE.PERSONAL ? "User" : "Organisation";
   const index = pathname.split("/")[2];
 
   const confirmIndex = endpoints.includes(index);
@@ -261,7 +261,8 @@ function DashboardLayout({
             </a>
           </div>
 
-          {/* {profile?.isFetching === true ? (
+
+          {profile?.isFetching === true ? (
             <>
               <Skeleton.Button
                 active
@@ -273,8 +274,7 @@ function DashboardLayout({
                 }}
               />
             </>
-          ) : */}
-           {!profileDetails && !isLoggedIn ? (
+          ) : profile?.isFetching === false && !isLoggedIn ? (
             <>
               {/* Show NAV_LINKS when user is not logged in */}
               <div className="flex flex-row items-center space-x-8">
@@ -318,7 +318,7 @@ function DashboardLayout({
               </div>
             </>
           ) : (
-            // profile?.isFetching === false &&
+            profile?.isFetching === false &&
             isLoggedIn && (
               <>
                 <Space
@@ -398,7 +398,7 @@ function DashboardLayout({
                   <Dropdown menu={{ items }} trigger={["click", "hover"]}>
                     <div className="flex-center gap-4 cursor-pointer">
                       <Image
-                        src={profileDetails?.image || emptyImage} // Fallback to imported empty image
+                        src={profile?.data?.data?.data?.image || emptyImage} // Fallback to imported empty image
                         alt="Profile Picture"
                         width={40} // Adjust this to match the previous avatar size if needed
                         height={40} // Adjust this to match the previous avatar size if needed
@@ -425,6 +425,7 @@ function DashboardLayout({
               </>
             )
           )}
+
         </Header>
         <Layout>
           <Sider
