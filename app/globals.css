@@ -1,0 +1,1274 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&display=swap'); */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: #ffffff;
+  --background-start-rgb: #ffffff;
+  --background-end-rgb: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: #ffffff;
+    --background-start-rgb: #ffffff;
+    --background-end-rgb: #ffffff;
+  }
+}
+
+@layer base {
+  body {
+    font-family: "Bricolage Grotesque", sans-serif !important;
+    background-color: #f8fafc !important;
+  }
+
+  input {
+    outline: none !important;
+  }
+
+  select,
+  input {
+    cursor: pointer;
+  }
+
+  input:checked {
+    accent-color: #e20000;
+  }
+
+  .ant-btn,
+  .ant-typography,
+  .ant-input {
+    font-family: inherit !important;
+  }
+}
+
+@layer components {
+  .flex-center {
+    @apply flex items-center;
+  }
+
+  .card-shadow {
+    @apply shadow-ticket-card rounded-[0.9375rem] px-5 py-5 flex justify-between items-start;
+  }
+
+  .primary-btn {
+    @apply rounded-full bg-OWANBE_PRY px-24 py-2 text-white hover:!text-white text-xl font-bold;
+  }
+
+  .side-nav-links {
+    /* color: #181515 !important;
+    background-color: #fadede !important;
+    border-left: 5px solid #e20000; */
+    @apply !text-[#181515] !bg-OWANBE_NOTIFICATION !border border-l !border-OWANBE_PRY;
+  }
+} 
+
+@layer base {
+  @font-face {
+    font-family: BricolageGrotesqueLight;
+    src: url("/fonts/BricolageGrotesque-Light.ttf");
+  }
+  @font-face {
+    font-family: BricolageGrotesqueMedium;
+    src: url("/fonts/BricolageGrotesque-Medium.ttf");
+  }
+  @font-face {
+    font-family: BricolageGrotesqueRegular;
+    src: url("/fonts/BricolageGrotesque-Regular.ttf");
+  }
+  @font-face {
+    font-family: BricolageGrotesqueSemiBold;
+    src: url("/fonts/BricolageGrotesque-SemiBold.ttf");
+  }
+  @font-face {
+    font-family: BricolageGrotesqueBold;
+    src: url("/fonts/BricolageGrotesque-Bold-BF648bd57888479.ttf");
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  font-family: BricolageGrotesqueMedium;
+  overflow: hidden;
+}
+
+.button-styles {
+  border-radius: 20px !important;
+  box-shadow: none !important;
+  outline: none !important;
+  font-family: BricolageGrotesqueMedium !important;
+  font-size: 16px;
+  font-weight: 500;
+  width: 120px;
+}
+
+.button-style {
+  border-radius: 20px !important;
+  box-shadow: none !important;
+  outline: none !important;
+  font-family: BricolageGrotesqueMedium !important;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.sign-up {
+  background: #e20000 !important;
+  color: #ffffff !important;
+}
+
+.sign-up:hover,
+.sign-up:focus,
+.sign-up:active {
+  color: #ffffff !important;
+  background: #e20000 !important;
+  outline: #e20000 !important;
+  box-shadow: none !important;
+  border: 0.5px solid #e20000 !important;
+}
+
+.sign-in {
+  border: 1px solid #000000 !important;
+}
+
+.continue,
+.continue:hover,
+.continue:active,
+.continue:focus {
+  border-radius: 20px !important;
+  box-shadow: none !important;
+  outline: none !important;
+  font-family: BricolageGrotesqueMedium !important;
+  font-size: 16px;
+  font-weight: 500;
+  color: #e20000 !important;
+  background: #fadede !important;
+  border: 0.5px solid #fadede !important;
+  outline: #fadede !important;
+  box-shadow: none !important;
+}
+
+.sign-in:hover,
+.sign-in:focus,
+.sign-in:active {
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
+  outline: 1px solid #000000 !important; /* Adjust the value as needed */
+  box-shadow: none !important;
+}
+
+:where(.css-dev-only-do-not-override-1a27wig).ant-drawer .ant-drawer-header {
+  border-bottom: none !important;
+}
+
+:not(.css-dev-only-do-not-override-zcfrx9) a:hover {
+  color: #e20000;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9)[class^="ant-layout"],
+:where(.css-dev-only-do-not-override-zcfrx9)[class*=" ant-layout"] {
+  font-family: BricolageGrotesqueMedium !important;
+}
+
+.get-started {
+  width: 250px !important;
+  background: #19235b !important;
+  padding: 10px !important;
+  height: 60px !important;
+  border-radius: 30px !important;
+  color: #ffffff !important;
+  font-size: 18px !important;
+  font-weight: bold !important;
+  text-transform: capitalize !important;
+  font-family: BricolageGrotesqueMedium !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.coming-soon {
+  background-image: url("/comingsoon.svg");
+  background-repeat: no-repeat;
+  height: 100px;
+  width: 1600px !important;
+  background-size: initial;
+  background-position: center center;
+}
+
+.footer-bottom {
+  border-top: 1px solid
+    linear-gradient(
+      90deg,
+      rgba(22, 22, 22, 0) 0%,
+      #696969 51.56%,
+      rgba(22, 22, 22, 0) 100%
+    );
+  border-image-source: linear-gradient(
+    90deg,
+    rgba(22, 22, 22, 0) 0%,
+    #696969 51.56%,
+    rgba(22, 22, 22, 0) 100%
+  );
+}
+
+.hor-rule::before {
+  content: "";
+  background: linear-gradient(
+    90deg,
+    rgba(22, 22, 22, 0) 0%,
+    #696969 51.56%,
+    rgba(22, 22, 22, 0) 100%
+  );
+  border: 1px solid transparent;
+}
+
+.news-letter {
+  box-shadow: -13.011109352111816px 13.011109352111816px 104.08887481689453px
+    0px #a1a1a11a !important;
+  font-family: BricolageGrotesqueMedium !important;
+}
+
+.news-letter-input {
+  font-family: BricolageGrotesqueMedium !important;
+}
+
+.card-div {
+  position: absolute;
+  top: -1%;
+  left: 45%;
+}
+
+.ant-drawer-content-wrapper {
+  width: 100% !important;
+}
+
+.ant-drawer-header {
+  border-bottom: none !important;
+}
+
+.auth-background {
+  background-image: url(/Topology-2.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto;
+  background-position-x: 36%;
+  background-position-y: -15%;
+}
+
+.auth-background-light {
+  background-image: url(/Topologylight.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto;
+  background-position-x: 36%;
+  background-position-y: -15%;
+}
+
+.side-nav > .ant-menu-item-selected {
+  color: #181515 !important;
+  background-color: #fadede !important;
+  border-left: 5px solid #e20000;
+  border-radius: 0px !important;
+  border-top-right-radius: 1.25rem !important ;
+  border-bottom-right-radius: 1.25rem !important ;
+}
+
+.collapsed-side-nav > .ant-menu-item-selected {
+  color: white !important;
+  background-color: #e20000 !important;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-select-single {
+  font-size: 14px !important;
+  height: 41px !important;
+  border-radius: 15px !important;
+  font-family: BricolageGrotesqueMedium !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-select-single:not(
+    .ant-select-customize-input
+  )
+  .ant-select-selector {
+  border-radius: 15px !important;
+  font-family: BricolageGrotesqueMedium !important;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 0px 20px !important;
+  height: 41px !important;
+  border: 1px solid #d0d4d4 !important;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-form-vertical
+  .ant-form-item-label,
+:where(.css-dev-only-do-not-override-zcfrx9).ant-col-24.ant-form-item-label,
+:where(.css-dev-only-do-not-override-zcfrx9).ant-col-xl-24.ant-form-item-label {
+  font-family: BricolageGrotesqueRegular !important;
+  font-weight: 400 !important;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-input {
+  border-radius: 15px !important;
+  height: 41px !important;
+  border: 1px solid #d0d4d4 !important;
+  font-family: BricolageGrotesqueRegular !important;
+  padding: 0px 20px !important;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-input:focus,
+:where(.css-dev-only-do-not-override-zcfrx9).ant-input:focus-within {
+  box-shadow: none !important;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-input-affix-wrapper {
+  border-radius: 15px !important;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-input-affix-wrapper
+  > input.ant-input {
+  border: none !important;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-form-item
+  .ant-form-item-control-input-content {
+  height: 41px !important;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-input-affix-wrapper {
+  padding: 0px 10px !important;
+  height: 44px !important;
+}
+
+/* :where(.css-dev-only-do-not-override-zcfrx9).ant-input-affix-wrapper
+  > input.ant-input:focus {
+  box-shadow: none !important;
+  outline: none !important;
+  border: 1px solid #d0d4d4 !important;
+} */
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-form-item
+  .ant-form-item-label
+  > label.ant-form-item-required:not(
+    .ant-form-item-required-mark-optional
+  )::before {
+  content: "" !important;
+}
+
+:where(.css-zcfrx9).ant-select-single {
+  font-size: 14px;
+  height: 41px !important;
+}
+
+:where(.css-zcfrx9).ant-select-single:not(.ant-select-customize-input)
+  .ant-select-selector {
+  width: 100%;
+  height: 100%;
+  padding: 0 16px !important;
+  border-radius: 15px !important;
+}
+
+:where(.css-zcfrx9).ant-input {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 4px 11px;
+  color: rgba(0, 0, 0, 0.88);
+  font-size: 14px;
+  line-height: 1.5714285714285714;
+  list-style: none;
+  font-family: BricolageGrotesqueRegular !important;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  min-width: 0;
+  background-color: #ffffff;
+  background-image: none;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d0d4d4;
+  border: 1px solid #d0d4d4;
+  border-radius: 20px !important;
+  height: 44px !important;
+  transition: all 0.2s;
+}
+
+:where(.css-zcfrx9).ant-input-affix-wrapper {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+  min-width: 0;
+  padding: 0px 14px !important;
+  color: rgba(0, 0, 0, 0.88);
+  font-size: 14px;
+  line-height: 1.5714285714285714;
+  background-color: #ffffff;
+  background-image: none;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d0d4d4;
+  border-radius: 20px !important;
+  border: 1px solid #d0d4d4;
+  transition: all 0.2s;
+  height: 47px !important;
+  text-align: center;
+  font-family: BricolageGrotesqueRegular !important;
+}
+
+:where(.css-zcfrx9).ant-form-item .ant-form-item-label {
+  flex-grow: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  /* text-align: end; */
+  vertical-align: middle;
+  font-family: "BricolageGrotesqueRegular";
+}
+
+:where(.css-zcfrx9).ant-form-item
+  .ant-form-item-label
+  > label.ant-form-item-required:not(
+    .ant-form-item-required-mark-optional
+  )::before {
+  display: inline-block;
+  margin-inline-end: 4px;
+  color: #ff4d4f;
+  font-size: 14px;
+  font-family: SimSun, sans-serif;
+  line-height: 1;
+  content: "" !important;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-switch.ant-switch-checked {
+  background: #e20000;
+}
+
+:where(.css-zcfrx9).ant-input:focus,
+:where(.css-zcfrx9).ant-input:focus-within {
+  border: 1px solid #d0d4d4;
+  border-color: #d0d4d4;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+:where(.css-zcfrx9).ant-switch .ant-switch-inner {
+  display: block;
+  overflow: hidden;
+  border-radius: 100px;
+  height: 100%;
+  padding-inline-start: 24px;
+  padding-inline-end: 9px;
+  transition: padding-inline-start 0.2s ease-in-out,
+    padding-inline-end 0.2s ease-in-out;
+  background: #e20000;
+}
+
+:where(.css-zcfrx9).ant-btn-primary,
+:where(.css-zcfrx9).ant-btn {
+  box-shadow: none !important;
+  font-family: "BricolageGrotesqueMedium" !important;
+}
+
+:where(.css-zcfrx9).ant-input:hover,
+:where(.css-zcfrx9).ant-input-affix-wrapper:hover,
+:where(.css-zcfrx9).ant-input-affix-wrapper:focus,
+:where(.css-zcfrx9).ant-input-affix-wrapper:focus-within {
+  border-color: #d0d4d4 !important;
+  box-shadow: none !important;
+}
+
+:where(.css-zcfrx9).ant-input:focus,
+:where(.css-zcfrx9).ant-input:focus-within {
+  border-color: #d0d4d4 !important;
+}
+
+:where(.css-zcfrx9).ant-menu-inline.ant-menu-root
+  .ant-menu-item
+  > .ant-menu-title-content,
+:where(.css-zcfrx9).ant-menu-inline.ant-menu-root
+  .ant-menu-submenu-title
+  > .ant-menu-title-content {
+  font-family: "BricolageGrotesqueMedium" !important;
+}
+
+:where(.css-zcfrx9).ant-menu .ant-menu-item .ant-menu-item-icon + span,
+:where(.css-zcfrx9).ant-menu .ant-menu-submenu-title .ant-menu-item-icon + span,
+:where(.css-zcfrx9).ant-menu .ant-menu-item .anticon + span,
+:where(.css-zcfrx9).ant-menu .ant-menu-submenu-title .anticon + span {
+  font-family: "BricolageGrotesqueRegular" !important;
+}
+
+:where(.css-zcfrx9).ant-menu-light:not(.ant-menu-horizontal)
+  .ant-menu-item:not(.ant-menu-item-selected):hover,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu:not(.ant-menu-horizontal)
+  .ant-menu-item:not(.ant-menu-item-selected):hover {
+  font-family: "BricolageGrotesqueMedium" !important;
+}
+
+:where(.css-zcfrx9).ant-menu-light
+  .ant-menu-item:not(.ant-menu-item-selected):not(
+    .ant-menu-submenu-selected
+  ):hover,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu
+  .ant-menu-item:not(.ant-menu-item-selected):not(
+    .ant-menu-submenu-selected
+  ):hover,
+:where(.css-zcfrx9).ant-menu-light
+  .ant-menu-item:not(.ant-menu-item-selected):not(.ant-menu-submenu-selected)
+  > .ant-menu-submenu-title:hover,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu
+  .ant-menu-item:not(.ant-menu-item-selected):not(.ant-menu-submenu-selected)
+  > .ant-menu-submenu-title:hover {
+  font-family: "BricolageGrotesqueMedium" !important;
+}
+
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-item-selected,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-item-selected,
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-submenu-selected,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-submenu-selected {
+  color: #081521 !important;
+  background-color: transparent;
+  font-family: "BricolageGrotesqueMedium" !important;
+  font-weight: 600;
+}
+
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal > .ant-menu-item,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-item,
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal > .ant-menu-submenu,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-submenu {
+  font-family: "BricolageGrotesqueMedium" !important;
+  font-weight: 600;
+  color: #081521 !important;
+}
+
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-item-selected::after,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-item-selected::after,
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-submenu-selected::after,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-submenu-selected::after {
+  border-bottom-color: #e20000 !important;
+}
+
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-item-selected::after,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-item-selected::after,
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-submenu-selected::after,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-submenu-selected::after {
+  border-bottom-width: 6px !important;
+  border-bottom-color: #e20000 !important;
+  border-radius: 4px 4px 0px 0px !important;
+}
+
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-item:hover::after,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-item:hover::after,
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-submenu:hover::after,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-submenu:hover::after,
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-item-active::after,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-item-active::after,
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-submenu-active::after,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-submenu-active::after,
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-item-open::after,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-item-open::after,
+:where(.css-zcfrx9).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-submenu-open::after,
+:where(.css-zcfrx9).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-submenu-open::after {
+  border-bottom-width: 6px !important;
+  border-bottom-color: #e20000 !important;
+  border-radius: 4px 4px 0px 0px !important;
+}
+
+.upload-button {
+  height: 44px !important;
+}
+
+:where(.css-zcfrx9).ant-btn-compact-item:not(
+    .ant-btn-compact-first-item
+  ).ant-btn-compact-last-item,
+:where(.css-zcfrx9).ant-btn-compact-item:not(
+    .ant-btn-compact-first-item
+  ).ant-btn-compact-last-item.ant-btn-sm,
+:where(.css-zcfrx9).ant-btn-compact-item:not(
+    .ant-btn-compact-first-item
+  ).ant-btn-compact-last-item.ant-btn-lg {
+  height: 44px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.ant-radio-wrapper {
+  font-family: "BricolageGrotesqueRegular" !important;
+  color: #000000;
+  font-weight: 400;
+}
+
+.ant-picker {
+  border-radius: 20px !important;
+  height: 41px !important;
+  border-color: #d0d4d4 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.ticket-category {
+  box-shadow: 0px 8px 24px 0px rgba(0, 0, 0, 0.14);
+  background: linear-gradient(0deg, #ffffff, #ffffff);
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.ticket-category > div > h5 {
+  color: #000000;
+  font-family: "BricolageGrotesqueSemiBold" !important;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.ticket-category > div > p {
+  color: #000000;
+  font-family: "BricolageGrotesqueRegular" !important;
+  font-weight: 400;
+  font-size: 17px;
+}
+
+.ticket-category:hover,
+.ticket-category:active,
+.ticket-category:focus,
+.ticket-category:focus-within {
+  border: 1px solid #e20000;
+  background: linear-gradient(0deg, #ffffff, #ffffff);
+  border-radius: 20px;
+  transition: ease-in-out 0.15s;
+}
+
+.ticket-category:hover > div > h5,
+.ticket-category:hover > div > p,
+.ticket-category:active > div > p,
+.ticket-category:active > div > h5 {
+  color: #e20000;
+}
+
+.ticket-title {
+  color: #e20000;
+  font-family: "BricolageGrotesqueSemiBold" !important;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.ticket-subtitle {
+  color: #e20000;
+  font-family: "BricolageGrotesqueRegular" !important;
+  font-weight: 400;
+  font-size: 17px;
+}
+
+.ticket-title:hover {
+  color: #e20000;
+  font-family: "BricolageGrotesqueSemiBold" !important;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.ticket-subtitle:hover {
+  color: #e20000;
+  font-family: "BricolageGrotesqueRegular" !important;
+  font-weight: 400;
+  font-size: 17px;
+}
+
+.ant-table-cell {
+  font-family: "BricolageGrotesqueRegular" !important;
+  color: #333333 !important;
+  font-size: 14px !important;
+}
+
+.event-poster {
+  background-image: url(/card.png);
+  background-repeat: no-repeat;
+}
+
+.image-bg {
+  background: linear-gradient(180deg, rgba(13, 37, 60, 0) 51.56%, #0d253c 100%);
+}
+
+/* .ant-steps-item-container {
+  width: 400px;
+} */
+
+.custom-upload-button {
+  border-color: #d0d4d4 !important;
+  color: #010101 !important;
+}
+
+.custom-upload-button:hover {
+  border-color: #e20000 !important;
+  color: #e20000 !important;
+}
+
+/* Override Ant Design primary and related colors */
+.ant-btn-primary,
+.ant-btn-primary:not(.ant-btn-background-ghost):not(
+    .ant-btn-background-ghost-hover
+  ),
+.ant-btn-primary:focus,
+.ant-btn-primary:hover,
+.ant-btn-primary:active,
+.ant-btn-primary.active,
+.ant-btn-primary.disabled,
+.ant-btn-primary[disabled],
+.ant-btn-primary.disabled:hover,
+.ant-btn-primary[disabled]:hover,
+.ant-btn-primary.disabled:focus,
+.ant-btn-primary[disabled]:focus,
+.ant-btn-primary.disabled:active,
+.ant-btn-primary[disabled]:active,
+.ant-btn-primary-disabled,
+.ant-btn-primary-disabled:hover,
+.ant-btn-primary-disabled:focus,
+.ant-btn-primary-disabled:active,
+.ant-btn-primary-disabled.active,
+.ant-btn-primary-disabled.disabled,
+.ant-btn-primary-disabled[disabled] {
+  background-color: #e20000;
+  border-color: #e20000;
+  color: #fff;
+}
+
+.ant-btn-primary:hover,
+.ant-btn-primary:focus,
+.ant-btn-primary:active,
+.ant-btn-primary.active {
+  background-color: #e20000;
+  border-color: #e20000;
+}
+
+.ant-btn-background-ghost:not(.ant-btn-primary):hover,
+.ant-btn-background-ghost:not(.ant-btn-primary):focus,
+.ant-btn-background-ghost:not(.ant-btn-primary):active,
+.ant-btn-background-ghost:not(.ant-btn-primary).active,
+.ant-btn-background-ghost:not(.ant-btn-primary).disabled,
+.ant-btn-background-ghost:not(.ant-btn-primary)[disabled] {
+  border-color: #e20000;
+}
+
+.ant-radio-checked .ant-radio-inner,
+.ant-radio-checked .ant-radio-input:focus + .ant-radio-inner,
+.ant-radio-checked .ant-radio-inner:hover,
+.ant-radio-checked:hover .ant-radio-inner,
+.ant-radio-checked:focus .ant-radio-inner {
+  border-color: #e20000;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner,
+.ant-checkbox-checked .ant-checkbox-inner:hover {
+  background-color: #e20000;
+  border-color: #e20000;
+}
+
+.ant-switch-checked .ant-switch-handle:before {
+  background-color: #e20000;
+}
+
+.ant-tag,
+.ant-tag-checkable {
+  color: #e20000;
+  border-color: #e20000;
+}
+
+.ant-tag-checkable-checked {
+  background-color: #e20000;
+}
+
+.ant-menu-item-selected,
+.ant-menu-item-active,
+.ant-menu-submenu-popup.ant-menu-submenu-open,
+.ant-menu-submenu-popup.ant-menu-submenu-active,
+.ant-menu-submenu-selected,
+.ant-menu-submenu-active,
+.ant-menu-submenu-title:hover {
+  background-color: #e20000;
+}
+
+.ant-menu-dark .ant-menu-item-selected {
+  background-color: #e20000;
+}
+
+.ant-menu-dark .ant-menu-item:hover {
+  color: #e20000;
+}
+
+.ant-layout-sider-dark .ant-menu-dark .ant-menu-item:hover {
+  color: #e20000;
+}
+
+.ant-tabs-ink-bar {
+  background-color: #e20000;
+}
+
+.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #e20000;
+}
+
+.ant-select-focused .ant-select-selector {
+  border-color: #e20000;
+  box-shadow: 0 0 0 2px rgba(226, 0, 0, 0.2);
+}
+
+.ant-slider-handle:focus,
+.ant-slider-handle:hover,
+.ant-slider-handle-click-focused,
+.ant-slider-handle-click-hover,
+.ant-slider-mark-text-active,
+.ant-slider-mark-text {
+  border-color: #e20000;
+}
+
+.ant-input:focus,
+.ant-input:hover,
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper:hover {
+  border-color: #e20000;
+}
+
+.ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.ant-checkbox:hover .ant-checkbox-inner,
+.ant-checkbox-input:focus + .ant-checkbox-inner,
+.ant-checkbox-checked .ant-checkbox-inner {
+  border-color: #e20000;
+}
+
+.ant-radio-wrapper:hover .ant-radio-inner,
+.ant-radio:hover .ant-radio-inner,
+.ant-radio-input:focus + .ant-radio-inner,
+.ant-radio-checked .ant-radio-inner {
+  border-color: #e20000;
+}
+
+.ant-picker-input > input:focus,
+.ant-picker-input > input:hover {
+  border-color: #e20000;
+}
+
+.ant-calendar-picker:hover .ant-calendar-picker-input {
+  border-color: #e20000;
+}
+
+.ant-calendar-picker:focus .ant-calendar-picker-input {
+  border-color: #e20000;
+}
+
+.ant-cascader-picker:focus .ant-input,
+.ant-cascader-picker:hover .ant-input {
+  border-color: #e20000;
+}
+
+.ant-calendar-selected-day .ant-calendar-date {
+  background: #e20000;
+}
+
+.ant-calendar-selected-date .ant-calendar-date {
+  background: #e20000;
+}
+
+.ant-calendar-today .ant-calendar-date {
+  border-color: #e20000;
+}
+
+.ant-calendar-selected-date .ant-calendar-date:hover,
+.ant-calendar-today .ant-calendar-date:hover {
+  background: #e20000;
+}
+
+.ant-pagination-item-active a,
+.ant-pagination-item-active a:hover,
+.ant-pagination-item-active:focus a,
+.ant-pagination-item-active:focus a:hover {
+  color: #e20000;
+  border-color: #e20000;
+}
+
+.ant-pagination-item:hover a,
+.ant-pagination-item:hover a:hover,
+.ant-pagination-item:focus a,
+.ant-pagination-item:focus a:hover {
+  border-color: #e20000;
+}
+
+.ant-pagination-item-link:focus,
+.ant-pagination-item-link:hover {
+  border-color: #e20000;
+}
+
+.ant-page-header-heading-title {
+  color: #e20000;
+}
+
+.ant-form-item-explain-error {
+  color: #e20000;
+}
+
+.ant-picker-panel-container .ant-picker-today-btn {
+  color: #e20000;
+}
+
+.ant-picker-cell-selected .ant-picker-cell-inner,
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner {
+  background-color: #e20000;
+}
+
+/* global.css */
+.custom-heading {
+  color: #e20000 !important;
+  font-size: 52px !important;
+}
+
+.welcome-heading {
+  color: #000000 !important;
+  font-size: 52px !important;
+  font-weight: normal !important;
+}
+
+input,
+.ant-input,
+.ant-select,
+.ant-picker,
+.ant-radio,
+.ant-input-textarea,
+.ant-upload {
+  border-radius: 5px !important;
+}
+.input-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-label {
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.input-field {
+  height: 40px; /* Adjust the height as needed */
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+.custom-button {
+  background-color: #e20000 !important;
+  color: white !important;
+  border: none !important;
+}
+
+.custom-button:hover {
+  background-color: #e20000 !important;
+  color: white !important;
+  border: none !important;
+}
+.equal-width-button {
+  width: 174px; /* Adjust the width as needed */
+}
+.optional-text {
+  color: #e20000;
+}
+.bold-text {
+  font-weight: 600;
+}
+:root {
+  --default-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Ubuntu, "Helvetica Neue", Helvetica, Arial, "PingFang SC",
+    "Hiragino Sans GB", "Microsoft Yahei UI", "Microsoft Yahei",
+    "Source Han Sans CN", sans-serif;
+}
+
+.main-container {
+  overflow: hidden;
+}
+
+.main-container,
+.main-container * {
+  box-sizing: border-box;
+}
+
+input,
+select,
+textarea,
+button {
+  outline: 0;
+}
+
+.main-container {
+  position: relative;
+  width: 1538px;
+  height: 72px;
+  margin: 0 auto;
+}
+.rectangle {
+  position: absolute;
+  width: 1538px;
+  height: 72px;
+  top: 0;
+  left: 0;
+  background: #ffffff;
+  z-index: 1;
+}
+.flex-row-aa {
+  position: relative;
+  width: 1443px;
+  height: 53px;
+  margin: 18px 0 0 48px;
+  z-index: 5;
+}
+.event-creation {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: absolute;
+  height: 36px;
+  top: 0;
+  left: 0;
+  color: #000000;
+  font-family: Bricolage Grotesque, var(--default-font-family);
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 36px;
+  text-align: left;
+  white-space: nowrap;
+  letter-spacing: 0.6px;
+  z-index: 4;
+}
+.frame {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  gap: 24px;
+  position: absolute;
+  width: 217px;
+  height: 35px;
+  top: 18px;
+  right: 0;
+  z-index: 5;
+}
+.frame-1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  gap: 12px;
+  position: relative;
+  width: 93px;
+  z-index: 6;
+}
+.create-event {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  flex-basis: auto;
+  position: relative;
+  width: 93px;
+  height: 17px;
+  color: #071420;
+  font-family: Bricolage Grotesque, var(--default-font-family);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16.8px;
+  text-align: center;
+  white-space: nowrap;
+  letter-spacing: 0.56px;
+  z-index: 7;
+}
+.rectangle-2 {
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+  height: 6px;
+  background: #e20000;
+  z-index: 8;
+  border-radius: 4px 4px 0 0;
+}
+.frame-3 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  gap: 12px;
+  position: relative;
+  width: 100px;
+  height: 35px;
+  z-index: 9;
+}
+.event-created {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  flex-basis: auto;
+  position: relative;
+  width: 100px;
+  height: 17px;
+  color: #a6abaf;
+  font-family: Bricolage Grotesque, var(--default-font-family);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16.8px;
+  text-align: center;
+  white-space: nowrap;
+  letter-spacing: 0.56px;
+  z-index: 10;
+}
+.rectangle-4 {
+  position: relative;
+  width: 1538px;
+  height: 1px;
+  margin: 0 0 0 0;
+  background: #e9eaeb;
+  z-index: 2;
+}
+/* styles/custom-checkbox.css */
+.custom-checkbox .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #e20000;
+  border-color: #e20000;
+}
+.custom-checkbox .ant-checkbox-checked::after {
+  border-color: #e20000;
+}
+.policy-link {
+  color: #e20000;
+  margin: 0 5px; /* Add margin to create space between the links */
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-label input[type="checkbox"] {
+  margin-right: 8px; /* Adjust the spacing as needed */
+}
+
+.label-no-content::after {
+  content: "" !important;
+}
+
+.ant-form-item-label > label::after {
+  content: "" !important;
+}
+.ant-form-item-label > label::before {
+  content: "" !important;
+}
+
+.ql-container {
+  min-height: 10em;
+  border-bottom-left-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+  background: #fefcfc;
+}
+
+.ql-toolbar {
+  background: #ffffff;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border-bottom: none;
+  border: none;
+  box-shadow: 0px 2px 5px 0px #00000014;
+}
+.profile-image-container {
+  border: 1px solid #7b7b7b; /* Change the color and width of the border as needed */
+  padding: 2px; /* Add some padding inside the border */
+  border-radius: 50%; /* Ensure the border is circular */
+  width: fit-content; /* Ensure the container size fits the image */
+  height: fit-content; /* Ensure the container size fits the image */
+}
+/* In your global CSS file, or within a CSS module */
+.info-card {
+  font-family: 'Bricolage Grotesque', sans-serif;
+}
+
+.info-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: bold; /* Adjust as needed */
+}
+
+.info-about,
+.info-status {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-weight: normal; /* Adjust as needed */
+}
+
+form label,
+form input,
+form select,
+form textarea,
+form .ant-form-item-explain, /* For Ant Design form validation messages */
+form .error-message {
+    font-family: 'Bricolage GrotesqueRegular', sans-serif;
+}
+.custom-font-size {
+  font-size: 16px;
+}
+
+/* Slim scrollbar with custom color */
+::-webkit-scrollbar {
+  width: 8px; /* Adjust the width to make it slimmer */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Optional: Track color */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #e20000; /* Scrollbar color */
+  border-radius: 25px; /* Rounded scrollbar ends */
+}

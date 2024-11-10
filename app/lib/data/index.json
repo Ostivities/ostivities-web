@@ -1,0 +1,41 @@
+{
+  "settingsData": [
+    {
+      "staffName": "Rose",
+      "designation": "Social Manager",
+      "dateAssigned": "21-Oct-2023, 10:04am"
+    },
+    {
+      "staffName": "Onome",
+      "designation": "Media Manager",
+      "dateAssigned": "21-Oct-2023, 10:04am"
+    },
+    {
+      "staffName": "Onome Roe",
+      "designation": "Social Media Manager",
+      "dateAssigned": "21-Oct-2023, 10:04am"
+    },
+    {
+      "staffName": "ORose",
+      "designation": "Social Media Manager",
+      "dateAssigned": "21-Oct-2023, 10:04am"
+    },
+    {
+      "staffName": "Ome Roe",
+      "designation": "Social Media Manager",
+      "dateAssigned": "21-Oct-2023, 10:04am"
+    }
+  ],
+  "billingData": [
+    {
+      "invoiceAmount": "₦50,000.00",
+      "invoiceId": "3335566",
+      "invoiceDate": "21-Oct-2023, 10:04am"
+    },
+    {
+      "invoiceAmount": "₦100,000.00",
+      "invoiceId": "5564466",
+      "invoiceDate": "21-Oct-2023, 10:04am"
+    }
+  ]
+}
