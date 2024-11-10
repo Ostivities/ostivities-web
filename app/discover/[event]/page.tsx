@@ -349,7 +349,7 @@ const EventDetail = () => {
         <meta property="og:title" content={eventDetails?.eventName} />
         <meta property="og:description" content={eventDetails?.eventDetails} />
         <meta property="og:image" content={eventDetails?.eventImage} />
-        <meta property="og:url" content={`https://ostivities.com/discover/${eventUrl}`} />
+        <meta property="og:url" content={`https://ostivities.com/discover/${params?.event}`} />
         <meta property="og:type" content="website" />
       </Head>
 
