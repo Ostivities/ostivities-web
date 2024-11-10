@@ -48,8 +48,8 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
         ticket_type: "VIP",
         event_name: "Ostivities Fest 2024",
         qr_code: "https://example.com/qrcode123456",
-        ostivities_logo: "https://example.com/owanbe-logo.png",
-        ticket_banner: "https://example.com/owanbe-banner.png"
+        ostivities_logo: "../../public/owanbe.svg",
+        ticket_banner: "../../public/owanbe.svg"
       },
       {
         order_number: "789012",
@@ -61,8 +61,8 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
         ticket_type: "GA",
         event_name: "Ostivities Concert Night",
         qr_code: "https://example.com/qrcode789012",
-        ostivities_logo: "https://example.com/ostivities-logo.png",
-        ticket_banner: "https://example.com/ticket-banner.png"
+        ostivities_logo: "../../public/owanbe.svg",
+        ticket_banner: "../../public/owanbe.svg"
       },
       {
         order_number: "345678",
@@ -74,8 +74,8 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
         ticket_type: "Early Bird",
         event_name: "Ostivities Winter Gala",
         qr_code: "https://example.com/qrcode345678",
-        ostivities_logo: "https://example.com/ostivities-logo.png",
-        ticket_banner: "https://example.com/ticket-banner.png"
+        ostivities_logo: "../../public/owanbe.svg",
+        ticket_banner: "../../public/owanbe.svg"
       }
     ],
     order_number: "345678",  
