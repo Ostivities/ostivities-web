@@ -149,7 +149,7 @@ function DashboardLayout({
   ];
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useLocalStorage<boolean>("sidebar", true);
-  const { isLoggedIn, loading, profileData } = useFetch();
+  const { isLoggedIn, loading } = useFetch();
   // console.log(isLoggedIn, "isLoggedIn");
   const userProfile = isLoggedIn ? profile : null;
   // console.log(userProfile, "userProfile");
