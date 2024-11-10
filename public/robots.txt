@@ -8,7 +8,6 @@ Disallow: /discover/event-not-found
 Disallow: /discover/events-created
 Disallow: /discover/payment
 Disallow: /discover/settings/discovery
-Disallow: /discover
 Disallow: /discover/settings
 Disallow: /discover/vendorspayment
 Disallow: /discover/vendorsregistration
