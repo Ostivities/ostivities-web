@@ -326,7 +326,7 @@ const EventDetail = () => {
         <div className="flex gap-10">
           <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
             <Image
-              src={eventDetails?.eventImage ? eventDetails.eventImage : placeholder}
+              src={eventDetails?.eventImage}
               alt="Event Image"
               fill
               style={{ objectFit: "cover" }}

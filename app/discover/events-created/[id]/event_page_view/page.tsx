@@ -13,7 +13,6 @@ import { useCookies } from "react-cookie";
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import ReadMoreHTML from "@/app/components/ReadMoreHTML";
-import placeholder from "@/public/placeholder.svg";
 
 
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
@@ -133,7 +132,7 @@ const EventPageView = () => {
           <Paragraph
             className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
             content={
-              "Update your event image here by clicking the camera icon (File size should not be more than 10MB)."
+              "Update your event image here by clicking the camera icon (File size should not be more than 10MB)." 
             }
             styles={{ fontWeight: "normal !important" }}
           /><br />
@@ -141,7 +140,7 @@ const EventPageView = () => {
         <div className="flex gap-12">
           <div className="relative w-[390px] h-[520px] rounded-[3.125rem] overflow-hidden">
             <Image
-              src={eventDetails?.eventImage ? eventDetails.eventImage : placeholder}
+              src={eventDetails?.eventImage || imageUrl}
               alt="Event Image"
               fill
               style={{ objectFit: "cover" }}
@@ -264,7 +263,7 @@ const EventPageView = () => {
                       fontFamily: "'Bricolage Grotesque', sans-serif",
                     }}
                   >
-                    {eventDetails?.address}
+                      {eventDetails?.address}
                   </div>
                 </div>
               </div>
@@ -381,16 +380,16 @@ const EventPageView = () => {
               </div>
             </div>
             <ReadMoreHTML htmlContent={eventDetails?.eventDetails || ""} maxLength={500} />
-
+            
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.7465438415493!2d3.427544374805034!3d6.426600593564447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bf5402368b913%3A0xca22600eeec46d00!2sEko%20Hotel%20And%20Suites!5e0!3m2!1sen!2sus!4v1730907605084!5m2!1sen!2sus"
-              width="100%"
-              height="120"
-              style={{ border: 0, marginTop: "20px" }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.7465438415493!2d3.427544374805034!3d6.426600593564447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bf5402368b913%3A0xca22600eeec46d00!2sEko%20Hotel%20And%20Suites!5e0!3m2!1sen!2sus!4v1730907605084!5m2!1sen!2sus"
+                  width="100%"
+                  height="120"
+                  style={{ border: 0, marginTop: "20px" }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+            
             <div className="flex justify-center mt-12">
             </div>
           </div>

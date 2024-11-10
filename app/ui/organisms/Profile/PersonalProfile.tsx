@@ -132,7 +132,6 @@ const PersonalProfile = () => {
         successFormatter(response);
         setSaveLoader(false);
         profile.refetch();
-        localStorage.setItem('profileData', JSON.stringify(profile?.data?.data?.data));
       }
     }
   };

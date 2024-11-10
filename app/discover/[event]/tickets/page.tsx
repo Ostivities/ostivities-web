@@ -505,7 +505,7 @@ const TicketsSelection = () => {
 
   const [loading, setLoading] = useState(false);
   const onFinish: FormProps<any>["onFinish"] = async (values: any) => {
-    // console.log(values);
+    console.log(values);
     const validateFields = await form.validateFields();
     if (!validateFields) {
       console.log("Form is not valid");
@@ -555,6 +555,11 @@ const TicketsSelection = () => {
         ticket_type: ticket?.ticketEntity,
       };
     });
+    // console.log(
+    //   attendees_information,
+    //   personal_information,
+    //   ticket_information
+    // );
 
     const updatedInfo = {
       ...allInfo,
@@ -629,8 +634,8 @@ const TicketsSelection = () => {
     });
 
     if (response.status === 200) {
-      setLoading(false);
       setSuccessModal(true);
+      setLoading(false);
     }
   };
 
@@ -654,11 +659,11 @@ const TicketsSelection = () => {
     }
   }, [currentPage, form.getFieldsValue()]);
 
-  // const handleSubmitForm = () => {
-  //   if (isFormValid === true) {
-
-  //   } else return;
-  // };
+  const handleSubmitForm = () => {
+    if (isFormValid === true) {
+      onFinish(form.getFieldsValue());
+    } else return;
+  };
 
   const handleButtonClick = () => {
     if (currentPage === "tickets") {
@@ -669,11 +674,11 @@ const TicketsSelection = () => {
     } else if (currentPage === "contactform") {
       // Check if the form is valid
       if (isFormValid) {
-        onFinish(form.getFieldsValue()); // Proceed to payment or next step
-      } else return;
+        handleSubmitForm(); // Proceed to payment or next step
+      }
     } else if (currentPage === "payment") {
       handleFinalSubmit();
-      // setSuccessModal(true);
+      setSuccessModal(true);
     }
   };
 
@@ -1755,9 +1760,6 @@ const TicketsSelection = () => {
                 </Checkbox>
               </div>
             </div>
-            {successModal && (
-              <PaymentSuccessModal data={eventDetails?.user?.firstName} />
-            )}
           </section>
         )}
         {/* Summary Section with Correct Props */}

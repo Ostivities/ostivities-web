@@ -17,7 +17,6 @@ import Link from "next/link";
 import { PUBLISH_TYPE } from "@/app/utils/enums";
 import useFetch from "@/app/components/forms/create-events/auth";
 import ReadMoreHTML from "@/app/components/ReadMoreHTML";
-import placeholder from "@/public/placeholder.svg";
 
 export default function PublishEvent(): JSX.Element {
   // const { isLoggedIn } = useFetch();
@@ -115,7 +114,7 @@ export default function PublishEvent(): JSX.Element {
           <div className="flex gap-12">
             <div className="relative w-[400px] h-[550px] rounded-[3.125rem] overflow-hidden">
               <Image
-                src={eventDetails?.eventImage ? eventDetails.eventImage : placeholder}
+                src={eventDetails?.eventImage || imageUrl}
                 alt="Event Image"
                 fill
                 style={{ objectFit: "cover" }}

@@ -14,22 +14,17 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import React, { useState } from "react";
 import * as XLSX from "xlsx";
-import { useGetEventGuests } from "@/app/hooks/guest/guest.hook";
-import { useParams } from "next/navigation";
 
 const { Search } = Input;
 
 const EventsGuestList = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const params = useParams<{ id: string }>();
   const [pageSize, setPageSize] = useState(10);
   const [searchText, setSearchText] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalData, setModalData] = useState<any>({});
-  const { getEventGuests } = useGetEventGuests(params?.id, params?.id);
 
-  console.log(getEventGuests);
   const data: SalesDataType[] = Array.from({ length: 50 }, (_, index) => ({
     key: `${index + 1}`,
     eventName: getRandomEventName(),

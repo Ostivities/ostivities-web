@@ -240,9 +240,9 @@ export class API_SERVICE {
     });
   }
 
-  static async _getEventGuests(eventId: string, eventid: string): Promise<AxiosResponse> {
+  static async _getEventGuests(id: string): Promise<AxiosResponse> {
     return await instance({
-      url: `/guest/event/${eventId}`,
+      url: `/guest/event/${id}`,
       method: HttpMethod.GET,
     });
   }
