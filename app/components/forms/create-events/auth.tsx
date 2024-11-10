@@ -8,7 +8,7 @@ const useFetch = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { profile } = useProfile();
-  const profileData = localStorage.setItem("profileData", JSON.stringify(profile?.data?.data?.data));
+  // const profileData = localStorage.setItem("profileData", JSON.stringify(profile?.data?.data?.data));
   
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -72,7 +72,7 @@ const useFetch = () => {
     };
   }, [pathname, profile, router]);
 
-  return { isLoggedIn, loading, profileData };
+  return { isLoggedIn, loading };
 };
 
 export default useFetch;
