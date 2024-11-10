@@ -93,6 +93,7 @@ function EventDetailsEdit(): JSX.Element {
   const [showRadio, setShowRadio] = useState(false);
   const [vendorRegRadio, setVendorRegRadio] = useState(false);
   const [editorContent, setEditorContent] = useState("");
+  const [editorError, setEditorError] = useState("");
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
@@ -304,6 +305,14 @@ function EventDetailsEdit(): JSX.Element {
       eventURL,
       ...rest
     } = data;
+
+    if (editorContent === "" || editorContent === "<p><br></p>") {
+      setEditorError("Please provide event details"); // Set error state
+      return; // Prevent form submission if no content
+    } else {
+      setEditorError(""); // Clear error if content is valid
+    }
+
     try {
       if (
         (facebookUrl && !facebookUrl.startsWith("https://")) ||
@@ -458,8 +467,8 @@ function EventDetailsEdit(): JSX.Element {
               styles={{ fontWeight: "bold !important" }}
             />
             <div
-              className="mb-9 pb-16 w-full"
-              style={{ marginBottom: "20px", marginTop: "10px" }}
+              className="w-full"
+              style={{ marginBottom: "25px", marginTop: "10px" }}
             >
               {getUserEvent.isSuccess === true && (
                 <EmailEditor
@@ -468,8 +477,10 @@ function EventDetailsEdit(): JSX.Element {
                 />
               )}
             </div>
+            <div style={{ color: "red" }}>{editorError}</div>
 
-            <Controller
+
+            {/* <Controller
               name="vendor_registration"
               control={control}
               render={({ field }) => (
@@ -652,7 +663,7 @@ function EventDetailsEdit(): JSX.Element {
                     </Form.Item>
                   )}
                 </Space>
-              )}
+              )} */}
 
             <Controller
               name="state"
@@ -663,7 +674,7 @@ function EventDetailsEdit(): JSX.Element {
                   direction="vertical"
                   size={"small"}
                   className="w-full"
-                  style={{ marginTop: "16px" }} // Adjust the value as needed
+                  style={{ marginTop: "25px" }} // Adjust the value as needed
                 >
                   <Label content="Event State" className="" htmlFor="state" />
                   <Select
@@ -713,7 +724,7 @@ function EventDetailsEdit(): JSX.Element {
                     />
                     <Popover
                       content={content}
-                      title="Search for a Location"
+                      
                       trigger="click"
                       open={popoverVisible}
                     >

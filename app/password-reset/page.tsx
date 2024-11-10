@@ -17,9 +17,14 @@ function PasswordReset() {
         <Space direction="vertical" size={"small"} className="w-5/6">
           <Heading5 content={"Password Reset"} className="" />
           <Paragraph
-            content={`A reset code has been sent to ${email ? email: "your email"}`}
+            content={
+              <span>
+                A reset code has been sent to <span style={{ color: "#e20000" }}>{email ? email : "your email"}</span>.
+              </span>
+            }
             className=""
           />
+
         </Space>
 
         <PasswordResetForm />

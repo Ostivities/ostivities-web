@@ -106,6 +106,7 @@ export interface IEventDetails {
   state: string;
   address: string;
   eventURL: string;
+  enable_registration?: boolean;
   supportingDocument: {
     fileName: string;
     _id: string;

@@ -12,7 +12,7 @@ import InfoCard from "./InfoCard";
 
 const DiscoverEvents = () => {
   const [searchText, setSearchText] = useState("");
-  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 4);
+  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 5);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
   const { addEventToDiscovery } = useAddEventToDiscovery();
   const [expiredEventsId, setExpiredEventsId] = useState<string[]>([]);
@@ -86,7 +86,7 @@ const DiscoverEvents = () => {
               key={event?.id}
               title={event?.eventName}
               about={event?.eventType}
-              status="Get Tickets"
+              status= {event?.enable_registration === false ? "Reg Closed" :  "Get Tickets"  }
               image={event?.eventImage}
               url={`/discover/${event?.unique_key}`}
               titleClass="font-bricolage-grotesque font-medium"

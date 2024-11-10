@@ -25,8 +25,8 @@ const InfoCard: React.FC<PropsI> = ({ title, about, status, image, url, titleCla
     className="object-cover"
   />
       <div className="absolute inset-0 bg-image-card text-white">
-        <div className={`absolute top-0 right-0 py-3 px-4 bg-OWANBE_PRY rounded-bl-[1.25rem] ${statusClass}`}>
-          {status}
+      <div className={`absolute top-0 right-0 py-2 px-3 bg-OWANBE_PRY rounded-bl-[1.25rem] ${statusClass}`}>
+        <span style={{ fontFamily: 'Bricolage Grotesque, sans-serif' }}>{status}</span>
         </div>
         <div className="absolute bottom-0 left-0 px-5 py-5">
           <h3 className={titleClass}>{title}</h3>

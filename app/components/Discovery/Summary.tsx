@@ -10,7 +10,7 @@ import { PlusSquareOutlined } from "@ant-design/icons";
 import { IDiscountData, ITicketDetails } from "@/app/utils/interface";
 import { useRouter, useParams } from "next/navigation";
 import { Button } from "antd";
-import { TICKET_ENTITY } from "@/app/utils/enums";
+import { PAYMENT_METHODS, TICKET_ENTITY } from "@/app/utils/enums";
 import { MdOutlineDiscount } from "react-icons/md";
 import {
   useGetEventDiscount,
@@ -40,6 +40,8 @@ interface SummaryProps {
   currentPage: string;
   eventId?: string;
   isFormValid?: boolean;
+  termsAndCondition?: boolean;
+  paymentMethod?: PAYMENT_METHODS | null;
   onClick?: () => void;
   onDiscountApplied?: (applied: boolean) => void;
 }
@@ -55,6 +57,8 @@ const Summary = ({
   isFormValid,
   eventId,
   currentPage,
+  termsAndCondition,
+  paymentMethod,
   onDiscountApplied,
   onClick,
 }: SummaryProps) => {
@@ -123,6 +127,12 @@ const Summary = ({
     }
   };
 
+  useEffect(() => {
+    if (ticketDetails?.length === 0) {
+      setShowInput(false)
+    }
+  }, [ticketDetails])
+
   const handleClearDiscount = () => {
     setDiscountCode("");
     setDiscountApplied(false);
@@ -147,18 +157,30 @@ const Summary = ({
         <div className="mt-3">
           {!showInput && (
             <div
-              onClick={handleAddDiscountClick}
-              className="flex-center gap-2 text-OWANBE_PRY text-lg font-BricolageGrotesqueRegular cursor-pointer"
+              onClick={
+                ticketDetails &&
+                ticketDetails.length > 0 &&
+                ticketDetails
+                  .map((ticket) => ticket?.subTotal || 0)
+                  .reduce((acc, curr) => acc + curr, 0) > 0
+                  ? handleAddDiscountClick
+                  : undefined
+              }
+              className={`flex-center gap-2 text-lg font-BricolageGrotesqueRegular ${
+                ticketDetails &&
+                ticketDetails?.length > 0 &&
+                ticketDetails
+                  ?.map((ticket) => ticket?.subTotal || 0)
+                  ?.reduce((acc, curr) => acc + curr, 0) > 0
+                  ? "text-OWANBE_PRY cursor-pointer"
+                  : "text-gray-400 cursor-not-allowed"
+              }`}
             >
-              <h3>Add discount code</h3> {<MdOutlineDiscount />}
+              <h3>Add discount code</h3>
+              <MdOutlineDiscount />
             </div>
-            // <Button
-            //   disabled={ticketDetails && ticketDetails?.length === 0}
-            // >
-            //   Add discount Code <MdOutlineDiscount />
-            // </Button>
           )}
-          {showInput && (
+          {showInput && (ticketDetails && ticketDetails?.length > 0) && (
             <>
               <div className="mt-3"></div>
               <div className="flex-center gap-3 w-full mt-3">
@@ -326,18 +348,25 @@ const Summary = ({
                   borderRadius: "25px",
                   fontFamily: "BricolageGrotesqueMedium",
                   backgroundColor:
-                  (currentPage === "tickets" && ticketDetails?.length === 0) ||
-                  (currentPage === "contactform" && !isFormValid)
-                      ? "#cccccc" // Active red if valid
-                      : "#e20000", // Gray if disabled
+                    (currentPage === "tickets" &&
+                      ticketDetails?.length === 0) ||
+                    (currentPage === "contactform" && !isFormValid) ||
+                    (currentPage === "payment" &&
+                      (!termsAndCondition || !paymentMethod))
+                      ? "#cccccc" // Gray for disabled
+                      : "#e20000", // Red for active
                   color:
-                  (currentPage === "tickets" && ticketDetails?.length === 0) ||
-                  (currentPage === "contactform" && !isFormValid)
+                    (currentPage === "tickets" &&
+                      ticketDetails?.length === 0) ||
+                    (currentPage === "contactform" && !isFormValid) ||
+                    (currentPage === "payment" &&
+                      (!termsAndCondition || !paymentMethod))
                       ? "#666666"
                       : "white",
                   height: "50px",
                   fontSize: "16px",
                   border: "none",
+                  zIndex: 10,
                 }}
                 title={
                   currentPage === "tickets"
@@ -346,14 +375,28 @@ const Summary = ({
                     ? "Continue"
                     : "Continue"
                 }
-                
                 disabled={
                   (currentPage === "tickets" && ticketDetails?.length === 0) ||
-                  (currentPage === "contactform" && !isFormValid)
+                  (currentPage === "contactform" && !isFormValid) ||
+                  (currentPage === "payment" &&
+                    (!termsAndCondition || !paymentMethod))
                 }
               >
-               {currentPage === "tickets" ? "Continue" : currentPage === "contactform" ? "Continue" : "Make Payment"}
-              </Button>
+                {currentPage === "tickets"
+                  ? "Continue"
+                  : currentPage === "contactform" &&
+                    ticketDetails
+                      ?.map((tickets) => tickets?.subTotal)
+                      .reduce((acc, curr) => acc + curr, 0) === 0
+                  ? "Order Tickets"
+                  : currentPage === "contactform" &&
+                    ticketDetails &&
+                    ticketDetails
+                      ?.map((tickets) => tickets?.subTotal)
+                      .reduce((acc, curr) => acc + curr, 0) > 0
+                  ? "Continue"
+                  : "Make Payment"}
+              </Button>{" "}
             </div>
           )}
           {paymentBtn && (

@@ -191,7 +191,7 @@ const PersonalProfile = () => {
           form={form}
           onFinish={onFinish}
         >
-          <div className="grid grid-cols-2 gap-x-14">
+          <div className="grid grid-cols-2 gap-x-10">
             <div className="grid gap-y-6">
               <Form.Item label="Account Type" name="accountType">
                 <Input

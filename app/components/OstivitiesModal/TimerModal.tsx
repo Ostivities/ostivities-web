@@ -34,7 +34,7 @@ const TimerModal = () => {
           </p>
           <div className="flex justify-center">
             <button
-              onClick={() => router.push(`/discover/${params?.event}/tickets`)}
+              onClick={() => router.push(`/discover/${params?.event}`)}
               className="block primary-btn font-normal text-base mt-12 px-32"
             >
               Initiate order again

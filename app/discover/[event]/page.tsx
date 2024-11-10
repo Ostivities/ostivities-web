@@ -230,7 +230,17 @@ const EventDetail = () => {
 
   const [isEventStarted, setIsEventStarted] = useState(false);
   const [isRegistrationClosed, setIsRegistrationClosed] = useState(false);
+  const [mapSrc, setMapSrc] = useState('');
 
+
+  useEffect(() => {
+    if (eventDetails?.address) {
+      // Construct the Google Maps iframe src URL using the address
+      setMapSrc(
+        `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&q=${encodeURIComponent(eventDetails.address)}`
+      );
+    }
+  }, [eventDetails?.address]);  // Re-run when the address changes
 
   useEffect(() => {
     if (eventDetails?.enable_registration === false) {
@@ -409,15 +419,11 @@ const EventDetail = () => {
                       width: "190px",
                       whiteSpace: "normal",
                       wordWrap: "break-word",
+                      fontWeight: 300,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
                     }}
                   >
-                    <a
-                      href="https://maps.app.goo.gl/jBmgQ5EFxngj2ffS6"
-                      style={{ color: "#e20000", textDecoration: "none", fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}
-                      target="_blank"
-                    >
-                      {eventDetails?.address}
-                    </a>
+                    {eventDetails?.address}
                   </div>
                 </div>
               </div>
@@ -605,6 +611,18 @@ const EventDetail = () => {
                   htmlContent={eventDetails?.eventDetails || ""}
                   maxLength={250}
                 />
+            
+                {mapSrc && (
+                  <iframe
+                    src={mapSrc}
+                    width="100%"
+                    height="120"
+                    style={{ border: 0, marginTop: "20px" }}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                )}
+                
                 <div className="flex justify-center mt-12">
                   {eventDetails?.vendor_registration === true ? (
                     <>
@@ -682,9 +700,6 @@ const EventDetail = () => {
             </div>
           </div>
         </div>
-
-        <br />
-        <br />
         <br />
         <br />
         <AvailableEvents />

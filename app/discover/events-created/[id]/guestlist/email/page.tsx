@@ -195,7 +195,7 @@ const EventsGuestListEmail = () => {
           </Form.Item>
 
           <div className="mb-4 pb-12 w-full">
-            <EmailEditor initialValue="<p>Write your email here!</p>" onChange={handleEditorChange} />
+            <EmailEditor initialValue="<p></p>" onChange={handleEditorChange} />
           </div>
           <br />
           <div className="flex flex-row justify-center space-x-4 mt-8">

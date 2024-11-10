@@ -315,7 +315,7 @@ const AboutEvent = () => {
   const popoverRef = useRef<HTMLDivElement>(null);
 
   const handleSelectLocation = (address: string) => {
-    setValue("state", address); // Update the form field value
+    setValue("address", address); // Update the form field value
     setPopoverVisible(false); // Close the popover
   };
 
@@ -392,7 +392,7 @@ const AboutEvent = () => {
               content={"Event Details"}
               styles={{ fontWeight: "bold !important" }}
             />
-            <div style={{ position: "relative" }}>
+            <div style={{  marginBottom: "35px", marginTop: "10px", position: "relative" }}>
               {componentDisabled && (
                 <div
                   style={{
@@ -414,9 +414,6 @@ const AboutEvent = () => {
                 />
               )}
             </div>
-            <br />
-            <br />
-            <br />
 
             {/* <Controller
               name="vendor_registration"
@@ -577,7 +574,7 @@ const AboutEvent = () => {
                   direction="vertical"
                   size={"small"}
                   className="w-full"
-                  style={{ marginTop: "16px" }} // Adjust the value as needed
+                  style={{ marginTop: "35px" }} // Adjust the value as needed
                 >
                   <Label content="Event State" className="" htmlFor="state" />
                   <Select
@@ -621,7 +618,7 @@ const AboutEvent = () => {
                     />
                     <Popover
                       content={content}
-                      title="Search for a Location"
+                     
                       trigger="click"
                       open={popoverVisible}
                     >

@@ -419,7 +419,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({
         styles={{ fontWeight: "bold !important" }}
       />
       <div
-        className="mb-9 pb-16 w-full"
+        className="mb-9 pb-10 w-full"
         style={{ marginBottom: "20px", marginTop: "10px" }}
       >
         {getSingleTicket.isSuccess === true && (

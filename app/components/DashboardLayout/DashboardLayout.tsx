@@ -92,8 +92,11 @@ function DashboardLayout({
   const router = useRouter();
   const pathname = usePathname();
 
+
+
   const { profile } = useProfile();
   const { logoutUser } = useLogout();
+  // const profileData = localStorage.getItem("profileData");
   const [cookies, setCookie, removeCookie] = useCookies([
     "forgot_email",
     "is_registered",
@@ -103,8 +106,12 @@ function DashboardLayout({
     "stage_two",
     "stage_three",
     "user_fullname",
+    "profileData",
   ]);
 
+  // if(profile?.isFetched === true && cookies?.profileData === undefined){
+  //   setCookie("profileData", JSON.stringify(profile?.data?.data?.data));
+  // }
   // const accountType = profile?.data?.data?.data?.accountType
 
   const isRegistered = cookies?.is_registered === "registered";
@@ -142,7 +149,7 @@ function DashboardLayout({
   ];
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useLocalStorage<boolean>("sidebar", true);
-  const { isLoggedIn } = useFetch();
+  const { isLoggedIn, loading } = useFetch();
   // console.log(isLoggedIn, "isLoggedIn");
   const userProfile = isLoggedIn ? profile : null;
   // console.log(userProfile, "userProfile");

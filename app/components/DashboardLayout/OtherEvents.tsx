@@ -39,25 +39,12 @@ const DiscoverEvents = () => {
       ) : (
         <></>
       )}
-      {/* {discoveryEvents?.map((event: any) => (
-        <OtherInfoCard 
-          key={event?.id}
-          title={event?.eventName}
-          about={event?.eventType}
-          status="Get Tickets"
-          image={event?.eventImage}
-          url={`/discover/discovery/${event?.id}`}
-          titleClass="font-bricolage-grotesque font-medium"
-          aboutClass="font-bricolage-grotesque"
-          statusClass="font-bricolage-grotesque font-medium"
-        />
-      ))} */}
       {discoveryEvents?.filter((event: IEventDetails) => currentEvent(event?.unique_key)).map((event: IEventDetails) => (
         <OtherInfoCard 
           key={event?.id}
           title={event?.eventName}
           about={event?.eventType}
-          status="Get Tickets"
+          status= {event?.enable_registration === false ? "Reg Closed" :  "Get Tickets"  }
           image={event?.eventImage}
           url={`/discover/${event?.unique_key}`}
           titleClass="font-bricolage-grotesque font-medium"
