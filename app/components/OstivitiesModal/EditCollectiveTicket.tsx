@@ -1,15 +1,5 @@
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
-import { useProfile } from "@/app/hooks/auth/auth.hook";
-import {
-  useGetSingleTicket,
-  useUpdateTicket,
-} from "@/app/hooks/ticket/ticket.hook";
-import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
-import {
-  ITicketCreate,
-  ITicketData,
-  ITicketUpdate,
-} from "@/app/utils/interface";
+import { useUpdateTicket, useGetSingleTicket } from "@/app/hooks/ticket/ticket.hook";
 import { CloseSquareOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -20,22 +10,21 @@ import {
   InputNumber,
   Select,
 } from "antd";
-import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import EmailEditor from "../QuillEditor/EmailEditor";
+import { ITicketCreate, ITicketData, ITicketUpdate } from "@/app/utils/interface";
+import { useParams, usePathname, useRouter } from "next/navigation";
+import { useProfile } from "@/app/hooks/auth/auth.hook";
+import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
 
 const { Option } = Select;
 interface CollectiveTicketProps {
-  onCancel?: () => void; // Optional function with no parameters and no return value
-  onOk?: any;
-  id: string;
+  onCancel?: () => void;  // Optional function with no parameters and no return value
+  onOk?: any;  
+  id: string    
 }
 
-const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({
-  onCancel,
-  onOk,
-  id,
-}) => {
+const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk, id }) => {  
   const { updateTicket } = useUpdateTicket();
   const { profile } = useProfile();
   const params = useParams<{ id: string }>();
@@ -46,7 +35,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({
   const [pricePerTicket, setPricePerTicket] = useState<number | null>(null);
   const [ticketStockValue, setTicketStockValue] = useState<string>("limited"); // Default to "limited"
   const [additionalFields, setAdditionalFields] = useState<
-    { id: number; is_compulsory: boolean; question: string }[]
+    { id: number; is_compulsory: boolean, question: string }[]
   >([]);
   const [showAdditionalField, setShowAdditionalField] =
     useState<boolean>(false);
@@ -58,7 +47,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
-  const pathname = usePathname();
+  const pathname = usePathname()
   // console.log(pathname)
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form); // Watch ticketType changes
@@ -68,9 +57,10 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({
 
   console.log(showAdditionalField, "showAdditionalField");
 
+
   console.log(ticketDetails, "ticketDetails");
   useEffect(() => {
-    if (ticketDetails) {
+    if (ticketDetails){
       form.setFieldsValue({
         ticketType: ticketDetails?.ticketType,
         ticketName: ticketDetails?.ticketName,
@@ -87,28 +77,24 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({
 
     if (ticketDetails?.ticketQuestions?.length > 0) {
       setAdditionalFields(
-        ticketDetails?.ticketQuestions?.map(
-          (
-            question: { is_compulsory: boolean; question: string },
-            index: any
-          ) => ({
-            id: index,
-            question: question?.question,
-            is_compulsory: question?.is_compulsory,
-          })
-        )
+        ticketDetails?.ticketQuestions?.map((question: { is_compulsory: boolean; question: string; }, index: any) => ({
+          id: index,
+          question: question?.question,
+          is_compulsory: question?.is_compulsory,
+        }))
       );
       form.setFieldsValue({
         ticketQuestions: ticketDetails?.ticketQuestions.map(
-          (question: { question: any }) => ({
+          (question: { question: any; }) => ({
             question: question?.question,
           })
         ),
       });
       setShowAdditionalField(true);
     }
+
   }, [ticketDetails]);
-  console.log(groupPrices, "groupPrices");
+  console.log(groupPrices, "groupPrices")
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ticketType, ...rest } = values;
@@ -121,11 +107,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({
       showAdditionalField === true
     ) {
       const reducedTicketQuestions = additionalFields?.map(
-        (questionObj: {
-          id: number;
-          is_compulsory: boolean;
-          question: string;
-        }) => {
+        (questionObj: { id: number; is_compulsory: boolean; question: string }) => {
           const { question, is_compulsory } = questionObj;
           console.log(question, is_compulsory, "question, is_compulsory");
           return { question, is_compulsory };
@@ -141,7 +123,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({
         ticketEntity: "COLLECTIVE",
         user: profile?.data?.data?.data?.id,
         // groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
-        ticketType,
+        ticketType
       };
       // console.log(payload, "kk");
 
@@ -153,15 +135,15 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({
           // console.log(response);
           form.resetFields();
           // linkRef.current?.click();
-          if (pathname.startsWith("/discover/create-events")) {
-            router.push(
-              `/discover/create-events/${params?.id}/tickets_created`
-            );
+          if(pathname.startsWith("/discover/create-events")) {
+            router.push(`/discover/create-events/${params?.id}/tickets_created`);
           }
           onOk();
+      
         }
       }
     } else {
+
       const payload: ITicketUpdate = {
         id: ticketDetails?.id,
         ...rest,
@@ -170,7 +152,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({
         ticketEntity: "COLLECTIVE",
         user: profile?.data?.data?.data?.id,
         // groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
-        ticketType,
+        ticketType
       };
       if (payload) {
         const response = await updateTicket.mutateAsync(payload);
@@ -178,10 +160,8 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({
           // console.log(response);
           form.resetFields();
           // linkRef.current?.click();
-          if (pathname.startsWith("/discover/create-events")) {
-            router.push(
-              `/discover/create-events/${params?.id}/tickets_created`
-            );
+          if(pathname.startsWith("/discover/create-events")) {
+            router.push(`/discover/create-events/${params?.id}/tickets_created`);
           }
           onOk();
         }
@@ -228,16 +208,17 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({
     if (groupPrice !== null && groupSize !== null) {
       const price = (groupPrice / groupSize).toFixed(0);
       setPricePerTicket(parseFloat(price));
-      const price_per_ticket = pricePerTicket;
-      if (price_per_ticket) {
-        form.setFieldValue("ticketPrice", price_per_ticket);
+      const price_per_ticket = pricePerTicket
+      if(price_per_ticket) {
+        form.setFieldValue("ticketPrice", price_per_ticket)
       }
       // console.log(pricePerTicket)
-    } else if (groupPrice === 0 && groupPrice === null) {
-      form.setFieldValue("ticketPrice", "");
-    } else {
+    } else if( groupPrice === 0 && groupPrice === null) {
+      form.setFieldValue('ticketPrice', "")
+    }
+    else {
       setPricePerTicket(null);
-      form.setFieldValue("ticketPrice", "");
+      form.setFieldValue('ticketPrice', "")
     }
   }, [groupPrice, groupSize, pricePerTicket]);
 
@@ -259,8 +240,8 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({
   useEffect(() => {
     if (ticketType === TICKET_TYPE.FREE) {
       form.setFieldsValue({ ticketPrice: null });
-      form.setFieldsValue({ groupPrice: null });
-      setGroupPrices(null);
+      form.setFieldsValue({ groupPrice: null })
+      setGroupPrices(null)
     }
   }, [ticketType]);
 
@@ -271,6 +252,8 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({
   // const handleGroupSizeChange = (value: number) => {
   //   setGroupSize(value);
   // };
+
+
 
   const prefixSelector = (
     <Form.Item name="ticketStock" noStyle>
@@ -421,40 +404,29 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({
       <div
         className="mb-9 pb-10 w-full"
         style={{ marginBottom: "20px", marginTop: "10px" }}
-      >
+      >  
         {getSingleTicket.isSuccess === true && (
           <EmailEditor
             initialValue={`${ticketDetails?.ticketDescription}`}
             onChange={handleEditorChange}
           />
-        )}
+        )} 
       </div>
 
       <Form.Item
-        style={{
-          marginBottom: "24px",
-          display: "flex",
-          alignItems: "center",
-          gap: "20px",
-        }}
+       style={{ marginBottom: "24px", display: "flex", alignItems: "center", gap: "20px" }}
       >
         <Form.Item<ITicketData>
           name="guestAsChargeBearer"
           valuePropName="checked"
           noStyle
         >
-          <Checkbox
-            defaultChecked={ticketDetails?.guestAsChargeBearer}
-            style={{ marginRight: "10px" }}
-          >
+          <Checkbox defaultChecked={ticketDetails?.guestAsChargeBearer} style={{ marginRight: "10px" }}>
             Transfer charge fees to guest
           </Checkbox>
         </Form.Item>
         <Form.Item noStyle>
-          <Checkbox
-            checked={showAdditionalField}
-            onChange={(e) => setShowAdditionalField(e.target.checked)}
-          >
+          <Checkbox checked={showAdditionalField} onChange={(e) => setShowAdditionalField(e.target.checked)}>
             Enable additional information
           </Checkbox>
         </Form.Item>
@@ -467,8 +439,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({
             {
               validator: async (_, ticketQuestions) => {
                 if (
-                  showAdditionalField &&
-                  additionalFields.length === 0 &&
+                  showAdditionalField && additionalFields.length === 0 &&
                   (!ticketQuestions || ticketQuestions.length === 0)
                 ) {
                   return Promise.reject(
@@ -525,7 +496,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({
                         Make compulsory
                       </Checkbox>
                     </Form.Item>
-                  </div>
+                  </div> 
                 ))}
                 <Form.Item>
                   <Button

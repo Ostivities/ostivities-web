@@ -29,7 +29,7 @@ import { relative } from "path";
 import React, { isValidElement, useEffect, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
 import useLocalStorage from "use-local-storage";
-import { useProfile, useLogout } from "../../hooks/auth/auth.hook";
+import { useLogout } from "../../hooks/auth/auth.hook";
 import useFetch from "../forms/create-events/auth";
 import emptyImage from "@/public/empty.svg";
 
@@ -94,9 +94,8 @@ function DashboardLayout({
 
 
 
-  const { profile } = useProfile();
+  // const { profile } = useProfile();
   const { logoutUser } = useLogout();
-  // const profileData = localStorage.getItem("profileData");
   const [cookies, setCookie, removeCookie] = useCookies([
     "forgot_email",
     "is_registered",
@@ -136,6 +135,10 @@ function DashboardLayout({
         const res = await logoutUser.mutateAsync();
         if (res.status === 200) {
           sessionStorage.removeItem("token");
+          sessionStorage.removeItem("tokenTimestamp");
+          localStorage.removeItem("token");
+          localStorage.removeItem("tokenTimestamp");
+          localStorage.removeItem("profileData");
           removeCookie("forgot_email");
           removeCookie("event_id");
           removeCookie("form_stage");
@@ -147,13 +150,56 @@ function DashboardLayout({
       },
     },
   ];
+
+  const initialProfileData = (() => {
+    if (typeof window !== "undefined") {
+      const storedProfileData = localStorage.getItem("profileData");
+      if (storedProfileData && storedProfileData !== "undefined" && storedProfileData !== "null") {
+        try {
+          return JSON.parse(storedProfileData); // Return parsed data if valid
+        } catch (error) {
+          console.error("Failed to parse profileData:", error);
+        }
+      }
+      return null;
+    }
+  })();
+
+  const [profileData, setProfileData] = useState(initialProfileData);
+
+
+  // useEffect(() => {
+  //   if (localStorage.getItem('profileData') !== "undefined") {
+  //     setProfileData(localStorage.getItem('profileData'));
+  //   }
+  //   }, []);
+
+  useEffect(() => {
+  if (typeof window !== "undefined") {
+    const storedProfileData = localStorage.getItem("profileData");
+    if (
+      storedProfileData &&
+      storedProfileData !== "undefined" &&
+      storedProfileData !== "null" &&
+      JSON.stringify(initialProfileData) !== storedProfileData
+    ) {
+      try {
+        setProfileData(JSON.parse(storedProfileData));
+      } catch (error) {
+        console.error("Failed to parse profileData:", error);
+      }
+    }
+  }
+  }, [initialProfileData]);
+    
+    // console.log(profileData, "profileData");
+
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useLocalStorage<boolean>("sidebar", true);
   const { isLoggedIn, loading } = useFetch();
-  // console.log(isLoggedIn, "isLoggedIn");
-  const userProfile = isLoggedIn ? profile : null;
+  // const userProfile = isLoggedIn ? profile : null;
   // console.log(userProfile, "userProfile");
-  const accountType = userProfile?.data?.data?.data?.accountType;
+  const accountType = profileData && profileData?.accountType;
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -167,18 +213,18 @@ function DashboardLayout({
 
   const userName =
     accountType === ACCOUNT_TYPE.PERSONAL
-      ? userProfile?.data?.data?.data?.firstName +
+      ? profileData?.firstName +
         " " +
-        userProfile?.data?.data?.data?.lastName
-      : userProfile?.data?.data?.data?.businessName || "";
+        profileData?.lastName
+      : profileData?.businessName || "";
 
   // setCookie("user_fullname", userName)
   const avatarName =
     accountType === ACCOUNT_TYPE.PERSONAL
-      ? userProfile?.data?.data?.data?.firstName?.charAt(0) +
-        userProfile?.data?.data?.data?.lastName?.charAt(0)
-      : userProfile?.data?.data?.data?.businessName?.charAt(0).toUpperCase() +
-          userProfile?.data?.data?.data?.businessName
+      ? profileData?.firstName?.charAt(0) +
+        profileData?.lastName?.charAt(0)
+      : profileData?.businessName?.charAt(0).toUpperCase() +
+          profileData?.businessName
             ?.charAt(1)
             .toUpperCase() || "";
 
@@ -208,7 +254,7 @@ function DashboardLayout({
     pathname.split("/").includes("create-events");
 
   const toggleSidebar = () => {
-    // console.log(collapsed);
+    console.log(collapsed);
     setCollapsed((prevValues) => !prevValues);
   };
 
@@ -262,7 +308,7 @@ function DashboardLayout({
           </div>
 
 
-          {profile?.isFetching === true ? (
+          {/* {profile?.isFetching === true ? (
             <>
               <Skeleton.Button
                 active
@@ -274,7 +320,8 @@ function DashboardLayout({
                 }}
               />
             </>
-          ) : profile?.isFetching === false && !isLoggedIn ? (
+          ) :  */}
+          {profileData === null && !isLoggedIn ? (
             <>
               {/* Show NAV_LINKS when user is not logged in */}
               <div className="flex flex-row items-center space-x-8">
@@ -318,7 +365,7 @@ function DashboardLayout({
               </div>
             </>
           ) : (
-            profile?.isFetching === false &&
+            profileData !== null &&
             isLoggedIn && (
               <>
                 <Space
@@ -398,7 +445,7 @@ function DashboardLayout({
                   <Dropdown menu={{ items }} trigger={["click", "hover"]}>
                     <div className="flex-center gap-4 cursor-pointer">
                       <Image
-                        src={profile?.data?.data?.data?.image || emptyImage} // Fallback to imported empty image
+                        src={profileData?.image || emptyImage} // Fallback to imported empty image
                         alt="Profile Picture"
                         width={40} // Adjust this to match the previous avatar size if needed
                         height={40} // Adjust this to match the previous avatar size if needed

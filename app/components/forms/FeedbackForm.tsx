@@ -1,10 +1,19 @@
 "use client";
+import "@/app/globals.css";
+import { useRegister } from "@/app/hooks/auth/auth.hook";
 import { IUser } from "@/app/utils/interface";
-import { Button, Checkbox, Col, Form, FormProps, Input, Rate, Row } from "antd";
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  FormProps,
+  Input,
+  Row,
+} from "antd";
 import { useRouter } from "next/navigation";
 import React from "react";
-import "../../globals.css";
-import { useRegister } from "../../hooks/auth/auth.hook";
+import { Rate } from 'antd';
 
 const App: React.FC = () => <Rate />;
 
@@ -24,7 +33,7 @@ function Feedback(): JSX.Element {
   };
 
   const onFinishFailed: FormProps<IUser>["onFinishFailed"] = (errorInfo) => {
-    console.error("Failed:", errorInfo);
+    console.error('Failed:', errorInfo);
   };
 
   return (
@@ -57,7 +66,9 @@ function Feedback(): JSX.Element {
           <Form.Item<IUser>
             label="Last Name"
             name="lastName"
-            rules={[{ required: true, message: "Please input your Last name" }]}
+            rules={[
+              { required: true, message: "Please input your Last name" },
+            ]}
           >
             <Input
               placeholder="Enter your last name"
@@ -97,50 +108,45 @@ function Feedback(): JSX.Element {
         </Col>
       </Row>
 
+
       <Row gutter={4}>
-        <Col span={24}>
-          <Form.Item
-            label="Rate Us"
-            style={{
-              fontFamily: "BricolageGrotesqueRegular",
-              marginBottom: "8px",
-            }}
-            className="font-BricolageGrotesqueRegular"
+      <Col span={24}>
+        <Form.Item
+          label="Rate Us"
+          style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: '8px' }}
+          className="font-BricolageGrotesqueRegular"
           >
-            <Rate style={{ fontSize: "30px" }} />
-          </Form.Item>
-        </Col>
-      </Row>
+          <Rate style={{ fontSize: '30px' }} />
+        </Form.Item>
+      </Col>
+    </Row>
+
+
 
       <Row gutter={4}>
         <Col span={24}>
-          <Form.Item
-            label="Additional Feedback"
+        <Form.Item
+        label="Additional Feedback"
+        style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: '8px' }} // Reduced marginBottom
+        className="font-BricolageGrotesqueRegular"
+      >
+        <Form.Item<IUser>
+          noStyle
+          name="feedback"
+          rules={[{ required: false, message: "Please input your feedback" }]}
+        >
+          <Input.TextArea
+            placeholder="Enter your feedback"
             style={{
-              fontFamily: "BricolageGrotesqueRegular",
-              marginBottom: "8px",
-            }} // Reduced marginBottom
-            className="font-BricolageGrotesqueRegular"
-          >
-            <Form.Item<IUser>
-              noStyle
-              name="feedback"
-              rules={[
-                { required: false, message: "Please input your feedback" },
-              ]}
-            >
-              <Input.TextArea
-                placeholder="Enter your feedback"
-                style={{
-                  minHeight: "220px",
-                  maxHeight: "220px",
-                  padding: "8px 12px",
-                  boxSizing: "border-box",
-                }}
-                className="placeholder:font-BricolageGrotesqueRegular"
-              />
-            </Form.Item>
-          </Form.Item>
+                minHeight: "220px",
+                maxHeight: "220px",
+                padding: "8px 12px",
+                boxSizing: "border-box",
+            }}
+            className="placeholder:font-BricolageGrotesqueRegular"
+          />
+        </Form.Item>
+      </Form.Item>
         </Col>
       </Row>
 

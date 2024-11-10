@@ -2,11 +2,9 @@
 
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import Summary from "@/app/components/Discovery/Summary";
-import "@/app/globals.css";
-import "@/app/scroll.css";
-import { Col, Form, Input, Row, Select } from "antd";
 import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
+import { Form, Input, Select, Row, Col } from "antd";
 import {
   AwaitedReactNode,
   JSXElementConstructor,

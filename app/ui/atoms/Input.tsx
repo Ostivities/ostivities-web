@@ -2,7 +2,7 @@
 
 import { InputAttributes } from "@/app/lib/types/components";
 import { cn } from "@/app/lib/utils";
-import { HidePasswordIcon, ViewPasswordIcon } from "@/public/svgs";
+import { ViewPasswordIcon, HidePasswordIcon } from "@/public/svgs";
 
 import Link from "next/link";
 import { useState } from "react";
@@ -49,7 +49,9 @@ const Input = ({
       >
         {/* <input
           className="flex-1 bg-transparent font-light placeholder:font-light placeholder:text-[0.9375rem] focus:outline-none"
-          type={type}
+          type={
+            type === "password" && showPassword ? "password" : "text" || type
+          }
           name={name}
           id={name}
           disabled={disabled} // Apply disabled prop here
@@ -84,3 +86,4 @@ const Input = ({
 };
 
 export default Input;
+

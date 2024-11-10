@@ -1,8 +1,9 @@
-import { IEventDetails } from "@/app/utils/interface";
-import { Skeleton } from "antd";
-import { useGetDiscoveryEvents } from "../../hooks/event/event.hook";
-import InfoCard from "./OtherInfoCard";
 import EventSection from "./PopularEventSection";
+import InfoCard from "./OtherInfoCard";
+import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
+import { Skeleton } from "antd";
+import { IEventDetails } from "@/app/utils/interface";
+import placeholder from "@/public/placeholder.svg";
 
 const PopularEvents = () => {
   const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 5);
@@ -30,12 +31,7 @@ const PopularEvents = () => {
                 key={index}
                 active
                 shape="round"
-                style={{
-                  height: 200,
-                  width: 200,
-                  margin: "10px",
-                  maxWidth: "100%",
-                }}
+                style={{ height: 200, width: 200, margin: "10px", maxWidth: '100%' }}
               />
             ))}
         </>
@@ -47,7 +43,7 @@ const PopularEvents = () => {
             title={event?.eventName}
             about={event?.eventType}
             status= {event?.enable_registration === false ? "Reg Closed" :  "Get Tickets"  }
-            image={event?.eventImage}
+            image={event?.eventImage ? event.eventImage : placeholder}
             url={`/discover/${event?.unique_key}`}
             titleClass="font-bricolage-grotesque font-medium"
             aboutClass="font-bricolage-grotesque"

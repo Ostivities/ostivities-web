@@ -9,12 +9,15 @@ import React, { useEffect, useState } from "react";
 import { IoChevronDown } from "react-icons/io5";
 import { LiaExternalLinkAltSolid } from "react-icons/lia";
 import PaymentDetails from "../OstivitiesModal/PaymentDetails";
-import Image from 'next/image';
+import Image from "next/image";
 import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
 // import { useGetUserEvent, usePublishEvent } from "@/app/hooks/event/event.hook";
-import { useGetUserEvent, useAddEventToDiscovery, usePublishEvent } from "@/app/hooks/event/event.hook";
+import {
+  useGetUserEvent,
+  useAddEventToDiscovery,
+  usePublishEvent,
+} from "@/app/hooks/event/event.hook";
 import { EVENT_INFO, PUBLISH_TYPE } from "@/app/utils/enums";
-
 
 export default function EventDetailsComponent({
   children,
@@ -41,60 +44,67 @@ export default function EventDetailsComponent({
   useEffect(() => {
     if (eventDetails?.mode && eventDetails?.mode === PUBLISH_TYPE.ACTIVE) {
       setTimeout(() => {
-        setIsPublished(true)
-      }, 2000)
-    } else if (eventDetails?.mode && eventDetails?.mode === PUBLISH_TYPE.INACTIVE) {
+        setIsPublished(true);
+      }, 2000);
+    } else if (
+      eventDetails?.mode &&
+      eventDetails?.mode === PUBLISH_TYPE.INACTIVE
+    ) {
       setTimeout(() => {
-        setIsPublished(false)
-      }, 2000)
+        setIsPublished(false);
+      }, 2000);
     }
     if (eventDetails?.discover === true) {
-      setIsDiscover(true)
+      setIsDiscover(true);
     }
-  }, [eventDetails])
-
-
-
+  }, [eventDetails]);
 
   const handlePublishEvent = async () => {
     if (eventDetails?.mode === PUBLISH_TYPE.ACTIVE) {
       const response = await publishEvent.mutateAsync({
         ids: [params?.id],
-        mode: PUBLISH_TYPE.INACTIVE
+        mode: PUBLISH_TYPE.INACTIVE,
       });
 
       if (response.status === 200) {
         setIsPublished(!isPublished);
-        getUserEvent.refetch()
-        setIsDiscover(false)
-        message.success('Event unpublished successfully');
+        getUserEvent.refetch();
+        setIsDiscover(false);
+        message.success("Event unpublished successfully");
         // console.log(response, 'response inactive')
       }
-    } else if (eventDetails?.mode === PUBLISH_TYPE.INACTIVE || !eventDetails?.mode) {
-      if (eventdates < new Date().getTime() && eventDetails?.eventInfo === EVENT_INFO.SINGLE_EVENT) {
-        message.error('The event has ended and cannot be published. Please update the event details to republish.');
+    } else if (
+      eventDetails?.mode === PUBLISH_TYPE.INACTIVE ||
+      !eventDetails?.mode
+    ) {
+      if (
+        eventdates < new Date().getTime() &&
+        eventDetails?.eventInfo === EVENT_INFO.SINGLE_EVENT
+      ) {
+        message.error(
+          "The event has ended and cannot be published. Please update the event details to republish."
+        );
         return;
       }
       const response = await publishEvent.mutateAsync({
         ids: [params?.id],
-        mode: PUBLISH_TYPE.ACTIVE
+        mode: PUBLISH_TYPE.ACTIVE,
       });
       if (response.status === 200) {
-        getUserEvent.refetch()
+        getUserEvent.refetch();
         setIsPublished(!isPublished);
-        message.success('Event published successfully');
+        message.success("Event published successfully");
         // console.log(response, 'response active')
       }
     }
-  }
+  };
 
-  const linkToCopy = eventDetails?.eventURL
+  const linkToCopy = eventDetails?.eventURL;
 
   const copyToClipBoard = () => {
-    navigator.clipboard.writeText(linkToCopy)
-    message.success('Event link copied');
-  }
-
+    navigator.clipboard.writeText(linkToCopy);
+    message.success("Event link copied");
+  };
 
   const [activeToggle, setActiveToggle] = useState<string | null>(null);
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -104,23 +114,23 @@ export default function EventDetailsComponent({
       const res = await addEventToDiscovery.mutateAsync({
         ids: [params?.id],
         discover: true,
-      })
+      });
 
       if (res.status === 200) {
-        message.success('Event added to discovery successfully');
-        setIsDiscover(true)
-        getUserEvent.refetch()
-        // console.log(res, 'res discover true') 
+        message.success("Event added to discovery successfully");
+        setIsDiscover(true);
+        getUserEvent.refetch();
+        // console.log(res, 'res discover true')
       }
     } else if (eventDetails?.discover === true) {
       const res = await addEventToDiscovery.mutateAsync({
         ids: [params?.id],
-        discover: false
-      })
+        discover: false,
+      });
       if (res.status === 200) {
-        setIsDiscover(false)
-        getUserEvent.refetch()
-        message.success('Event removed from discovery successfully');
+        setIsDiscover(false);
+        getUserEvent.refetch();
+        message.success("Event removed from discovery successfully");
       }
     }
   };
@@ -131,29 +141,33 @@ export default function EventDetailsComponent({
   };
 
   useEffect(() => {
-    const checkEventStatus = async () => {
-      if (eventdates < new Date().getTime() && eventDetails?.eventInfo === EVENT_INFO.SINGLE_EVENT) {
-        const response = await publishEvent.mutateAsync({
-          ids: [params?.id],
-          mode: PUBLISH_TYPE.INACTIVE
-        });
-        if (response.status === 200) {
-          setIsPublished(false)
+    if (isPublished === true) {
+      const checkEventStatus = async () => {
+        if (
+          eventdates < new Date().getTime() &&
+          eventDetails?.eventInfo === EVENT_INFO.SINGLE_EVENT
+        ) {
+          const response = await publishEvent.mutateAsync({
+            ids: [params?.id],
+            mode: PUBLISH_TYPE.INACTIVE,
+          });
+          if (response.status === 200) {
+            setIsPublished(false);
+          }
         }
-      }
-    };
-
-    checkEventStatus();
-  }, [eventDetails, params?.id])
+      };
+      checkEventStatus();
+    }
+  }, [eventDetails, params?.id]);
 
   useEffect(() => {
     const fetchInitialState = async () => {
       try {
         // Replace this with your actual API call
-        const response = eventDetails?.discover
+        const response = eventDetails?.discover;
         setIsActive(response);
       } catch (error) {
-        console.error('Failed to fetch event details', error);
+        console.error("Failed to fetch event details", error);
       }
     };
 
@@ -170,10 +184,11 @@ export default function EventDetailsComponent({
         label: (
           <Link
             href={`/discover/events-created/${params?.id}/tickets`}
-            className={`font-BricolageGrotesqueRegular font-normal text-sm ${pathname.includes("tickets")
+            className={`font-BricolageGrotesqueRegular font-normal text-sm ${
+              pathname.includes("tickets")
                 ? "text-OWANBE_PRY"
                 : "text-OWANBE_DARK"
-              }`}
+            }`}
           >
             Tickets
           </Link>
@@ -271,8 +286,9 @@ export default function EventDetailsComponent({
           <Button
             type={pathname.includes("about") ? "primary" : "text"}
             size={"large"}
-            className={`font-BricolageGrotesqueRegular ${pathname.includes("about") ? "sign-up" : ""
-              } cursor-pointer font-medium w-32 rounded-2xl`}
+            className={`font-BricolageGrotesqueRegular ${
+              pathname.includes("about") ? "sign-up" : ""
+            } cursor-pointer font-medium w-32 rounded-2xl`}
             style={{
               borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
@@ -291,8 +307,9 @@ export default function EventDetailsComponent({
           >
             <Button
               type={pathname.includes("tickets") ? "primary" : "text"}
-              className={`font-BricolageGrotesqueRegular cursor-pointer font-medium w-32 rounded-2xl ${pathname.includes("tickets") ? "sign-up" : ""
-                }`}
+              className={`font-BricolageGrotesqueRegular cursor-pointer font-medium w-32 rounded-2xl ${
+                pathname.includes("tickets") ? "sign-up" : ""
+              }`}
               style={{
                 borderRadius: "25px",
                 fontFamily: "BricolageGrotesqueMedium",
@@ -302,8 +319,9 @@ export default function EventDetailsComponent({
               <Space>
                 Tickets
                 <IoChevronDown
-                  color={`${pathname.includes("tickets") ? "#ffffff" : "#000000"
-                    }`}
+                  color={`${
+                    pathname.includes("tickets") ? "#ffffff" : "#000000"
+                  }`}
                 />
               </Space>
             </Button>
@@ -312,8 +330,9 @@ export default function EventDetailsComponent({
           <Button
             type={pathname.includes("event_page_view") ? "primary" : "text"}
             size="large"
-            className={`font-BricolageGrotesqueRegular ${pathname.includes("event_page_view") ? "sign-up" : ""
-              } cursor-pointer font-medium w-40 rounded-2xl`}
+            className={`font-BricolageGrotesqueRegular ${
+              pathname.includes("event_page_view") ? "sign-up" : ""
+            } cursor-pointer font-medium w-40 rounded-2xl`}
             style={{
               borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
@@ -345,27 +364,28 @@ export default function EventDetailsComponent({
           </Dropdown>
 
           {/* <Dropdown menu={{ items: CoordinatorsItems, onClick: handleMenuClick }}> */}
-            <Button
-              type={pathname.includes("coordinators") ? "primary" : "text"}
-              className="font-BricolageGrotesqueRegular cursor-pointer font-medium w-40 rounded-2xl"
-              style={{
-                borderRadius: "25px",
-                fontFamily: "BricolageGrotesqueMedium",
-              }}
-              size="large"
-            >
-              <Space>
-                Coordinators
-                {/* <IoChevronDown /> */}
-              </Space>
-            </Button>
+          <Button
+            type={pathname.includes("coordinators") ? "primary" : "text"}
+            className="font-BricolageGrotesqueRegular cursor-pointer font-medium w-40 rounded-2xl"
+            style={{
+              borderRadius: "25px",
+              fontFamily: "BricolageGrotesqueMedium",
+            }}
+            size="large"
+          >
+            <Space>
+              Coordinators
+              {/* <IoChevronDown /> */}
+            </Space>
+          </Button>
           {/* </Dropdown> */}
 
           <Button
             type={pathname.includes("sales") ? "primary" : "text"}
             size="large"
-            className={`font-BricolageGrotesqueRegular ${pathname.includes("sales") ? "sign-up" : ""
-              } cursor-pointer font-medium w-32 rounded-2xl`}
+            className={`font-BricolageGrotesqueRegular ${
+              pathname.includes("sales") ? "sign-up" : ""
+            } cursor-pointer font-medium w-32 rounded-2xl`}
             style={{
               borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
@@ -445,27 +465,27 @@ export default function EventDetailsComponent({
     };
 
     const cardStyle = {
-      width: 'full', // Adjust card width
-      height: '150px', // Adjust card height
+      width: "full", // Adjust card width
+      height: "150px", // Adjust card height
     };
 
     const titleStyle = {
-      fontSize: '20px', // Adjust title text size
+      fontSize: "20px", // Adjust title text size
     };
 
     const valueStyle = {
-      fontSize: '19px', // Adjust value text size
+      fontSize: "19px", // Adjust value text size
     };
 
     const containerStyle = {
-      gap: '4px', // Adjust the spacing between title and value (you can customize this)
+      gap: "4px", // Adjust the spacing between title and value (you can customize this)
     };
 
     const salesRevenue = 250000;
 
-    const formattedRevenue = new Intl.NumberFormat('en-NG', {
-      style: 'currency',
-      currency: 'NGN',
+    const formattedRevenue = new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(salesRevenue);
@@ -530,12 +550,12 @@ export default function EventDetailsComponent({
               isActive={isActive}
               onToggle={(checked: boolean) => {
                 handleSwitchChange(checked);
-                handleToggle('someLabel'); // Replace 'someLabel' with the actual label you want to toggle
+                handleToggle("someLabel"); // Replace 'someLabel' with the actual label you want to toggle
               }}
               label="Add to discovery page"
             />
             <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
-              {isDiscover ? 'Remove from discovery' : 'Add to discovery'} 
+              {isDiscover ? "Remove from discovery" : "Add to discovery"}
               {/* Add to discovery page */}
             </span>
           </div>
@@ -553,7 +573,7 @@ export default function EventDetailsComponent({
         onClick={handlePublishEvent}
         loading={publishEvent.isPending}
       >
-        {isPublished ? 'Unpublish Event' : 'Publish Event'}
+        {isPublished ? "Unpublish Event" : "Publish Event"}
       </Button>
 
       {isPublished && (
@@ -572,12 +592,10 @@ export default function EventDetailsComponent({
             />
             <span className="font-BricolageGrotesqueMedium">Copy Link</span>
           </Button>
-
         </div>
       )}
     </div>
   );
-
 
   return (
     <React.Fragment>
@@ -591,8 +609,9 @@ export default function EventDetailsComponent({
         isLoggedIn
         extraComponents={
           <div
-            className={`flex flex-col ${pathname.includes("sales") ? "space-y-8" : ""
-              }`}
+            className={`flex flex-col ${
+              pathname.includes("sales") ? "space-y-8" : ""
+            }`}
           >
             <ExtraTab />
             {pathname.includes("sales") && <SalesMetrics />}

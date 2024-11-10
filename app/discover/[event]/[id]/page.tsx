@@ -1,34 +1,34 @@
 "use client";
 
-import useFetch from "@/app/components/forms/create-events/auth";
-import ReadMoreHTML from "@/app/components/ReadMoreHTML";
+import AvailableEvents from "@/app/components/DashboardLayout/OtherEvents";
+import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import { Heading5 } from "@/app/components/typography/Typography";
-import { useProfile } from "@/app/hooks/auth/auth.hook";
-import { useGetUserEvent, usePublishEvent } from "@/app/hooks/event/event.hook";
-import { dateFormat, timeFormat } from "@/app/utils/helper";
-import end from "@/public/Endsin.svg";
-import start from "@/public/Startsin.svg";
-import { CopyOutlined, ShareAltOutlined } from "@ant-design/icons";
-import { Button, Dropdown, MenuProps, Modal, Space } from "antd";
+import { Button, Dropdown, MenuProps, Space, Modal } from "antd";
 import Image from "next/image";
 import Link from "next/link";
+import { useProfile } from "@/app/hooks/auth/auth.hook";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
 import { IoChevronDown } from "react-icons/io5";
+import React, { useEffect, useState } from "react";
+import { dateFormat, timeFormat } from "@/app/utils/helper";
+import { useGetUserEvent, usePublishEvent } from "@/app/hooks/event/event.hook";
+import { useCookies } from "react-cookie";
+import useFetch from "@/app/components/forms/create-events/auth";
 import {
-  FacebookIcon,
   FacebookShareButton,
-  LinkedinIcon,
-  LinkedinShareButton,
-  TwitterIcon,
   TwitterShareButton,
-  WhatsappIcon,
+  LinkedinShareButton,
   WhatsappShareButton,
+  FacebookIcon,
+  WhatsappIcon,
+  TwitterIcon,
+  LinkedinIcon,
   XIcon,
 } from "react-share";
-import DashboardLayout from "../../../components/DashboardLayout/DashboardLayout";
-import AvailableEvents from "../../../components/DashboardLayout/OtherEvents";
+import { ShareAltOutlined, CopyOutlined } from "@ant-design/icons";
+import ReadMoreHTML from "@/app/components/ReadMoreHTML";
+import start from "@/public/Startsin.svg";
+import end from "@/public/Endsin.svg";
 import placeholder from "@/public/placeholder.svg";
 
 
@@ -245,12 +245,8 @@ const EventDetail = () => {
         setIsRegistrationClosed(false); // Registration is open
 
         const days = Math.floor(distanceToStart / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (distanceToStart % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
-        const minutes = Math.floor(
-          (distanceToStart % (1000 * 60 * 60)) / (1000 * 60)
-        );
+        const hours = Math.floor((distanceToStart % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distanceToStart % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distanceToStart % (1000 * 60)) / 1000);
 
         setTimeRemaining({ days, hours, minutes, seconds });
@@ -260,12 +256,8 @@ const EventDetail = () => {
         setIsRegistrationClosed(false); // Registration is still open
 
         const days = Math.floor(distanceToEnd / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (distanceToEnd % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
-        const minutes = Math.floor(
-          (distanceToEnd % (1000 * 60 * 60)) / (1000 * 60)
-        );
+        const hours = Math.floor((distanceToEnd % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distanceToEnd % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distanceToEnd % (1000 * 60)) / 1000);
 
         setTimeRemaining({ days, hours, minutes, seconds });
@@ -279,6 +271,8 @@ const EventDetail = () => {
 
     return () => clearInterval(countdownInterval);
   }, [eventDate, eventEndDate]);
+
+
 
   const title = (
     <div className="flex-center gap-2">
@@ -326,7 +320,7 @@ const EventDetail = () => {
         <div className="flex gap-10">
           <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
             <Image
-              src={eventDetails?.eventImage}
+              src={eventDetails?.eventImage ? eventDetails.eventImage : placeholder}
               alt="Event Image"
               fill
               style={{ objectFit: "cover" }}
@@ -359,8 +353,7 @@ const EventDetail = () => {
                       wordWrap: "break-word",
                     }}
                   >
-                    {dateFormat(eventDetails?.startDate)} -{" "}
-                    {dateFormat(eventDetails?.endDate)}
+                    {dateFormat(eventDetails?.startDate)} - {dateFormat(eventDetails?.endDate)}
                   </div>
                 </div>
               </div>
@@ -420,9 +413,9 @@ const EventDetail = () => {
                 </div>
               </div>
               {twitterLink?.url ||
-              instagramLink?.url ||
-              websiteLink?.url ||
-              facebookLink?.url ? (
+                instagramLink?.url ||
+                websiteLink?.url ||
+                facebookLink?.url ? (
                 <div className="flex gap-3 items-center">
                   <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
                     <Image
@@ -508,7 +501,7 @@ const EventDetail = () => {
           <div className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-6">
             <div className="py-8">
               <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between items-center">
-                <h2 className="text-xl font-BricolageGrotesqueMedium">
+                <h2 className="text-xl font-BricolageGrotesqueMedium"> 
                   {eventDetails?.eventName}
                 </h2>
 
@@ -525,7 +518,7 @@ const EventDetail = () => {
                   centered
                   style={{
                     borderRadius: "15px",
-                    padding: "20px", // Include padding here instead of using bodyStyle
+                    padding: "20px"  // Include padding here instead of using bodyStyle
                   }}
                 >
                   <ShareModalContent url={eventUrl} title={eventTitle} />
@@ -583,17 +576,11 @@ const EventDetail = () => {
                   </div>
                 </div>
 
-                <ReadMoreHTML
-                  htmlContent={eventDetails?.eventDetails || ""}
-                  maxLength={250}
-                />
+                <ReadMoreHTML htmlContent={eventDetails?.eventDetails || ""} maxLength={250} />
                 <div className="flex justify-center mt-12">
                   <Dropdown
                     disabled={isRegistrationClosed} // Disable if registration is closed
-                    menu={{
-                      items: RegistrationTypes,
-                      onClick: handleMenuClick,
-                    }}
+                    menu={{ items: RegistrationTypes, onClick: handleMenuClick }}
                   >
                     <Button
                       type={pathname.includes("register") ? "primary" : "text"}
@@ -601,9 +588,7 @@ const EventDetail = () => {
                       style={{
                         borderRadius: "25px",
                         fontFamily: "BricolageGrotesqueMedium",
-                        backgroundColor: isRegistrationClosed
-                          ? "#cccccc"
-                          : "#e20000", // Gray for disabled, red for active
+                        backgroundColor: isRegistrationClosed ? "#cccccc" : "#e20000", // Gray for disabled, red for active
                         color: isRegistrationClosed ? "#666666" : "white",
                         height: "50px", // Adjust height as needed
                         fontSize: "16px", // Increase text size
@@ -620,9 +605,7 @@ const EventDetail = () => {
                   </Dropdown>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
+            </div></div></div>
 
         <br />
         <br />
