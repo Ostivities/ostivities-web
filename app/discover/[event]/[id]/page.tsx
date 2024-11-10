@@ -29,6 +29,8 @@ import {
 } from "react-share";
 import DashboardLayout from "../../../components/DashboardLayout/DashboardLayout";
 import AvailableEvents from "../../../components/DashboardLayout/OtherEvents";
+import placeholder from "@/public/placeholder.svg";
+
 
 const ShareModalContent: React.FC<{ url: string; title: string }> = ({
   url,
@@ -324,7 +326,7 @@ const EventDetail = () => {
         <div className="flex gap-10">
           <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
             <Image
-              src={eventDetails?.eventImage}
+              src={eventDetails?.eventImage ? eventDetails.eventImage : placeholder}
               alt="Event Image"
               fill
               style={{ objectFit: "cover" }}

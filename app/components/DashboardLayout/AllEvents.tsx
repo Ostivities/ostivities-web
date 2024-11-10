@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useGetDiscoveryEvents } from "../../hooks/event/event.hook";
 import EventSection from "./AllEventSection";
 import InfoCard from "./OtherInfoCard";
+import placeholder from "@/public/placeholder.svg";
 
 const AllEvents = () => {
   const [page, setPage] = useState(1);
@@ -50,7 +51,7 @@ const AllEvents = () => {
             title={event?.eventName}
             about={event?.eventType}
             status= {event?.enable_registration === false ? "Reg Closed" :  "Get Tickets"  }
-            image={event?.eventImage}
+            image={event?.eventImage ? event.eventImage : placeholder}
             url={`/discover/${event?.unique_key}`}
             titleClass="font-bricolage-grotesque font-medium"
             aboutClass="font-bricolage-grotesque"

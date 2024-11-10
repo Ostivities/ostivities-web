@@ -1,5 +1,4 @@
 "use client";
-
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import React, { useState } from "react";
 import DiscoverEvents from "../components/DashboardLayout/DiscoverEvents";
@@ -88,7 +87,7 @@ function Dashboard(): JSX.Element {
                   }}
                   className="text-OWANBE_PRY mb-1 block"
                 >
-                  Event Name (optional)
+                  Event Name 
                 </span>
                 <Input
                   onChange={(e) => setSearchText(e.target.value)}
@@ -115,7 +114,7 @@ function Dashboard(): JSX.Element {
                 />
               </label>
 
-              <label htmlFor="category" className="flex-1 min-w-[200px]">
+              {/* <label htmlFor="category" className="flex-1 min-w-[200px]">
                 <span
                   style={{
                     fontFamily: "'Bricolage Grotesque', sans-serif",
@@ -134,7 +133,7 @@ function Dashboard(): JSX.Element {
                   ]}
                   onChange={(value) => setSearchText(value)}
                 />
-              </label>
+              </label> */}
 
               <label htmlFor="type" className="flex-1 min-w-[200px]">
                 <span

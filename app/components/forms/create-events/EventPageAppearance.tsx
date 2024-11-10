@@ -14,6 +14,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { Heading5, Paragraph } from "../../typography/Typography";
 import { GET_EVENT } from "@/app/utils/constants";
 import ReadMoreHTML from "@/app/components/ReadMoreHTML";
+import placeholder from "@/public/placeholder.svg";
 
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
 const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
@@ -199,7 +200,7 @@ const EventPageAppearance: React.FC = () => {
       <div className="flex gap-12">
         <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
           <Image
-            src={eventDetails?.eventImage || imageUrl}
+            src={eventDetails?.eventImage ? eventDetails.eventImage : placeholder}
             alt="Event Image"
             fill
             style={{ objectFit: "cover" }}

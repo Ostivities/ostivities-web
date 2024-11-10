@@ -9,6 +9,7 @@ import {
 import { EVENT_INFO, PUBLISH_TYPE } from "../../utils/enums";
 import EventSection from "./DiscoverEventSection";
 import InfoCard from "./InfoCard";
+import placeholder from "@/public/placeholder.svg";
 
 const DiscoverEvents = () => {
   const [searchText, setSearchText] = useState("");
@@ -63,21 +64,19 @@ const DiscoverEvents = () => {
         {isPending ? (
           // Display 5 skeleton buttons as placeholders while loading
           <>
-            {Array(5)
-              .fill(null)
-              .map((_, index) => (
-                <Skeleton.Button
-                  key={index}
-                  active
-                  shape="round"
-                  style={{
-                    height: "320px",
-                    width: "250px",
-                    margin: "10px",
-                    maxWidth: "100%",
-                  }}
-                />
-              ))}
+            {Array(5).fill(null).map((_, index) => (
+              <Skeleton.Button
+                key={index}
+                active
+                shape="round"
+                style={{
+                  height: '300px',
+                  width: '250px',
+                  margin: '10px',
+                  maxWidth: '100%',
+                }}
+              />
+            ))}
           </>
         ) : (
           // Once data is loaded, map through discoveryEvents and render InfoCard components
@@ -87,7 +86,7 @@ const DiscoverEvents = () => {
               title={event?.eventName}
               about={event?.eventType}
               status= {event?.enable_registration === false ? "Reg Closed" :  "Get Tickets"  }
-              image={event?.eventImage}
+              image={event?.eventImage ? event.eventImage : placeholder}
               url={`/discover/${event?.unique_key}`}
               titleClass="font-bricolage-grotesque font-medium"
               aboutClass="font-bricolage-grotesque"

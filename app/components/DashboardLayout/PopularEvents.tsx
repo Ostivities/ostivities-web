@@ -3,6 +3,7 @@ import { Skeleton } from "antd";
 import { useGetDiscoveryEvents } from "../../hooks/event/event.hook";
 import InfoCard from "./OtherInfoCard";
 import EventSection from "./PopularEventSection";
+import placeholder from "@/public/placeholder.svg";
 
 const PopularEvents = () => {
   const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 5);
@@ -47,7 +48,7 @@ const PopularEvents = () => {
             title={event?.eventName}
             about={event?.eventType}
             status= {event?.enable_registration === false ? "Reg Closed" :  "Get Tickets"  }
-            image={event?.eventImage}
+            image={event?.eventImage ? event.eventImage : placeholder}
             url={`/discover/${event?.unique_key}`}
             titleClass="font-bricolage-grotesque font-medium"
             aboutClass="font-bricolage-grotesque"
