@@ -127,19 +127,14 @@ export const useResetPassword = () => {
 
 
 export const useProfile = () => {
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
   const profile = useQuery<AxiosResponse, AxiosError>({
     queryKey: [USER_PROFILE],
-    queryFn: () => {
-      return API_SERVICE._userProfile();
-    },
+    queryFn: () => API_SERVICE._userProfile(),
+    enabled: !!token, // Only enabled if token exists
+    retry: false,     // Optionally disable retries if token is missing
   });
-  // useEffect(() => {
-  //   if (profile.isSuccess && profile.data) {
-  //     // Store profile data in localStorage when query is successful
-  //     localStorage.setItem("profile", JSON.stringify(profile.data));
-  //   }
-  // }, [profile.isSuccess, profile.data]);
-
   return { profile };
 }
 
