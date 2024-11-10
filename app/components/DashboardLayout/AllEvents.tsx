@@ -44,7 +44,7 @@ const AllEvents = () => {
             key={event?.id}
             title={event?.eventName}
             about={event?.eventType}
-            status="Get Tickets"
+            status= {event?.enable_registration === false ? "Reg Closed" :  "Get Tickets"  }
             image={event?.eventImage}
             url={`/discover/${event?.unique_key}`}
             titleClass="font-bricolage-grotesque font-medium"
