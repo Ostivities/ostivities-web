@@ -1,4 +1,4 @@
-import { IEventDetails } from "@/app/utils/interface";
+import { IEventDetails } from "@/app/utils/interface"; 
 import { Skeleton } from "antd";
 import { useEffect, useState } from "react";
 import {
