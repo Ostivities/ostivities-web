@@ -57,7 +57,7 @@ const DiscoverEvents = () => {
                 active
                 shape="round"
                 style={{
-                  height: '320px',
+                  height: '300px',
                   width: '250px',
                   margin: '10px',
                   maxWidth: '100%',
