@@ -128,8 +128,17 @@ const EventsCreatedTable: React.FC = () => {
         />
       ),
       dataIndex: "status",
+      sorter: (a, b) => {
+        const statusA = a.status ?? ""; // Use nullish coalescing to handle undefined or null
+        const statusB = b.status ?? "";
+      
+        if (statusA < statusB) return -1;
+        if (statusA > statusB) return 1;
+        return 0;
+      },
       render: (status, endDate) => {
         // console.log(status)
+        let displayStatus = status ?? "Inactive";
         let style = {};
         let dotColor = "";
     
