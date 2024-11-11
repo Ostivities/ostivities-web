@@ -394,19 +394,27 @@ function EventDetailsEdit(): JSX.Element {
     </div>
   );
 
-  function getGreeting() {
+  const getGreeting = () => {
     const currentHour = new Date().getHours();
-    
-    if (currentHour < 12) {
-      return "Good Morning";
-    } else if (currentHour < 18) {
-      return "Good Afternoon";
+    let greeting;
+    let icon;
+  
+    if (currentHour >= 5 && currentHour < 12) {
+      greeting = "Good Morning";
+      icon = "☀️"; // Sun icon
+    } else if (currentHour >= 12 && currentHour < 18) {
+      greeting = "Good Afternoon";
+      icon = "🌞"; // Sun with face icon for afternoon
     } else {
-      return "Good Evening";
+      greeting = "Good Evening";
+      icon = "🌜"; // Moon icon
     }
-  }   
-  const Greeting = ({ userName }: { userName: string }) => {
-  }
+  
+    return { greeting, icon };
+  };
+  
+  // Call getGreeting to retrieve greeting and icon values
+  const { greeting, icon } = getGreeting();
   
   return (
     <Fragment>
@@ -421,7 +429,7 @@ function EventDetailsEdit(): JSX.Element {
             className=""
             content={
               formStep === 1
-                ? `${getGreeting()}, ${userName}` 
+              ? `${greeting} ${icon}, ${userName}` 
                 : formStep === 2
                 ? "Event Page Appearance"
                 : "Event Ticket"

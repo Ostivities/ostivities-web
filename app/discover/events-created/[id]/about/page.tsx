@@ -360,19 +360,27 @@ const AboutEvent = () => {
     ? profile?.data?.data?.data?.firstName
     : profile?.data?.data?.data?.businessName || "";
 
-    function getGreeting() {
+    const getGreeting = () => {
       const currentHour = new Date().getHours();
-      
-      if (currentHour < 12) {
-        return "Good Morning";
-      } else if (currentHour < 18) {
-        return "Good Afternoon";
+      let greeting;
+      let icon;
+    
+      if (currentHour >= 5 && currentHour < 12) {
+        greeting = "Good Morning";
+        icon = "☀️"; // Sun icon
+      } else if (currentHour >= 12 && currentHour < 18) {
+        greeting = "Good Afternoon";
+        icon = "🌞"; // Sun with face icon for afternoon
       } else {
-        return "Good Evening";
+        greeting = "Good Evening";
+        icon = "🌜"; // Moon icon
       }
-    }   
-    const Greeting = ({ userName }: { userName: string }) => {
-    }
+    
+      return { greeting, icon };
+    };
+    
+    // Call getGreeting to retrieve greeting and icon values
+    const { greeting, icon } = getGreeting();
   
   return (
     <EventDetailsComponent>
@@ -385,7 +393,7 @@ const AboutEvent = () => {
           <div
             style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}
           >
-        <Heading5 className="" content={`${getGreeting()}, ${userName}`} /> 
+        <Heading5 className="" content={`${greeting} ${icon}, ${userName}`} /> 
         </div>
           <Paragraph
             className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular mb-2"
