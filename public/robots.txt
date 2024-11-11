@@ -15,6 +15,7 @@ Disallow: /discover/vendorsregistration
 Disallow: /discover/vendorstickets
 Disallow: /forgot-password
 Disallow: /login
+Disallow: /Signup
 Disallow: /feedback
 Disallow: /privacy-policy
 Disallow: /password-reset
