@@ -40,25 +40,7 @@ function Faqs(): JSX.Element {
                 marginBottom: "16px",
               }}
             >
-              1. What is Ostivities?
-            </h2>
-            <p style={{ fontSize: "16px", marginBottom: "24px" }}>
-            Ostivities is a one-stop event management platform created to 
-            streamline and enhance the planning experience for any occasion. 
-            Ostivities provides organizers with the tools and resources to 
-            seamlessly oversee every aspect of their event, from conception to 
-            execution, all in a user-friendly and efficient manner.
-            </p>
-
-            <h2
-              style={{
-                fontSize: "20px",
-                fontWeight: "bold",
-                color: "#e20000",
-                marginBottom: "16px",
-              }}
-            >
-              2. How do I create an account?
+              1. How do I create an account?
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
             To create an account on Ostivities, follow these steps:
@@ -94,7 +76,7 @@ function Faqs(): JSX.Element {
                 marginBottom: "16px",
               }}
             >
-              3. What should I do if I forget my password?
+              2. What should I do if I forget my password?
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
             If you forget your password, you can reset it by following these steps:
@@ -130,7 +112,7 @@ function Faqs(): JSX.Element {
                 marginBottom: "16px",
               }}
             >
-              4. How do I find events near me?
+              3. How do I find events near me?
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
             To find events near you:
@@ -164,7 +146,7 @@ function Faqs(): JSX.Element {
                 marginBottom: "16px",
               }}
             >
-              5. How do I create an event?
+              4. How do I create an event?
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
             To create an event on Ostivities:
@@ -206,7 +188,7 @@ function Faqs(): JSX.Element {
                 marginBottom: "16px",
               }}
             >
-              6. How can I manage my event registrations?
+              5. How can I manage my event registrations?
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
             To manage your event registrations:
@@ -242,7 +224,7 @@ function Faqs(): JSX.Element {
                 marginBottom: "16px",
               }}
             >
-              7. Can I get a refund if I can&apos;t attend an event?
+              6. Can I get a refund if I can&apos;t attend an event?
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
             Refunds are handled according to our <a href="/refund-policy"style={{ color: "#e20000", textDecoration: "none" }}>Refund Policy</a>. 
@@ -259,7 +241,7 @@ function Faqs(): JSX.Element {
                 marginBottom: "16px",
               }}
             >
-              8. How do I contact Ostivities for support?
+              7. How do I contact Ostivities for support?
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
             If you need help or have questions, you can contact Ostivities support in the following ways:
@@ -292,7 +274,7 @@ function Faqs(): JSX.Element {
                 marginBottom: "16px",
               }}
             >
-              9. How do I update my account information?
+              8. How do I update my account information?
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
             To update your account information:
@@ -328,7 +310,7 @@ function Faqs(): JSX.Element {
                 marginBottom: "16px",
               }}
             >
-              10. How do I unsubscribe from newsletters and promotional emails?
+              9. How do I unsubscribe from newsletters and promotional emails?
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
             If you wish to stop receiving newsletters and promotional emails,
@@ -343,7 +325,7 @@ function Faqs(): JSX.Element {
                 marginBottom: "16px",
               }}
             >
-              11. Is my personal information safe with Ostivities?
+              10. Is my personal information safe with Ostivities?
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
             Yes, protecting your personal information is a priority for us. 
@@ -358,7 +340,7 @@ function Faqs(): JSX.Element {
                 marginBottom: "16px",
               }}
             >
-              12. Can I transfer my ticket to someone else?
+              11. Can I transfer my ticket to someone else?
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
             Ticket transferability depends on the event organizer&apos;s policies. 
@@ -375,7 +357,7 @@ function Faqs(): JSX.Element {
                 marginBottom: "16px",
               }}
             >
-              13. What payment methods are accepted on Ostivities?
+              12. What payment methods are accepted on Ostivities?
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
             We accept a variety of payment methods, including major credit cards 
@@ -391,7 +373,7 @@ function Faqs(): JSX.Element {
                 marginBottom: "16px",
               }}
             >
-              14. How do I report a problem with an event or another user?
+              13. How do I report a problem with an event or another user?
             </h2>
             <p style={{ fontSize: "16px", marginBottom: "24px" }}>
             If you encounter a problem with an event or another user, 
