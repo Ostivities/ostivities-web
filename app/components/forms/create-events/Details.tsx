@@ -340,7 +340,21 @@ function Details(): JSX.Element {
     </div>
   );
 
+  function getGreeting() {
+    const currentHour = new Date().getHours();
+    
+    if (currentHour < 12) {
+      return "Good Morning";
+    } else if (currentHour < 18) {
+      return "Good Afternoon";
+    } else {
+      return "Good Evening";
+    }
+  }   
+  const Greeting = ({ userName }: { userName: string }) => {
+  } 
   return (
+
     <Fragment>
       <AddTicketModal
         open={isModalOpen}
@@ -353,7 +367,7 @@ function Details(): JSX.Element {
             className=""
             content={
               formStep === 1
-                ? `Hello, ${userName}`
+                ? `${getGreeting()}, ${userName}`
                 : formStep === 2
                 ? "Event Page Appearance"
                 : "Event Ticket"
@@ -363,7 +377,7 @@ function Details(): JSX.Element {
             className="text-OWANBE_PRY text-md font-normal font-BricolageGrotesqueMedium"
             content={
               formStep === 1
-                ? "Welcome! Ready to create your next event?"
+                ? "Welcome! Ready to create your next event?" 
                 : formStep === 2
                 ? "Upload your event image here by clicking the camera icon (File size should not be more than 10MB)."
                 : "For free events, Ostivities is free. For paid events, we charge a percentage-based transaction fee on ticket sales."

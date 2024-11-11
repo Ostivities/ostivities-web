@@ -363,7 +363,7 @@ export default function EventDetailsComponent({
             </Button>
           </Dropdown>
 
-          {/* <Dropdown menu={{ items: CoordinatorsItems, onClick: handleMenuClick }}> */}
+          <Dropdown menu={{ items: CoordinatorsItems, onClick: handleMenuClick }}>
           <Button
             type={pathname.includes("coordinators") ? "primary" : "text"}
             className="font-BricolageGrotesqueRegular cursor-pointer font-medium w-40 rounded-2xl"
@@ -378,7 +378,7 @@ export default function EventDetailsComponent({
               {/* <IoChevronDown /> */}
             </Space>
           </Button>
-          {/* </Dropdown> */}
+          </Dropdown>
 
           <Button
             type={pathname.includes("sales") ? "primary" : "text"}

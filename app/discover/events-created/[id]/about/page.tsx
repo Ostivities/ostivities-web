@@ -14,8 +14,9 @@ import {
   EVENT_TYPES,
   STATES_IN_NIGERIA,
 } from "@/app/utils/data";
-import { EVENT_INFO, EXHIBITION_SPACE } from "@/app/utils/enums";
+import { EVENT_INFO, EXHIBITION_SPACE, ACCOUNT_TYPE } from "@/app/utils/enums";
 import { IFormInput } from "@/app/utils/interface";
+import { useProfile } from "@/app/hooks/auth/auth.hook";
 import {
   DeleteOutlined,
   FacebookFilled,
@@ -87,6 +88,7 @@ const AboutEvent = () => {
   const { getUserEvent } = useGetUserEvent(params?.id);
   const [showRadio, setShowRadio] = useState(false);
   const { updateEvent } = useUpdateEvent();
+  const { profile } = useProfile();
   const [editorContent, setEditorContent] = useState("");
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
@@ -352,6 +354,26 @@ const AboutEvent = () => {
     return current && current < dayjs().startOf("day");
   };
 
+  const accountType = profile?.data?.data?.data?.accountType;
+  const userName =
+  accountType === ACCOUNT_TYPE.PERSONAL
+    ? profile?.data?.data?.data?.firstName
+    : profile?.data?.data?.data?.businessName || "";
+
+    function getGreeting() {
+      const currentHour = new Date().getHours();
+      
+      if (currentHour < 12) {
+        return "Good Morning";
+      } else if (currentHour < 18) {
+        return "Good Afternoon";
+      } else {
+        return "Good Evening";
+      }
+    }   
+    const Greeting = ({ userName }: { userName: string }) => {
+    }
+  
   return (
     <EventDetailsComponent>
       <form
@@ -359,10 +381,18 @@ const AboutEvent = () => {
         autoComplete="off"
         className="flex flex-col space-y-8 pb-5"
       >
-        <Space direction="vertical">
-          <Heading5 className="pb-0" content={"Event Details"} />
-        </Space>
-
+        <Space direction="vertical" size={"small"} style={{ width: "100%" }}>
+          <div
+            style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}
+          >
+        <Heading5 className="" content={`${getGreeting()}, ${userName}`} /> 
+        </div>
+          <Paragraph
+            className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular mb-2"
+            content={"Manage your event seamlessly from here."}
+            styles={{ fontWeight: "normal !important" }}
+          />
+</Space>
         <div className="grid grid-cols-2 gap-x-4">
           <div className="flex flex-col space-y-4 pr-6">
             <Controller
@@ -390,7 +420,7 @@ const AboutEvent = () => {
             <Paragraph
               className="text-OWANBE_DARK text-sm font-normal font-BricolageGrotesqueRegular"
               content={"Event Details"}
-              styles={{ fontWeight: "bold !important" }}
+              styles={{ fontWeight: "bold !important" }} 
             />
             <div style={{  marginBottom: "35px", marginTop: "10px", position: "relative" }}>
               {componentDisabled && (
@@ -1287,7 +1317,7 @@ const AboutEvent = () => {
               style={{
                 borderRadius: "20px",
                 fontFamily: "BricolageGrotesqueMedium",
-                marginTop: "20px",
+                marginTop: "25px",
               }}
               onClick={(e) => {
                 e.preventDefault(); // Prevent form default submission behavior
@@ -1306,7 +1336,7 @@ const AboutEvent = () => {
               style={{
                 borderRadius: "20px",
                 fontFamily: "BricolageGrotesqueMedium",
-                marginTop: "20px",
+                marginTop: "25px",
               }}
               onClick={(e) => {
                 e.preventDefault();
