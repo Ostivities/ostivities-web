@@ -467,7 +467,17 @@ const EventPageAppearance: React.FC = () => {
           size={"large"}
           className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
           onClick={() => {
-            router.push("/create-events");
+            setCookie("form_stage", 3);
+            setCookie("stage_one", "finish");
+            setCookie("stage_two", "finish");
+            setCookie("stage_three", "process");
+            if (cookies.ticket_created === "yes") {
+              router.push(`/discover/create-events/${params?.id}/tickets_created`);
+            } else {
+              router.push(
+                `/discover/create-events/${params?.id}/event_tickets`
+              );
+            }
           }}
         >
           Skip & do this later

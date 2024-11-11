@@ -33,8 +33,8 @@ const CantPublishModal = ({ open, onCancel, onClose, onOk }: IModal): JSX.Elemen
           Unable to Publish Event!
           </h2>
           <p className="font-bricolage-grotesque font-regular text-OWAMBE_FADE_TEXT max-w-md mx-auto mt-5">
-          You will need to fulfil all necessary requirements before you can publish your event. 
-          You can view more details about your event by clicking the button below.
+          One or more ticket needs to be created before you can be able to publish an event.
+          Click the button below to manage your event.
           </p>
           <div className="flex justify-center">
             <button

@@ -4,13 +4,11 @@ import { Button } from "antd";
 import Image from "next/image";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Heading5 } from "../../../../components/typography/Typography";
-import PublishSuccess from "@/app/components/OstivitiesModal/CantPublishModal";
 import CantPublish from "@/app/components/OstivitiesModal/CantPublishModal";
 import { useState } from "react";
 import { useGetUserEvent, usePublishEvent } from "@/app/hooks/event/event.hook";
 import { useProfile } from "@/app/hooks/auth/auth.hook";
 import { useCookies } from "react-cookie";
-
 import React from "react";
 import { dateFormat, timeFormat } from "../../../../utils/helper";
 import Link from "next/link";
@@ -48,8 +46,6 @@ export default function PublishEvent(): JSX.Element {
   // console.log(eventDetails, "eventDetails");
 
   const handlePublishEvent = async () => {
-    const response = await publishEvent.mutateAsync(params?.id || cookies.event_id);
-    console.log(response, "response");
     setIsModalOpen(true);
     // if (response.) {
     // }
@@ -324,7 +320,7 @@ export default function PublishEvent(): JSX.Element {
 
       {/* Modal for Publish Success */}
       {isModalOpen && (
-        <PublishSuccess
+        <CantPublish
           open={isModalOpen}
           onClose={() => setIsModalOpen(false)}
         />
