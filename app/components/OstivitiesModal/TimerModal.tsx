@@ -8,7 +8,7 @@ const TimerModal = () => {
   const params = useParams<{ event: string }>();
 
   return (
-    <div className="fixed inset-0 bg-black/20 grid place-items-center">
+    <div className="fixed inset-0 bg-black/20 grid place-items-center z-50">
       <div
         onClick={(e) => e.stopPropagation()}
         className="bg-white rounded-2xl px-12 py-16 lg:min-w-[43rem]"
