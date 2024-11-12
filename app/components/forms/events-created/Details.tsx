@@ -9,6 +9,7 @@ import {
   FileExcelOutlined,
   FilePdfOutlined,
 } from "@ant-design/icons";
+import { GET_ALL_USER_EVENTS } from "@/app/utils/constants";
 import { Button, Input, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import jsPDF from "jspdf";
@@ -20,6 +21,7 @@ import { useGetAllUserEvents, usePublishEvent } from "@/app/hooks/event/event.ho
 import { IEventDetails } from "@/app/utils/interface";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
 import { PUBLISH_TYPE } from "@/app/utils/enums";
+import { useQueryClient } from "@tanstack/react-query"
 
 
 
@@ -27,6 +29,7 @@ const { Search } = Input;
 
 const EventsCreatedTable: React.FC = () => {
   const router = useRouter(); 
+  const queryClient = useQueryClient()
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -37,6 +40,12 @@ const EventsCreatedTable: React.FC = () => {
   const { getAllUserEvents } = useGetAllUserEvents(currentPage, pageSize, searchText);
   // console.log(getAllUserEvents,"getAllUserEvents")
   const { publishEvent } = usePublishEvent();
+
+  useEffect(() => {
+    if (currentPage || pageSize) {
+      queryClient.invalidateQueries({ queryKey: [GET_ALL_USER_EVENTS, currentPage, pageSize, searchText] });
+    }
+  }, [currentPage, pageSize]);
 
 
   const totalEvents = getAllUserEvents?.data?.data?.data?.total;

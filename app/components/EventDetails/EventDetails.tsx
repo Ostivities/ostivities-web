@@ -198,6 +198,7 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
+            
             href={`/discover/events-created/${params?.id}/tickets/discounts`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >

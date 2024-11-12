@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Input, List, Spin, message } from 'antd';
+import { useCookies } from "react-cookie";
 
 // Utility to load Google Maps API dynamically
 const loadGoogleMapsApi = () => {
@@ -37,7 +38,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({ onSelectLocation }) => 
   const [googleLoaded, setGoogleLoaded] = useState(false); // Track if Google Maps API is loaded
   const [selectedAddress, setSelectedAddress] = useState<string>('');
   const [mapSrc, setMapSrc] = useState<string>(''); // State to store the iframe URL
-
+  const [cookies, setCookie] = useCookies(["mapSrc"])
   // Load Google Maps API when the component mounts
   useEffect(() => {
     loadGoogleMapsApi()
@@ -98,7 +99,8 @@ const LocationSearch: React.FC<LocationSearchProps> = ({ onSelectLocation }) => 
         // Construct the iframe src URL using both address and coordinates
         setMapSrc(
           `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&q=${encodeURIComponent(address)}&center=${lat},${lng}&zoom=15`
-        );      
+        );
+        setCookie("mapSrc", `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&q=${encodeURIComponent(address)}&center=${lat},${lng}&zoom=15`)      
       } else {
         message.error('Failed to geocode the address.');
       }

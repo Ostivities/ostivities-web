@@ -102,6 +102,11 @@ function CreateTicketPage(): JSX.Element {
                   `/discover/create-events/${params?.id}/incomplete-publish-event`
                 );
               }}
+              disabled={hasTickets}
+              style={{
+                backgroundColor: hasTickets ? "#cccccc" : "#e20000",
+                color: hasTickets ? "#666666" : "white",
+              }}
             >
               Skip & do this later
             </Button>
@@ -114,6 +119,10 @@ function CreateTicketPage(): JSX.Element {
                 router.push(
                   `/discover/create-events/${params?.id}/publish-events`
                 );
+              }}
+              style={{
+                backgroundColor: !hasTickets ? "#cccccc" : "#e20000",
+                color: !hasTickets ? "#666666" : "white",
               }}
               disabled={!hasTickets}
               // title="This button is disabled until the user creates a ticket"

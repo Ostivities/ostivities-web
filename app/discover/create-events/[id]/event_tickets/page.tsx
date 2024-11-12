@@ -131,6 +131,11 @@ function CreateTicketPage(): JSX.Element {
                 router.push(`/discover/create-events/${params?.id}/publish-events`);
               }}
               disabled={true}
+              style={{
+                backgroundColor: "#cccccc",
+                color: "#666666",
+              }}
+
               title="This button is disabled until the user creates a ticket"
             >
               Save & continue

@@ -34,6 +34,7 @@ const EventPageAppearance: React.FC = () => {
     "stage_two",
     "stage_three",
     "ticket_created",
+    "mapSrc",
   ]);
   const params = useParams<{ id: string }>();
   const { getUserEvent } = useGetUserEvent(params?.id);
@@ -446,7 +447,7 @@ const EventPageAppearance: React.FC = () => {
                   maxLength={250}
                 />
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.7465438415493!2d3.427544374805034!3d6.426600593564447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bf5402368b913%3A0xca22600eeec46d00!2sEko%20Hotel%20And%20Suites!5e0!3m2!1sen!2sus!4v1730907605084!5m2!1sen!2sus"
+                  src={cookies?.mapSrc}
                   width="100%"
                   height="120"
                   style={{ border: 0, marginTop: "20px" }}
