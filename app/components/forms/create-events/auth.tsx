@@ -69,9 +69,9 @@ const useFetch = () => {
     }
 
     // Update login state if profile fetch fails
-    if (profile?.isFetching === false && profile?.isSuccess === false) {
-      setIsLoggedIn(false);
-    }
+    // if (profile?.isFetching === false && profile?.isSuccess === false) {
+    //   setIsLoggedIn(false);
+    // }
 
     setLoading(false);
 

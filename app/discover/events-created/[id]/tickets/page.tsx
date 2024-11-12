@@ -19,7 +19,10 @@ import { Button, Dropdown, Menu, Space, Table, Input, message } from "antd";
 import { ColumnsType } from "antd/es/table";
 import React, { useState, useEffect, useMemo } from "react";
 import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
-import { useEnableEventRegistration, useGetUserEvent } from "@/app/hooks/event/event.hook"
+import {
+  useEnableEventRegistration,
+  useGetUserEvent,
+} from "@/app/hooks/event/event.hook";
 import { useParams, useRouter } from "next/navigation";
 import { TICKET_ENTITY, TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
 import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
@@ -61,9 +64,9 @@ const EventTickets = () => {
 
   const { getTickets } = useGetEventTickets(params?.id);
   const ticketData = getTickets?.data?.data?.data;
-  const { enableEventRegistration } = useEnableEventRegistration()
-  const { getUserEvent } = useGetUserEvent(params?.id)
-  const eventDetails = getUserEvent?.data?.data?.data
+  const { enableEventRegistration } = useEnableEventRegistration();
+  const { getUserEvent } = useGetUserEvent(params?.id);
+  const eventDetails = getUserEvent?.data?.data?.data;
   // const {id, ...rest} = ticketData;
   // console.log(ticketData, "ticketData")
   // console.log(duplicateData, "duplicateData")
@@ -207,13 +210,15 @@ const EventTickets = () => {
       },
     },
     {
-      title: 
-      <Label 
-      content="Ticket Entity" 
-      className="font-semibold text-OWANBE_TABLE_TITLE"
-      />,
+      title: (
+        <Label
+          content="Ticket Entity"
+          className="font-semibold text-OWANBE_TABLE_TITLE"
+        />
+      ),
       dataIndex: "ticketEntity",
-      sorter: (a, b) => (a.ticketEntity ?? "").localeCompare(b.ticketEntity ?? ""),
+      sorter: (a, b) =>
+        (a.ticketEntity ?? "").localeCompare(b.ticketEntity ?? ""),
       render: (text, record: ITicketDetails) => {
         return (
           <>
@@ -274,33 +279,33 @@ const EventTickets = () => {
   const [isToggled, setIsToggled] = useState(false);
 
   useEffect(() => {
-    if(eventDetails?.enable_registration === true) {
-      setIsToggled(true)
-    } else{
-      setIsToggled(false)
+    if (eventDetails?.enable_registration === true) {
+      setIsToggled(true);
+    } else {
+      setIsToggled(false);
     }
-  },[eventDetails])
+  }, [eventDetails]);
 
   const onChange = async () => {
     if (isToggled === false) {
       const response = await enableEventRegistration.mutateAsync({
         id: params?.id,
-        enable_registration: !isToggled
-      })
-      if(response.status === 200) {
-        getUserEvent.refetch()
-        message.success("Registration started")
-        setIsToggled(!isToggled)
+        enable_registration: !isToggled,
+      });
+      if (response.status === 200) {
+        getUserEvent.refetch();
+        message.success("Registration started");
+        setIsToggled(!isToggled);
       }
     } else {
       const response = await enableEventRegistration.mutateAsync({
         id: params?.id,
-        enable_registration: false
-      })
-      if(response.status === 200) {
+        enable_registration: false,
+      });
+      if (response.status === 200) {
         setIsToggled(!isToggled);
-        getUserEvent.refetch()
-        message.success("Registration stopped")
+        getUserEvent.refetch();
+        message.success("Registration stopped");
       }
     }
   };
@@ -356,9 +361,15 @@ const EventTickets = () => {
                     setIsToggled(checked); // Update the toggle state
                     onChange(); // Additional logic if necessary
                   }}
+                  isDisabled={ticketData?.length === 0}
                   label="Registration toggle" // Provide the required label prop
                 />
-                <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
+                <span
+                  className={`font-BricolageGrotesqueMedium font-medium text-sm ${
+                    ticketData?.length === 0 ? "text-gray-400" : "text-OWANBE_DARK"
+                  }`}
+                >
+                  {" "}
                   {isToggled ? "Stop registration" : "Start registration"}
                 </span>
               </div>
