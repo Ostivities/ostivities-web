@@ -181,7 +181,7 @@ const CreateAttendeeFlyer = () => {
                                     </span>
                                 </p>
                             </div>
-                            <div className="mt-20 -mb-7 flex items-center justify-end text-xs space-x-2 text-right">
+                            <div className="mt-20 -mb-9 flex items-center justify-end text-xs space-x-2 text-right">
                                 <FaMapMarkerAlt className="text-red-500" />
                             </div>
 
@@ -190,12 +190,12 @@ const CreateAttendeeFlyer = () => {
                                 {/* Scan Information on the Left */}
                                 <div className="flex flex-col text-white-500 font-semibold">
                                     <div><ReactQRCode value={eventUrl} size={50} /></div>
-                                    <div>Scan to register</div>
+                                    <div className="text-xs">Scan to register</div>
                                 </div>
 
                                 {/* Time Information on the Right */}
-                                <div className="-mb-6 flex items-center space-x-2 text-right">
-                                    <p>
+                                <div className="-mb-8 flex items-center space-x-2 text-right">
+                                <p className="text-xs">
                                         <p>{eventDetails?.address}</p>
                                         {timeFormat(eventDetails?.startDate)} {eventDetails?.timeZone} | {dateFormat(eventDetails?.startDate)}
                                     </p>
