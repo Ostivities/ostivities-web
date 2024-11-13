@@ -204,7 +204,7 @@ const EventDetail = () => {
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
   const handleCloseModal2 = () => setShowModal(false);
-  
+
 
   const eventUrl = eventDetails?.eventURL;
   const eventTitle = eventDetails?.eventName;
@@ -739,18 +739,18 @@ const EventDetail = () => {
             </div>
           </div>
           <Modal
-        title="Create your personalized attendee flier and share to the world 🥳 "
-        open={showModal}
-        onCancel={handleCloseModal2}
-        footer={null} // Removes the default footer
-        width="50%" // Optional: Adjust width for a better overlay feel
-        styles={{ body: { padding: '20px', height: 'auto', maxHeight: '87vh', overflowY: 'auto' } }}  // Decrease height
-        centered // Centers the modal in the viewport
-        destroyOnClose // Destroy modal on close for cleanup
-      >
-        {/* Pass the onClose function to the CreateAttendeeFlyer modal */}
-        <Dpmodal />
-      </Modal>
+            title="Upload your prefered image, download and share with everyone 🥳 "
+            open={showModal}
+            onCancel={handleCloseModal2}
+            footer={null} // Removes the default footer
+            width="50%" // Optional: Adjust width for a better overlay feel
+            styles={{ body: { padding: '20px', height: 'auto', maxHeight: '87vh', overflowY: 'auto' } }}  // Decrease height
+            centered // Centers the modal in the viewport
+            destroyOnClose // Destroy modal on close for cleanup
+          >
+            {/* Pass the onClose function to the CreateAttendeeFlyer modal */}
+            <Dpmodal />
+          </Modal>
         </div>
         <br />
         <br />
