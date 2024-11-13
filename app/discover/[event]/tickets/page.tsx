@@ -120,7 +120,7 @@ const TicketsSelection = () => {
     }[]
   >([]);
 
-  // console.log(ticketDetails, "ticketDetails");
+  console.log(ticketDetails, "ticketDetails");
 
   useEffect(() => {
     // When ticketData is updated, re-initialize selectedTickets
@@ -193,11 +193,11 @@ const TicketsSelection = () => {
             : ticket?.groupPrice || 0;
         const currentFee =
           realPrice < 10000 && realPrice > 0
-            ? realPrice * 0.05 + 150
+            ? Math.round(realPrice * 0.05 + 150)
             : realPrice >= 10000 && realPrice < 25000
-            ? realPrice * 0.045 + 150 // For ticketrealPrice between 10000 and 24999
+            ? Math.round(realPrice * 0.045 + 150) // For ticketrealPrice between 10000 and 24999
             : realPrice >= 25000
-            ? realPrice * 0.035 + 150 // For ticketPrice 25000 and above
+            ? Math.round(realPrice * 0.035 + 150) // For ticketPrice 25000 and above
             : 0;
         if (existingTicketIndex > -1) {
           const existingTicket = updatedDetails[existingTicketIndex];
@@ -281,11 +281,11 @@ const TicketsSelection = () => {
           const newTicketNumber = existingTicket?.ticketNumber - 1;
           const currentFee =
             ticket?.ticketPrice < 10000 && ticket?.ticketPrice > 0
-              ? ticket?.ticketPrice * 0.05 + 150
+              ? Math.round(ticket?.ticketPrice * 0.05 + 150)
               : ticket?.ticketPrice >= 10000 && ticket?.ticketPrice < 25000
-              ? ticket?.ticketPrice * 0.045 + 150
+              ? Math.round(ticket?.ticketPrice * 0.045 + 150)
               : ticket?.ticketPrice >= 25000
-              ? ticket?.ticketPrice * 0.035 + 150
+              ? Math.round(ticket?.ticketPrice * 0.035 + 150)
               : 0;
 
           if (newTicketNumber >= 0) {
@@ -308,9 +308,7 @@ const TicketsSelection = () => {
                   : ticket?.discount?.discount_value * newTicketNumber,
               ticketFee: currentFee * newTicketNumber,
               ticketNumber: newTicketNumber,
-              subTotal:
-                price * newTicketNumber +
-                currentFee * newTicketNumber,
+              subTotal: price * newTicketNumber + currentFee * newTicketNumber,
             };
           }
         }
@@ -687,7 +685,9 @@ const TicketsSelection = () => {
   }, [minutes, remainingSeconds]);
 
   const [termsAndCondition, setTermsAndCondition] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<PAYMENT_METHODS | undefined>(undefined);
+  const [paymentMethod, setPaymentMethod] = useState<
+    PAYMENT_METHODS | undefined
+  >(undefined);
 
   // console.log(termsAndCondition, paymentMethod);
   return (
@@ -823,10 +823,10 @@ const TicketsSelection = () => {
                                       }}
                                     >
                                       ₦
-                                      {(
+                                      {Math.round(
                                         ticket?.ticketPrice * 0.05 +
-                                        150 +
-                                        ticket?.ticketPrice
+                                          150 +
+                                          ticket?.ticketPrice
                                       ).toLocaleString()}
                                     </span>{" "}
                                     <span
@@ -837,9 +837,8 @@ const TicketsSelection = () => {
                                       }}
                                     >
                                       Including ₦
-                                      {(
-                                        ticket?.ticketPrice * 0.05 +
-                                        150
+                                      {Math.round(
+                                        ticket?.ticketPrice * 0.05 + 150
                                       ).toLocaleString()}{" "}
                                       fee
                                     </span>
@@ -856,10 +855,10 @@ const TicketsSelection = () => {
                                         }}
                                       >
                                         ₦
-                                        {(
+                                        {Math.round(
                                           ticket?.ticketPrice * 0.045 +
-                                          150 +
-                                          ticket?.ticketPrice
+                                            150 +
+                                            ticket?.ticketPrice
                                         ).toLocaleString()}
                                       </span>{" "}
                                       <span
@@ -888,10 +887,10 @@ const TicketsSelection = () => {
                                       }}
                                     >
                                       ₦
-                                      {(
+                                      {Math.round(
                                         ticket?.ticketPrice * 0.035 +
-                                        150 +
-                                        ticket?.ticketPrice
+                                          150 +
+                                          ticket?.ticketPrice
                                       ).toLocaleString()}
                                     </span>{" "}
                                     <span
@@ -1771,9 +1770,7 @@ const TicketsSelection = () => {
           termsAndCondition={termsAndCondition}
           allInfo={allInfo}
           isFormValid={isFormValid}
-          onClick={
-            handleButtonClick
-          }
+          onClick={handleButtonClick}
           ticketDetails={ticketDetails}
           continueBtn
           // {currentPage === "tickets" ? continueBtn : paymentBtn}
