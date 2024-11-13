@@ -9,8 +9,8 @@ import html2canvas from "html2canvas";
 import placeholder from "@/public/placeholder.svg";
 import attend from "@/public/attend.svg";
 import rec from "@/public/recbg.svg";
-import watermark from "@/public/watermark.svg";
 import { FaMapMarkerAlt, FaCalendarAlt, FaClock } from "react-icons/fa";
+import ReactQRCode from 'react-qr-code';
 
 const templates = [
     { id: 1, name: "Template 1", backgroundColor: "#151515", textColor: "#ffffff" },
@@ -42,23 +42,23 @@ const CreateAttendeeFlyer = () => {
 
     const handleDownload = async () => {
         if (!flyerRef.current) return;
-    
+
         // Render the canvas with a higher scale for better resolution
         const canvas = await html2canvas(flyerRef.current, {
             scale: 5, // Adjust this scale for higher resolution, e.g., 2x, 3x, etc.
             useCORS: true, // Enable cross-origin image loading
         });
-    
+
         // Convert the canvas to a high-quality PNG image
         const image = canvas.toDataURL("image/png", 1.0); // 1.0 = highest quality
-    
+
         // Create a link element for downloading the image
         const link = document.createElement("a");
         link.href = image;
         link.download = "attendee_flyer.png";
         link.click();
     };
-    
+
 
     const router = useRouter();
     const pathname = usePathname();
@@ -181,27 +181,27 @@ const CreateAttendeeFlyer = () => {
                                     </span>
                                 </p>
                             </div>
-                            <div className="mt-16 flex items-center justify-end text-xs space-x-2 text-right">
+                            <div className="mt-20 -mb-7 flex items-center justify-end text-xs space-x-2 text-right">
                                 <FaMapMarkerAlt className="text-red-500" />
                             </div>
-                            <div className="mt-1 flex items-center justify-end text-xs space-x-2 text-right">
-                                {/* <FaMapMarkerAlt className="text-red-500" /> */}
-                                <p>{eventDetails?.address}</p>
-                            </div>
-                            <div className="mt-1 flex items-center justify-between text-xs">
-                                {/* Registration Link on the Left */}
-                                <div className="text-white-500 font-semibold">
-                                    Register at: Ostivitis.com
+
+
+                            <div className="mt-1 flex justify-between items-center">
+                                {/* Scan Information on the Left */}
+                                <div className="flex flex-col text-white-500 font-semibold">
+                                    <div><ReactQRCode value={eventUrl} size={50} /></div>
+                                    <div>Scan to register</div>
                                 </div>
 
                                 {/* Time Information on the Right */}
-                                <div className="flex items-center space-x-2 text-right">
-                                    {/* <FaClock className="text-green-500" /> */}
+                                <div className="-mb-6 flex items-center space-x-2 text-right">
                                     <p>
+                                        <p>{eventDetails?.address}</p>
                                         {timeFormat(eventDetails?.startDate)} {eventDetails?.timeZone} | {dateFormat(eventDetails?.startDate)}
                                     </p>
                                 </div>
                             </div>
+
 
                         </div>
                     ) : (
