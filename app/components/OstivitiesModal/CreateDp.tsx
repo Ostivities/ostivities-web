@@ -42,15 +42,23 @@ const CreateAttendeeFlyer = () => {
 
     const handleDownload = async () => {
         if (!flyerRef.current) return;
-
-        const canvas = await html2canvas(flyerRef.current);
-        const image = canvas.toDataURL("image/png");
-
+    
+        // Render the canvas with a higher scale for better resolution
+        const canvas = await html2canvas(flyerRef.current, {
+            scale: 5, // Adjust this scale for higher resolution, e.g., 2x, 3x, etc.
+            useCORS: true, // Enable cross-origin image loading
+        });
+    
+        // Convert the canvas to a high-quality PNG image
+        const image = canvas.toDataURL("image/png", 1.0); // 1.0 = highest quality
+    
+        // Create a link element for downloading the image
         const link = document.createElement("a");
         link.href = image;
         link.download = "attendee_flyer.png";
         link.click();
     };
+    
 
     const router = useRouter();
     const pathname = usePathname();
