@@ -34,7 +34,7 @@ const GuestDetail = ({ open, onCancel, onOk, data }: IModal) => {
       <div className="grid grid-cols-2 gap-x-8 gap-y-8 pb-4">
         {/* Ticket Name Field */}
         <Space direction="vertical" size="small">
-          <Label content="Ticket Name(s)" className="font-BricolageGrotesqueRegular" />
+          <Label content="Ticket Bought" className="font-BricolageGrotesqueRegular" />
           {Array.isArray(data?.eventName) ? (
             data.eventName.map((ticketName: string, index: number) => (
               <Input key={index} readOnly defaultValue={ticketName} />

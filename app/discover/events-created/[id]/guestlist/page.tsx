@@ -59,7 +59,13 @@ const EventsGuestList = () => {
 
   const columns = [
     {
-      title: "Ticket Name",
+      title: "Guest Name",
+      dataIndex: "eventType",
+      sorter: (a: SalesDataType, b: SalesDataType) =>
+        a.eventType.localeCompare(b.eventType),
+    },
+    {
+      title: "Ticket Bought",
       dataIndex: "eventName",
       sorter: (a: SalesDataType, b: SalesDataType) =>
         a.eventName.localeCompare(b.eventName),
@@ -69,12 +75,6 @@ const EventsGuestList = () => {
       dataIndex: "ticketSold",
       sorter: (a: SalesDataType, b: SalesDataType) =>
         a.ticketSold - b.ticketSold,
-    },
-    {
-      title: "Guest Name",
-      dataIndex: "eventType",
-      sorter: (a: SalesDataType, b: SalesDataType) =>
-        a.eventType.localeCompare(b.eventType),
     },
     {
       title: "Order Number",
@@ -113,7 +113,7 @@ const EventsGuestList = () => {
       : data;
 
     const formattedExportData = exportData.map((item) => ({
-      "Ticket Name": item.eventName,
+      "Ticket Bought": item.eventName,
       "Ticket Quantity": item.ticketSold,
       "Buyer Name": item.eventType,
       "Order Number": item.fees,
@@ -159,9 +159,18 @@ const EventsGuestList = () => {
         data={modalData}
       />
       <EventDetailsComponent>
-        <Space direction="vertical" size={"large"}>
-          <Space direction="vertical" size={"middle"} style={{ width: "100%" }}>
-            <Heading5 className="" content={"Guest List"} />
+      <Space direction="vertical" size={"small"} style={{ width: "100%" }}>
+          <div
+            style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}
+          >
+        <Heading5 className="" content={"Guestlist"} /> 
+        </div>
+          <Paragraph
+            className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular mb-10"
+            content={"This displays a record of guests who have bought your tickets."}
+            styles={{ fontWeight: "normal !important" }}
+          />
+            
             <Paragraph
               className="text-OWANBE_PRY font-normal font-BricolageGrotesqueRegular text-center mx-auto border border-OWANBE_PRY bg-OWANBE_PRY2 rounded-lg w-[500px] h-14 flex flex-row items-center justify-center text-3xl py-8 place-self-center"
               content={`${filteredData.length} Ticketed Guests`}
@@ -224,7 +233,6 @@ const EventsGuestList = () => {
               scroll={{ x: "max-content" }}
             />
           </Space>
-        </Space>
       </EventDetailsComponent>
     </React.Fragment>
   );

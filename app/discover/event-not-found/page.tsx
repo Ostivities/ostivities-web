@@ -33,8 +33,8 @@ function EventNotFound(): JSX.Element {
           />
         </div>
         <div className="w-full md:w-1/2 flex flex-col gap-2 p-8 md:p-[8rem] justify-center md:order-1">
-          <h2 className="w-full font-BricolageGrotesqueMedium text-3xl font-bold mb-4">Oops.... page not found!</h2>
-          <p className="w-full font-BricolageGrotesqueMedium text-md mb-6">This Page doesn`t exist or was removed!
+          <h2 className="w-full font-BricolageGrotesqueMedium text-3xl font-bold mb-4">Oops.... event not found!</h2>
+          <p className="w-full font-BricolageGrotesqueMedium text-md mb-6">This event doesn`t exist or was removed!
           We suggest you confirm the search parameters is correct and try again.</p>
           <button
             onClick={handleBackToDiscovery}
