@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { useParams, useRouter } from "next/navigation";
 import { pdfGenerator } from "../../TicketPdfGenerator";
-import OwanbeLogo from "@/public/owanbe.svg";
+import { Tooltip } from 'antd';
 
 
 const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): JSX.Element => {
@@ -78,7 +78,7 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
         ticket_banner: "../../public/owanbe.svg"
       }
     ],
-    order_number: "345678",  
+    order_number: "345678",
   }
 
   return (
@@ -113,26 +113,45 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
               >
                 Download Ticket
               </button>
-              <button
-                onClick={handleSyncToCalendar}
-                className="flex items-center justify-center p-2 rounded-full"
-                style={{ backgroundColor: '#fadede' }}
-                aria-label="Sync to Calendar"
-              >
-                <Image
-                  src="/icons/calendar.svg"
-                  alt="Calendar Icon"
-                  height={24}
-                  width={24}
-                />
-              </button>
+              <Tooltip title="Click to sync to calendar">
+                <button
+                  onClick={handleSyncToCalendar}
+                  className="flex items-center justify-center p-2 rounded-full"
+                  style={{ backgroundColor: '#fadede' }}
+                  aria-label="Sync to Calendar"
+                >
+                  <Image
+                    src="/icons/calendar.svg"
+                    alt="Calendar Icon"
+                    height={24}
+                    width={24}
+                  />
+                </button>
+              </Tooltip>
             </div>
-            <button
-              onClick={() => router.push(`/discover/${params?.event}`)}
-              className="primary-btn font-normal continue cursor-pointer text-base w-[20rem]"
-            >
-              Buy Again
-            </button>
+            <div className="flex items-center space-x-4 w-[20rem]">
+              <button
+                onClick={() => router.push(`/discover/${params?.event}`)}
+                className="primary-btn font-normal continue cursor-pointer text-base flex-1 whitespace-nowrap px-3 py-2"
+              >
+                Buy Again
+              </button>
+              <Tooltip title="Click to discover more events">
+                <button
+                  onClick={() => router.push(`/discover`)}
+                  className="flex items-center justify-center p-2 rounded-full"
+                  style={{ backgroundColor: '#fadede' }}
+                  aria-label="Go back to discovery"
+                >
+                  <Image
+                    src="/icons/discovery.svg"
+                    alt="Discover Icon"
+                    height={24}
+                    width={24}
+                  />
+                </button>
+              </Tooltip>
+            </div>
           </div>
         </div>
       </div>
