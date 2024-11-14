@@ -340,7 +340,30 @@ function Details(): JSX.Element {
     </div>
   );
 
+  const getGreeting = () => {
+    const currentHour = new Date().getHours();
+    let greeting;
+    let icon;
+  
+    if (currentHour >= 5 && currentHour < 12) {
+      greeting = "Good Morning";
+      icon = "☀️"; // Sun icon
+    } else if (currentHour >= 12 && currentHour < 18) {
+      greeting = "Good Afternoon";
+      icon = "🌞"; // Sun with face icon for afternoon
+    } else {
+      greeting = "Good Evening";
+      icon = "🌜"; // Moon icon
+    }
+  
+    return { greeting, icon };
+  };
+  
+  // Call getGreeting to retrieve greeting and icon values
+  const { greeting, icon } = getGreeting();
+
   return (
+
     <Fragment>
       <AddTicketModal
         open={isModalOpen}
@@ -353,7 +376,7 @@ function Details(): JSX.Element {
             className=""
             content={
               formStep === 1
-                ? `Hello, ${userName}`
+                ? `${greeting} ${icon}, ${userName}`
                 : formStep === 2
                 ? "Event Page Appearance"
                 : "Event Ticket"
@@ -363,7 +386,7 @@ function Details(): JSX.Element {
             className="text-OWANBE_PRY text-md font-normal font-BricolageGrotesqueMedium"
             content={
               formStep === 1
-                ? "Welcome! Ready to create your next event?"
+                ? "Welcome! Ready to create your next event?" 
                 : formStep === 2
                 ? "Upload your event image here by clicking the camera icon (File size should not be more than 10MB)."
                 : "For free events, Ostivities is free. For paid events, we charge a percentage-based transaction fee on ticket sales."

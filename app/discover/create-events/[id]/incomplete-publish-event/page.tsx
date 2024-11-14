@@ -4,13 +4,11 @@ import { Button } from "antd";
 import Image from "next/image";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Heading5 } from "../../../../components/typography/Typography";
-import PublishSuccess from "@/app/components/OstivitiesModal/CantPublishModal";
 import CantPublish from "@/app/components/OstivitiesModal/CantPublishModal";
 import { useState } from "react";
 import { useGetUserEvent, usePublishEvent } from "@/app/hooks/event/event.hook";
 import { useProfile } from "@/app/hooks/auth/auth.hook";
 import { useCookies } from "react-cookie";
-
 import React from "react";
 import { dateFormat, timeFormat } from "../../../../utils/helper";
 import Link from "next/link";
@@ -31,6 +29,7 @@ export default function PublishEvent(): JSX.Element {
     "stage_one",
     "stage_two",
     "stage_three",
+    "mapSrc",
   ]);
   const pathname = usePathname();
   const [imageUrl, setImageUrl] = useState<string>("/images/emptyimage2.png");
@@ -48,8 +47,6 @@ export default function PublishEvent(): JSX.Element {
   // console.log(eventDetails, "eventDetails");
 
   const handlePublishEvent = async () => {
-    const response = await publishEvent.mutateAsync(params?.id || cookies.event_id);
-    console.log(response, "response");
     setIsModalOpen(true);
     // if (response.) {
     // }
@@ -292,7 +289,7 @@ export default function PublishEvent(): JSX.Element {
                   maxLength={250}
                 />
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.7465438415493!2d3.427544374805034!3d6.426600593564447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bf5402368b913%3A0xca22600eeec46d00!2sEko%20Hotel%20And%20Suites!5e0!3m2!1sen!2sus!4v1730907605084!5m2!1sen!2sus"
+                  src={cookies?.mapSrc}
                   width="100%"
                   height="120"
                   style={{ border: 0, marginTop: "20px" }}
@@ -324,7 +321,7 @@ export default function PublishEvent(): JSX.Element {
 
       {/* Modal for Publish Success */}
       {isModalOpen && (
-        <PublishSuccess
+        <CantPublish
           open={isModalOpen}
           onClose={() => setIsModalOpen(false)}
         />

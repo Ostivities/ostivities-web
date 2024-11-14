@@ -30,6 +30,9 @@ import start from "@/public/Startsin.svg";
 import end from "@/public/Endsin.svg";
 import placeholder from "@/public/placeholder.svg";
 import Head from "next/head";
+import { Tooltip } from 'antd';
+import Dpmodal from '@/app/components/OstivitiesModal/CreateDp';
+
 
 const ShareModalContent: React.FC<{ url: string; title: string }> = ({
   url,
@@ -191,9 +194,17 @@ const EventDetail = () => {
     return e;
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false); // State to control modal visibility
+
+  // Open the modal
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
+  const handleCloseModal2 = () => setShowModal(false);
+
 
   const eventUrl = eventDetails?.eventURL;
   const eventTitle = eventDetails?.eventName;
@@ -546,11 +557,29 @@ const EventDetail = () => {
                   {eventDetails?.eventName}
                 </h2>
 
-                <Button
-                  icon={<ShareAltOutlined className="text-black text-2xl" />}
-                  onClick={handleOpenModal}
-                  className="bg-white border-none p-0"
-                />
+                <div className="flex items-center space-x-3"> {/* Wrapper for buttons with tighter spacing */}
+                  <Button
+                    icon={<ShareAltOutlined className="text-black text-2xl" />}
+                    onClick={handleOpenModal}
+                    className="bg-white border-none p-0"
+                  />
+
+                  <Tooltip title="Click to Create Your Attendee Flyer">
+                    <Button
+                      onClick={handleShowModal}
+                      className="p-2"
+                      style={{
+                        backgroundColor: "#e20000",
+                        color: "#FFFFFF",
+                        border: "none",
+                        borderRadius: "25px",
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
+                      Create Af
+                    </Button>
+                  </Tooltip>
+                </div>
 
                 <Modal
                   open={isModalOpen}
@@ -621,7 +650,7 @@ const EventDetail = () => {
                   htmlContent={eventDetails?.eventDetails || ""}
                   maxLength={250}
                 />
-            
+
                 {mapSrc && (
                   <iframe
                     src={mapSrc}
@@ -632,7 +661,7 @@ const EventDetail = () => {
                     referrerPolicy="no-referrer-when-downgrade"
                   />
                 )}
-                
+
                 <div className="flex justify-center mt-12">
                   {eventDetails?.vendor_registration === true ? (
                     <>
@@ -709,6 +738,19 @@ const EventDetail = () => {
               </div>
             </div>
           </div>
+          <Modal
+            title="Upload your prefered image, download and share with everyone 🥳 "
+            open={showModal}
+            onCancel={handleCloseModal2}
+            footer={null} // Removes the default footer
+            width="50%" // Optional: Adjust width for a better overlay feel
+            styles={{ body: { padding: '20px', height: 'auto', maxHeight: '87vh', overflowY: 'auto' } }}  // Decrease height
+            centered // Centers the modal in the viewport
+            destroyOnClose // Destroy modal on close for cleanup
+          >
+            {/* Pass the onClose function to the CreateAttendeeFlyer modal */}
+            <Dpmodal />
+          </Modal>
         </div>
         <br />
         <br />

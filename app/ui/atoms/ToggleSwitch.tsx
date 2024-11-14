@@ -5,6 +5,7 @@ const ToggleSwitch = ({
   label,
   isActive,
   onToggle,
+  isDisabled,
 }: ToggleSwitchAttributes) => {
   // Correctly handle the change event and call onToggle with the checked value
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,12 +16,13 @@ const ToggleSwitch = ({
     <div className="flex gap-x-3 items-center">
       <label
         htmlFor={label}
-        className="flex cursor-pointer relative w-12 h-6 rounded-full"
+        className={`flex relative w-12 h-6 rounded-full ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
       >
         <input
           type="checkbox"
           id={label}
-          className="sr-only peer"
+          disabled={isDisabled}
+          className={`sr-only peer ${isDisabled ? "cursor-not-allowed" : ""}`}
           checked={isActive}
           onChange={handleChange} // Use handleChange to call onToggle
         />

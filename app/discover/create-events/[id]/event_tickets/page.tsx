@@ -2,6 +2,7 @@
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import useFetch from "@/app/components/forms/create-events/auth";
 import AddTicketModal from "@/app/components/OstivitiesModal/AddTicket";
+import Cantpublish from "@/app/components/OstivitiesModal/CantPublishModal";
 import Steppers from "@/app/components/Steppper/Steppers";
 import EventTicketTable from "@/app/components/Tables/EventTicket";
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
@@ -130,6 +131,11 @@ function CreateTicketPage(): JSX.Element {
                 router.push(`/discover/create-events/${params?.id}/publish-events`);
               }}
               disabled={true}
+              style={{
+                backgroundColor: "#cccccc",
+                color: "#666666",
+              }}
+
               title="This button is disabled until the user creates a ticket"
             >
               Save & continue

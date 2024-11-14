@@ -213,7 +213,7 @@ const EventsGuestListEmail = () => {
               size={"large"}
               htmlType="button"
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
-              onClick={() => message.success('Guestlist email has been initiated successfully')}
+              onClick={() => message.success('Email sent successfully')}
             >
               Send Email 
             </Button>

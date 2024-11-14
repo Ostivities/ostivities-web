@@ -51,6 +51,7 @@ export interface ToggleSwitchAttributes {
   description?: string; // Make it optional if not always provided
   label: string;
   isActive: boolean;
+  isDisabled?: boolean;
   onToggle: (checked: boolean) => void; // Custom handler for toggle switch
 }
 
