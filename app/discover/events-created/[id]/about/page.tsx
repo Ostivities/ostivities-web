@@ -58,6 +58,12 @@ import { RangePickerProps } from "antd/es/date-picker";
 
 interface FieldType {}
 
+interface DisabledTime {
+  disabledHours: () => number[];
+  disabledMinutes: () => number[];
+  disabledSeconds: () => number[];
+}
+
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
 const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const cloud_api: any = process.env.NEXT_PUBLIC_CLOUDINARY_API_URL;
@@ -360,6 +366,22 @@ const AboutEvent = () => {
       current &&
       (current < dayjs().startOf("day") || current < startDate.startOf("day"))
     );
+  };
+
+
+
+  const disabledTime = (current: dayjs.Dayjs | null): Partial<DisabledTime> => {
+    const startDate = dayjs(startDateValue); // Your specified start date
+
+    // Disable past times only if the selected date is the start date
+    if (current && current.isSame(startDate, "day")) {
+      return {
+        disabledHours: () => Array.from({ length: startDate.hour() }, (_, i) => i),
+        disabledMinutes: () => Array.from({ length: startDate.minute() }, (_, i) => i),
+        disabledSeconds: () => Array.from({ length: startDate.second() }, (_, i) => i),
+      };
+    }
+    return {};
   };
 
 
@@ -949,6 +971,7 @@ const AboutEvent = () => {
                           format="YYYY-MM-DD HH:mm:ss"
                           style={{ width: "100%", height: "33px" }}
                           disabledDate={disabledDate}
+                          disabledTime={disabledTime}
                         />
                       )}
                     />
@@ -1187,6 +1210,7 @@ const AboutEvent = () => {
                               format="YYYY-MM-DD HH:mm:ss"
                               style={{ width: "100%", height: "33px" }}
                               disabledDate={disabledDate}
+                              disabledTime={disabledTime}
                             />
                           )}
                         />
