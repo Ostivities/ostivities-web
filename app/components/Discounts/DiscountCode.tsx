@@ -33,10 +33,17 @@ type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 
 interface FieldType {}
 
+interface DisabledTime {
+  disabledHours: () => number[];
+  disabledMinutes: () => number[];
+  disabledSeconds: () => number[];
+}
+
 const DiscountCode = (): JSX.Element => {
   const { toggleDiscount } = useDiscount();
   const [form] = Form.useForm();
   const [ticketApplicable, setTicketApplicable] = useState("");
+  const [startDateValue, setStartDateValue] = useState("");
   const [discountType, setDiscountType] = useState("");
   const [selectedTickets, setSelectedTickets] = useState<string[]>([]);
   const params = useParams<{ id: string }>();
@@ -53,8 +60,29 @@ const DiscountCode = (): JSX.Element => {
 
 
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
-    // Can not select days before today and today
-    return current && current < dayjs().startOf("day");
+    const startDate = dayjs(startDateValue); // Replace `startDateValue` with your actual start date
+
+    // Disable dates before today and before the `startDate`
+    return (
+      current &&
+      (current < dayjs().startOf("day") || current < startDate.startOf("day"))
+    );
+  };
+
+
+
+  const disabledTime = (current: dayjs.Dayjs | null): Partial<DisabledTime> => {
+    const startDate = dayjs(startDateValue); // Your specified start date
+
+    // Disable past times only if the selected date is the start date
+    if (current && current.isSame(startDate, "day")) {
+      return {
+        disabledHours: () => Array.from({ length: startDate.hour() }, (_, i) => i),
+        disabledMinutes: () => Array.from({ length: startDate.minute() }, (_, i) => i),
+        disabledSeconds: () => Array.from({ length: startDate.second() }, (_, i) => i),
+      };
+    }
+    return {};
   };
 
   useEffect(() => {
@@ -285,6 +313,10 @@ const DiscountCode = (): JSX.Element => {
                 showTime
                 format="YYYY-MM-DD HH:mm:ss"
                 style={{ width: "100%", height: "33px" }}
+                onChange={(date) => {
+                  form.setFieldsValue({ startDateAndTime: date });
+                  setStartDateValue(date?.format("YYYY-MM-DD HH:mm:ss"));}
+                }
                 disabledDate={disabledDate}
               />
             </Form.Item>
@@ -304,6 +336,7 @@ const DiscountCode = (): JSX.Element => {
                 format="YYYY-MM-DD HH:mm:ss"
                 style={{ width: "100%", height: "33px" }}
                 disabledDate={disabledDate}
+                disabledTime={disabledTime}
               />
             </Form.Item>
 

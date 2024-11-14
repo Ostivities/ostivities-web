@@ -492,7 +492,7 @@ export default function EventDetailsComponent({
     }).format(salesRevenue);
 
     return (
-      <div className="grid grid-cols-4 gap-x-6">
+      <div className="grid grid-cols-3 gap-x-6">
         <CardMetrics
           title="Total Tickets Sold"
           value={250}
@@ -501,16 +501,16 @@ export default function EventDetailsComponent({
           valueStyle={valueStyle}
           containerStyle={containerStyle}
         />
-        <CardMetrics
+        {/* <CardMetrics
           title="Total Space Booked"
           value={10}
           cardStyle={cardStyle}
           titleStyle={titleStyle}
           valueStyle={valueStyle}
           containerStyle={containerStyle}
-        />
+        /> */}
         <CardMetrics
-          title="Total Sales Revenue"
+          title="Total Net Sales Revenue"
           value={formattedRevenue}
           cardStyle={cardStyle}
           titleStyle={titleStyle}
