@@ -86,6 +86,7 @@ const AboutEvent = () => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [eventUrl, setEventUrl] = useState("");
   const { getUserEvent } = useGetUserEvent(params?.id);
+  const [startDateValue, setStartDateValue] = useState("");
   const [showRadio, setShowRadio] = useState(false);
   const { updateEvent } = useUpdateEvent();
   const { profile } = useProfile();
@@ -212,6 +213,7 @@ const AboutEvent = () => {
       setVendorRegRadio(eventDetails?.vendor_registration);
       setValue("vendor_registration", eventDetails?.vendor_registration);
       setValue("startDate", dayjs(eventDetails?.startDate));
+      setStartDateValue(eventDetails?.startDate);
       setValue("endDate", dayjs(eventDetails?.endDate));
       setValue("frequency", eventDetails?.frequency);
     }
@@ -351,9 +353,15 @@ const AboutEvent = () => {
   );
 
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
-    // Can not select days before today and today
-    return current && current < dayjs().startOf("day");
+    const startDate = dayjs(startDateValue); // Replace `startDateValue` with your actual start date
+
+    // Disable dates before today and before the `startDate`
+    return (
+      current &&
+      (current < dayjs().startOf("day") || current < startDate.startOf("day"))
+    );
   };
+
 
   const accountType = profile?.data?.data?.data?.accountType;
   const userName =
@@ -914,6 +922,10 @@ const AboutEvent = () => {
                         <DatePicker
                           {...field}
                           disabled={componentDisabled}
+                          onChange={(date) => {
+                            field.onChange(date);
+                            setStartDateValue(date);
+                          }}
                           showTime
                           format="YYYY-MM-DD HH:mm:ss"
                           style={{ width: "100%", height: "33px" }}

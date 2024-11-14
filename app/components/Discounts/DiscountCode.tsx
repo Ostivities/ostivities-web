@@ -37,6 +37,7 @@ const DiscountCode = (): JSX.Element => {
   const { toggleDiscount } = useDiscount();
   const [form] = Form.useForm();
   const [ticketApplicable, setTicketApplicable] = useState("");
+  const [startDateValue, setStartDateValue] = useState("");
   const [discountType, setDiscountType] = useState("");
   const [selectedTickets, setSelectedTickets] = useState<string[]>([]);
   const params = useParams<{ id: string }>();
@@ -53,8 +54,13 @@ const DiscountCode = (): JSX.Element => {
 
 
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
-    // Can not select days before today and today
-    return current && current < dayjs().startOf("day");
+    const startDate = dayjs(startDateValue); // Replace `startDateValue` with your actual start date
+
+    // Disable dates before today and before the `startDate`
+    return (
+      current &&
+      (current < dayjs().startOf("day") || current < startDate.startOf("day"))
+    );
   };
 
   useEffect(() => {
@@ -285,6 +291,10 @@ const DiscountCode = (): JSX.Element => {
                 showTime
                 format="YYYY-MM-DD HH:mm:ss"
                 style={{ width: "100%", height: "33px" }}
+                onChange={(date) => {
+                  form.setFieldsValue({ startDateAndTime: date });
+                  setStartDateValue(date?.format("YYYY-MM-DD HH:mm:ss"));}
+                }
                 disabledDate={disabledDate}
               />
             </Form.Item>
