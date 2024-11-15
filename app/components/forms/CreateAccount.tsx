@@ -292,6 +292,7 @@ function CreateAccount(): JSX.Element {
             height: "51px",
           }}
           loading={registerUser.isPending}
+          disabled
         >
           Sign Up
         </Button>
