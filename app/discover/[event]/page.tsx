@@ -645,7 +645,11 @@ const EventDetail = () => {
                     src={eventDetails?.event_coordinates}
                     width="100%"
                     height="120"
-                    style={{ border: 0, marginTop: "20px" }}
+                    style={{
+                      border: 0,
+                      marginTop: "20px",
+                      borderRadius: "0.5rem", // Corner radius
+                    }}
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                   />

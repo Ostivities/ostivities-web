@@ -23,10 +23,10 @@ function AuthLayout({ children }: IAuthLayout): JSX.Element {
             <div className="w-full md:w-7/12">
               {" "}
               <Card
-                className="min-h-full md:px-5 w-full !rounded-[30px]"
+                className="min-h-full md:px-5 w-full !rounded-[35px]"
                 style={{
                   // borderRadius: '70px 70px 70px 70px',
-                  boxShadow: "0px 8px 24px 0px #00000014",
+                  boxShadow: "0px 8px 40px 0px #00000014",
                   border: "1px solid #ffffff",
                 }}
               >

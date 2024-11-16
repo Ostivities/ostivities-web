@@ -13,12 +13,12 @@ import React from "react";
 function ForgotPassword() {
   return (
     <AuthLayout>
-      <div className="mt-2">
+      <div className="mt-8">
         {" "}
         {/* Add margin-top to create space from AuthLayout */}
         <div className="flex flex-col">
           <Small />
-          <div className="md:w-full md:mx-auto flex flex-col">
+          <div className="md:w-4/5 md:mx-auto flex flex-col space-y-8">
             <Space direction="vertical" size={"small"} className="">
               <Heading5 content={"Forgot Password?"} className="" />
               <Paragraph

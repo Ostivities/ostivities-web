@@ -138,7 +138,7 @@ function LoginForm(): JSX.Element {
             width: "100%",
             height: "51px",
           }}
-          loading={loginUser.isPending}
+          loading={loginUser.isPending} 
         >
           Sign In
         </Button>

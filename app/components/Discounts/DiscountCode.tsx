@@ -29,7 +29,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 
-interface FieldType {}
+interface FieldType { }
 
 interface DisabledTime {
   disabledHours: () => number[];
@@ -307,12 +307,13 @@ const DiscountCode = (): JSX.Element => {
               ]}
             >
               <DatePicker
-                showTime
-                format="YYYY-MM-DD HH:mm:ss"
+                showTime={{ format: "h:mm:ss A" }} // Enables 12-hour time picker with AM/PM
+                format="YYYY-MM-DD h:mm:ss A" // Displays date and time in 12-hour format
                 style={{ width: "100%", height: "33px" }}
                 onChange={(date) => {
+                  // Ensure the displayed and stored value is in 12-hour format
                   form.setFieldsValue({ startDateAndTime: date });
-                  setStartDateValue(date?.format("YYYY-MM-DD HH:mm:ss"));
+                  setStartDateValue(date?.format("YYYY-MM-DD h:mm:ss A"));
                 }}
                 disabledDate={disabledDate}
               />
@@ -329,8 +330,8 @@ const DiscountCode = (): JSX.Element => {
               ]}
             >
               <DatePicker
-                showTime
-                format="YYYY-MM-DD HH:mm:ss"
+                showTime={{ format: "h:mm:ss A" }} // Enables 12-hour format in the time picker
+                format="YYYY-MM-DD h:mm:ss A" // Ensures the input value matches the 12-hour format
                 style={{ width: "100%", height: "33px" }}
                 disabledDate={disabledDate}
                 disabledTime={disabledTime}
