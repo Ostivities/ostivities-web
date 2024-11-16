@@ -95,6 +95,7 @@ export interface ICreateEvent
     fileUrl: string;
   };
   discover?: boolean;
+  event_coordinates: string;
 }
 
 export interface IEventDetails {
