@@ -243,17 +243,6 @@ const EventDetail = () => {
 
   const [isEventStarted, setIsEventStarted] = useState(false);
   const [isRegistrationClosed, setIsRegistrationClosed] = useState(false);
-  const [mapSrc, setMapSrc] = useState('');
-
-
-  useEffect(() => {
-    if (eventDetails?.address) {
-      // Construct the Google Maps iframe src URL using the address
-      setMapSrc(
-        `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&q=${encodeURIComponent(eventDetails.address)}`
-      );
-    }
-  }, [eventDetails?.address]);  // Re-run when the address changes
 
   useEffect(() => {
     if (eventDetails?.enable_registration === false) {
@@ -651,9 +640,9 @@ const EventDetail = () => {
                   maxLength={250}
                 />
 
-                {mapSrc && (
+                {eventDetails?.event_coordinates && (
                   <iframe
-                    src={mapSrc}
+                    src={eventDetails?.event_coordinates}
                     width="100%"
                     height="120"
                     style={{ border: 0, marginTop: "20px" }}

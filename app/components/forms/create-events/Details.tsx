@@ -93,6 +93,7 @@ function Details(): JSX.Element {
     "stage_one",
     "stage_two",
     "stage_three",
+    "mapSrc"
   ]);
   const [vendorRegRadio, setVendorRegRadio] = useState(false);
   const [showRadio, setShowRadio] = useState(false);
@@ -322,6 +323,7 @@ function Details(): JSX.Element {
         eventDetails: editorContent,
         socials,
         eventInfo: EVENT_INFO.SINGLE_EVENT,
+        event_coordinates: cookies?.mapSrc,
       });
 
       if (response.status === 201) {

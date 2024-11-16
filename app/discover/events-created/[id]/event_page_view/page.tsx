@@ -14,14 +14,13 @@ import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import ReadMoreHTML from "@/app/components/ReadMoreHTML";
 import placeholder from "@/public/placeholder.svg";
-
+import { ACCOUNT_TYPE, EVENT_INFO, EXHIBITION_SPACE } from "@/app/utils/enums";
 
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
 const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const cloud_api: any = process.env.NEXT_PUBLIC_CLOUDINARY_API_URL;
 const event_appearance_image: any =
   process.env.NEXT_PUBLIC_OSTIVITIES_EVENT_APPEARANCE_IMAGES;
-
 
 const EventPageView = () => {
   const router = useRouter();
@@ -39,13 +38,14 @@ const EventPageView = () => {
   const { getUserEvent } = useGetUserEvent(params?.id);
   // console.log(getUserEvent, "getUserEvent");
 
-
   const eventDetails = getUserEvent?.data?.data?.data;
 
-  const userFullName =
-    (eventDetails?.user?.firstName || "") +
-    " " +
-    (eventDetails?.user?.lastName || "");
+  const name =
+    eventDetails?.user?.accountType === ACCOUNT_TYPE.PERSONAL
+      ? `${eventDetails?.user?.firstName ?? ""} ${
+          eventDetails?.user?.lastName ?? ""
+        }`.trim()
+      : `${eventDetails?.user?.businessName ?? ""}`;
 
   const props: UploadProps = {
     name: "image",
@@ -82,7 +82,7 @@ const EventPageView = () => {
           }
         }
         setLoader(false);
-      } catch (error) { }
+      } catch (error) {}
     },
     async onChange(info) {
       if (info.file.status !== "uploading") {
@@ -108,22 +108,22 @@ const EventPageView = () => {
     (link: any) => link?.name.toLowerCase() === "facebook"
   );
 
-  const validateFile = (file: { type: string; size: number; }) => {
-    const isAllowedFormat = ['image/png', 'image/jpeg', 'image/gif'].includes(file.type);
+  const validateFile = (file: { type: string; size: number }) => {
+    const isAllowedFormat = ["image/png", "image/jpeg", "image/gif"].includes(
+      file.type
+    );
     const isBelowSizeLimit = file.size / 1024 / 1024 < 10; // Convert file size to MB
 
     if (!isAllowedFormat) {
-      message.error('Only PNG, JPEG, and GIF files are allowed.');
+      message.error("Only PNG, JPEG, and GIF files are allowed.");
     }
 
     if (!isBelowSizeLimit) {
-      message.error('File must be smaller than 10MB.');
+      message.error("File must be smaller than 10MB.");
     }
 
     return isAllowedFormat && isBelowSizeLimit;
   };
-
-
 
   return (
     <EventDetailsComponent>
@@ -136,12 +136,15 @@ const EventPageView = () => {
               "Update your event image here by clicking the camera icon (File size should not be more than 10MB)."
             }
             styles={{ fontWeight: "normal !important" }}
-          /><br />
+          />
+          <br />
         </Space>
         <div className="flex gap-12">
           <div className="relative w-[390px] h-[520px] rounded-[3.125rem] overflow-hidden">
             <Image
-              src={eventDetails?.eventImage ? eventDetails.eventImage : placeholder}
+              src={
+                eventDetails?.eventImage ? eventDetails.eventImage : placeholder
+              }
               alt="Event Image"
               fill
               style={{ objectFit: "cover" }}
@@ -182,9 +185,9 @@ const EventPageView = () => {
                 ) : (
                   <CameraFilled
                     style={{
-                      fontSize: '24px',
-                      color: '#e20000',
-                      background: 'none',
+                      fontSize: "24px",
+                      color: "#e20000",
+                      background: "none",
                     }}
                   />
                 )}
@@ -207,7 +210,13 @@ const EventPageView = () => {
 
                 {/* Text Section */}
                 <div className="ml-2">
-                  <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                  <div
+                    className="text-sm"
+                    style={{
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
                     Date
                   </div>
                   <div
@@ -215,7 +224,8 @@ const EventPageView = () => {
                       width: "140px",
                       whiteSpace: "normal",
                       wordWrap: "break-word",
-                      fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif"
+                      fontWeight: 300,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
                     }}
                   >
                     {dateFormat(eventDetails?.startDate)} -{" "}
@@ -225,18 +235,24 @@ const EventPageView = () => {
               </div>
               <div className="flex gap-3">
                 <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
-                  <Image
-                    src="/icons/time.svg"
-                    alt=""
-                    height={25}
-                    width={25}
-                  />
+                  <Image src="/icons/time.svg" alt="" height={25} width={25} />
                 </div>
                 <div>
-                  <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                  <div
+                    className="text-sm"
+                    style={{
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
                     Time
                   </div>
-                  <div style={{ fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                  <div
+                    style={{
+                      fontWeight: 300,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
                     {timeFormat(eventDetails?.startDate)} -{" "}
                     {timeFormat(eventDetails?.endDate)}
                   </div>
@@ -252,7 +268,13 @@ const EventPageView = () => {
                   />
                 </div>
                 <div>
-                  <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                  <div
+                    className="text-sm"
+                    style={{
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
                     Location
                   </div>
                   <div
@@ -271,25 +293,33 @@ const EventPageView = () => {
 
               <div className="flex gap-3">
                 <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
-                  <Image
-                    src="/icons/host.svg"
-                    alt=""
-                    height={25}
-                    width={25}
-                  />
+                  <Image src="/icons/host.svg" alt="" height={25} width={25} />
                 </div>
                 <div>
-                  <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                  <div
+                    className="text-sm"
+                    style={{
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
                     Host
                   </div>
-                  <div style={{ fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}>{userFullName}</div>
+                  <div
+                    style={{
+                      fontWeight: 300,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
+                    {name}
+                  </div>
                 </div>
               </div>
 
               {twitterLink?.url ||
-                instagramLink?.url ||
-                websiteLink?.url ||
-                facebookLink?.url ? (
+              instagramLink?.url ||
+              websiteLink?.url ||
+              facebookLink?.url ? (
                 <div className="flex gap-3 items-center">
                   <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
                     <Image
@@ -300,7 +330,13 @@ const EventPageView = () => {
                     />
                   </div>
                   <div>
-                    <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                    <div
+                      className="text-sm"
+                      style={{
+                        fontWeight: 600,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
                       Contact Us
                     </div>
                     <div className="flex items-center gap-4 mt-1">
@@ -380,19 +416,23 @@ const EventPageView = () => {
                 </h2>
               </div>
             </div>
-            <ReadMoreHTML htmlContent={eventDetails?.eventDetails || ""} maxLength={500} />
-
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.7465438415493!2d3.427544374805034!3d6.426600593564447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bf5402368b913%3A0xca22600eeec46d00!2sEko%20Hotel%20And%20Suites!5e0!3m2!1sen!2sus!4v1730907605084!5m2!1sen!2sus"
-              width="100%"
-              height="120"
-              style={{ border: 0, marginTop: "20px" }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
+            <ReadMoreHTML
+              htmlContent={eventDetails?.eventDetails || ""}
+              maxLength={500}
             />
 
-            <div className="flex justify-center mt-12">
-            </div>
+            {eventDetails?.event_coordinates && (
+              <iframe
+                src={eventDetails?.event_coordinates}
+                width="100%"
+                height="120"
+                style={{ border: 0, marginTop: "20px" }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            )}
+
+            <div className="flex justify-center mt-12"></div>
           </div>
         </div>
       </Space>

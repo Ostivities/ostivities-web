@@ -258,18 +258,38 @@ body {
   background-image: url(/Topology-2.svg);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: auto;
-  background-position-x: 36%;
-  background-position-y: -15%;
+  background-size: 300px;
+  background-position-x: 89%;
+  background-position-y: -11%;
 }
 
-.auth-background-light {
+/* .auth-background-light {
   background-image: url(/Topologylight.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: auto;
   background-position-x: 36%;
   background-position-y: -15%;
+} */
+
+@media screen and (min-width: 768px) {
+  .auth-background {
+    background-image: url(/Topology-2.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto;
+    background-position-x: 36%;
+    background-position-y: -15%;
+  }
+
+  .auth-background-light {
+    background-image: url(/Topologylight.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto;
+    background-position-x: 36%;
+    background-position-y: -15%;
+  }
 }
 
 .side-nav > .ant-menu-item-selected {
