@@ -415,16 +415,6 @@ const DiscountCode = (): JSX.Element => {
               Create Discount
             </Button>
           )}
-          <Button
-            type="default"
-            htmlType="submit"
-            size="large"
-            className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
-            // onClick={handleAddDiscount}
-            loading={createDiscount.isPending}
-          >
-            Create Discount
-          </Button>
         </Form.Item>
       </Space>
     </Form>

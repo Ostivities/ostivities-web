@@ -254,13 +254,22 @@ body {
   border-bottom: none !important;
 }
 
+/* .auth-background {
+  background-image: url(/Topology-2.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto;
+  background-position-x: 36%;
+  background-position-y: -15%;
+} */
+
 .auth-background {
   background-image: url(/Topology-2.svg);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 300px;
-  background-position-x: 89%;
-  background-position-y: -11%;
+  background-size: 90%;
+  background-position-x: 450%;
+  background-position-y: -17%;
 }
 
 /* .auth-background-light {
@@ -984,12 +993,10 @@ body {
 /* global.css */
 .custom-heading {
   color: #e20000 !important;
-  font-size: 52px !important;
 }
 
 .welcome-heading {
   color: #000000 !important;
-  font-size: 52px !important;
   font-weight: normal !important;
 }
 

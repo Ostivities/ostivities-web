@@ -114,7 +114,7 @@ function Header2(): JSX.Element {
         </nav>
 
         {/* SM AND MD SCREENS */}
-        <div className="flex flex-row items-center justify-between px-2 py-3 lg:hidden">
+        <div className="bg-white flex flex-row items-center justify-between px-2 py-3 lg:hidden">
           <Link href="/" shallow>
             <Image
               src={OwanbeLogo}

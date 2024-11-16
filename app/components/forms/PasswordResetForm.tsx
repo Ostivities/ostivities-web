@@ -91,7 +91,6 @@ function PasswordResetForm(): JSX.Element {
         </div>
       </Form.Item>
 
-      <br />
       <Form.Item
         label="Enter your New Password"
         name="password"

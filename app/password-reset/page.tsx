@@ -13,8 +13,8 @@ function PasswordReset() {
 
   return (
     <AuthLayout>
-      <div className="w-4/5 mx-auto flex flex-col space-y-8 pt-32">
-        <Space direction="vertical" size={"small"} className="w-5/6">
+      <div className="w-4/5 mx-auto flex flex-col space-y-8 pt-8">
+        <Space direction="vertical" size={"small"} className="">
           <Heading5 content={"Password Reset"} className="" />
           <Paragraph
             content={
