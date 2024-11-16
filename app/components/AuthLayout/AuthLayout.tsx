@@ -8,10 +8,10 @@ function AuthLayout({ children }: IAuthLayout): JSX.Element {
   return (
     <main className="overflow-hidden min-h-screen flex flex-col">
       <Header />
-      <section className="flex-1 md:mt-8 bg-OWANBE_AUTH_BG md:flex items-center justify-center">
+      <section className="flex-1 md:mt-24 bg-OWANBE_AUTH_BG md:flex items-center justify-center">
         <div className="md:container md:mx-auto px-5 pt-8 pb-12 lg:pb-0 md:pt-6 lg:pt-0">
           <div className="flex md:flex-row flex-col mt-4 md:gap-12 gap-16 relative md:items-center auth-background"> 
-            <div className="w-5/12 flex flex-col space-y-3 pt-6">
+            <div className="w-5/12 flex flex-col space-y-0 pt-6">
               <h5 className="leading-10 w-max font-BricolageGrotesqueRegular welcome-heading md:text-5xl text-4xl">
                 Welcome to
               </h5>
