@@ -30,9 +30,8 @@ import start from "@/public/Startsin.svg";
 import end from "@/public/Endsin.svg";
 import placeholder from "@/public/placeholder.svg";
 import Head from "next/head";
-import { Tooltip } from 'antd';
-import Dpmodal from '@/app/components/OstivitiesModal/CreateDp';
-
+import { Tooltip } from "antd";
+import Dpmodal from "@/app/components/OstivitiesModal/CreateDp";
 
 const ShareModalContent: React.FC<{ url: string; title: string }> = ({
   url,
@@ -187,7 +186,10 @@ const EventDetail = () => {
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
   // console.log(getUserEventByUniqueKey, "getUserEventByUniqueKey");
 
-  const eventDetails = getUserEventByUniqueKey?.data?.data?.data === null ? router.push('/not-found') : getUserEventByUniqueKey?.data?.data?.data;
+  const eventDetails =
+    getUserEventByUniqueKey?.data?.data?.data === null
+      ? router.push("/not-found")
+      : getUserEventByUniqueKey?.data?.data?.data;
   // console.log(eventDetails, "eventDetails");
 
   const handleMenuClick: MenuProps["onClick"] = (e) => {
@@ -204,7 +206,6 @@ const EventDetail = () => {
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
   const handleCloseModal2 = () => setShowModal(false);
-
 
   const eventUrl = eventDetails?.eventURL;
   const eventTitle = eventDetails?.eventName;
@@ -349,15 +350,20 @@ const EventDetail = () => {
         <meta property="og:title" content={eventDetails?.eventName} />
         <meta property="og:description" content={eventDetails?.eventDetails} />
         <meta property="og:image" content={eventDetails?.eventImage} />
-        <meta property="og:url" content={`https://ostivities.com/discover/${params?.event}`} />
+        <meta
+          property="og:url"
+          content={`https://ostivities.com/discover/${params?.event}`}
+        />
         <meta property="og:type" content="website" />
       </Head>
 
       <section>
-        <div className="flex gap-10">
+        <div className="hidden min-[870px]:flex gap-10 md:flex-row">
           <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
             <Image
-              src={eventDetails?.eventImage ? eventDetails.eventImage : placeholder}
+              src={
+                eventDetails?.eventImage ? eventDetails.eventImage : placeholder
+              }
               alt="Event Image"
               fill
               style={{ objectFit: "cover" }}
@@ -381,7 +387,13 @@ const EventDetail = () => {
 
                 {/* Text Section */}
                 <div className="ml-2">
-                  <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                  <div
+                    className="text-sm"
+                    style={{
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
                     Date
                   </div>
                   <div
@@ -389,7 +401,8 @@ const EventDetail = () => {
                       width: "140px",
                       whiteSpace: "normal",
                       wordWrap: "break-word",
-                      fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif"
+                      fontWeight: 300,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
                     }}
                   >
                     {dateFormat(eventDetails?.startDate)} -{" "}
@@ -402,10 +415,21 @@ const EventDetail = () => {
                   <Image src="/icons/time.svg" alt="" height={25} width={25} />
                 </div>
                 <div>
-                  <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                  <div
+                    className="text-sm"
+                    style={{
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
                     Time
                   </div>
-                  <div style={{ fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                  <div
+                    style={{
+                      fontWeight: 300,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
                     {timeFormat(eventDetails?.startDate)} -{" "}
                     {timeFormat(eventDetails?.endDate)} {eventDetails?.timeZone}
                   </div>
@@ -421,7 +445,13 @@ const EventDetail = () => {
                   />
                 </div>
                 <div>
-                  <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                  <div
+                    className="text-sm"
+                    style={{
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
                     Location
                   </div>
                   <div
@@ -442,21 +472,31 @@ const EventDetail = () => {
                   <Image src="/icons/host.svg" alt="" height={25} width={25} />
                 </div>
                 <div>
-                  <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                  <div
+                    className="text-sm"
+                    style={{
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
                     Host
                   </div>
                   <div>
-                    <div style={{ fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                    <div
+                      style={{
+                        fontWeight: 300,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
                       {userFullName}
                     </div>
-
                   </div>
                 </div>
               </div>
               {twitterLink?.url ||
-                instagramLink?.url ||
-                websiteLink?.url ||
-                facebookLink?.url ? (
+              instagramLink?.url ||
+              websiteLink?.url ||
+              facebookLink?.url ? (
                 <div className="flex gap-3 items-center">
                   <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
                     <Image
@@ -467,7 +507,13 @@ const EventDetail = () => {
                     />
                   </div>
                   <div>
-                    <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                    <div
+                      className="text-sm"
+                      style={{
+                        fontWeight: 600,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
                       Contact Us
                     </div>
                     <div className="flex items-center gap-4 mt-1">
@@ -546,13 +592,14 @@ const EventDetail = () => {
                   {eventDetails?.eventName}
                 </h2>
 
-                <div className="flex items-center space-x-3"> {/* Wrapper for buttons with tighter spacing */}
+                <div className="flex items-center space-x-3">
+                  {" "}
+                  {/* Wrapper for buttons with tighter spacing */}
                   <Button
                     icon={<ShareAltOutlined className="text-black text-2xl" />}
                     onClick={handleOpenModal}
                     className="bg-white border-none p-0"
                   />
-
                   <Tooltip title="Click to Create Your Attendee Flyer">
                     <Button
                       onClick={handleShowModal}
@@ -697,7 +744,9 @@ const EventDetail = () => {
                         type={
                           pathname.includes("register") ? "primary" : "text"
                         }
-                        onClick={() => router.push(`/discover/${params?.event}/tickets`)}
+                        onClick={() =>
+                          router.push(`/discover/${params?.event}/tickets`)
+                        }
                         className="primary-btn w-full"
                         style={{
                           borderRadius: "25px",
@@ -733,13 +782,453 @@ const EventDetail = () => {
             onCancel={handleCloseModal2}
             footer={null} // Removes the default footer
             width="50%" // Optional: Adjust width for a better overlay feel
-            styles={{ body: { padding: '20px', height: 'auto', maxHeight: '87vh', overflowY: 'auto' } }}  // Decrease height
+            styles={{
+              body: {
+                padding: "20px",
+                height: "auto",
+                maxHeight: "87vh",
+                overflowY: "auto",
+              },
+            }} // Decrease height
             centered // Centers the modal in the viewport
             destroyOnClose // Destroy modal on close for cleanup
           >
             {/* Pass the onClose function to the CreateAttendeeFlyer modal */}
             <Dpmodal />
           </Modal>
+        </div>
+
+        {/* For small screen */}
+        <div className="min-[870px]:hidden flex gap-10 flex-col">
+          <div className="relative w-full h-[320px] rounded-[3.125rem] overflow-hidden">
+            <Image
+              src={
+                eventDetails?.eventImage ? eventDetails.eventImage : placeholder
+              }
+              alt="Event Image"
+              fill
+              style={{ objectFit: "cover" }}
+              className=""
+            />
+            <div className="absolute inset-0 bg-image-card"></div>
+          </div>
+          <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between items-center">
+            <h2 className="text-xl font-BricolageGrotesqueMedium">
+              {eventDetails?.eventName}
+            </h2>
+
+            <div className="flex items-center space-x-3">
+              {" "}
+              {/* Wrapper for buttons with tighter spacing */}
+              <Button
+                icon={<ShareAltOutlined className="text-black text-2xl" />}
+                onClick={handleOpenModal}
+                className="bg-white border-none p-0"
+              />
+              <Tooltip title="Click to Create Your Attendee Flyer">
+                <Button
+                  onClick={handleShowModal}
+                  className="p-2"
+                  style={{
+                    backgroundColor: "#e20000",
+                    color: "#FFFFFF",
+                    border: "none",
+                    borderRadius: "25px",
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                  }}
+                >
+                  Create Af
+                </Button>
+              </Tooltip>
+            </div>
+
+            <Modal
+              open={isModalOpen}
+              onCancel={handleCloseModal}
+              footer={null}
+              centered
+              style={{
+                borderRadius: "15px",
+                padding: "20px", // Include padding here instead of using bodyStyle
+              }}
+            >
+              <ShareModalContent url={eventUrl} title={eventTitle} />
+            </Modal>
+          </div>{" "}
+          <div className="rounded-lg overflow-hidden flex flex-row items-center justify-center text-center p-4">
+            {/* Image on the left side */}
+            <Image
+              src={isEventStarted ? end : start}
+              alt={isEventStarted ? "Ends" : "Starts"}
+              className="w-20 h-auto flex-shrink-0"
+            />
+
+            {/* Countdown beside the image */}
+            <div className="p-4">
+              <div className="flex justify-center gap-5">
+                <div className="flex flex-col items-center">
+                  <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                    <div className="text-2xl font-semibold">
+                      {timeRemaining.days}
+                    </div>
+                  </div>
+                  <div className="text-xs capitalize mt-2">Days</div>
+                </div>
+
+                <div className="flex flex-col items-center">
+                  <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                    <div className="text-2xl font-semibold">
+                      {timeRemaining.hours}
+                    </div>
+                  </div>
+                  <div className="text-xs capitalize mt-2">Hours</div>
+                </div>
+
+                <div className="flex flex-col items-center">
+                  <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                    <div className="text-2xl font-semibold">
+                      {timeRemaining.minutes}
+                    </div>
+                  </div>
+                  <div className="text-xs capitalize mt-2">Minutes</div>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                    <div className="text-2xl font-semibold">
+                      {timeRemaining.seconds}
+                    </div>
+                  </div>
+                  <div className="text-xs capitalize mt-2">Seconds</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-14 flex flex-col gap-8">
+              <div className="flex items-start">
+                {/* Image Section */}
+                <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+                  <Image
+                    src="/icons/calendar.svg"
+                    alt=""
+                    height={25}
+                    width={25}
+                  />
+                </div>
+
+                {/* Text Section */}
+                <div className="ml-2">
+                  <div
+                    className="text-sm"
+                    style={{
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
+                    Date
+                  </div>
+                  <div
+                    style={{
+                      width: "140px",
+                      whiteSpace: "normal",
+                      wordWrap: "break-word",
+                      fontWeight: 300,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
+                    {dateFormat(eventDetails?.startDate)} -{" "}
+                    {dateFormat(eventDetails?.endDate)}
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+                  <Image src="/icons/time.svg" alt="" height={25} width={25} />
+                </div>
+                <div>
+                  <div
+                    className="text-sm"
+                    style={{
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
+                    Time
+                  </div>
+                  <div
+                    style={{
+                      fontWeight: 300,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
+                    {timeFormat(eventDetails?.startDate)} -{" "}
+                    {timeFormat(eventDetails?.endDate)} {eventDetails?.timeZone}
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+                  <Image
+                    src="/icons/location.svg"
+                    alt=""
+                    height={25}
+                    width={25}
+                  />
+                </div>
+                <div>
+                  <div
+                    className="text-sm"
+                    style={{
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
+                    Location
+                  </div>
+                  <div
+                    style={{
+                      width: "190px",
+                      whiteSpace: "normal",
+                      wordWrap: "break-word",
+                      fontWeight: 300,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
+                    {eventDetails?.address}
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+                  <Image src="/icons/host.svg" alt="" height={25} width={25} />
+                </div>
+                <div>
+                  <div
+                    className="text-sm"
+                    style={{
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
+                    Host
+                  </div>
+                  <div>
+                    <div
+                      style={{
+                        fontWeight: 300,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
+                      {userFullName}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {twitterLink?.url ||
+              instagramLink?.url ||
+              websiteLink?.url ||
+              facebookLink?.url ? (
+                <div className="flex gap-3 items-center">
+                  <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
+                    <Image
+                      src="/icons/phone.svg"
+                      alt=""
+                      height={25}
+                      width={25}
+                    />
+                  </div>
+                  <div>
+                    <div
+                      className="text-sm"
+                      style={{
+                        fontWeight: 600,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
+                      Contact Us
+                    </div>
+                    <div className="flex items-center gap-4 mt-1">
+                      <div className="flex items-center gap-4 mt-1">
+                        {websiteLink && websiteLink?.url && (
+                          <Link
+                            href={websiteLink?.url}
+                            className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <Image
+                              src="/icons/link.svg"
+                              alt=""
+                              height={14}
+                              width={14}
+                            />
+                          </Link>
+                        )}
+                        {twitterLink && twitterLink?.url && (
+                          <Link
+                            href={twitterLink?.url}
+                            className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <Image
+                              src="/icons/x.svg"
+                              alt=""
+                              height={14}
+                              width={14}
+                            />
+                          </Link>
+                        )}
+                        {facebookLink && facebookLink?.url && (
+                          <Link
+                            href={facebookLink?.url}
+                            className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <Image
+                              src="/icons/facebook.svg"
+                              alt=""
+                              height={10}
+                              width={10}
+                            />
+                          </Link>
+                        )}
+                        {instagramLink && instagramLink?.url && (
+                          <Link
+                            href={instagramLink?.url}
+                            className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <Image
+                              src="/icons/instagram.svg"
+                              alt=""
+                              height={16}
+                              width={16}
+                            />
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+            </div>
+            <div>
+            <Heading5 className="text-2xl" content={"About this event"} />
+            <ReadMoreHTML
+                  htmlContent={eventDetails?.eventDetails || ""}
+                  maxLength={250}
+                />
+
+                {eventDetails?.event_coordinates && (
+                  <iframe
+                    src={eventDetails?.event_coordinates}
+                    width="100%"
+                    height="120"
+                    style={{ border: 0, marginTop: "20px" }}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                )}
+
+                <div className="flex justify-center mt-12">
+                  {eventDetails?.vendor_registration === true ? (
+                    <>
+                      <Dropdown
+                        disabled={isRegistrationClosed} // Disable if registration is closed
+                        menu={{
+                          items: RegistrationTypes,
+                          onClick: handleMenuClick,
+                        }}
+                      >
+                        <Button
+                          type={
+                            pathname.includes("register") ? "primary" : "text"
+                          }
+                          className="primary-btn w-full"
+                          style={{
+                            borderRadius: "25px",
+                            fontFamily: "BricolageGrotesqueMedium",
+                            backgroundColor: isRegistrationClosed
+                              ? "#cccccc"
+                              : "#e20000", // Gray for disabled, red for active
+                            color: isRegistrationClosed ? "#666666" : "white",
+                            height: "50px", // Adjust height as needed
+                            fontSize: "16px", // Increase text size
+                            border: "none", // Remove border if needed
+                          }}
+                          title={
+                            isRegistrationClosed ? "Registration Closed" : ""
+                          }
+                          disabled={isRegistrationClosed} // Disable button when registration is closed
+                        >
+                          <Space>
+                            {eventDetails?.enable_registration === false
+                              ? "Registration Closed"
+                              : "Get Tickets"}
+                            <IoChevronDown />
+                          </Space>
+                        </Button>
+                      </Dropdown>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        type={
+                          pathname.includes("register") ? "primary" : "text"
+                        }
+                        onClick={() =>
+                          router.push(`/discover/${params?.event}/tickets`)
+                        }
+                        className="primary-btn w-full"
+                        style={{
+                          borderRadius: "25px",
+                          fontFamily: "BricolageGrotesqueMedium",
+                          backgroundColor: isRegistrationClosed
+                            ? "#cccccc"
+                            : "#e20000", // Gray for disabled, red for active
+                          color: isRegistrationClosed ? "#666666" : "white",
+                          height: "50px", // Adjust height as needed
+                          fontSize: "16px", // Increase text size
+                          border: "none", // Remove border if needed
+                        }}
+                        title={
+                          isRegistrationClosed ? "Registration Closed" : ""
+                        }
+                        disabled={isRegistrationClosed} // Disable button when registration is closed
+                      >
+                        <Space>
+                          {eventDetails?.enable_registration === false
+                            ? "Registration Closed"
+                            : "Get Tickets"}
+                        </Space>
+                      </Button>
+                    </>
+                  )}
+                </div>
+            </div>
+            <Modal
+            title="Upload your prefered image, download and share with everyone 🥳 "
+            open={showModal}
+            onCancel={handleCloseModal2}
+            footer={null} // Removes the default footer
+            width="50%" // Optional: Adjust width for a better overlay feel
+            styles={{
+              body: {
+                padding: "20px",
+                height: "auto",
+                maxHeight: "87vh",
+                overflowY: "auto",
+              },
+            }} // Decrease height
+            centered // Centers the modal in the viewport
+            destroyOnClose // Destroy modal on close for cleanup
+          >
+            {/* Pass the onClose function to the CreateAttendeeFlyer modal */}
+            <Dpmodal />
+          </Modal>
+
         </div>
         <br />
         <br />
