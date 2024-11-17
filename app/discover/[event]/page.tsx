@@ -358,8 +358,8 @@ const EventDetail = () => {
       </Head>
 
       <section>
-        <div className="hidden min-[870px]:flex gap-10 md:flex-row">
-          <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
+        <div className="hidden min-[870px]:flex gap-10 md:flex-row ">
+          <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden bg-white card-shadow ">
             <Image
               src={
                 eventDetails?.eventImage ? eventDetails.eventImage : placeholder
@@ -369,7 +369,7 @@ const EventDetail = () => {
               style={{ objectFit: "cover" }}
               className=""
             />
-            <div className="absolute inset-0 bg-image-card"></div>
+            <div className=" "></div>
           </div>
           <div className="py-8">
             <Heading5 className="text-2xl" content={"About this event"} />
@@ -804,7 +804,7 @@ const EventDetail = () => {
 
         {/* For small screen */}
         <div className="min-[870px]:hidden flex gap-10 flex-col">
-          <div className="relative w-full h-[320px] rounded-[3.125rem] overflow-hidden">
+          <div className="relative w-full h-[320px] rounded-[3.125rem] overflow-hidden bg-white card-shadow ">
             <Image
               src={
                 eventDetails?.eventImage ? eventDetails.eventImage : placeholder
@@ -814,7 +814,7 @@ const EventDetail = () => {
               style={{ objectFit: "cover" }}
               className=""
             />
-            <div className="absolute inset-0 bg-image-card"></div>
+            <div className=""></div>
           </div>
           <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between items-center">
             <h2 className="text-xl font-BricolageGrotesqueMedium">
@@ -1130,7 +1130,11 @@ const EventDetail = () => {
                     src={eventDetails?.event_coordinates}
                     width="100%"
                     height="120"
-                    style={{ border: 0, marginTop: "20px" }}
+                    style={{
+                      border: 0,
+                      marginTop: "20px",
+                      borderRadius: "0.5rem", // Corner radius
+                    }}
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                   />
