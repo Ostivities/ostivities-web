@@ -41,6 +41,7 @@ import TimerModal from "@/app/components/OstivitiesModal/TimerModal";
 import PaymentSuccessModal from "@/app/components/OstivitiesModal/PaymentSuccessModal";
 import ContactForm from "@/app/components/ContactForm/ContactForm";
 import PaymentValidation from "@/app/components/OstivitiesModal/PaymentValidation";
+import paystack from "@/public/paystack.png";
 
 const TicketsSelection = () => {
   const router = useRouter();
@@ -80,8 +81,8 @@ const TicketsSelection = () => {
         {currentPage === "tickets"
           ? "Choose your tickets"
           : currentPage === "contactform"
-          ? "Contact Information"
-          : "Payment Options"}{" "}
+            ? "Contact Information"
+            : "Payment Options"}{" "}
       </h1>
     </div>
   );
@@ -195,10 +196,10 @@ const TicketsSelection = () => {
           realPrice < 10000 && realPrice > 0
             ? Math.round(realPrice * 0.05 + 150)
             : realPrice >= 10000 && realPrice < 25000
-            ? Math.round(realPrice * 0.045 + 150) // For ticketrealPrice between 10000 and 24999
-            : realPrice >= 25000
-            ? Math.round(realPrice * 0.035 + 150) // For ticketPrice 25000 and above
-            : 0;
+              ? Math.round(realPrice * 0.045 + 150) // For ticketrealPrice between 10000 and 24999
+              : realPrice >= 25000
+                ? Math.round(realPrice * 0.035 + 150) // For ticketPrice 25000 and above
+                : 0;
         if (existingTicketIndex > -1) {
           const existingTicket = updatedDetails[existingTicketIndex];
           const newTicketNumber = existingTicket?.ticketNumber + 1;
@@ -208,8 +209,8 @@ const TicketsSelection = () => {
             discountToDeduct:
               ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE
                 ? realPrice *
-                  (ticket?.discount?.discount_value / 100) *
-                  newTicketNumber
+                (ticket?.discount?.discount_value / 100) *
+                newTicketNumber
                 : ticket?.discount?.discount_value * newTicketNumber,
             discountedTicketPrice: discountedPrice * newTicketNumber,
             ticketFee: newTicketNumber * currentFee,
@@ -283,10 +284,10 @@ const TicketsSelection = () => {
             ticket?.ticketPrice < 10000 && ticket?.ticketPrice > 0
               ? Math.round(ticket?.ticketPrice * 0.05 + 150)
               : ticket?.ticketPrice >= 10000 && ticket?.ticketPrice < 25000
-              ? Math.round(ticket?.ticketPrice * 0.045 + 150)
-              : ticket?.ticketPrice >= 25000
-              ? Math.round(ticket?.ticketPrice * 0.035 + 150)
-              : 0;
+                ? Math.round(ticket?.ticketPrice * 0.045 + 150)
+                : ticket?.ticketPrice >= 25000
+                  ? Math.round(ticket?.ticketPrice * 0.035 + 150)
+                  : 0;
 
           if (newTicketNumber >= 0) {
             const price =
@@ -303,8 +304,8 @@ const TicketsSelection = () => {
               discountToDeduct:
                 ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE
                   ? price *
-                    (ticket?.discount?.discount_value / 100) *
-                    newTicketNumber
+                  (ticket?.discount?.discount_value / 100) *
+                  newTicketNumber
                   : ticket?.discount?.discount_value * newTicketNumber,
               ticketFee: currentFee * newTicketNumber,
               ticketNumber: newTicketNumber,
@@ -524,17 +525,17 @@ const TicketsSelection = () => {
     // Check if additional_information exists and has items
     const additionalFields = additional_information?.length
       ? additional_information.map((field: any) => {
-          const { id, ...fieldData } = field;
-          return fieldData;
-        })
+        const { id, ...fieldData } = field;
+        return fieldData;
+      })
       : [];
 
     // Check if attendeesInformation exists and has items
     const attendees_information = attendeesInformation?.length
       ? attendeesInformation.map((attendee) => {
-          const { id, ...attendeeData } = attendee;
-          return attendeeData;
-        })
+        const { id, ...attendeeData } = attendee;
+        return attendeeData;
+      })
       : [];
 
     const personal_information = {
@@ -786,13 +787,13 @@ const TicketsSelection = () => {
                     (ticket: ITicketDetails) =>
                       ticket?.ticketEntity === TICKET_ENTITY.SINGLE
                   ) && (
-                    <button
-                      className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
-                      style={{ borderRadius: "20px", fontSize: "12px" }}
-                    >
-                      Single Ticket
-                    </button>
-                  )}
+                      <button
+                        className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
+                        style={{ borderRadius: "20px", fontSize: "12px" }}
+                      >
+                        Single Ticket
+                      </button>
+                    )}
                   {ticketData
                     ?.filter(
                       (ticket: ITicketDetails) =>
@@ -825,8 +826,8 @@ const TicketsSelection = () => {
                                       ₦
                                       {Math.round(
                                         ticket?.ticketPrice * 0.05 +
-                                          150 +
-                                          ticket?.ticketPrice
+                                        150 +
+                                        ticket?.ticketPrice
                                       ).toLocaleString()}
                                     </span>{" "}
                                     <span
@@ -857,8 +858,8 @@ const TicketsSelection = () => {
                                         ₦
                                         {Math.round(
                                           ticket?.ticketPrice * 0.045 +
-                                            150 +
-                                            ticket?.ticketPrice
+                                          150 +
+                                          ticket?.ticketPrice
                                         ).toLocaleString()}
                                       </span>{" "}
                                       <span
@@ -889,8 +890,8 @@ const TicketsSelection = () => {
                                       ₦
                                       {Math.round(
                                         ticket?.ticketPrice * 0.035 +
-                                          150 +
-                                          ticket?.ticketPrice
+                                        150 +
+                                        ticket?.ticketPrice
                                       ).toLocaleString()}
                                     </span>{" "}
                                     <span
@@ -958,12 +959,12 @@ const TicketsSelection = () => {
                             style={{
                               color:
                                 selectedTickets[ticket?.id] ===
-                                ticket?.purchaseLimit
+                                  ticket?.purchaseLimit
                                   ? "white"
                                   : "#e20000",
                               backgroundColor:
                                 selectedTickets[ticket?.id] ===
-                                ticket?.purchaseLimit
+                                  ticket?.purchaseLimit
                                   ? "#cccccc"
                                   : "#FADEDE",
                             }}
@@ -1003,13 +1004,13 @@ const TicketsSelection = () => {
                     (ticket: ITicketDetails) =>
                       ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE
                   ) && (
-                    <button
-                      className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
-                      style={{ borderRadius: "20px", fontSize: "12px" }}
-                    >
-                      Collective Ticket
-                    </button>
-                  )}
+                      <button
+                        className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
+                        style={{ borderRadius: "20px", fontSize: "12px" }}
+                      >
+                        Collective Ticket
+                      </button>
+                    )}
 
                   {ticketData
                     ?.filter(
@@ -1268,7 +1269,7 @@ const TicketsSelection = () => {
                         },
                       ]}
                       style={{}}
-                      // className=""
+                    // className=""
                     >
                       <Input placeholder="Enter First Name" />
                     </Form.Item>
@@ -1432,11 +1433,11 @@ const TicketsSelection = () => {
                                 rules={
                                   fieldData?.is_compulsory === true
                                     ? [
-                                        {
-                                          required: true,
-                                          message: "Please provide an answer",
-                                        },
-                                      ]
+                                      {
+                                        required: true,
+                                        message: "Please provide an answer",
+                                      },
+                                    ]
                                     : []
                                 }
                               >
@@ -1644,58 +1645,37 @@ const TicketsSelection = () => {
               <Radio.Group>
                 <div className="flex flex-col gap-8">
                   <div
-                    className="card-shadow flex justify-between"
-                    style={{ width: "120%" }}
+                    className="card-shadow flex justify-between items-center"
+                    style={{ width: "620px" }}
                   >
+                    {/* Left Section */}
                     <div className="flex gap-3 items-start">
                       <div className="pt-1">
                         <Radio
-                          onChange={() =>
-                            setPaymentMethod(PAYMENT_METHODS.CARD)
-                          }
+                          onChange={() => setPaymentMethod(PAYMENT_METHODS.CARD)}
                           value={PAYMENT_METHODS.CARD}
                         />
                       </div>
                       <div>
                         <h2 className="text-lg font-BricolageGrotesqueRegular text-OWANBE_PRY">
-                          Pay with Card
+                          Pay with Card or bank
                         </h2>
-                        {/* Add default styles to check visibility */}
                         <span
                           className="text-s font-BricolageGrotesqueRegular"
                           style={{ fontSize: "14px", color: "#000" }}
                         >
-                          Pay with a MasterCard, Visa, Verve Card, or directly
-                          with your bank.
+                          Pay with a MasterCard, Visa or Verve Card
                         </span>
                       </div>
                     </div>
-                  </div>
-                  <div
-                    className="card-shadow flex justify-between"
-                    style={{ width: "120%" }}
-                  >
-                    <div className="flex gap-3 items-start">
-                      <div className="pt-1">
-                        <Radio
-                          onChange={() =>
-                            setPaymentMethod(PAYMENT_METHODS.TRANSFER)
-                          }
-                          value={PAYMENT_METHODS.TRANSFER}
-                        />
-                      </div>
-                      <div>
-                        <h2 className="text-lg font-BricolageGrotesqueRegular text-OWANBE_PRY">
-                          Pay with Bank Transfer
-                        </h2>
-                        <span
-                          className="text-s font-BricolageGrotesqueRegular"
-                          style={{ fontSize: "14px", color: "#000" }}
-                        >
-                          Make payment by transferring to our dedicated account
-                          number.
-                        </span>
-                      </div>
+
+                    {/* Right Section (Image) */}
+                    <div>
+                      <img
+                        src="/paystack.svg"
+                        alt="Paystack Logo"
+                        style={{ height: "50px", width: "100px" }} // Adjust size as needed
+                      />
                     </div>
                   </div>
                 </div>
@@ -1773,7 +1753,7 @@ const TicketsSelection = () => {
           onClick={handleButtonClick}
           ticketDetails={ticketDetails}
           continueBtn
-          // {currentPage === "tickets" ? continueBtn : paymentBtn}
+        // {currentPage === "tickets" ? continueBtn : paymentBtn}
         />
         {modal && <TimerModal />}
       </section>

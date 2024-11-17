@@ -280,6 +280,7 @@ export interface PaymentDataType {
   bankAccount: string;
   transferFee: number;
   payout: number;
+  status?: string;
   paymentDate: string;
 }
 

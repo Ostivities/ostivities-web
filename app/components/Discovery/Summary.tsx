@@ -395,7 +395,7 @@ const Summary = ({
                       ?.map((tickets) => tickets?.subTotal)
                       .reduce((acc, curr) => acc + curr, 0) > 0
                   ? "Continue"
-                  : "Make Payment"}
+                  : "Checkout"}
               </Button>{" "}
             </div>
           )}
@@ -405,7 +405,7 @@ const Summary = ({
                 className="primary-btn w-full"
                 onClick={() => setIsModalOpen(true)}
               >
-                Make Payment
+                Checkout
               </button>
             </div>
           )}
