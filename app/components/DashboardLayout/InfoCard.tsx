@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
 
 interface PropsI {
   status: string;
@@ -7,26 +7,34 @@ interface PropsI {
   about: string;
   image: string;
   url: string;
-  titleClass?: string;  // Optional because you might not always pass it
-  aboutClass?: string;  // Optional
+  titleClass?: string; // Optional because you might not always pass it
+  aboutClass?: string; // Optional
   statusClass?: string; // Optional
 }
 
-const InfoCard: React.FC<PropsI> = ({ title, about, status, image, url, titleClass = 'font-bricolage-grotesque', aboutClass = 'font-bricolage-grotesque', statusClass = 'font-bricolage-grotesque' }) => {
+const InfoCard: React.FC<PropsI> = ({
+  title,
+  about,
+  status,
+  image,
+  url,
+  titleClass = "font-bricolage-grotesque",
+  aboutClass = "font-bricolage-grotesque",
+  statusClass = "font-bricolage-grotesque",
+}) => {
   return (
     <Link
       href={url}
-       className="relative w-full max-w-[250px] h-[300px] rounded-[30px] overflow-hidden"
+      className="relative w-full min-w-[250px] h-[300px] rounded-[30px] overflow-x-auto"
     >
-       <Image
-    src={image}
-    alt=""
-    fill
-    className="object-cover"
-      />
+      <Image src={image} alt="" fill className="object-cover" />
       <div className="absolute inset-0 bg-image-card text-white">
-        <div className={`absolute top-0 right-0 py-2 px-3 bg-OWANBE_PRY rounded-bl-[1.25rem] ${statusClass}`}>
-        <span style={{ fontFamily: 'Bricolage Grotesque, sans-serif' }}>{status}</span>
+        <div
+          className={`absolute top-0 right-0 py-2 px-3 bg-OWANBE_PRY rounded-bl-[1.25rem] ${statusClass}`}
+        >
+          <span style={{ fontFamily: "Bricolage Grotesque, sans-serif" }}>
+            {status}
+          </span>
         </div>
         <div className="absolute bottom-0 left-0 px-5 py-5">
           <h3 className={titleClass}>{title}</h3>
