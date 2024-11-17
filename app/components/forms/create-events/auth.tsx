@@ -1,20 +1,13 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { useProfile } from "../../../hooks/auth/auth.hook";
+// import { useProfile } from "../../../hooks/auth/auth.hook";
 
 const useFetch = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-  const [profileData, setProfileData] = useState<any>(() => {
-    if (typeof window !== "undefined") {
-      return JSON.parse(localStorage.getItem("profileData") || "{}");
-    }
-    return null;
-  });
 
   const router = useRouter();
   const pathname = usePathname();
-  const { profile } = useProfile();
 
   // Private paths for authentication
   const privatePaths = [
@@ -44,19 +37,11 @@ const useFetch = () => {
     return false;
   };
 
-  const updateProfileData = () => {
-    if (profile?.data?.data?.data) {
-      const data = profile.data.data.data;
-      setProfileData(data);
-      localStorage.setItem("profileData", JSON.stringify(data));
-    }
-  };
 
   useEffect(() => {
     // Token validation and initial login state setup
     if (isTokenValid()) {
       setIsLoggedIn(true);
-      updateProfileData();
     } else {
       setIsLoggedIn(false);
       localStorage.removeItem("token");
@@ -88,9 +73,9 @@ const useFetch = () => {
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
-  }, [pathname, profile, router]);
+  }, [pathname, router]);
 
-  return { isLoggedIn, loading, profileData };
+  return { isLoggedIn, loading };
 };
 
 export default useFetch;
