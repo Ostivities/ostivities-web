@@ -24,7 +24,7 @@ const EventSection: React.FC<PropsI> = ({ title, uri, children, titleClass = 'fo
           </Link>
         )}
       </div>
-      <div className="grid grid-cols-5 gap-4">{limitedChildren}</div>
+      <div className="flex gap-4 overflow-x-auto">{limitedChildren}</div>
     </section>
   );
 };

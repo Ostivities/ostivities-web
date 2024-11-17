@@ -126,6 +126,22 @@ export const useResetPassword = () => {
 };
 
 
+export const useUpdateProfile = () => {
+  const updateProfile = useMutation({
+    mutationFn: (data: IUpdateUser) => {
+      return API_SERVICE._updateProfile(data);
+    },
+    mutationKey: [UPDATE_PROFILE],
+    onSuccess: (data: AxiosResponse) => {
+      // successFormatter(data);
+    },
+    onError: (error: AxiosError | any) => {
+      errorFormatter(error);
+    },
+  });
+  return { updateProfile };
+}
+
 export const useProfile = () => {
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
@@ -151,19 +167,3 @@ export const useProfile = () => {
 
   return { profile: storedProfile || profile };
 };
-
-export const useUpdateProfile = () => {
-  const updateProfile = useMutation({
-    mutationFn: (data: IUpdateUser) => {
-      return API_SERVICE._updateProfile(data);
-    },
-    mutationKey: [UPDATE_PROFILE],
-    onSuccess: (data: AxiosResponse) => {
-      // successFormatter(data);
-    },
-    onError: (error: AxiosError | any) => {
-      errorFormatter(error);
-    },
-  });
-  return { updateProfile };
-}

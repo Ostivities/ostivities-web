@@ -2,7 +2,7 @@
 import { Label } from "@/app/components/typography/Typography";
 import FormProvider from "@/app/contexts/form-context/FormContext";
 import Button from "@/app/ui/atoms/Button";
-import { NAV_LINKS } from "@/app/utils/data";
+import { NAV_LINKS, EVENT_NAV_LINKS } from "@/app/utils/data";
 import { ACCOUNT_TYPE } from "@/app/utils/enums";
 import { IDashboard, INavLinks } from "@/app/utils/interface";
 import Hamburger from "@/public/hamburger.svg";
@@ -545,7 +545,7 @@ function DashboardLayout({
           style={{ borderBottom: "0px solid !important", width: "100%" }}
         >
           {isLoggedIn && (
-            <div className="font-BricolageGrotesqueMedium items-center flex flex-col justify-center cursor-pointer" >
+            <div className="font-BricolageGrotesqueMedium items-center flex flex-col justify-center cursor-pointer">
               <Image
                 src={
                   userProfile?.data?.data?.data?.image ||
@@ -561,44 +561,42 @@ function DashboardLayout({
                 }}
               />
               <div className="h-fit py-3">
-                <h3 className="font-BricolageGrotesqueMedium text-sm text-OWANBE_TABLE_CELL">{userName}</h3>
+                <h3 className="font-BricolageGrotesqueMedium text-sm text-OWANBE_TABLE_CELL">
+                  {userName}
+                </h3>
               </div>
             </div>
           )}
           <hr />
-          {showNavLinks && (
-            <>
-              {NAV_LINKS.map((link: INavLinks) => (
-                <p
-                  key={link.link + link.name}
-                  className="font-BricolageGrotesqueMedium py-3 text-center"
-                >
-                  <Link
-                    href={link.link}
-                    onClick={onClose}
-                    style={{
-                      color:
-                        typeof window !== "undefined" &&
-                        window.innerWidth <= 768
-                          ? "#000000"
-                          : "#000000", // Check if window is defined
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.target as HTMLElement).style.color = "#E20000"; // Change to red on hover
-                    }}
-                    onMouseLeave={(e) => {
-                      if (typeof window !== "undefined") {
-                        (e.target as HTMLElement).style.color =
-                          window.innerWidth <= 768 ? "#000000" : "#000000";
-                      }
-                    }}
-                  >
-                    {link.name}
-                  </Link>
-                </p>
-              ))}
-            </>
-          )}
+          {EVENT_NAV_LINKS.map((link: INavLinks) => (
+            <p
+              key={link.link + link.name}
+              className="font-BricolageGrotesqueMedium py-3 text-center"
+            >
+              <Link
+                href={link.link}
+                onClick={onClose}
+                style={{
+                  color:
+                    typeof window !== "undefined" && window.innerWidth <= 768
+                      ? "#000000"
+                      : "#000000", // Check if window is defined
+                }}
+                onMouseEnter={(e) => {
+                  (e.target as HTMLElement).style.color = "#E20000"; // Change to red on hover
+                }}
+                onMouseLeave={(e) => {
+                  if (typeof window !== "undefined") {
+                    (e.target as HTMLElement).style.color =
+                      window.innerWidth <= 768 ? "#000000" : "#000000";
+                  }
+                }}
+              >
+                {link.name}
+              </Link>
+            </p>
+          ))}
+
           <div className="flex flex-col items-center justify-center space-y-4 mt-7 mx-auto w-3/5 md:w-1/5">
             {!pathCheck && (
               <>
@@ -651,6 +649,7 @@ function DashboardLayout({
               fontFamily: "BricolageGrotesqueMedium !important",
               paddingTop: "1px",
             }}
+            className="hidden lg:block"
             breakpoint="lg"
             trigger={null}
             collapsible
@@ -701,8 +700,9 @@ function DashboardLayout({
             }
           >
             <Header
+              className=" hidden lg:flex"
               style={{
-                display: "flex",
+                // display: "flex",
                 alignItems: "center",
                 padding: 20,
                 justifyContent: "space-between",
@@ -750,7 +750,7 @@ function DashboardLayout({
                     boxShadow: "0px 8px 24px 0px #00000014",
                     background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
                   }}
-                  className="px-12 py-16"
+                  className="md:px-12 md:py-16 py-8 px-4"
                 >
                   <div>{children}</div>
                 </div>

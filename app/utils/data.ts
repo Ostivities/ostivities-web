@@ -24,6 +24,30 @@ export const NAV_LINKS: INavLinks[] = [
     rel: "noopener noreferrer" },
 ];
 
+
+export const EVENT_NAV_LINKS: INavLinks[] = [
+  {
+    link: "/discover", name: "Discover",
+    target: undefined,
+    rel: undefined
+  },
+  {
+    link: "/discover/create-events", name: "Create Event",
+    target: undefined,
+    rel: undefined
+  },
+  {
+    link: "/discover/events-created", name: "Events Created",
+    target: undefined,
+    rel: undefined
+  },
+  { link: "/discover/settings", name: "Settings", 
+    target: "_blank", 
+    rel: "noopener noreferrer" },
+];
+
+
+
 export const FEATURES: IFeatures[] = [
   {
     icon: Star,
