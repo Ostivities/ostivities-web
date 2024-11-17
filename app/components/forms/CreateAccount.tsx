@@ -54,7 +54,7 @@ function CreateAccount(): JSX.Element {
       return Promise.resolve();
     }
   
-    return Promise.reject(new Error("Password must contain at least one alphabet, one number, and one special character"));
+    return Promise.reject(new Error("Must contain at least one alphabet, number and special character"));
   };
 
   return (
@@ -284,7 +284,7 @@ function CreateAccount(): JSX.Element {
         <Button
           type="primary"
           htmlType="submit"
-          className="font-BricolageGrotesqueLight text-base mt-5"
+          className="font-BricolageGrotesqueLight text-base mt-2"
           style={{
             background: "#E20000",
             borderRadius: "25px",
