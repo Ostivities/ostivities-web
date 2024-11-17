@@ -165,7 +165,9 @@ const EventTickets = () => {
             {record?.ticketStock === TICKET_STOCK.UNLIMITED ? (
               "Unlimited"
             ) : (
-              <span>{text}</span>
+              <span>
+              {record.ticketSold}/{record.ticketQty} Available
+            </span>
             )}
           </>
         );
