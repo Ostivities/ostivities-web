@@ -25,7 +25,7 @@ function Signup(): JSX.Element {
           />
 
           <div className="md:w-4/5 md:mx-auto flex flex-col  ">
-            <Heading5 className="mt-16 mb-6" content="Sign up and start creating events."/>
+            <Heading5 className="mt-9 mb-4" content="Sign up and start creating events."/>
 
             <CreateAccount /> 
           </div>
