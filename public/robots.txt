@@ -18,6 +18,7 @@ Disallow: /feedback
 Disallow: /privacy-policy
 Disallow: /password-reset
 Disallow: /refund-policy
+Disallow: /faqs
 Disallow: /terms-and-condition
 Disallow: /verify-account
 
