@@ -24,7 +24,7 @@ import {
   LinkedinIcon,
   XIcon,
 } from "react-share";
-import { ShareAltOutlined, CopyOutlined } from "@ant-design/icons";
+import { ShareAltOutlined, CopyOutlined, EditOutlined } from "@ant-design/icons";
 import ReadMoreHTML from "@/app/components/ReadMoreHTML";
 import start from "@/public/Startsin.svg";
 import end from "@/public/Endsin.svg";
@@ -602,18 +602,10 @@ const EventDetail = () => {
                   />
                   <Tooltip title="Click to Create Your Attendee Flyer">
                     <Button
+                    icon={<EditOutlined className="text-black text-2xl" />}
                       onClick={handleShowModal}
-                      className="p-2"
-                      style={{
-                        backgroundColor: "#e20000",
-                        color: "#FFFFFF",
-                        border: "none",
-                        borderRadius: "25px",
-                        fontFamily: "'Bricolage Grotesque', sans-serif",
-                      }}
-                    >
-                      Create Af
-                    </Button>
+                      className="bg-white border-none p-0"
+                    />
                   </Tooltip>
                 </div>
 
@@ -781,7 +773,7 @@ const EventDetail = () => {
             </div>
           </div>
           <Modal
-            title="Upload your prefered image, download and share with everyone 🥳 "
+            title="Create your attendee flyer, download and share with everyone 🥳 "
             open={showModal}
             onCancel={handleCloseModal2}
             footer={null} // Removes the default footer
@@ -829,21 +821,13 @@ const EventDetail = () => {
                 onClick={handleOpenModal}
                 className="bg-white border-none p-0"
               />
-              <Tooltip title="Click to Create Your Attendee Flyer">
-                <Button
-                  onClick={handleShowModal}
-                  className="p-2"
-                  style={{
-                    backgroundColor: "#e20000",
-                    color: "#FFFFFF",
-                    border: "none",
-                    borderRadius: "25px",
-                    fontFamily: "'Bricolage Grotesque', sans-serif",
-                  }}
-                >
-                  Create Af
-                </Button>
-              </Tooltip>
+               <Tooltip title="Click to Create Your Attendee Flyer">
+                    <Button
+                    icon={<EditOutlined className="text-black text-2xl" />}
+                      onClick={handleShowModal}
+                      className="bg-white border-none p-0"
+                    />
+                  </Tooltip>
             </div>
 
             <Modal
@@ -1217,7 +1201,7 @@ const EventDetail = () => {
                 </div>
             </div>
             <Modal
-            title="Upload your prefered image, download and share with everyone 🥳 "
+            title="Create your attendee flyer, download and share with everyone 🥳"
             open={showModal}
             onCancel={handleCloseModal2}
             footer={null} // Removes the default footer
