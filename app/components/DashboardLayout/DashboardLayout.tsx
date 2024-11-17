@@ -20,16 +20,26 @@ import {
   SettingOutlined,
   UsergroupAddOutlined,
 } from "@ant-design/icons";
+import CloseIcon from "@/public/close.svg";
+import blank from "@/public/blank.svg";
 import type { MenuProps } from "antd";
-import { Avatar, Badge, Dropdown, Layout, Menu, Space, theme } from "antd";
+import {
+  Avatar,
+  Badge,
+  Dropdown,
+  Drawer,
+  Layout,
+  Menu,
+  Space,
+  theme,
+} from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { relative } from "path";
 import React, { isValidElement, useEffect, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
 import useLocalStorage from "use-local-storage";
-import { useLogout } from "../../hooks/auth/auth.hook";
+import { useProfile, useLogout } from "../../hooks/auth/auth.hook";
 import useFetch from "../forms/create-events/auth";
 import emptyImage from "@/public/empty.svg";
 
@@ -91,8 +101,7 @@ function DashboardLayout({
 }: IDashboard): JSX.Element {
   const router = useRouter();
   const pathname = usePathname();
-
-
+  const [open, setOpen] = useState<boolean>(false);
 
   // const { profile } = useProfile();
   const { logoutUser } = useLogout();
@@ -107,6 +116,32 @@ function DashboardLayout({
     "user_fullname",
     "profileData",
   ]);
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
+  const logOut = async () => {
+    const res = await logoutUser.mutateAsync();
+    if (res.status === 200) {
+      sessionStorage.removeItem("token");
+      sessionStorage.removeItem("tokenTimestamp");
+      localStorage.removeItem("token");
+      localStorage.removeItem("tokenTimestamp");
+      localStorage.removeItem("profileData");
+      removeCookie("forgot_email");
+      removeCookie("event_id");
+      removeCookie("form_stage");
+      removeCookie("stage_one");
+      removeCookie("stage_two");
+      removeCookie("stage_three");
+      router.push("/login");
+    }
+  };
 
   // if(profile?.isFetched === true && cookies?.profileData === undefined){
   //   setCookie("profileData", JSON.stringify(profile?.data?.data?.data));
@@ -131,30 +166,21 @@ function DashboardLayout({
     {
       label: <Label className="cursor-pointer" content="Sign out" />,
       key: "sign-out",
-      onClick: async () => {
-        const res = await logoutUser.mutateAsync();
-        if (res.status === 200) {
-          sessionStorage.removeItem("token");
-          sessionStorage.removeItem("tokenTimestamp");
-          localStorage.removeItem("token");
-          localStorage.removeItem("tokenTimestamp");
-          localStorage.removeItem("profileData");
-          removeCookie("forgot_email");
-          removeCookie("event_id");
-          removeCookie("form_stage");
-          removeCookie("stage_one");
-          removeCookie("stage_two");
-          removeCookie("stage_three");
-          router.push("/login");
-        }
-      },
+      onClick: logOut,
     },
   ];
+
+  const { profile } = useProfile();
+  const { isLoggedIn, loading } = useFetch();
 
   const initialProfileData = (() => {
     if (typeof window !== "undefined") {
       const storedProfileData = localStorage.getItem("profileData");
-      if (storedProfileData && storedProfileData !== "undefined" && storedProfileData !== "null") {
+      if (
+        storedProfileData &&
+        storedProfileData !== "undefined" &&
+        storedProfileData !== "null"
+      ) {
         try {
           return JSON.parse(storedProfileData); // Return parsed data if valid
         } catch (error) {
@@ -166,7 +192,9 @@ function DashboardLayout({
   })();
 
   const [profileData, setProfileData] = useState(initialProfileData);
-
+  const [isProfileReady, setIsProfileReady] = useState(false);
+  const userProfile = isLoggedIn || !profileData ? profile : profileData;
+  console.log(userProfile);
 
   // useEffect(() => {
   //   if (localStorage.getItem('profileData') !== "undefined") {
@@ -175,31 +203,31 @@ function DashboardLayout({
   //   }, []);
 
   useEffect(() => {
-  if (typeof window !== "undefined") {
-    const storedProfileData = localStorage.getItem("profileData");
-    if (
-      storedProfileData &&
-      storedProfileData !== "undefined" &&
-      storedProfileData !== "null" &&
-      JSON.stringify(initialProfileData) !== storedProfileData
-    ) {
-      try {
-        setProfileData(JSON.parse(storedProfileData));
-      } catch (error) {
-        console.error("Failed to parse profileData:", error);
+    if (typeof window !== "undefined") {
+      const storedProfileData = localStorage.getItem("profileData");
+      if (
+        storedProfileData &&
+        storedProfileData !== "undefined" &&
+        storedProfileData !== "null" &&
+        JSON.stringify(initialProfileData) !== storedProfileData
+      ) {
+        try {
+          setProfileData(JSON.parse(storedProfileData));
+        } catch (error) {
+          console.error("Failed to parse profileData:", error);
+        }
       }
+      setIsProfileReady(true);
     }
-  }
   }, [initialProfileData]);
-    
-    // console.log(profileData, "profileData");
+
+  // console.log(profileData, "profileData");
 
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useLocalStorage<boolean>("sidebar", true);
-  const { isLoggedIn, loading } = useFetch();
+
   // const userProfile = isLoggedIn ? profile : null;
   // console.log(userProfile, "userProfile");
-  const accountType = profileData && profileData?.accountType;
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -211,22 +239,24 @@ function DashboardLayout({
     "settings",
   ];
 
+  const accountType =
+    userProfile?.data?.data?.data?.accountType || profileData?.accountType;
+
   const userName =
     accountType === ACCOUNT_TYPE.PERSONAL
-      ? profileData?.firstName +
-        " " +
-        profileData?.lastName
-      : profileData?.businessName || "";
+      ? `${profileData?.firstName} ${profileData?.lastName}` ||
+        `${userProfile?.data?.data?.data?.firstName} ${userProfile?.data?.data?.data?.lastName}` ||
+        ""
+      : profileData?.businessName ||
+        userProfile?.data?.data?.data?.businessName ||
+        "";
 
   // setCookie("user_fullname", userName)
   const avatarName =
     accountType === ACCOUNT_TYPE.PERSONAL
-      ? profileData?.firstName?.charAt(0) +
-        profileData?.lastName?.charAt(0)
+      ? profileData?.firstName?.charAt(0) + profileData?.lastName?.charAt(0)
       : profileData?.businessName?.charAt(0).toUpperCase() +
-          profileData?.businessName
-            ?.charAt(1)
-            .toUpperCase() || "";
+          profileData?.businessName?.charAt(1).toUpperCase() || "";
 
   const account_type =
     accountType === ACCOUNT_TYPE.PERSONAL ? "User" : "Organisation";
@@ -252,6 +282,8 @@ function DashboardLayout({
     pathname.split("/").includes("events-created") ||
     pathname.split("/").includes("coming-soon") ||
     pathname.split("/").includes("create-events");
+
+  const showNavLinks = !pathCheck && pathname !== "/discover";
 
   const toggleSidebar = () => {
     console.log(collapsed);
@@ -287,8 +319,9 @@ function DashboardLayout({
         }}
       >
         <Header
+          className="hidden md:hidden lg:flex"
           style={{
-            display: "flex",
+            // display: "flex",
             alignItems: "center",
             padding: 20,
             justifyContent: "space-between",
@@ -307,8 +340,19 @@ function DashboardLayout({
             </a>
           </div>
 
+          <div className="flex flex-row items-center space-x-8">
+            {NAV_LINKS.map((link: INavLinks) => (
+              <Link
+                href={link.link}
+                key={link.link + link.name}
+                className="font-BricolageGrotesqueMedium font-medium text-base text-black"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
 
-          {/* {profile?.isFetching === true ? (
+          {profile?.isFetching === true || !isProfileReady ? (
             <>
               <Skeleton.Button
                 active
@@ -320,22 +364,9 @@ function DashboardLayout({
                 }}
               />
             </>
-          ) :  */}
-          {profileData === null && !isLoggedIn ? (
+          ) : profileData === null && !isLoggedIn ? (
             <>
               {/* Show NAV_LINKS when user is not logged in */}
-              <div className="flex flex-row items-center space-x-8">
-                {NAV_LINKS.map((link: INavLinks) => (
-                  <Link
-                    href={link.link}
-                    key={link.link + link.name}
-                    className="font-BricolageGrotesqueMedium font-medium text-base text-black"
-                  >
-                    {link.name}
-                  </Link>
-                ))}
-              </div>
-
               {/* Show buttons based on isRegistered status */}
               <div className="flex flex-row items-end justify-end space-x-3">
                 {isRegistered ? (
@@ -365,7 +396,7 @@ function DashboardLayout({
               </div>
             </>
           ) : (
-            profileData !== null &&
+            (profileData !== null || userProfile) &&
             isLoggedIn && (
               <>
                 <Space
@@ -445,7 +476,11 @@ function DashboardLayout({
                   <Dropdown menu={{ items }} trigger={["click", "hover"]}>
                     <div className="flex-center gap-4 cursor-pointer">
                       <Image
-                        src={profileData?.image || emptyImage} // Fallback to imported empty image
+                        src={
+                          userProfile?.data?.data?.data?.image ||
+                          profileData?.image ||
+                          emptyImage
+                        } // Fallback to imported empty image
                         alt="Profile Picture"
                         width={40} // Adjust this to match the previous avatar size if needed
                         height={40} // Adjust this to match the previous avatar size if needed
@@ -472,8 +507,141 @@ function DashboardLayout({
               </>
             )
           )}
-
         </Header>
+        <div className=" bg-white shadow-sm flex flex-row items-center justify-between px-2 py-3 lg:hidden">
+          <Link href="/" shallow>
+            <Image
+              src={OwanbeLogo}
+              alt="Ostivities Logo"
+              style={{ width: "130px", height: "50px" }}
+            />
+          </Link>
+
+          <Image
+            src={Hamburger}
+            alt="Hamburger Menu"
+            style={{ width: "40px", height: "35px" }}
+            onClick={showDrawer}
+          />
+        </div>
+        <Drawer
+          closeIcon={
+            <Image
+              src={blank}
+              alt="Owanbe Logo"
+              style={{ width: "130px", height: "50px" }}
+            />
+          }
+          extra={
+            <Image
+              src={CloseIcon}
+              alt="Ostivities Logo"
+              style={{ width: "40px", height: "35px" }}
+              onClick={onClose}
+            />
+          }
+          placement="right"
+          open={open}
+          style={{ borderBottom: "0px solid !important", width: "100%" }}
+        >
+          {isLoggedIn && (
+            <div className="font-BricolageGrotesqueMedium items-center flex flex-col justify-center cursor-pointer" >
+              <Image
+                src={
+                  userProfile?.data?.data?.data?.image ||
+                  profileData?.image ||
+                  emptyImage
+                } // Fallback to imported empty image
+                alt="Profile Picture"
+                width={50} // Adjust this to match the previous avatar size if needed
+                height={50} // Adjust this to match the previous avatar size if needed
+                className="object-cover rounded-full"
+                style={{
+                  cursor: "pointer", // Keep the cursor style for interaction
+                }}
+              />
+              <div className="h-fit py-3">
+                <h3 className="font-BricolageGrotesqueMedium text-sm text-OWANBE_TABLE_CELL">{userName}</h3>
+              </div>
+            </div>
+          )}
+          <hr />
+          {showNavLinks && (
+            <>
+              {NAV_LINKS.map((link: INavLinks) => (
+                <p
+                  key={link.link + link.name}
+                  className="font-BricolageGrotesqueMedium py-3 text-center"
+                >
+                  <Link
+                    href={link.link}
+                    onClick={onClose}
+                    style={{
+                      color:
+                        typeof window !== "undefined" &&
+                        window.innerWidth <= 768
+                          ? "#000000"
+                          : "#000000", // Check if window is defined
+                    }}
+                    onMouseEnter={(e) => {
+                      (e.target as HTMLElement).style.color = "#E20000"; // Change to red on hover
+                    }}
+                    onMouseLeave={(e) => {
+                      if (typeof window !== "undefined") {
+                        (e.target as HTMLElement).style.color =
+                          window.innerWidth <= 768 ? "#000000" : "#000000";
+                      }
+                    }}
+                  >
+                    {link.name}
+                  </Link>
+                </p>
+              ))}
+            </>
+          )}
+          <div className="flex flex-col items-center justify-center space-y-4 mt-7 mx-auto w-3/5 md:w-1/5">
+            {!pathCheck && (
+              <>
+                {!isLoggedIn ? (
+                  isRegistered ? (
+                    // Show only Sign In button if user is registered but not logged in
+                    <Link href="/login" passHref>
+                      <Button
+                        variant="outline"
+                        label="Sign in"
+                        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                      />
+                    </Link>
+                  ) : (
+                    // Show both Sign In and Sign Up buttons if user is not registered
+                    <>
+                      <Link href="/login" passHref>
+                        <Button
+                          variant="outline"
+                          label="Sign in"
+                          className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                        />
+                      </Link>
+                      <Link href="/signup" passHref>
+                        <Button label="Sign Up" />
+                      </Link>
+                    </>
+                  )
+                ) : (
+                  // Show My Account button if user is logged in
+                  <Link href="/login" passHref>
+                    <Button
+                      // variant="outline"
+                      onClick={logOut}
+                      label="Sign Out"
+                    />
+                  </Link>
+                )}
+              </>
+            )}
+          </div>
+        </Drawer>
+
         <Layout>
           <Sider
             width={200}
