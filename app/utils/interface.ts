@@ -95,6 +95,7 @@ export interface ICreateEvent
     fileUrl: string;
   };
   discover?: boolean;
+  event_coordinates: string;
 }
 
 export interface IEventDetails {
@@ -378,6 +379,7 @@ export interface ITicketDetails {
   ticketName: string
   ticketQty: number
   ticketPrice?: number
+  ticketSold: number
   groupSize?: number
   groupPrice?: number
   ticketStock: string

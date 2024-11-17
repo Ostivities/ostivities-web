@@ -58,12 +58,12 @@ function Header2(): JSX.Element {
         {/* LG && XL SCREENS */}
         <nav className="bg-white shadow-sm fixed top-0 left-0 w-full z-50 px-8 py-5 hidden md:hidden lg:grid lg:grid-cols-3 lg:items-center">
           <div>
-            <Link href="/" className="" shallow>
+            <Link href="/" shallow>
               <Image
                 src={OwanbeLogo}
                 alt="Ostivities Logo"
                 style={{ height: '40px' }}
-                className="w-[110px]"
+                className="w-[140px]"
               />
             </Link>
           </div>
@@ -114,12 +114,12 @@ function Header2(): JSX.Element {
         </nav>
 
         {/* SM AND MD SCREENS */}
-        <div className="flex flex-row items-center justify-between px-2 py-3 lg:hidden">
+        <div className="bg-white shadow-sm flex flex-row items-center justify-between px-2 py-3 lg:hidden">
           <Link href="/" shallow>
             <Image
               src={OwanbeLogo}
               alt="Ostivities Logo"
-              style={{ width: "130px", height: "50px" }}
+              style={{ width: "110px", height: "50px" }}
             />
           </Link>
 
@@ -128,7 +128,7 @@ function Header2(): JSX.Element {
             alt="Hamburger Menu"
             style={{ width: "40px", height: "35px" }}
             onClick={showDrawer}
-          /> */}
+          />
         </div>
         <Drawer
           closeIcon={
@@ -149,8 +149,9 @@ function Header2(): JSX.Element {
           placement="right"
           open={open}
           style={{ borderBottom: "0px solid !important", width: "100%" }}
-        >
-          {showNavLinks && (
+        > */}
+        </div>
+          {/* {showNavLinks && (
             <>
               {NAV_LINKS.map((link: INavLinks) => (
                 <p
@@ -194,8 +195,8 @@ function Header2(): JSX.Element {
                 )}
               </>
             )}
-          </div>
-        </Drawer>
+          </div> */}
+        {/* </Drawer> */}
       </header>
     </ConfigProvider>
   );

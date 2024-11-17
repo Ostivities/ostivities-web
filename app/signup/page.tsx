@@ -7,8 +7,8 @@ import React from "react";
 function Signup(): JSX.Element {
   return (
     <AuthLayout>
-      <div className="mt-2"> {/* Add margin-top to create space from AuthLayout */}
-        <div className="flex flex-col space-y-8">
+      <div className="mt-1"> {/* Add margin-top to create space from AuthLayout */}
+        <div className="flex flex-col space-y-2">
           <Small
             content={
               <span className="text-sm font-BricolageGrotesqueRegular">
@@ -24,10 +24,10 @@ function Signup(): JSX.Element {
             className="float-right place-self-end"
           />
 
-          <div className="w-4/5 mx-auto flex flex-col space-y-5">
-            <Heading5 className="" content="Sign up now to start creating events."/>
+          <div className="md:w-4/5 md:mx-auto flex flex-col  ">
+            <Heading5 className="mt-16 mb-6" content="Sign up and start creating events."/>
 
-            <CreateAccount />
+            <CreateAccount /> 
           </div>
         </div>
       </div>

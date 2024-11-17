@@ -27,11 +27,9 @@ import {
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
-
-
 type RangePickerProps = GetProps<typeof DatePicker.RangePicker>;
 
-interface FieldType {}
+interface FieldType { }
 
 interface DisabledTime {
   disabledHours: () => number[];
@@ -55,9 +53,8 @@ const DiscountCode = (): JSX.Element => {
   // console.log(ticketData, "ticketData");
   // console.log(selectedTickets, "selectedTickets");
   // console.log(ticketApplicable, "ticketApplicable")
-  
-  dayjs.extend(customParseFormat);
 
+  dayjs.extend(customParseFormat);
 
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
     const startDate = dayjs(startDateValue); // Replace `startDateValue` with your actual start date
@@ -69,17 +66,18 @@ const DiscountCode = (): JSX.Element => {
     );
   };
 
-
-
   const disabledTime = (current: dayjs.Dayjs | null): Partial<DisabledTime> => {
     const startDate = dayjs(startDateValue); // Your specified start date
 
     // Disable past times only if the selected date is the start date
     if (current && current.isSame(startDate, "day")) {
       return {
-        disabledHours: () => Array.from({ length: startDate.hour() }, (_, i) => i),
-        disabledMinutes: () => Array.from({ length: startDate.minute() }, (_, i) => i),
-        disabledSeconds: () => Array.from({ length: startDate.second() }, (_, i) => i),
+        disabledHours: () =>
+          Array.from({ length: startDate.hour() }, (_, i) => i),
+        disabledMinutes: () =>
+          Array.from({ length: startDate.minute() }, (_, i) => i),
+        disabledSeconds: () =>
+          Array.from({ length: startDate.second() }, (_, i) => i),
       };
     }
     return {};
@@ -102,9 +100,9 @@ const DiscountCode = (): JSX.Element => {
       event: params?.id,
       eventId: params?.id,
       user: profile?.data?.data?.data?.id,
-    })
+    });
 
-    if(response.status === 201) {
+    if (response.status === 201) {
       router.push(`/discover/events-created/${params?.id}/tickets/discounts`);
     }
   };
@@ -126,8 +124,6 @@ const DiscountCode = (): JSX.Element => {
     setSelectedTickets(value);
   };
 
-
-
   return (
     <Form<IDiscountData>
       form={form}
@@ -140,14 +136,15 @@ const DiscountCode = (): JSX.Element => {
     >
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
         <Space direction="vertical" size="small" style={{ width: "100%" }}>
-        <Heading5 className="" content={"Create Discount"} />
+          <Heading5 className="" content={"Create Discount"} />
           <Paragraph
             className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
             content={
               "Generate discount codes and implement automatic discounts."
             }
-            styles={{ fontWeight: "normal !important" }} 
-          /><br />
+            styles={{ fontWeight: "normal !important" }}
+          />
+          <br />
 
           <div className="grid grid-cols-2 gap-x-8">
             <Form.Item
@@ -299,7 +296,7 @@ const DiscountCode = (): JSX.Element => {
         <Space direction="vertical" size="small" style={{ width: "100%" }}>
           <Heading5 content="Usage Limit" />
           <div className="grid grid-cols-2 gap-x-8">
-          <Form.Item
+            <Form.Item
               label={<Label content="Start Date & Time" />} // Correct usage of Label component
               name="startDateAndTime"
               rules={[
@@ -310,13 +307,14 @@ const DiscountCode = (): JSX.Element => {
               ]}
             >
               <DatePicker
-                showTime
-                format="YYYY-MM-DD HH:mm:ss"
+                showTime={{ format: "h:mm:ss A" }} // Enables 12-hour time picker with AM/PM
+                format="YYYY-MM-DD h:mm:ss A" // Displays date and time in 12-hour format
                 style={{ width: "100%", height: "33px" }}
                 onChange={(date) => {
+                  // Ensure the displayed and stored value is in 12-hour format
                   form.setFieldsValue({ startDateAndTime: date });
-                  setStartDateValue(date?.format("YYYY-MM-DD HH:mm:ss"));}
-                }
+                  setStartDateValue(date?.format("YYYY-MM-DD h:mm:ss A"));
+                }}
                 disabledDate={disabledDate}
               />
             </Form.Item>
@@ -332,8 +330,8 @@ const DiscountCode = (): JSX.Element => {
               ]}
             >
               <DatePicker
-                showTime
-                format="YYYY-MM-DD HH:mm:ss"
+                showTime={{ format: "h:mm:ss A" }} // Enables 12-hour format in the time picker
+                format="YYYY-MM-DD h:mm:ss A" // Ensures the input value matches the 12-hour format
                 style={{ width: "100%", height: "33px" }}
                 disabledDate={disabledDate}
                 disabledTime={disabledTime}
@@ -358,7 +356,8 @@ const DiscountCode = (): JSX.Element => {
             </Form.Item>
           </div>
         </Space>
-      </Space><br />
+      </Space>
+      <br />
 
       <Space
         direction="horizontal"
@@ -382,22 +381,41 @@ const DiscountCode = (): JSX.Element => {
               borderRadius: "16px",
               fontFamily: "BricolageGrotesqueMedium",
             }}
-            onClick={() => router.push(`/discover/events-created/${params?.id}/tickets/discounts`)}
+            onClick={() =>
+              router.push(
+                `/discover/events-created/${params?.id}/tickets/discounts`
+              )
+            }
           >
             Cancel
           </Button>
         </Form.Item>
         <Form.Item>
-          <Button
-            type="default"
-            htmlType="submit"
-            size="large"
-            className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
-            // onClick={handleAddDiscount}
-            loading={createDiscount.isPending}
-          >
-            Create Discount
-          </Button>
+          {ticketData?.length === 0 ? (
+            <Button
+              type="default"
+              htmlType="button"
+              size="large"
+              disabled
+              style={{
+                backgroundColor: "#E20000",
+                color: "#fff",
+              }}
+              className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
+            >
+              Create Discount
+            </Button>
+          ) : (
+            <Button
+              type="default"
+              htmlType="submit"
+              size="large"
+              className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
+              loading={createDiscount.isPending}
+            >
+              Create Discount
+            </Button>
+          )}
         </Form.Item>
       </Space>
     </Form>

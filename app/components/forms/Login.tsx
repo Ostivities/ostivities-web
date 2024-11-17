@@ -53,14 +53,13 @@ function LoginForm(): JSX.Element {
     const hasAlphabet = /[a-zA-Z]/.test(value);
     const hasNumber = /[0-9]/.test(value);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
-    
+
     if (hasAlphabet && hasNumber && hasSpecialChar) {
       return Promise.resolve();
     }
-  
+
     return Promise.reject(new Error(""));
   };
-  
 
   return (
     <Form
@@ -78,29 +77,28 @@ function LoginForm(): JSX.Element {
       style={{ fontFamily: "BricolageGrotesqueRegular" }}
     >
       <Form.Item
-  label="Email Address"
-  style={{ fontFamily: "BricolageGrotesqueRegular" }}
-  className="font-BricolageGrotesqueRegular"
->
-  <Form.Item
-    name="email"
-    noStyle
-    rules={[{ required: true, message: "Please input your email" }]}
-  >
-    <Input
-      type="email"
-      placeholder="Enter your email"
-      className="placeholder:font-BricolageGrotesqueRegular"
-      autoComplete="off"
-      defaultValue={cookies?.user_email}
-      onChange={(e) => {
-        const email = e.target.value.toLowerCase(); // Convert input to lowercase
-        form.setFieldsValue({ email }); // Update the form field value
-      }}
-    />
-  </Form.Item>
-</Form.Item>
-
+        label="Email Address"
+        style={{ fontFamily: "BricolageGrotesqueRegular" }}
+        className="font-BricolageGrotesqueRegular"
+      >
+        <Form.Item
+          name="email"
+          noStyle
+          rules={[{ required: true, message: "Please input your email" }]}
+        >
+          <Input
+            type="email"
+            placeholder="Enter your email"
+            className="placeholder:font-BricolageGrotesqueRegular"
+            autoComplete="off"
+            defaultValue={cookies?.user_email}
+            onChange={(e) => {
+              const email = e.target.value.toLowerCase(); // Convert input to lowercase
+              form.setFieldsValue({ email }); // Update the form field value
+            }}
+          />
+        </Form.Item>
+      </Form.Item>
 
       <Form.Item
         label="Password"
@@ -140,7 +138,7 @@ function LoginForm(): JSX.Element {
             width: "100%",
             height: "51px",
           }}
-          loading={loginUser.isPending}
+          loading={loginUser.isPending} 
         >
           Sign In
         </Button>

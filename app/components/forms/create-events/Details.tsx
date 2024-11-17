@@ -93,6 +93,7 @@ function Details(): JSX.Element {
     "stage_one",
     "stage_two",
     "stage_three",
+    "mapSrc"
   ]);
   const [vendorRegRadio, setVendorRegRadio] = useState(false);
   const [showRadio, setShowRadio] = useState(false);
@@ -322,6 +323,7 @@ function Details(): JSX.Element {
         eventDetails: editorContent,
         socials,
         eventInfo: EVENT_INFO.SINGLE_EVENT,
+        event_coordinates: cookies?.mapSrc,
       });
 
       if (response.status === 201) {
@@ -407,8 +409,8 @@ function Details(): JSX.Element {
               formStep === 1
                 ? `${greeting} ${icon}, ${userName}`
                 : formStep === 2
-                ? "Event Page Appearance"
-                : "Event Ticket"
+                  ? "Event Page Appearance"
+                  : "Event Ticket"
             }
           />
           <Paragraph
@@ -417,8 +419,8 @@ function Details(): JSX.Element {
               formStep === 1
                 ? "Welcome! Ready to create your next event?"
                 : formStep === 2
-                ? "Upload your event image here by clicking the camera icon (File size should not be more than 10MB)."
-                : "For free events, Ostivities is free. For paid events, we charge a percentage-based transaction fee on ticket sales."
+                  ? "Upload your event image here by clicking the camera icon (File size should not be more than 10MB)."
+                  : "For free events, Ostivities is free. For paid events, we charge a percentage-based transaction fee on ticket sales."
             }
             styles={{ fontWeight: "normal !important" }}
           />
@@ -768,9 +770,9 @@ function Details(): JSX.Element {
                       // value={eventUrl}
                       {...field}
                       placeholder="your event url name will show here"
-                      // onChange={(e) => {
-                      //   field.onChange(e.target.value.replace(/\s+/g, "")); // Remove spaces as the user types
-                      // }}
+                    // onChange={(e) => {
+                    //   field.onChange(e.target.value.replace(/\s+/g, "")); // Remove spaces as the user types
+                    // }}
                     />
                   </Space.Compact>
                   {errors.eventURL && (
@@ -981,12 +983,14 @@ function Details(): JSX.Element {
                         <>
                           <DatePicker
                             {...field}
-                            showTime
+                            showTime={{ format: "h:mm:ss A" }} // Time picker shows 12-hour format
                             onChange={(date) => {
-                              field.onChange(date);
-                              setStartDateValue(date?.format("YYYY-MM-DD HH:mm:ss"));}
-                            }
-                            format="YYYY-MM-DD HH:mm:ss"
+                              // Set the selected value in 12-hour format
+                              const formattedDate = date?.format("YYYY-MM-DD h:mm:ss A");
+                              field.onChange(date); // Still pass the full date object to the form's field
+                              setStartDateValue(formattedDate); // Store the 12-hour format value in state
+                            }}
+                            format="YYYY-MM-DD h:mm:ss A" // Ensures the displayed value is in 12-hour format
                             style={{ width: "100%", height: "33px" }}
                             disabledDate={disabledDate}
                           />
@@ -1013,12 +1017,13 @@ function Details(): JSX.Element {
                         <>
                           <DatePicker
                             {...field}
-                            showTime
-                            format="YYYY-MM-DD HH:mm:ss"
+                            showTime={{ format: "h:mm:ss A" }} // Configures time picker to show 12-hour format
+                            format="YYYY-MM-DD h:mm:ss A" // Ensures the displayed value is in 12-hour format
                             style={{ width: "100%", height: "33px" }}
                             disabledDate={disabledDate}
                             disabledTime={disabledTime}
                           />
+
                           {errors.endDate && (
                             <span style={{ color: "red" }}>
                               {errors.endDate &&
@@ -1237,7 +1242,8 @@ function Details(): JSX.Element {
                               showTime
                               onChange={(date) => {
                                 field.onChange(date);
-                                setStartDateValue(date?.format("YYYY-MM-DD HH:mm:ss"));}
+                                setStartDateValue(date?.format("YYYY-MM-DD HH:mm:ss"));
+                              }
                               }
                               format="YYYY-MM-DD HH:mm:ss"
                               style={{ width: "100%", height: "33px" }}

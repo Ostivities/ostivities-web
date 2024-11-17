@@ -218,7 +218,7 @@ function CreateAccount(): JSX.Element {
     >
       <Input.Password
         placeholder="Enter your password"
-        className="placeholder:font-BricolageGrotesqueRegular"
+        className="placeholder:font-BricolageGrotesqueRegular" 
       />
     </Form.Item>
   </Col>

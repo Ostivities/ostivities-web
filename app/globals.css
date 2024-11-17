@@ -254,22 +254,54 @@ body {
   border-bottom: none !important;
 }
 
-.auth-background {
+/* .auth-background {
   background-image: url(/Topology-2.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: auto;
   background-position-x: 36%;
   background-position-y: -15%;
+} */
+
+.auth-background {
+  background-image: url(/Topology-2.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 90%;
+  background-position-x: 450%;
+  background-position-y: -17%;
 }
 
-.auth-background-light {
+/* .auth-background-light {
   background-image: url(/Topologylight.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: auto;
   background-position-x: 36%;
   background-position-y: -15%;
+} */
+
+@media screen and (min-width: 768px) {
+  .auth-background {
+    background-image: url(/Topology-2.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto;
+    background-position-x: 36%;
+    background-position-y: -15%;
+  }
+
+  .auth-background-light {
+    background-image: url(/Topologylight.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto;
+    background-position-x: 36%;
+    background-position-y: -15%;
+  }
+  .small-discover {
+    
+  }
 }
 
 .side-nav > .ant-menu-item-selected {
@@ -964,12 +996,10 @@ body {
 /* global.css */
 .custom-heading {
   color: #e20000 !important;
-  font-size: 52px !important;
 }
 
 .welcome-heading {
   color: #000000 !important;
-  font-size: 52px !important;
   font-weight: normal !important;
 }
 

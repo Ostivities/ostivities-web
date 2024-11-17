@@ -200,7 +200,7 @@ function PrivacyPolicy(): JSX.Element {
               <li style={{ marginBottom: "10px" }}>
                 &#x2022; <strong>For Legal Reasons:</strong> We may disclose your information if 
                 required by law or if we believe that such action is necessary to 
-                comply with legal obligations, protect our rights, or ensure the 
+                comply with legal obligations (also includes complying with court orders), protect our rights, or ensure the 
                 safety of our users.
               </li>
               <li style={{ marginBottom: "10px" }}>
