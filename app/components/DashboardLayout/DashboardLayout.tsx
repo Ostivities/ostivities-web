@@ -257,14 +257,17 @@ function DashboardLayout({
   const accountType =
     profile?.data?.data?.data?.accountType || profileData?.accountType;
 
-    console.log(accountType, "accountType");
+  console.log(accountType, "accountType");
 
   const userName =
-  accountType === ACCOUNT_TYPE.PERSONAL
-    ? (profile?.data?.data?.data?.firstName && profile?.data?.data?.data?.lastName
+    accountType === ACCOUNT_TYPE.PERSONAL
+      ? profile?.data?.data?.data?.firstName &&
+        profile?.data?.data?.data?.lastName
         ? `${profile?.data?.data?.data?.firstName} ${profile?.data?.data?.data?.lastName}`
-        : `${profileData?.firstName || ""} ${profileData?.lastName || ""}`)
-    : profile?.data?.data?.data?.businessName || profileData?.businessName || "";
+        : `${profileData?.firstName || ""} ${profileData?.lastName || ""}`
+      : profile?.data?.data?.data?.businessName ||
+        profileData?.businessName ||
+        "";
   console.log(userName, "userName");
   // setCookie("user_fullname", userName)
   const avatarName =
@@ -635,7 +638,7 @@ function DashboardLayout({
                   />
                   <div className="h-fit py-3">
                     <h3 className="font-BricolageGrotesqueMedium text-sm text-OWANBE_TABLE_CELL">
-                    {userName}
+                      {userName}
                     </h3>
                   </div>
                 </div>
@@ -674,62 +677,58 @@ function DashboardLayout({
           )}
 
           <div className="flex flex-col items-center justify-center space-y-4 mt-7 mx-auto w-3/5 md:w-1/5">
-            {!pathCheck && (
-              <>
-                {!isLoggedIn ? (
-                  isRegistered ? (
-                    // Show only Sign In button if user is registered but not logged in
-                    <Link href="/login" passHref>
-                      <Button
-                        variant="outline"
-                        label="Sign in"
-                        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
-                      />
-                    </Link>
-                  ) : (
-                    // Show both Sign In and Sign Up buttons if user is not registered
-                    <>
-                      <Link href="/login" passHref>
-                        <Button
-                          variant="outline"
-                          label="Sign in"
-                          className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
-                        />
-                      </Link>
-                      <Link href="/signup" passHref>
-                        <Button label="Sign Up" />
-                      </Link>
-                    </>
-                  )
-                ) : (
-                  // Show My Account button if user is logged in
-                  <button
-                    type="submit"
-                    // size={"large"}
-                    className="font-BricolageGrotesqueSemiBold continue cursor-pointer py-2 font-bold equal-width-button"
-                    onClick={async () => {
-                      const res = await logoutUser.mutateAsync();
-                      if (res.status === 200) {
-                        sessionStorage.removeItem("token");
-                        sessionStorage.removeItem("tokenTimestamp");
-                        localStorage.removeItem("token");
-                        localStorage.removeItem("tokenTimestamp");
-                        localStorage.removeItem("profileData");
-                        removeCookie("forgot_email");
-                        removeCookie("event_id");
-                        removeCookie("form_stage");
-                        removeCookie("stage_one");
-                        removeCookie("stage_two");
-                        removeCookie("stage_three");
-                        router.push("/login");
-                      }
-                    }}
-                    // label="Sign Out"
-                  >
-                    Sign Out
-                  </button>
-                )}
-              </>
+            {!isLoggedIn ? (
+              isRegistered ? (
+                // Show only Sign In button if user is registered but not logged in
+                <Link href="/login" passHref>
+                  <Button
+                    variant="outline"
+                    label="Sign in"
+                    className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                  />
+                </Link>
+              ) : (
+                // Show both Sign In and Sign Up buttons if user is not registered
+                <>
+                  <Link href="/login" passHref>
+                    <Button
+                      variant="outline"
+                      label="Sign in"
+                      className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                    />
+                  </Link>
+                  <Link href="/signup" passHref>
+                    <Button label="Sign Up" />
+                  </Link>
+                </>
+              )
+            ) : (
+              // Show My Account button if user is logged in
+              <button
+                type="submit"
+                // size={"large"}
+                className="font-BricolageGrotesqueSemiBold continue cursor-pointer py-2 font-bold equal-width-button"
+                onClick={async () => {
+                  const res = await logoutUser.mutateAsync();
+                  if (res.status === 200) {
+                    sessionStorage.removeItem("token");
+                    sessionStorage.removeItem("tokenTimestamp");
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("tokenTimestamp");
+                    localStorage.removeItem("profileData");
+                    removeCookie("forgot_email");
+                    removeCookie("event_id");
+                    removeCookie("form_stage");
+                    removeCookie("stage_one");
+                    removeCookie("stage_two");
+                    removeCookie("stage_three");
+                    router.push("/login");
+                  }
+                }}
+                // label="Sign Out"
+              >
+                Sign Out
+              </button>
             )}
           </div>
         </Drawer>
