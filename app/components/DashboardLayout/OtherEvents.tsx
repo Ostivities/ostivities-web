@@ -2,20 +2,22 @@ import OtherInfoCard from './OtherInfoCard';
 import { Skeleton } from "antd";
 import EventSection from './OtherEventSection';
 import { useGetDiscoveryEvents } from '@/app/hooks/event/event.hook';
-import { useParams } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 import { IEventDetails } from '@/app/utils/interface';
 import placeholder from "@/public/placeholder.svg";
 
 const DiscoverEvents = () => {
   const params = useParams<{ event: string }>();
+  const pathname = usePathname();
 
-  const currentEvent = (value: string) => {
-    return value !== params?.event;
-  }
+  const lastPath = pathname?.split('/').pop();
+
+
 
   const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 10);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
   // console.log(discoveryEvents, 'discoveryEvents');
+  const uniqueEvent = discoveryEvents?.map((event: IEventDetails) => event?.unique_key);
 
   const isPending = getDiscoveryEvents?.isLoading;
 
@@ -41,7 +43,7 @@ const DiscoverEvents = () => {
       ) : (
         <></>
       )}
-      {discoveryEvents?.filter((event: IEventDetails) => currentEvent(event?.unique_key)).map((event: IEventDetails) => (
+      {discoveryEvents?.filter((event: IEventDetails) => event?.unique_key !== lastPath).map((event: IEventDetails) => (
         <OtherInfoCard 
           key={event?.id}
           title={event?.eventName}
@@ -54,6 +56,19 @@ const DiscoverEvents = () => {
           statusClass="font-bricolage-grotesque font-medium"
         />
       ))}
+      {/* {discoveryEvents?.filter((event: IEventDetails) => event?.unique_key !=== params?.event).map((event: IEventDetails) => (
+        <OtherInfoCard
+          key={event?.id}
+          title={event?.eventName}
+          about={event?.eventType}
+          status={event?.enable_registration === false ? "Reg Closed" : "Get Tickets"}
+          image={event?.eventImage ? event.eventImage : placeholder}
+          url={`/discover/${event?.unique_key}`}
+          titleClass="font-bricolage-grotesque font-medium"
+          aboutClass="font-bricolage-grotesque"
+          statusClass="font-bricolage-grotesque font-medium"
+        />
+      ))} */}
     </EventSection>
   );
 };

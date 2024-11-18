@@ -166,7 +166,23 @@ function DashboardLayout({
     {
       label: <Label className="cursor-pointer" content="Sign out" />,
       key: "sign-out",
-      onClick: logOut,
+      onClick: async () => {
+        const res = await logoutUser.mutateAsync();
+        if (res.status === 200) {
+          sessionStorage.removeItem("token");
+          sessionStorage.removeItem("tokenTimestamp");
+          localStorage.removeItem("token");
+          localStorage.removeItem("tokenTimestamp");
+          localStorage.removeItem("profileData");
+          removeCookie("forgot_email");
+          removeCookie("event_id");
+          removeCookie("form_stage");
+          removeCookie("stage_one");
+          removeCookie("stage_two");
+          removeCookie("stage_three");
+          router.push("/login");
+        }
+      },
     },
   ];
 
@@ -251,6 +267,7 @@ function DashboardLayout({
         userProfile?.data?.data?.data?.businessName ||
         "";
 
+  console.log(userName, "userName");
   // setCookie("user_fullname", userName)
   const avatarName =
     accountType === ACCOUNT_TYPE.PERSONAL
@@ -340,18 +357,6 @@ function DashboardLayout({
             </a>
           </div>
 
-          <div className="flex flex-row items-center space-x-8">
-            {NAV_LINKS.map((link: INavLinks) => (
-              <Link
-                href={link.link}
-                key={link.link + link.name}
-                className="font-BricolageGrotesqueMedium font-medium text-base text-black"
-              >
-                {link.name}
-              </Link>
-            ))}
-          </div>
-
           {profile?.isFetching === true || !isProfileReady ? (
             <>
               <Skeleton.Button
@@ -367,6 +372,18 @@ function DashboardLayout({
           ) : profileData === null && !isLoggedIn ? (
             <>
               {/* Show NAV_LINKS when user is not logged in */}
+              <div className="flex flex-row items-center space-x-8">
+                {NAV_LINKS.map((link: INavLinks) => (
+                  <Link
+                    href={link.link}
+                    key={link.link + link.name}
+                    className="font-BricolageGrotesqueMedium font-medium text-base text-black"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+
               {/* Show buttons based on isRegistered status */}
               <div className="flex flex-row items-end justify-end space-x-3">
                 {isRegistered ? (
@@ -513,14 +530,14 @@ function DashboardLayout({
             <Image
               src={OwanbeLogo}
               alt="Ostivities Logo"
-              style={{ width: "130px", height: "50px" }}
+              style={{ width: "130px", height: "50px", cursor: "pointer" }}
             />
           </Link>
 
           <Image
             src={Hamburger}
             alt="Hamburger Menu"
-            style={{ width: "40px", height: "35px" }}
+            style={{ width: "40px", height: "35px", cursor: "pointer" }}
             onClick={showDrawer}
           />
         </div>
@@ -544,58 +561,119 @@ function DashboardLayout({
           open={open}
           style={{ borderBottom: "0px solid !important", width: "100%" }}
         >
-          {isLoggedIn && (
-            <div className="font-BricolageGrotesqueMedium items-center flex flex-col justify-center cursor-pointer">
-              <Image
-                src={
-                  userProfile?.data?.data?.data?.image ||
-                  profileData?.image ||
-                  emptyImage
-                } // Fallback to imported empty image
-                alt="Profile Picture"
-                width={50} // Adjust this to match the previous avatar size if needed
-                height={50} // Adjust this to match the previous avatar size if needed
-                className="object-cover rounded-full"
+          {profile?.isFetching === true || !isProfileReady ? (
+            <>
+              <Skeleton.Button
+                active
+                shape="round"
                 style={{
-                  cursor: "pointer", // Keep the cursor style for interaction
+                  height: "10px",
+                  width: "10px",
+                  maxWidth: "100%",
                 }}
               />
-              <div className="h-fit py-3">
-                <h3 className="font-BricolageGrotesqueMedium text-sm text-OWANBE_TABLE_CELL">
-                  {userName}
-                </h3>
+            </>
+          ) : profileData === null && !isLoggedIn ? (
+            <>
+              {/* Show NAV_LINKS when user is not logged in */}
+              {/* <div className="flex flex-row items-center space-x-8"> */}
+              {/* </div> */}
+
+              {/* Show buttons based on isRegistered status */}
+              <div className="font-BricolageGrotesqueMedium items-center flex flex-col justify-center cursor-pointer">
+                {NAV_LINKS.map((link: INavLinks) => (
+                  <Link
+                    href={link.link}
+                    key={link.link + link.name}
+                    className="font-BricolageGrotesqueMedium py-3 text-center"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+                {/* {isRegistered ? (
+                  // If user is registered but not logged in, show only Sign In button
+                  <Link href="/login" passHref>
+                    <Button
+                      variant="outline"
+                      label="Sign in"
+                      className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                    />
+                  </Link>
+                ) : (
+                  // If user is not registered, show both Sign In and Sign Up buttons
+                  <>
+                    <Link href="/login" passHref>
+                      <Button
+                        variant="outline"
+                        label="Sign in"
+                        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                      />
+                    </Link>
+                    <Link href="/signup" passHref>
+                      <Button label="Sign Up" />
+                    </Link>
+                  </>
+                )} */}
               </div>
-            </div>
+            </>
+          ) : (
+            (profileData !== null || userProfile) &&
+            isLoggedIn && (
+              <>
+                <div className="font-BricolageGrotesqueMedium items-center flex flex-col justify-center cursor-pointer">
+                  <Image
+                    src={
+                      userProfile?.data?.data?.data?.image ||
+                      profileData?.image ||
+                      emptyImage
+                    } // Fallback to imported empty image
+                    alt="Profile Picture"
+                    width={50} // Adjust this to match the previous avatar size if needed
+                    height={50} // Adjust this to match the previous avatar size if needed
+                    className="object-cover rounded-full"
+                    style={{
+                      cursor: "pointer", // Keep the cursor style for interaction
+                    }}
+                  />
+                  <div className="h-fit py-3">
+                    <h3 className="font-BricolageGrotesqueMedium text-sm text-OWANBE_TABLE_CELL">
+                      {userName}
+                    </h3>
+                  </div>
+                </div>
+                <hr />
+                {EVENT_NAV_LINKS.map((link: INavLinks) => (
+                  <p
+                    key={link.link + link.name}
+                    className="font-BricolageGrotesqueMedium py-3 text-center"
+                  >
+                    <Link
+                      href={link.link}
+                      onClick={onClose}
+                      style={{
+                        color:
+                          typeof window !== "undefined" &&
+                          window.innerWidth <= 768
+                            ? "#000000"
+                            : "#000000", // Check if window is defined
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.target as HTMLElement).style.color = "#E20000"; // Change to red on hover
+                      }}
+                      onMouseLeave={(e) => {
+                        if (typeof window !== "undefined") {
+                          (e.target as HTMLElement).style.color =
+                            window.innerWidth <= 768 ? "#000000" : "#000000";
+                        }
+                      }}
+                    >
+                      {link.name}
+                    </Link>
+                  </p>
+                ))}
+              </>
+            )
           )}
-          <hr />
-          {EVENT_NAV_LINKS.map((link: INavLinks) => (
-            <p
-              key={link.link + link.name}
-              className="font-BricolageGrotesqueMedium py-3 text-center"
-            >
-              <Link
-                href={link.link}
-                onClick={onClose}
-                style={{
-                  color:
-                    typeof window !== "undefined" && window.innerWidth <= 768
-                      ? "#000000"
-                      : "#000000", // Check if window is defined
-                }}
-                onMouseEnter={(e) => {
-                  (e.target as HTMLElement).style.color = "#E20000"; // Change to red on hover
-                }}
-                onMouseLeave={(e) => {
-                  if (typeof window !== "undefined") {
-                    (e.target as HTMLElement).style.color =
-                      window.innerWidth <= 768 ? "#000000" : "#000000";
-                  }
-                }}
-              >
-                {link.name}
-              </Link>
-            </p>
-          ))}
 
           <div className="flex flex-col items-center justify-center space-y-4 mt-7 mx-auto w-3/5 md:w-1/5">
             {!pathCheck && (
@@ -627,13 +705,31 @@ function DashboardLayout({
                   )
                 ) : (
                   // Show My Account button if user is logged in
-                  <Link href="/login" passHref>
-                    <Button
-                      // variant="outline"
-                      onClick={logOut}
-                      label="Sign Out"
-                    />
-                  </Link>
+                  <button
+                    type="submit"
+                    // size={"large"}
+                    className="font-BricolageGrotesqueSemiBold continue cursor-pointer py-2 font-bold equal-width-button"
+                    onClick={async () => {
+                      const res = await logoutUser.mutateAsync();
+                      if (res.status === 200) {
+                        sessionStorage.removeItem("token");
+                        sessionStorage.removeItem("tokenTimestamp");
+                        localStorage.removeItem("token");
+                        localStorage.removeItem("tokenTimestamp");
+                        localStorage.removeItem("profileData");
+                        removeCookie("forgot_email");
+                        removeCookie("event_id");
+                        removeCookie("form_stage");
+                        removeCookie("stage_one");
+                        removeCookie("stage_two");
+                        removeCookie("stage_three");
+                        router.push("/login");
+                      }
+                    }}
+                    // label="Sign Out"
+                  >
+                    Sign Out
+                  </button>
                 )}
               </>
             )}
