@@ -118,7 +118,7 @@ function Hero(): JSX.Element {
         </div>
         <br />
         <motion.div
-          className="w-full md:w-full lg:w-1/2 flex justify-center"
+          className="w-full md:w-full lg:w-1/2 justify-center hidden md:flex"
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 3 }}
