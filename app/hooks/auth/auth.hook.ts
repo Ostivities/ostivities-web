@@ -160,10 +160,12 @@ export const useProfile = () => {
 
   useEffect(() => {
     if (profile?.isSuccess && profile?.data?.data) {
+      setInterval(() => {
+        localStorage.setItem("profileData", JSON.stringify(profile?.data?.data?.data));
+      }, 1000);
       // Save profile to localStorage
-      localStorage.setItem("profileData", JSON.stringify(profile?.data?.data?.data));
     }
   }, [profile?.isSuccess, profile?.data]);
 
-  return { profile: storedProfile || profile };
+  return { profile };
 };

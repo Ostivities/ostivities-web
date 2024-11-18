@@ -209,8 +209,6 @@ function DashboardLayout({
 
   const [profileData, setProfileData] = useState(initialProfileData);
   const [isProfileReady, setIsProfileReady] = useState(false);
-  const userProfile = isLoggedIn || !profileData ? profile : profileData;
-  console.log(userProfile);
 
   // useEffect(() => {
   //   if (localStorage.getItem('profileData') !== "undefined") {
@@ -256,15 +254,15 @@ function DashboardLayout({
   ];
 
   const accountType =
-    userProfile?.data?.data?.data?.accountType || profileData?.accountType;
+    profile?.data?.data?.data?.accountType || profileData?.accountType;
 
   const userName =
     accountType === ACCOUNT_TYPE.PERSONAL
-      ? `${profileData?.firstName} ${profileData?.lastName}` ||
-        `${userProfile?.data?.data?.data?.firstName} ${userProfile?.data?.data?.data?.lastName}` ||
+      ? `${profile?.data?.data?.data?.firstName} ${profile?.data?.data?.data?.lastName}` ||
+         `${profileData?.firstName} ${profileData?.lastName}` ||
         ""
-      : profileData?.businessName ||
-        userProfile?.data?.data?.data?.businessName ||
+      : profile?.data?.data?.data?.businessName ||
+        profileData?.businessName ||
         "";
 
   console.log(userName, "userName");
@@ -413,7 +411,7 @@ function DashboardLayout({
               </div>
             </>
           ) : (
-            (profileData !== null || userProfile) &&
+            (profileData !== null || profile?.isFetched === true) &&
             isLoggedIn && (
               <>
                 <Space
@@ -494,7 +492,7 @@ function DashboardLayout({
                     <div className="flex-center gap-4 cursor-pointer">
                       <Image
                         src={
-                          userProfile?.data?.data?.data?.image ||
+                          profile?.data?.data?.data?.image ||
                           profileData?.image ||
                           emptyImage
                         } // Fallback to imported empty image
@@ -617,13 +615,13 @@ function DashboardLayout({
               </div>
             </>
           ) : (
-            (profileData !== null || userProfile) &&
+            (profileData !== null || profile?.isFetched === true) &&
             isLoggedIn && (
               <>
                 <div className="font-BricolageGrotesqueMedium items-center flex flex-col justify-center cursor-pointer">
                   <Image
                     src={
-                      userProfile?.data?.data?.data?.image ||
+                      profile?.data?.data?.data?.image ||
                       profileData?.image ||
                       emptyImage
                     } // Fallback to imported empty image
