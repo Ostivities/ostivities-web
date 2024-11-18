@@ -32,6 +32,7 @@ import placeholder from "@/public/placeholder.svg";
 import Head from "next/head";
 import { Tooltip } from "antd";
 import Dpmodal from "@/app/components/OstivitiesModal/CreateDp";
+import { Heading3 } from "@/app/components/typography/Heading3";
 
 const ShareModalContent: React.FC<{ url: string; title: string }> = ({
   url,
@@ -808,7 +809,7 @@ const EventDetail = () => {
             />
             <div className=""></div>
           </div>
-          <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between items-center">
+          <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between items-center -mt-3">
             <h2 className="text-xl font-BricolageGrotesqueMedium">
               {eventDetails?.eventName}
             </h2>
@@ -843,7 +844,7 @@ const EventDetail = () => {
               <ShareModalContent url={eventUrl} title={eventTitle} />
             </Modal>
           </div>{" "}
-          <div className="rounded-lg overflow-hidden flex flex-row items-center justify-center text-center p-4">
+          <div className="rounded-lg overflow-hidden flex flex-row items-center justify-center text-center p-3">
             {/* Image on the left side */}
             <Image
               src={isEventStarted ? end : start}
@@ -853,7 +854,7 @@ const EventDetail = () => {
 
             {/* Countdown beside the image */}
             <div className="p-2 -mt-8 -mb-8">
-              <div className="flex justify-center gap-3">
+              <div className="flex justify-center gap-4">
                 <div className="flex flex-col items-center">
                   <div className="flex items-center justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
                     <div className="text-2xl font-semibold">
@@ -916,7 +917,7 @@ const EventDetail = () => {
                   </div>
                   <div
                     style={{
-                      width: "140px",
+                      width: "280px",
                       whiteSpace: "normal",
                       wordWrap: "break-word",
                       fontWeight: 300,
@@ -974,7 +975,7 @@ const EventDetail = () => {
                   </div>
                   <div
                     style={{
-                      width: "190px",
+                      width: "270px",
                       whiteSpace: "normal",
                       wordWrap: "break-word",
                       fontWeight: 300,
@@ -1103,7 +1104,7 @@ const EventDetail = () => {
               ) : null}
             </div>
             <div>
-            <Heading5 className="text-2xl" content={"About this event"} />
+            <Heading3 className="text-lg font-bold mb-3" content={"About this event"} />
             <ReadMoreHTML
                   htmlContent={eventDetails?.eventDetails || ""}
                   maxLength={250}
@@ -1116,7 +1117,7 @@ const EventDetail = () => {
                     height="120"
                     style={{
                       border: 0,
-                      marginTop: "20px",
+                      marginTop: "24px",
                       borderRadius: "0.5rem", // Corner radius
                     }}
                     loading="lazy"

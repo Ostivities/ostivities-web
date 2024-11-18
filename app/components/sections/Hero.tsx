@@ -18,7 +18,7 @@ function Hero(): JSX.Element {
     dots: false,
     infinite: true,
     speed: 3200,
-    slidesToShow: 9,
+    slidesToShow: 8,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 0,
