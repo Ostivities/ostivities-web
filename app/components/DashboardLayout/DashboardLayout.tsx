@@ -215,6 +215,7 @@ function DashboardLayout({
   //     setProfileData(localStorage.getItem('profileData'));
   //   }
   //   }, []);
+  console.log("profileData", profileData);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -256,15 +257,14 @@ function DashboardLayout({
   const accountType =
     profile?.data?.data?.data?.accountType || profileData?.accountType;
 
-  const userName =
-    accountType === ACCOUNT_TYPE.PERSONAL
-      ? `${profile?.data?.data?.data?.firstName} ${profile?.data?.data?.data?.lastName}` ||
-         `${profileData?.firstName} ${profileData?.lastName}` ||
-        ""
-      : profile?.data?.data?.data?.businessName ||
-        profileData?.businessName ||
-        "";
+    console.log(accountType, "accountType");
 
+  const userName =
+  accountType === ACCOUNT_TYPE.PERSONAL
+    ? (profile?.data?.data?.data?.firstName && profile?.data?.data?.data?.lastName
+        ? `${profile?.data?.data?.data?.firstName} ${profile?.data?.data?.data?.lastName}`
+        : `${profileData?.firstName || ""} ${profileData?.lastName || ""}`)
+    : profile?.data?.data?.data?.businessName || profileData?.businessName || "";
   console.log(userName, "userName");
   // setCookie("user_fullname", userName)
   const avatarName =
@@ -635,7 +635,7 @@ function DashboardLayout({
                   />
                   <div className="h-fit py-3">
                     <h3 className="font-BricolageGrotesqueMedium text-sm text-OWANBE_TABLE_CELL">
-                      {userName}
+                    {userName}
                     </h3>
                   </div>
                 </div>
