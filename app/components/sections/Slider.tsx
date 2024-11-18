@@ -9,7 +9,7 @@ import "@/app/DynamicHeading.css";
 // Dynamic import of react-slick
 const Slider = dynamic(() => import("react-slick"), { ssr: false });
 
-function Partners(): JSX.Element {
+function Hero(): JSX.Element {
   const settings = {
     dots: false,
     infinite: true,
@@ -30,28 +30,30 @@ function Partners(): JSX.Element {
       },
       {
         breakpoint: 480,
-        settings: { slidesToShow: 2, slidesToScroll: 1 },
+        settings: { slidesToShow: 3, slidesToScroll: 1 },
       },
     ],
   };
 
   const slides = [
-    "/partner1.svg",
-    "/partner2.svg",
-    "/partner3.svg",
-    "/partner4.svg",
-    "/partner5.svg",
-    "/partner1.svg",
-    "/partner4.svg",
-   "/partner2.svg",
+    "/events.svg",
+    "/Conferences.svg",
+    "/Weddings.svg",
+    "/concerts.svg",
+    "/Hangouts.svg",
+    "/Seminar.svg",
+    "/events.svg",
+    "/Birthdays.svg",
+    "/Weddings.svg",
+    "/concerts.svg",
+    "/Hangouts.svg",
   ];
 
   return (
     <Section>
       {/* Slider Section */}
       <motion.div
-     className="w-screen overflow-hidden pb-4 sm:pb-24 -mx-16"
-     // Ensure full width and no margin
+      className="w-screen overflow-hidden pt-8 -mx-16" // Ensure full width and no margin
       initial={{ x: "100%" }} // Start from the right side
       animate={{ x: 0 }} // Move into the left side
       transition={{ duration: 1.5, ease: "easeOut" }} // Slide-in animation
@@ -65,7 +67,7 @@ function Partners(): JSX.Element {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: index * 0.2 }} // Staggered transition
           >
-            <img src={img} alt={`Slide ${index + 1}`} className="w-180px h-70px object-cover" />
+            <img src={img} alt={`Slide ${index + 1}`} className="w-full h-auto object-cover" />
           </motion.div>
         ))}
       </Slider>
@@ -74,4 +76,4 @@ function Partners(): JSX.Element {
   );
 }
 
-export default Partners;
+export default Hero;
