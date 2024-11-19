@@ -45,11 +45,25 @@ function Hero(): JSX.Element {
     dots: false,
     infinite: true,
     speed: 3200,
-    slidesToShow: 6,
+    slidesToShow: 8,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 0,
-    cssEase: 'linear',
+    cssEase: "linear",
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: { slidesToShow: 4, slidesToScroll: 1 },
+      },
+      {
+        breakpoint: 768,
+        settings: { slidesToShow: 2, slidesToScroll: 1 },
+      },
+      {
+        breakpoint: 480,
+        settings: { slidesToShow: 3, slidesToScroll: 1 },
+      },
+    ],
   };
 
   const slides = [
@@ -230,10 +244,10 @@ function Hero(): JSX.Element {
           </div>
         </div>
 
-        <br /><br /><br />
+      
         {/* Adding framer-motion to the image for a unique animation */}
         <motion.div
-          className="w-full md:w-full lg:w-1/2 flex justify-center"
+          className="w-full md:w-full lg:w-1/2 justify-center hidden md:flex"
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 2, y: 0 }}
           transition={{ duration: 3 }}
@@ -243,19 +257,19 @@ function Hero(): JSX.Element {
       </motion.div>
 
       <motion.div
-        className="hidden lg:block lg:w-full pt-8 lg:pt-0"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-      >
-        <br /><br /><br />
-        {/* Wrap the Slider with motion.div for animation */}
+      className="w-screen overflow-hidden pt-12 -mx-16" // Ensure full width and no margin
+      initial={{ x: "100%" }} // Start from the right side
+      animate={{ x: 0 }} // Move into the left side
+      transition={{ duration: 1.5, ease: "easeOut" }} // Slide-in animation
+    >
+        {/* <br /><br /><br />
+     
         <motion.div
           className="flex flex-col space-y-4"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.5 }} // Optional delay for smoother animation
-        >
+        > */}
           <Slider {...settings}>
             {slides.map((img, index) => (
               <motion.div
@@ -265,15 +279,14 @@ function Hero(): JSX.Element {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
               >
-                <img src={img} alt={`Slide ${index + 1}`} className="rounded-lg" />
-              </motion.div>
+                <img src={img} alt={`Slide ${index + 1}`} className="w-full h-auto object-cover" />
+                </motion.div>
             ))}
           </Slider>
         </motion.div>
-      </motion.div>
+    
     </Section>
   );
 }
 
 export default Hero;
-

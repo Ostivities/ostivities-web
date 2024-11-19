@@ -126,18 +126,6 @@ export const useResetPassword = () => {
 };
 
 
-export const useProfile = () => {
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
-
-  const profile = useQuery<AxiosResponse, AxiosError>({
-    queryKey: [USER_PROFILE],
-    queryFn: () => API_SERVICE._userProfile(),
-    enabled: !!token, // Only enabled if token exists
-    retry: false,     // Optionally disable retries if token is missing
-  });
-  return { profile };
-}
-
 export const useUpdateProfile = () => {
   const updateProfile = useMutation({
     mutationFn: (data: IUpdateUser) => {
@@ -153,3 +141,31 @@ export const useUpdateProfile = () => {
   });
   return { updateProfile };
 }
+
+export const useProfile = () => {
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
+  // Check for existing profile in localStorage
+  const localProfile = typeof window !== "undefined" ? localStorage.getItem("profileData") : null;
+
+  // Parse the stored profile if available
+  const storedProfile = localProfile ? JSON.parse(localProfile) : null;
+
+  const profile = useQuery<AxiosResponse, AxiosError>({
+    queryKey: [USER_PROFILE],
+    queryFn: () => API_SERVICE._userProfile(),
+    enabled: !!token && !storedProfile, // Only enabled if token exists and profile isn't already in localStorage
+    retry: false, // Optionally disable retries
+  });
+
+  useEffect(() => {
+    if (profile?.isSuccess && profile?.data?.data) {
+      setInterval(() => {
+        localStorage.setItem("profileData", JSON.stringify(profile?.data?.data?.data));
+      }, 1000);
+      // Save profile to localStorage
+    }
+  }, [profile?.isSuccess, profile?.data]);
+
+  return { profile };
+};

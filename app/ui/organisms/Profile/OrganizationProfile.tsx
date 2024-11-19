@@ -35,16 +35,59 @@ const OrganizationProfile = () => {
   const [saveLoader, setSaveLoader] = useState(false);
   const [form] = Form.useForm();
 
+
+  const initialProfileData = (() => {
+    if (typeof window !== "undefined") {
+      const storedProfileData = localStorage.getItem("profileData");
+      if (
+        storedProfileData &&
+        storedProfileData !== "undefined" &&
+        storedProfileData !== "null"
+      ) {
+        try {
+          return JSON.parse(storedProfileData); // Return parsed data if valid
+        } catch (error) {
+          console.error("Failed to parse profileData:", error);
+        }
+      }
+      return null;
+    }
+  })();
+
+  const [profileData, setProfileData] = useState(initialProfileData);
+  const [isProfileReady, setIsProfileReady] = useState(false);
+
+  console.log(profileData, "profileData from the component");
+
   useEffect(() => {
-    if (profile) {
+    if (typeof window !== "undefined") {
+      const storedProfileData = localStorage.getItem("profileData");
+      if (
+        storedProfileData &&
+        storedProfileData !== "undefined" &&
+        storedProfileData !== "null" &&
+        JSON.stringify(initialProfileData) !== storedProfileData
+      ) {
+        try {
+          setProfileData(JSON.parse(storedProfileData));
+        } catch (error) {
+          console.error("Failed to parse profileData:", error);
+        }
+      }
+      setIsProfileReady(true);
+    }
+  }, [initialProfileData]);
+
+  useEffect(() => {
+    if (profile && profileData && isProfileReady) {
       form.setFieldsValue({
-        accountType: profile?.data?.data?.data?.accountType,
-        businessName: profile?.data?.data?.data?.businessName,
-        emailAddress: profile?.data?.data?.data?.email,
-        phone_number: profile?.data?.data?.data?.phone_number,
+        accountType: profile?.data?.data?.data?.accountType || profileData?.accountType,
+        businessName: profile?.data?.data?.data?.businessName || profileData?.businessName,
+        emailAddress: profile?.data?.data?.data?.email || profileData?.email,
+        phone_number: profile?.data?.data?.data?.phone_number || profileData?.phone_number,
       });
     }
-  }, [profile]);
+  }, [profile, profileData]);
 
   const props: UploadProps = {
     name: "image",
@@ -72,12 +115,14 @@ const OrganizationProfile = () => {
             response?.data?.secure_url || response?.data?.url;
           const res = await updateProfile.mutateAsync({
             image: urlString,
-            id: profile?.data?.data?.data?.id,
+            id: profileData?.id,
           });
           if (res.status === 200) {
             setLoader(false);
-            profile.refetch();
+            // profile.refetch();
+            setProfileData(res?.data?.data);
             setFields(urlString);
+            localStorage.setItem('profileData', JSON.stringify(res?.data?.data));
           }
         }
       } catch (error) {}
@@ -100,6 +145,7 @@ const OrganizationProfile = () => {
         setProfileImage("/empty.svg"); // Reset profile image to default
         setUploadButton("Update"); // Change button text back to "Update"
         setIsImageUploaded(false); // Set image upload state to false
+        delete profileData?.image;
         message.success("Profile picture removed successfully");
       },
       onCancel() {},
@@ -128,13 +174,15 @@ const OrganizationProfile = () => {
     if (value) {
       const response = await updateProfile.mutateAsync({
         phone_number,
-        id: profile?.data?.data?.data?.id,
+        id: profileData?.id,
       });
       if (response.status === 200) {
+        console.log(response, "response");
         successFormatter(response);
         setSaveLoader(false);
-        profile.refetch();
-        localStorage.setItem('profileData', JSON.stringify(profile?.data?.data?.data));
+        // profile.refetch();
+        setProfileData(response?.data?.data);
+        localStorage.setItem('profileData', JSON.stringify(response?.data?.data));
       }
     }
   };
@@ -146,7 +194,7 @@ const OrganizationProfile = () => {
         {/* Flex container for profile picture and buttons */}
         <div className="relative profile-image-container">
           <Image
-            src={profile?.data?.data?.data?.image || "/empty.svg"} // Display the profile image dynamically
+            src={profileData?.image || fields || "/empty.svg"} // Display the profile image dynamically
             alt="Profile Picture"
             width={96} // Equivalent to w-24
             height={96} // Equivalent to h-24

@@ -53,6 +53,7 @@ const EventSales = () => {
     bankAccount: `******${Math.floor(100000 + Math.random() * 900000).toString()}`,
     transferFee: Math.floor(Math.random() * 1000),
     payout: Math.floor(Math.random() * 10000),
+    status: index % 2 === 0 ? "Completed" : "Pending",
     paymentDate: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
   }));
 
@@ -245,6 +246,69 @@ const EventSales = () => {
       sorter: (a, b) => (a.payout ?? 0) - (b.payout ?? 0),
       render: text => `₦${text.toLocaleString()}`,
     },
+    {
+      title: (
+        <Label
+          content="Status"
+          className="font-semibold text-OWANBE_TABLE_TITLE"
+        />
+      ),
+      dataIndex: "status",
+      sorter: (a, b) => {
+        // Handle undefined or null status values
+        const statusA = a.status?.toLowerCase() ?? "";
+        const statusB = b.status?.toLowerCase() ?? "";
+    
+        if (statusA < statusB) return -1;
+        if (statusA > statusB) return 1;
+        return 0;
+      },
+      render: (status) => {
+        // Default to "Pending" if status is undefined
+        const displayStatus =
+          status === "Completed" || status === "Pending" ? status : "Pending";
+    
+        // Determine styles based on status
+        let style = {};
+        let dotColor = "";
+    
+        if (displayStatus === "Completed") {
+          style = { color: "#009A44", backgroundColor: "#E6F5ED" }; // Green
+          dotColor = "#009A44";
+        } else if (displayStatus === "Pending") {
+          style = { color: "#F68D2E", backgroundColor: "#FDE8D5" }; // Orange
+          dotColor = "#F68D2E";
+        }
+    
+        // Render the status with a colored dot and styled badge
+        return (
+          <span
+            style={{
+              ...style,
+              padding: "2px 10px",
+              borderRadius: "25px",
+              fontWeight: "500",
+              display: "inline-block",
+              minWidth: "80px",
+              textAlign: "center",
+            }}
+          >
+            <span
+              style={{
+                width: "10px",
+                height: "10px",
+                backgroundColor: dotColor,
+                borderRadius: "50%",
+                display: "inline-block",
+                marginRight: "8px",
+              }}
+            ></span>
+            {displayStatus.charAt(0).toUpperCase() + displayStatus.slice(1).toLowerCase()}
+          </span>
+        );
+      },
+    },
+    
     {
       title: (
         <Label

@@ -24,7 +24,7 @@ import {
   LinkedinIcon,
   XIcon,
 } from "react-share";
-import { ShareAltOutlined, CopyOutlined } from "@ant-design/icons";
+import { ShareAltOutlined, CopyOutlined, EditOutlined } from "@ant-design/icons";
 import ReadMoreHTML from "@/app/components/ReadMoreHTML";
 import start from "@/public/Startsin.svg";
 import end from "@/public/Endsin.svg";
@@ -32,6 +32,7 @@ import placeholder from "@/public/placeholder.svg";
 import Head from "next/head";
 import { Tooltip } from "antd";
 import Dpmodal from "@/app/components/OstivitiesModal/CreateDp";
+import { Heading3 } from "@/app/components/typography/Heading3";
 
 const ShareModalContent: React.FC<{ url: string; title: string }> = ({
   url,
@@ -358,8 +359,8 @@ const EventDetail = () => {
       </Head>
 
       <section>
-        <div className="hidden min-[870px]:flex gap-10 md:flex-row">
-          <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
+        <div className="hidden min-[870px]:flex gap-10 md:flex-row ">
+          <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden bg-white card-shadow ">
             <Image
               src={
                 eventDetails?.eventImage ? eventDetails.eventImage : placeholder
@@ -369,7 +370,7 @@ const EventDetail = () => {
               style={{ objectFit: "cover" }}
               className=""
             />
-            <div className="absolute inset-0 bg-image-card"></div>
+            <div className=" "></div>
           </div>
           <div className="py-8">
             <Heading5 className="text-2xl" content={"About this event"} />
@@ -602,18 +603,10 @@ const EventDetail = () => {
                   />
                   <Tooltip title="Click to Create Your Attendee Flyer">
                     <Button
+                    icon={<EditOutlined className="text-black text-2xl" />}
                       onClick={handleShowModal}
-                      className="p-2"
-                      style={{
-                        backgroundColor: "#e20000",
-                        color: "#FFFFFF",
-                        border: "none",
-                        borderRadius: "25px",
-                        fontFamily: "'Bricolage Grotesque', sans-serif",
-                      }}
-                    >
-                      Create Af
-                    </Button>
+                      className="bg-white border-none p-0"
+                    />
                   </Tooltip>
                 </div>
 
@@ -781,7 +774,7 @@ const EventDetail = () => {
             </div>
           </div>
           <Modal
-            title="Upload your prefered image, download and share with everyone 🥳 "
+            title="Create your attendee flyer, download and share with everyone 🥳 "
             open={showModal}
             onCancel={handleCloseModal2}
             footer={null} // Removes the default footer
@@ -804,7 +797,7 @@ const EventDetail = () => {
 
         {/* For small screen */}
         <div className="min-[870px]:hidden flex gap-10 flex-col">
-          <div className="relative w-full h-[320px] rounded-[3.125rem] overflow-hidden">
+          <div className="relative w-full h-[320px] rounded-[3.125rem] overflow-hidden bg-white card-shadow ">
             <Image
               src={
                 eventDetails?.eventImage ? eventDetails.eventImage : placeholder
@@ -814,9 +807,9 @@ const EventDetail = () => {
               style={{ objectFit: "cover" }}
               className=""
             />
-            <div className="absolute inset-0 bg-image-card"></div>
+            <div className=""></div>
           </div>
-          <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between items-center">
+          <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between items-center -mt-3">
             <h2 className="text-xl font-BricolageGrotesqueMedium">
               {eventDetails?.eventName}
             </h2>
@@ -829,21 +822,13 @@ const EventDetail = () => {
                 onClick={handleOpenModal}
                 className="bg-white border-none p-0"
               />
-              <Tooltip title="Click to Create Your Attendee Flyer">
-                <Button
-                  onClick={handleShowModal}
-                  className="p-2"
-                  style={{
-                    backgroundColor: "#e20000",
-                    color: "#FFFFFF",
-                    border: "none",
-                    borderRadius: "25px",
-                    fontFamily: "'Bricolage Grotesque', sans-serif",
-                  }}
-                >
-                  Create Af
-                </Button>
-              </Tooltip>
+               <Tooltip title="Click to Create Your Attendee Flyer">
+                    <Button
+                    icon={<EditOutlined className="text-black text-2xl" />}
+                      onClick={handleShowModal}
+                      className="bg-white border-none p-0"
+                    />
+                  </Tooltip>
             </div>
 
             <Modal
@@ -859,7 +844,7 @@ const EventDetail = () => {
               <ShareModalContent url={eventUrl} title={eventTitle} />
             </Modal>
           </div>{" "}
-          <div className="rounded-lg overflow-hidden flex flex-row items-center justify-center text-center p-4">
+          <div className="rounded-lg overflow-hidden flex flex-row items-center justify-center text-center p-3">
             {/* Image on the left side */}
             <Image
               src={isEventStarted ? end : start}
@@ -868,10 +853,10 @@ const EventDetail = () => {
             />
 
             {/* Countdown beside the image */}
-            <div className="p-4">
-              <div className="flex justify-center gap-5">
+            <div className="p-2 -mt-8 -mb-8">
+              <div className="flex justify-center gap-4">
                 <div className="flex flex-col items-center">
-                  <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                  <div className="flex items-center justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
                     <div className="text-2xl font-semibold">
                       {timeRemaining.days}
                     </div>
@@ -880,7 +865,7 @@ const EventDetail = () => {
                 </div>
 
                 <div className="flex flex-col items-center">
-                  <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                  <div className="flex items-center justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
                     <div className="text-2xl font-semibold">
                       {timeRemaining.hours}
                     </div>
@@ -889,7 +874,7 @@ const EventDetail = () => {
                 </div>
 
                 <div className="flex flex-col items-center">
-                  <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                  <div className="flex items-center justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
                     <div className="text-2xl font-semibold">
                       {timeRemaining.minutes}
                     </div>
@@ -897,7 +882,7 @@ const EventDetail = () => {
                   <div className="text-xs capitalize mt-2">Minutes</div>
                 </div>
                 <div className="flex flex-col items-center">
-                  <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
+                  <div className="flex items-center justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
                     <div className="text-2xl font-semibold">
                       {timeRemaining.seconds}
                     </div>
@@ -907,7 +892,7 @@ const EventDetail = () => {
               </div>
             </div>
           </div>
-          <div className="mt-14 flex flex-col gap-8">
+          <div className="mt-2 flex flex-col gap-8">
               <div className="flex items-start">
                 {/* Image Section */}
                 <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
@@ -932,7 +917,7 @@ const EventDetail = () => {
                   </div>
                   <div
                     style={{
-                      width: "140px",
+                      width: "280px",
                       whiteSpace: "normal",
                       wordWrap: "break-word",
                       fontWeight: 300,
@@ -990,7 +975,7 @@ const EventDetail = () => {
                   </div>
                   <div
                     style={{
-                      width: "190px",
+                      width: "270px",
                       whiteSpace: "normal",
                       wordWrap: "break-word",
                       fontWeight: 300,
@@ -1119,7 +1104,7 @@ const EventDetail = () => {
               ) : null}
             </div>
             <div>
-            <Heading5 className="text-2xl" content={"About this event"} />
+            <Heading3 className="text-lg font-bold mb-3" content={"About this event"} />
             <ReadMoreHTML
                   htmlContent={eventDetails?.eventDetails || ""}
                   maxLength={250}
@@ -1130,7 +1115,11 @@ const EventDetail = () => {
                     src={eventDetails?.event_coordinates}
                     width="100%"
                     height="120"
-                    style={{ border: 0, marginTop: "20px" }}
+                    style={{
+                      border: 0,
+                      marginTop: "24px",
+                      borderRadius: "0.5rem", // Corner radius
+                    }}
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                   />
@@ -1213,7 +1202,7 @@ const EventDetail = () => {
                 </div>
             </div>
             <Modal
-            title="Upload your prefered image, download and share with everyone 🥳 "
+            title="Create your attendee flyer, download and share with everyone 🥳"
             open={showModal}
             onCancel={handleCloseModal2}
             footer={null} // Removes the default footer
