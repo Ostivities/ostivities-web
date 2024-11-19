@@ -57,7 +57,7 @@ const OrganizationProfile = () => {
   const [profileData, setProfileData] = useState(initialProfileData);
   const [isProfileReady, setIsProfileReady] = useState(false);
 
-  console.log(profileData, "profileData from the component");
+  // console.log(profileData, "profileData from the component");
 
   useEffect(() => {
     if (typeof window !== "undefined") {

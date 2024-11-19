@@ -10,9 +10,12 @@ interface PropsI {
   titleClass?: string;  // Optional because you might not always pass it
   aboutClass?: string;  // Optional
   statusClass?: string; // Optional
+  startDate?: string;
+  endDate?: string;
+  eventType?: string;
 }
 
-const InfoCard: React.FC<PropsI> = ({ title, about, status, image, url, titleClass = 'font-bricolage-grotesque', aboutClass = 'font-bricolage-grotesque', statusClass = 'font-bricolage-grotesque' }) => {
+const InfoCard: React.FC<PropsI> = ({ title, about, status, image, url, startDate, endDate, eventType, titleClass = 'font-bricolage-grotesque', aboutClass = 'font-bricolage-grotesque', statusClass = 'font-bricolage-grotesque' }) => {
   return (
     <Link
       href={url}
