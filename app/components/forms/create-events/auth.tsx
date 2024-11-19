@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 // import { useProfile } from "../../../hooks/auth/auth.hook";
+import { useCookies } from "react-cookie";
 
 const useFetch = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "profileData",
+  ]);
+
 
   const router = useRouter();
   const pathname = usePathname();
@@ -47,7 +52,7 @@ const useFetch = () => {
       localStorage.removeItem("token");
       localStorage.removeItem("tokenTimestamp");
       localStorage.removeItem("profileData");
-
+      removeCookie("profileData")
       if (isPrivatePath(pathname)) {
         router.push("/login");
       }

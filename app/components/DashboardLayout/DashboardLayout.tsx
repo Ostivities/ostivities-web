@@ -180,6 +180,7 @@ function DashboardLayout({
           removeCookie("stage_one");
           removeCookie("stage_two");
           removeCookie("stage_three");
+          removeCookie("profileData")
           router.push("/login");
         }
       },
@@ -722,6 +723,7 @@ function DashboardLayout({
                     removeCookie("stage_one");
                     removeCookie("stage_two");
                     removeCookie("stage_three");
+                    removeCookie("profileData")
                     router.push("/login");
                   }
                 }}

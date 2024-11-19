@@ -1,6 +1,6 @@
 import { IEventDetails } from "@/app/utils/interface";
 import EventSection from "./AllEventSection";
-import InfoCard from "./OtherInfoCard";
+import InfoCard from "./OtherInfoCard2";
 import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
 import { Skeleton } from "antd";
 import { useState } from "react";
@@ -45,6 +45,8 @@ const AllEvents = () => {
             key={event?.id}
             title={event?.eventName}
             about={event?.eventType}
+            startDate={event?.startDate}
+            endDate={event?.endDate}
             status= {event?.enable_registration === false ? "Reg Closed" :  "Get Tickets"  }
             image={event?.eventImage ? event.eventImage : placeholder}
             url={`/discover/${event?.unique_key}`}

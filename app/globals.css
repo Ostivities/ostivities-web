@@ -304,6 +304,10 @@ body {
   }
 }
 
+/* @media screen and (min-width: ) {
+  
+} */
+
 .side-nav > .ant-menu-item-selected {
   color: #181515 !important;
   background-color: #fadede !important;

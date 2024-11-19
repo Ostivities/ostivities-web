@@ -16,6 +16,8 @@ import { ITicketCreate, ITicketData, ITicketUpdate } from "@/app/utils/interface
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { useProfile } from "@/app/hooks/auth/auth.hook";
 import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
+import { useCookies } from "react-cookie";
+
 
 const { Option } = Select;
 interface CollectiveTicketProps {
@@ -47,6 +49,8 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
+  const [cookies, setCookies] = useCookies(["ticket_id", "stage_three", "profileData"]);
+
   const pathname = usePathname()
   // console.log(pathname)
   const ticketStock: string = Form.useWatch("ticketStock", form);
@@ -121,7 +125,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         ticketDescription: editorContent,
         event: params?.id,
         ticketEntity: "COLLECTIVE",
-        user: profile?.data?.data?.data?.id,
+        user: cookies?.profileData?.id,
         // groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
         ticketType
       };
@@ -150,7 +154,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         ticketDescription: editorContent,
         event: params?.id,
         ticketEntity: "COLLECTIVE",
-        user: profile?.data?.data?.data?.id,
+        user: cookies?.profileData?.id,
         // groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
         ticketType
       };

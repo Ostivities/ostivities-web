@@ -93,8 +93,11 @@ function Details(): JSX.Element {
     "stage_one",
     "stage_two",
     "stage_three",
-    "mapSrc"
+    "mapSrc",
+    "profileData"
   ]);
+
+  console.log(cookies?.profileData?.id, "profileData");
   const [vendorRegRadio, setVendorRegRadio] = useState(false);
   const [showRadio, setShowRadio] = useState(false);
   const [editorContent, setEditorContent] = useState("");
@@ -107,14 +110,14 @@ function Details(): JSX.Element {
 
   const { RangePicker } = DatePicker;
 
-  const accountType = profile?.data?.data?.data?.accountType;
+  const accountType = cookies?.profileData?.accountType;
 
   const { Option } = Select;
 
   const userName =
     accountType === ACCOUNT_TYPE.PERSONAL
-      ? profile?.data?.data?.data?.firstName
-      : profile?.data?.data?.data?.businessName || "";
+      ? cookies?.profileData?.firstName
+      : cookies?.profileData?.businessName || "";
 
   const {
     handleSubmit,

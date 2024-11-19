@@ -21,6 +21,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { message } from "antd";
 import { AxiosError, AxiosResponse } from "axios";
 import { useEffect } from "react";
+import { useCookies } from "react-cookie";
+
 
 export const useRegister = () => {
   const registerUser = useMutation({
@@ -143,6 +145,7 @@ export const useUpdateProfile = () => {
 }
 
 export const useProfile = () => {
+  const [cookies, setCookie] = useCookies(["profileData"]);
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
   // Check for existing profile in localStorage
@@ -163,9 +166,14 @@ export const useProfile = () => {
       setInterval(() => {
         localStorage.setItem("profileData", JSON.stringify(profile?.data?.data?.data));
       }, 1000);
-      // Save profile to localStorage
+      setCookie("profileData", JSON.stringify(profile?.data?.data?.data), {
+        path: "/", // Cookie is accessible across the entire site
+        maxAge: 60 * 60 * 24, // Cookie expires in 24 hours
+        secure: true, // Ensures cookie is sent over HTTPS
+        sameSite: "strict", // Restricts cross-site requests
+      });
     }
-  }, [profile?.isSuccess, profile?.data]);
+  }, [profile?.isSuccess, profile?.data, setCookie]);
 
   return { profile };
 };
