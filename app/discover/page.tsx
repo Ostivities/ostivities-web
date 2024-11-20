@@ -104,7 +104,7 @@ function Dashboard(): JSX.Element {
                   }}
                   className="text-OWANBE_PRY mb-1 block"
                 >
-                  Event State (optional)
+                  Event State
                 </span>
                 <Select
                   placeholder="select event state"
