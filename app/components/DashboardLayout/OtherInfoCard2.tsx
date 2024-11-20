@@ -33,35 +33,38 @@ const InfoCardM: React.FC<PropsI> = ({
   return (
     <Link
       href={url}
-      className={`relative min-w-[250px] py-2 px-3 flex justify-between items-stretch shadow-md h-[150px] rounded-[20px] overflow-hidden gap-4 ${className}`}
+      className={`relative min-w-[250px] py-2 pl-3 pr-20 flex justify-between items-stretch shadow-md h-[120px] rounded-[20px] overflow-hidden gap-4 ${className}`}
     >
       {/* Image Container */}
-      <div className="w-1/2 h-full relative">
+      <div className="w-[120px] h-full relative rounded-[15px] overflow-hidden">
         <Image
           src={image}
           alt=""
-          className="object-cover rounded-[20px]" // Ensures the image maintains proportions
-          layout="fill" // Makes the image fill the container
+          fill
+          style={{ objectFit: "cover" }}
+          className="" // Ensures the image maintains proportions
         />
-      </div>
+     <div className="absolute inset-0 bg-image-card"></div>
+     </div>
 
       {/* Content Container */}
       <div className="w-1/2 flex h-full text-black justify-between py-4 bg-white rounded-[20px]">
         <div
-          className={`px-2 py-2 bg-OWANBE_PRY absolute top-0 right-0 rounded-bl-[1.25rem] ${statusClass}`}
+          className={`px-2 py-1 bg-OWANBE_PRY absolute top-0 right-0 rounded-bl-[1.25rem] ${statusClass}`}
         >
           <span
             className=" text-white"
             style={{ 
               fontFamily: "Bricolage Grotesque, sans-serif",
+              fontSize: "12px",
             }}
           >
             {status}
           </span>
         </div>
-        <div className="flex flex-col justify-center">
-          <h3 className={titleClass}>{title}</h3>
-          <div className={`flex items-center gap-2 mt-1 ${aboutClass}`}>
+        <div className="flex flex-col justify-center" style={{ fontFamily: "Bricolage Grotesque, sans-serif" }}>
+          <h3 className={titleClass}>{title} </h3>
+          <div className={`flex items-center gap-2 mt-1 ${aboutClass}`} >
             <Image
               className=""
               src="/icons/Folder2.svg"
@@ -69,7 +72,7 @@ const InfoCardM: React.FC<PropsI> = ({
               height={18}
               width={18}
             />
-            <span className="text-xs">{about}</span>
+            <span className="text-xs" style={{ fontFamily: "Bricolage Grotesque, sans-serif" }}>{about}</span>
           </div>
           <div className={`flex items-center gap-2 mt-1 ${aboutClass}`}>
             <Image
@@ -79,7 +82,7 @@ const InfoCardM: React.FC<PropsI> = ({
               height={18}
               width={18}
             />
-            <span className="text-xs">
+            <span className="text-xs"style={{ fontFamily: "Bricolage Grotesque, sans-serif" }}>
               {dateFormat(startDate)}
             </span>
           </div>
