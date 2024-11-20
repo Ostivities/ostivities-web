@@ -808,7 +808,7 @@ const EventDetail = () => {
 
         {/* !!!For small screen */}
         <div className="min-[870px]:hidden flex gap-10 flex-col">
-          <div className="relative w-full h-[320px] rounded-[3.125rem] overflow-hidden bg-white card-shadow ">
+          <div className="relative w-full h-[320px] rounded-[2.5rem] overflow-hidden bg-white card-shadow ">
             <Image
               src={
                 eventDetails?.eventImage ? eventDetails.eventImage : placeholder
