@@ -822,12 +822,13 @@ function DashboardLayout({
             </Header>
 
             <Layout
+              className="md:px-5"
               style={{
-                padding: "0 20px",
+                // padding: "0 20px",
                 overflowY: "auto",
               }}
             >
-              <Content className="flex flex-col space-y-8 py-8">
+              <Content className="flex flex-col space-y-8 md:py-8">
                 {steppers && (
                   <div
                     className={`mx-auto text-center flex flex-row items-center justify-center pb-3 ${
@@ -840,12 +841,12 @@ function DashboardLayout({
                 {extraComponents && <div className="">{extraComponents}</div>}
                 <div
                   style={{
-                    borderRadius: "30px",
+                    // borderRadius: "30px",
                     border: "1px solid #E5E5E5",
                     boxShadow: "0px 8px 24px 0px #00000014",
                     background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
                   }}
-                  className="md:px-12 md:py-16 py-8 px-4"
+                  className="md:px-12 md:py-15 rounded-2xl md:rounded-[30px] py-4 px-2"
                 >
                   <div>{children}</div>
                 </div>
