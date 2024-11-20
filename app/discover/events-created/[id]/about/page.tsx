@@ -55,6 +55,8 @@ import dayjs from "dayjs";
 import axios from "axios";
 import useFetch from "@/app/components/forms/create-events/auth";
 import { RangePickerProps } from "antd/es/date-picker";
+import { useCookies } from "react-cookie";
+
 
 interface FieldType {}
 
@@ -96,6 +98,10 @@ const AboutEvent = () => {
   const [showRadio, setShowRadio] = useState(false);
   const { updateEvent } = useUpdateEvent();
   const { profile } = useProfile();
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "profileData"
+  ]);
+
   const [editorContent, setEditorContent] = useState("");
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
@@ -385,11 +391,10 @@ const AboutEvent = () => {
   };
 
 
-  const accountType = profile?.data?.data?.data?.accountType;
-  const userName =
-    accountType === ACCOUNT_TYPE.PERSONAL
-      ? profile?.data?.data?.data?.firstName
-      : profile?.data?.data?.data?.businessName || "";
+  const accountType = cookies?.profileData?.accountType;
+
+  const userName =  accountType === ACCOUNT_TYPE.PERSONAL
+    ? cookies?.profileData?.firstName || "" : cookies?.profileData?.businessName || "";
 
   const getGreeting = () => {
     const currentHour = new Date().getHours();

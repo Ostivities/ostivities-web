@@ -49,7 +49,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
-  const [cookies, setCookies] = useCookies(["ticket_created", "stage_three"]);
+  const [cookies, setCookies] = useCookies(["ticket_created", "stage_three", "profileData"]);
 
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form);
@@ -104,7 +104,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
         ticketDescription: editorContent,
         event: params?.id,
         ticketEntity: TICKET_ENTITY.SINGLE,
-        user: profile?.data?.data?.data?.id,
+        user: cookies?.profileData?.id,
       };
       // return console.log(payload, "kk");
 
@@ -130,7 +130,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
         ticketDescription: editorContent,
         event: params?.id,
         ticketEntity: TICKET_ENTITY.SINGLE,
-        user: profile?.data?.data?.data?.id,
+        user: cookies?.profileData?.id,
       };
       if (payload) {
         const response = await createTicket.mutateAsync(payload);

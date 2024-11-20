@@ -15,6 +15,8 @@ import { Heading5, Paragraph } from "../../typography/Typography";
 import { GET_EVENT } from "@/app/utils/constants";
 import ReadMoreHTML from "@/app/components/ReadMoreHTML";
 import placeholder from "@/public/placeholder.svg";
+import { ACCOUNT_TYPE, EVENT_INFO, EXHIBITION_SPACE } from "@/app/utils/enums";
+
 
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
 const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
@@ -35,6 +37,7 @@ const EventPageAppearance: React.FC = () => {
     "stage_three",
     "ticket_created",
     "mapSrc",
+    "profileData"
   ]);
   const params = useParams<{ id: string }>();
   const { getUserEvent } = useGetUserEvent(params?.id);
@@ -47,10 +50,13 @@ const EventPageAppearance: React.FC = () => {
   }, [params?.id]);
 
   const { profile } = useProfile();
-  const userFullName =
-    profile?.data?.data?.data?.firstName +
+
+  const accountType = cookies?.profileData?.accountType;
+
+  const userFullName =  accountType === ACCOUNT_TYPE.PERSONAL
+    ? cookies?.profileData?.firstName +
     " " +
-    profile?.data?.data?.data?.lastName;
+    cookies?.profileData?.lastName : cookies?.profileData?.businessName;
 
 
   const eventDetails = getUserEvent?.data?.data?.data;

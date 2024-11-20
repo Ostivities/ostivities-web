@@ -91,6 +91,9 @@ const DiscountCode = (): JSX.Element => {
     }
   }, [ticketApplicable, ticketData]);
 
+  const userID = ticketData?.[0]?.user?.id || null; // Use optional chaining to handle undefined cases
+  // console.log(userID, "userID");
+
   const onFinish: FormProps<IDiscountData>["onFinish"] = async (values) => {
     // return console.log(values, "values");
     const { ticketApplicable, ...rest } = values;
@@ -99,7 +102,7 @@ const DiscountCode = (): JSX.Element => {
       ...rest,
       event: params?.id,
       eventId: params?.id,
-      user: profile?.data?.data?.data?.id,
+      user: userID,
     });
 
     if (response.status === 201) {

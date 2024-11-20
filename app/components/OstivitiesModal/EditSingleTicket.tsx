@@ -41,7 +41,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
   id,
 }) => {
   const [form] = Form.useForm();
-  const [cookies, setCookie, removeCookie] = useCookies(["ticket_id"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["ticket_id", "profileData"]);
   const { updateTicket } = useUpdateTicket();
   const { profile } = useProfile();
   const { getSingleTicket } = useGetSingleTicket(id);
@@ -161,7 +161,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
         ticketDescription: editorContent,
         event: params?.id,
         ticketEntity: "SINGLE",
-        user: profile?.data?.data?.data?.id,
+        user: cookies?.profileData?.id,
         guestAsChargeBearer: true
       };
       // console.log(payload, "kk");
@@ -187,7 +187,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
         ticketDescription: editorContent,
         event: params?.id,
         ticketEntity: "SINGLE",
-        user: profile?.data?.data?.data?.id,
+        user: cookies?.profileData?.id,
         guestAsChargeBearer: true
       };
       if (payload) {
