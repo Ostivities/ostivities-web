@@ -167,7 +167,7 @@ function Dashboard(): JSX.Element {
                 />
               </label>
 
-              <div className="flex items-end">
+              <div className="flex items-end button-lenght">
                 <button
                   disabled={searchText === ""}
                   type="submit"

@@ -45,7 +45,7 @@ const DiscoverEvents = () => {
         title="Discover Events"
         titleClass="custom-title-class"
         style={{
-          fontSize: "24px",
+          // fontSize: "24px",
           fontFamily: "Bricolage Grotesque, font-semibold",
         }} // Inline style
       >

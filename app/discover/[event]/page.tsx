@@ -802,7 +802,11 @@ const EventDetail = () => {
           </Modal>
         </div>
 
-        {/* For small screen */}
+
+
+
+
+        {/* !!!For small screen */}
         <div className="min-[870px]:hidden flex gap-10 flex-col">
           <div className="relative w-full h-[320px] rounded-[3.125rem] overflow-hidden bg-white card-shadow ">
             <Image
@@ -851,50 +855,50 @@ const EventDetail = () => {
               <ShareModalContent url={eventUrl} title={eventTitle} />
             </Modal>
           </div>{" "}
-          <div className="rounded-lg overflow-hidden flex flex-row items-center justify-center text-center p-3">
+          <div className="rounded-lg flex flex-row items-center justify-center text-center p-3 w-full max-w-[95%] mx-auto">
             {/* Image on the left side */}
             <Image
               src={isEventStarted ? end : start}
               alt={isEventStarted ? "Ends" : "Starts"}
-              className="w-20 h-auto flex-shrink-0"
+              className="w-20 h-auto flex-shrink-0 img_reduce"
             />
 
             {/* Countdown beside the image */}
-            <div className="p-2 -mt-8 -mb-8">
+            <div className="p-2 -mt-5 -mb-8">
               <div className="flex justify-center gap-4">
-                <div className="flex flex-col items-center">
-                  <div className="flex items-center justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
-                    <div className="text-2xl font-semibold">
+                <div className="flex gap-1 flex-col items-center">
+                  <div className="flex items-center justify-center w-12 h-12 time_reduce border-2 border-[#e20000] rounded-full">
+                    <div className="text-2xl text-reduce font-semibold">
                       {timeRemaining.days}
                     </div>
                   </div>
-                  <div className="text-xs capitalize mt-2">Days</div>
+                  <div className="text-xs capitalize">Days</div>
                 </div>
 
-                <div className="flex flex-col items-center">
-                  <div className="flex items-center justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
-                    <div className="text-2xl font-semibold">
+                <div className="flex gap-1 flex-col items-center">
+                  <div className="flex items-center time_reduce justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
+                    <div className="text-2xl text-reduce font-semibold">
                       {timeRemaining.hours}
                     </div>
                   </div>
-                  <div className="text-xs capitalize mt-2">Hours</div>
+                  <div className="text-xs capitalize">Hours</div>
                 </div>
 
-                <div className="flex flex-col items-center">
-                  <div className="flex items-center justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
-                    <div className="text-2xl font-semibold">
+                <div className="flex gap-1 flex-col items-center">
+                  <div className="flex items-center justify-center w-12 h-12 time_reduce border-2 border-[#e20000] rounded-full">
+                    <div className="text-2xl text-reduce font-semibold">
                       {timeRemaining.minutes}
                     </div>
                   </div>
-                  <div className="text-xs capitalize mt-2">Minutes</div>
+                  <div className="text-xs capitalize">Minutes</div>
                 </div>
-                <div className="flex flex-col items-center">
-                  <div className="flex items-center justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
-                    <div className="text-2xl font-semibold">
+                <div className="flex flex-col gap-1 items-center">
+                  <div className="flex items-center time_reduce justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
+                    <div className="text-2xl text-reduce font-semibold">
                       {timeRemaining.seconds}
                     </div>
                   </div>
-                  <div className="text-xs capitalize mt-2">Seconds</div>
+                  <div className="text-xs capitalize">Seconds</div>
                 </div>
               </div>
             </div>
@@ -902,7 +906,7 @@ const EventDetail = () => {
           <div className="mt-2 flex flex-col gap-8">
             <div className="flex items-start">
               {/* Image Section */}
-              <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+              <div className="bg-OWANBE_PRY/20 p-2 max-h-[41px] min-w-[41px] rounded-xl flex-center justify-center">
                 <Image
                   src="/icons/calendar.svg"
                   alt=""
@@ -924,7 +928,6 @@ const EventDetail = () => {
                 </div>
                 <div
                   style={{
-                    width: "280px",
                     whiteSpace: "normal",
                     wordWrap: "break-word",
                     fontWeight: 300,
@@ -937,7 +940,7 @@ const EventDetail = () => {
               </div>
             </div>
             <div className="flex gap-3">
-              <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+              <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
                 <Image src="/icons/time.svg" alt="" height={25} width={25} />
               </div>
               <div>
@@ -962,7 +965,7 @@ const EventDetail = () => {
               </div>
             </div>
             <div className="flex gap-3">
-              <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+              <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
                 <Image
                   src="/icons/location.svg"
                   alt=""
@@ -982,7 +985,6 @@ const EventDetail = () => {
                 </div>
                 <div
                   style={{
-                    width: "270px",
                     whiteSpace: "normal",
                     wordWrap: "break-word",
                     fontWeight: 300,
@@ -994,7 +996,7 @@ const EventDetail = () => {
               </div>
             </div>
             <div className="flex gap-3">
-              <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+              <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
                 <Image src="/icons/host.svg" alt="" height={25} width={25} />
               </div>
               <div>
@@ -1024,7 +1026,7 @@ const EventDetail = () => {
             websiteLink?.url ||
             facebookLink?.url ? (
               <div className="flex gap-3 items-center">
-                <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
+                <div className="bg-OWANBE_PRY/20 p-2 max-h-[41px] min-w-[41px] rounded-xl flex items-center justify-center">
                   <Image src="/icons/phone.svg" alt="" height={25} width={25} />
                 </div>
                 <div>
@@ -1142,7 +1144,7 @@ const EventDetail = () => {
                   >
                     <Button
                       type={pathname.includes("register") ? "primary" : "text"}
-                      className="primary-btn w-full"
+                      className="primary-btn w-full "
                       style={{
                         borderRadius: "25px",
                         fontFamily: "BricolageGrotesqueMedium",
