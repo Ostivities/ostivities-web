@@ -34,7 +34,7 @@ import start from "@/public/Startsin.svg";
 import end from "@/public/Endsin.svg";
 import placeholder from "@/public/placeholder.svg";
 import Head from "next/head";
-import { Tooltip } from "antd";
+import { Tooltip, Skeleton } from "antd";
 import Dpmodal from "@/app/components/OstivitiesModal/CreateDp";
 import { Heading3 } from "@/app/components/typography/Heading3";
 import { ACCOUNT_TYPE } from "@/app/utils/enums";
@@ -263,37 +263,60 @@ const EventDetail = () => {
       const distanceToStart = eventdates - now;
       const distanceToEnd = eventEnddates ? eventEnddates - now : null;
 
+      const formatWithLeadingZero = (value: number): string =>
+        String(value).padStart(2, "0");
+
       // Check if the event has started
       if (distanceToStart > 0) {
         // Event hasn't started yet
         setIsEventStarted(false);
         setIsRegistrationClosed(false); // Registration is open
 
-        const days = Math.floor(distanceToStart / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (distanceToStart % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        const days = formatWithLeadingZero(
+          Math.floor(distanceToStart / (1000 * 60 * 60 * 24))
         );
-        const minutes = Math.floor(
-          (distanceToStart % (1000 * 60 * 60)) / (1000 * 60)
+        const hours = formatWithLeadingZero(
+          Math.floor(
+            (distanceToStart % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          )
         );
-        const seconds = Math.floor((distanceToStart % (1000 * 60)) / 1000);
+        const minutes = formatWithLeadingZero(
+          Math.floor((distanceToStart % (1000 * 60 * 60)) / (1000 * 60))
+        );
+        const seconds = formatWithLeadingZero(
+          Math.floor((distanceToStart % (1000 * 60)) / 1000)
+        );
 
-        setTimeRemaining({ days, hours, minutes, seconds });
+        setTimeRemaining({
+          days: parseInt(days, 10),
+          hours: parseInt(hours, 10),
+          minutes: parseInt(minutes, 10),
+          seconds: parseInt(seconds, 10),
+        });
       } else if (distanceToEnd && distanceToEnd > 0) {
         // Event has started and is ongoing
         setIsEventStarted(true);
         setIsRegistrationClosed(false); // Registration is still open
 
-        const days = Math.floor(distanceToEnd / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (distanceToEnd % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        const days = formatWithLeadingZero(
+          Math.floor(distanceToEnd / (1000 * 60 * 60 * 24))
         );
-        const minutes = Math.floor(
-          (distanceToEnd % (1000 * 60 * 60)) / (1000 * 60)
+        const hours = formatWithLeadingZero(
+          Math.floor((distanceToEnd % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
         );
-        const seconds = Math.floor((distanceToEnd % (1000 * 60)) / 1000);
+        const minutes = formatWithLeadingZero(
+          Math.floor((distanceToEnd % (1000 * 60 * 60)) / (1000 * 60))
+        );
+        const seconds = formatWithLeadingZero(
+          Math.floor((distanceToEnd % (1000 * 60)) / 1000)
+        );
 
-        setTimeRemaining({ days, hours, minutes, seconds });
+        setTimeRemaining({
+          days: parseInt(days, 10),
+          hours: parseInt(hours, 10),
+          minutes: parseInt(minutes, 10),
+          seconds: parseInt(seconds, 10),
+        });
       } else if (eventDetails?.enable_registration === false) {
         setIsRegistrationClosed(true);
       } else {
@@ -302,6 +325,7 @@ const EventDetail = () => {
         setIsRegistrationClosed(true); // Close registration
         clearInterval(countdownInterval);
       }
+
       if (eventDetails?.enable_registration === false) {
         setIsRegistrationClosed(true); // Close registration
       } else {
@@ -367,24 +391,40 @@ const EventDetail = () => {
 
       <section>
         <div className="hidden min-[870px]:flex gap-10 md:flex-row ">
-          <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden bg-white card-shadow ">
-            <Image
-              src={
-                eventDetails?.eventImage ? eventDetails.eventImage : placeholder
-              }
-              alt="Event Image"
-              fill
-              style={{ objectFit: "cover" }}
-              className=""
+          {getUserEventByUniqueKey?.isLoading ? (
+            <Skeleton.Button
+              active
+              className="relative w-min-[400px] w-[1500px] h-[520px] rounded-[2.5rem]"
+              shape="round"
+              style={{
+                height: "100%",
+                // width: "100%",
+                margin: "6px",
+                maxWidth: "100%",
+              }}
             />
-            <div className=" "></div>
-          </div>
+          ) : (
+            <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden bg-white card-shadow ">
+              <Image
+                src={
+                  eventDetails?.eventImage
+                    ? eventDetails.eventImage
+                    : placeholder
+                }
+                alt="Event Image"
+                fill
+                style={{ objectFit: "cover" }}
+                className=""
+              />
+              <div className=" "></div>
+            </div>
+          )}
           <div className="py-8">
             <Heading5 className="text-2xl" content={"About this event"} />
             <div className="mt-14 flex flex-col gap-8">
               <div className="flex items-start">
                 {/* Image Section */}
-                <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+                <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
                   <Image
                     src="/icons/calendar.svg"
                     alt=""
@@ -404,22 +444,35 @@ const EventDetail = () => {
                   >
                     Date
                   </div>
-                  <div
-                    style={{
-                      width: "140px",
-                      whiteSpace: "normal",
-                      wordWrap: "break-word",
-                      fontWeight: 300,
-                      fontFamily: "'Bricolage Grotesque', sans-serif",
-                    }}
-                  >
-                    {dateFormat(eventDetails?.startDate)} -{" "}
-                    {dateFormat(eventDetails?.endDate)}
-                  </div>
+                  {getUserEventByUniqueKey?.isLoading ? (
+                    <Skeleton.Button
+                      active
+                      className="relative h-5 w-[200px] md:w-[200px] sm:w-[150px] rounded"
+                      shape="round"
+                      style={{
+                        height: "100%",
+                        width: "100%",
+                        margin: "6px",
+                        maxWidth: "100%",
+                      }}
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        whiteSpace: "normal",
+                        wordWrap: "break-word",
+                        fontWeight: 300,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
+                      {dateFormat(eventDetails?.startDate)} -{" "}
+                      {dateFormat(eventDetails?.endDate)}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex gap-3">
-                <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+                <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
                   <Image src="/icons/time.svg" alt="" height={25} width={25} />
                 </div>
                 <div>
@@ -432,19 +485,34 @@ const EventDetail = () => {
                   >
                     Time
                   </div>
-                  <div
-                    style={{
-                      fontWeight: 300,
-                      fontFamily: "'Bricolage Grotesque', sans-serif",
-                    }}
-                  >
-                    {timeFormat(eventDetails?.startDate)} -{" "}
-                    {timeFormat(eventDetails?.endDate)} {eventDetails?.timeZone}
-                  </div>
+                  {getUserEventByUniqueKey?.isLoading ? (
+                    <Skeleton.Button
+                      active
+                      className="relative h-5 w-[200px] md:w-[200px] sm:w-[150px] rounded"
+                      shape="round"
+                      style={{
+                        height: "100%",
+                        width: "100%",
+                        margin: "6px",
+                        maxWidth: "100%",
+                      }}
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        fontWeight: 300,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
+                      {timeFormat(eventDetails?.startDate)} -{" "}
+                      {timeFormat(eventDetails?.endDate)}{" "}
+                      {eventDetails?.timeZone}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex gap-3">
-                <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+                <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
                   <Image
                     src="/icons/location.svg"
                     alt=""
@@ -462,21 +530,35 @@ const EventDetail = () => {
                   >
                     Location
                   </div>
-                  <div
-                    style={{
-                      width: "190px",
-                      whiteSpace: "normal",
-                      wordWrap: "break-word",
-                      fontWeight: 300,
-                      fontFamily: "'Bricolage Grotesque', sans-serif",
-                    }}
-                  >
-                    {eventDetails?.address}
-                  </div>
+                  {getUserEventByUniqueKey?.isLoading ? (
+                    <Skeleton.Button
+                      active
+                      className="relative h-5 w-[200px] md:w-[200px] sm:w-[150px] rounded"
+                      shape="round"
+                      style={{
+                        height: "100%",
+                        width: "100%",
+                        margin: "6px",
+                        maxWidth: "100%",
+                      }}
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        // width: "190px",
+                        whiteSpace: "normal",
+                        wordWrap: "break-word",
+                        fontWeight: 300,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
+                      {eventDetails?.address}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex gap-3">
-                <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
+                <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
                   <Image src="/icons/host.svg" alt="" height={25} width={25} />
                 </div>
                 <div>
@@ -489,16 +571,30 @@ const EventDetail = () => {
                   >
                     Host
                   </div>
-                  <div>
-                    <div
+                  {getUserEventByUniqueKey?.isLoading ? (
+                    <Skeleton.Button
+                      active
+                      className="relative h-5 w-[200px] md:w-[200px] sm:w-[150px] rounded"
+                      shape="round"
                       style={{
-                        fontWeight: 300,
-                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                        height: "100%",
+                        width: "100%",
+                        margin: "6px",
+                        maxWidth: "100%",
                       }}
-                    >
-                      {userFullName}
+                    />
+                  ) : (
+                    <div>
+                      <div
+                        style={{
+                          fontWeight: 300,
+                          fontFamily: "'Bricolage Grotesque', sans-serif",
+                        }}
+                      >
+                        {userFullName}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
               {twitterLink?.url ||
@@ -506,7 +602,7 @@ const EventDetail = () => {
               websiteLink?.url ||
               facebookLink?.url ? (
                 <div className="flex gap-3 items-center">
-                  <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
+                  <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex items-center justify-center">
                     <Image
                       src="/icons/phone.svg"
                       alt=""
@@ -590,15 +686,41 @@ const EventDetail = () => {
                     </div>
                   </div>
                 </div>
-              ) : null}
+              ) : (
+                <Skeleton.Button
+                  active
+                  className="relative h-16 w-[200px] md:w-[200px] sm:w-[150px] rounded-[1rem]"
+                  shape="round"
+                  style={{
+                    height: "100%",
+                    width: "50%",
+                    margin: "6px",
+                    maxWidth: "100%",
+                  }}
+                />
+              )}
             </div>
           </div>
-          <div className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-6">
+          <div className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black pl-6">
             <div className="py-8">
               <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between items-center">
-                <h2 className="text-xl font-BricolageGrotesqueMedium">
-                  {eventDetails?.eventName}
-                </h2>
+                {getUserEventByUniqueKey?.isLoading ? (
+                  <Skeleton.Button
+                    active
+                    className="relative h-7 sm: w-[150px] md:w-[120px] sm:w-200px] rounded-[1rem]"
+                    shape="round"
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      margin: "6px",
+                      maxWidth: "100%",
+                    }}
+                  />
+                ) : (
+                  <h2 className="text-xl font-BricolageGrotesqueMedium">
+                    {eventDetails?.eventName}
+                  </h2>
+                )}
 
                 <div className="flex items-center space-x-3">
                   {" "}
@@ -632,74 +754,115 @@ const EventDetail = () => {
               </div>
 
               <div className="mt-1">
-                <div className="rounded-lg overflow-hidden flex flex-row items-center justify-center text-center p-4">
-                  {/* Image on the left side */}
-                  <Image
-                    src={isEventStarted ? end : start}
-                    alt={isEventStarted ? "Ends" : "Starts"}
-                    className="w-20 h-auto flex-shrink-0"
+                {getUserEventByUniqueKey?.isLoading ? (
+                  <Skeleton.Button
+                    active
+                    className="relative h-20 w-[126px] md:w-[100px] sm:w-[80px] rounded-[1rem]"
+                    shape="round"
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      margin: "6px",
+                      maxWidth: "100%",
+                    }}
                   />
+                ) : (
+                  <div className="w-full min-w-[330px] gap-4 overflow-hidden flex flex-row items-center justify-between text-center py-4">
+                    {/* Image on the left side */}
+                    <Image
+                      src={isEventStarted ? end : start}
+                      alt={isEventStarted ? "Ends" : "Starts"}
+                      className="w-16 h-auto flex-shrink-0"
+                    />
 
-                  {/* Countdown beside the image */}
-                  <div className="p-4">
-                    <div className="flex justify-center gap-5">
-                      <div className="flex flex-col items-center">
-                        <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
-                          <div className="text-2xl font-semibold">
-                            {timeRemaining.days}
+                    {/* Countdown beside the image */}
+                    <div className="p-1">
+                      <div className="flex justify-center gap-4">
+                        <div className="flex flex-col items-center">
+                          <div className="flex items-center justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
+                            <div className="text-xl font-semibold">
+                              {timeRemaining.days}
+                            </div>
                           </div>
+                          <div className="text-xs capitalize mt-2">Days</div>
                         </div>
-                        <div className="text-xs capitalize mt-2">Days</div>
-                      </div>
 
-                      <div className="flex flex-col items-center">
-                        <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
-                          <div className="text-2xl font-semibold">
-                            {timeRemaining.hours}
+                        <div className="flex flex-col items-center">
+                          <div className="flex items-center justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
+                            <div className="text-xl font-semibold">
+                              {timeRemaining.hours}
+                            </div>
                           </div>
+                          <div className="text-xs capitalize mt-2">Hours</div>
                         </div>
-                        <div className="text-xs capitalize mt-2">Hours</div>
-                      </div>
 
-                      <div className="flex flex-col items-center">
-                        <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
-                          <div className="text-2xl font-semibold">
-                            {timeRemaining.minutes}
+                        <div className="flex flex-col items-center">
+                          <div className="flex items-center justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
+                            <div className="text-xl font-semibold">
+                              {timeRemaining.minutes}
+                            </div>
                           </div>
+                          <div className="text-xs capitalize mt-2">Minutes</div>
                         </div>
-                        <div className="text-xs capitalize mt-2">Minutes</div>
-                      </div>
 
-                      <div className="flex flex-col items-center">
-                        <div className="flex items-center justify-center w-14 h-14 border-2 border-[#e20000] rounded-full">
-                          <div className="text-2xl font-semibold">
-                            {timeRemaining.seconds}
+                        <div className="flex flex-col items-center">
+                          <div className="flex items-center justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
+                            <div className="text-xl font-semibold">
+                              {timeRemaining.seconds}
+                            </div>
                           </div>
+                          <div className="text-xs capitalize mt-2">Seconds</div>
                         </div>
-                        <div className="text-xs capitalize mt-2">Seconds</div>
                       </div>
                     </div>
                   </div>
-                </div>
-
-                <ReadMoreHTML
-                  htmlContent={eventDetails?.eventDetails || ""}
-                  maxLength={250}
+                )}
+                <Heading3
+                  className="text-lg font-bold mb-3"
+                  content={"About this event"}
                 />
 
-                {eventDetails?.event_coordinates && (
-                  <iframe
-                    src={eventDetails?.event_coordinates}
-                    width="100%"
-                    height="120"
-                    style={{
-                      border: 0,
-                      marginTop: "20px",
-                      borderRadius: "0.5rem", // Corner radius
-                    }}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
+                {getUserEventByUniqueKey?.isLoading ? (
+                  <div className="flex flex-col gap-4">
+                    {Array(2)
+                      .fill(null)
+                      .map((_, index) => (
+                        <Skeleton.Button
+                          key={index}
+                          className="relative h-60 w-[200px] md:w-[200px] sm:w-[150px] rounded"
+                          active
+                          shape="round"
+                          style={{
+                            height: "100%",
+                            width: "100%",
+                            margin: "10px",
+                            maxWidth: "100%",
+                          }}
+                        />
+                      ))}
+                  </div>
+                ) : (
+                  <>
+                    <ReadMoreHTML
+                      htmlContent={eventDetails?.eventDetails || ""}
+                      maxLength={250}
+                    />
+
+                    {eventDetails?.event_coordinates && (
+                      <iframe
+                        src={eventDetails?.event_coordinates}
+                        width="100%"
+                        height="120"
+                        style={{
+                          border: 0,
+                          marginTop: "20px",
+                          borderRadius: "0.5rem", // Corner radius
+                        }}
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                      />
+                    )}
+                  </>
                 )}
 
                 <div className="flex justify-center mt-12">
@@ -802,29 +965,55 @@ const EventDetail = () => {
           </Modal>
         </div>
 
-
-
-
-
         {/* !!!For small screen */}
         <div className="min-[870px]:hidden flex gap-10 flex-col">
-          <div className="relative w-full h-[320px] rounded-[2.5rem] overflow-hidden bg-white card-shadow ">
-            <Image
-              src={
-                eventDetails?.eventImage ? eventDetails.eventImage : placeholder
-              }
-              alt="Event Image"
-              fill
-              style={{ objectFit: "cover" }}
-              className=""
+          {getUserEventByUniqueKey?.isLoading ? (
+            <Skeleton.Button
+              active
+              className="relative w-full h-[320px] rounded-[2.5rem]"
+              shape="round"
+              style={{
+                height: "100%",
+                width: "100%",
+                margin: "6px",
+                maxWidth: "100%",
+              }}
             />
-            <div className=""></div>
-          </div>
+          ) : (
+            <div className="relative w-full h-[320px] rounded-[2.5rem] overflow-hidden bg-white card-shadow ">
+              <Image
+                src={
+                  eventDetails?.eventImage
+                    ? eventDetails.eventImage
+                    : placeholder
+                }
+                alt="Event Image"
+                fill
+                style={{ objectFit: "cover" }}
+                className=""
+              />
+            </div>
+          )}
           <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between items-center -mt-3">
-            <h2 className="text-xl font-BricolageGrotesqueMedium">
-              {eventDetails?.eventName}
-            </h2>
-
+            <div>
+              {getUserEventByUniqueKey?.isLoading ? (
+                <Skeleton.Button
+                  active
+                  className="relative h-7 sm: w-[150px] md:w-[120px] sm:w-200px] rounded-[1rem]"
+                  shape="round"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    margin: "6px",
+                    maxWidth: "100%",
+                  }}
+                />
+              ) : (
+                <h2 className="text-xl font-BricolageGrotesqueMedium">
+                  {eventDetails?.eventName}
+                </h2>
+              )}
+            </div>
             <div className="flex items-center space-x-3">
               {" "}
               {/* Wrapper for buttons with tighter spacing */}
@@ -855,54 +1044,68 @@ const EventDetail = () => {
               <ShareModalContent url={eventUrl} title={eventTitle} />
             </Modal>
           </div>{" "}
-          <div className="rounded-lg flex flex-row items-center justify-center text-center p-3 w-full max-w-[95%] mx-auto">
-            {/* Image on the left side */}
-            <Image
-              src={isEventStarted ? end : start}
-              alt={isEventStarted ? "Ends" : "Starts"}
-              className="w-20 h-auto flex-shrink-0 img_reduce"
+          {getUserEventByUniqueKey?.isLoading ? (
+            <Skeleton.Button
+              active
+              className="relative h-20 w-[126px] md:w-[100px] sm:w-[80px] rounded-[1rem]"
+              shape="round"
+              style={{
+                height: "100%",
+                width: "100%",
+                margin: "6px",
+                maxWidth: "100%",
+              }}
             />
+          ) : (
+            <div className="rounded-lg flex flex-row items-center justify-center text-center p-3 w-full max-w-[95%] mx-auto">
+              {/* Image on the left side */}
+              <Image
+                src={isEventStarted ? end : start}
+                alt={isEventStarted ? "Ends" : "Starts"}
+                className="w-20 h-auto flex-shrink-0 img_reduce"
+              />
 
-            {/* Countdown beside the image */}
-            <div className="p-2 -mt-5 -mb-8">
-              <div className="flex justify-center gap-4">
-                <div className="flex gap-1 flex-col items-center">
-                  <div className="flex items-center justify-center w-12 h-12 time_reduce border-2 border-[#e20000] rounded-full">
-                    <div className="text-2xl text-reduce font-semibold">
-                      {timeRemaining.days}
+              {/* Countdown beside the image */}
+              <div className="p-2 -mt-5 -mb-8">
+                <div className="flex justify-center gap-4">
+                  <div className="flex gap-1 flex-col items-center">
+                    <div className="flex items-center justify-center w-12 h-12 time_reduce border-2 border-[#e20000] rounded-full">
+                      <div className="text-2xl text-reduce font-semibold">
+                        {timeRemaining.days}
+                      </div>
                     </div>
+                    <div className="text-xs capitalize">Days</div>
                   </div>
-                  <div className="text-xs capitalize">Days</div>
-                </div>
 
-                <div className="flex gap-1 flex-col items-center">
-                  <div className="flex items-center time_reduce justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
-                    <div className="text-2xl text-reduce font-semibold">
-                      {timeRemaining.hours}
+                  <div className="flex gap-1 flex-col items-center">
+                    <div className="flex items-center time_reduce justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
+                      <div className="text-2xl text-reduce font-semibold">
+                        {timeRemaining.hours}
+                      </div>
                     </div>
+                    <div className="text-xs capitalize">Hours</div>
                   </div>
-                  <div className="text-xs capitalize">Hours</div>
-                </div>
 
-                <div className="flex gap-1 flex-col items-center">
-                  <div className="flex items-center justify-center w-12 h-12 time_reduce border-2 border-[#e20000] rounded-full">
-                    <div className="text-2xl text-reduce font-semibold">
-                      {timeRemaining.minutes}
+                  <div className="flex gap-1 flex-col items-center">
+                    <div className="flex items-center justify-center w-12 h-12 time_reduce border-2 border-[#e20000] rounded-full">
+                      <div className="text-2xl text-reduce font-semibold">
+                        {timeRemaining.minutes}
+                      </div>
                     </div>
+                    <div className="text-xs capitalize">Minutes</div>
                   </div>
-                  <div className="text-xs capitalize">Minutes</div>
-                </div>
-                <div className="flex flex-col gap-1 items-center">
-                  <div className="flex items-center time_reduce justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
-                    <div className="text-2xl text-reduce font-semibold">
-                      {timeRemaining.seconds}
+                  <div className="flex flex-col gap-1 items-center">
+                    <div className="flex items-center time_reduce justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
+                      <div className="text-2xl text-reduce font-semibold">
+                        {timeRemaining.seconds}
+                      </div>
                     </div>
+                    <div className="text-xs capitalize">Seconds</div>
                   </div>
-                  <div className="text-xs capitalize">Seconds</div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
           <div className="mt-2 flex flex-col gap-8">
             <div className="flex items-start">
               {/* Image Section */}
@@ -926,17 +1129,31 @@ const EventDetail = () => {
                 >
                   Date
                 </div>
-                <div
-                  style={{
-                    whiteSpace: "normal",
-                    wordWrap: "break-word",
-                    fontWeight: 300,
-                    fontFamily: "'Bricolage Grotesque', sans-serif",
-                  }}
-                >
-                  {dateFormat(eventDetails?.startDate)} -{" "}
-                  {dateFormat(eventDetails?.endDate)}
-                </div>
+                {getUserEventByUniqueKey?.isLoading ? (
+                  <Skeleton.Button
+                    active
+                    className="relative h-5 w-[200px] md:w-[200px] sm:w-[150px] rounded"
+                    shape="round"
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      margin: "6px",
+                      maxWidth: "100%",
+                    }}
+                  />
+                ) : (
+                  <div
+                    style={{
+                      whiteSpace: "normal",
+                      wordWrap: "break-word",
+                      fontWeight: 300,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
+                    {dateFormat(eventDetails?.startDate)} -{" "}
+                    {dateFormat(eventDetails?.endDate)}
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex gap-3">
@@ -953,15 +1170,29 @@ const EventDetail = () => {
                 >
                   Time
                 </div>
-                <div
-                  style={{
-                    fontWeight: 300,
-                    fontFamily: "'Bricolage Grotesque', sans-serif",
-                  }}
-                >
-                  {timeFormat(eventDetails?.startDate)} -{" "}
-                  {timeFormat(eventDetails?.endDate)} {eventDetails?.timeZone}
-                </div>
+                {getUserEventByUniqueKey?.isLoading ? (
+                  <Skeleton.Button
+                    active
+                    className="relative h-5 w-[200px] md:w-[200px] sm:w-[150px] rounded"
+                    shape="round"
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      margin: "6px",
+                      maxWidth: "100%",
+                    }}
+                  />
+                ) : (
+                  <div
+                    style={{
+                      fontWeight: 300,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
+                    {timeFormat(eventDetails?.startDate)} -{" "}
+                    {timeFormat(eventDetails?.endDate)} {eventDetails?.timeZone}
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex gap-3">
@@ -983,16 +1214,30 @@ const EventDetail = () => {
                 >
                   Location
                 </div>
-                <div
-                  style={{
-                    whiteSpace: "normal",
-                    wordWrap: "break-word",
-                    fontWeight: 300,
-                    fontFamily: "'Bricolage Grotesque', sans-serif",
-                  }}
-                >
-                  {eventDetails?.address}
-                </div>
+                {getUserEventByUniqueKey?.isLoading ? (
+                  <Skeleton.Button
+                    active
+                    className="relative h-5 w-[200px] md:w-[200px] sm:w-[150px] rounded"
+                    shape="round"
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      margin: "6px",
+                      maxWidth: "100%",
+                    }}
+                  />
+                ) : (
+                  <div
+                    style={{
+                      whiteSpace: "normal",
+                      wordWrap: "break-word",
+                      fontWeight: 300,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
+                    {eventDetails?.address}
+                  </div>
+                )}
               </div>
             </div>
             <div className="flex gap-3">
@@ -1010,14 +1255,28 @@ const EventDetail = () => {
                   Host
                 </div>
                 <div>
-                  <div
-                    style={{
-                      fontWeight: 300,
-                      fontFamily: "'Bricolage Grotesque', sans-serif",
-                    }}
-                  >
-                    {userFullName}
-                  </div>
+                  {getUserEventByUniqueKey?.isLoading ? (
+                    <Skeleton.Button
+                      active
+                      className="relative h-5 w-[200px] md:w-[200px] sm:w-[150px] rounded"
+                      shape="round"
+                      style={{
+                        height: "100%",
+                        width: "100%",
+                        margin: "6px",
+                        maxWidth: "100%",
+                      }}
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        fontWeight: 300,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
+                      {userFullName}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -1105,31 +1364,66 @@ const EventDetail = () => {
                   </div>
                 </div>
               </div>
-            ) : null}
+            ) : (
+              <Skeleton.Button
+                active
+                className="relative h-16 w-[200px] md:w-[200px] sm:w-[150px] rounded-[1rem]"
+                shape="round"
+                style={{
+                  height: "100%",
+                  width: "50%",
+                  margin: "6px",
+                  maxWidth: "100%",
+                }}
+              />
+            )}
           </div>
           <div>
             <Heading3
               className="text-lg font-bold mb-3"
               content={"About this event"}
             />
-            <ReadMoreHTML
-              htmlContent={eventDetails?.eventDetails || ""}
-              maxLength={250}
-            />
+            {getUserEventByUniqueKey?.isLoading ? (
+              <div className="flex flex-col gap-4">
+                {Array(2)
+                  .fill(null)
+                  .map((_, index) => (
+                    <Skeleton.Button
+                      key={index}
+                      className="relative h-60 w-[200px] md:w-[200px] sm:w-[150px] rounded"
+                      active
+                      shape="round"
+                      style={{
+                        height: "100%",
+                        width: "100%",
+                        margin: "10px",
+                        maxWidth: "100%",
+                      }}
+                    />
+                  ))}
+              </div>
+            ) : (
+              <>
+                <ReadMoreHTML
+                  htmlContent={eventDetails?.eventDetails || ""}
+                  maxLength={250}
+                />
 
-            {eventDetails?.event_coordinates && (
-              <iframe
-                src={eventDetails?.event_coordinates}
-                width="100%"
-                height="120"
-                style={{
-                  border: 0,
-                  marginTop: "24px",
-                  borderRadius: "0.5rem", // Corner radius
-                }}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
+                {eventDetails?.event_coordinates && (
+                  <iframe
+                    src={eventDetails?.event_coordinates}
+                    width="100%"
+                    height="120"
+                    style={{
+                      border: 0,
+                      marginTop: "24px",
+                      borderRadius: "0.5rem", // Corner radius
+                    }}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                )}
+              </>
             )}
 
             <div className="flex justify-center mt-12">
