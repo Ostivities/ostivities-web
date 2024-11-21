@@ -53,7 +53,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
-  const [cookies, setCookies] = useCookies(["ticket_id", "stage_three"]);
+  const [cookies, setCookies] = useCookies(["ticket_id", "stage_three", "profileData"]);
 
   const pathname = usePathname();
   // console.log(pathname)
@@ -95,7 +95,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
         ticketDescription: editorContent,
         event: params?.id,
         ticketEntity: TICKET_ENTITY.COLLECTIVE,
-        user: profile?.data?.data?.data?.id,
+        user: cookies?.profileData?.id,
         groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
         ticketType,
         purchaseLimit: 1,
@@ -129,7 +129,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
         ticketDescription: editorContent,
         event: params?.id,
         ticketEntity: TICKET_ENTITY.COLLECTIVE,
-        user: profile?.data?.data?.data?.id,
+        user: cookies?.profileData?.id,
         groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
         ticketType,
         purchaseLimit: 1,

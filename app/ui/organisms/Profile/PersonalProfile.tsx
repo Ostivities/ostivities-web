@@ -49,7 +49,7 @@ const PersonalProfile = () => {
   const [profileData, setProfileData] = useState(initialProfileData);
   const [isProfileReady, setIsProfileReady] = useState(false);
 
-  console.log(profileData, "profileData from the component");
+  // console.log(profileData, "profileData from the component");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -74,7 +74,8 @@ const PersonalProfile = () => {
     if (profile && profileData && isProfileReady) {
       form.setFieldsValue({
         accountType: profile?.data?.data?.data?.accountType || profileData?.accountType,
-        businessName: profile?.data?.data?.data?.businessName || profileData?.businessName,
+        firstName: profile?.data?.data?.data?.firstName || profileData?.firstName,
+        lastName: profile?.data?.data?.data?.lastName || profileData?.lastName,
         emailAddress: profile?.data?.data?.data?.email || profileData?.email,
         phone_number: profile?.data?.data?.data?.phone_number || profileData?.phone_number,
       });
@@ -82,7 +83,7 @@ const PersonalProfile = () => {
   }, [profile, profileData]);
 
 
-  console.log("personal")
+  // console.log("personal")
 
   const props: UploadProps = {
     name: "image",

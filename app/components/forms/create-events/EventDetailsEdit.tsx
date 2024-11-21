@@ -88,6 +88,7 @@ function EventDetailsEdit(): JSX.Element {
     "stage_one",
     "stage_two",
     "stage_three",
+    "profileData"
   ]);
   const params = useParams<{ id: string }>();
   const [showRadio, setShowRadio] = useState(false);
@@ -103,7 +104,7 @@ function EventDetailsEdit(): JSX.Element {
 
   const { RangePicker } = DatePicker;
 
-  const accountType = profile?.data?.data?.data?.accountType;
+  const accountType = cookies?.profileData?.accountType;
 
   const { getUserEvent } = useGetUserEvent(params?.id || cookies.event_id);
   const eventDetails: IEventDetails = getUserEvent?.data?.data?.data;
@@ -112,8 +113,8 @@ function EventDetailsEdit(): JSX.Element {
 
   const userName =
     accountType === ACCOUNT_TYPE.PERSONAL
-      ? profile?.data?.data?.data?.firstName
-      : profile?.data?.data?.data?.businessName || "";
+      ? cookies?.profileData?.firstName
+      : cookies?.profileData?.businessName || "";
 
   const {
     handleSubmit,

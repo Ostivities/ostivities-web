@@ -304,6 +304,10 @@ body {
   }
 }
 
+/* @media screen and (min-width: ) {
+  
+} */
+
 .side-nav > .ant-menu-item-selected {
   color: #181515 !important;
   background-color: #fadede !important;
@@ -1302,6 +1306,28 @@ form .error-message {
    display: none;
   }
   
+}
+
+@media screen and (max-width: 436px) {
+  .button-lenght {
+    width: 100%;
+  }
+  
+}
+@media screen and (max-width: 400px){
+  .time_reduce {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+  .text-reduce {
+    font-size: 1rem;
+  }
+  .img_reduce{
+    width: 2.5rem;
+  }
+  .margin_top {
+    margin-top: 1rem;
+  }
 }
 
 ::-webkit-scrollbar-track {

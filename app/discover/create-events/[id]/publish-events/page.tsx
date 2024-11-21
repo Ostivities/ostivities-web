@@ -35,6 +35,7 @@ export default function PublishEvent(): JSX.Element {
     "stage_two",
     "stage_three",
     "mapSrc",
+    "profileData",
   ]);
   const pathname = usePathname();
   const [imageUrl, setImageUrl] = useState<string>("/images/emptyimage2.png");
@@ -45,9 +46,9 @@ export default function PublishEvent(): JSX.Element {
   const { addEventToDiscovery } = useAddEventToDiscovery();
   const { enableEventRegistration } = useEnableEventRegistration();
   const userFullName =
-    profile?.data?.data?.data?.firstName +
+    cookies?.profileData?.firstName +
     " " +
-    profile?.data?.data?.data?.lastName;
+    cookies?.profileData?.lastName;
 
   const { getUserEvent } = useGetUserEvent(params?.id || cookies.event_id);
   const eventDetails = getUserEvent?.data?.data?.data;

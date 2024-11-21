@@ -87,7 +87,7 @@ function Dashboard(): JSX.Element {
                   }}
                   className="text-OWANBE_PRY mb-1 block"
                 >
-                  Event Name 
+                  Event Name
                 </span>
                 <Input
                   onChange={(e) => setSearchText(e.target.value)}
@@ -104,7 +104,7 @@ function Dashboard(): JSX.Element {
                   }}
                   className="text-OWANBE_PRY mb-1 block"
                 >
-                  Event State (optional)
+                  Event State
                 </span>
                 <Select
                   placeholder="select event state"
@@ -167,9 +167,18 @@ function Dashboard(): JSX.Element {
                 />
               </label>
 
-              <div className="flex items-end">
+              <div className="flex items-end button-lenght">
                 <button
+                  disabled={searchText === ""}
                   type="submit"
+                  style={{
+                    backgroundColor:
+                      searchText === ""
+                        ? "#cccccc" // Gray for disabled
+                        : "#e20000", // Red for active
+                    color: searchText === "" ? "#666666" : "white",
+                    cursor: searchText === "" ? "not-allowed" : "pointer",
+                  }}
                   className="w-full md:w-36 h-fit text-sm text-white bg-OWANBE_PRY py-1.5 px-12 rounded-full"
                 >
                   Search
@@ -185,8 +194,8 @@ function Dashboard(): JSX.Element {
               activeTab === "all" ? "text-red-600" : "text-gray-500"
             }`}
             onClick={() => {
-              setActiveTab("all")
-              router.push('/discover/all')
+              setActiveTab("all");
+              // router.push('/discover/all')
             }}
           >
             All Events

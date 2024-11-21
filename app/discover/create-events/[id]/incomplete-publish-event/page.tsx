@@ -15,6 +15,8 @@ import Link from "next/link";
 import useFetch from "@/app/components/forms/create-events/auth";
 import ReadMoreHTML from "@/app/components/ReadMoreHTML";
 import placeholder from "@/public/placeholder.svg";
+import { ACCOUNT_TYPE, EVENT_INFO, EXHIBITION_SPACE } from "@/app/utils/enums";
+
 
 export default function PublishEvent(): JSX.Element {
   // const { isLoggedIn } = useFetch();
@@ -30,6 +32,7 @@ export default function PublishEvent(): JSX.Element {
     "stage_two",
     "stage_three",
     "mapSrc",
+    "profileData"
   ]);
   const pathname = usePathname();
   const [imageUrl, setImageUrl] = useState<string>("/images/emptyimage2.png");
@@ -37,10 +40,13 @@ export default function PublishEvent(): JSX.Element {
   const router = useRouter();
   const { profile } = useProfile();
   const { publishEvent } = usePublishEvent();
-  const userFullName =
-    profile?.data?.data?.data?.firstName +
+
+  const accountType = cookies?.profileData?.accountType;
+
+  const userFullName =  accountType === ACCOUNT_TYPE.PERSONAL
+    ? cookies?.profileData?.firstName +
     " " +
-    profile?.data?.data?.data?.lastName;
+    cookies?.profileData?.lastName : cookies?.profileData?.businessName;
 
   const { getUserEvent } = useGetUserEvent(params?.id || cookies.event_id);
   const eventDetails = getUserEvent?.data?.data?.data;
