@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { useCookies } from "react-cookie";
+import EventPageLoader from "@/app/components/Loaders/EventPageLoader";
 import {
   FacebookShareButton,
   TwitterShareButton,
@@ -194,7 +195,7 @@ const EventDetail = () => {
   // console.log(params, 'params');
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
   // console.log(getUserEventByUniqueKey, "getUserEventByUniqueKey");
-  const {isLoggedIn, loading} = useFetch()
+  const { isLoggedIn, loading } = useFetch();
   const eventDetails =
     getUserEventByUniqueKey?.data?.data?.data === null
       ? router.push("/not-found")
@@ -352,10 +353,12 @@ const EventDetail = () => {
         />
         <h1 style={{ fontSize: "24px" }}>{eventTitle}</h1>
       </div>
-  
+
       {isLoggedIn && (
         <button
-        onClick={() => window.open('https://scanner.ostivities.com/', '_blank')}
+          onClick={() =>
+            window.open("https://scanner.ostivities.com/", "_blank")
+          }
           className="bg-OWANBE_PRY rounded-full px-4 py-2 text-xs font-semibold text-white flex items-center"
         >
           <ScanOutlined />
@@ -364,7 +367,6 @@ const EventDetail = () => {
       )}
     </div>
   );
-  
 
   const RegistrationTypes: MenuProps["items"] = [
     {
@@ -405,20 +407,10 @@ const EventDetail = () => {
       </Head>
 
       <section>
-        <div className="hidden min-[870px]:flex gap-10 md:flex-row ">
-          {getUserEventByUniqueKey?.isLoading ? (
-            <Skeleton.Button
-              active
-              className="relative w-min-[400px] w-[1500px] h-[520px] rounded-[2.5rem]"
-              shape="round"
-              style={{
-                height: "100%",
-                // width: "100%",
-                margin: "6px",
-                maxWidth: "100%",
-              }}
-            />
-          ) : (
+        {getUserEventByUniqueKey?.isLoading ? (
+          <EventPageLoader />
+        ) : (
+          <div className="hidden min-[870px]:flex gap-10 md:flex-row">
             <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden bg-white card-shadow ">
               <Image
                 src={
@@ -431,47 +423,34 @@ const EventDetail = () => {
                 style={{ objectFit: "cover" }}
                 className=""
               />
-              <div className=" "></div>
             </div>
-          )}
-          <div className="py-8">
-            <Heading5 className="text-2xl" content={"About this event"} />
-            <div className="mt-14 flex flex-col gap-8">
-              <div className="flex items-start">
-                {/* Image Section */}
-                <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
-                  <Image
-                    src="/icons/calendar.svg"
-                    alt=""
-                    height={25}
-                    width={25}
-                  />
-                </div>
 
-                {/* Text Section */}
-                <div className="ml-2">
-                  <div
-                    className="text-sm"
-                    style={{
-                      fontWeight: 600,
-                      fontFamily: "'Bricolage Grotesque', sans-serif",
-                    }}
-                  >
-                    Date
-                  </div>
-                  {getUserEventByUniqueKey?.isLoading ? (
-                    <Skeleton.Button
-                      active
-                      className="relative h-5 w-[200px] md:w-[200px] sm:w-[150px] rounded"
-                      shape="round"
-                      style={{
-                        height: "100%",
-                        width: "100%",
-                        margin: "6px",
-                        maxWidth: "100%",
-                      }}
+            <div className="py-8" style={{ maxWidth: "21%" }}>
+              <Heading5 className="text-2xl" content={"About this event"} />
+              <div className="mt-14 flex flex-col gap-8">
+                <div className="flex items-start">
+                  {/* Image Section */}
+                  <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
+                    <Image
+                      src="/icons/calendar.svg"
+                      alt=""
+                      height={25}
+                      width={25}
                     />
-                  ) : (
+                  </div>
+
+                  {/* Text Section */}
+                  <div className="ml-2">
+                    <div
+                      className="text-sm"
+                      style={{
+                        fontWeight: 600,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
+                      Date
+                    </div>
+
                     <div
                       style={{
                         whiteSpace: "normal",
@@ -483,143 +462,12 @@ const EventDetail = () => {
                       {dateFormat(eventDetails?.startDate)} -{" "}
                       {dateFormat(eventDetails?.endDate)}
                     </div>
-                  )}
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
-                  <Image src="/icons/time.svg" alt="" height={25} width={25} />
-                </div>
-                <div>
-                  <div
-                    className="text-sm"
-                    style={{
-                      fontWeight: 600,
-                      fontFamily: "'Bricolage Grotesque', sans-serif",
-                    }}
-                  >
-                    Time
                   </div>
-                  {getUserEventByUniqueKey?.isLoading ? (
-                    <Skeleton.Button
-                      active
-                      className="relative h-5 w-[200px] md:w-[200px] sm:w-[150px] rounded"
-                      shape="round"
-                      style={{
-                        height: "100%",
-                        width: "100%",
-                        margin: "6px",
-                        maxWidth: "100%",
-                      }}
-                    />
-                  ) : (
-                    <div
-                      style={{
-                        fontWeight: 300,
-                        fontFamily: "'Bricolage Grotesque', sans-serif",
-                      }}
-                    >
-                      {timeFormat(eventDetails?.startDate)} -{" "}
-                      {timeFormat(eventDetails?.endDate)}{" "}
-                      {eventDetails?.timeZone}
-                    </div>
-                  )}
                 </div>
-              </div>
-              <div className="flex gap-3">
-                <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
-                  <Image
-                    src="/icons/location.svg"
-                    alt=""
-                    height={25}
-                    width={25}
-                  />
-                </div>
-                <div>
-                  <div
-                    className="text-sm"
-                    style={{
-                      fontWeight: 600,
-                      fontFamily: "'Bricolage Grotesque', sans-serif",
-                    }}
-                  >
-                    Location
-                  </div>
-                  {getUserEventByUniqueKey?.isLoading ? (
-                    <Skeleton.Button
-                      active
-                      className="relative h-5 w-[200px] md:w-[200px] sm:w-[150px] rounded"
-                      shape="round"
-                      style={{
-                        height: "100%",
-                        width: "100%",
-                        margin: "6px",
-                        maxWidth: "100%",
-                      }}
-                    />
-                  ) : (
-                    <div
-                      style={{
-                        // width: "190px",
-                        whiteSpace: "normal",
-                        wordWrap: "break-word",
-                        fontWeight: 300,
-                        fontFamily: "'Bricolage Grotesque', sans-serif",
-                      }}
-                    >
-                      {eventDetails?.address}
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
-                  <Image src="/icons/host.svg" alt="" height={25} width={25} />
-                </div>
-                <div>
-                  <div
-                    className="text-sm"
-                    style={{
-                      fontWeight: 600,
-                      fontFamily: "'Bricolage Grotesque', sans-serif",
-                    }}
-                  >
-                    Host
-                  </div>
-                  {getUserEventByUniqueKey?.isLoading ? (
-                    <Skeleton.Button
-                      active
-                      className="relative h-5 w-[200px] md:w-[200px] sm:w-[150px] rounded"
-                      shape="round"
-                      style={{
-                        height: "100%",
-                        width: "100%",
-                        margin: "6px",
-                        maxWidth: "100%",
-                      }}
-                    />
-                  ) : (
-                    <div>
-                      <div
-                        style={{
-                          fontWeight: 300,
-                          fontFamily: "'Bricolage Grotesque', sans-serif",
-                        }}
-                      >
-                        {userFullName}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-              {twitterLink?.url ||
-              instagramLink?.url ||
-              websiteLink?.url ||
-              facebookLink?.url ? (
-                <div className="flex gap-3 items-center">
-                  <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex items-center justify-center">
+                <div className="flex gap-3">
+                  <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
                     <Image
-                      src="/icons/phone.svg"
+                      src="/icons/time.svg"
                       alt=""
                       height={25}
                       width={25}
@@ -633,155 +481,220 @@ const EventDetail = () => {
                         fontFamily: "'Bricolage Grotesque', sans-serif",
                       }}
                     >
-                      Contact Us
+                      Time
                     </div>
-                    <div className="flex items-center gap-4 mt-1">
-                      <div className="flex items-center gap-4 mt-1">
-                        {websiteLink && websiteLink?.url && (
-                          <Link
-                            href={websiteLink?.url}
-                            className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <Image
-                              src="/icons/link.svg"
-                              alt=""
-                              height={14}
-                              width={14}
-                            />
-                          </Link>
-                        )}
-                        {twitterLink && twitterLink?.url && (
-                          <Link
-                            href={twitterLink?.url}
-                            className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <Image
-                              src="/icons/x.svg"
-                              alt=""
-                              height={14}
-                              width={14}
-                            />
-                          </Link>
-                        )}
-                        {facebookLink && facebookLink?.url && (
-                          <Link
-                            href={facebookLink?.url}
-                            className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <Image
-                              src="/icons/facebook.svg"
-                              alt=""
-                              height={10}
-                              width={10}
-                            />
-                          </Link>
-                        )}
-                        {instagramLink && instagramLink?.url && (
-                          <Link
-                            href={instagramLink?.url}
-                            className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <Image
-                              src="/icons/instagram.svg"
-                              alt=""
-                              height={16}
-                              width={16}
-                            />
-                          </Link>
-                        )}
+
+                    <div
+                      style={{
+                        fontWeight: 300,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
+                      {timeFormat(eventDetails?.startDate)} -{" "}
+                      {timeFormat(eventDetails?.endDate)}{" "}
+                      {eventDetails?.timeZone}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
+                    <Image
+                      src="/icons/location.svg"
+                      alt=""
+                      height={25}
+                      width={25}
+                    />
+                  </div>
+                  <div>
+                    <div
+                      className="text-sm"
+                      style={{
+                        fontWeight: 600,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
+                      Location
+                    </div>
+                    <div
+                      style={{
+                        // width: "190px",
+                        whiteSpace: "normal",
+                        wordWrap: "break-word",
+                        fontWeight: 300,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
+                      {eventDetails?.address}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
+                    <Image
+                      src="/icons/host.svg"
+                      alt=""
+                      height={25}
+                      width={25}
+                    />
+                  </div>
+                  <div>
+                    <div
+                      className="text-sm"
+                      style={{
+                        fontWeight: 600,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
+                      Host
+                    </div>
+                    <div>
+                      <div
+                        style={{
+                          fontWeight: 300,
+                          fontFamily: "'Bricolage Grotesque', sans-serif",
+                        }}
+                      >
+                        {userFullName}
                       </div>
                     </div>
                   </div>
                 </div>
-              ) : (
-                <Skeleton.Button
-                  active
-                  className="relative h-16 w-[200px] md:w-[200px] sm:w-[150px] rounded-[1rem]"
-                  shape="round"
-                  style={{
-                    height: "100%",
-                    width: "50%",
-                    margin: "6px",
-                    maxWidth: "100%",
-                  }}
-                />
-              )}
+                {twitterLink?.url ||
+                instagramLink?.url ||
+                websiteLink?.url ||
+                facebookLink?.url ? (
+                  <div className="flex gap-3 items-center">
+                    <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex items-center justify-center">
+                      <Image
+                        src="/icons/phone.svg"
+                        alt=""
+                        height={25}
+                        width={25}
+                      />
+                    </div>
+                    <div>
+                      <div
+                        className="text-sm"
+                        style={{
+                          fontWeight: 600,
+                          fontFamily: "'Bricolage Grotesque', sans-serif",
+                        }}
+                      >
+                        Contact Us
+                      </div>
+                      <div className="flex items-center gap-4 mt-1">
+                        <div className="flex items-center gap-4 mt-1">
+                          {websiteLink && websiteLink?.url && (
+                            <Link
+                              href={websiteLink?.url}
+                              className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <Image
+                                src="/icons/link.svg"
+                                alt=""
+                                height={14}
+                                width={14}
+                              />
+                            </Link>
+                          )}
+                          {twitterLink && twitterLink?.url && (
+                            <Link
+                              href={twitterLink?.url}
+                              className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <Image
+                                src="/icons/x.svg"
+                                alt=""
+                                height={14}
+                                width={14}
+                              />
+                            </Link>
+                          )}
+                          {facebookLink && facebookLink?.url && (
+                            <Link
+                              href={facebookLink?.url}
+                              className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <Image
+                                src="/icons/facebook.svg"
+                                alt=""
+                                height={10}
+                                width={10}
+                              />
+                            </Link>
+                          )}
+                          {instagramLink && instagramLink?.url && (
+                            <Link
+                              href={instagramLink?.url}
+                              className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <Image
+                                src="/icons/instagram.svg"
+                                alt=""
+                                height={16}
+                                width={16}
+                              />
+                            </Link>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+              </div>
             </div>
-          </div>
-          <div className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black pl-6">
-            <div className="py-8">
-              <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between items-center">
-                {getUserEventByUniqueKey?.isLoading ? (
-                  <Skeleton.Button
-                    active
-                    className="relative h-7 sm: w-[150px] md:w-[120px] sm:w-200px] rounded-[1rem]"
-                    shape="round"
-                    style={{
-                      height: "100%",
-                      width: "100%",
-                      margin: "6px",
-                      maxWidth: "100%",
-                    }}
-                  />
-                ) : (
+            <div
+              style={{ minWidth: "45%" }}
+              className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black pl-6"
+            >
+              <div className="py-8">
+                <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between items-center">
                   <h2 className="text-xl font-BricolageGrotesqueMedium">
                     {eventDetails?.eventName}
                   </h2>
-                )}
 
-                <div className="flex items-center space-x-3">
-                  {" "}
-                  {/* Wrapper for buttons with tighter spacing */}
-                  <Button
-                    icon={<ShareAltOutlined className="text-black text-2xl" />}
-                    onClick={handleOpenModal}
-                    className="bg-white border-none p-0"
-                  />
-                  <Tooltip title="Click to Create Your Attendee Flyer">
+                  <div className="flex items-center space-x-3">
+                    {" "}
+                    {/* Wrapper for buttons with tighter spacing */}
                     <Button
-                      icon={<EditOutlined className="text-black text-2xl" />}
-                      onClick={handleShowModal}
+                      icon={
+                        <ShareAltOutlined className="text-black text-2xl" />
+                      }
+                      onClick={handleOpenModal}
                       className="bg-white border-none p-0"
                     />
-                  </Tooltip>
+                    <Tooltip title="Click to Create Your Attendee Flyer">
+                      <Button
+                        icon={<EditOutlined className="text-black text-2xl" />}
+                        onClick={handleShowModal}
+                        className="bg-white border-none p-0"
+                      />
+                    </Tooltip>
+                  </div>
+
+                  <Modal
+                    open={isModalOpen}
+                    onCancel={handleCloseModal}
+                    footer={null}
+                    centered
+                    style={{
+                      borderRadius: "15px",
+                      padding: "20px", // Include padding here instead of using bodyStyle
+                    }}
+                  >
+                    <ShareModalContent url={eventUrl} title={eventTitle} />
+                  </Modal>
                 </div>
 
-                <Modal
-                  open={isModalOpen}
-                  onCancel={handleCloseModal}
-                  footer={null}
-                  centered
-                  style={{
-                    borderRadius: "15px",
-                    padding: "20px", // Include padding here instead of using bodyStyle
-                  }}
-                >
-                  <ShareModalContent url={eventUrl} title={eventTitle} />
-                </Modal>
-              </div>
-
-              <div className="mt-1">
-                {getUserEventByUniqueKey?.isLoading ? (
-                  <Skeleton.Button
-                    active
-                    className="relative h-20 w-[126px] md:w-[100px] sm:w-[80px] rounded-[1rem]"
-                    shape="round"
-                    style={{
-                      height: "100%",
-                      width: "100%",
-                      margin: "6px",
-                      maxWidth: "100%",
-                    }}
-                  />
-                ) : (
+                <div className="mt-1">
                   <div className="w-full min-w-[330px] gap-4 overflow-hidden flex flex-row items-center justify-between text-center py-4">
                     {/* Image on the left side */}
                     <Image
@@ -831,32 +744,11 @@ const EventDetail = () => {
                       </div>
                     </div>
                   </div>
-                )}
-                <Heading3
-                  className="text-lg font-bold mb-3"
-                  content={"About this event"}
-                />
+                  <Heading3
+                    className="text-lg font-bold mb-3"
+                    content={"About this event"}
+                  />
 
-                {getUserEventByUniqueKey?.isLoading ? (
-                  <div className="flex flex-col gap-4">
-                    {Array(2)
-                      .fill(null)
-                      .map((_, index) => (
-                        <Skeleton.Button
-                          key={index}
-                          className="relative h-60 w-[200px] md:w-[200px] sm:w-[150px] rounded"
-                          active
-                          shape="round"
-                          style={{
-                            height: "100%",
-                            width: "100%",
-                            margin: "10px",
-                            maxWidth: "100%",
-                          }}
-                        />
-                      ))}
-                  </div>
-                ) : (
                   <>
                     <ReadMoreHTML
                       htmlContent={eventDetails?.eventDetails || ""}
@@ -878,21 +770,55 @@ const EventDetail = () => {
                       />
                     )}
                   </>
-                )}
 
-                <div className="flex justify-center mt-12">
-                  {eventDetails?.vendor_registration === true ? (
-                    <>
-                      <Dropdown
-                        disabled={isRegistrationClosed} // Disable if registration is closed
-                        menu={{
-                          items: RegistrationTypes,
-                          onClick: handleMenuClick,
-                        }}
-                      >
+                  <div className="flex justify-center mt-12">
+                    {eventDetails?.vendor_registration === true ? (
+                      <>
+                        <Dropdown
+                          disabled={isRegistrationClosed} // Disable if registration is closed
+                          menu={{
+                            items: RegistrationTypes,
+                            onClick: handleMenuClick,
+                          }}
+                        >
+                          <Button
+                            type={
+                              pathname.includes("register") ? "primary" : "text"
+                            }
+                            className="primary-btn w-full"
+                            style={{
+                              borderRadius: "25px",
+                              fontFamily: "BricolageGrotesqueMedium",
+                              backgroundColor: isRegistrationClosed
+                                ? "#cccccc"
+                                : "#e20000", // Gray for disabled, red for active
+                              color: isRegistrationClosed ? "#666666" : "white",
+                              height: "50px", // Adjust height as needed
+                              fontSize: "16px", // Increase text size
+                              border: "none", // Remove border if needed
+                            }}
+                            title={
+                              isRegistrationClosed ? "Registration Closed" : ""
+                            }
+                            disabled={isRegistrationClosed} // Disable button when registration is closed
+                          >
+                            <Space>
+                              {eventDetails?.enable_registration === false
+                                ? "Registration Closed"
+                                : "Get Tickets"}
+                              <IoChevronDown />
+                            </Space>
+                          </Button>
+                        </Dropdown>
+                      </>
+                    ) : (
+                      <>
                         <Button
                           type={
                             pathname.includes("register") ? "primary" : "text"
+                          }
+                          onClick={() =>
+                            router.push(`/discover/${params?.event}/tickets`)
                           }
                           className="primary-btn w-full"
                           style={{
@@ -915,70 +841,36 @@ const EventDetail = () => {
                             {eventDetails?.enable_registration === false
                               ? "Registration Closed"
                               : "Get Tickets"}
-                            <IoChevronDown />
                           </Space>
                         </Button>
-                      </Dropdown>
-                    </>
-                  ) : (
-                    <>
-                      <Button
-                        type={
-                          pathname.includes("register") ? "primary" : "text"
-                        }
-                        onClick={() =>
-                          router.push(`/discover/${params?.event}/tickets`)
-                        }
-                        className="primary-btn w-full"
-                        style={{
-                          borderRadius: "25px",
-                          fontFamily: "BricolageGrotesqueMedium",
-                          backgroundColor: isRegistrationClosed
-                            ? "#cccccc"
-                            : "#e20000", // Gray for disabled, red for active
-                          color: isRegistrationClosed ? "#666666" : "white",
-                          height: "50px", // Adjust height as needed
-                          fontSize: "16px", // Increase text size
-                          border: "none", // Remove border if needed
-                        }}
-                        title={
-                          isRegistrationClosed ? "Registration Closed" : ""
-                        }
-                        disabled={isRegistrationClosed} // Disable button when registration is closed
-                      >
-                        <Space>
-                          {eventDetails?.enable_registration === false
-                            ? "Registration Closed"
-                            : "Get Tickets"}
-                        </Space>
-                      </Button>
-                    </>
-                  )}
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
+            <Modal
+              title="Create your attendee flyer, download and share with everyone 🥳 "
+              open={showModal}
+              onCancel={handleCloseModal2}
+              footer={null} // Removes the default footer
+              width="50%" // Optional: Adjust width for a better overlay feel
+              styles={{
+                body: {
+                  padding: "20px",
+                  height: "auto",
+                  maxHeight: "87vh",
+                  overflowY: "auto",
+                },
+              }} // Decrease height
+              centered // Centers the modal in the viewport
+              destroyOnClose // Destroy modal on close for cleanup
+            >
+              {/* Pass the onClose function to the CreateAttendeeFlyer modal */}
+              <Dpmodal />
+            </Modal>
           </div>
-          <Modal
-            title="Create your attendee flyer, download and share with everyone 🥳 "
-            open={showModal}
-            onCancel={handleCloseModal2}
-            footer={null} // Removes the default footer
-            width="50%" // Optional: Adjust width for a better overlay feel
-            styles={{
-              body: {
-                padding: "20px",
-                height: "auto",
-                maxHeight: "87vh",
-                overflowY: "auto",
-              },
-            }} // Decrease height
-            centered // Centers the modal in the viewport
-            destroyOnClose // Destroy modal on close for cleanup
-          >
-            {/* Pass the onClose function to the CreateAttendeeFlyer modal */}
-            <Dpmodal />
-          </Modal>
-        </div>
+        )}
 
         {/* !!!For small screen */}
         <div className="min-[870px]:hidden flex gap-10 flex-col">
@@ -1030,31 +922,37 @@ const EventDetail = () => {
               )}
             </div>
             <div className="flex items-center space-x-3">
-  {/* Wrapper for buttons with tighter spacing */}
-  <Button
-    icon={<ShareAltOutlined className="text-black text-2xl" />}
-    onClick={handleOpenModal}
-    className="bg-white border-none p-0"
-  />
+              {/* Wrapper for buttons with tighter spacing */}
+              <Button
+                icon={<ShareAltOutlined className="text-black text-2xl" />}
+                onClick={handleOpenModal}
+                className="bg-white border-none p-0"
+              />
 
-  <Tooltip
-    title={isLoggedIn ? "Click to Scan Event Tickets" : "Click to Create Your Attendee Flyer"}
-  >
-    {isLoggedIn ? (
-      <Button
-        icon={<ScanOutlined className="text-black text-2xl" />}
-        onClick={() => window.open('https://scanner.ostivities.com/', '_blank')}
-        className="bg-white border-none p-0"
-      />
-    ) : (
-      <Button
-        icon={<EditOutlined className="text-black text-2xl" />}
-        onClick={handleShowModal}
-        className="bg-white border-none p-0"
-      />
-    )}
-  </Tooltip>
-</div>
+              <Tooltip
+                title={
+                  isLoggedIn
+                    ? "Click to Scan Event Tickets"
+                    : "Click to Create Your Attendee Flyer"
+                }
+              >
+                {isLoggedIn ? (
+                  <Button
+                    icon={<ScanOutlined className="text-black text-2xl" />}
+                    onClick={() =>
+                      window.open("https://scanner.ostivities.com/", "_blank")
+                    }
+                    className="bg-white border-none p-0"
+                  />
+                ) : (
+                  <Button
+                    icon={<EditOutlined className="text-black text-2xl" />}
+                    onClick={handleShowModal}
+                    className="bg-white border-none p-0"
+                  />
+                )}
+              </Tooltip>
+            </div>
 
             <Modal
               open={isModalOpen}
@@ -1305,13 +1203,32 @@ const EventDetail = () => {
                 </div>
               </div>
             </div>
-            {twitterLink?.url ||
-            instagramLink?.url ||
-            websiteLink?.url ||
-            facebookLink?.url ? (
+            {getUserEventByUniqueKey?.isLoading ? (
+              // If loading, show the Skeleton
+              <Skeleton.Button
+                active
+                className="relative h-16 w-[200px] md:w-[200px] sm:w-[150px] rounded-[1rem]"
+                shape="round"
+                style={{
+                  height: "100%",
+                  width: "50%",
+                  margin: "6px",
+                  maxWidth: "100%",
+                }}
+              />
+            ) : twitterLink?.url ||
+              instagramLink?.url ||
+              websiteLink?.url ||
+              facebookLink?.url ? (
+              // If not loading and links exist, show the Contact Us section
               <div className="flex gap-3 items-center">
                 <div className="bg-OWANBE_PRY/20 p-2 max-h-[41px] min-w-[41px] rounded-xl flex items-center justify-center">
-                  <Image src="/icons/phone.svg" alt="" height={25} width={25} />
+                  <Image
+                    src="/icons/phone.svg"
+                    alt="Phone Icon"
+                    height={25}
+                    width={25}
+                  />
                 </div>
                 <div>
                   <div
@@ -1324,84 +1241,70 @@ const EventDetail = () => {
                     Contact Us
                   </div>
                   <div className="flex items-center gap-4 mt-1">
-                    <div className="flex items-center gap-4 mt-1">
-                      {websiteLink && websiteLink?.url && (
-                        <Link
-                          href={websiteLink?.url}
-                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <Image
-                            src="/icons/link.svg"
-                            alt=""
-                            height={14}
-                            width={14}
-                          />
-                        </Link>
-                      )}
-                      {twitterLink && twitterLink?.url && (
-                        <Link
-                          href={twitterLink?.url}
-                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <Image
-                            src="/icons/x.svg"
-                            alt=""
-                            height={14}
-                            width={14}
-                          />
-                        </Link>
-                      )}
-                      {facebookLink && facebookLink?.url && (
-                        <Link
-                          href={facebookLink?.url}
-                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <Image
-                            src="/icons/facebook.svg"
-                            alt=""
-                            height={10}
-                            width={10}
-                          />
-                        </Link>
-                      )}
-                      {instagramLink && instagramLink?.url && (
-                        <Link
-                          href={instagramLink?.url}
-                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <Image
-                            src="/icons/instagram.svg"
-                            alt=""
-                            height={16}
-                            width={16}
-                          />
-                        </Link>
-                      )}
-                    </div>
+                    {websiteLink?.url && (
+                      <Link
+                        href={websiteLink.url}
+                        className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <Image
+                          src="/icons/link.svg"
+                          alt="Website Icon"
+                          height={14}
+                          width={14}
+                        />
+                      </Link>
+                    )}
+                    {twitterLink?.url && (
+                      <Link
+                        href={twitterLink.url}
+                        className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <Image
+                          src="/icons/x.svg"
+                          alt="Twitter Icon"
+                          height={14}
+                          width={14}
+                        />
+                      </Link>
+                    )}
+                    {facebookLink?.url && (
+                      <Link
+                        href={facebookLink.url}
+                        className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <Image
+                          src="/icons/facebook.svg"
+                          alt="Facebook Icon"
+                          height={10}
+                          width={10}
+                        />
+                      </Link>
+                    )}
+                    {instagramLink?.url && (
+                      <Link
+                        href={instagramLink.url}
+                        className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <Image
+                          src="/icons/instagram.svg"
+                          alt="Instagram Icon"
+                          height={16}
+                          width={16}
+                        />
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>
-            ) : (
-              <Skeleton.Button
-                active
-                className="relative h-16 w-[200px] md:w-[200px] sm:w-[150px] rounded-[1rem]"
-                shape="round"
-                style={{
-                  height: "100%",
-                  width: "50%",
-                  margin: "6px",
-                  maxWidth: "100%",
-                }}
-              />
-            )}
+            ) : null}
           </div>
           <div>
             <Heading3
