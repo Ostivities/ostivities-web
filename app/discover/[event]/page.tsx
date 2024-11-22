@@ -3,6 +3,7 @@
 import AvailableEvents from "@/app/components/DashboardLayout/OtherEvents";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import { Heading5 } from "@/app/components/typography/Typography";
+import useFetch from "@/app/components/forms/create-events/auth";
 import { Button, Dropdown, MenuProps, Space, Modal } from "antd";
 import Image from "next/image";
 import Link from "next/link";
@@ -28,6 +29,8 @@ import {
   ShareAltOutlined,
   CopyOutlined,
   EditOutlined,
+  PlusOutlined,
+  ScanOutlined,
 } from "@ant-design/icons";
 import ReadMoreHTML from "@/app/components/ReadMoreHTML";
 import start from "@/public/Startsin.svg";
@@ -191,7 +194,7 @@ const EventDetail = () => {
   // console.log(params, 'params');
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
   // console.log(getUserEventByUniqueKey, "getUserEventByUniqueKey");
-
+  const {isLoggedIn, loading} = useFetch()
   const eventDetails =
     getUserEventByUniqueKey?.data?.data?.data === null
       ? router.push("/not-found")
@@ -337,19 +340,31 @@ const EventDetail = () => {
   }, [eventDate, eventDetails, eventEndDate, eventEnddates, eventdates]);
 
   const title = (
-    <div className="flex-center gap-2">
-      <Image
-        src="/icons/back-arrow.svg"
-        alt=""
-        height={25}
-        width={25}
-        onClick={() => router.back()}
-        className="cursor-pointer"
-      />
-
-      <h1 style={{ fontSize: "24px" }}>{eventTitle}</h1>
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-2">
+        <Image
+          src="/icons/back-arrow.svg"
+          alt=""
+          height={25}
+          width={25}
+          onClick={() => router.back()}
+          className="cursor-pointer"
+        />
+        <h1 style={{ fontSize: "24px" }}>{eventTitle}</h1>
+      </div>
+  
+      {isLoggedIn && (
+        <button
+        onClick={() => window.open('https://scanner.ostivities.com/', '_blank')}
+          className="bg-OWANBE_PRY rounded-full px-4 py-2 text-xs font-semibold text-white flex items-center"
+        >
+          <ScanOutlined />
+          <span className="pl-1">Scan Tickets</span>
+        </button>
+      )}
     </div>
   );
+  
 
   const RegistrationTypes: MenuProps["items"] = [
     {
@@ -1015,21 +1030,31 @@ const EventDetail = () => {
               )}
             </div>
             <div className="flex items-center space-x-3">
-              {" "}
-              {/* Wrapper for buttons with tighter spacing */}
-              <Button
-                icon={<ShareAltOutlined className="text-black text-2xl" />}
-                onClick={handleOpenModal}
-                className="bg-white border-none p-0"
-              />
-              <Tooltip title="Click to Create Your Attendee Flyer">
-                <Button
-                  icon={<EditOutlined className="text-black text-2xl" />}
-                  onClick={handleShowModal}
-                  className="bg-white border-none p-0"
-                />
-              </Tooltip>
-            </div>
+  {/* Wrapper for buttons with tighter spacing */}
+  <Button
+    icon={<ShareAltOutlined className="text-black text-2xl" />}
+    onClick={handleOpenModal}
+    className="bg-white border-none p-0"
+  />
+
+  <Tooltip
+    title={isLoggedIn ? "Click to Scan Event Tickets" : "Click to Create Your Attendee Flyer"}
+  >
+    {isLoggedIn ? (
+      <Button
+        icon={<ScanOutlined className="text-black text-2xl" />}
+        onClick={() => window.open('https://scanner.ostivities.com/', '_blank')}
+        className="bg-white border-none p-0"
+      />
+    ) : (
+      <Button
+        icon={<EditOutlined className="text-black text-2xl" />}
+        onClick={handleShowModal}
+        className="bg-white border-none p-0"
+      />
+    )}
+  </Tooltip>
+</div>
 
             <Modal
               open={isModalOpen}
