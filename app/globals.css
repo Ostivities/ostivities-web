@@ -1336,7 +1336,6 @@ form .error-message {
   margin-top: 12px;
   display: flex;
   justify-content: center;
-  z-index: 1000;
 }
 
 /* Mobile-specific styles */

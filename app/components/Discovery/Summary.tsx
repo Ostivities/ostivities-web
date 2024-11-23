@@ -354,10 +354,7 @@ useEffect(() => {
             </div>
           )} */}
           {continueBtn && (
-            <div className="continue-btn-container"
-            style={{
-              zIndex: 1000,
-            }}>
+            <div className="continue-btn-container">
               <Button
                 loading={loading}
                 onClick={onClick}
