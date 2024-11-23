@@ -1312,17 +1312,18 @@ const EventDetail = () => {
               content={"About this event"}
             />
             {getUserEventByUniqueKey?.isLoading ? (
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-1 ">
                 {Array(2)
                   .fill(null)
                   .map((_, index) => (
-                    <Skeleton.Button
+                    <Skeleton
                       key={index}
-                      className="relative h-60 w-[200px] md:w-[200px] sm:w-[150px] rounded"
+                      // className="relative h-60 w-[200px] md:w-[200px] sm:w-[150px] rounded"
+                      paragraph={{ rows: 1 }}
                       active
-                      shape="round"
+                      
                       style={{
-                        height: "100%",
+                        height: "50px",
                         width: "100%",
                         margin: "10px",
                         maxWidth: "100%",

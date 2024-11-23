@@ -3,23 +3,24 @@ import React from "react";
 
 const EventPageLoader = () => {
   return (
-    <div className="w-full flex flex-col md:flex-row gap-10">
-      {/* First Skeleton */}
-      <div className="w-full md:w-[400px] h-[520px] rounded-[3.125rem]">
-        <Skeleton.Button
-          active
-          shape="round"
-          className="w-full h-full rounded-[2.5rem]"
-          style={{
-            width: "400px",
-            height: "520px",
-            margin: "6px",
-          }}
-        />
-      </div>
+<div className="hidden w-full min-[870px]:flex gap-10 md:flex-row">
+  {/* First Skeleton */}
+  <div className="w-full md:w-[400px] h-[520px] rounded-[3.125rem]">
+    <Skeleton.Button
+      active
+      className="relative w-full md:w-[400px] lg:w-[500px] h-[520px] rounded-[2.5rem]"
+      shape="round"
+      style={{
+        width: "400px",
+        height: "520px",
+        margin: "6px",
+        maxWidth: "100%",
+      }}
+    />
+  </div>
 
-      {/* Second Skeleton */}
-      <div className="flex flex-col py-8 gap-3">
+   {/* Second Skeleton */}
+   <div className="flex flex-col py-8 gap-3">
         {[...Array(5)].map((_, index) => (
           <Skeleton
             key={index}
