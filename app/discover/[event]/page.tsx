@@ -427,7 +427,7 @@ const EventDetail = () => {
 
             <div className="py-8" style={{ maxWidth: "21%" }}>
               <Heading5 className="text-2xl" content={"About this event"} />
-              <div className="mt-14 flex flex-col gap-8">
+              <div className="mt-8 flex flex-col gap-8">
                 <div className="flex items-start">
                   {/* Image Section */}
                   <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
@@ -652,7 +652,7 @@ const EventDetail = () => {
               </div>
             </div>
             <div
-              style={{ minWidth: "45%" }}
+              style={{ minWidth: "40%" }}
               className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black pl-6"
             >
               <div className="py-8">
@@ -744,10 +744,10 @@ const EventDetail = () => {
                       </div>
                     </div>
                   </div>
-                  <Heading3
+                  {/* <Heading3
                     className="text-lg font-bold mb-3"
                     content={"About this event"}
-                  />
+                  /> */}
 
                   <>
                     <ReadMoreHTML
