@@ -222,8 +222,7 @@ const EventDetail = () => {
 
   const userFullName =
     eventDetails?.user?.accountType === ACCOUNT_TYPE.PERSONAL
-      ? `${eventDetails?.user?.firstName ?? ""} ${
-          eventDetails?.user?.lastName ?? ""
+      ? `${eventDetails?.user?.firstName ?? ""} ${eventDetails?.user?.lastName ?? ""
         }`.trim()
       : `${eventDetails?.user?.businessName ?? ""}`;
 
@@ -353,18 +352,6 @@ const EventDetail = () => {
         />
         <h1 style={{ fontSize: "24px" }}>{eventTitle}</h1>
       </div>
-
-      {isLoggedIn && (
-        <button
-          onClick={() =>
-            window.open("https://scanner.ostivities.com/", "_blank")
-          }
-          className="bg-OWANBE_PRY rounded-full px-4 py-2 text-xs font-semibold text-white flex items-center"
-        >
-          <ScanOutlined />
-          <span className="pl-1">Scan Tickets</span>
-        </button>
-      )}
     </div>
   );
 
@@ -560,9 +547,9 @@ const EventDetail = () => {
                   </div>
                 </div>
                 {twitterLink?.url ||
-                instagramLink?.url ||
-                websiteLink?.url ||
-                facebookLink?.url ? (
+                  instagramLink?.url ||
+                  websiteLink?.url ||
+                  facebookLink?.url ? (
                   <div className="flex gap-3 items-center">
                     <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex items-center justify-center">
                       <Image
@@ -665,18 +652,33 @@ const EventDetail = () => {
                     {" "}
                     {/* Wrapper for buttons with tighter spacing */}
                     <Button
-                      icon={
-                        <ShareAltOutlined className="text-black text-2xl" />
-                      }
+                      icon={<ShareAltOutlined className="text-black text-2xl" />}
                       onClick={handleOpenModal}
                       className="bg-white border-none p-0"
                     />
-                    <Tooltip title="Click to Create Your Attendee Flyer">
-                      <Button
-                        icon={<EditOutlined className="text-black text-2xl" />}
-                        onClick={handleShowModal}
-                        className="bg-white border-none p-0"
-                      />
+
+                    <Tooltip
+                      title={
+                        isLoggedIn
+                          ? "Click to Scan Event Tickets"
+                          : "Click to Create Your Attendee Flyer"
+                      }
+                    >
+                      {isLoggedIn ? (
+                        <Button
+                          icon={<ScanOutlined className="text-black text-2xl" />}
+                          onClick={() =>
+                            window.open("https://scanner.ostivities.com/", "_blank")
+                          }
+                          className="bg-white border-none p-0"
+                        />
+                      ) : (
+                        <Button
+                          icon={<EditOutlined className="text-black text-2xl" />}
+                          onClick={handleShowModal}
+                          className="bg-white border-none p-0"
+                        />
+                      )}
                     </Tooltip>
                   </div>
 
@@ -1166,9 +1168,9 @@ const EventDetail = () => {
                 </div>
               </div>
               {twitterLink?.url ||
-              instagramLink?.url ||
-              websiteLink?.url ||
-              facebookLink?.url ? (
+                instagramLink?.url ||
+                websiteLink?.url ||
+                facebookLink?.url ? (
                 // If not loading and links exist, show the Contact Us section
                 <div className="flex gap-3 items-center">
                   <div className="bg-OWANBE_PRY/20 p-2 max-h-[41px] min-w-[41px] rounded-xl flex items-center justify-center">

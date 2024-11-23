@@ -1,8 +1,8 @@
 "use client";
 import { useGetUserEvent, useUpdateEvent } from "@/app/hooks/event/event.hook";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
-import { CameraFilled } from "@ant-design/icons";
-import { Button, Flex, Space, Upload, message } from "antd";
+import { CameraFilled, ScanOutlined } from "@ant-design/icons";
+import { Button, Flex, Space, Tooltip, Upload, message } from "antd";
 import type { RcFile, UploadProps } from "antd/es/upload/interface";
 import axios from "axios";
 import Image from "next/image";
@@ -42,8 +42,7 @@ const EventPageView = () => {
 
   const name =
     eventDetails?.user?.accountType === ACCOUNT_TYPE.PERSONAL
-      ? `${eventDetails?.user?.firstName ?? ""} ${
-          eventDetails?.user?.lastName ?? ""
+      ? `${eventDetails?.user?.firstName ?? ""} ${eventDetails?.user?.lastName ?? ""
         }`.trim()
       : `${eventDetails?.user?.businessName ?? ""}`;
 
@@ -82,7 +81,7 @@ const EventPageView = () => {
           }
         }
         setLoader(false);
-      } catch (error) {}
+      } catch (error) { }
     },
     async onChange(info) {
       if (info.file.status !== "uploading") {
@@ -317,9 +316,9 @@ const EventPageView = () => {
               </div>
 
               {twitterLink?.url ||
-              instagramLink?.url ||
-              websiteLink?.url ||
-              facebookLink?.url ? (
+                instagramLink?.url ||
+                websiteLink?.url ||
+                facebookLink?.url ? (
                 <div className="flex gap-3 items-center">
                   <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
                     <Image
@@ -414,6 +413,20 @@ const EventPageView = () => {
                 <h2 className="text-2xl font-BricolageGrotesqueMedium">
                   {eventDetails?.eventName}
                 </h2>
+                <div className="flex items-center space-x-3">
+                  {/* Wrapper for buttons with tighter spacing */}
+                  <Tooltip
+                    title={"Click to Scan Event Tickets"}
+                  >
+                    <Button
+                      icon={<ScanOutlined className="text-black text-2xl" />}
+                      onClick={() =>
+                        window.open("https://scanner.ostivities.com/", "_blank")
+                      }
+                      className="bg-white border-none p-0"
+                    />
+                  </Tooltip>
+                </div>
               </div>
             </div>
             <ReadMoreHTML

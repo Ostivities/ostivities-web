@@ -727,7 +727,7 @@ const TicketsSelection = () => {
                 </div>
               </div>
               <div className="flex-center gap-3">
-                <div className="m-w-12 m-h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
+                <div className="min-w-12 min-h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
                   <Image src="/icons/time.svg" alt="" height={25} width={25} />
                 </div>
                 <div>
