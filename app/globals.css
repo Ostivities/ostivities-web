@@ -1329,6 +1329,36 @@ form .error-message {
     margin-top: 1rem;
   }
 }
+/* General styling for the container */
+.continue-btn-container {
+  position: static; /* Default position */
+  width: 100%;
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Mobile-specific styles */
+@media screen and (max-width: 768px) {
+  .continue-btn-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: white; /* Optional: Add background for better visibility */
+    padding: 10px;
+  }
+}
+
+/* When scrolled to the bottom of the page */
+@media screen and (max-width: 768px) {
+  body.scrolled-to-bottom .continue-btn-container {
+    position: static; /* Reset to original position */
+    background-color: transparent; /* Reset background */
+    box-shadow: none; /* Remove shadow */
+  }
+}
+
 
 ::-webkit-scrollbar-track {
   background: transparent; /* Optional: Track color */

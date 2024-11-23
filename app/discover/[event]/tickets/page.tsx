@@ -693,12 +693,12 @@ const TicketsSelection = () => {
   // console.log(termsAndCondition, paymentMethod);
   return (
     <DashboardLayout title={title} isLoggedIn>
-      <section className="flex gap-12">
+      <section className="flex flex-col md:flex-row gap-6 md:gap-12">
         {currentPage === "tickets" ? (
-          <section className="flex-1 pr-1 pl-3 pb-4 scrollable-content overflow-y-auto scroll-smooth h-full">
+          <section className="flex-1 pb-4 scrollable-content overflow-y-auto scroll-smooth h-full">
             <div className="flex-center justify-between">
               <div className="flex-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
+                <div className="min-w-12 min-h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
                   <Image
                     src="/icons/calendar.svg"
                     alt=""
@@ -727,7 +727,7 @@ const TicketsSelection = () => {
                 </div>
               </div>
               <div className="flex-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
+                <div className="m-w-12 m-h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
                   <Image src="/icons/time.svg" alt="" height={25} width={25} />
                 </div>
                 <div>
@@ -939,18 +939,18 @@ const TicketsSelection = () => {
                           style={{ marginBlockStart: "10px" }}
                         >
                           <button
-                            className="w-8 h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
+                            className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
                             onClick={() => handleDecrement(ticket?.id)}
                             disabled={selectedTickets[ticket?.id] === 0}
                             style={{ backgroundColor: "#FADEDE" }}
                           >
                             -
                           </button>
-                          <span className="text-lg mx-2">
+                          <span className="text-base sm:text-lg mx-2">
                             {selectedTickets[ticket?.id] || 0}
                           </span>
                           <button
-                            className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
+                            className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center rounded-full text-lg font-bold"
                             onClick={() => handleIncrement(ticket?.id)}
                             disabled={
                               selectedTickets[ticket?.id] ===
@@ -1158,18 +1158,18 @@ const TicketsSelection = () => {
                           style={{ marginBlockStart: "10px" }}
                         >
                           <button
-                            className="w-8 h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
+                            className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
                             onClick={() => handleDecrement(ticket?.id)}
                             disabled={selectedTickets[ticket?.id] === 0}
                             style={{ backgroundColor: "#FADEDE" }}
                           >
                             -
                           </button>
-                          <span className="text-lg mx-2">
+                          <span className="text-base sm:text-lg mx-2">
                             {selectedTickets[ticket?.id] || 0}
                           </span>
                           <button
-                            className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
+                            className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center rounded-full text-lg font-bold"
                             onClick={() => handleIncrement(ticket?.id)}
                             disabled={selectedTickets[ticket?.id] === 1}
                             style={{
@@ -1193,11 +1193,6 @@ const TicketsSelection = () => {
             </div>
           </section>
         ) : currentPage === "contactform" ? (
-          // <ContactForm
-          //  ticketDetails={ticketDetails}
-          //  onSubmit={handleSubmit}
-          //  onExternalFinishTrigger={(trigger) => setExternalTrigger(() => trigger)}
-          // />
           <section className="flex-1 pr-1 pl-3 pb-4 scrollable-content overflow-y-auto scroll-smooth h-full">
             <div className="bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem] w-[570px]">
               We have reserved your tickets, please complete checkout within{" "}

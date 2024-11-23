@@ -695,7 +695,7 @@ const EventDetail = () => {
                 </div>
 
                 <div className="mt-1">
-                  <div className="w-full min-w-[330px] gap-4 overflow-hidden flex flex-row items-center justify-between text-center py-4">
+                  <div className="w-full min-w-[330px] gap-4 flex flex-row items-center justify-center text-center py-4">
                     {/* Image on the left side */}
                     <Image
                       src={isEventStarted ? end : start}
@@ -704,7 +704,9 @@ const EventDetail = () => {
                     />
 
                     {/* Countdown beside the image */}
-                    <div className="p-1">
+                    <div className="p-0">
+                      {" "}
+                      {/* Removed unnecessary padding */}
                       <div className="flex justify-center gap-4">
                         <div className="flex flex-col items-center">
                           <div className="flex items-center justify-center w-12 h-12 border-2 border-[#e20000] rounded-full">
@@ -1029,42 +1031,45 @@ const EventDetail = () => {
               </div>
             </div>
           )}
-          <div className="mt-2 flex flex-col gap-8">
-            <div className="flex items-start">
-              {/* Image Section */}
-              <div className="bg-OWANBE_PRY/20 p-2 max-h-[41px] min-w-[41px] rounded-xl flex-center justify-center">
-                <Image
-                  src="/icons/calendar.svg"
-                  alt=""
-                  height={25}
-                  width={25}
-                />
-              </div>
-
-              {/* Text Section */}
-              <div className="ml-2">
-                <div
-                  className="text-sm"
+          {getUserEventByUniqueKey?.isLoading ? (
+            <div className="flex flex-col py-8 gap-3">
+              {[...Array(5)].map((_, index) => (
+                <Skeleton
+                  key={index}
+                  avatar
+                  paragraph={{ rows: 1 }}
+                  active
                   style={{
-                    fontWeight: 600,
-                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                    width: "250px",
+                    margin: "10px 0",
                   }}
-                >
-                  Date
-                </div>
-                {getUserEventByUniqueKey?.isLoading ? (
-                  <Skeleton.Button
-                    active
-                    className="relative h-5 w-[200px] md:w-[200px] sm:w-[150px] rounded"
-                    shape="round"
-                    style={{
-                      height: "100%",
-                      width: "100%",
-                      margin: "6px",
-                      maxWidth: "100%",
-                    }}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="mt-2 flex flex-col gap-8">
+              <div className="flex items-start">
+                {/* Image Section */}
+                <div className="bg-OWANBE_PRY/20 p-2 max-h-[41px] min-w-[41px] rounded-xl flex-center justify-center">
+                  <Image
+                    src="/icons/calendar.svg"
+                    alt=""
+                    height={25}
+                    width={25}
                   />
-                ) : (
+                </div>
+
+                {/* Text Section */}
+                <div className="ml-2">
+                  <div
+                    className="text-sm"
+                    style={{
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
+                    Date
+                  </div>
                   <div
                     style={{
                       whiteSpace: "normal",
@@ -1076,36 +1081,22 @@ const EventDetail = () => {
                     {dateFormat(eventDetails?.startDate)} -{" "}
                     {dateFormat(eventDetails?.endDate)}
                   </div>
-                )}
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
-                <Image src="/icons/time.svg" alt="" height={25} width={25} />
-              </div>
-              <div>
-                <div
-                  className="text-sm"
-                  style={{
-                    fontWeight: 600,
-                    fontFamily: "'Bricolage Grotesque', sans-serif",
-                  }}
-                >
-                  Time
                 </div>
-                {getUserEventByUniqueKey?.isLoading ? (
-                  <Skeleton.Button
-                    active
-                    className="relative h-5 w-[200px] md:w-[200px] sm:w-[150px] rounded"
-                    shape="round"
+              </div>
+              <div className="flex gap-3">
+                <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
+                  <Image src="/icons/time.svg" alt="" height={25} width={25} />
+                </div>
+                <div>
+                  <div
+                    className="text-sm"
                     style={{
-                      height: "100%",
-                      width: "100%",
-                      margin: "6px",
-                      maxWidth: "100%",
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
                     }}
-                  />
-                ) : (
+                  >
+                    Time
+                  </div>
                   <div
                     style={{
                       fontWeight: 300,
@@ -1115,117 +1106,13 @@ const EventDetail = () => {
                     {timeFormat(eventDetails?.startDate)} -{" "}
                     {timeFormat(eventDetails?.endDate)} {eventDetails?.timeZone}
                   </div>
-                )}
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
-                <Image
-                  src="/icons/location.svg"
-                  alt=""
-                  height={25}
-                  width={25}
-                />
-              </div>
-              <div>
-                <div
-                  className="text-sm"
-                  style={{
-                    fontWeight: 600,
-                    fontFamily: "'Bricolage Grotesque', sans-serif",
-                  }}
-                >
-                  Location
-                </div>
-                {getUserEventByUniqueKey?.isLoading ? (
-                  <Skeleton.Button
-                    active
-                    className="relative h-5 w-[200px] md:w-[200px] sm:w-[150px] rounded"
-                    shape="round"
-                    style={{
-                      height: "100%",
-                      width: "100%",
-                      margin: "6px",
-                      maxWidth: "100%",
-                    }}
-                  />
-                ) : (
-                  <div
-                    style={{
-                      whiteSpace: "normal",
-                      wordWrap: "break-word",
-                      fontWeight: 300,
-                      fontFamily: "'Bricolage Grotesque', sans-serif",
-                    }}
-                  >
-                    {eventDetails?.address}
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="flex gap-3">
-              <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
-                <Image src="/icons/host.svg" alt="" height={25} width={25} />
-              </div>
-              <div>
-                <div
-                  className="text-sm"
-                  style={{
-                    fontWeight: 600,
-                    fontFamily: "'Bricolage Grotesque', sans-serif",
-                  }}
-                >
-                  Host
-                </div>
-                <div>
-                  {getUserEventByUniqueKey?.isLoading ? (
-                    <Skeleton.Button
-                      active
-                      className="relative h-5 w-[200px] md:w-[200px] sm:w-[150px] rounded"
-                      shape="round"
-                      style={{
-                        height: "100%",
-                        width: "100%",
-                        margin: "6px",
-                        maxWidth: "100%",
-                      }}
-                    />
-                  ) : (
-                    <div
-                      style={{
-                        fontWeight: 300,
-                        fontFamily: "'Bricolage Grotesque', sans-serif",
-                      }}
-                    >
-                      {userFullName}
-                    </div>
-                  )}
                 </div>
               </div>
-            </div>
-            {getUserEventByUniqueKey?.isLoading ? (
-              // If loading, show the Skeleton
-              <Skeleton.Button
-                active
-                className="relative h-16 w-[200px] md:w-[200px] sm:w-[150px] rounded-[1rem]"
-                shape="round"
-                style={{
-                  height: "100%",
-                  width: "50%",
-                  margin: "6px",
-                  maxWidth: "100%",
-                }}
-              />
-            ) : twitterLink?.url ||
-              instagramLink?.url ||
-              websiteLink?.url ||
-              facebookLink?.url ? (
-              // If not loading and links exist, show the Contact Us section
-              <div className="flex gap-3 items-center">
-                <div className="bg-OWANBE_PRY/20 p-2 max-h-[41px] min-w-[41px] rounded-xl flex items-center justify-center">
+              <div className="flex gap-3">
+                <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
                   <Image
-                    src="/icons/phone.svg"
-                    alt="Phone Icon"
+                    src="/icons/location.svg"
+                    alt=""
                     height={25}
                     width={25}
                   />
@@ -1238,74 +1125,137 @@ const EventDetail = () => {
                       fontFamily: "'Bricolage Grotesque', sans-serif",
                     }}
                   >
-                    Contact Us
+                    Location
                   </div>
-                  <div className="flex items-center gap-4 mt-1">
-                    {websiteLink?.url && (
-                      <Link
-                        href={websiteLink.url}
-                        className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <Image
-                          src="/icons/link.svg"
-                          alt="Website Icon"
-                          height={14}
-                          width={14}
-                        />
-                      </Link>
-                    )}
-                    {twitterLink?.url && (
-                      <Link
-                        href={twitterLink.url}
-                        className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <Image
-                          src="/icons/x.svg"
-                          alt="Twitter Icon"
-                          height={14}
-                          width={14}
-                        />
-                      </Link>
-                    )}
-                    {facebookLink?.url && (
-                      <Link
-                        href={facebookLink.url}
-                        className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <Image
-                          src="/icons/facebook.svg"
-                          alt="Facebook Icon"
-                          height={10}
-                          width={10}
-                        />
-                      </Link>
-                    )}
-                    {instagramLink?.url && (
-                      <Link
-                        href={instagramLink.url}
-                        className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        <Image
-                          src="/icons/instagram.svg"
-                          alt="Instagram Icon"
-                          height={16}
-                          width={16}
-                        />
-                      </Link>
-                    )}
+                  <div
+                    style={{
+                      whiteSpace: "normal",
+                      wordWrap: "break-word",
+                      fontWeight: 300,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
+                    {eventDetails?.address}
                   </div>
                 </div>
               </div>
-            ) : null}
-          </div>
+              <div className="flex gap-3">
+                <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
+                  <Image src="/icons/host.svg" alt="" height={25} width={25} />
+                </div>
+                <div>
+                  <div
+                    className="text-sm"
+                    style={{
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
+                    Host
+                  </div>
+                  <div>
+                    <div
+                      style={{
+                        fontWeight: 300,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
+                      {userFullName}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {twitterLink?.url ||
+              instagramLink?.url ||
+              websiteLink?.url ||
+              facebookLink?.url ? (
+                // If not loading and links exist, show the Contact Us section
+                <div className="flex gap-3 items-center">
+                  <div className="bg-OWANBE_PRY/20 p-2 max-h-[41px] min-w-[41px] rounded-xl flex items-center justify-center">
+                    <Image
+                      src="/icons/phone.svg"
+                      alt="Phone Icon"
+                      height={25}
+                      width={25}
+                    />
+                  </div>
+                  <div>
+                    <div
+                      className="text-sm"
+                      style={{
+                        fontWeight: 600,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
+                      Contact Us
+                    </div>
+                    <div className="flex items-center gap-4 mt-1">
+                      {websiteLink?.url && (
+                        <Link
+                          href={websiteLink.url}
+                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <Image
+                            src="/icons/link.svg"
+                            alt="Website Icon"
+                            height={14}
+                            width={14}
+                          />
+                        </Link>
+                      )}
+                      {twitterLink?.url && (
+                        <Link
+                          href={twitterLink.url}
+                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <Image
+                            src="/icons/x.svg"
+                            alt="Twitter Icon"
+                            height={14}
+                            width={14}
+                          />
+                        </Link>
+                      )}
+                      {facebookLink?.url && (
+                        <Link
+                          href={facebookLink.url}
+                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <Image
+                            src="/icons/facebook.svg"
+                            alt="Facebook Icon"
+                            height={10}
+                            width={10}
+                          />
+                        </Link>
+                      )}
+                      {instagramLink?.url && (
+                        <Link
+                          href={instagramLink.url}
+                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <Image
+                            src="/icons/instagram.svg"
+                            alt="Instagram Icon"
+                            height={16}
+                            width={16}
+                          />
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          )}
           <div>
             <Heading3
               className="text-lg font-bold mb-3"
@@ -1321,7 +1271,6 @@ const EventDetail = () => {
                       // className="relative h-60 w-[200px] md:w-[200px] sm:w-[150px] rounded"
                       paragraph={{ rows: 1 }}
                       active
-                      
                       style={{
                         height: "50px",
                         width: "100%",
