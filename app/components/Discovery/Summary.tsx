@@ -159,7 +159,7 @@ useEffect(() => {
 
   return (
     <section className="flex-1">
-      <Heading5 className="text-4xl text-center" content={"Order Summary"} />
+      <Heading5 className="text-4xl text-left md:text-center" content={"Order Summary"} />
       <section className="mt-7 md:mt-14 md:px-20 h-4/5 border-l md:border-[#525252]">
         <div>
           <h3 className="text-OWANBE_PRY text-lg font-BricolageGrotesqueRegular">
@@ -308,7 +308,7 @@ useEffect(() => {
               </div>
             </div>
           </div>
-          <div className="flex-center justify-between font-BricolageGrotesqueMedium text-2xl text-OWANBE_PRY my-6">
+          <div className="flex-center justify-between font-BricolageGrotesqueMedium text-2xl text-OWANBE_PRY mb-10 my-6">
             <div>Total</div>
             <div>
               ₦{""}

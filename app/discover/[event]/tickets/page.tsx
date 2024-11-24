@@ -680,10 +680,10 @@ const TicketsSelection = () => {
 
   const { minutes, remainingSeconds, timer } = useTimer();
   useEffect(() => {
-    if (minutes === 0 && remainingSeconds === 0) {
+    if (minutes === 0 && remainingSeconds === 0 && successModal === false) {
       setModal(true);
     }
-  }, [minutes, remainingSeconds]);
+  }, [minutes, remainingSeconds, successModal]);
 
   const [termsAndCondition, setTermsAndCondition] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<
@@ -1194,7 +1194,7 @@ const TicketsSelection = () => {
           </section>
         ) : currentPage === "contactform" ? (
           <section className="flex-1 pr-1 pl-3 pb-4 scrollable-content overflow-y-auto scroll-smooth h-full">
-            <div className="bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem] w-[570px]">
+            <div className="bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem] w-full">
               We have reserved your tickets, please complete checkout within{" "}
               <span className="text-OWANBE_PRY text-s font-BricolageGrotesqueRegular">
                 {timer}
@@ -1629,7 +1629,7 @@ const TicketsSelection = () => {
           </section>
         ) : (
           <section className="flex-1">
-            <div className=" bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem]">
+            <div className="w-full bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem]">
               We have reserved your tickets please complete checkout within{" "}
               <span className=" text-OWANBE_PRY text-s font-BricolageGrotesqueRegular">
                 {timer}

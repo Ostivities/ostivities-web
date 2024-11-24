@@ -17,6 +17,7 @@ import {
   IUpdateUser,
   IUser,
   IVerifyToken,
+  IBulkMailData,
 } from "./interface";
 
 export class API_SERVICE {
@@ -240,10 +241,11 @@ export class API_SERVICE {
     });
   }
 
-  static async _getEventGuests(eventId: string, eventid: string): Promise<AxiosResponse> {
+  static async _getEventGuests(eventId: string, page:number , limit: number): Promise<AxiosResponse> {
     return await instance({
       url: `/guest/event/${eventId}`,
       method: HttpMethod.GET,
+      params: { page, limit },
     });
   }
 
@@ -251,6 +253,14 @@ export class API_SERVICE {
     return await instance({
       url: `/guest/ticket/${id}`,
       method: HttpMethod.GET,
+    });
+  }
+
+  static async _sendBulkEmail(data: IBulkMailData): Promise<AxiosResponse> {
+    return await instance({
+      url: `/bulk_email/send`,
+      method: HttpMethod.POST,
+      data,
     });
   }
 }

@@ -161,6 +161,34 @@ export interface IModal {
 
 }
 
+export interface IModal2 {
+  id?: any;
+  ticketEntity?: string;
+  open?: boolean;
+  onClose?: any;
+  onCancel?: any;
+  onOk?: any;
+  actionType?: "delete" | "warning" | "detail";
+  ticketName: string[];
+  ticketSold: number[];
+  dateCreated: string;
+  fees: number;
+  revenue: number;
+  sales: number;
+  additionalInfo?: {
+    question: string;
+    answer: string;
+  };
+  email: string;
+  phone: string;
+  selectedRowKeys?: string[];
+  eachTicketQuantity?: number[];
+  totalAmountPaid?: number;
+  orderDate: string;
+  total_purchased: number;
+  orderNumber: string;
+}
+
 export type FieldType = {
   ticketType?: string;
   ticketName?: string;
@@ -535,10 +563,44 @@ export interface IGuestData {
   total_amount_paid?: number,
   discountCode?: string,
   total_purchased?: number,
-  payment_method?: PAYMENT_METHODS
+  payment_method?: PAYMENT_METHODS,
+  order_number?: string;
+  createdAt: string;
+  id?: string;
+  record: any;
+  ticketSold?: number[];
+  dateCreated?: string;
+  ticketName?: string[];
+  revenue?: number;
+  sales?: number;
+  email?: string;
+  phone?: string;
+  orderNumber?: string;
+  eachTicketQuantity?: number[];
 }
 
 
 export interface IGuestCreate extends Partial<IGuestData> {
   eventId: string;
+}
+
+export interface IBulkMailData {
+  sender_name: string,
+  sender_email: string,
+  reply_to: string,
+  receipients: [
+    {
+      name: string,
+      email: string
+    }
+  ],
+  email_subject: string,
+  email_content: string,
+  email_attachment: [
+    {
+      name: string,
+      content: string,
+      url: string
+    }
+  ]
 }

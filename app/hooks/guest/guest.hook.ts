@@ -22,11 +22,11 @@ export const useRegisterGuest = () => {
     return { registerGuest };
 }
 
-export const useGetEventGuests = (eventId: string, eventid:string) => {
+export const useGetEventGuests = (eventId: string, page:number, limit:number) => {
     const getEventGuests = useQuery({
-        queryKey: [GET_EVENT_GUESTS, eventId],
+        queryKey: [GET_EVENT_GUESTS, eventId, page, limit],
         queryFn: () => {
-        return API_SERVICE._getEventGuests(eventId, eventid);
+        return API_SERVICE._getEventGuests(eventId, page, limit);
         },
     });
     return { getEventGuests };
