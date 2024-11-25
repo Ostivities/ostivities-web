@@ -696,7 +696,7 @@ const TicketsSelection = () => {
       <section className="flex flex-col md:flex-row gap-6 md:gap-12">
         {currentPage === "tickets" ? (
           <section className="flex-1 pb-4 scrollable-content overflow-y-auto scroll-smooth h-full">
-            <div className="flex-center justify-between">
+            <div className="flex-center justify-around">
               <div className="flex-center gap-3">
                 <div className="min-w-12 min-h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
                   <Image
@@ -747,8 +747,7 @@ const TicketsSelection = () => {
                       fontFamily: "'Bricolage Grotesque', sans-serif",
                     }}
                   >
-                    {timeFormat(eventDetails?.startDate)} -{" "}
-                    {timeFormat(eventDetails?.endDate)} {eventDetails?.timeZone}
+                    {timeFormat(eventDetails?.startDate)} {eventDetails?.timeZone}
                   </span>
                 </div>
               </div>
@@ -1355,7 +1354,6 @@ const TicketsSelection = () => {
                     placeholder="Enter Phone Number"
                   />
                 </Form.Item>
-                <br />
                 {/* {ticketDetails?.map((ticketDetail, ticketIndex) => {
                 return ticketDetail?.additionalInformation?.map(
                   (
@@ -1443,9 +1441,9 @@ const TicketsSelection = () => {
                         </>
                       )}
                     </Form.List>
+                    <br />
                   </>
                 )}
-                <br />
                 {/* {ticketDetails?.map((ticketDetail, ticketIndex) => {
                   return (
                     ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE && (

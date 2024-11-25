@@ -25,7 +25,7 @@ const EventSection: React.FC<PropsI> = ({ title, uri, children, titleClass = 'fo
           </Link>
         )}
       </div>
-      <div className="grid lg:grid-cols-6 grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid mb-20 min-[900px]:mb-1 lg:grid-cols-6 grid-cols-1 md:grid-cols-2 gap-6">
         {limitedChildren}
       </div>
     </section>

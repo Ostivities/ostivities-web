@@ -15,13 +15,14 @@ const GuestDetail = ({ open, onCancel, onOk, data }: IModal) => {
     orderNumber,
     dateCreated,
     additionalInfo,
+    guestName,
   } = data || {};
 
   return (
     <Modal
       title={
         <Space direction="vertical" size="large">
-          <Paragraph content={eventType} className="pb-5 text-2xl" />
+          <Paragraph content={guestName} className="pb-5 text-2xl" />
         </Space>
       }
       open={open}

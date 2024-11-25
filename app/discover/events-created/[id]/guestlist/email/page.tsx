@@ -2,31 +2,51 @@
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import EmailEditor from "@/app/components/QuillEditor/EmailEditor";
 import { Heading5 } from "@/app/components/typography/Typography";
-import { Button, Form, Input, message, Select, Space, Upload, UploadFile } from "antd";
+import { Button, Form, Input, message, Select, Space, Upload, UploadProps, UploadFile } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import PreviewEmail from "@/app/components/OstivitiesModal/GuestMailPreviewModal";
 import { useCookies } from "react-cookie";
+import { useGetEventGuests } from "@/app/hooks/guest/guest.hook";
 import { useGetUserEvent, useUpdateEvent } from "@/app/hooks/event/event.hook";
+import { useSendBulkEmail } from "@/app/hooks/bulkemail/bulkemail.hook";
 import { useParams } from "next/navigation";
+import axios from "axios";
+import { IGuestData } from "@/app/utils/interface";
+
+
+const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
+const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+const cloud_api: any = process.env.NEXT_PUBLIC_CLOUDINARY_API_URL;
+const discovery_url: any = process.env.NEXT_PUBLIC_EVENT_DISCOVERY_URL;
+const event_email_attachment_image: any =
+process.env.NEXT_PUBLIC_OSTIVITIES_EVENT_EMAIL_ATTACHMENT_IMAGE;
+
+
 
 const EventsGuestListEmail = () => {
   const [form] = Form.useForm();
-  const [editorContent, setEditorContent] = useState<string>("Your dynamic message here");
-  const [recipientType, setRecipientType] = useState<string>("all");
+  const [editorContent, setEditorContent] = useState<string>("");
+  const [recipientType, setRecipientType] = useState<string>("");
   const [selectedTickets, setSelectedTickets] = useState<string[]>([]);
   const [selectedAttendees, setSelectedAttendees] = useState<string[]>([]);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [loader, setLoader] = useState(false);
+  const [editorError, setEditorError] = useState("");
+  const [attachmentUrl, setAttachmentUrl] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
   const [guestName, setGuestName] = useState<string>("Guest Name");
   const [eventName, setEventName] = useState<string>("Awesome Event");
   const [cookies, setCookie, removeCookie] = useCookies(["event_id"]);
   const { updateEvent } = useUpdateEvent();
   const params = useParams<{ id: string }>();
+  const { getEventGuests } = useGetEventGuests(params?.id, 1, 10);
   const { getUserEvent } = useGetUserEvent(params?.id);
-  console.log(getUserEvent, "getUserEvent");
+  console.log(editorContent, "editorContent");
+  console.log(attachmentUrl, "attachmentUrl")
   const eventDetails = getUserEvent?.data?.data?.data;
+  const allGuestsData = getEventGuests?.data?.data?.data?.guests;
+  const totalGuests = getEventGuests?.data?.data?.data?.total;
 
   // Update eventName when eventDetails is available
   useEffect(() => {
@@ -39,8 +59,67 @@ const EventsGuestListEmail = () => {
     setEditorContent(content);
   };
 
+  const props: UploadProps = {
+    name: "image",
+    maxCount: 1,
+    action: `${cloud_api}/${cloud_name}/auto/upload`,
+    beforeUpload: (file, fileList) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", event_email_attachment_image);
+      formData.append("upload_preset", preset);
+    },
+    async customRequest({ file, onSuccess, onError }) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", event_email_attachment_image);
+      formData.append("upload_preset", preset);
+      setLoader(true);
+      try {
+        const response = await axios.post(
+          `${cloud_api}/${cloud_name}/auto/upload`,
+          formData
+        );
+        console.log(response, "fileupload");
+        if (response.status === 200) {
+          const urlString: string | any =
+            response?.data?.secure_url || response?.data?.url;
+          // setValue("eventDocument", urlString);
+          setAttachmentUrl(urlString);
+        }
+        setLoader(false);
+      } catch (error) {
+        // console.error(error);
+        setLoader(false);
+      }
+    },
+    async onChange(info) {
+      setFileList(info.fileList);
+      if (info.file.status !== "uploading") {
+      }
+      if (info.file.status === "done") {
+        const urlString =
+          info.file.response?.secure_url || info.file.response?.url;
+        // setValue("eventDocument", urlString);
+      } else if (info.file.status === "error") {
+      }
+    },
+    showUploadList: false,
+    fileList,
+  };
+
+
   const onFinish = (values: any) => {
-    return values;
+
+    if (editorContent === "" || editorContent === "<p><br></p>") {
+      setEditorError("Please provide event details!"); // Set error state
+      return; // Prevent form submission if no content
+    } else {
+      setEditorError(""); // Clear error if content is valid
+    }
+    console.log(values, "values");
+    // return values;
+
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -102,7 +181,7 @@ const EventsGuestListEmail = () => {
           <div className="grid grid-cols-2 gap-x-12">
             <Form.Item
               label="Sender Name"
-              name="senderName"
+              name="sender_name"
               rules={[{ required: true, message: "Please input your sender name!" }]}
               style={{ marginBottom: "8px" }}
             >
@@ -120,7 +199,7 @@ const EventsGuestListEmail = () => {
 
             <Form.Item
               label="Recipients"
-              name="recipients"
+              name="recipientsApplicable"
               rules={[{ required: true, message: "Please select recipient type!" }]}
               style={{ marginBottom: "8px" }}
             >
@@ -133,7 +212,7 @@ const EventsGuestListEmail = () => {
 
             <Form.Item
               label="Email Subject"
-              name="subject"
+              name="email_subject"
               rules={[{ required: true, message: "Please input email subject!" }]}
               style={{ marginBottom: "8px" }}
             >
@@ -141,8 +220,39 @@ const EventsGuestListEmail = () => {
             </Form.Item>
           </div>
 
+          {recipientType === "all" && (
+            <Form.Item 
+              label="Guest Name" 
+              name="recipients" 
+              style={{ display: "none" }}
+              initialValue={allGuestsData?.map((guest: IGuestData) => {
+                return {
+                  name: `${guest?.personal_information?.firstName} ${guest?.personal_information?.lastName}`,
+                  email: guest?.personal_information?.email,
+                }
+              })}
+            >
+              <Select
+                mode="multiple"
+                placeholder="Select guest name"
+                value={allGuestsData?.map((guest: IGuestData) => {
+                  return {
+                    name: `${guest?.personal_information?.firstName} ${guest?.personal_information?.lastName}`,
+                    email: guest?.personal_information?.email,
+                  }
+                })}             
+              >
+                {allGuestsData?.map((guest: IGuestData) => (
+                  <Select.Option key={guest?.id} value={guest?.guestName}>
+                    {guest?.guestName}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          )}
+
           {recipientType === "ticket" && (
-            <Form.Item label="Select Tickets" name="selectedTickets" style={{ marginBottom: "8px" }}>
+            <Form.Item label="Select Tickets" name="recipients" style={{ marginBottom: "8px" }}>
               <Select mode="multiple" placeholder="Select tickets" onChange={handleTicketTypeChange}>
                 <Select.Option value="ticketType1">Ticket Type 1</Select.Option>
                 <Select.Option value="ticketType2">Ticket Type 2</Select.Option>
@@ -181,6 +291,7 @@ const EventsGuestListEmail = () => {
 
           <Form.Item label="Attachments" name="attachments" style={{ marginBottom: "8px" }}>
             <Upload
+              {...props}
               fileList={fileList}
               onChange={handleFileChange}
               beforeUpload={() => false}
@@ -190,13 +301,14 @@ const EventsGuestListEmail = () => {
                 </div>
               )}
             >
-              <Button icon={<UploadOutlined />}>Click to Upload</Button>
+              <Button loading={loader} icon={<UploadOutlined />}>Click to Upload</Button>
             </Upload>
           </Form.Item>
 
-          <div className="mb-4 pb-12 w-full">
+          <div className="mb-3 pb-12 w-full">
             <EmailEditor initialValue="<p></p>" onChange={handleEditorChange} />
           </div>
+          <div className="text-base md:text-lg" style={{ color: "red" }}>{editorError}</div>
           <br />
           <div className="flex flex-row justify-center space-x-4 mt-8">
             <Button
@@ -211,7 +323,7 @@ const EventsGuestListEmail = () => {
             <Button
               type="primary"
               size={"large"}
-              htmlType="button"
+              htmlType="submit"
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
               onClick={() => message.success('Email sent successfully')}
             >

@@ -577,6 +577,7 @@ export interface IGuestData {
   phone?: string;
   orderNumber?: string;
   eachTicketQuantity?: number[];
+  guestName?: string;
 }
 
 

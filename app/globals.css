@@ -1358,6 +1358,13 @@ form .error-message {
   }
 }
 
+/* position: fixed;
+bottom: 0;
+left: 0;
+width: 100%;
+padding: 20px;
+background-color: white;
+z-index: 99; */
 
 ::-webkit-scrollbar-track {
   background: transparent; /* Optional: Track color */

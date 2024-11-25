@@ -293,6 +293,7 @@ const EventsGuestList = () => {
                     dateCreated: dateFormat(record?.createdAt),
                     email: record?.email,
                     phone: record?.phone,
+                    guestName: record?.guestName,
                     orderNumber: record?.orderNumber,
                     additionalInfo: record?.additional_information,
                   });
