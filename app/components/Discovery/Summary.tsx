@@ -308,7 +308,7 @@ useEffect(() => {
               </div>
             </div>
           </div>
-          <div className="flex-center justify-between font-BricolageGrotesqueMedium text-2xl text-OWANBE_PRY mb-10 my-6">
+          <div className="flex-center justify-between font-BricolageGrotesqueMedium text-2xl text-OWANBE_PRY md:mb-10 mb-28 my-6">
             <div>Total</div>
             <div>
               ₦{""}

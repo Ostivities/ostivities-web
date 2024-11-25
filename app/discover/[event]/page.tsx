@@ -397,7 +397,7 @@ const EventDetail = () => {
         {getUserEventByUniqueKey?.isLoading ? (
           <EventPageLoader />
         ) : (
-          <div className="hidden min-[870px]:flex gap-10 md:flex-row">
+          <div className="hidden min-[900px]:flex gap-10 md:flex-row">
             <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden bg-white card-shadow ">
               <Image
                 src={
@@ -877,7 +877,7 @@ const EventDetail = () => {
         )}
 
         {/* !!!For small screen */}
-        <div className="min-[870px]:hidden flex gap-10 flex-col">
+        <div className="min-[900px]:hidden flex gap-10 flex-col">
           {getUserEventByUniqueKey?.isLoading ? (
             <Skeleton.Button
               active
@@ -1306,7 +1306,17 @@ const EventDetail = () => {
               </>
             )}
 
-            <div className="flex justify-center mt-12">
+            <div
+            style={{
+              position: "fixed",
+              bottom: 0,
+              left: 0,
+              width: "100%",
+              padding: "20px",
+              backgroundColor: "white",
+              zIndex: 99,
+            }}
+             className="flex justify-center mt-12">
               {eventDetails?.vendor_registration === true ? (
                 <>
                   <Dropdown
