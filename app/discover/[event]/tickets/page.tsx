@@ -87,12 +87,41 @@ const TicketsSelection = () => {
     </div>
   );
 
-  let ticketCounter = 0;
+  // useEffect(() => {
+  //   // Update the URL and history state when `currentPage` changes
+  //   const updateHistory = () => {
+  //     const url = `/discover/${params?.event}/tickets?page=${currentPage}`;
+  //     if (currentPage !== "tickets") {
+  //       window.history.pushState({ page: currentPage }, "", url);
+  //     }
+  //   };
 
-  const tiral = () => {
-    console.log("here");
-  };
+  //   updateHistory();
+  // }, [currentPage, params?.event]); // Only re-run when currentPage or event changes
 
+  // useEffect(() => {
+  //   const handlePopState = (event: PopStateEvent) => {
+  //     const page = event.state?.page;
+
+  //     if (page) {
+  //       // If `page` exists in state, update `currentPage`
+  //       setCurrentPage(page as "tickets" | "contactform" | "payment");
+  //     } else {
+  //       // If no `page` exists and `currentPage` is `tickets`, navigate back to the parent route
+  //       if (currentPage === "tickets") {
+  //         router.push(`/discover/${params?.event}`);
+  //       } else {
+  //         setCurrentPage("tickets"); // Default to `tickets` if undefined
+  //       }
+  //     }
+  //   };
+
+  //   window.addEventListener("popstate", handlePopState);
+
+  //   return () => {
+  //     window.removeEventListener("popstate", handlePopState);
+  //   };
+  // }, [currentPage, router, params?.event]); 
   // const ticketEnt = ticketEntity === TICKET_ENTITY.SINGLE ? "Single Ticket" : "Collective Ticket";
 
   // State to manage selected ticket counts
@@ -121,7 +150,7 @@ const TicketsSelection = () => {
     }[]
   >([]);
 
-  console.log(ticketDetails, "ticketDetails");
+  // console.log(ticketDetails, "ticketDetails");
 
   useEffect(() => {
     // When ticketData is updated, re-initialize selectedTickets
@@ -499,7 +528,7 @@ const TicketsSelection = () => {
   }, [ticketDetails]);
 
   useEffect(() => {
-    console.log(allInfo, "Updated allInfo");
+    // console.log(allInfo, "Updated allInfo");
   }, [allInfo]);
 
   const [loading, setLoading] = useState(false);
@@ -507,7 +536,7 @@ const TicketsSelection = () => {
     // console.log(values);
     const validateFields = await form.validateFields();
     if (!validateFields) {
-      console.log("Form is not valid");
+      // console.log("Form is not valid");
       return;
     }
     // return
@@ -640,10 +669,10 @@ const TicketsSelection = () => {
       try {
         // Run validation and set `isFormValid` based on result
         await form.validateFields();
-        console.log("Valid values");
+        // console.log("Valid values");
         setIsFormValid(true);
       } catch (errorInfo) {
-        console.log(errorInfo, "Validation error info");
+        // console.log(errorInfo, "Validation error info");
         setIsFormValid(false);
       }
     };
@@ -696,7 +725,7 @@ const TicketsSelection = () => {
       <section className="flex flex-col md:flex-row gap-6 md:gap-12">
         {currentPage === "tickets" ? (
           <section className="flex-1 pb-4 scrollable-content overflow-y-auto scroll-smooth h-full">
-            <div className="flex-center justify-around">
+            <div className="flex-center gap-5 sm:gap-10 md:gap-20">
               <div className="flex-center gap-3">
                 <div className="min-w-12 min-h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
                   <Image
@@ -1634,12 +1663,11 @@ const TicketsSelection = () => {
               </span>
               minutes to secure your tickets.
             </div>
-            <div className="pr-full mt-16">
-              <Radio.Group>
-                <div className="flex flex-col gap-8">
+            <div className="pr-full w-full mt-16">
+              <Radio.Group className="w-full">
+                <div className="flex flex-col w-full gap-8">
                   <div
-                    className="card-shadow flex justify-between items-center"
-                    style={{ width: "620px" }}
+                    className="card-shadow w-full flex justify-between items-center"
                   >
                     {/* Left Section */}
                     <div className="flex gap-3 items-start">
