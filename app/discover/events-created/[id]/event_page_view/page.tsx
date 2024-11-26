@@ -253,18 +253,19 @@ const EventPageView = () => {
                     }}
                   >
                     {timeFormat(eventDetails?.startDate)} -{" "}
-                    {timeFormat(eventDetails?.endDate)}
+                    {timeFormat(eventDetails?.endDate)}{" "}
+                    {eventDetails?.timeZone}
                   </div>
                 </div>
               </div>
-              <div className="flex gap-3 items-center">
-                <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
-                  <Image
-                    src="/icons/location.svg"
-                    alt=""
-                    height={25}
-                    width={25}
-                  />
+              <div className="flex gap-3">
+                  <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
+                    <Image
+                      src="/icons/location.svg"
+                      alt=""
+                      height={25}
+                      width={25}
+                    />
                 </div>
                 <div>
                   <div
@@ -274,11 +275,11 @@ const EventPageView = () => {
                       fontFamily: "'Bricolage Grotesque', sans-serif",
                     }}
                   >
-                    Location
+                    Location 
                   </div>
                   <div
                     style={{
-                      width: "190px",
+                      width: "200px",
                       whiteSpace: "normal",
                       wordWrap: "break-word",
                       fontWeight: 300,
@@ -439,7 +440,11 @@ const EventPageView = () => {
                 src={eventDetails?.event_coordinates}
                 width="100%"
                 height="120"
-                style={{ border: 0, marginTop: "20px" }}
+                style={{
+                  border: 0,
+                  marginTop: "20px",
+                  borderRadius: "0.5rem", // Corner radius
+                }}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               />

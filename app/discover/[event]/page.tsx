@@ -500,7 +500,7 @@ const EventDetail = () => {
                         fontFamily: "'Bricolage Grotesque', sans-serif",
                       }}
                     >
-                      Location
+                      Location 
                     </div>
                     <div
                       style={{
