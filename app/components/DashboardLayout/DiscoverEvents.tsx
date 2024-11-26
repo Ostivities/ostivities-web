@@ -59,8 +59,8 @@ const DiscoverEvents = () => {
                 shape="round"
                 style={{
                   height: '300px',
-                  width: '250px',
-                  margin: '10px',
+                  width: '240px',
+                  margin: '5px',
                   maxWidth: '100%',
                 }}
               />
