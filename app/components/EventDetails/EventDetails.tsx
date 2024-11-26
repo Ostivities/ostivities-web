@@ -282,7 +282,7 @@ export default function EventDetailsComponent({
     ];
 
     return (
-      <div className={`flex flex-row items-center justify-between`}>
+      <div className={`flex flex-row overflow-x-scroll items-center justify-between`}>
         <div className="flex flex-row items-center space-x-4">
           <Button
             type={pathname.includes("about") ? "primary" : "text"}

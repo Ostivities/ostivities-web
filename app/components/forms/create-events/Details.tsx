@@ -87,7 +87,7 @@ function Details(): JSX.Element {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const { profile } = useProfile();
   const { createEvent } = useCreateEvent();
-  const [cookies, setCookie] = useCookies([
+  const [cookies, setCookie, removeCookie] = useCookies([
     "event_id",
     "form_stage",
     "stage_one",
@@ -339,6 +339,7 @@ function Details(): JSX.Element {
         router.push(
           `/discover/create-events/${response?.data?.data?.id}/event_appearance`
         );
+        removeCookie("mapSrc");
       }
     } catch (error) {
       return error;

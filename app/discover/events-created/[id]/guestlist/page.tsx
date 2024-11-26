@@ -128,7 +128,7 @@ const EventsGuestList = () => {
     },
     {
       title: "Order Date",
-      dataIndex: "orderDate",
+      dataIndex: "createdAt",
       render: (text: string) => {
         return dateFormat(text);
       },

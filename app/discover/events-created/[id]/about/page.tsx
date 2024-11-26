@@ -98,8 +98,9 @@ const AboutEvent = () => {
   const [showRadio, setShowRadio] = useState(false);
   const { updateEvent } = useUpdateEvent();
   const { profile } = useProfile();
+  const [mapSrc, setMapSrc] = useState<string>(''); // State to store the iframe URL
   const [cookies, setCookie, removeCookie] = useCookies([
-    "profileData"
+    "profileData", "mapSrc"
   ]);
 
   const [editorContent, setEditorContent] = useState("");
@@ -314,6 +315,7 @@ const AboutEvent = () => {
         },
         eventDetails: editorContent,
         socials,
+        event_coordinates: cookies?.mapSrc && cookies?.mapSrc
       });
 
       if (response.status === 200) {
@@ -321,6 +323,7 @@ const AboutEvent = () => {
         getUserEvent.refetch();
         // setLoader(false)
         setComponentDisabled(true);
+        removeCookie("mapSrc");
       }
     } catch (error) {
       // setLoader(false)
