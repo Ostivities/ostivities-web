@@ -144,6 +144,8 @@ export interface IEventDetails {
   space_available?: number;
   space_fee?: number;
   mode?: string;
+  total_ticket_sold?: number;
+  total_sales_revenue?: number;
   eventMode?: string;
   unique_key: string
 }
@@ -407,6 +409,11 @@ export interface ITicketDetails {
   ticketEntity: string
   ticketName: string
   ticketQty: number
+  ticket_sold: number;
+  ticket_net_sales_revenue: number;
+  ticket_sales_revenue: number;
+  fees: number;
+  status: string;
   ticketPrice?: number
   ticketSold: number
   groupSize?: number
