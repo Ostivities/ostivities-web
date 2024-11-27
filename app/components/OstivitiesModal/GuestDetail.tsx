@@ -101,7 +101,7 @@ const GuestDetail = ({ open, onCancel, onOk, data }: IModal) => {
         {/* Ostivities Fees */}
         <Space direction="vertical" size="small">
           <Label
-            content="Ostivities Fees"
+            content="Fees"
             className="font-BricolageGrotesqueRegular"
           />
           <Input readOnly value={fees} />
@@ -145,18 +145,6 @@ const GuestDetail = ({ open, onCancel, onOk, data }: IModal) => {
           ))}
         </>
       )}
-      {/* <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-4 custom-font-size">
-        Additional Information.
-      </h3>
-      <Form layout="vertical">
-        <Form.Item label="Information 1" name="information1">
-          <Input type="text" placeholder="answer will be here" readOnly />
-        </Form.Item>
-        <Form.Item label="Information 2" name="information2">
-          <Input type="text" placeholder="answer will be here" readOnly />
-        </Form.Item>
-      </Form>
-      <br /> */}
     </Modal>
   );
 };
