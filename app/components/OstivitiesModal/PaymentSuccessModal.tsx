@@ -103,10 +103,10 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
           </h2>
           <p className="font-bricolage-grotesque font-semibold text-OWAMBE_FADE_TEXT mx-auto mt-5">
             Your order was successful. We&apos;ve also sent a copy to your email address. If you do not receive your ticket,
-            please email us at <a href="mailto:sales&#64;ostivities.com" style={{ color: "#e20000", textDecoration: "none" }} >(Host email will be here)</a>.
+            please email us at <a href={`mailto:${eventDetails?.user?.email}`} style={{ color: "#e20000", textDecoration: "none" }}>{eventDetails?.user?.email}</a>
           </p>
           <div className="flex flex-col items-center space-y-4 mt-10">
-            <div className="flex items-center space-x-4 w-full">
+          <div className="flex items-center space-x-4 w-[20rem]">
               <button
                 onClick={() => pdfGenerator(payload)}
                 className="primary-btn font-normal text-base flex-1 whitespace-nowrap px-3 py-2"
@@ -129,7 +129,7 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
                 </button>
               </Tooltip>
             </div>
-            <div className="flex items-center space-x-4 w-full">
+            <div className="flex items-center space-x-4 w-[20rem]">
               <button
                 onClick={() => router.push(`/discover/${params?.event}`)}
                 className="primary-btn font-normal continue cursor-pointer text-base flex-1 whitespace-nowrap px-3 py-2"

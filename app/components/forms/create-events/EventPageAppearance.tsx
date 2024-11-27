@@ -213,7 +213,7 @@ const EventPageAppearance: React.FC = () => {
             style={{ objectFit: "cover" }}
             className=""
           />
-          <div className="absolute inset-0 bg-image-card"></div>
+          <div className="absolute inset-0 bg-image-card"></div> 
           <Upload
             className="absolute top-2 right-2 z-10"
             {...props}
@@ -456,7 +456,11 @@ const EventPageAppearance: React.FC = () => {
                   src={cookies?.mapSrc}
                   width="100%"
                   height="120"
-                  style={{ border: 0, marginTop: "20px" }}
+                  style={{
+                    border: 0,
+                    marginTop: "20px",
+                    borderRadius: "0.5rem", // Corner radius
+                  }}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                 />
