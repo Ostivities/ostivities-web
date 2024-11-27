@@ -1,4 +1,4 @@
-import React, { HTMLAttributeAnchorTarget } from "react";
+import React, { HTMLAttributeAnchorTarget, Key } from "react";
 import { EXHIBITION_SPACE, TICKET_STOCK, USAGE_LIMIT, DISCOUNT_TYPE, PAYMENT_METHODS } from "./enums";
 export enum ACCOUNT_TYPE {
   PERSONAL = "PERSONAL",
@@ -535,6 +535,8 @@ export interface InfoNeeded {
 
 
 export interface IGuestData {
+  ticketQuantity: string;
+  key: Key;
   event?: string,
   event_unique_code?: string,
   ticket_information?:{

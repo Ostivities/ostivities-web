@@ -58,22 +58,6 @@ const EventsGuestList = () => {
       additional_information: item?.additional_information,
     };
   });
-  // const data: SalesDataType[] = Array.from({ length: 50 }, (_, index) => ({
-  //   key: `${index + 1}`,
-  //   eventName: getRandomEventName(),
-  //   eventType: getRandomName(),
-  //   ticketSold: Math.floor(Math.random() * 100),
-  //   sales: Math.floor(Math.random() * 100),
-  //   revenue: Math.floor(Math.random() * 10000),
-  //   fees: Math.floor(Math.random() * 1000),
-  //   dateCreated: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
-  //   chargeBearer: ["Guest", "Organizer"][Math.floor(Math.random() * 2)],
-  //   status: ["Active", "Closed", "Pending"][Math.floor(Math.random() * 3)] as
-  //     | "Active"
-  //     | "Closed"
-  //     | "Pending",
-  //   id: generateRandomString(10),
-  // }));
 
   const handleSearch = (value: string) => {
     setSearchText(value.toLowerCase());
@@ -151,39 +135,57 @@ const EventsGuestList = () => {
   ];
 
   const handleExport = (format: string) => {
+    // Filter data based on selected rows
     const exportData = selectedRowKeys?.length
-      ? data.filter(
-          (item) => item.id !== undefined && selectedRowKeys.includes(item.id)
-        )
+      ? data.filter((item) => selectedRowKeys.includes(item.key))
       : data;
 
+    // Log filtered data
+    console.log("Selected Rows:", selectedRowKeys);
+    console.log("Export Data:", exportData);
+
+    // Format data for export
     const formattedExportData = exportData.map((item) => ({
-      "Ticket Bought": item?.ticket_information
-        ?.map((ticket) => ticket?.ticket_name)
-        .join(", "),
-      "Ticket Quantity": item?.total_purchased,
-      "Buyer Name":
-        item?.personal_information?.firstName +
-        " " +
-        item?.personal_information?.lastName,
-      "Order Number": item.fees,
-      "Order Date": item?.createdAt,
+      "Guest Name": item.guestName || "N/A",
+      "Ticket Bought": item.ticketName?.join(", ") || "N/A",
+      "Ticket Quantity": item.ticketQuantity || "N/A",
+      "Email": item.email || "N/A",
+      "Order Number": item.orderNumber || "N/A",
+      "Order Date": item.createdAt ? dateFormat(item.createdAt) : "N/A",
     }));
 
+    // Check if there's data to export
+    if (!formattedExportData.length) {
+      console.error("No data to export.");
+      return;
+    }
+
+    console.log("Formatted Export Data:", formattedExportData);
+
+    // Handle Excel Export
     if (format === "excel") {
       const ws = XLSX.utils.json_to_sheet(formattedExportData);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Guest List");
       XLSX.writeFile(wb, "Guest List.xlsx");
-    } else if (format === "pdf") {
+    }
+
+    // Handle PDF Export
+    if (format === "pdf") {
       const doc = new jsPDF();
       (doc as any).autoTable({
         head: [Object.keys(formattedExportData[0])],
         body: formattedExportData.map((item) => Object.values(item)),
+        didDrawCell: (data: { column: { index: number }; cell: { styles: { fillColor: string } } }) => {
+          if (data.column.index === 0) {
+            data.cell.styles.fillColor = "#e20000"; // Optional styling
+          }
+        },
       });
       doc.save("Guest List.pdf");
     }
   };
+
 
   const handleAction = (record: any) => {
     console.log(record, "record");
