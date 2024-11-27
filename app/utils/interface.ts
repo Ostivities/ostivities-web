@@ -420,6 +420,7 @@ export interface ITicketDetails {
   groupPrice?: number
   ticketStock: string
   ticketType: string
+  revenue: string;
   createdAt: string
   discount?: {
     createdAt: string
@@ -613,4 +614,18 @@ export interface IBulkMailData {
       url: string
     }
   ]
+}
+
+
+export interface ISettlementData {
+  user: string,
+  account_name: string,
+  account_number: string,
+  bank_code: string,
+  bank_name: string
+}
+
+export interface IVerifyBankAccount {
+  account_number: string,
+  bank_code: string
 }

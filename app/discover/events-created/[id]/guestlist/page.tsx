@@ -9,7 +9,7 @@ import {
 } from "@/app/utils/helper";
 import { SalesDataType, IGuestData, IModal2 } from "@/app/utils/interface";
 import { FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
-import { Button, Input, Space, Table } from "antd";
+import { Button, Skeleton, Flex, Input, Space, Table } from "antd";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import React, { useState } from "react";
@@ -125,7 +125,7 @@ const EventsGuestList = () => {
       render: (text: any, record: IGuestData) => (
         <Button
           type="primary"
-          // onClick={() => handleAction(record)}
+          onClick={() => handleAction(record)}
           style={{ borderRadius: "20px" }}
         >
           View
@@ -149,7 +149,7 @@ const EventsGuestList = () => {
       "Guest Name": item.guestName || "N/A",
       "Ticket Bought": item.ticketName?.join(", ") || "N/A",
       "Ticket Quantity": item.ticketQuantity || "N/A",
-      "Email": item.email || "N/A",
+      Email: item.email || "N/A",
       "Order Number": item.orderNumber || "N/A",
       "Order Date": item.createdAt ? dateFormat(item.createdAt) : "N/A",
     }));
@@ -176,7 +176,10 @@ const EventsGuestList = () => {
       (doc as any).autoTable({
         head: [Object.keys(formattedExportData[0])],
         body: formattedExportData.map((item) => Object.values(item)),
-        didDrawCell: (data: { column: { index: number }; cell: { styles: { fillColor: string } } }) => {
+        didDrawCell: (data: {
+          column: { index: number };
+          cell: { styles: { fillColor: string } };
+        }) => {
           if (data.column.index === 0) {
             data.cell.styles.fillColor = "#e20000"; // Optional styling
           }
@@ -186,21 +189,20 @@ const EventsGuestList = () => {
     }
   };
 
-
-  const handleAction = (record: any) => {
-    console.log(record, "record");
+  const handleAction = (record: IGuestData) => {
+    // console.log(record, "record");
     const mockModalData = {
       ticketName: record?.ticketName,
-      // eventType: record.eventType,
       ticketSold: record?.eachTicketQuantity, // Quantities for each ticket
-      revenue: `₦${record?.totalAmountPaid}`,
-      fees: `₦${record?.fees}`,
-      sales: record?.total_purchased,
-      dateCreated: dateFormat(record?.orderDate),
+      revenue: `₦${record?.total_amount_paid?.toLocaleString()}`,
+      fees: `₦${record?.fees?.toLocaleString()}`,
+      sales: record?.total_purchased?.toLocaleString(),
+      dateCreated: dateFormat(record?.createdAt),
       email: record?.email,
       phone: record?.phone,
+      guestName: record?.guestName,
       orderNumber: record?.orderNumber,
-      additionalInfo: record?.additionalInfo,
+      additionalInfo: record?.additional_information,
     };
 
     setModalData(mockModalData);
@@ -234,11 +236,26 @@ const EventsGuestList = () => {
             styles={{ fontWeight: "normal !important" }}
           />
 
-          <Paragraph
-            className="text-OWANBE_PRY font-normal font-BricolageGrotesqueRegular text-center mx-auto border border-OWANBE_PRY bg-OWANBE_PRY2 rounded-lg w-[500px] h-14 flex flex-row items-center justify-center text-3xl py-8 place-self-center"
-            content={totalGuests && `${totalGuests} Ticketed Guests`}
-            styles={{ fontWeight: "normal !important" }}
-          />
+          <div className="w-full">
+            {getEventGuests?.isLoading ? (
+              <Flex gap="middle" vertical>
+                <Skeleton.Button
+                  style={{ height: "200px", width: "50%", display: "flex", justifyContent: "center" }}
+                  active
+                />
+              </Flex>
+            ) : (
+              <Paragraph
+                className="text-OWANBE_PRY font-normal font-BricolageGrotesqueRegular text-center mx-auto border border-OWANBE_PRY bg-OWANBE_PRY2 rounded-lg w-[500px] h-14 flex flex-row items-center justify-center text-3xl py-8 place-self-center"
+                content={
+                  totalGuests > 0
+                    ? `${totalGuests} Ticketed Guests`
+                    : `0 Ticketed Guest`
+                }
+                styles={{ fontWeight: "normal !important" }}
+              />
+            )}
+          </div>
         </Space>
 
         <Space direction="vertical" size="middle" style={{ width: "100%" }}>
@@ -283,26 +300,26 @@ const EventsGuestList = () => {
               selectedRowKeys,
               onChange: (keys) => setSelectedRowKeys(keys),
             }}
-            onRow={(record: IGuestData) => {
-              return {
-                onClick: () => {
-                  setModalData({
-                    ticketName: record?.ticketName,
-                    ticketSold: record?.eachTicketQuantity, // Quantities for each ticket
-                    revenue: `₦${record?.total_amount_paid?.toLocaleString()}`,
-                    fees: `₦${record?.fees?.toLocaleString()}`,
-                    sales: record?.total_purchased?.toLocaleString(),
-                    dateCreated: dateFormat(record?.createdAt),
-                    email: record?.email,
-                    phone: record?.phone,
-                    guestName: record?.guestName,
-                    orderNumber: record?.orderNumber,
-                    additionalInfo: record?.additional_information,
-                  });
-                  setIsModalOpen(true);
-                },
-              };
-            }}
+            // onRow={(record: IGuestData) => {
+            //   return {
+            //     onClick: () => {
+            //       setModalData({
+            //         ticketName: record?.ticketName,
+            //         ticketSold: record?.eachTicketQuantity, // Quantities for each ticket
+            //         revenue: `₦${record?.total_amount_paid?.toLocaleString()}`,
+            //         fees: `₦${record?.fees?.toLocaleString()}`,
+            //         sales: record?.total_purchased?.toLocaleString(),
+            //         dateCreated: dateFormat(record?.createdAt),
+            //         email: record?.email,
+            //         phone: record?.phone,
+            //         guestName: record?.guestName,
+            //         orderNumber: record?.orderNumber,
+            //         additionalInfo: record?.additional_information,
+            //       });
+            //       setIsModalOpen(true);
+            //     },
+            //   };
+            // }}
             columns={columns}
             dataSource={data}
             pagination={{
