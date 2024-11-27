@@ -234,36 +234,44 @@ const EventsCreatedTable: React.FC = () => {
     const exportData = selectedRowKeys?.length
       ? data?.filter((item) => selectedRowKeys?.includes(String(item?.key)))
       : data;
-
-    // Remove unnecessary columns (e.g., 'key') and format dates
-    const dataToExport = exportData?.map(({ key, ...rest }) => ({
-      ...rest,
-      dateCreated: dateFormat(rest.createdAt), // Format 'dateCreated'
-      endDate: dateFormat(rest.endDate), // Format 'endDate'
+  
+    // Format data for export
+    const formattedExportData = exportData.map((item) => ({
+      "Event Name": item.eventName || "N/A",
+      "Event Type": item.eventType || "N/A",  // Ensure 'eventDetails' exists in the data
+      "Ticket Sold": item.ticketSold || 0,          // Ensure 'ticketSold' exists in the data
+      "Date Created": item.createdAt ? dateFormat(item.createdAt) : "N/A",
+      "End Date": item.endDate? dateFormat(item.endDate): "N/A",
+      "Status": item.status || "N/A",
     }));
+  
+    // Log the formatted data for debugging
+  console.log("Formatted Export Data:", formattedExportData);
 
-    if (format === "excel") {
-      const ws = XLSX.utils.json_to_sheet(dataToExport);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Events");
-      XLSX.writeFile(wb, "EventsCreated.xlsx");
-    } else if (format === "pdf") {
-      const doc = new jsPDF();
-      (doc as any).autoTable({
-        head: [Object.keys(dataToExport[0])],
-        body: dataToExport?.map((item) => Object.values(item)),
-        didDrawCell: (data: {
-          column: { index: number };
-          cell: { styles: { fillColor: string } };
-        }) => {
-          if (data.column.index === 0) {
-            data.cell.styles.fillColor = "#e20000"; // Optional styling for header
-          }
-        },
-      });
-      doc.save("EventsCreated.pdf");
-    }
-  };
+  // Handle Excel Export
+  if (format === "excel") {
+    const ws = XLSX.utils.json_to_sheet(formattedExportData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Events");
+    XLSX.writeFile(wb, "EventsCreated.xlsx");
+  }
+
+  // Handle PDF Export
+  if (format === "pdf") {
+    const doc = new jsPDF();
+    (doc as any).autoTable({
+      head: [Object.keys(formattedExportData[0])],
+      body: formattedExportData.map((item) => Object.values(item)),
+      didDrawCell: (data: { column: { index: number }; cell: { styles: { fillColor: string } } }) => {
+        if (data.column.index === 0) {
+          data.cell.styles.fillColor = "#e20000"; // Optional styling for header
+        }
+      },
+    });
+    doc.save("EventsCreated.pdf");
+  }
+};
+  
 
 
   const handleActionSuccess = () => {
