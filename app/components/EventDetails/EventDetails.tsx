@@ -19,11 +19,19 @@ import {
 } from "@/app/hooks/event/event.hook";
 import { EVENT_INFO, PUBLISH_TYPE } from "@/app/utils/enums";
 
+interface EventProps {
+  totalTickets?: number;
+  totalRevenue?: number;
+  nextDate?: string;
+}
 export default function EventDetailsComponent({
   children,
+  totalTickets,
+  totalRevenue,
+  nextDate,
 }: {
   children: React.ReactNode;
-}): JSX.Element {
+} & EventProps): JSX.Element {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const pathname = usePathname();
@@ -40,6 +48,8 @@ export default function EventDetailsComponent({
 
   const eventDate = eventDetails?.endDate;
   const eventdates = new Date(eventDate).getTime();
+
+
 
   useEffect(() => {
     if (eventDetails?.mode && eventDetails?.mode === PUBLISH_TYPE.ACTIVE) {
@@ -437,7 +447,7 @@ export default function EventDetailsComponent({
     }): JSX.Element => {
       return (
         <Card
-          className="rounded-3xl"
+          className="rounded-3xl p-0"
           style={{
             borderRadius: "30px",
             boxShadow: "0px 8px 24px 0px #00000014",
@@ -445,7 +455,7 @@ export default function EventDetailsComponent({
           }}
         >
           <div
-            className="flex flex-col mx-auto text-center py-6"
+            className="flex flex-col mx-auto text-center py-5"
             style={containerStyle}
           >
             <p
@@ -489,13 +499,13 @@ export default function EventDetailsComponent({
       currency: "NGN",
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
-    }).format(salesRevenue);
+    }).format(totalRevenue ?? 0);
 
     return (
       <div className="grid grid-cols-3 gap-x-6">
         <CardMetrics
           title="Total Tickets Sold"
-          value={250}
+          value={totalTickets ?? ""}
           cardStyle={cardStyle}
           titleStyle={titleStyle}
           valueStyle={valueStyle}
@@ -519,7 +529,7 @@ export default function EventDetailsComponent({
         />
         <CardMetrics
           title="Next Payout Date"
-          value={"2024-04-07"}
+          value={nextDate || "2024-04-07"}
           cardStyle={cardStyle}
           titleStyle={titleStyle}
           valueStyle={valueStyle}

@@ -287,9 +287,9 @@ const EventsGuestList = () => {
                   setModalData({
                     ticketName: record?.ticketName,
                     ticketSold: record?.eachTicketQuantity, // Quantities for each ticket
-                    revenue: `₦${record?.total_amount_paid}`,
-                    fees: `₦${record?.fees}`,
-                    sales: record?.total_purchased,
+                    revenue: `₦${record?.total_amount_paid?.toLocaleString()}`,
+                    fees: `₦${record?.fees?.toLocaleString()}`,
+                    sales: record?.total_purchased?.toLocaleString(),
                     dateCreated: dateFormat(record?.createdAt),
                     email: record?.email,
                     phone: record?.phone,

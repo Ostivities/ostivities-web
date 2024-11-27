@@ -2,10 +2,13 @@
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import { Heading5, Label } from "@/app/components/typography/Typography";
 import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
-import { SalesDataType,ExhibitionDataType, PaymentDataType } from "@/app/utils/interface";
+import { SalesDataType,ExhibitionDataType, PaymentDataType, ITicketDetails } from "@/app/utils/interface";
 import { Button, Input, Space, Table, Tabs } from "antd";
 import { FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
 import jsPDF from "jspdf";
+import { useGetUserEvent } from "@/app/hooks/event/event.hook";
+import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
+import { useParams } from "next/navigation";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
 import React, { useState } from "react";
@@ -19,7 +22,10 @@ const EventSales = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-
+  const params = useParams<{ id: string }>();
+  const { getUserEvent } = useGetUserEvent(params?.id);
+  const { getTickets } = useGetEventTickets(params?.id);
+  const ticketData = getTickets?.data?.data?.data;
   const [paymentSearchText, setPaymentSearchText] = useState("");
   const [selectedPaymentRowKeys, setSelectedPaymentRowKeys] = useState<React.Key[]>([]);
   const [currentPaymentPage, setCurrentPaymentPage] = useState(1);
@@ -29,6 +35,30 @@ const EventSales = () => {
   const [selectedSpaceRowKeys, setSelectedSpaceRowKeys] = useState<React.Key[]>([]);
   const [currentSpacePage, setCurrentSpacePage] = useState(1);
   const [spacePageSize, setSpacePageSize] = useState(10);
+
+  console.log(getUserEvent, "getuserevent")
+
+  const eventDetails = getUserEvent?.data?.data?.data;
+  console.log(eventDetails, "eventdetails")
+
+  const totalTicketSold = eventDetails?.total_ticket_sold;
+
+  const totalRevenue = eventDetails?.total_sales_revenue;
+
+  const data2:  ITicketDetails[] = ticketData?.map((ticket: ITicketDetails) => {
+    return {
+      key: ticket?.id,
+      ticketName: ticket?.ticketName,
+      ticketSold: ticket?.ticket_sold,
+      sales: ticket?.ticket_sales_revenue,
+      revenue: ticket?.ticket_net_sales_revenue,
+      fees: ticket?.fees,
+      dateCreated: ticket?.createdAt,
+      chargeBearer: ticket?.guestAsChargeBearer,
+      status: ticket?.status,
+      id: ticket?.id,
+    };
+  })
 
   const data: SalesDataType[] = Array.from({ length: 50 }, (_, index) => ({
     key: `${index + 1}`,
@@ -402,7 +432,7 @@ const inactiveTabStyle = {
   
   
   return (
-    <EventDetailsComponent>
+    <EventDetailsComponent totalTickets={totalTicketSold} totalRevenue={totalRevenue}>
       <Space direction="vertical" size="middle" className="w-full">
         <Tabs defaultActiveKey="1" className="w-full" onChange={setActiveKey}>
           <TabPane
