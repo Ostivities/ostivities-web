@@ -8,6 +8,8 @@ import {
   IFormInput,
   IGuestCreate,
   ILogin,
+  ISettlementData,
+  IVerifyBankAccount,
   IResetPassword,
   IResetToken,
   ITicketCreate,
@@ -259,6 +261,44 @@ export class API_SERVICE {
   static async _sendBulkEmail(data: IBulkMailData): Promise<AxiosResponse> {
     return await instance({
       url: `/bulk_email/send`,
+      method: HttpMethod.POST,
+      data,
+    });
+  }
+
+  static async _createSettlementAccount(data: ISettlementData): Promise<AxiosResponse> {
+    return await instance({
+      url: `/settlement_account/create`,
+      method: HttpMethod.POST,
+      data,
+    });
+  }
+
+  static async _updateSettlementAccount(data: ISettlementData): Promise<AxiosResponse> {
+    return await instance({
+      url: `/settlement_account/update`,
+      method: HttpMethod.PUT,
+      data,
+    });
+  }
+
+  static async _getSettlementAccount(id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/settlement_account/get/${id}`,
+      method: HttpMethod.GET,
+    });
+  }
+
+  static async _getAllBanks(): Promise<AxiosResponse> {
+    return await instance({
+      url: `/settlement_account/banks`,
+      method: HttpMethod.GET,
+    });
+  }
+
+  static async _verifyAccountNumber(data: IVerifyBankAccount): Promise<AxiosResponse> {
+    return await instance({
+      url: `/settlement_account/validate_account_number`,
       method: HttpMethod.POST,
       data,
     });

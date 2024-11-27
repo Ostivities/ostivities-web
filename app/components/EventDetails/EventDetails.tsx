@@ -450,6 +450,7 @@ export default function EventDetailsComponent({
           className="rounded-3xl p-0"
           style={{
             borderRadius: "30px",
+            padding: "0px",
             boxShadow: "0px 8px 24px 0px #00000014",
             ...cardStyle,
           }}

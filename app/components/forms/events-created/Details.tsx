@@ -79,8 +79,8 @@ const EventsCreatedTable: React.FC = () => {
       key: item?.id,
       eventName: item?.eventName,
       eventType: item?.eventType,
-      ticketSold: item?.ticketSold,
-      dateCreated: item?.createdAt,
+      ticketSold: item?.total_ticket_sold,
+      createdAt: item?.createdAt,
       status: item?.mode,
       endDate: item?.endDate,
     }
@@ -125,7 +125,7 @@ const EventsCreatedTable: React.FC = () => {
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
-      dataIndex: "dateCreated",
+      dataIndex: "createdAt",
       render: (text) => { return dateFormat(text); },
       sorter: (a, b) => new Date(a?.startDate).getTime() - new Date(b?.startDate).getTime(),
     },
@@ -241,7 +241,7 @@ const EventsCreatedTable: React.FC = () => {
       "Event Type": item.eventType || "N/A",  // Ensure 'eventDetails' exists in the data
       "Ticket Sold": item.ticketSold || 0,          // Ensure 'ticketSold' exists in the data
       "Date Created": item.createdAt ? dateFormat(item.createdAt) : "N/A",
-      "End Date": item.endDate? dateFormat(item.endDate): "N/A",
+      "End Date": item.endDate ? dateFormat(item.endDate): "N/A",
       "Status": item.status || "N/A",
     }));
   

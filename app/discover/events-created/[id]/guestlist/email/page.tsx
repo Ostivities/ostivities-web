@@ -435,6 +435,7 @@ const EventsGuestListEmail = () => {
             messageContent={editorContent} // Pass the email content from the editor
             guestName={guestName} // Pass the guest name
             eventName={eventName} // Pass the event name
+            hostEmail={eventDetails?.user?.email}
           />
         )}
       </Space>
