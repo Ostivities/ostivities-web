@@ -8,19 +8,19 @@ import React from 'react';
 
 function VenueHub(): JSX.Element {
   const router = useRouter();
-  const {isLoggedIn} = useFetch() // Update this based on your authentication logic
+  const { isLoggedIn } = useFetch() // Update this based on your authentication logic
 
   const header = (
     <div className="flex-center justify-between w-full">
       <h1 className="text-2xl">Venue Hub</h1>
 
-      {isLoggedIn && ( 
+      {isLoggedIn && (
         <button
-          onClick={() => router.push('/Dashboard/venue-hub')}
-          
+          onClick={() => router.push('/discover/venue-hub')}
+
         >
-         
-          
+
+
         </button>
       )}
     </div>
@@ -29,9 +29,9 @@ function VenueHub(): JSX.Element {
   return (
     <DashboardLayout title={header} isLoggedIn>
       <div className="w-full mx-auto flex flex-col space-y-5 py-6">
-      <h1 className="text-2xl" style={{ fontSize: '20px', fontFamily: 'Bricolage Grotesque' }}>
-  Find & book available venue for your events
-</h1>
+        <h1 className="text-black text-lg font-normal font-BricolageGrotesqueRegular mb-2" >
+          Find & book available venue for your events
+        </h1>
         <Details />
       </div>
     </DashboardLayout>

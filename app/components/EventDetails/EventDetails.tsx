@@ -278,17 +278,17 @@ export default function EventDetailsComponent({
         ),
         key: "1",
       },
-      // {
-      //   label: (
-      //     <Link
-      //       href={`/discover/events-created/${params?.id}/coordinators/vendors`}
-      //       className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
-      //     >
-      //       Vendors Management
-      //     </Link>
-      //   ),
-      //   key: "2",
-      // },
+      {
+        label: (
+          <Link
+            href={`/discover/events-created/${params?.id}/coordinators/vendors`}
+            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          >
+            Vendors Management
+          </Link>
+        ),
+        key: "2",
+      },
     ];
 
     return (
@@ -386,7 +386,7 @@ export default function EventDetailsComponent({
           >
             <Space>
               Coordinators
-              {/* <IoChevronDown /> */}
+              <IoChevronDown />
             </Space>
           </Button>
           </Dropdown>
@@ -503,7 +503,7 @@ export default function EventDetailsComponent({
     }).format(totalRevenue ?? 0);
 
     return (
-      <div className="grid grid-cols-3 gap-x-6">
+      <div className="grid grid-cols-4 gap-x-6">
         <CardMetrics
           title="Total Tickets Sold"
           value={totalTickets ?? ""}
@@ -512,14 +512,14 @@ export default function EventDetailsComponent({
           valueStyle={valueStyle}
           containerStyle={containerStyle}
         />
-        {/* <CardMetrics
+        <CardMetrics
           title="Total Space Booked"
           value={10}
           cardStyle={cardStyle}
           titleStyle={titleStyle}
           valueStyle={valueStyle}
           containerStyle={containerStyle}
-        /> */}
+        />
         <CardMetrics
           title="Total Net Sales Revenue"
           value={formattedRevenue}

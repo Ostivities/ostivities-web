@@ -444,7 +444,7 @@ const AboutEvent = () => {
           </div>
           <Paragraph
             className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular mb-2"
-            content={"Manage your event seamlessly from here."}
+            content={"Update your event details here."}
             styles={{ fontWeight: "normal !important" }}
           />
         </Space>
@@ -506,7 +506,7 @@ const AboutEvent = () => {
               )}
             </div>
 
-            {/* <Controller
+            <Controller
               name="vendor_registration"
               control={control}
               render={({ field }) => (
@@ -655,7 +655,7 @@ const AboutEvent = () => {
                     </Form.Item>
                   )}
                 </Space>
-              )} */}
+              )}
 
             <Controller
               name="state"

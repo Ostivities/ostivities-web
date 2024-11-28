@@ -36,7 +36,7 @@ export default function EventDetailsComponent({
           alt="Back"
           height={25}
           width={25}
-          onClick={() => router.push(`/Dashboard/venue-hub`)}
+          onClick={() => router.push(`/discover/venue-hub`)}
         />
         <h1 style={{ fontSize: "24px" }}>High Point Event Centre & Suites</h1>
       </div>

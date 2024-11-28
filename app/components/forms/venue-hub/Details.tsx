@@ -179,7 +179,7 @@ const VenueHubTable: React.FC = () => {
             minWidth: "70px",
             padding: "4px",
           }}
-          onClick={() => router.push(`/Dashboard/venue-hub/${record.id}/venue_details_view`)}
+          onClick={() => router.push(`/discover/venue-hub/${record.id}/venue_details_view`)}
         >
           View
         </Button>
@@ -197,33 +197,6 @@ const VenueHubTable: React.FC = () => {
 
   const hasSelected = selectedRowKeys.length > 0;
 
-  const handleExport = (format: string) => {
-    const exportData = selectedRowKeys.length
-      ? data.filter((item) => selectedRowKeys.includes(item.key))
-      : data;
-
-    const dataToExport = exportData.map(({ id, ...rest }) => rest);
-
-    if (format === "excel") {
-      const ws = XLSX.utils.json_to_sheet(dataToExport);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Venues");
-      XLSX.writeFile(wb, "VenueHub.xlsx");
-    } else if (format === "pdf") {
-      const doc = new jsPDF();
-      (doc as any).autoTable({
-        head: [Object.keys(dataToExport[0])],
-        body: dataToExport.map((item) => Object.values(item)),
-        didDrawCell: (data: { column: { index: number }; cell: { styles: { fillColor: string } } }) => {
-          if (data.column.index === 0) {
-            data.cell.styles.fillColor = "#e20000";
-          }
-        },
-      });
-      doc.save("VenueHub.pdf");
-    }
-  };
-
   return (
     <React.Fragment>
       <DeleteTicket
@@ -239,38 +212,12 @@ const VenueHubTable: React.FC = () => {
           onChange={onSearchChange}
           style={{ width: 300 }}
         />
-        {hasSelected && (
-          <div className="space-x-4">
-            <Button
-              icon={<FileExcelOutlined />}
-              onClick={() => handleExport("excel")}
-              style={{
-                borderRadius: "10px",
-                backgroundColor: "#1D6F42",
-                color: "#fff",
-              }}
-            >
-              Export Excel
-            </Button>
-            <Button
-              icon={<FilePdfOutlined />}
-              onClick={() => handleExport("pdf")}
-              style={{
-                borderRadius: "10px",
-                backgroundColor: "#D30000",
-                color: "#fff",
-              }}
-            >
-              Export PDF
-            </Button>
-          </div>
-        )}
       </div>
       <Table
-        rowSelection={{
-          selectedRowKeys,
-          onChange: setSelectedRowKeys,
-        }}
+        // rowSelection={{
+        //   selectedRowKeys,
+        //   onChange: setSelectedRowKeys,
+        // }}
         columns={columns}
         dataSource={filteredData}
         pagination={{

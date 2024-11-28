@@ -503,7 +503,7 @@ function EventDetailsEdit(): JSX.Element {
             <div style={{ color: "red" }}>{editorError}</div>
 
 
-            {/* <Controller
+            <Controller
               name="vendor_registration"
               control={control}
               render={({ field }) => (
@@ -521,7 +521,7 @@ function EventDetailsEdit(): JSX.Element {
                         style={{
                           fontFamily: "Bricolage Grotesque Light",
                         }}
-                        className="font-BricolageGrotesqueRegular"
+                        className="font-BricolageGrotesqueRegular" 
                       >
                         Vendors registration{" "}
                         <span className="optional-text font-BricolageGrotesqueLight">
@@ -686,7 +686,7 @@ function EventDetailsEdit(): JSX.Element {
                     </Form.Item>
                   )}
                 </Space>
-              )} */}
+              )}
 
             <Controller
               name="state"

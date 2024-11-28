@@ -56,7 +56,10 @@ const items1: MenuProps["items"] = [
 ];
 
 const items2: MenuProps["items"] = [
-  { icon: CompassOutlined, title: "Discovery", link: "/discover" },
+  { icon: CompassOutlined, 
+    title: "Discovery", 
+    link: "/discover" 
+  },
   {
     icon: PlusCircleOutlined,
     title: "Create Event",
@@ -67,9 +70,15 @@ const items2: MenuProps["items"] = [
     title: "Events Created",
     link: "/discover/events-created",
   },
-  { icon: ShopOutlined, title: 'Venue Hub', link: '/Dashboard/venue-hub' },
-  { icon: SettingOutlined, title: "Settings", link: "/Dashboard/settings" },
-  // { icon: FieldTimeOutlined, title: "Coming Soon", link: "/Dashboard/coming-soon" },
+  { icon: ShopOutlined, 
+    title: 'Venue Hub', 
+    link: '/discover/venue-hub' 
+  },
+  { icon: SettingOutlined, 
+    title: "Settings", 
+    link: "/discover/settings" 
+  },
+  // { icon: FieldTimeOutlined, title: "Coming Soon", link: "/discover/coming-soon" },
  
 ].map((item) => {
   const key = item.link;

@@ -39,7 +39,7 @@ export default function Page(): JSX.Element {
             fontFamily: "BricolageGrotesqueMedium",
           }}
           onClick={() => {
-            router.push(`/Dashboard/venue-hub/${params?.id}/about`);
+            router.push(`/discover/venue-hub/${params?.id}/about`);
           }}
         >
           About
@@ -58,7 +58,7 @@ export default function Page(): JSX.Element {
           }}
           onClick={() => {
             router.push(
-              `/Dashboard/venue-hub/${params?.id}/event_page_view`
+              `/discover/venue-hub/${params?.id}/event_page_view`
             );
           }}
         >
@@ -80,7 +80,7 @@ export default function Page(): JSX.Element {
         height={25}
         width={25}
           onClick={() => {
-            router.push(`/Dashboard/venue-hub`);
+            router.push(`/discover/venue-hub`);
           }}
         />
         <h1 style={{ fontSize: "24px" }}>Venue Name</h1>

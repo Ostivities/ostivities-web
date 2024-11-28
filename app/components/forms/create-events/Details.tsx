@@ -481,7 +481,7 @@ function Details(): JSX.Element {
             </div>
             <div style={{ color: "red" }}>{editorError}</div>
 
-            {/* <Controller
+            <Controller
               name="vendor_registration"
               control={control}
               render={({ field }) => (
@@ -661,7 +661,7 @@ function Details(): JSX.Element {
                     </Form.Item>
                   )}
                 </Space>
-              )} */}
+              )}
 
             <Controller
               name="state"

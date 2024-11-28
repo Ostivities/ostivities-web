@@ -293,7 +293,7 @@ const EventsCreatedTable: React.FC = () => {
         actionType={actionType}
         selectedRowKeys={selectedRowKeys}
       />
-      <div className="w-full flex flex-col space-y-6">
+      
         <div className="flex justify-between items-center mb-4">
           <Search
             placeholder="Search events"
@@ -359,7 +359,6 @@ const EventsCreatedTable: React.FC = () => {
           }}
           scroll={{ x: "max-content" }}
         />
-      </div>
     </React.Fragment>
   );
 };
