@@ -5,18 +5,16 @@ import Sider from "antd/es/layout/Sider";
 import { useRouter } from "next/navigation";
 
 import { Menu, MenuProps, theme } from "antd";
-import Image from "next/image";
 
-import EventCreation from "@/public/EventCreation.svg";
 
-import { CompassOutlined, FieldTimeOutlined, FileAddOutlined, FileSearchOutlined, PlusCircleOutlined, QuestionCircleOutlined, QuestionOutlined, SettingOutlined, UsergroupAddOutlined } from "@ant-design/icons";
-import { createElement } from "react";
+import { CompassOutlined, FileSearchOutlined, PlusCircleOutlined, SettingOutlined, ShopOutlined } from "@ant-design/icons";
 import React from "react";
 
 const items2: MenuProps['items'] = [
   { icon: CompassOutlined, title: 'Discovery', link: '/discover' },
   { icon: PlusCircleOutlined, title: 'Create Event', link: '/discover/create-events' },
   { icon: FileSearchOutlined, title: 'Events Created', link: '/discover/events-created' },
+  { icon: ShopOutlined, title: 'Venue Hub', link: '/discover/venue-hub' },
   { icon: SettingOutlined, title: 'Settings', link: '/discover/settings' },
   // { icon: FieldTimeOutlined, title: 'Coming Soon', link: '/discover/coming-soon' },
 ].map((item) => {

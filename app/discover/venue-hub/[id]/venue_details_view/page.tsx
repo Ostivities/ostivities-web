@@ -46,7 +46,7 @@ const VenueHubView = () => {
 
           {/* Left side: Image Gallery */}
           <div className={`${styles.venueImage} w-2/3`}>
-            <div className="relative w-[560px] h-[400px] overflow-hidden rounded-[20px]">
+            <div className="relative w-[560px] h-[400px] overflow-hidden rounded-[20px] shadow-md">
               <Image
                 src={imageUrl}
                 alt="Venue Image"

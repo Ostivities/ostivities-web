@@ -72,7 +72,7 @@ const items2: MenuProps["items"] = [
   },
   { icon: ShopOutlined, 
     title: 'Venue Hub', 
-    link: '/discover/venue-hub' 
+    link: '/discover/venue-hub'
   },
   { icon: SettingOutlined, 
     title: "Settings", 
