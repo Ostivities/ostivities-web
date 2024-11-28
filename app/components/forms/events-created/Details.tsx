@@ -292,7 +292,6 @@ const EventsCreatedTable: React.FC = () => {
         }}
         actionType={actionType}
         selectedRowKeys={selectedRowKeys}
-
       />
       <div className="w-full flex flex-col space-y-6">
         <div className="flex justify-between items-center mb-4">

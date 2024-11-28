@@ -898,11 +898,10 @@ const TicketsSelection = () => {
                                         }}
                                       >
                                         Including ₦
-                                        {(
-                                          ticket?.ticketPrice * 0.045 +
-                                          150
-                                        ).toLocaleString()}{" "}
-                                        fee
+                                        {Math.round(
+                                        ticket?.ticketPrice * 0.045 + 150
+                                      ).toLocaleString()}{" "}
+                                      fee
                                       </span>
                                     </>
                                   )}
@@ -930,9 +929,8 @@ const TicketsSelection = () => {
                                       }}
                                     >
                                       Including ₦
-                                      {(
-                                        ticket?.ticketPrice * 0.035 +
-                                        150
+                                      {Math.round(
+                                        ticket?.ticketPrice * 0.035 + 150
                                       ).toLocaleString()}{" "}
                                       fee
                                     </span>
