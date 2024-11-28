@@ -9,6 +9,7 @@ import {
   FileExcelOutlined,
   FilePdfOutlined,
 } from "@ant-design/icons";
+import { GET_ALL_USER_EVENTS } from "@/app/utils/constants";
 import { Button, Input, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import jsPDF from "jspdf";
@@ -20,13 +21,15 @@ import { useGetAllUserEvents, usePublishEvent } from "@/app/hooks/event/event.ho
 import { IEventDetails } from "@/app/utils/interface";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
 import { PUBLISH_TYPE } from "@/app/utils/enums";
+import { useQueryClient } from "@tanstack/react-query"
 
 
 
 const { Search } = Input;
 
 const EventsCreatedTable: React.FC = () => {
-  const router = useRouter(); 
+  const router = useRouter();
+  const queryClient = useQueryClient()
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -37,6 +40,12 @@ const EventsCreatedTable: React.FC = () => {
   const { getAllUserEvents } = useGetAllUserEvents(currentPage, pageSize, searchText);
   // console.log(getAllUserEvents,"getAllUserEvents")
   const { publishEvent } = usePublishEvent();
+
+  useEffect(() => {
+    if (currentPage || pageSize) {
+      queryClient.invalidateQueries({ queryKey: [GET_ALL_USER_EVENTS, currentPage, pageSize, searchText] });
+    }
+  }, [currentPage, pageSize]);
 
 
   const totalEvents = getAllUserEvents?.data?.data?.data?.total;
@@ -70,9 +79,9 @@ const EventsCreatedTable: React.FC = () => {
       key: item?.id,
       eventName: item?.eventName,
       eventType: item?.eventType,
-      ticketSold: item?.ticketSold,
-      dateCreated: item?.createdAt,
-      status: item?.mode ,
+      ticketSold: item?.total_ticket_sold,
+      createdAt: item?.createdAt,
+      status: item?.mode,
       endDate: item?.endDate,
     }
   })
@@ -116,8 +125,8 @@ const EventsCreatedTable: React.FC = () => {
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
-      dataIndex: "dateCreated",
-      render: (text) => {return dateFormat(text);},
+      dataIndex: "createdAt",
+      render: (text) => { return dateFormat(text); },
       sorter: (a, b) => new Date(a?.startDate).getTime() - new Date(b?.startDate).getTime(),
     },
     {
@@ -128,11 +137,20 @@ const EventsCreatedTable: React.FC = () => {
         />
       ),
       dataIndex: "status",
+      sorter: (a, b) => {
+        const statusA = a.status ?? ""; // Use nullish coalescing to handle undefined or null
+        const statusB = b.status ?? "";
+
+        if (statusA < statusB) return -1;
+        if (statusA > statusB) return 1;
+        return 0;
+      },
       render: (status, endDate) => {
         // console.log(status)
+        let displayStatus = status ?? "Inactive";
         let style = {};
         let dotColor = "";
-    
+
         if (status === PUBLISH_TYPE.ACTIVE) {
           style = { color: "#009A44", backgroundColor: "#E6F5ED" }; // Green
           dotColor = "#009A44";
@@ -143,7 +161,7 @@ const EventsCreatedTable: React.FC = () => {
           style = { color: "#F68D2E", backgroundColor: "#FDE8D5" }; // Orange
           dotColor = "#F68D2E";
         }
-    
+
         return (
           <span
             style={{
@@ -199,7 +217,7 @@ const EventsCreatedTable: React.FC = () => {
       ),
     },
   ];
-  
+
 
   const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -212,35 +230,49 @@ const EventsCreatedTable: React.FC = () => {
   const hasSelected = selectedRowKeys?.length > 0;
 
   const handleExport = (format: string) => {
+    // Prepare data for export
     const exportData = selectedRowKeys?.length
       ? data?.filter((item) => selectedRowKeys?.includes(String(item?.key)))
       : data;
+  
+    // Format data for export
+    const formattedExportData = exportData.map((item) => ({
+      "Event Name": item.eventName || "N/A",
+      "Event Type": item.eventType || "N/A",  // Ensure 'eventDetails' exists in the data
+      "Ticket Sold": item.ticketSold || 0,          // Ensure 'ticketSold' exists in the data
+      "Date Created": item.createdAt ? dateFormat(item.createdAt) : "N/A",
+      "End Date": item.endDate ? dateFormat(item.endDate): "N/A",
+      "Status": item.status || "N/A",
+    }));
+  
+    // Log the formatted data for debugging
+  console.log("Formatted Export Data:", formattedExportData);
 
-    // Prepare data for export without 'id' column
-    const dataToExport = exportData?.map(({ _id, ...rest }) => rest);
+  // Handle Excel Export
+  if (format === "excel") {
+    const ws = XLSX.utils.json_to_sheet(formattedExportData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Events");
+    XLSX.writeFile(wb, "EventsCreated.xlsx");
+  }
 
-    if (format === "excel") {
-      const ws = XLSX.utils.json_to_sheet(dataToExport);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Data");
-      XLSX.writeFile(wb, "EventsCreated.xlsx");
-    } else if (format === "pdf") {
-      const doc = new jsPDF();
-      (doc as any).autoTable({
-        head: [Object.keys(dataToExport[0])],
-        body: dataToExport?.map((item) => Object.values(item)),
-        didDrawCell: (data: {
-          column: { index: number };
-          cell: { styles: { fillColor: string } };
-        }) => {
-          if (data.column.index === 0) {
-            data.cell.styles.fillColor = "#e20000";
-          }
-        },
-      });
-      doc.save("EventsCreated.pdf");
-    }
-  };
+  // Handle PDF Export
+  if (format === "pdf") {
+    const doc = new jsPDF();
+    (doc as any).autoTable({
+      head: [Object.keys(formattedExportData[0])],
+      body: formattedExportData.map((item) => Object.values(item)),
+      didDrawCell: (data: { column: { index: number }; cell: { styles: { fillColor: string } } }) => {
+        if (data.column.index === 0) {
+          data.cell.styles.fillColor = "#e20000"; // Optional styling for header
+        }
+      },
+    });
+    doc.save("EventsCreated.pdf");
+  }
+};
+  
+
 
   const handleActionSuccess = () => {
     // Refetch the tickets after an action (delete, edit, duplicate)
@@ -260,75 +292,74 @@ const EventsCreatedTable: React.FC = () => {
         }}
         actionType={actionType}
         selectedRowKeys={selectedRowKeys}
-
       />
-    <div className="w-full flex flex-col space-y-6">
-      <div className="flex justify-between items-center mb-4">
-        <Search
-          placeholder="Search events"
-          onChange={onSearchChange}
-          style={{ width: 300 }}
+      <div className="w-full flex flex-col space-y-6">
+        <div className="flex justify-between items-center mb-4">
+          <Search
+            placeholder="Search events"
+            onChange={onSearchChange}
+            style={{ width: 300 }}
+          />
+          {hasSelected && (
+            <div>
+              <Button
+                type="primary"
+                className="font-BricolageGrotesqueSemiBold continue font-bold custom-button"
+                danger
+                style={{ borderRadius: 15, marginRight: 8 }}
+                onClick={() => {
+                  setIsShown(true);
+                  setActionType("delete");
+                }}
+              >
+                <DeleteOutlined />
+              </Button>
+              <Button
+                type="default"
+                className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
+                style={{ borderRadius: 15, marginRight: 8 }}
+                onClick={() => handleExport("excel")}
+              >
+                <FileExcelOutlined />
+              </Button>
+              <Button
+                type="default"
+                className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
+                style={{ borderRadius: 15 }}
+                onClick={() => handleExport("pdf")}
+              >
+                <FilePdfOutlined />
+              </Button>
+            </div>
+          )}
+        </div>
+        <Table
+          loading={getAllUserEvents?.isFetching}
+
+          rowSelection={{
+            selectedRowKeys,
+            onChange: (keys) => setSelectedRowKeys(keys.map(String)),
+            onSelect: (record, selected) => {
+              setEventStatus(record?.status ?? "");
+              // console.log({record, selected}, "record and selected")
+            },
+          }}
+          columns={columns}
+          dataSource={data}
+          className="font-BricolageGrotesqueRegular w-full"
+          pagination={{
+            current: currentPage,
+            pageSize: pageSize,
+            total: totalEvents,
+            onChange: (page, size) => {
+              setCurrentPage(page);
+              setPageSize(size);
+            },
+            showSizeChanger: true,
+          }}
+          scroll={{ x: "max-content" }}
         />
-        {hasSelected && (
-          <div>
-            <Button
-              type="primary"
-              className="font-BricolageGrotesqueSemiBold continue font-bold custom-button"
-              danger
-              style={{ borderRadius: 15, marginRight: 8 }}
-              onClick={() => {
-                setIsShown(true);
-                setActionType("delete");
-              }}
-            >
-              <DeleteOutlined />
-            </Button>
-            <Button
-              type="default"
-              className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
-              style={{ borderRadius: 15, marginRight: 8 }}
-              onClick={() => handleExport("excel")}
-            >
-              <FileExcelOutlined />
-            </Button>
-            <Button
-              type="default"
-              className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
-              style={{ borderRadius: 15 }}
-              onClick={() => handleExport("pdf")}
-            >
-              <FilePdfOutlined />
-            </Button>
-          </div>
-        )}
       </div>
-      <Table
-        loading={getAllUserEvents?.isFetching}
-
-        rowSelection={{
-          selectedRowKeys,
-          onChange: (keys) => setSelectedRowKeys(keys.map(String)),
-          onSelect: (record, selected) => {
-            setEventStatus(record?.status ?? "");
-            // console.log({record, selected}, "record and selected")
-          },
-        }}
-        columns={columns}
-        dataSource={data}
-        className="font-BricolageGrotesqueRegular w-full"
-        pagination={{
-          current: currentPage,
-          pageSize: pageSize,
-          total: totalEvents,
-          onChange: (page, size) => {
-            setCurrentPage(page);
-            setPageSize(size);
-          },
-          showSizeChanger: true,
-        }}
-        scroll={{ x: "max-content" }}
-      />
-    </div>
     </React.Fragment>
   );
 };

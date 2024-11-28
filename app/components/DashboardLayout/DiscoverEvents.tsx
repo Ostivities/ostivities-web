@@ -5,10 +5,11 @@ import { Skeleton } from "antd";
 import { useEffect, useState } from "react";
 import { IEventDetails } from "@/app/utils/interface";
 import { EVENT_INFO, PUBLISH_TYPE } from "@/app/utils/enums";
+import placeholder from "@/public/placeholder.svg";
 
 const DiscoverEvents = () => {
   const [searchText, setSearchText] = useState("");
-  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 4);
+  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 5);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
   const { addEventToDiscovery } = useAddEventToDiscovery();
   const [expiredEventsId, setExpiredEventsId] = useState<string[]>([]);
@@ -44,7 +45,7 @@ const DiscoverEvents = () => {
         title="Discover Events"
         titleClass="custom-title-class"
         style={{
-          fontSize: "24px",
+          // fontSize: "24px",
           fontFamily: "Bricolage Grotesque, font-semibold",
         }} // Inline style
       >
@@ -57,9 +58,9 @@ const DiscoverEvents = () => {
                 active
                 shape="round"
                 style={{
-                  height: '320px',
-                  width: '250px',
-                  margin: '10px',
+                  height: '300px',
+                  width: '240px',
+                  margin: '5px',
                   maxWidth: '100%',
                 }}
               />
@@ -72,8 +73,8 @@ const DiscoverEvents = () => {
               key={event?.id}
               title={event?.eventName}
               about={event?.eventType}
-              status="Get Tickets"
-              image={event?.eventImage}
+              status= {event?.enable_registration === false ? "Reg Closed" :  "Get Tickets"  }
+              image={event?.eventImage ? event.eventImage : placeholder}
               url={`/discover/${event?.unique_key}`}
               titleClass="font-bricolage-grotesque font-medium"
               aboutClass="font-bricolage-grotesque"

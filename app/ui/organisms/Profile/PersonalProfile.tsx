@@ -28,18 +28,62 @@ const PersonalProfile = () => {
   const [loader, setLoader] = useState(false);
   const [saveLoader, setSaveLoader] = useState(false);
 
+  const initialProfileData = (() => {
+    if (typeof window !== "undefined") {
+      const storedProfileData = localStorage.getItem("profileData");
+      if (
+        storedProfileData &&
+        storedProfileData !== "undefined" &&
+        storedProfileData !== "null"
+      ) {
+        try {
+          return JSON.parse(storedProfileData); // Return parsed data if valid
+        } catch (error) {
+          console.error("Failed to parse profileData:", error);
+        }
+      }
+      return null;
+    }
+  })();
+
+  const [profileData, setProfileData] = useState(initialProfileData);
+  const [isProfileReady, setIsProfileReady] = useState(false);
+
+  // console.log(profileData, "profileData from the component");
+
   useEffect(() => {
-    if (profile) {
+    if (typeof window !== "undefined") {
+      const storedProfileData = localStorage.getItem("profileData");
+      if (
+        storedProfileData &&
+        storedProfileData !== "undefined" &&
+        storedProfileData !== "null" &&
+        JSON.stringify(initialProfileData) !== storedProfileData
+      ) {
+        try {
+          setProfileData(JSON.parse(storedProfileData));
+        } catch (error) {
+          console.error("Failed to parse profileData:", error);
+        }
+      }
+      setIsProfileReady(true);
+    }
+  }, [initialProfileData]);
+
+  useEffect(() => {
+    if (profile && profileData && isProfileReady) {
       form.setFieldsValue({
-        accountType: profile?.data?.data?.data?.accountType,
-        firstName: profile?.data?.data?.data?.firstName,
-        lastName: profile?.data?.data?.data?.lastName,
-        emailAddress: profile?.data?.data?.data?.email,
-        phone_number: profile?.data?.data?.data?.phone_number,
+        accountType: profile?.data?.data?.data?.accountType || profileData?.accountType,
+        firstName: profile?.data?.data?.data?.firstName || profileData?.firstName,
+        lastName: profile?.data?.data?.data?.lastName || profileData?.lastName,
+        emailAddress: profile?.data?.data?.data?.email || profileData?.email,
+        phone_number: profile?.data?.data?.data?.phone_number || profileData?.phone_number,
       });
     }
-  }, [profile]);
+  }, [profile, profileData]);
 
+
+  // console.log("personal")
 
   const props: UploadProps = {
     name: "image",
@@ -67,12 +111,13 @@ const PersonalProfile = () => {
             response?.data?.secure_url || response?.data?.url;
           const res = await updateProfile.mutateAsync({
             image: urlString,
-            id: profile?.data?.data?.data?.id,
+            id: profileData?.id,
           });
           if (res.status === 200) {
             setLoader(false);
-            profile.refetch();
+            setProfileData(res?.data?.data);
             setFields(urlString);
+            localStorage.setItem('profileData', JSON.stringify(res?.data?.data));
           }
         }
       } catch (error) {}
@@ -97,6 +142,7 @@ const PersonalProfile = () => {
         setProfileImage("/empty.svg"); // Reset profile image to default
         setUploadButton("Update"); // Change button text back to "Update"
         setIsImageUploaded(false); // Set image upload state to false
+        delete profileData?.image;
         message.success("Profile picture removed successfully");
       },
       onCancel() {},
@@ -126,12 +172,13 @@ const PersonalProfile = () => {
     if (value) {
       const response = await updateProfile.mutateAsync({
         phone_number,
-        id: profile?.data?.data?.data?.id,
+        id: profileData?.id,
       });
       if (response.status === 200) {
         successFormatter(response);
         setSaveLoader(false);
-        profile.refetch();
+        setProfileData(response?.data?.data);
+        localStorage.setItem('profileData', JSON.stringify(response?.data?.data));
       }
     }
   };
@@ -142,7 +189,7 @@ const PersonalProfile = () => {
         {/* Flex container for profile picture and buttons */}
         <div className="relative profile-image-container">
           <Image
-            src={profile?.data?.data?.data?.image || "/empty.svg"}  // Display the profile image dynamically
+            src={profileData?.image || fields || "/empty.svg"}  // Display the profile image dynamically
             alt="Profile Picture"
             width={96} // Equivalent to w-24
             height={96} // Equivalent to h-24
@@ -191,7 +238,7 @@ const PersonalProfile = () => {
           form={form}
           onFinish={onFinish}
         >
-          <div className="grid grid-cols-2 gap-x-14">
+          <div className="grid grid-cols-2 gap-x-10">
             <div className="grid gap-y-6">
               <Form.Item label="Account Type" name="accountType">
                 <Input

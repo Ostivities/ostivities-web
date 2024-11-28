@@ -1,4 +1,4 @@
-import React, { HTMLAttributeAnchorTarget } from "react";
+import React, { HTMLAttributeAnchorTarget, Key } from "react";
 import { EXHIBITION_SPACE, TICKET_STOCK, USAGE_LIMIT, DISCOUNT_TYPE, PAYMENT_METHODS } from "./enums";
 export enum ACCOUNT_TYPE {
   PERSONAL = "PERSONAL",
@@ -96,6 +96,7 @@ export interface ICreateEvent
     fileUrl: string;
   };
   discover?: boolean;
+  event_coordinates: string;
 }
 
 export interface IEventDetails {
@@ -107,6 +108,7 @@ export interface IEventDetails {
   state: string;
   address: string;
   eventURL: string;
+  enable_registration?: boolean;
   supportingDocument: {
     fileName: string;
     _id: string;
@@ -143,6 +145,8 @@ export interface IEventDetails {
   space_available?: number;
   space_fee?: number;
   mode?: string;
+  total_ticket_sold?: number;
+  total_sales_revenue?: number;
   eventMode?: string;
   unique_key: string
 }
@@ -158,6 +162,34 @@ export interface IModal {
   data?: any;
   selectedRowKeys?: string[];
 
+}
+
+export interface IModal2 {
+  id?: any;
+  ticketEntity?: string;
+  open?: boolean;
+  onClose?: any;
+  onCancel?: any;
+  onOk?: any;
+  actionType?: "delete" | "warning" | "detail";
+  ticketName: string[];
+  ticketSold: number[];
+  dateCreated: string;
+  fees: number;
+  revenue: number;
+  sales: number;
+  additionalInfo?: {
+    question: string;
+    answer: string;
+  };
+  email: string;
+  phone: string;
+  selectedRowKeys?: string[];
+  eachTicketQuantity?: number[];
+  totalAmountPaid?: number;
+  orderDate: string;
+  total_purchased: number;
+  orderNumber: string;
 }
 
 export type FieldType = {
@@ -264,6 +296,7 @@ export interface CoordinatorsDataType {
 }
 
 export interface SummaryDataType {
+  ticketType: any;
   key: string;
   guestName: string;
   ticketName: string;
@@ -280,6 +313,7 @@ export interface PaymentDataType {
   bankAccount: string;
   transferFee: number;
   payout: number;
+  status?: string;
   paymentDate: string;
 }
 
@@ -379,11 +413,18 @@ export interface ITicketDetails {
   ticketEntity: string
   ticketName: string
   ticketQty: number
+  ticket_sold: number;
+  ticket_net_sales_revenue: number;
+  ticket_sales_revenue: number;
+  fees: number;
+  status: string;
   ticketPrice?: number
+  ticketSold: number
   groupSize?: number
   groupPrice?: number
   ticketStock: string
   ticketType: string
+  revenue: string;
   createdAt: string
   discount?: {
     createdAt: string
@@ -506,6 +547,8 @@ export interface InfoNeeded {
 
 
 export interface IGuestData {
+  ticketQuantity: string;
+  key: Key;
   event?: string,
   event_unique_code?: string,
   ticket_information?:{
@@ -534,10 +577,59 @@ export interface IGuestData {
   total_amount_paid?: number,
   discountCode?: string,
   total_purchased?: number,
-  payment_method?: PAYMENT_METHODS
+  payment_method?: PAYMENT_METHODS,
+  order_number?: string;
+  createdAt: string;
+  id?: string;
+  record: any;
+  ticketSold?: number[];
+  dateCreated?: string;
+  ticketName?: string[];
+  revenue?: number;
+  sales?: number;
+  email?: string;
+  phone?: string;
+  orderNumber?: string;
+  eachTicketQuantity?: number[];
+  guestName?: string;
 }
 
 
 export interface IGuestCreate extends Partial<IGuestData> {
   eventId: string;
+}
+
+export interface IBulkMailData {
+  sender_name: string,
+  sender_email: string,
+  reply_to: string,
+  receipients: [
+    {
+      name: string,
+      email: string
+    }
+  ],
+  email_subject: string,
+  email_content: string,
+  email_attachment: [
+    {
+      name: string,
+      content: string,
+      url: string
+    }
+  ]
+}
+
+
+export interface ISettlementData {
+  user: string,
+  account_name: string,
+  account_number: string,
+  bank_code: string,
+  bank_name: string
+}
+
+export interface IVerifyBankAccount {
+  account_number: string,
+  bank_code: string
 }

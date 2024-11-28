@@ -40,6 +40,8 @@ import { useRegisterGuest } from "@/app/hooks/guest/guest.hook";
 import TimerModal from "@/app/components/OstivitiesModal/TimerModal";
 import PaymentSuccessModal from "@/app/components/OstivitiesModal/PaymentSuccessModal";
 import ContactForm from "@/app/components/ContactForm/ContactForm";
+import PaymentValidation from "@/app/components/OstivitiesModal/PaymentValidation";
+import paystack from "@/public/paystack.png";
 
 const TicketsSelection = () => {
   const router = useRouter();
@@ -79,18 +81,47 @@ const TicketsSelection = () => {
         {currentPage === "tickets"
           ? "Choose your tickets"
           : currentPage === "contactform"
-          ? "Contact Information"
-          : "Payment Options"}{" "}
+            ? "Contact Information"
+            : "Payment Options"}{" "}
       </h1>
     </div>
   );
 
-  let ticketCounter = 0;
+  // useEffect(() => {
+  //   // Update the URL and history state when `currentPage` changes
+  //   const updateHistory = () => {
+  //     const url = `/discover/${params?.event}/tickets?page=${currentPage}`;
+  //     if (currentPage !== "tickets") {
+  //       window.history.pushState({ page: currentPage }, "", url);
+  //     }
+  //   };
 
-  const tiral = () => {
-    console.log("here");
-  };
+  //   updateHistory();
+  // }, [currentPage, params?.event]); // Only re-run when currentPage or event changes
 
+  // useEffect(() => {
+  //   const handlePopState = (event: PopStateEvent) => {
+  //     const page = event.state?.page;
+
+  //     if (page) {
+  //       // If `page` exists in state, update `currentPage`
+  //       setCurrentPage(page as "tickets" | "contactform" | "payment");
+  //     } else {
+  //       // If no `page` exists and `currentPage` is `tickets`, navigate back to the parent route
+  //       if (currentPage === "tickets") {
+  //         router.push(`/discover/${params?.event}`);
+  //       } else {
+  //         setCurrentPage("tickets"); // Default to `tickets` if undefined
+  //       }
+  //     }
+  //   };
+
+  //   window.addEventListener("popstate", handlePopState);
+
+  //   return () => {
+  //     window.removeEventListener("popstate", handlePopState);
+  //   };
+  // }, [currentPage, router, params?.event]); 
   // const ticketEnt = ticketEntity === TICKET_ENTITY.SINGLE ? "Single Ticket" : "Collective Ticket";
 
   // State to manage selected ticket counts
@@ -192,12 +223,12 @@ const TicketsSelection = () => {
             : ticket?.groupPrice || 0;
         const currentFee =
           realPrice < 10000 && realPrice > 0
-            ? realPrice * 0.05 + 150
+            ? Math.round(realPrice * 0.05 + 150)
             : realPrice >= 10000 && realPrice < 25000
-            ? realPrice * 0.045 + 150 // For ticketrealPrice between 10000 and 24999
-            : realPrice >= 25000
-            ? realPrice * 0.035 + 150 // For ticketPrice 25000 and above
-            : 0;
+              ? Math.round(realPrice * 0.045 + 150) // For ticketrealPrice between 10000 and 24999
+              : realPrice >= 25000
+                ? Math.round(realPrice * 0.035 + 150) // For ticketPrice 25000 and above
+                : 0;
         if (existingTicketIndex > -1) {
           const existingTicket = updatedDetails[existingTicketIndex];
           const newTicketNumber = existingTicket?.ticketNumber + 1;
@@ -207,8 +238,8 @@ const TicketsSelection = () => {
             discountToDeduct:
               ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE
                 ? realPrice *
-                  (ticket?.discount?.discount_value / 100) *
-                  newTicketNumber
+                (ticket?.discount?.discount_value / 100) *
+                newTicketNumber
                 : ticket?.discount?.discount_value * newTicketNumber,
             discountedTicketPrice: discountedPrice * newTicketNumber,
             ticketFee: newTicketNumber * currentFee,
@@ -280,12 +311,12 @@ const TicketsSelection = () => {
           const newTicketNumber = existingTicket?.ticketNumber - 1;
           const currentFee =
             ticket?.ticketPrice < 10000 && ticket?.ticketPrice > 0
-              ? ticket?.ticketPrice * 0.05 + 150
+              ? Math.round(ticket?.ticketPrice * 0.05 + 150)
               : ticket?.ticketPrice >= 10000 && ticket?.ticketPrice < 25000
-              ? ticket?.ticketPrice * 0.045 + 150
-              : ticket?.ticketPrice >= 25000
-              ? ticket?.ticketPrice * 0.035 + 150
-              : 0;
+                ? Math.round(ticket?.ticketPrice * 0.045 + 150)
+                : ticket?.ticketPrice >= 25000
+                  ? Math.round(ticket?.ticketPrice * 0.035 + 150)
+                  : 0;
 
           if (newTicketNumber >= 0) {
             const price =
@@ -302,15 +333,12 @@ const TicketsSelection = () => {
               discountToDeduct:
                 ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE
                   ? price *
-                    (ticket?.discount?.discount_value / 100) *
-                    newTicketNumber
+                  (ticket?.discount?.discount_value / 100) *
+                  newTicketNumber
                   : ticket?.discount?.discount_value * newTicketNumber,
               ticketFee: currentFee * newTicketNumber,
               ticketNumber: newTicketNumber,
-              subTotal:
-                price * newTicketNumber +
-                currentFee * newTicketNumber -
-                ticket?.discountToDeduct * newTicketNumber,
+              subTotal: price * newTicketNumber + currentFee * newTicketNumber,
             };
           }
         }
@@ -361,8 +389,9 @@ const TicketsSelection = () => {
   const [form] = Form.useForm();
   // ! contactform
   const [additionalFields, setAdditionalFields] = useState<
-    { id: number; question: string; answer: string }[]
+    { id: number; question: string; answer: string; is_compulsory: boolean }[]
   >([]);
+  // console.log(additionalFields, "additionalFields");
   const [allInfo, setAllInfo] = useState<{
     personal_information: {
       firstName: string;
@@ -387,7 +416,8 @@ const TicketsSelection = () => {
     event_unique_code: string;
     fees: number;
     total_amount_paid: number;
-    disocuntCode?: string;
+    discountCode?: string;
+    discount: number;
     total_purchased: number;
     payment_method?: PAYMENT_METHODS;
   }>({
@@ -406,7 +436,8 @@ const TicketsSelection = () => {
       ?.map((ticket) => ticket?.ticketFee)
       .reduce((acc, curr) => acc + curr, 0),
     total_amount_paid: 0,
-    disocuntCode: "",
+    discountCode: "",
+    discount: 0,
     total_purchased: 0,
   });
   const [attendeesInformation, setAttendeesInformation] = useState<
@@ -422,7 +453,7 @@ const TicketsSelection = () => {
   const [modal, setModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
-  // console.log(isFormValid, "isFormValid");
+  // console.log(successModal, "successModal");
   const validateForm = async () => {
     try {
       await form.validateFields();
@@ -486,6 +517,7 @@ const TicketsSelection = () => {
           return ticketDetail.additionalInformation.map((info) => ({
             id: counter++,
             question: info.question,
+            is_compulsory: info.is_compulsory,
             answer: "",
           }));
         }
@@ -496,19 +528,19 @@ const TicketsSelection = () => {
   }, [ticketDetails]);
 
   useEffect(() => {
-    console.log(allInfo, "Updated allInfo");
+    // console.log(allInfo, "Updated allInfo");
   }, [allInfo]);
 
   const [loading, setLoading] = useState(false);
   const onFinish: FormProps<any>["onFinish"] = async (values: any) => {
-    console.log(values);
+    // console.log(values);
     const validateFields = await form.validateFields();
     if (!validateFields) {
-      console.log("Form is not valid");
+      // console.log("Form is not valid");
       return;
     }
     // return
-    console.log(ticketDetails, "ticketDetails");
+    // console.log(ticketDetails, "ticketDetails");
     const {
       firstName,
       lastName,
@@ -522,24 +554,24 @@ const TicketsSelection = () => {
     // Check if additional_information exists and has items
     const additionalFields = additional_information?.length
       ? additional_information.map((field: any) => {
-          const { id, ...fieldData } = field;
-          return fieldData;
-        })
+        const { id, ...fieldData } = field;
+        return fieldData;
+      })
       : [];
 
     // Check if attendeesInformation exists and has items
     const attendees_information = attendeesInformation?.length
       ? attendeesInformation.map((attendee) => {
-          const { id, ...attendeeData } = attendee;
-          return attendeeData;
-        })
+        const { id, ...attendeeData } = attendee;
+        return attendeeData;
+      })
       : [];
 
     const personal_information = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      phoneNumber: phoneNumber,
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      email: email.trim(),
+      phoneNumber: phoneNumber.trim(),
     };
     const ticket_information = ticketDetails?.map((ticket) => {
       return {
@@ -547,13 +579,10 @@ const TicketsSelection = () => {
         quantity: ticket?.ticketNumber,
         ticket_name: ticket?.ticketName,
         total_amount: ticket?.subTotal,
+        ticket_price: ticket?.ticketPrice === null ? 0 : ticket?.ticketPrice,
+        ticket_type: ticket?.ticketEntity,
       };
     });
-    console.log(
-      attendees_information,
-      personal_information,
-      ticket_information
-    );
 
     const updatedInfo = {
       ...allInfo,
@@ -605,12 +634,10 @@ const TicketsSelection = () => {
         eventId: eventDetails && eventDetails?.id,
       });
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         setSuccessModal(true);
         setLoading(false);
       }
-      // setTimeout( async() => {
-      // }, 2000)
     } else {
       setCurrentPage("payment");
     }
@@ -629,35 +656,37 @@ const TicketsSelection = () => {
       eventId: eventDetails && eventDetails?.id,
     });
 
-    if (response.status === 201) {
-      setSuccessModal(true);
+    if (response.status === 200) {
       setLoading(false);
+      setSuccessModal(true);
     }
   };
+
+  const isFieldTouched = useRef(false);
 
   useEffect(() => {
     const checkFormValidity = async () => {
       try {
         // Run validation and set `isFormValid` based on result
         await form.validateFields();
-        console.log("Valid values");
+        // console.log("Valid values");
         setIsFormValid(true);
       } catch (errorInfo) {
-        console.log(errorInfo, "Validation error info");
+        // console.log(errorInfo, "Validation error info");
         setIsFormValid(false);
       }
     };
 
-    if (currentPage === "contactform") {
+    if (currentPage === "contactform" && isFieldTouched.current) {
       checkFormValidity();
     }
   }, [currentPage, form.getFieldsValue()]);
 
-  const handleSubmitForm = () => {
-    if (isFormValid === true) {
-      onFinish(form.getFieldsValue());
-    } else return;
-  };
+  // const handleSubmitForm = () => {
+  //   if (isFormValid === true) {
+
+  //   } else return;
+  // };
 
   const handleButtonClick = () => {
     if (currentPage === "tickets") {
@@ -668,10 +697,11 @@ const TicketsSelection = () => {
     } else if (currentPage === "contactform") {
       // Check if the form is valid
       if (isFormValid) {
-        handleSubmitForm(); // Proceed to payment or next step
-      }
+        onFinish(form.getFieldsValue()); // Proceed to payment or next step
+      } else return;
     } else if (currentPage === "payment") {
       handleFinalSubmit();
+      // setSuccessModal(true);
     }
   };
 
@@ -679,25 +709,25 @@ const TicketsSelection = () => {
 
   const { minutes, remainingSeconds, timer } = useTimer();
   useEffect(() => {
-    if (minutes === 0 && remainingSeconds === 0) {
+    if (minutes === 0 && remainingSeconds === 0 && successModal === false) {
       setModal(true);
     }
-  }, [minutes, remainingSeconds]);
+  }, [minutes, remainingSeconds, successModal]);
 
   const [termsAndCondition, setTermsAndCondition] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<
-    PAYMENT_METHODS.CARD | PAYMENT_METHODS.TRANSFER | ""
-  >("");
+    PAYMENT_METHODS | undefined
+  >(undefined);
 
   // console.log(termsAndCondition, paymentMethod);
   return (
     <DashboardLayout title={title} isLoggedIn>
-      <section className="flex gap-12">
+      <section className="flex flex-col md:flex-row gap-6 md:gap-12">
         {currentPage === "tickets" ? (
-          <section className="flex-1 pr-1 pl-3 pb-4 scrollable-content overflow-y-auto scroll-smooth h-full">
-            <div className="flex-center justify-between">
+          <section className="flex-1 pb-4 scrollable-content overflow-y-auto scroll-smooth h-full">
+            <div className="flex-center gap-10 sm:gap-10 md:gap-20">
               <div className="flex-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
+                <div className="min-w-12 min-h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
                   <Image
                     src="/icons/calendar.svg"
                     alt=""
@@ -726,7 +756,7 @@ const TicketsSelection = () => {
                 </div>
               </div>
               <div className="flex-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
+                <div className="min-w-12 min-h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
                   <Image src="/icons/time.svg" alt="" height={25} width={25} />
                 </div>
                 <div>
@@ -746,8 +776,7 @@ const TicketsSelection = () => {
                       fontFamily: "'Bricolage Grotesque', sans-serif",
                     }}
                   >
-                    {timeFormat(eventDetails?.startDate)} -{" "}
-                    {timeFormat(eventDetails?.endDate)} {eventDetails?.timeZone}
+                    {timeFormat(eventDetails?.startDate)} {eventDetails?.timeZone}
                   </span>
                 </div>
               </div>
@@ -786,13 +815,13 @@ const TicketsSelection = () => {
                     (ticket: ITicketDetails) =>
                       ticket?.ticketEntity === TICKET_ENTITY.SINGLE
                   ) && (
-                    <button
-                      className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
-                      style={{ borderRadius: "20px", fontSize: "12px" }}
-                    >
-                      Single Ticket
-                    </button>
-                  )}
+                      <button
+                        className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
+                        style={{ borderRadius: "20px", fontSize: "12px" }}
+                      >
+                        Single Ticket
+                      </button>
+                    )}
                   {ticketData
                     ?.filter(
                       (ticket: ITicketDetails) =>
@@ -823,7 +852,7 @@ const TicketsSelection = () => {
                                       }}
                                     >
                                       ₦
-                                      {(
+                                      {Math.round(
                                         ticket?.ticketPrice * 0.05 +
                                         150 +
                                         ticket?.ticketPrice
@@ -837,9 +866,8 @@ const TicketsSelection = () => {
                                       }}
                                     >
                                       Including ₦
-                                      {(
-                                        ticket?.ticketPrice * 0.05 +
-                                        150
+                                      {Math.round(
+                                        ticket?.ticketPrice * 0.05 + 150
                                       ).toLocaleString()}{" "}
                                       fee
                                     </span>
@@ -856,7 +884,7 @@ const TicketsSelection = () => {
                                         }}
                                       >
                                         ₦
-                                        {(
+                                        {Math.round(
                                           ticket?.ticketPrice * 0.045 +
                                           150 +
                                           ticket?.ticketPrice
@@ -870,11 +898,10 @@ const TicketsSelection = () => {
                                         }}
                                       >
                                         Including ₦
-                                        {(
-                                          ticket?.ticketPrice * 0.045 +
-                                          150
-                                        ).toLocaleString()}{" "}
-                                        fee
+                                        {Math.round(
+                                        ticket?.ticketPrice * 0.045 + 150
+                                      ).toLocaleString()}{" "}
+                                      fee
                                       </span>
                                     </>
                                   )}
@@ -888,7 +915,7 @@ const TicketsSelection = () => {
                                       }}
                                     >
                                       ₦
-                                      {(
+                                      {Math.round(
                                         ticket?.ticketPrice * 0.035 +
                                         150 +
                                         ticket?.ticketPrice
@@ -902,9 +929,8 @@ const TicketsSelection = () => {
                                       }}
                                     >
                                       Including ₦
-                                      {(
-                                        ticket?.ticketPrice * 0.035 +
-                                        150
+                                      {Math.round(
+                                        ticket?.ticketPrice * 0.035 + 150
                                       ).toLocaleString()}{" "}
                                       fee
                                     </span>
@@ -939,18 +965,18 @@ const TicketsSelection = () => {
                           style={{ marginBlockStart: "10px" }}
                         >
                           <button
-                            className="w-8 h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
+                            className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
                             onClick={() => handleDecrement(ticket?.id)}
                             disabled={selectedTickets[ticket?.id] === 0}
                             style={{ backgroundColor: "#FADEDE" }}
                           >
                             -
                           </button>
-                          <span className="text-lg mx-2">
+                          <span className="text-base sm:text-lg mx-2">
                             {selectedTickets[ticket?.id] || 0}
                           </span>
                           <button
-                            className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
+                            className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center rounded-full text-lg font-bold"
                             onClick={() => handleIncrement(ticket?.id)}
                             disabled={
                               selectedTickets[ticket?.id] ===
@@ -959,12 +985,12 @@ const TicketsSelection = () => {
                             style={{
                               color:
                                 selectedTickets[ticket?.id] ===
-                                ticket?.purchaseLimit
+                                  ticket?.purchaseLimit
                                   ? "white"
                                   : "#e20000",
                               backgroundColor:
                                 selectedTickets[ticket?.id] ===
-                                ticket?.purchaseLimit
+                                  ticket?.purchaseLimit
                                   ? "#cccccc"
                                   : "#FADEDE",
                             }}
@@ -1004,13 +1030,13 @@ const TicketsSelection = () => {
                     (ticket: ITicketDetails) =>
                       ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE
                   ) && (
-                    <button
-                      className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
-                      style={{ borderRadius: "20px", fontSize: "12px" }}
-                    >
-                      Collective Ticket
-                    </button>
-                  )}
+                      <button
+                        className="bg-OWANBE_PRY text-white px-3 py-1 mb-6 rounded-md text-sm font-BricolageGrotesqueMedium"
+                        style={{ borderRadius: "20px", fontSize: "12px" }}
+                      >
+                        Collective Ticket
+                      </button>
+                    )}
 
                   {ticketData
                     ?.filter(
@@ -1158,18 +1184,18 @@ const TicketsSelection = () => {
                           style={{ marginBlockStart: "10px" }}
                         >
                           <button
-                            className="w-8 h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
+                            className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
                             onClick={() => handleDecrement(ticket?.id)}
                             disabled={selectedTickets[ticket?.id] === 0}
                             style={{ backgroundColor: "#FADEDE" }}
                           >
                             -
                           </button>
-                          <span className="text-lg mx-2">
+                          <span className="text-base sm:text-lg mx-2">
                             {selectedTickets[ticket?.id] || 0}
                           </span>
                           <button
-                            className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
+                            className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center rounded-full text-lg font-bold"
                             onClick={() => handleIncrement(ticket?.id)}
                             disabled={selectedTickets[ticket?.id] === 1}
                             style={{
@@ -1193,13 +1219,8 @@ const TicketsSelection = () => {
             </div>
           </section>
         ) : currentPage === "contactform" ? (
-          // <ContactForm
-          //  ticketDetails={ticketDetails}
-          //  onSubmit={handleSubmit}
-          //  onExternalFinishTrigger={(trigger) => setExternalTrigger(() => trigger)}
-          // />
           <section className="flex-1 pr-1 pl-3 pb-4 scrollable-content overflow-y-auto scroll-smooth h-full">
-            <div className="bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem] w-[570px]">
+            <div className="bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem] w-full">
               We have reserved your tickets, please complete checkout within{" "}
               <span className="text-OWANBE_PRY text-s font-BricolageGrotesqueRegular">
                 {timer}
@@ -1245,7 +1266,13 @@ const TicketsSelection = () => {
                 onFinishFailed={onFinishFailed}
                 layout="vertical"
                 className="form-spacing"
-                onValuesChange={async (changedValues: any, values: any) => {}}
+                onValuesChange={() => {
+                  // Mark that fields have been touched
+                  isFieldTouched.current = true;
+                  if (currentPage === "contactform") {
+                    validateForm();
+                  }
+                }}
               >
                 <Row gutter={16}>
                   <Col span={12}>
@@ -1263,7 +1290,7 @@ const TicketsSelection = () => {
                         },
                       ]}
                       style={{}}
-                      // className=""
+                    // className=""
                     >
                       <Input placeholder="Enter First Name" />
                     </Form.Item>
@@ -1354,16 +1381,6 @@ const TicketsSelection = () => {
                     placeholder="Enter Phone Number"
                   />
                 </Form.Item>
-                <br />
-                {ticketDetails?.some(
-                  (ticket) =>
-                    ticket?.additionalInformation &&
-                    ticket?.additionalInformation?.length > 0
-                ) && (
-                  <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-2 custom-font-size">
-                    Additional Information
-                  </h3>
-                )}
                 {/* {ticketDetails?.map((ticketDetail, ticketIndex) => {
                 return ticketDetail?.additionalInformation?.map(
                   (
@@ -1403,45 +1420,58 @@ const TicketsSelection = () => {
                   }
                 );
               })} */}
-                {additionalFields?.length > 0 && (
-                  <Form.List rules={[]} name="additional_information">
-                    {(fields, { add, remove }) => (
-                      <>
-                        {additionalFields.map(({ id, question }) => (
-                          <div key={id}>
-                            <Form.Item
-                              name={[id, "question"]}
-                              initialValue={question}
-                              hidden
-                            >
-                              <Input />
-                            </Form.Item>
-                            <Form.Item
-                              key={id}
-                              label={
-                                <span>
-                                  {question}{" "}
-                                  <span style={{ color: "red" }}>*</span>
-                                </span>
-                              }
-                              name={[id, "answer"]}
-                              rules={[
-                                {
-                                  required: false,
-                                  message: "Please provide an answer",
-                                },
-                              ]}
-                            >
-                              <Input placeholder="Enter your answer" />
-                            </Form.Item>
-                          </div>
-                        ))}
-                      </>
-                    )}
-                  </Form.List>
+                {additionalFields && additionalFields.length > 0 && (
+                  <>
+                    <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-2 custom-font-size">
+                      Additional Information
+                    </h3>
+                    <Form.List name="additional_information">
+                      {(fields) => (
+                        <>
+                          {additionalFields.map((fieldData, index) => (
+                            <div key={index}>
+                              <Form.Item
+                                name={[index, "question"]}
+                                initialValue={fieldData.question}
+                                hidden
+                              >
+                                <Input />
+                              </Form.Item>
+                              <Form.Item
+                                key={fieldData.id}
+                                label={
+                                  fieldData?.is_compulsory === true ? (
+                                    <span>
+                                      {fieldData.question}{" "}
+                                      <span style={{ color: "red" }}>*</span>
+                                    </span>
+                                  ) : (
+                                    <span>{fieldData.question}</span>
+                                  )
+                                }
+                                name={[index, "answer"]}
+                                rules={
+                                  fieldData?.is_compulsory === true
+                                    ? [
+                                      {
+                                        required: true,
+                                        message: "Please provide an answer",
+                                      },
+                                    ]
+                                    : []
+                                }
+                              >
+                                <Input placeholder="Enter your answer" />
+                              </Form.Item>
+                            </div>
+                          ))}
+                        </>
+                      )}
+                    </Form.List>
+                    <br />
+                  </>
                 )}
-                <br />
-                {ticketDetails?.map((ticketDetail, ticketIndex) => {
+                {/* {ticketDetails?.map((ticketDetail, ticketIndex) => {
                   return (
                     ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE && (
                       <div key={ticketIndex}>
@@ -1614,7 +1644,7 @@ const TicketsSelection = () => {
                       </div>
                     )
                   );
-                })}{" "}
+                })}{" "} */}
               </Form>
             </div>
             {modal && <TimerModal />}
@@ -1624,63 +1654,47 @@ const TicketsSelection = () => {
           </section>
         ) : (
           <section className="flex-1">
-            <div className=" bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem]">
+            <div className="w-full bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem]">
               We have reserved your tickets please complete checkout within{" "}
               <span className=" text-OWANBE_PRY text-s font-BricolageGrotesqueRegular">
                 {timer}
               </span>
               minutes to secure your tickets.
             </div>
-            <div className="pr-full mt-16">
-              <Radio.Group>
-                <div className="flex flex-col gap-8">
-                  <div className="card-shadow flex justify-between">
+            <div className="pr-full w-full mt-16">
+              <Radio.Group className="w-full">
+                <div className="flex flex-col w-full gap-8">
+                  <div
+                    className="card-shadow w-full flex justify-between items-center"
+                  >
+                    {/* Left Section */}
                     <div className="flex gap-3 items-start">
                       <div className="pt-1">
                         <Radio
-                          onChange={() =>
-                            setPaymentMethod(PAYMENT_METHODS.CARD)
-                          }
+                          onChange={() => setPaymentMethod(PAYMENT_METHODS.CARD)}
                           value={PAYMENT_METHODS.CARD}
                         />
                       </div>
                       <div>
                         <h2 className="text-lg font-BricolageGrotesqueRegular text-OWANBE_PRY">
-                          Pay with Card
+                          Pay with Card or bank
                         </h2>
-                        {/* Add default styles to check visibility */}
                         <span
                           className="text-s font-BricolageGrotesqueRegular"
                           style={{ fontSize: "14px", color: "#000" }}
                         >
-                          Pay with a MasterCard, Visa, Verve Card, or directly
-                          with your bank.
+                          Pay with a MasterCard, Visa or Verve Card
                         </span>
                       </div>
                     </div>
-                  </div>
-                  <div className="card-shadow flex justify-between">
-                    <div className="flex gap-3 items-start">
-                      <div className="pt-1">
-                        <Radio
-                          onChange={() =>
-                            setPaymentMethod(PAYMENT_METHODS.TRANSFER)
-                          }
-                          value={PAYMENT_METHODS.TRANSFER}
-                        />
-                      </div>
-                      <div>
-                        <h2 className="text-lg font-BricolageGrotesqueRegular text-OWANBE_PRY">
-                          Pay with Bank Transfer
-                        </h2>
-                        <span
-                          className="text-s font-BricolageGrotesqueRegular"
-                          style={{ fontSize: "14px", color: "#000" }}
-                        >
-                          Make payment by transferring to our dedicated account
-                          number.
-                        </span>
-                      </div>
+
+                    {/* Right Section (Image) */}
+                    <div>
+                      <img
+                        src="/paystack.svg"
+                        alt="Paystack Logo"
+                        style={{ height: "50px", width: "100px" }} // Adjust size as needed
+                      />
                     </div>
                   </div>
                 </div>
@@ -1739,6 +1753,9 @@ const TicketsSelection = () => {
                 </Checkbox>
               </div>
             </div>
+            {successModal && (
+              <PaymentSuccessModal data={eventDetails?.user?.firstName} />
+            )}
           </section>
         )}
         {/* Summary Section with Correct Props */}
@@ -1748,19 +1765,16 @@ const TicketsSelection = () => {
           loading={loading}
           currentPage={currentPage}
           eventName={eventDetails?.eventName}
+          paymentMethod={paymentMethod}
+          termsAndCondition={termsAndCondition}
           allInfo={allInfo}
           isFormValid={isFormValid}
-          onClick={
-            handleButtonClick
-            // currentPage === "tickets"
-            //   ? () => setCurrentPage("contactform")
-            //   : currentPage === "contactform"
-            //   ? () =>  handleSubmitForm()
-            //   : undefined
-          }
+          onClick={handleButtonClick}
           ticketDetails={ticketDetails}
           continueBtn
+        // {currentPage === "tickets" ? continueBtn : paymentBtn}
         />
+        {modal && <TimerModal />}
       </section>
     </DashboardLayout>
   );

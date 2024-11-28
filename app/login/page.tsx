@@ -26,7 +26,7 @@ function Login() {
 
         <div className="md:w-4/5 md:mx-auto flex flex-col space-y-8">
           <Heading5 className="" content="Sign into your account" />
-          <LoginForm />
+          <LoginForm /> 
         </div>
       </div>
       </div>

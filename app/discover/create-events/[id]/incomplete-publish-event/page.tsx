@@ -4,17 +4,19 @@ import { Button } from "antd";
 import Image from "next/image";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Heading5 } from "../../../../components/typography/Typography";
-import PublishSuccess from "@/app/components/OstivitiesModal/CantPublishModal";
 import CantPublish from "@/app/components/OstivitiesModal/CantPublishModal";
 import { useState } from "react";
 import { useGetUserEvent, usePublishEvent } from "@/app/hooks/event/event.hook";
 import { useProfile } from "@/app/hooks/auth/auth.hook";
 import { useCookies } from "react-cookie";
-
 import React from "react";
 import { dateFormat, timeFormat } from "../../../../utils/helper";
 import Link from "next/link";
 import useFetch from "@/app/components/forms/create-events/auth";
+import ReadMoreHTML from "@/app/components/ReadMoreHTML";
+import placeholder from "@/public/placeholder.svg";
+import { ACCOUNT_TYPE, EVENT_INFO, EXHIBITION_SPACE } from "@/app/utils/enums";
+
 
 export default function PublishEvent(): JSX.Element {
   // const { isLoggedIn } = useFetch();
@@ -29,6 +31,8 @@ export default function PublishEvent(): JSX.Element {
     "stage_one",
     "stage_two",
     "stage_three",
+    "mapSrc",
+    "profileData"
   ]);
   const pathname = usePathname();
   const [imageUrl, setImageUrl] = useState<string>("/images/emptyimage2.png");
@@ -36,18 +40,19 @@ export default function PublishEvent(): JSX.Element {
   const router = useRouter();
   const { profile } = useProfile();
   const { publishEvent } = usePublishEvent();
-  const userFullName =
-    profile?.data?.data?.data?.firstName +
+
+  const accountType = cookies?.profileData?.accountType;
+
+  const userFullName =  accountType === ACCOUNT_TYPE.PERSONAL
+    ? cookies?.profileData?.firstName +
     " " +
-    profile?.data?.data?.data?.lastName;
+    cookies?.profileData?.lastName : cookies?.profileData?.businessName;
 
   const { getUserEvent } = useGetUserEvent(params?.id || cookies.event_id);
   const eventDetails = getUserEvent?.data?.data?.data;
   // console.log(eventDetails, "eventDetails");
 
   const handlePublishEvent = async () => {
-    const response = await publishEvent.mutateAsync(params?.id || cookies.event_id);
-    console.log(response, "response");
     setIsModalOpen(true);
     // if (response.) {
     // }
@@ -88,7 +93,7 @@ export default function PublishEvent(): JSX.Element {
           <div className="flex gap-12">
             <div className="relative w-[400px] h-[550px] rounded-[3.125rem] overflow-hidden">
               <Image
-                src={eventDetails?.eventImage || imageUrl}
+                src={eventDetails?.eventImage ? eventDetails.eventImage : placeholder}
                 alt="Event Image"
                 fill
                 style={{ objectFit: "cover" }}
@@ -162,18 +167,14 @@ export default function PublishEvent(): JSX.Element {
                     </div>
                     <div
                       style={{
-                        maxWidth: "190px", // Adjust this value as needed
-                        wordWrap: "break-word", // Ensures long words wrap to the next line
-                        overflowWrap: "break-word", // Adds further wrapping behavior for better browser support
+                        width: "190px",
+                        whiteSpace: "normal",
+                        wordWrap: "break-word",
+                        fontWeight: 300,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
                       }}
                     >
-                      <a
-                        href="https://maps.app.goo.gl/jBmgQ5EFxngj2ffS6"
-                        style={{ color: "#e20000", textDecoration: "none", fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}
-                        target="_blank"
-                      >
                         {eventDetails?.address}
-                      </a>
                     </div>
                   </div>
                 </div>
@@ -289,21 +290,30 @@ export default function PublishEvent(): JSX.Element {
                   </h2>
                 </div>
               </div>
-              <div
-                className="font-BricolageGrotesqueRegular flex-1 h-fit px-1"
-                dangerouslySetInnerHTML={{
-                  __html: eventDetails?.eventDetails as string,
-                }}
-              ></div>
-              <div className="flex justify-center mt-12">
+              <ReadMoreHTML
+                  htmlContent={eventDetails?.eventDetails || ""}
+                  maxLength={250}
+                />
+                <iframe
+                  src={cookies?.mapSrc}
+                  width="100%"
+                  height="120"
+                  style={{ border: 0, marginTop: "20px" }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+          <div className="flex justify-center mt-12">
                 <Button
                   type="primary"
-                  size={"large"}
-                  className="w-full rounded-full bg-OWANBE_PRY px-24 py-3 text-white text-l font-bold"
+                 
+                  className="primary-btn w-full"
                   style={{
                     borderRadius: "25px",
                     fontFamily: "BricolageGrotesqueMedium",
                     float: "right",
+                    height: "50px", // Adjust height as needed
+                    fontSize: "16px", // Increase text size
+                    border: "none", // Remove border if needed
                   }}
                   onClick={handlePublishEvent}
                 >
@@ -317,7 +327,7 @@ export default function PublishEvent(): JSX.Element {
 
       {/* Modal for Publish Success */}
       {isModalOpen && (
-        <PublishSuccess
+        <CantPublish
           open={isModalOpen}
           onClose={() => setIsModalOpen(false)}
         />

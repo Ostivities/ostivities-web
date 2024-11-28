@@ -254,23 +254,59 @@ body {
   border-bottom: none !important;
 }
 
-.auth-background {
+/* .auth-background {
   background-image: url(/Topology-2.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: auto;
   background-position-x: 36%;
   background-position-y: -15%;
+} */
+
+.auth-background {
+  background-image: url(/Topology-2.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 90%;
+  background-position-x: 450%;
+  background-position-y: -17%;
 }
 
-.auth-background-light {
+/* .auth-background-light {
   background-image: url(/Topologylight.svg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: auto;
   background-position-x: 36%;
   background-position-y: -15%;
+} */
+
+@media screen and (min-width: 768px) {
+  .auth-background {
+    background-image: url(/Topology-2.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto;
+    background-position-x: 36%;
+    background-position-y: -15%;
+  }
+
+  .auth-background-light {
+    background-image: url(/Topologylight.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto;
+    background-position-x: 36%;
+    background-position-y: -15%;
+  }
+  .small-discover {
+    
+  }
 }
+
+/* @media screen and (min-width: ) {
+  
+} */
 
 .side-nav > .ant-menu-item-selected {
   color: #181515 !important;
@@ -964,12 +1000,10 @@ body {
 /* global.css */
 .custom-heading {
   color: #e20000 !important;
-  font-size: 52px !important;
 }
 
 .welcome-heading {
   color: #000000 !important;
-  font-size: 52px !important;
   font-weight: normal !important;
 }
 
@@ -1263,6 +1297,74 @@ form .error-message {
 ::-webkit-scrollbar {
   width: 8px; /* Adjust the width to make it slimmer */
 }
+::-webkit-scrollbar:horizontal {
+  display: none; /* Completely hides the horizontal scrollbar */
+}
+
+@media screen and (max-width: 768px) {
+  ::-webkit-scrollbar {
+   display: none;
+  }
+  
+}
+
+@media screen and (max-width: 436px) {
+  .button-lenght {
+    width: 100%;
+  }
+  
+}
+@media screen and (max-width: 400px){
+  .time_reduce {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+  .text-reduce {
+    font-size: 1rem;
+  }
+  .img_reduce{
+    width: 2.5rem;
+  }
+  .margin_top {
+    margin-top: 1rem;
+  }
+}
+/* General styling for the container */
+.continue-btn-container {
+  position: static; /* Default position */
+  width: 100%;
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Mobile-specific styles */
+@media screen and (max-width: 768px) {
+  .continue-btn-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: white; /* Optional: Add background for better visibility */
+    padding: 10px;
+  }
+}
+
+/* When scrolled to the bottom of the page */
+@media screen and (max-width: 768px) {
+  body.scrolled-to-bottom .continue-btn-container {
+    position: static; /* Reset to original position */
+    background-color: transparent; /* Reset background */
+    box-shadow: none; /* Remove shadow */
+  }
+}
+
+/* position: fixed;
+bottom: 0;
+left: 0;
+width: 100%;
+padding: 20px;
+background-color: white;
+z-index: 99; */
 
 ::-webkit-scrollbar-track {
   background: transparent; /* Optional: Track color */

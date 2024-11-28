@@ -8,7 +8,7 @@ const TimerModal = () => {
   const params = useParams<{ event: string }>();
 
   return (
-    <div className="fixed inset-0 bg-black/20 grid place-items-center">
+    <div className="fixed inset-0 bg-black/20 grid place-items-center z-50">
       <div
         onClick={(e) => e.stopPropagation()}
         className="bg-white rounded-2xl px-12 py-16 lg:min-w-[43rem]"
@@ -34,11 +34,12 @@ const TimerModal = () => {
           </p>
           <div className="flex justify-center">
             <button
-              onClick={() => router.push(`/discover/${params?.event}/tickets`)}
-              className="block primary-btn font-normal text-base mt-12 px-32"
+              onClick={() => router.push(`/discover/${params?.event}`)}
+              className="block primary-btn font-normal text-base mt-6 mx-auto px-6 py-3 w-full sm:w-auto sm:px-12 lg:px-32 text-center"
             >
-              Initiate order again
+              Initiate Order Again
             </button>
+
           </div>
         </div>
       </div>

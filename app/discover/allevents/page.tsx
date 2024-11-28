@@ -7,12 +7,13 @@ import { useLayoutEffect, useMemo, useState } from "react";
 import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
 import { Button, Skeleton } from "antd";
 import { IEventDetails } from "@/app/utils/interface";
+import placeholder from "@/public/placeholder.svg";
 
 interface PropsI {
   event: "popular" | "all" | "paid" | "free";
 }
 
-const Event = ({ params }: { params: { event: string } }) => {
+const AllEvent = ({ params }: { params: { event: string } }) => {
   const router = useRouter();
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(12)
@@ -146,8 +147,8 @@ const Event = ({ params }: { params: { event: string } }) => {
                 key={event?.id}
                 title={event?.eventName}
                 about={event?.eventType}
-                status="Get Tickets"
-                image={event?.eventImage}
+                status= {event?.enable_registration === false ? "Reg Closed" :  "Get Tickets"  }
+                image={event?.eventImage ? event.eventImage : placeholder}
                 url={`/discover/${event?.unique_key}`}
                 titleClass="font-bricolage-grotesque font-medium"
                 aboutClass="font-bricolage-grotesque"
@@ -161,4 +162,4 @@ const Event = ({ params }: { params: { event: string } }) => {
   );
 };
 
-export default Event;
+export default AllEvent;

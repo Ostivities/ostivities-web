@@ -16,6 +16,8 @@ import { ITicketCreate, ITicketData, ITicketUpdate } from "@/app/utils/interface
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { useProfile } from "@/app/hooks/auth/auth.hook";
 import { TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
+import { useCookies } from "react-cookie";
+
 
 const { Option } = Select;
 interface CollectiveTicketProps {
@@ -47,6 +49,8 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
+  const [cookies, setCookies] = useCookies(["ticket_id", "stage_three", "profileData"]);
+
   const pathname = usePathname()
   // console.log(pathname)
   const ticketStock: string = Form.useWatch("ticketStock", form);
@@ -97,7 +101,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
   console.log(groupPrices, "groupPrices")
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
-    const { ticketQuestions, ticketType, ...rest } = values;
+    const { ticketQuestions, ticketType, guestAsChargeBearer, ...rest } = values;
     // return console.log(values)
     if (
       // @ts-ignore
@@ -121,7 +125,8 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         ticketDescription: editorContent,
         event: params?.id,
         ticketEntity: "COLLECTIVE",
-        user: profile?.data?.data?.data?.id,
+        user: cookies?.profileData?.id,
+        guestAsChargeBearer: guestAsChargeBearer,
         // groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
         ticketType
       };
@@ -133,7 +138,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         const response = await updateTicket.mutateAsync(payload);
         if (response.status === 200) {
           // console.log(response);
-          form.resetFields();
+          // form.resetFields();
           // linkRef.current?.click();
           if(pathname.startsWith("/discover/create-events")) {
             router.push(`/discover/create-events/${params?.id}/tickets_created`);
@@ -150,7 +155,8 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         ticketDescription: editorContent,
         event: params?.id,
         ticketEntity: "COLLECTIVE",
-        user: profile?.data?.data?.data?.id,
+        user: cookies?.profileData?.id,
+        guestAsChargeBearer: guestAsChargeBearer,
         // groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
         ticketType
       };
@@ -158,7 +164,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         const response = await updateTicket.mutateAsync(payload);
         if (response.status === 200) {
           // console.log(response);
-          form.resetFields();
+          // form.resetFields();
           // linkRef.current?.click();
           if(pathname.startsWith("/discover/create-events")) {
             router.push(`/discover/create-events/${params?.id}/tickets_created`);
@@ -225,6 +231,8 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
   useEffect(() => {
     if (guestAsChargeBearer === true) {
       form.setFieldsValue({ guestAsChargeBearer: true });
+    } else {
+      form.setFieldsValue({ guestAsChargeBearer: false });
     }
   }, [guestAsChargeBearer]);
 
@@ -268,7 +276,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
     <Form<ITicketData>
       form={form}
       name="basic"
-      initialValues={{ remember: true }}
+      initialValues={{ remember: true, guestAsChargeBearer: guestAsChargeBearer }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
@@ -402,7 +410,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         styles={{ fontWeight: "bold !important" }}
       />
       <div
-        className="mb-9 pb-16 w-full"
+        className="mb-9 pb-10 w-full"
         style={{ marginBottom: "20px", marginTop: "10px" }}
       >  
         {getSingleTicket.isSuccess === true && (

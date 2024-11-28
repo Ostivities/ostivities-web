@@ -13,6 +13,9 @@ import { useCookies } from "react-cookie";
 import { useQueryClient } from "@tanstack/react-query"
 import { Heading5, Paragraph } from "../../typography/Typography";
 import { GET_EVENT } from "@/app/utils/constants";
+import ReadMoreHTML from "@/app/components/ReadMoreHTML";
+import placeholder from "@/public/placeholder.svg";
+import { ACCOUNT_TYPE, EVENT_INFO, EXHIBITION_SPACE } from "@/app/utils/enums";
 
 
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
@@ -33,6 +36,8 @@ const EventPageAppearance: React.FC = () => {
     "stage_two",
     "stage_three",
     "ticket_created",
+    "mapSrc",
+    "profileData"
   ]);
   const params = useParams<{ id: string }>();
   const { getUserEvent } = useGetUserEvent(params?.id);
@@ -45,10 +50,13 @@ const EventPageAppearance: React.FC = () => {
   }, [params?.id]);
 
   const { profile } = useProfile();
-  const userFullName =
-    profile?.data?.data?.data?.firstName +
+
+  const accountType = cookies?.profileData?.accountType;
+
+  const userFullName =  accountType === ACCOUNT_TYPE.PERSONAL
+    ? cookies?.profileData?.firstName +
     " " +
-    profile?.data?.data?.data?.lastName;
+    cookies?.profileData?.lastName : cookies?.profileData?.businessName;
 
 
   const eventDetails = getUserEvent?.data?.data?.data;
@@ -199,13 +207,13 @@ const EventPageAppearance: React.FC = () => {
       <div className="flex gap-12">
         <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
           <Image
-            src={eventDetails?.eventImage || imageUrl}
+            src={eventDetails?.eventImage ? eventDetails.eventImage : placeholder}
             alt="Event Image"
             fill
             style={{ objectFit: "cover" }}
             className=""
           />
-          <div className="absolute inset-0 bg-image-card"></div>
+          <div className="absolute inset-0 bg-image-card"></div> 
           <Upload
             className="absolute top-2 right-2 z-10"
             {...props}
@@ -315,25 +323,15 @@ const EventPageAppearance: React.FC = () => {
                   Location
                 </div>
                 <div
-                  style={{
-                    maxWidth: "190px", // Adjust this value as needed
-                    wordWrap: "break-word", // Ensures long words wrap to the next line
-                    overflowWrap: "break-word", // Adds further wrapping behavior for better browser support
+                   style={{
+                    width: "190px",
+                    whiteSpace: "normal",
+                    wordWrap: "break-word",
+                    fontWeight: 300,
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
                   }}
                 >
-                  <button
-                    style={{ fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif", color: "#e20000", textDecoration: "none" }}
-                    onClick={mapLocation}
-                  >
                     {eventDetails?.address}
-                  </button>
-                  {/* <a
-                        href={`https://api.geoapify.com/v1/geocode/autocomplete?text=${eventDetails?.address}&format=json&apiKey=${API_KEY}`}
-                        style={{ color: "#e20000", textDecoration: "none" }}
-                        target="_blank"
-                      >
-                        {eventDetails?.address}
-                      </a> */}
                 </div>
               </div>
             </div>
@@ -449,12 +447,23 @@ const EventPageAppearance: React.FC = () => {
               </h2>
             </div>
           </div>
-          <div
-            className="font-BricolageGrotesqueRegular flex-1 h-fit px-1"
-            dangerouslySetInnerHTML={{
-              __html: eventDetails?.eventDetails as string,
-            }}
-          ></div>
+         
+          <ReadMoreHTML
+                  htmlContent={eventDetails?.eventDetails || ""}
+                  maxLength={250}
+                />
+                <iframe
+                  src={cookies?.mapSrc}
+                  width="100%"
+                  height="120"
+                  style={{
+                    border: 0,
+                    marginTop: "20px",
+                    borderRadius: "0.5rem", // Corner radius
+                  }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
           <div className="flex justify-center mt-12">
           </div>
         </div>
@@ -469,7 +478,17 @@ const EventPageAppearance: React.FC = () => {
           size={"large"}
           className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
           onClick={() => {
-            router.push("/create-events");
+            setCookie("form_stage", 3);
+            setCookie("stage_one", "finish");
+            setCookie("stage_two", "finish");
+            setCookie("stage_three", "process");
+            if (cookies.ticket_created === "yes") {
+              router.push(`/discover/create-events/${params?.id}/tickets_created`);
+            } else {
+              router.push(
+                `/discover/create-events/${params?.id}/event_tickets`
+              );
+            }
           }}
         >
           Skip & do this later

@@ -8,8 +8,8 @@ interface PreviewEmailProps extends IModal {
   messageContent: string;
   guestName: string;
   eventName: string;
+  hostEmail: string;
 }
-
 
 const PreviewEmail = ({
   open,
@@ -19,6 +19,7 @@ const PreviewEmail = ({
   messageContent,
   guestName,
   eventName,
+  hostEmail,
 }: PreviewEmailProps): JSX.Element => {
   const router = useRouter();
   const params = useParams<{ id: string }>();
@@ -36,14 +37,15 @@ const PreviewEmail = ({
       text = text
         .replace("{{message}}", messageContent)
         .replace("{{guest_name}}", guestName)
-        .replace("{{event_name}}", eventName);
+        .replace("{{event_name}}", eventName)
+        .replace("{{host_email}}", hostEmail);
 
       setHtmlContent(text);
       setLoading(false);
     };
 
     fetchHtmlContent();
-  }, [messageContent, guestName, eventName]);
+  }, [messageContent, guestName, eventName, hostEmail]);
 
   if (loading) {
     return (
@@ -86,12 +88,14 @@ const PreviewEmail = ({
         onClick={(e) => e.stopPropagation()}
         className="bg-white rounded-2xl px-6 py-8 lg:min-w-[10rem]"
         style={{
-          maxHeight: '800px', // Set the maximum height for the modal
-          overflow: 'hidden', // Hide overflow for the modal
+          maxHeight: "800px", // Set the maximum height for the modal
+          overflow: "hidden", // Hide overflow for the modal
         }}
       >
         <div className="flex justify-between items-center">
-          <h2 className="font-bricolage-grotesque font-regular">Email Preview</h2>
+          <h2 className="font-bricolage-grotesque font-regular">
+            Email Preview
+          </h2>
           <Button
             onClick={onCancel}
             style={{
@@ -113,15 +117,16 @@ const PreviewEmail = ({
         <div
           className="mt-8 text-aligned"
           style={{
-            overflowY: 'auto', // Enable vertical scrolling
-            maxHeight: '600px', // Set the maximum height for content
-            scrollbarWidth: 'none', // Hide scrollbar for Firefox
-            WebkitOverflowScrolling: 'touch', // Enable momentum scrolling on iOS
+            overflowY: "auto", // Enable vertical scrolling
+            maxHeight: "600px", // Set the maximum height for content
+            scrollbarWidth: "none", // Hide scrollbar for Firefox
+            WebkitOverflowScrolling: "touch", // Enable momentum scrolling on iOS
           }}
           onScroll={(e) => {
             // Hide scrollbar for Chrome, Safari, Edge and Opera
             const target = e.currentTarget;
-            target.style.overflowY = target.scrollHeight > target.clientHeight ? 'scroll' : 'hidden';
+            target.style.overflowY =
+              target.scrollHeight > target.clientHeight ? "scroll" : "hidden";
           }}
         >
           <div

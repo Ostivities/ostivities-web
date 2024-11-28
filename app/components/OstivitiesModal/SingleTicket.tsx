@@ -49,7 +49,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
-  const [cookies, setCookies] = useCookies(["ticket_created", "stage_three"]);
+  const [cookies, setCookies] = useCookies(["ticket_created", "stage_three", "profileData"]);
 
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form);
@@ -79,7 +79,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
   }, [guestAsChargeBearer]);
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
-    const { ticketQuestions, ...rest } = values;
+    const { ticketQuestions, guestAsChargeBearer, ...rest } = values;
     console.log(ticketQuestions, "ticketQuestions");
     setLoading(true);
     if (
@@ -104,7 +104,8 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
         ticketDescription: editorContent,
         event: params?.id,
         ticketEntity: TICKET_ENTITY.SINGLE,
-        user: profile?.data?.data?.data?.id,
+        user: cookies?.profileData?.id,
+        guestAsChargeBearer: guestAsChargeBearer
       };
       // return console.log(payload, "kk");
 
@@ -130,7 +131,8 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
         ticketDescription: editorContent,
         event: params?.id,
         ticketEntity: TICKET_ENTITY.SINGLE,
-        user: profile?.data?.data?.data?.id,
+        user: cookies?.profileData?.id,
+        guestAsChargeBearer: guestAsChargeBearer
       };
       if (payload) {
         const response = await createTicket.mutateAsync(payload);
@@ -299,14 +301,13 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
         content={"Ticket description"}
         styles={{ fontWeight: "bold !important" }}
       />
-      <Form.Item className="mb-3 pb-16 w-full mt-3">
+      <Form.Item className="mb-20 w-full mt-3">
         <EmailEditor
-          initialValue="<p>Enter ticket description!</p>"
+          initialValue=""
           onChange={handleEditorChange}
         />
       </Form.Item>
-      <br />
-      <br />
+     
 
       <Form.Item
         style={{

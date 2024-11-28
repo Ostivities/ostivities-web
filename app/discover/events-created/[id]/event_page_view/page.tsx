@@ -1,8 +1,8 @@
 "use client";
 import { useGetUserEvent, useUpdateEvent } from "@/app/hooks/event/event.hook";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
-import { CameraFilled } from "@ant-design/icons";
-import { Button, Flex, Space, Upload, message } from "antd";
+import { CameraFilled, ScanOutlined } from "@ant-design/icons";
+import { Button, Flex, Space, Tooltip, Upload, message } from "antd";
 import type { RcFile, UploadProps } from "antd/es/upload/interface";
 import axios from "axios";
 import Image from "next/image";
@@ -13,14 +13,14 @@ import { useCookies } from "react-cookie";
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import ReadMoreHTML from "@/app/components/ReadMoreHTML";
-
+import placeholder from "@/public/placeholder.svg";
+import { ACCOUNT_TYPE, EVENT_INFO, EXHIBITION_SPACE } from "@/app/utils/enums";
 
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
 const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 const cloud_api: any = process.env.NEXT_PUBLIC_CLOUDINARY_API_URL;
 const event_appearance_image: any =
   process.env.NEXT_PUBLIC_OSTIVITIES_EVENT_APPEARANCE_IMAGES;
-
 
 const EventPageView = () => {
   const router = useRouter();
@@ -38,13 +38,13 @@ const EventPageView = () => {
   const { getUserEvent } = useGetUserEvent(params?.id);
   // console.log(getUserEvent, "getUserEvent");
 
-
   const eventDetails = getUserEvent?.data?.data?.data;
 
-  const userFullName =
-    (eventDetails?.user?.firstName || "") +
-    " " +
-    (eventDetails?.user?.lastName || "");
+  const name =
+    eventDetails?.user?.accountType === ACCOUNT_TYPE.PERSONAL
+      ? `${eventDetails?.user?.firstName ?? ""} ${eventDetails?.user?.lastName ?? ""
+        }`.trim()
+      : `${eventDetails?.user?.businessName ?? ""}`;
 
   const props: UploadProps = {
     name: "image",
@@ -107,22 +107,22 @@ const EventPageView = () => {
     (link: any) => link?.name.toLowerCase() === "facebook"
   );
 
-  const validateFile = (file: { type: string; size: number; }) => {
-    const isAllowedFormat = ['image/png', 'image/jpeg', 'image/gif'].includes(file.type);
+  const validateFile = (file: { type: string; size: number }) => {
+    const isAllowedFormat = ["image/png", "image/jpeg", "image/gif"].includes(
+      file.type
+    );
     const isBelowSizeLimit = file.size / 1024 / 1024 < 10; // Convert file size to MB
 
     if (!isAllowedFormat) {
-      message.error('Only PNG, JPEG, and GIF files are allowed.');
+      message.error("Only PNG, JPEG, and GIF files are allowed.");
     }
 
     if (!isBelowSizeLimit) {
-      message.error('File must be smaller than 10MB.');
+      message.error("File must be smaller than 10MB.");
     }
 
     return isAllowedFormat && isBelowSizeLimit;
   };
-
-
 
   return (
     <EventDetailsComponent>
@@ -132,15 +132,18 @@ const EventPageView = () => {
           <Paragraph
             className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
             content={
-              "Update your event image here by clicking the camera icon (File size should not be more than 10MB)." 
+              "Update your event image here by clicking the camera icon (File size should not be more than 10MB)."
             }
             styles={{ fontWeight: "normal !important" }}
-          /><br />
+          />
+          <br />
         </Space>
         <div className="flex gap-12">
           <div className="relative w-[390px] h-[520px] rounded-[3.125rem] overflow-hidden">
             <Image
-              src={eventDetails?.eventImage || imageUrl}
+              src={
+                eventDetails?.eventImage ? eventDetails.eventImage : placeholder
+              }
               alt="Event Image"
               fill
               style={{ objectFit: "cover" }}
@@ -181,9 +184,9 @@ const EventPageView = () => {
                 ) : (
                   <CameraFilled
                     style={{
-                      fontSize: '24px',
-                      color: '#e20000',
-                      background: 'none',
+                      fontSize: "24px",
+                      color: "#e20000",
+                      background: "none",
                     }}
                   />
                 )}
@@ -206,7 +209,13 @@ const EventPageView = () => {
 
                 {/* Text Section */}
                 <div className="ml-2">
-                  <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                  <div
+                    className="text-sm"
+                    style={{
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
                     Date
                   </div>
                   <div
@@ -214,7 +223,8 @@ const EventPageView = () => {
                       width: "140px",
                       whiteSpace: "normal",
                       wordWrap: "break-word",
-                      fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif"
+                      fontWeight: 300,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
                     }}
                   >
                     {dateFormat(eventDetails?.startDate)} -{" "}
@@ -224,68 +234,85 @@ const EventPageView = () => {
               </div>
               <div className="flex gap-3">
                 <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
-                  <Image
-                    src="/icons/time.svg"
-                    alt=""
-                    height={25}
-                    width={25}
-                  />
+                  <Image src="/icons/time.svg" alt="" height={25} width={25} />
                 </div>
                 <div>
-                  <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                  <div
+                    className="text-sm"
+                    style={{
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
                     Time
-                  </div>
-                  <div style={{ fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
-                    {timeFormat(eventDetails?.startDate)} -{" "}
-                    {timeFormat(eventDetails?.endDate)}
-                  </div>
-                </div>
-              </div>
-              <div className="flex gap-3 items-center">
-                <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
-                  <Image
-                    src="/icons/location.svg"
-                    alt=""
-                    height={25}
-                    width={25}
-                  />
-                </div>
-                <div>
-                  <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
-                    Location
                   </div>
                   <div
                     style={{
-                      maxWidth: "190px", // Adjust this value as needed
-                      wordWrap: "break-word", // Ensures long words wrap to the next line
-                      overflowWrap: "break-word", // Adds further wrapping behavior for better browser support
+                      fontWeight: 300,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
                     }}
                   >
-                    <a
-                      href="https://maps.app.goo.gl/jBmgQ5EFxngj2ffS6"
-                      style={{ color: "#e20000", textDecoration: "none", fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}
-                      target="_blank"
-                    >
-                      {eventDetails?.address}
-                    </a>
+                    {timeFormat(eventDetails?.startDate)} -{" "}
+                    {timeFormat(eventDetails?.endDate)}{" "}
+                    {eventDetails?.timeZone}
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-3">
+                  <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
+                    <Image
+                      src="/icons/location.svg"
+                      alt=""
+                      height={25}
+                      width={25}
+                    />
+                </div>
+                <div>
+                  <div
+                    className="text-sm"
+                    style={{
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
+                    Location 
+                  </div>
+                  <div
+                    style={{
+                      width: "200px",
+                      whiteSpace: "normal",
+                      wordWrap: "break-word",
+                      fontWeight: 300,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
+                    {eventDetails?.address}
                   </div>
                 </div>
               </div>
 
               <div className="flex gap-3">
                 <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
-                  <Image
-                    src="/icons/host.svg"
-                    alt=""
-                    height={25}
-                    width={25}
-                  />
+                  <Image src="/icons/host.svg" alt="" height={25} width={25} />
                 </div>
                 <div>
-                  <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                  <div
+                    className="text-sm"
+                    style={{
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
                     Host
                   </div>
-                  <div style={{ fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}>{userFullName}</div>
+                  <div
+                    style={{
+                      fontWeight: 300,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
+                    {name}
+                  </div>
                 </div>
               </div>
 
@@ -303,7 +330,13 @@ const EventPageView = () => {
                     />
                   </div>
                   <div>
-                    <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                    <div
+                      className="text-sm"
+                      style={{
+                        fontWeight: 600,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
                       Contact Us
                     </div>
                     <div className="flex items-center gap-4 mt-1">
@@ -381,17 +414,43 @@ const EventPageView = () => {
                 <h2 className="text-2xl font-BricolageGrotesqueMedium">
                   {eventDetails?.eventName}
                 </h2>
+                <div className="flex items-center space-x-3">
+                  {/* Wrapper for buttons with tighter spacing */}
+                  <Tooltip
+                    title={"Click to Scan Event Tickets"}
+                  >
+                    <Button
+                      icon={<ScanOutlined className="text-black text-2xl" />}
+                      onClick={() =>
+                        window.open("https://scanner.ostivities.com/", "_blank")
+                      }
+                      className="bg-white border-none p-0"
+                    />
+                  </Tooltip>
+                </div>
               </div>
             </div>
-            {/* <div
-                className="font-BricolageGrotesqueRegular flex-1 h-fit px-1"
-                dangerouslySetInnerHTML={{
-                  __html: eventDetails?.eventDetails as string,
+            <ReadMoreHTML
+              htmlContent={eventDetails?.eventDetails || ""}
+              maxLength={500}
+            />
+
+            {eventDetails?.event_coordinates && (
+              <iframe
+                src={eventDetails?.event_coordinates}
+                width="100%"
+                height="120"
+                style={{
+                  border: 0,
+                  marginTop: "20px",
+                  borderRadius: "0.5rem", // Corner radius
                 }}
-              ></div> */}
-            <ReadMoreHTML htmlContent={eventDetails?.eventDetails || ""} maxLength={500} />
-            <div className="flex justify-center mt-12">
-            </div>
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            )}
+
+            <div className="flex justify-center mt-12"></div>
           </div>
         </div>
       </Space>

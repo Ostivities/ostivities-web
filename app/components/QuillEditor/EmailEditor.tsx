@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 
 interface EditoProps {
-  initialValue: string;
   onChange: any;
+  initialValue: string;
 }
 
 const ReactQuill = dynamic(() => import("react-quill"), {
@@ -13,32 +13,21 @@ const ReactQuill = dynamic(() => import("react-quill"), {
 });
 
 const EmailEditor = ({
-  initialValue = "",
   onChange,
+  initialValue,
 }: EditoProps): JSX.Element => {
   const [isClient, setIsClient] = useState(false);
   const [value, setValue] = useState(initialValue);
-  // "image", "video"
+  // "image", "video", "formula", "link", "code-block", "clean", "table"
+
+
 
   const toolbarOptions = [
-    ["bold", "italic", "underline", "strike"],
-    ["blockquote", "code-block"],
-    ["link", "formula"],
-
+    ["bold", "italic", "underline"],
+    ["blockquote"],
     [{ header: 1 }, { header: 2 }],
-    [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
-    [{ script: "sub" }, { script: "super" }],
-    [{ indent: "-1" }, { indent: "+1" }],
-    [{ direction: "rtl" }],
-
-    [{ size: ["small", false, "large", "huge"] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-    [{ color: [] }, { background: [] }],
-    [{ font: [] }],
+    [{ list: "ordered" }, { list: "bullet" }],
     [{ align: [] }],
-
-    ["clean"],
   ];
 
   useEffect(() => {
@@ -61,7 +50,8 @@ const EmailEditor = ({
   return (
     <React.Fragment>
       {isClient && (
-        <ReactQuill
+        <ReactQuill 
+          placeholder="Enter details!"
           theme="snow"
           value={value}
           onChange={handleChange}

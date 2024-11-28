@@ -16,6 +16,8 @@ import { dateFormat, timeFormat } from "../../../../utils/helper";
 import Link from "next/link";
 import { PUBLISH_TYPE } from "@/app/utils/enums";
 import useFetch from "@/app/components/forms/create-events/auth";
+import ReadMoreHTML from "@/app/components/ReadMoreHTML";
+import placeholder from "@/public/placeholder.svg";
 
 export default function PublishEvent(): JSX.Element {
   // const { isLoggedIn } = useFetch();
@@ -32,6 +34,8 @@ export default function PublishEvent(): JSX.Element {
     "stage_one",
     "stage_two",
     "stage_three",
+    "mapSrc",
+    "profileData",
   ]);
   const pathname = usePathname();
   const [imageUrl, setImageUrl] = useState<string>("/images/emptyimage2.png");
@@ -42,9 +46,9 @@ export default function PublishEvent(): JSX.Element {
   const { addEventToDiscovery } = useAddEventToDiscovery();
   const { enableEventRegistration } = useEnableEventRegistration();
   const userFullName =
-    profile?.data?.data?.data?.firstName +
+    cookies?.profileData?.firstName +
     " " +
-    profile?.data?.data?.data?.lastName;
+    cookies?.profileData?.lastName;
 
   const { getUserEvent } = useGetUserEvent(params?.id || cookies.event_id);
   const eventDetails = getUserEvent?.data?.data?.data;
@@ -113,7 +117,7 @@ export default function PublishEvent(): JSX.Element {
           <div className="flex gap-12">
             <div className="relative w-[400px] h-[550px] rounded-[3.125rem] overflow-hidden">
               <Image
-                src={eventDetails?.eventImage || imageUrl}
+                src={eventDetails?.eventImage ? eventDetails.eventImage : placeholder}
                 alt="Event Image"
                 fill
                 style={{ objectFit: "cover" }}
@@ -186,19 +190,15 @@ export default function PublishEvent(): JSX.Element {
                       Location
                     </div>
                     <div
-                      style={{
-                        maxWidth: "190px", // Adjust this value as needed
-                        wordWrap: "break-word", // Ensures long words wrap to the next line
-                        overflowWrap: "break-word", // Adds further wrapping behavior for better browser support
+                       style={{
+                        width: "190px",
+                        whiteSpace: "normal",
+                        wordWrap: "break-word",
+                        fontWeight: 300,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
                       }}
                     >
-                      <a
-                        href="https://maps.app.goo.gl/jBmgQ5EFxngj2ffS6"
-                        style={{ color: "#e20000", textDecoration: "none", fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}
-                        target="_blank"
-                      >
                         {eventDetails?.address}
-                      </a>
                     </div>
                   </div>
                 </div>
@@ -314,21 +314,30 @@ export default function PublishEvent(): JSX.Element {
                   </h2>
                 </div>
               </div>
-              <div
-                className="font-BricolageGrotesqueRegular flex-1 h-fit px-1"
-                dangerouslySetInnerHTML={{
-                  __html: eventDetails?.eventDetails as string,
-                }}
-              ></div>
-              <div className="flex justify-center mt-12">
+              <ReadMoreHTML
+                  htmlContent={eventDetails?.eventDetails || ""}
+                  maxLength={250}
+                />
+                <iframe
+                  src={cookies?.mapSrc}
+                  width="100%"
+                  height="120"
+                  style={{ border: 0, marginTop: "20px" }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+          <div className="flex justify-center mt-12">
                 <Button
                   type="primary"
-                  size={"large"}
-                  className="w-full rounded-full bg-OWANBE_PRY px-24 py-3 text-white text-l font-bold"
+                  
+                  className="primary-btn w-full"
                   style={{
                     borderRadius: "25px",
                     fontFamily: "BricolageGrotesqueMedium",
                     float: "right",
+                    height: "50px", // Adjust height as needed
+                    fontSize: "16px", // Increase text size
+                    border: "none", // Remove border if needed
                   }}
                   loading={publishEvent.isPending}
                   onClick={handlePublishEvent}

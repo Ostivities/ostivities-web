@@ -25,10 +25,13 @@ function OwanbeWebLayout({
 
       {/* Main content with top margin to avoid overlap with fixed header */}
       <main
-        className={`min-h-screen pt-[90px] px-0 sm:px-0 lg:px-6 w-full ${className} max-w-full sm:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl mx-auto`}
-      >
-        {children}
-      </main>
+ className={`min-h-screen pt-[90px] px-0 w-full ${className}`}
+>
+  {/* Other children */}
+  <div className="max-w-full sm:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl mx-auto">
+    {children}
+  </div>
+</main>
 
       {/* Scroll to Top Button */}
       <ScrollToTopButton />
