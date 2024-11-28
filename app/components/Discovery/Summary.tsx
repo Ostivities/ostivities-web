@@ -67,6 +67,7 @@ const Summary = ({
   const [ticketWithDiscount, setTicketWithDiscount] = useState<{
     [key: string]: number;
   }>({});
+  const [isAtPageEnd, setIsAtPageEnd] = useState(false);
   const [discountMessage, setDiscountMessage] = useState("");
   const [totalTicketPrice, setTotalTicketPrice] = useState<number>();
   const [subTotal, setSubTotal] = useState(false);
@@ -83,6 +84,20 @@ const Summary = ({
   useEffect(() => {
     onDiscountApplied && onDiscountApplied(discountApplied);
   }, [discountApplied, onDiscountApplied]);
+
+
+useEffect(() => {
+  const handleScroll = () => {
+    const scrolledToBottom =
+      window.innerHeight + window.scrollY >=
+      document.body.offsetHeight - 10; // Adjust threshold if needed
+    setIsAtPageEnd(scrolledToBottom);
+  };
+
+  window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
+
 
   // useEffect(() => {
   //   const checkDiscountCode = async () => {
@@ -144,8 +159,8 @@ const Summary = ({
 
   return (
     <section className="flex-1">
-      <Heading5 className="text-4xl text-center" content={"Order Summary"} />
-      <section className="mt-14 px-20 h-4/5 border-l border-[#525252]">
+      <Heading5 className="text-4xl text-left md:text-center" content={"Order Summary"} />
+      <section className="mt-7 md:mt-14 md:px-20 h-4/5 border-l md:border-[#525252]">
         <div>
           <h3 className="text-OWANBE_PRY text-lg font-BricolageGrotesqueRegular">
             Event name
@@ -293,7 +308,7 @@ const Summary = ({
               </div>
             </div>
           </div>
-          <div className="flex-center justify-between font-BricolageGrotesqueMedium text-2xl text-OWANBE_PRY my-6">
+          <div className="flex-center justify-between font-BricolageGrotesqueMedium text-2xl text-OWANBE_PRY md:mb-10 mb-28 my-6">
             <div>Total</div>
             <div>
               ₦{""}
@@ -339,7 +354,7 @@ const Summary = ({
             </div>
           )} */}
           {continueBtn && (
-            <div className="flex justify-center mt-12 mb-6 w-full">
+            <div className="continue-btn-container">
               <Button
                 loading={loading}
                 onClick={onClick}
@@ -399,7 +414,7 @@ const Summary = ({
               </Button>{" "}
             </div>
           )}
-          {paymentBtn && (
+          {/* {paymentBtn && (
             <div className="flex justify-center mt-12 mb-6 w-full">
               <button
                 className="primary-btn w-full"
@@ -408,7 +423,7 @@ const Summary = ({
                 Checkout
               </button>
             </div>
-          )}
+          )} */}
           {isModalOpen && (
             <PaymentSuccess
               open={isModalOpen}

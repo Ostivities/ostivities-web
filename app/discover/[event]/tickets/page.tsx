@@ -87,12 +87,41 @@ const TicketsSelection = () => {
     </div>
   );
 
-  let ticketCounter = 0;
+  // useEffect(() => {
+  //   // Update the URL and history state when `currentPage` changes
+  //   const updateHistory = () => {
+  //     const url = `/discover/${params?.event}/tickets?page=${currentPage}`;
+  //     if (currentPage !== "tickets") {
+  //       window.history.pushState({ page: currentPage }, "", url);
+  //     }
+  //   };
 
-  const tiral = () => {
-    console.log("here");
-  };
+  //   updateHistory();
+  // }, [currentPage, params?.event]); // Only re-run when currentPage or event changes
 
+  // useEffect(() => {
+  //   const handlePopState = (event: PopStateEvent) => {
+  //     const page = event.state?.page;
+
+  //     if (page) {
+  //       // If `page` exists in state, update `currentPage`
+  //       setCurrentPage(page as "tickets" | "contactform" | "payment");
+  //     } else {
+  //       // If no `page` exists and `currentPage` is `tickets`, navigate back to the parent route
+  //       if (currentPage === "tickets") {
+  //         router.push(`/discover/${params?.event}`);
+  //       } else {
+  //         setCurrentPage("tickets"); // Default to `tickets` if undefined
+  //       }
+  //     }
+  //   };
+
+  //   window.addEventListener("popstate", handlePopState);
+
+  //   return () => {
+  //     window.removeEventListener("popstate", handlePopState);
+  //   };
+  // }, [currentPage, router, params?.event]); 
   // const ticketEnt = ticketEntity === TICKET_ENTITY.SINGLE ? "Single Ticket" : "Collective Ticket";
 
   // State to manage selected ticket counts
@@ -121,7 +150,7 @@ const TicketsSelection = () => {
     }[]
   >([]);
 
-  console.log(ticketDetails, "ticketDetails");
+  // console.log(ticketDetails, "ticketDetails");
 
   useEffect(() => {
     // When ticketData is updated, re-initialize selectedTickets
@@ -499,7 +528,7 @@ const TicketsSelection = () => {
   }, [ticketDetails]);
 
   useEffect(() => {
-    console.log(allInfo, "Updated allInfo");
+    // console.log(allInfo, "Updated allInfo");
   }, [allInfo]);
 
   const [loading, setLoading] = useState(false);
@@ -507,7 +536,7 @@ const TicketsSelection = () => {
     // console.log(values);
     const validateFields = await form.validateFields();
     if (!validateFields) {
-      console.log("Form is not valid");
+      // console.log("Form is not valid");
       return;
     }
     // return
@@ -640,10 +669,10 @@ const TicketsSelection = () => {
       try {
         // Run validation and set `isFormValid` based on result
         await form.validateFields();
-        console.log("Valid values");
+        // console.log("Valid values");
         setIsFormValid(true);
       } catch (errorInfo) {
-        console.log(errorInfo, "Validation error info");
+        // console.log(errorInfo, "Validation error info");
         setIsFormValid(false);
       }
     };
@@ -680,10 +709,10 @@ const TicketsSelection = () => {
 
   const { minutes, remainingSeconds, timer } = useTimer();
   useEffect(() => {
-    if (minutes === 0 && remainingSeconds === 0) {
+    if (minutes === 0 && remainingSeconds === 0 && successModal === false) {
       setModal(true);
     }
-  }, [minutes, remainingSeconds]);
+  }, [minutes, remainingSeconds, successModal]);
 
   const [termsAndCondition, setTermsAndCondition] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<
@@ -693,12 +722,12 @@ const TicketsSelection = () => {
   // console.log(termsAndCondition, paymentMethod);
   return (
     <DashboardLayout title={title} isLoggedIn>
-      <section className="flex gap-12">
+      <section className="flex flex-col md:flex-row gap-6 md:gap-12">
         {currentPage === "tickets" ? (
-          <section className="flex-1 pr-1 pl-3 pb-4 scrollable-content overflow-y-auto scroll-smooth h-full">
-            <div className="flex-center justify-between">
+          <section className="flex-1 pb-4 scrollable-content overflow-y-auto scroll-smooth h-full">
+            <div className="flex-center gap-10 sm:gap-10 md:gap-20">
               <div className="flex-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
+                <div className="min-w-12 min-h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
                   <Image
                     src="/icons/calendar.svg"
                     alt=""
@@ -727,7 +756,7 @@ const TicketsSelection = () => {
                 </div>
               </div>
               <div className="flex-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
+                <div className="min-w-12 min-h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
                   <Image src="/icons/time.svg" alt="" height={25} width={25} />
                 </div>
                 <div>
@@ -747,8 +776,7 @@ const TicketsSelection = () => {
                       fontFamily: "'Bricolage Grotesque', sans-serif",
                     }}
                   >
-                    {timeFormat(eventDetails?.startDate)} -{" "}
-                    {timeFormat(eventDetails?.endDate)} {eventDetails?.timeZone}
+                    {timeFormat(eventDetails?.startDate)} {eventDetails?.timeZone}
                   </span>
                 </div>
               </div>
@@ -939,18 +967,18 @@ const TicketsSelection = () => {
                           style={{ marginBlockStart: "10px" }}
                         >
                           <button
-                            className="w-8 h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
+                            className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
                             onClick={() => handleDecrement(ticket?.id)}
                             disabled={selectedTickets[ticket?.id] === 0}
                             style={{ backgroundColor: "#FADEDE" }}
                           >
                             -
                           </button>
-                          <span className="text-lg mx-2">
+                          <span className="text-base sm:text-lg mx-2">
                             {selectedTickets[ticket?.id] || 0}
                           </span>
                           <button
-                            className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
+                            className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center rounded-full text-lg font-bold"
                             onClick={() => handleIncrement(ticket?.id)}
                             disabled={
                               selectedTickets[ticket?.id] ===
@@ -1158,18 +1186,18 @@ const TicketsSelection = () => {
                           style={{ marginBlockStart: "10px" }}
                         >
                           <button
-                            className="w-8 h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
+                            className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
                             onClick={() => handleDecrement(ticket?.id)}
                             disabled={selectedTickets[ticket?.id] === 0}
                             style={{ backgroundColor: "#FADEDE" }}
                           >
                             -
                           </button>
-                          <span className="text-lg mx-2">
+                          <span className="text-base sm:text-lg mx-2">
                             {selectedTickets[ticket?.id] || 0}
                           </span>
                           <button
-                            className="w-8 h-8 flex-center justify-center rounded-full text-lg font-bold"
+                            className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center rounded-full text-lg font-bold"
                             onClick={() => handleIncrement(ticket?.id)}
                             disabled={selectedTickets[ticket?.id] === 1}
                             style={{
@@ -1193,13 +1221,8 @@ const TicketsSelection = () => {
             </div>
           </section>
         ) : currentPage === "contactform" ? (
-          // <ContactForm
-          //  ticketDetails={ticketDetails}
-          //  onSubmit={handleSubmit}
-          //  onExternalFinishTrigger={(trigger) => setExternalTrigger(() => trigger)}
-          // />
           <section className="flex-1 pr-1 pl-3 pb-4 scrollable-content overflow-y-auto scroll-smooth h-full">
-            <div className="bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem] w-[570px]">
+            <div className="bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem] w-full">
               We have reserved your tickets, please complete checkout within{" "}
               <span className="text-OWANBE_PRY text-s font-BricolageGrotesqueRegular">
                 {timer}
@@ -1360,7 +1383,6 @@ const TicketsSelection = () => {
                     placeholder="Enter Phone Number"
                   />
                 </Form.Item>
-                <br />
                 {/* {ticketDetails?.map((ticketDetail, ticketIndex) => {
                 return ticketDetail?.additionalInformation?.map(
                   (
@@ -1448,9 +1470,9 @@ const TicketsSelection = () => {
                         </>
                       )}
                     </Form.List>
+                    <br />
                   </>
                 )}
-                <br />
                 {/* {ticketDetails?.map((ticketDetail, ticketIndex) => {
                   return (
                     ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE && (
@@ -1634,19 +1656,18 @@ const TicketsSelection = () => {
           </section>
         ) : (
           <section className="flex-1">
-            <div className=" bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem]">
+            <div className="w-full bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem]">
               We have reserved your tickets please complete checkout within{" "}
               <span className=" text-OWANBE_PRY text-s font-BricolageGrotesqueRegular">
                 {timer}
               </span>
               minutes to secure your tickets.
             </div>
-            <div className="pr-full mt-16">
-              <Radio.Group>
-                <div className="flex flex-col gap-8">
+            <div className="pr-full w-full mt-16">
+              <Radio.Group className="w-full">
+                <div className="flex flex-col w-full gap-8">
                   <div
-                    className="card-shadow flex justify-between items-center"
-                    style={{ width: "620px" }}
+                    className="card-shadow w-full flex justify-between items-center"
                   >
                     {/* Left Section */}
                     <div className="flex gap-3 items-start">

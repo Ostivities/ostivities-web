@@ -2,10 +2,13 @@
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import { Heading5, Label } from "@/app/components/typography/Typography";
 import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
-import { SalesDataType,ExhibitionDataType, PaymentDataType } from "@/app/utils/interface";
+import { SalesDataType,ExhibitionDataType, PaymentDataType, ITicketDetails } from "@/app/utils/interface";
 import { Button, Input, Space, Table, Tabs } from "antd";
 import { FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
 import jsPDF from "jspdf";
+import { useGetUserEvent } from "@/app/hooks/event/event.hook";
+import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
+import { useParams } from "next/navigation";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
 import React, { useState } from "react";
@@ -19,7 +22,10 @@ const EventSales = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-
+  const params = useParams<{ id: string }>();
+  const { getUserEvent } = useGetUserEvent(params?.id);
+  const { getTickets } = useGetEventTickets(params?.id);
+  const ticketData = getTickets?.data?.data?.data;
   const [paymentSearchText, setPaymentSearchText] = useState("");
   const [selectedPaymentRowKeys, setSelectedPaymentRowKeys] = useState<React.Key[]>([]);
   const [currentPaymentPage, setCurrentPaymentPage] = useState(1);
@@ -30,22 +36,45 @@ const EventSales = () => {
   const [currentSpacePage, setCurrentSpacePage] = useState(1);
   const [spacePageSize, setSpacePageSize] = useState(10);
 
-  const data: SalesDataType[] = Array.from({ length: 50 }, (_, index) => ({
-    key: `${index + 1}`,
-    eventName: getRandomEventName(),
-    eventType: `Type ${index + 1}`,
-    ticketSold: Math.floor(Math.random() * 100),
-    sales: Math.floor(Math.random() * 100),
-    revenue: Math.floor(Math.random() * 10000),
-    fees: Math.floor(Math.random() * 1000),
-    dateCreated: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
-    chargeBearer: ["Guest", "Organizer"][Math.floor(Math.random() * 2)],
-    status: ["Active", "Closed", "Pending"][Math.floor(Math.random() * 3)] as
-      | "Active"
-      | "Closed"
-      | "Pending",
-    id: generateRandomString(10),
-  }));
+  console.log(getUserEvent, "getuserevent")
+
+  const eventDetails = getUserEvent?.data?.data?.data;
+  console.log(eventDetails, "eventdetails")
+
+  const totalTicketSold = eventDetails?.total_ticket_sold;
+
+  const totalRevenue = eventDetails?.total_sales_revenue;
+
+  const data:  ITicketDetails[] = ticketData?.map((ticket: ITicketDetails) => {
+    return {
+      key: ticket?.id,
+      ticketName: ticket?.ticketName,
+      ticketSold: ticket?.ticket_sold,
+      sales: ticket?.ticket_sales_revenue,
+      revenue: ticket?.ticket_net_sales_revenue,
+      fees: ticket?.fees,
+      dateCreated: ticket?.createdAt,
+      guestAsChargeBearer: ticket?.guestAsChargeBearer === true ? "Guest" : "Organizer",
+      id: ticket?.id,
+    };
+  })
+
+  // const data: SalesDataType[] = Array.from({ length: 50 }, (_, index) => ({
+  //   key: `${index + 1}`,
+  //   eventName: getRandomEventName(),
+  //   eventType: `Type ${index + 1}`,
+  //   ticketSold: Math.floor(Math.random() * 100),
+  //   sales: Math.floor(Math.random() * 100),
+  //   revenue: Math.floor(Math.random() * 10000),
+  //   fees: Math.floor(Math.random() * 1000),
+  //   dateCreated: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
+  //   chargeBearer: ["Guest", "Organizer"][Math.floor(Math.random() * 2)],
+  //   status: ["Active", "Closed", "Pending"][Math.floor(Math.random() * 3)] as
+  //     | "Active"
+  //     | "Closed"
+  //     | "Pending",
+  //   id: generateRandomString(10),
+  // }));
 
   const paymentData: PaymentDataType[] = Array.from({ length: 20 }, (_, index) => ({
     key: `${index + 1}`,
@@ -70,7 +99,7 @@ const EventSales = () => {
   })).slice(0, 1);
 
 
-  const columns: ColumnsType<SalesDataType> = [
+  const columns: ColumnsType<ITicketDetails> = [
     {
       title: (
         <Label
@@ -78,8 +107,8 @@ const EventSales = () => {
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
-      dataIndex: "eventName",
-      sorter: (a, b) => a.eventName.localeCompare(b.eventName),
+      dataIndex: "ticketName",
+      // sorter: (a, b) => a.eventName.localeCompare(b.eventName),
     },
     {
       title: (
@@ -99,7 +128,7 @@ const EventSales = () => {
         />
       ),
       dataIndex: "revenue",
-      sorter: (a, b) => (a.revenue ?? 0) - (b.revenue ?? 0),
+      // sorter: (a, b) => (a.revenue ?? 0) - (b.revenue ?? 0),
       render: text => `₦${text.toLocaleString()}`,
     },
     {
@@ -120,13 +149,13 @@ const EventSales = () => {
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
-      dataIndex: "chargeBearer",
+      dataIndex: "guestAsChargeBearer",
       filters: [
         { text: "Guest", value: "Guest" },
         { text: "Organizer", value: "Organizer" },
       ],
-      onFilter: (value, record) => record.chargeBearer.includes(value as string), // Ensure property name matches
-      sorter: (a, b) => a.chargeBearer.localeCompare(b.chargeBearer), // Ensure property name matches
+      // onFilter: (value, record) => record.guestAsChargeBearer?.includes(value as string), // Ensure property name matches
+      // sorter: (a, b) => a.guestAsChargeBearer?.localeCompare(b.guestAsChargeBearer), // Ensure property name matches
     },
     {
       title: (
@@ -136,7 +165,7 @@ const EventSales = () => {
         />
       ),
       dataIndex: "sales",
-      sorter: (a, b) => (a.sales ?? 0) - (b.sales ?? 0),
+      // sorter: (a, b) => (a.sales ?? 0) - (b.sales ?? 0),
       render: text => `₦${text.toLocaleString()}`,
     },
   ];
@@ -366,8 +395,8 @@ const EventSales = () => {
     setPaymentSearchText(e.target.value);
   };
 
-  const filteredData = data.filter(item =>
-    item.eventName.toLowerCase().includes(searchText.toLowerCase())
+  const filteredData = data?.filter(item =>
+    item?.ticketName?.toLowerCase()?.includes(searchText?.toLowerCase())
   );
   
   const filteredspaceData = exhibitionData.filter(item =>
@@ -402,7 +431,7 @@ const inactiveTabStyle = {
   
   
   return (
-    <EventDetailsComponent>
+    <EventDetailsComponent totalTickets={totalTicketSold} totalRevenue={totalRevenue}>
       <Space direction="vertical" size="middle" className="w-full">
         <Tabs defaultActiveKey="1" className="w-full" onChange={setActiveKey}>
           <TabPane
@@ -427,7 +456,7 @@ const inactiveTabStyle = {
                     type="default"
                     className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
                     style={{ borderRadius: 15, marginRight: 8 }}
-                    onClick={() => handleExport("excel", data.filter((item) => selectedRowKeys.includes(item.key)), columns, "TicketSales")}
+                    onClick={() => handleExport("excel", data.filter((item) => item?.key && selectedRowKeys.includes(item.key)), columns, "TicketSales")}
                   >
                     <FileExcelOutlined /> 
                   </Button>
@@ -435,7 +464,7 @@ const inactiveTabStyle = {
                     type="default"
                     className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
                     style={{ borderRadius: 15 }}
-                    onClick={() => handleExport("pdf", data.filter((item) => selectedRowKeys.includes(item.key)), columns, "TicketSales")}
+                    onClick={() => handleExport("pdf", data.filter((item) => item?.key && selectedRowKeys.includes(item?.key)), columns, "TicketSales")}
                   >
                     <FilePdfOutlined />
                   </Button>
@@ -444,6 +473,7 @@ const inactiveTabStyle = {
             </Space>
             <br /><br />
             <Table
+              loading={getTickets?.isLoading}
               rowSelection={{
                 selectedRowKeys,
                 onChange: (keys) => setSelectedRowKeys(keys),
@@ -454,7 +484,7 @@ const inactiveTabStyle = {
               pagination={{
                 current: currentPage,
                 pageSize: pageSize,
-                total: filteredData.length,
+                total: filteredData?.length,
                 onChange: (page, size) => {
                   setCurrentPage(page);
                   setPageSize(size);

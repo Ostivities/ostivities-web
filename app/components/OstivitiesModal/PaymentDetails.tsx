@@ -4,12 +4,20 @@ import { IModal } from "@/app/utils/interface";
 import { Button, Form, FormProps, Input, Modal, Select, Space } from "antd";
 import React, { useState } from "react";
 import { Heading5, Label } from "../typography/Typography";
+import {
+  useCreateSettlementAccount,
+  useGetSettlementAccount,
+  useGetAllBanks,
+  useVerifyBankAccount,
+} from "@/app/hooks/settlement/settlement.hook";
 
 interface FieldType {}
 
 const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
   const [form] = Form.useForm();
   const [accountName, setAccountName] = useState("");
+  const { getAllBanks } = useGetAllBanks();
+  // const { getSettlementAccount } = useGetSettlementAccount("1");
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     return values;
@@ -26,7 +34,10 @@ const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
     "bank2-654321": "Jane Smith",
   };
 
-  const fetchAccountName = (bankName: string, accountNumber: string): string => {
+  const fetchAccountName = (
+    bankName: string,
+    accountNumber: string
+  ): string => {
     const key = `${bankName}-${accountNumber}`;
     return accountNames[key] || "";
   };
@@ -39,7 +50,9 @@ const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
     }
   };
 
-  const handleAccountNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAccountNumberChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const bankName = form.getFieldValue("bankName");
     if (bankName) {
       const fetchedAccountName = fetchAccountName(bankName, e.target.value);
@@ -52,7 +65,7 @@ const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
       title={
         <>
           <Heading5
-            content={"Add Account Details"} 
+            content={"Add Account Details"}
             className=""
             styles={{ fontSize: "16px" }} // Adjust font size here
           />
@@ -99,10 +112,16 @@ const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
           name={"accountNumber"}
           label={
             <>
-              <Label content="Account Number" className="" htmlFor="accountNumber" />
+              <Label
+                content="Account Number"
+                className=""
+                htmlFor="accountNumber"
+              />
             </>
           }
-          rules={[{ required: true, message: "Please input your account number" }]}
+          rules={[
+            { required: true, message: "Please input your account number" },
+          ]}
           style={{ marginBottom: "12px" }} // Adjust spacing here
         >
           <Input
@@ -118,10 +137,16 @@ const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
           name={"accountName"}
           label={
             <>
-              <Label content="Account Name" className="" htmlFor="accountName" />
+              <Label
+                content="Account Name"
+                className=""
+                htmlFor="accountName"
+              />
             </>
           }
-          rules={[{ required: false, message: "Please input your account name" }]}
+          rules={[
+            { required: false, message: "Please input your account name" },
+          ]}
           style={{ marginBottom: "12px" }} // Adjust spacing here
         >
           <Input

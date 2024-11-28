@@ -85,7 +85,7 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
     <div className="fixed inset-0 bg-black/20 grid place-items-center z-20">
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white rounded-2xl px-12 py-12 lg:min-w-[40rem]"
+        className="bg-white rounded-2xl p-4 max-w-[40rem] md:p-12 lg:min-w-[40rem]"
       >
         <div className="flex justify-center">
           <div className="bg-OWANBE_NOTIFICATION rounded-full w-[4.5rem] h-[4.5rem] grid place-items-center">
@@ -101,12 +101,12 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
           <h2 className="font-bricolage-grotesque font-bold text-xl">
             Success!
           </h2>
-          <p className="font-bricolage-grotesque font-semibold text-OWAMBE_FADE_TEXT w-[35rem] mx-auto mt-5">
+          <p className="font-bricolage-grotesque font-semibold text-OWAMBE_FADE_TEXT mx-auto mt-5">
             Your order was successful. We&apos;ve also sent a copy to your email address. If you do not receive your ticket,
-            please email us at <a href="mailto:sales&#64;ostivities.com" style={{ color: "#e20000", textDecoration: "none" }} >(Host email will be here)</a>.
+            please email us at <a href={`mailto:${eventDetails?.user?.email}`} style={{ color: "#e20000", textDecoration: "none" }}>{eventDetails?.user?.email}</a>
           </p>
           <div className="flex flex-col items-center space-y-4 mt-10">
-            <div className="flex items-center space-x-4 w-[20rem]">
+          <div className="flex items-center space-x-4 w-[20rem]">
               <button
                 onClick={() => pdfGenerator(payload)}
                 className="primary-btn font-normal text-base flex-1 whitespace-nowrap px-3 py-2"

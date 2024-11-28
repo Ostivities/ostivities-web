@@ -216,7 +216,7 @@ function DashboardLayout({
   //     setProfileData(localStorage.getItem('profileData'));
   //   }
   //   }, []);
-  console.log("profileData", profileData);
+  // console.log("profileData", profileData);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -258,7 +258,7 @@ function DashboardLayout({
   const accountType =
     profile?.data?.data?.data?.accountType || profileData?.accountType;
 
-  console.log(accountType, "accountType");
+  // console.log(accountType, "accountType");
 
   const userName =
     accountType === ACCOUNT_TYPE.PERSONAL
@@ -269,7 +269,7 @@ function DashboardLayout({
       : profile?.data?.data?.data?.businessName ||
         profileData?.businessName ||
         "";
-  console.log(userName, "userName");
+  // console.log(userName, "userName");
   // setCookie("user_fullname", userName)
   const avatarName =
     accountType === ACCOUNT_TYPE.PERSONAL
@@ -305,7 +305,7 @@ function DashboardLayout({
   const showNavLinks = !pathCheck && pathname !== "/discover";
 
   const toggleSidebar = () => {
-    console.log(collapsed);
+    // console.log(collapsed);
     setCollapsed((prevValues) => !prevValues);
   };
 
