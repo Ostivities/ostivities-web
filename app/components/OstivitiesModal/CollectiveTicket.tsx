@@ -53,7 +53,11 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
-  const [cookies, setCookies] = useCookies(["ticket_id", "stage_three", "profileData"]);
+  const [cookies, setCookies] = useCookies([
+    "ticket_id",
+    "stage_three",
+    "profileData",
+  ]);
 
   const pathname = usePathname();
   // console.log(pathname)
@@ -67,7 +71,8 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
   // console.log(groupPrice, groupSize);
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
-    const { ticketQuestions, ticketType, ...rest } = values;
+    const { ticketQuestions, ticketType, guestAsChargeBearer, ...rest } =
+      values;
     // return console.log(values)
     setLoading(true);
     if (
@@ -98,6 +103,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
         user: cookies?.profileData?.id,
         groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
         ticketType,
+        guestAsChargeBearer: guestAsChargeBearer,
         purchaseLimit: 1,
       };
       // console.log(payload, "kk");
@@ -132,6 +138,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
         user: cookies?.profileData?.id,
         groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
         ticketType,
+        guestAsChargeBearer: guestAsChargeBearer,
         purchaseLimit: 1,
       };
       if (payload) {
@@ -385,7 +392,6 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
       <Form.Item className="mb-20 w-full mt-3">
         <EmailEditor initialValue="" onChange={handleEditorChange} />
       </Form.Item>
-      
 
       <Form.Item
         style={{

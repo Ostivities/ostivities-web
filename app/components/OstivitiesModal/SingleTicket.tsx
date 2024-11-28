@@ -79,7 +79,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
   }, [guestAsChargeBearer]);
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
-    const { ticketQuestions, ...rest } = values;
+    const { ticketQuestions, guestAsChargeBearer, ...rest } = values;
     console.log(ticketQuestions, "ticketQuestions");
     setLoading(true);
     if (
@@ -105,6 +105,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
         event: params?.id,
         ticketEntity: TICKET_ENTITY.SINGLE,
         user: cookies?.profileData?.id,
+        guestAsChargeBearer: guestAsChargeBearer
       };
       // return console.log(payload, "kk");
 
@@ -131,6 +132,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
         event: params?.id,
         ticketEntity: TICKET_ENTITY.SINGLE,
         user: cookies?.profileData?.id,
+        guestAsChargeBearer: guestAsChargeBearer
       };
       if (payload) {
         const response = await createTicket.mutateAsync(payload);
