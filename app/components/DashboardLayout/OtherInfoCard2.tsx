@@ -18,7 +18,7 @@ interface PropsI {
 }
 
 const InfoCardM: React.FC<PropsI> = ({
-  title,
+  title, 
   about,
   status,
   image,

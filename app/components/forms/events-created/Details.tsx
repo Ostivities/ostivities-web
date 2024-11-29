@@ -241,7 +241,6 @@ const EventsCreatedTable: React.FC = () => {
       "Event Type": item.eventType || "N/A",  // Ensure 'eventDetails' exists in the data
       "Ticket Sold": item.ticketSold || 0,          // Ensure 'ticketSold' exists in the data
       "Date Created": item.createdAt ? dateFormat(item.createdAt) : "N/A",
-      "End Date": item.endDate ? dateFormat(item.endDate): "N/A",
       "Status": item.status || "N/A",
     }));
   

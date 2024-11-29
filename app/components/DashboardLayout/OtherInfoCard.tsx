@@ -46,7 +46,7 @@ const InfoCard: React.FC<PropsI> = ({
         </div>
         <div className="absolute bottom-0 left-0 px-5 py-5">
           <h3 className={titleClass}>{title}</h3>
-          <div className={`flex-center gap-2 mt-1 ${aboutClass}`}>
+          <div className={`flex-center gap-1 mt-1 ${aboutClass}`}>
             <Image src="/icons/folder.svg" alt="" height={18} width={18} />
             <span className="text-xs">{about}</span>
           </div>
