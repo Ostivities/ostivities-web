@@ -51,38 +51,9 @@ const DeleteEvent = ({
           className="pb-7 mx-auto text-center"
         >
           {actionType === "delete" &&
-        (data?.some((event: any) => event?.eventStatus === "ACTIVE") ? (
-            <Button
-              type={"primary"}
-              size={"large"}
-              className="font-BricolageGrotesqueSemiBold cursor-pointer font-bold rounded-2xl mx-auto place-self-center w-2/3"
-              style={{
-                borderRadius: "25px",
-                fontFamily: "BricolageGrotesqueMedium",
-              }}
-              onClick={onCancel}
-            >
-              Close
-            </Button>
-          ) : (
-            <>
-              {actionType === "delete" && (
-                <Button
-                  type={"primary"}
-                  size="large"
-                  className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold rounded-2xl mx-auto place-self-center w-2/3"
-                  style={{
-                    borderRadius: "25px",
-                    fontFamily: "BricolageGrotesqueMedium",
-                  }}
-                  onClick={handleDeleteClick}
-                  loading={deleteEvent.isPending}
-                >
-                  Yes, delete
-                </Button>
-              )}
+            (data?.some((event: any) => event?.eventStatus === "ACTIVE") ? (
               <Button
-                type={"default"}
+                type={"primary"}
                 size={"large"}
                 className="font-BricolageGrotesqueSemiBold cursor-pointer font-bold rounded-2xl mx-auto place-self-center w-2/3"
                 style={{
@@ -91,10 +62,39 @@ const DeleteEvent = ({
                 }}
                 onClick={onCancel}
               >
-                No, cancel
+                Close
               </Button>
-            </>
-          ))}
+            ) : (
+              <>
+                {actionType === "delete" && (
+                  <Button
+                    type={"primary"}
+                    size="large"
+                    className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold rounded-2xl mx-auto place-self-center w-2/3"
+                    style={{
+                      borderRadius: "25px",
+                      fontFamily: "BricolageGrotesqueMedium",
+                    }}
+                    onClick={handleDeleteClick}
+                    loading={deleteEvent.isPending}
+                  >
+                    Yes, delete
+                  </Button>
+                )}
+                <Button
+                  type={"default"}
+                  size={"large"}
+                  className="font-BricolageGrotesqueSemiBold cursor-pointer font-bold rounded-2xl mx-auto place-self-center w-2/3"
+                  style={{
+                    borderRadius: "25px",
+                    fontFamily: "BricolageGrotesqueMedium",
+                  }}
+                  onClick={onCancel}
+                >
+                  No, cancel
+                </Button>
+              </>
+            ))}
         </Space>
       }
     >

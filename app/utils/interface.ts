@@ -422,7 +422,8 @@ export interface ITicketDetails {
   ticketStock: string
   ticketType: string
   revenue: string;
-  createdAt: string
+  createdAt: string;
+  ticket_available: number;
   discount?: {
     createdAt: string
     discountCode: string 
