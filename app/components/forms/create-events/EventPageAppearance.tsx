@@ -14,7 +14,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Heading5, Paragraph } from "../../typography/Typography";
 import { GET_EVENT } from "@/app/utils/constants";
 import ReadMoreHTML from "@/app/components/ReadMoreHTML";
-import placeholder from "@/public/placeholder.svg";
+import placeholder from "@/public/emptyimage2.png";
 import { ACCOUNT_TYPE, EVENT_INFO, EXHIBITION_SPACE } from "@/app/utils/enums";
 
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;

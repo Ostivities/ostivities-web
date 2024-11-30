@@ -398,7 +398,7 @@ const EventDetail = () => {
           <EventPageLoader />
         ) : (
           <div className="hidden min-[900px]:flex gap-10 md:flex-row">
-            <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden bg-white card-shadow ">
+            <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden bg-white" style={{ boxShadow: '0 12px 24px rgba(0, 0, 0, 0.1)' }}>
               <Image
                 src={
                   eventDetails?.eventImage
@@ -411,7 +411,6 @@ const EventDetail = () => {
                 className=""
               />
             </div>
-
             <div className="py-8" style={{ maxWidth: "21%" }}>
               <Heading5 className="text-2xl" content={"About this event"} />
               <div className="mt-8 flex flex-col gap-8">
