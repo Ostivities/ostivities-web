@@ -61,17 +61,19 @@ const EventTickets = () => {
   const [selectedTicketEntity, setSelectedTicketEntity] = useState<
     string | undefined
   >("");
-  const [eventStatus, setEventStatus] = useState<{
-    id: string,
-    eventStatus: number
-  }[]>([]);
+  const [eventStatus, setEventStatus] = useState<
+    {
+      id: string;
+      eventStatus: number;
+    }[]
+  >([]);
   const { getTickets } = useGetEventTickets(params?.id);
   const ticketData = getTickets?.data?.data?.data;
   const { enableEventRegistration } = useEnableEventRegistration();
   const { getUserEvent } = useGetUserEvent(params?.id);
   const eventDetails = getUserEvent?.data?.data?.data;
   // const {id, ...rest} = ticketData;
-  console.log(ticketData, "ticketData")
+  console.log(ticketData, "ticketData");
   // console.log(duplicateData, "duplicateData")
 
   const handleActionSuccess = () => {
@@ -90,9 +92,9 @@ const EventTickets = () => {
         <Button
           type="link"
           className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
-          style={{ 
-            color: ticketData?.ticket_sold > 0 ? "#ccc" : "#000000", 
-            fontFamily: "BricolageGrotesqueRegular"
+          style={{
+            color: ticketData?.ticket_sold > 0 ? "#ccc" : "#000000",
+            fontFamily: "BricolageGrotesqueRegular",
           }}
           onClick={(e) => {
             // console.log(e)
@@ -127,9 +129,9 @@ const EventTickets = () => {
         <Button
           type="link"
           className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
-          style={{ 
-            color: ticketData?.ticket_sold > 0 ? "#ccc" : "#000000", 
-            fontFamily: "BricolageGrotesqueRegular" 
+          style={{
+            color: ticketData?.ticket_sold > 0 ? "#ccc" : "#000000",
+            fontFamily: "BricolageGrotesqueRegular",
           }}
           onClick={() => {
             setIsShown(true);
@@ -177,8 +179,8 @@ const EventTickets = () => {
               "Unlimited"
             ) : (
               <span>
-              {record.ticketSold}/{record.ticketQty}
-            </span>
+                {record?.ticket_available}/{record.ticketQty} Available
+              </span>
             )}
           </>
         );
@@ -285,7 +287,8 @@ const EventTickets = () => {
       ticketQuestions: item?.ticketQuestions,
       groupSize: item?.groupSize,
       groupPrice: item?.groupPrice,
-      ticketSold: item?.ticket_sold
+      ticketSold: item?.ticket_sold,
+      ticket_available: item?.ticket_available,
     };
   });
   // console.log(data, "data")
@@ -343,6 +346,7 @@ const EventTickets = () => {
         }}
         id={selectedTicket}
         ticketEntity={selectedTicketEntity}
+        dataToDelete={eventStatus}
       />
       <DeleteTicket
         open={isShown}
@@ -381,7 +385,9 @@ const EventTickets = () => {
                 />
                 <span
                   className={`font-BricolageGrotesqueMedium font-medium text-sm ${
-                    ticketData?.length === 0 ? "text-gray-400" : "text-OWANBE_DARK"
+                    ticketData?.length === 0
+                      ? "text-gray-400"
+                      : "text-OWANBE_DARK"
                   }`}
                 >
                   {" "}

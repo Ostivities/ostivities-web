@@ -30,7 +30,7 @@ const DeleteTicket = ({
 
   console.log(dataToDelete?.[0]?.event?.eventStatus, "dataToDelete");
   const singleEventStatus = dataToDelete[0]?.eventStatus; // Use optional chaining to avoid errors
-    console.log(singleEventStatus); 
+  console.log(singleEventStatus);
   const handleDuplicateClick = async () => {
     const response = await createTicket.mutateAsync(data);
     console.log(response);
@@ -53,59 +53,61 @@ const DeleteTicket = ({
           style={{ margin: "auto", width: "100%" }}
           className="pb-7 mx-auto text-center"
         >
-          {actionType === "delete" &&
-            (dataToDelete?.[0]?.eventStatus > 0) ? (
-              <Button
-                type={"primary"}
-                size={"large"}
-                className="font-BricolageGrotesqueSemiBold cursor-pointer font-bold rounded-2xl mx-auto place-self-center w-2/3"
-                style={{
-                  borderRadius: "25px",
-                  fontFamily: "BricolageGrotesqueMedium",
-                }}
-                onClick={onCancel}
-              >
-                Close
-              </Button>
-            ) : actionType === "delete" ? (
-              <Button
-                type={"primary"}
-                size="large"
-                className={`font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold rounded-2xl mx-auto place-self-center w-2/3`}
-                style={{
-                  borderRadius: "25px",
-                  fontFamily: "BricolageGrotesqueMedium",
-                }}
-                onClick={handleDeleteClick}
-              >
-                Yes, delete
-              </Button>
-            ) : actionType === "warning" ? (
-              <Button
-                type={"primary"}
-                size="large"
-                className={`font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold rounded-2xl mx-auto place-self-center w-2/3`}
-                style={{
-                  borderRadius: "25px",
-                  fontFamily: "BricolageGrotesqueMedium",
-                }}
-                onClick={handleDuplicateClick}
-              >
-                Yes, duplicate
-              </Button>
-            ) : null}
-          <Button
-            type={"default"}
-            size={"large"}
-            className={`font-BricolageGrotesqueSemiBold  cursor-pointer font-bold  rounded-2xl mx-auto place-self-center w-2/3`}
-            style={{
-              borderRadius: "25px",
-              fontFamily: "BricolageGrotesqueMedium",
-            }}
-            onClick={onCancel}
-          >
-            No, cancel
-          </Button>
+          {actionType === "delete" && dataToDelete?.[0]?.eventStatus > 0 ? (
+            <Button
+              type={"primary"}
+              size={"large"}
+              className="font-BricolageGrotesqueSemiBold cursor-pointer font-bold rounded-2xl mx-auto place-self-center w-2/3"
+              style={{
+                borderRadius: "25px",
+                fontFamily: "BricolageGrotesqueMedium",
+              }}
+              onClick={onCancel}
+            >
+              Close
+            </Button>
+          ) : actionType === "delete" ? (
+            <Button
+              type={"primary"}
+              size="large"
+              className={`font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold rounded-2xl mx-auto place-self-center w-2/3`}
+              style={{
+                borderRadius: "25px",
+                fontFamily: "BricolageGrotesqueMedium",
+              }}
+              onClick={handleDeleteClick}
+            >
+              Yes, delete
+            </Button>
+          ) : actionType === "warning" ? (
+            <Button
+              type={"primary"}
+              size="large"
+              className={`font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold rounded-2xl mx-auto place-self-center w-2/3`}
+              style={{
+                borderRadius: "25px",
+                fontFamily: "BricolageGrotesqueMedium",
+              }}
+              onClick={handleDuplicateClick}
+            >
+              Yes, duplicate
+            </Button>
+          ) : null}
+
+          {actionType === "delete" && dataToDelete?.[0]?.eventStatus < 0 && (
+            <Button
+              type={"default"}
+              size={"large"}
+              className={`font-BricolageGrotesqueSemiBold  cursor-pointer font-bold  rounded-2xl mx-auto place-self-center w-2/3`}
+              style={{
+                borderRadius: "25px",
+                fontFamily: "BricolageGrotesqueMedium",
+              }}
+              onClick={onCancel}
+            >
+              No, cancel
+            </Button>
+          )}
         </Space>
       }
       closeIcon={null}
@@ -123,7 +125,9 @@ const DeleteTicket = ({
         <Paragraph
           className="text-OWANBE_DARK_SHADE text-sm font-normal font-BricolageGrotesqueRegular text-center mx-auto mt-5"
           content={
-            actionType === "delete"
+            actionType === "delete" && dataToDelete?.[0]?.eventStatus > 0 ?
+              `You cannot delete an active event.`
+              : actionType === "delete" 
               ? `Are you sure you want to delete this entry?`
               : `Are you sure you want to duplicate this entry?`
           }

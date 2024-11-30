@@ -69,6 +69,11 @@ export default function EventDetailsComponent({
 
   const handlePublishEvent = async () => {
     if (eventDetails?.mode === PUBLISH_TYPE.ACTIVE) {
+      if(eventDetails?.total_ticket_sold > 0) {
+        message.error("Event with sold tickets cannot be unpublished");
+        return;
+      }
+
       const response = await publishEvent.mutateAsync({
         ids: [params?.id],
         mode: PUBLISH_TYPE.INACTIVE,
@@ -87,7 +92,7 @@ export default function EventDetailsComponent({
     ) {
       if (
         eventdates < new Date().getTime() &&
-        eventDetails?.eventInfo === EVENT_INFO.SINGLE_EVENT
+        eventDetails?.eventInfo === EVENT_INFO.SINGLE_EVENT 
       ) {
         message.error(
           "The event has ended and cannot be published. Please update the event details to republish."
@@ -588,7 +593,6 @@ export default function EventDetailsComponent({
               : "#e20000", // Red for active
           color: eventDetails?.total_ticket_sold > 0 ? "#666666" : "white",
         }}
-        disabled={eventDetails?.total_ticket_sold > 0}
         onClick={handlePublishEvent}
         loading={publishEvent.isPending}
       >
