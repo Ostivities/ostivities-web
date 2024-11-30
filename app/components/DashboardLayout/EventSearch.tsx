@@ -18,7 +18,7 @@ const EventSearch = () => {
 
   return (
     <EventSection
-      title="All Events"
+      title="Hangout Events"
       titleClass="custom-title-class"
       style={{
         fontSize: "20px",

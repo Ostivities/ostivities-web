@@ -17,7 +17,8 @@ const EventSection: React.FC<PropsI> = ({ title, uri, children, titleClass = 'fo
   return (
     <section>
       <div className="flex-center justify-between">
-      <h2 className={`${titleClass} mb-8 mt-8`} style={style}></h2>
+      <h2 className={`${titleClass} mb-8 mt-8`} style={style}>{title}</h2>
+        
       </div>
       <div className="grid lg:grid-cols-6 grid-cols-1 md:grid-cols-2 gap-6">{limitedChildren}</div>
     </section>
