@@ -166,7 +166,7 @@ const EventTickets = () => {
               "Unlimited"
             ) : (
               <span>
-              {record.ticketSold}/{record.ticketQty} Available
+              {record.ticketSold}/{record.ticketQty}
             </span>
             )}
           </>
