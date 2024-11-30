@@ -59,7 +59,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
-  console.log(additionalFields)
+  console.log(additionalFields, "additionalFields")
 
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form);
@@ -90,6 +90,12 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
       form.setFieldsValue({ ticketPrice: null });
     }
   }, [ticketType]);
+
+  useEffect(() => {
+    if(showAdditionalField === false){
+      setAdditionalFields([]);
+    }
+  }, [showAdditionalField])
 
   
   console.log(ticketDetails, "ticketDetails");
@@ -192,7 +198,8 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
         event: params?.id,
         ticketEntity: "SINGLE",
         user: cookies?.profileData?.id,
-        guestAsChargeBearer: guestAsChargeBearer
+        guestAsChargeBearer: guestAsChargeBearer,
+        ticketQuestions: []
       };
       if (payload) {
         const response = await updateTicket.mutateAsync(payload);

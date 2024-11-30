@@ -29,7 +29,7 @@ interface SummaryProps {
     ticketPrice: number;
     discountedTicketPrice?: number;
     discountToDeduct?: number;
-    ticketDiscountCode: string;
+    ticketDiscountCode: string[];
     ticketDiscountType: string;
     ticketDiscountValue: number;
     ticketFee: number;
@@ -42,8 +42,9 @@ interface SummaryProps {
   isFormValid?: boolean;
   termsAndCondition?: boolean;
   paymentMethod?: PAYMENT_METHODS | null;
+  discountCodeApplied?: string;
   onClick?: () => void;
-  onDiscountApplied?: (applied: boolean) => void;
+  onDiscountApplied?: (applied: string) => void;
 }
 
 const Summary = ({
@@ -56,6 +57,7 @@ const Summary = ({
   loading,
   isFormValid,
   eventId,
+  discountCodeApplied,
   currentPage,
   termsAndCondition,
   paymentMethod,
@@ -64,13 +66,14 @@ const Summary = ({
 }: SummaryProps) => {
   const [showInput, setShowInput] = useState(false);
   const [discountApplied, setDiscountApplied] = useState(false);
-  const [ticketWithDiscount, setTicketWithDiscount] = useState<{
-    [key: string]: number;
-  }>({});
+  const [ticketWithDiscount, setTicketWithDiscount] = useState(ticketDetails);
   const [isAtPageEnd, setIsAtPageEnd] = useState(false);
   const [discountMessage, setDiscountMessage] = useState("");
   const [totalTicketPrice, setTotalTicketPrice] = useState<number>();
   const [subTotal, setSubTotal] = useState(false);
+  const [adjustedTotal, setAdjustedTotal] = useState<string>("0.00");
+  const [shownDicount, setShownDiscount] = useState<number>();
+  const [validDiscount, setValidDiscount] = useState(false);
   const [discountCode, setDiscountCode] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const params = useParams<{ event: string }>();
@@ -79,25 +82,80 @@ const Summary = ({
   // const { getTicketDiscount } = useGetTicketDiscount(ticketDetails?.map)
   const { getEventDiscount } = useGetEventDiscount(eventId ?? "");
   const discountDetails = getEventDiscount?.data?.data?.data;
-  // console.log(discountDetails)
+
+  const availableDiscountCode = discountDetails?.map(
+    (discount: any) => discount?.discountCode
+  );
+  // console.log(availableDiscountCode)
+
+  // const discountCodeUsed = discountDetails?.filter((discount: any) => discount?.discountCode === discountCode)
+
+  // console.log(discountCodeUsed, "discountCodeUsed")
+  // console.log(ticketWithDiscount, "ticketWithDiscount")
+
+  // useEffect(() => {
+  //   const discountCodeUsedType = discountCodeUsed?.map((discount: any) => discount?.discountType)
+
+  //   if (discountCodeUsedType === "FIXED") {
+
+  //   } else if (discountCodeUsedType === "PERCENTAGE") {
+
+  //   }
+
+  // })
+
+  // useEffect(() => {
+  //   onDiscountApplied && onDiscountApplied(discountApplied);
+  // }, [discountApplied, onDiscountApplied]);
 
   useEffect(() => {
-    onDiscountApplied && onDiscountApplied(discountApplied);
-  }, [discountApplied, onDiscountApplied]);
+    const handleScroll = () => {
+      const scrolledToBottom =
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 10; // Adjust threshold if needed
+      setIsAtPageEnd(scrolledToBottom);
+    };
 
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-useEffect(() => {
-  const handleScroll = () => {
-    const scrolledToBottom =
-      window.innerHeight + window.scrollY >=
-      document.body.offsetHeight - 10; // Adjust threshold if needed
-    setIsAtPageEnd(scrolledToBottom);
-  };
+  useEffect(() => {
+    const isValid =
+      ticketDetails?.some((ticket) =>
+        ticket?.ticketDiscountCode?.includes(discountCode.trim())
+      ) ?? false;
 
-  window.addEventListener("scroll", handleScroll);
-  return () => window.removeEventListener("scroll", handleScroll);
-}, []);
+    setValidDiscount(isValid); // Update validDiscount based on the check
 
+    if (!isValid && discountCode.trim()) {
+      setDiscountMessage("Invalid discount code for the ticket(s)"); // Set the message if the code is invalid
+    } else {
+      setDiscountMessage(""); // Clear the message when the code is valid or empty
+    }
+  }, [discountCode, ticketDetails]);
+
+  // useEffect(() => {
+  //   if (ticketDetails) {
+  //     const total = ticketDetails?.some(
+  //       (ticket: any) => ticket?.ticketDiscountValue !== undefined
+  //     )
+  //       ? ticketDetails?.reduce(
+  //           (acc: number, ticket: any) => acc + (ticket?.subTotal ?? 0), // Regular subtotal
+  //           0
+  //         ) -
+  //         ticketDetails?.reduce(
+  //           (acc, ticket) => acc + (ticket?.discountToDeduct ?? 0),
+  //           0
+  //         )
+  //       : ticketDetails?.reduce(
+  //           (acc: number, ticket: any) => acc + (ticket?.subTotal ?? 0), // Regular subtotal
+  //           0
+  //         );
+
+  //     // Update the state with formatted value
+  //     setAdjustedTotal(total.toLocaleString() + ".00");
+  //   }
+  // }, [ticketDetails]);
 
   // useEffect(() => {
   //   const checkDiscountCode = async () => {
@@ -139,18 +197,20 @@ useEffect(() => {
     // Logic to apply the discount code (e.g., validate code, apply discount)
     if (discountCode.trim() !== "") {
       setDiscountApplied(true);
+      onDiscountApplied && onDiscountApplied(discountCode);
     }
   };
 
   useEffect(() => {
     if (ticketDetails?.length === 0) {
-      setShowInput(false)
+      setShowInput(false);
     }
-  }, [ticketDetails])
+  }, [ticketDetails]);
 
   const handleClearDiscount = () => {
     setDiscountCode("");
     setDiscountApplied(false);
+    onDiscountApplied && onDiscountApplied("");
     setShowInput(false); // Disable input after clearing
   };
   const handleClick = () => {
@@ -159,7 +219,10 @@ useEffect(() => {
 
   return (
     <section className="flex-1">
-      <Heading5 className="text-4xl text-left md:text-center" content={"Order Summary"} />
+      <Heading5
+        className="text-4xl text-left md:text-center"
+        content={"Order Summary"}
+      />
       <section className="mt-7 md:mt-14 md:px-20 h-4/5 border-l md:border-[#525252]">
         <div>
           <h3 className="text-OWANBE_PRY text-lg font-BricolageGrotesqueRegular">
@@ -195,7 +258,7 @@ useEffect(() => {
               <MdOutlineDiscount />
             </div>
           )}
-          {showInput && (ticketDetails && ticketDetails?.length > 0) && (
+          {showInput && ticketDetails && ticketDetails?.length > 0 && (
             <>
               <div className="mt-3"></div>
               <div className="flex-center gap-3 w-full mt-3">
@@ -210,9 +273,9 @@ useEffect(() => {
                 {!discountApplied ? (
                   <button
                     onClick={handleApplyDiscount}
-                    disabled={!discountCode.trim()} // Disable button if discountCode is empty or only whitespace
+                    disabled={!validDiscount} // Disable button if discountCode is empty or only whitespace
                     className={`py-1 px-7 rounded-full bg-OWANBE_PRY font-semibold text-white ${
-                      !discountCode.trim() && "opacity-50 cursor-not-allowed"
+                      !validDiscount && "opacity-50 cursor-not-allowed"
                     }`}
                   >
                     Apply
@@ -226,11 +289,9 @@ useEffect(() => {
                   </button>
                 )}
               </div>
-              {discountApplied && (
-                <span className="text-OWANBE_PRY text-sm font-BricolageGrotesqueRegular">
-                  {discountMessage}
-                </span>
-              )}
+              <span className="text-OWANBE_PRY text-sm font-BricolageGrotesqueRegular">
+                {discountMessage}
+              </span>
             </>
           )}
         </div>
@@ -299,10 +360,30 @@ useEffect(() => {
                   <div>Subtotal</div>
                   <div>
                     ₦
-                    {ticketDetails
-                      ?.reduce((acc, ticket) => acc + ticket?.subTotal, 0)
-                      .toLocaleString()}
-                    {".00 "}
+                    {ticketDetails &&
+                    ticketDetails.some(
+                      (ticket: any) => ticket?.ticketDiscountValue !== undefined
+                    )
+                      ? // If ticketDiscountValue is defined, calculate adjusted total
+                        (
+                          ticketDetails?.reduce(
+                            (acc: number, ticket: any) =>
+                              acc + (ticket?.subTotal ?? 0), // Regular subtotal
+                            0
+                          ) -
+                          ticketDetails?.reduce(
+                            (acc, ticket) =>
+                              acc + (ticket?.discountToDeduct ?? 0),
+                            0
+                          )
+                        ).toLocaleString() + ".00"
+                      : // Otherwise, sum up only the subTotal
+                        ticketDetails
+                          ?.reduce(
+                            (acc, ticket) => acc + (ticket?.subTotal ?? 0),
+                            0
+                          )
+                          .toLocaleString() + ".00"}
                   </div>
                 </div>
               </div>
@@ -311,11 +392,27 @@ useEffect(() => {
           <div className="flex-center justify-between font-BricolageGrotesqueMedium text-2xl text-OWANBE_PRY md:mb-10 mb-28 my-6">
             <div>Total</div>
             <div>
-              ₦{""}
-              {ticketDetails
-                ?.reduce((acc, ticket) => acc + ticket?.subTotal, 0)
-                .toLocaleString()}
-              {".00 "}
+              ₦
+              {ticketDetails &&
+              ticketDetails.some(
+                (ticket: any) => ticket?.ticketDiscountValue !== undefined
+              )
+                ? // If ticketDiscountValue is defined, calculate adjusted total
+                  (
+                    ticketDetails?.reduce(
+                      (acc: number, ticket: any) =>
+                        acc + (ticket?.subTotal ?? 0), // Regular subtotal
+                      0
+                    ) -
+                    ticketDetails?.reduce(
+                      (acc, ticket) => acc + (ticket?.discountToDeduct ?? 0),
+                      0
+                    )
+                  ).toLocaleString() + ".00"
+                : // Otherwise, sum up only the subTotal
+                  ticketDetails
+                    ?.reduce((acc, ticket) => acc + (ticket?.subTotal ?? 0), 0)
+                    .toLocaleString() + ".00"}
             </div>
             {/* Adjust this based on your calculation */}
           </div>

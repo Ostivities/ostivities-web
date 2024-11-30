@@ -36,7 +36,10 @@ import {
 import { Skeleton } from "antd";
 import { useTimer } from "@/app/hooks/countdown";
 import { useRegisterGuest } from "@/app/hooks/guest/guest.hook";
-
+import {
+  useGetEventDiscount,
+  useGetTicketDiscount,
+} from "@/app/hooks/discount/discount.hook";
 import TimerModal from "@/app/components/OstivitiesModal/TimerModal";
 import PaymentSuccessModal from "@/app/components/OstivitiesModal/PaymentSuccessModal";
 import ContactForm from "@/app/components/ContactForm/ContactForm";
@@ -53,12 +56,15 @@ const TicketsSelection = () => {
   >("tickets");
   const [externalTrigger, setExternalTrigger] =
     useState<() => void | undefined>();
+  const [discountCode, setDiscountCode] = useState("");
   const [discountApplied, setDiscountApplied] = useState(false);
   const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
   const { getTickets } = useGetEventTickets(eventDetails?.id);
+  const { getEventDiscount } = useGetEventDiscount(eventDetails?.id);
   const ticketData = getTickets?.data?.data?.data;
+  const discountDetails = getEventDiscount?.data?.data?.data;
   // console.log(eventDetails?.eventName, "eventName")
-  // console.log(eventDetails?.id, "eventID")
+  // console.log(discountCode, "discountCode")
   const title = (
     <div className="flex-center gap-2">
       <Image
@@ -139,7 +145,7 @@ const TicketsSelection = () => {
       ticketFee: number;
       eventName?: string;
       ticketDiscountType: string;
-      ticketDiscountCode: string;
+      ticketDiscountCode: string[];
       ticketDiscountValue: number;
       ticketNumber: number;
       ticketId: string;
@@ -177,10 +183,51 @@ const TicketsSelection = () => {
     }
   }, [ticketDetails]);
 
-  const handleDiscountApplied = (applied: boolean) => {
-    setDiscountApplied(applied === true);
+  const handleDiscountApplied = (code: string) => {
+    // setDiscountApplied(applied === true);
+    setDiscountCode(code);
   };
 
+// Filter the discount details for the matching discount code
+
+// console.log(discountCodeUsed, "discountCodeUsed");
+// console.log(discountValueUsed, "discountValueUsed");
+// console.log(discountTypeUsed, "discountTypeUsed");
+
+useEffect(() => {
+  const discountCodeUsed = discountDetails?.find((discount: any) =>  discount?.discountCode?.toLowerCase() === discountCode?.toLowerCase()); 
+  const discountTypeUsed = discountCodeUsed && discountCodeUsed?.discountType; // Use null or a default value if not found
+  const discountValueUsed = discountCodeUsed && discountCodeUsed?.discount_value; // Use null or a default value if not found
+      setTicketDetails((prevDetails) =>
+        prevDetails?.map((ticket: any) => {
+          if (discountCode && ticket?.ticketDiscountCode?.includes(discountCode)) {
+            // Calculate the discounted ticket price or any other property you want to update
+            const discountValue =
+              discountTypeUsed === "PERCENTAGE"
+                ? (ticket?.ticketPrice * discountValueUsed) / 100
+                : discountValueUsed * ticket?.ticketNumber;
+  
+            const discountedTicketPrice = ticket?.ticketPrice - discountValue;
+  
+            return {
+              ...ticket,
+              ticketDiscountType: discountTypeUsed,
+              ticketDiscountValue: Math.round(discountValueUsed),
+              discountedTicketPrice: Math.round(Math.max(discountedTicketPrice, 0)), // Ensure price isn't negative
+              discountToDeduct: Math.round(discountValue) ,
+            };
+          }
+          return {
+            ...ticket,
+            ticketDiscountType: undefined,
+            ticketDiscountValue: undefined,
+            discountedTicketPrice: undefined,
+            discountToDeduct: undefined,
+          }; // Return ticket unchanged if discountCode doesn't match
+        })
+      );
+  }, [discountCode, discountDetails]);
+  
   const handleIncrement = (ticketId: string) => {
     const ticket = ticketData?.find(
       (ticket: ITicketDetails) => ticket?.id === ticketId
@@ -235,13 +282,13 @@ const TicketsSelection = () => {
           updatedDetails[existingTicketIndex] = {
             ...existingTicket,
             ticketPrice: realPrice * newTicketNumber,
-            discountToDeduct:
-              ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE
-                ? realPrice *
-                (ticket?.discount?.discount_value / 100) *
-                newTicketNumber
-                : ticket?.discount?.discount_value * newTicketNumber,
-            discountedTicketPrice: discountedPrice * newTicketNumber,
+            // discountToDeduct:
+            //   ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE
+            //     ? realPrice *
+            //     (ticket?.discount?.discount_value / 100) *
+            //     newTicketNumber
+            //     : ticket?.discount?.discount_value * newTicketNumber,
+            // discountedTicketPrice: discountedPrice * newTicketNumber,
             ticketFee: newTicketNumber * currentFee,
             ticketNumber: newTicketNumber,
             subTotal: discountApplied
@@ -262,7 +309,7 @@ const TicketsSelection = () => {
             ticketDiscountCode: ticket?.discountCode,
             ticketDiscountType: ticket?.discount?.discountType,
             ticketDiscountValue: ticket?.discount?.discount_value,
-            subTotal: discountApplied
+            subTotal: discountCode
               ? discountedPrice + currentFee
               : realPrice + currentFee,
             ticketId: ticket?.id,
@@ -353,38 +400,6 @@ const TicketsSelection = () => {
       }));
     }
   };
-
-  //   useEffect(() => {
-  //   // Recalculate ticket prices when discountApplied changes
-  //   setTicketDetails((prevDetails) =>
-  //     prevDetails.map((ticket) => {
-  //       const {
-  //         ticketPrice,
-  //         ticketFee,
-  //         ticketDiscountValue,
-  //         ticketDiscountType,
-  //         discountedTicketPrice,
-  //         ticketNumber,
-  //       } = ticket;
-  //       const realPrice = ticketPrice;
-  //       const priceWithDiscount =
-  //         ticketDiscountType === DISCOUNT_TYPE.PERCENTAGE
-  //           ? realPrice - ((ticketDiscountValue / 100) * realPrice)
-  //           : ticketDiscountType === DISCOUNT_TYPE.FIXED
-  //           ? realPrice - ticketDiscountValue
-  //           : realPrice;
-
-  //       const price = discountApplied === true ? priceWithDiscount : realPrice;
-
-  //       return {
-  //         ...ticket,
-  //         ticketPrice: price * ticketNumber,
-  //         ticketFee: ticketFee,
-  //         subTotal: price * ticketNumber + ticketFee * ticketNumber,
-  //       };
-  //     })
-  //   );
-  // }, [discountApplied]);
 
   const [form] = Form.useForm();
   // ! contactform
@@ -644,7 +659,7 @@ const TicketsSelection = () => {
     // router.push(`discover/${params?.event}/payment`);
   };
   const onFinishFailed: FormProps<any>["onFinishFailed"] = (errorInfo) => {
-    console.log(errorInfo, "errorInfo");
+    // console.log(errorInfo, "errorInfo");
     return errorInfo;
   };
 
@@ -707,12 +722,14 @@ const TicketsSelection = () => {
 
   const isPending: boolean = getTickets?.isLoading;
 
-  const { minutes, remainingSeconds, timer } = useTimer();
+  const { minutes, remainingSeconds, timer, stopTimer } = useTimer();
   useEffect(() => {
     if (minutes === 0 && remainingSeconds === 0 && successModal === false) {
       setModal(true);
+    } else if (successModal === true){
+      stopTimer();
     }
-  }, [minutes, remainingSeconds, successModal]);
+  }, [minutes, remainingSeconds, successModal, stopTimer]);
 
   const [termsAndCondition, setTermsAndCondition] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<
@@ -1068,7 +1085,7 @@ const TicketsSelection = () => {
                                       }}
                                     >
                                       ₦
-                                      {(
+                                      {Math.round(
                                         ticket?.groupPrice * 0.05 +
                                         150 +
                                         ticket?.groupPrice
@@ -1082,7 +1099,7 @@ const TicketsSelection = () => {
                                       }}
                                     >
                                       Including ₦
-                                      {(
+                                      {Math.round(
                                         ticket?.groupPrice * 0.05 +
                                         150
                                       ).toLocaleString()}{" "}
@@ -1101,7 +1118,7 @@ const TicketsSelection = () => {
                                         }}
                                       >
                                         ₦
-                                        {(
+                                        {Math.round(
                                           ticket?.groupPrice * 0.045 +
                                           150 +
                                           ticket?.groupPrice
@@ -1115,7 +1132,7 @@ const TicketsSelection = () => {
                                         }}
                                       >
                                         Including ₦
-                                        {(
+                                        {Math.round(
                                           ticket?.groupPrice * 0.045 +
                                           150
                                         ).toLocaleString()}{" "}
@@ -1133,7 +1150,7 @@ const TicketsSelection = () => {
                                       }}
                                     >
                                       ₦
-                                      {(
+                                      {Math.round(
                                         ticket?.groupPrice * 0.035 +
                                         150 +
                                         ticket?.groupPrice
@@ -1147,7 +1164,7 @@ const TicketsSelection = () => {
                                       }}
                                     >
                                       Including ₦
-                                      {(
+                                      {Math.round(
                                         ticket?.groupPrice * 0.035 +
                                         150
                                       ).toLocaleString()}{" "}

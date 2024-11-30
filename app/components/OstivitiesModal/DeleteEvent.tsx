@@ -4,7 +4,7 @@ import { IModal } from "@/app/utils/interface";
 import { Button, message, Modal, Space } from "antd";
 import React from "react";
 import { Paragraph } from "../typography/Typography";
-import { useDeleteEvent, } from "@/app/hooks/event/event.hook";
+import { useDeleteEvent } from "@/app/hooks/event/event.hook";
 
 const DeleteEvent = ({
   open,
@@ -14,6 +14,7 @@ const DeleteEvent = ({
   selectedRowKeys,
   data,
 }: IModal) => {
+  console.log(data, "data");
 
   const { deleteEvent } = useDeleteEvent();
 
@@ -49,9 +50,10 @@ const DeleteEvent = ({
           style={{ margin: "auto", width: "100%" }}
           className="pb-7 mx-auto text-center"
         >
-          {data === "ACTIVE" ? (
+          {actionType === "delete" &&
+        (data?.some((event: any) => event?.eventStatus === "ACTIVE") ? (
             <Button
-            type={"primary"}
+              type={"primary"}
               size={"large"}
               className="font-BricolageGrotesqueSemiBold cursor-pointer font-bold rounded-2xl mx-auto place-self-center w-2/3"
               style={{
@@ -92,35 +94,35 @@ const DeleteEvent = ({
                 No, cancel
               </Button>
             </>
-          )}
+          ))}
         </Space>
       }
     >
-      {data === "ACTIVE" ? (
-        <Space
-          direction="vertical"
-          style={{ width: "100%" }}
-          size={"small"}
-          className="pb-7 pt-8"
-        >
-          <div className="mx-auto text-center flex flex-row w-full justify-center items-center">
-            {/* Icon can be added here if needed */}
-            <WarningIcon />
-          </div>
-          <Paragraph
-            className="text-OWANBE_DARK_SHADE text-sm font-normal font-BricolageGrotesqueRegular text-center mx-auto mt-5"
-            content={
-              <>
-                You can&apos;t delete this event because it is currently active.
-                <br />
-                Please deactivate the event to proceed with deletion.
-              </>
-            }
-            styles={{ fontWeight: "normal !important" }}
-          />
-        </Space>
-      ) : (
-        actionType === "delete" && (
+      {actionType === "delete" &&
+        (data?.some((event: any) => event?.eventStatus === "ACTIVE") ? (
+          <Space
+            direction="vertical"
+            style={{ width: "100%" }}
+            size={"small"}
+            className="pb-7 pt-8"
+          >
+            <div className="mx-auto text-center flex flex-row w-full justify-center items-center">
+              <WarningIcon />
+            </div>
+            <Paragraph
+              className="text-OWANBE_DARK_SHADE text-sm font-normal font-BricolageGrotesqueRegular text-center mx-auto mt-5"
+              content={
+                <>
+                  You can&apos;t delete this event because it is currently
+                  active.
+                  <br />
+                  Please deactivate the event to proceed with deletion.
+                </>
+              }
+              styles={{ fontWeight: "normal !important" }}
+            />
+          </Space>
+        ) : (
           <Space
             direction="vertical"
             style={{ width: "100%" }}
@@ -142,8 +144,7 @@ const DeleteEvent = ({
               styles={{ fontWeight: "normal !important" }}
             />
           </Space>
-        )
-      )}
+        ))}
     </Modal>
   );
 };

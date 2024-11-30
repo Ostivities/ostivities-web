@@ -78,6 +78,12 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
     }
   }, [guestAsChargeBearer]);
 
+  useEffect(() => {
+    if(showAdditionalField === false){
+      setAdditionalFields([]);
+    }
+  }, [showAdditionalField])
+
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, guestAsChargeBearer, ...rest } = values;
     console.log(ticketQuestions, "ticketQuestions");

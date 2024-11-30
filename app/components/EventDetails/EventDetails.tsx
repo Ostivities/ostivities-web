@@ -49,8 +49,6 @@ export default function EventDetailsComponent({
   const eventDate = eventDetails?.endDate;
   const eventdates = new Date(eventDate).getTime();
 
-
-
   useEffect(() => {
     if (eventDetails?.mode && eventDetails?.mode === PUBLISH_TYPE.ACTIVE) {
       setTimeout(() => {
@@ -208,7 +206,6 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            
             href={`/discover/events-created/${params?.id}/tickets/discounts`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
@@ -292,7 +289,9 @@ export default function EventDetailsComponent({
     ];
 
     return (
-      <div className={`flex flex-row overflow-x-scroll items-center justify-between`}>
+      <div
+        className={`flex flex-row overflow-x-scroll items-center justify-between`}
+      >
         <div className="flex flex-row items-center space-x-4">
           <Button
             type={pathname.includes("about") ? "primary" : "text"}
@@ -374,21 +373,23 @@ export default function EventDetailsComponent({
             </Button>
           </Dropdown>
 
-          <Dropdown menu={{ items: CoordinatorsItems, onClick: handleMenuClick }}>
-          <Button
-            type={pathname.includes("coordinators") ? "primary" : "text"}
-            className="font-BricolageGrotesqueRegular cursor-pointer font-medium w-40 rounded-2xl"
-            style={{
-              borderRadius: "25px",
-              fontFamily: "BricolageGrotesqueMedium",
-            }}
-            size="large"
+          <Dropdown
+            menu={{ items: CoordinatorsItems, onClick: handleMenuClick }}
           >
-            <Space>
-              Coordinators
-              {/* <IoChevronDown /> */}
-            </Space>
-          </Button>
+            <Button
+              type={pathname.includes("coordinators") ? "primary" : "text"}
+              className="font-BricolageGrotesqueRegular cursor-pointer font-medium w-40 rounded-2xl"
+              style={{
+                borderRadius: "25px",
+                fontFamily: "BricolageGrotesqueMedium",
+              }}
+              size="large"
+            >
+              <Space>
+                Coordinators
+                {/* <IoChevronDown /> */}
+              </Space>
+            </Button>
           </Dropdown>
 
           <Button
@@ -581,7 +582,13 @@ export default function EventDetailsComponent({
         style={{
           borderRadius: "20px",
           fontFamily: "BricolageGrotesqueMedium",
+          backgroundColor:
+            eventDetails?.total_ticket_sold > 0
+              ? "#cccccc" // Gray for disabled
+              : "#e20000", // Red for active
+          color: eventDetails?.total_ticket_sold > 0 ? "#666666" : "white",
         }}
+        disabled={eventDetails?.total_ticket_sold > 0}
         onClick={handlePublishEvent}
         loading={publishEvent.isPending}
       >

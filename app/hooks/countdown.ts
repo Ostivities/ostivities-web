@@ -22,5 +22,7 @@ export const useTimer = () => {
 
   const timer = `${minutes}:${String(remainingSeconds).padStart(2, '0')} `;
 
-  return {minutes,remainingSeconds,setTimer,timer}
+  const stopTimer = () => setSeconds(0)
+
+  return {minutes,remainingSeconds,setTimer,timer, stopTimer}
 }
