@@ -70,6 +70,12 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
 
   // console.log(groupPrice, groupSize);
 
+  useEffect(() => {
+    if(showAdditionalField === false){
+      setAdditionalFields([]);
+    }
+  }, [showAdditionalField])
+  
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ticketType, guestAsChargeBearer, ...rest } =
       values;

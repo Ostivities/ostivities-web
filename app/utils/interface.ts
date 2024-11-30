@@ -160,6 +160,7 @@ export interface IModal {
   actionType?: "delete" | "warning" | "detail";
   data?: any;
   selectedRowKeys?: string[];
+  dataToDelete?: any;
 
 }
 

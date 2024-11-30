@@ -61,14 +61,17 @@ const EventTickets = () => {
   const [selectedTicketEntity, setSelectedTicketEntity] = useState<
     string | undefined
   >("");
-
+  const [eventStatus, setEventStatus] = useState<{
+    id: string,
+    eventStatus: number
+  }[]>([]);
   const { getTickets } = useGetEventTickets(params?.id);
   const ticketData = getTickets?.data?.data?.data;
   const { enableEventRegistration } = useEnableEventRegistration();
   const { getUserEvent } = useGetUserEvent(params?.id);
   const eventDetails = getUserEvent?.data?.data?.data;
   // const {id, ...rest} = ticketData;
-  // console.log(ticketData, "ticketData")
+  console.log(ticketData, "ticketData")
   // console.log(duplicateData, "duplicateData")
 
   const handleActionSuccess = () => {
@@ -87,12 +90,16 @@ const EventTickets = () => {
         <Button
           type="link"
           className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
-          style={{ color: "#000000", fontFamily: "BricolageGrotesqueRegular" }}
+          style={{ 
+            color: ticketData?.ticket_sold > 0 ? "#ccc" : "#000000", 
+            fontFamily: "BricolageGrotesqueRegular"
+          }}
           onClick={(e) => {
             // console.log(e)
             // setSelectedTicket(e);  // Set the selected ticket's data here
             setIsOpen(true);
           }}
+          disabled={ticketData?.ticket_sold > 0}
         >
           Edit
         </Button>
@@ -120,11 +127,15 @@ const EventTickets = () => {
         <Button
           type="link"
           className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
-          style={{ color: "#000000", fontFamily: "BricolageGrotesqueRegular" }}
+          style={{ 
+            color: ticketData?.ticket_sold > 0 ? "#ccc" : "#000000", 
+            fontFamily: "BricolageGrotesqueRegular" 
+          }}
           onClick={() => {
             setIsShown(true);
             setActionType("delete");
           }}
+          disabled={ticketData?.ticket_sold > 0}
         >
           Delete
         </Button>
@@ -274,6 +285,7 @@ const EventTickets = () => {
       ticketQuestions: item?.ticketQuestions,
       groupSize: item?.groupSize,
       groupPrice: item?.groupPrice,
+      ticketSold: item?.ticket_sold
     };
   });
   // console.log(data, "data")
@@ -342,6 +354,7 @@ const EventTickets = () => {
         actionType={actionType}
         id={selectedTicket}
         data={duplicateData}
+        dataToDelete={eventStatus}
       />
       <EventDetailsComponent>
         <Space direction="vertical" size="large">
@@ -408,6 +421,12 @@ const EventTickets = () => {
                     // console.log(record, "record")
                     setSelectedTicket(record?.key);
                     setSelectedTicketEntity(record?.ticketEntity);
+                    setEventStatus([
+                      {
+                        id: record?.key || "",
+                        eventStatus: record?.ticketSold,
+                      },
+                    ]);
                     setDuplicateData({
                       ticketName: record?.ticketName,
                       ticketQty: record?.ticketQty,

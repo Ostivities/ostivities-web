@@ -98,6 +98,12 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
     }
 
   }, [ticketDetails]);
+
+  useEffect(() => {
+    if(showAdditionalField === false){
+      setAdditionalFields([]);
+    }
+  }, [showAdditionalField])
   console.log(groupPrices, "groupPrices")
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
@@ -158,7 +164,8 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         user: cookies?.profileData?.id,
         guestAsChargeBearer: guestAsChargeBearer,
         // groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
-        ticketType
+        ticketType,
+        ticketQuestions: []
       };
       if (payload) {
         const response = await updateTicket.mutateAsync(payload);

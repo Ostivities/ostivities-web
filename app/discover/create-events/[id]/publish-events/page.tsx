@@ -319,7 +319,7 @@ export default function PublishEvent(): JSX.Element {
                   maxLength={250}
                 />
                 <iframe
-                  src={cookies?.mapSrc}
+                  src={eventDetails?.event_coordinates}
                   width="100%"
                   height="120"
                   style={{ border: 0, marginTop: "20px" }}
