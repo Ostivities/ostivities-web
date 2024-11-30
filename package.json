@@ -39,6 +39,7 @@
     "react-qr-code": "^2.0.15",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.27.0",
+    "react-select": "^5.8.3",
     "react-share": "^5.1.0",
     "react-slick": "^0.30.2",
     "sharp": "^0.33.4",

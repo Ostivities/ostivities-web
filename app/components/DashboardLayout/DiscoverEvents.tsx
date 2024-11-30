@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { IEventDetails } from "@/app/utils/interface";
 import { EVENT_INFO, PUBLISH_TYPE } from "@/app/utils/enums";
 import placeholder from "@/public/placeholder.svg";
+import Select, { StylesConfig } from "react-select";
 
 const DiscoverEvents = () => {
   const [searchText, setSearchText] = useState("");

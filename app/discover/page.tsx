@@ -12,7 +12,7 @@ import { Country, State } from "country-state-city";
 import { EVENT_TYPES } from "../utils/data";
 import useFetch from "../components/forms/create-events/auth";
 
-function Dashboard(): JSX.Element {
+function Discover(): JSX.Element {
   const router = useRouter();
   const { isLoggedIn } = useFetch();
   const [activeTab, setActiveTab] = useState("all");
@@ -73,119 +73,7 @@ function Dashboard(): JSX.Element {
     <DashboardLayout title={header}>
       <div className="flex flex-col gap-10">
         <DiscoverEvents />
-        <div className="border-[1px]  rounded-[24px] p-8 shadow-md">
-          <h3 className="font-semibold mb-3">
-            Find events happening around you.
-          </h3>
-          <div>
-            <form onSubmit={handleSearch} className="flex flex-wrap gap-4">
-              <label htmlFor="name" className="flex-1 min-w-[200px]">
-                <span
-                  style={{
-                    fontFamily: "'Bricolage Grotesque', sans-serif",
-                    fontWeight: "300",
-                  }}
-                  className="text-OWANBE_PRY mb-1 block"
-                >
-                  Event Name
-                </span>
-                <Input
-                  onChange={(e) => setSearchText(e.target.value)}
-                  placeholder="enter event name"
-                  className="w-full"
-                />
-              </label>
-
-              <label htmlFor="state" className="flex-1 min-w-[200px]">
-                <span
-                  style={{
-                    fontFamily: "'Bricolage Grotesque', sans-serif",
-                    fontWeight: "300",
-                  }}
-                  className="text-OWANBE_PRY mb-1 block"
-                >
-                  Event State
-                </span>
-                <Select
-                  placeholder="select event state"
-                  className="w-full"
-                  options={[...STATE_BY_COUNTRYCODE("NG")]}
-                  onChange={(value) => setSearchText(value)}
-                />
-              </label>
-
-              {/* <label htmlFor="category" className="flex-1 min-w-[200px]">
-                <span
-                  style={{
-                    fontFamily: "'Bricolage Grotesque', sans-serif",
-                    fontWeight: "300",
-                  }}
-                  className="text-OWANBE_PRY mb-1 block"
-                >
-                  Event Category
-                </span>
-                <Select
-                  placeholder="select event category"
-                  className="w-full"
-                  options={[
-                    { value: "free", label: "Free Events" },
-                    { value: "paid", label: "Paid Events" },
-                  ]}
-                  onChange={(value) => setSearchText(value)}
-                />
-              </label> */}
-
-              <label htmlFor="type" className="flex-1 min-w-[200px]">
-                <span
-                  style={{
-                    fontFamily: "'Bricolage Grotesque', sans-serif",
-                    fontWeight: "300",
-                  }}
-                  className="text-OWANBE_PRY mb-1 block"
-                >
-                  Event Type
-                </span>
-                <Select
-                  placeholder="select event type"
-                  onChange={(value) => setSearchText(value)}
-                  className="w-full"
-                  options={[
-                    { value: "All", label: "All" },
-                    { value: "Wedding", label: "Wedding" },
-                    { value: "Birthday", label: "Birthday" },
-                    { value: "Concert", label: "Concert" },
-                    { value: "Paint & Sip", label: "Paint & Sip" },
-                    { value: "Hangout", label: "Hangout" },
-                    { value: "Carnival", label: "Carnival" },
-                    { value: "Seminar", label: "Seminar" },
-                    { value: "Conference", label: "Conference" },
-                    { value: "Tech Event", label: "Tech Event" },
-                    { value: "Art Exhibition", label: "Art Exhibition" },
-                    { value: "Holiday Camp", label: "Holiday Camp" },
-                    { value: "Others", label: "Others" },
-                  ]}
-                />
-              </label>
-
-              <div className="flex items-end button-lenght">
-                <button
-                  disabled={searchText === ""}
-                  type="submit"
-                  style={{
-                    backgroundColor:
-                      searchText === ""
-                        ? "#cccccc" // Gray for disabled
-                        : "#e20000", // Red for active
-                    color: searchText === "" ? "#666666" : "white",
-                    cursor: searchText === "" ? "not-allowed" : "pointer",
-                  }}
-                  className="w-full md:w-36 h-fit text-sm text-white bg-OWANBE_PRY py-1.5 px-12 rounded-full"
-                >
-                  Search
-                </button>
-              </div>
-            </form>
-          </div>
+        <div className="border-[1px]  rounded-[24px] shadow-md">   
         </div>
         {/* Tab Navigation */}
         <div className="flex space-x-8 mb-1">
@@ -231,4 +119,4 @@ function Dashboard(): JSX.Element {
   );
 }
 
-export default Dashboard;
+export default Discover;

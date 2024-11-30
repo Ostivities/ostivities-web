@@ -113,10 +113,10 @@ const DeleteEvent = ({
               className="text-OWANBE_DARK_SHADE text-sm font-normal font-BricolageGrotesqueRegular text-center mx-auto mt-5"
               content={
                 <>
-                  You can&apos;t delete this event because it is currently
+                  You can&apos;t delete this event(s) because it is currently
                   active.
                   <br />
-                  Please deactivate the event to proceed with deletion.
+                  Please unpublish the event(s) to proceed with deletion.
                 </>
               }
               styles={{ fontWeight: "normal !important" }}
@@ -138,7 +138,7 @@ const DeleteEvent = ({
                 <>
                   Are you sure you want to delete this event(s)?
                   <br />
-                  This action is irreversible.
+                  This action is irreversible and will permanently delete all event details.
                 </>
               }
               styles={{ fontWeight: "normal !important" }}
