@@ -17,7 +17,6 @@ const customStyles: StylesConfig = {
     ...base,
     borderRadius: '12px',
     borderColor: '#ccc',
-    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
     fontFamily: "'Bricolage Grotesque', sans-serif",
     fontSize: '14px',
     padding: '2px 8px',
@@ -129,7 +128,6 @@ const SearchResult = ({ params }: { params: { event: string } }) => {
                 borderRadius: '12px !important', // Rounded corners
                 borderColor: '#ccc', // Border color
                 borderWidth: '1px', // Adding border width to match react-select
-                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)', // Subtle shadow
                 fontFamily: "'Bricolage Grotesque', sans-serif", // Custom font
                 fontSize: '14px', // Font size to match react-select
                 padding: '2px 18px', // Adjust padding to make it more compact
@@ -140,7 +138,7 @@ const SearchResult = ({ params }: { params: { event: string } }) => {
                 color: '#333', // Text color
                 backgroundColor: '#fff', // White background color
               }}
-              className="w-full p-2 border border-gray-300 "
+              className="w-full p-2 border border-gray-300 rounded-[12px] !important"
             />
           </label>
 
@@ -197,7 +195,8 @@ const SearchResult = ({ params }: { params: { event: string } }) => {
                 color: searchText === "" ? "#666666" : "white",
                 cursor: searchText === "" ? "not-allowed" : "pointer",
                 borderRadius: '25px',
-                height: '35px',
+                height: '38px',
+                border: "none",
                 // Rounded corners (adjust this as needed)
               }}
               className="w-full md:w-36 h-30px text-sm text-white py-1.5 px-12"
