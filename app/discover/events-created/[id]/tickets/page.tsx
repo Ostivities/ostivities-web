@@ -14,8 +14,8 @@ import {
   ITicketDetails,
   SalesDataType,
 } from "@/app/utils/interface";
-import { MenuOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Menu, Space, Table, Input, message } from "antd";
+import { MenuOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+import { Button, Dropdown, Menu, Space, Table, Input, message, Tooltip } from "antd";
 import { ColumnsType } from "antd/es/table";
 import React, { useState, useEffect, useMemo } from "react";
 import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
@@ -384,14 +384,23 @@ const EventTickets = () => {
                   label="Registration toggle" // Provide the required label prop
                 />
                 <span
-                  className={`font-BricolageGrotesqueMedium font-medium text-sm ${
-                    ticketData?.length === 0
+                  className={`font-BricolageGrotesqueMedium font-medium text-sm ${ticketData?.length === 0
                       ? "text-gray-400"
                       : "text-OWANBE_DARK"
-                  }`}
+                    }`}
                 >
                   {" "}
                   {isToggled ? "Stop registration" : "Start registration"}
+                  <a
+                    href="https://ostivities.tawk.help/article/how-to-start-and-stop-ticket-registration-on-ostivities" // Replace with your actual URL 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ marginLeft: "8px" }}
+                  >
+                    <Tooltip title="Click to learn more">
+                      <QuestionCircleOutlined style={{ fontSize: "18px", color: "#858990" }} />
+                    </Tooltip>
+                  </a>
                 </span>
               </div>
 

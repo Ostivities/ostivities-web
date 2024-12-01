@@ -2,7 +2,7 @@
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import useModal from "@/app/hooks/useModal";
 import type { MenuProps } from "antd";
-import { Button, Card, Dropdown, message, Space, Switch } from "antd";
+import { Button, Card, Dropdown, message, Space, Switch, Tooltip } from "antd";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -18,6 +18,7 @@ import {
   usePublishEvent,
 } from "@/app/hooks/event/event.hook";
 import { EVENT_INFO, PUBLISH_TYPE } from "@/app/utils/enums";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 interface EventProps {
   totalTickets?: number;
@@ -575,7 +576,16 @@ export default function EventDetailsComponent({
             />
             <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
               {isDiscover ? "Remove from discovery" : "Add to discovery"}
-              {/* Add to discovery page */}
+              <a
+                    href="https://ostivities.tawk.help/article/how-to-add-or-remove-events-from-discovery-on-ostivities" // Replace with your actual URL 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ marginLeft: "8px" }}
+                  >
+                    <Tooltip title="Click to learn more">
+                      <QuestionCircleOutlined style={{ fontSize: "18px", color: "#858990" }} />
+                    </Tooltip>
+                  </a>
             </span>
           </div>
         )}

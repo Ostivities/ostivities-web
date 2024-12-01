@@ -17,7 +17,7 @@ function AboutUs(): JSX.Element {
         <Image
           src={soon}
           alt="About us"
-          style={{ width: "w-full", height: "auto", marginTop: "20px" }}
+          style={{ width: "100%", height: "auto", marginTop: "20px" }}
         />
         <div className="md:container md:mx-auto lg:container lg:mx-auto xl:container xl:mx-auto xxl:container xxl:mx-auto px-5 relative pt-6">
           <div
