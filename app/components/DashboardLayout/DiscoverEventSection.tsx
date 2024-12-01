@@ -38,7 +38,6 @@ const EventSection: React.FC<PropsI> = ({ title, uri, children, titleClass = 'fo
       ...base,
       borderRadius: '12px', // Rounded corners
       borderColor: '#ccc', // Border color
-      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)', // Subtle shadow
       fontFamily: "'Bricolage Grotesque', sans-serif", // Custom font
       fontSize: '14px',
       padding: '2px 8px', // Adjust padding to make it more compact
@@ -84,7 +83,7 @@ const EventSection: React.FC<PropsI> = ({ title, uri, children, titleClass = 'fo
       <div className="sm:w-94 md:w-64 flex-shrink-0">  {/* Ensure it doesn't shrink */}
         <Select
           options={options}
-          placeholder="Search events"
+          placeholder="Filter events"
           styles={customStyles} // This is correct for styling
           onChange={handleChange}
         />

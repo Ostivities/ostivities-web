@@ -17,9 +17,9 @@ const EventSection: React.FC<PropsI> = ({ title, uri, children, titleClass = 'fo
   return (
     <section>
       <div className="flex-center justify-between">
-      <h2 className={`${titleClass} mb-8 -mt-4`} style={style}>{title}</h2>
+      <h2 className={`${titleClass} -mt-4`} style={style}>{title}</h2>
         {uri && (
-          <Link href={uri} className="font-bricolage-grotesque font-semibold text-OWANBE_PRY">
+          <Link href={uri} className="font-bricolage-grotesque font-semibold text-OWANBE_PRY mb-6">
             See More {<ForwardOutlined />}
           </Link>
         )}
