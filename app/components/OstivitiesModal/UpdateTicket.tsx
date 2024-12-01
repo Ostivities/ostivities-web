@@ -53,23 +53,25 @@ const UpdateTicket = ({
         </div>
       }
     >
-      {dataToDelete?.[0]?.eventStatus > 0 ? 
-      <Space
-        direction="vertical"
-        style={{ width: "100%" }}
-        size={"small"}
-        className="pb-7 pt-8"
-      >
-        <div className="mx-auto text-center flex flex-row w-full justify-center items-center">
-        <ShieldIcon />
-        </div>
-        <Paragraph
-          content={"You cannot update a ticket for an active event"}
-          className="text-OWANBE_DARK_SHADE text-sm font-normal font-BricolageGrotesqueRegular text-center mx-auto mt-5"
-          styles={{ fontWeight: "normal !important" }}
-        />
-      </Space>
-      : ticketEntity === "SINGLE" ? (
+      {
+      // dataToDelete?.[0]?.eventStatus > 0 ? 
+      // <Space
+      //   direction="vertical"
+      //   style={{ width: "100%" }}
+      //   size={"small"}
+      //   className="pb-7 pt-8"
+      // >
+      //   <div className="mx-auto text-center flex flex-row w-full justify-center items-center">
+      //   <ShieldIcon />
+      //   </div>
+      //   <Paragraph
+      //     content={"You cannot update a ticket for an active event"}
+      //     className="text-OWANBE_DARK_SHADE text-sm font-normal font-BricolageGrotesqueRegular text-center mx-auto mt-5"
+      //     styles={{ fontWeight: "normal !important" }}
+      //   />
+      // </Space>
+      // : 
+      ticketEntity === "SINGLE" ? (
         <EditSingleTicket onCancel={onCancel} id={id} onOk={onOk} />
       ) : (
         <EditCollectiveTicket onCancel={onCancel} id={id} onOk={onOk} />

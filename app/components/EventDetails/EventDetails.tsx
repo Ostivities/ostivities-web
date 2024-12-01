@@ -624,6 +624,8 @@ export default function EventDetailsComponent({
     <React.Fragment>
       <PaymentDetails
         open={isModalOpen}
+        data={eventDetails?.user?.id}
+        onOk={() => setIsModalOpen(false)}
         onCancel={() => setIsModalOpen(false)}
       />
 
