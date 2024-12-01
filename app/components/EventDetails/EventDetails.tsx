@@ -40,6 +40,7 @@ export default function EventDetailsComponent({
   const { getUserEvent } = useGetUserEvent(params?.id);
   const { addEventToDiscovery } = useAddEventToDiscovery();
   const { publishEvent } = usePublishEvent();
+  const [accountDetailsAdded, setAccountDetailsAdded] = useState(false);
   const eventDetails = getUserEvent?.data?.data?.data;
   const [isPublished, setIsPublished] = useState(false); // State to track publish status
   const [isDiscover, setIsDiscover] = useState(false); // State to track discovery status
@@ -414,7 +415,7 @@ export default function EventDetailsComponent({
             Sales
           </Button>
         </div>
-        {pathname.includes("sales") && (
+        {pathname.includes("sales") && accountDetailsAdded === false && (
           <div className="flex flex-row">
             <Button
               type={"default"}
@@ -625,7 +626,10 @@ export default function EventDetailsComponent({
       <PaymentDetails
         open={isModalOpen}
         data={eventDetails?.user?.id}
-        onOk={() => setIsModalOpen(false)}
+        onOk={() => {
+          setAccountDetailsAdded(true)
+          setIsModalOpen(false)
+        }}
         onCancel={() => setIsModalOpen(false)}
       />
 
