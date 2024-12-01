@@ -285,16 +285,10 @@ const TicketsSelection = () => {
             : ticket?.groupPrice || 0;
 
         // const discountedPrice
-        const currentFee =
-          realPrice < 10000 && realPrice > 0
-            ? Math.round(realPrice * 0.05 + 150)
-            : realPrice >= 10000 && realPrice < 25000
-            ? Math.round(realPrice * 0.045 + 150) // For ticketrealPrice between 10000 and 24999
-            : realPrice >= 25000
-            ? Math.round(realPrice * 0.035 + 150) // For ticketPrice 25000 and above
-            : 0;
+        const currentFee = Math.round(realPrice * 0.45 + 100)
         if (existingTicketIndex > -1) {
           const existingTicket = updatedDetails[existingTicketIndex];
+          const realDiscount = existingTicket?.discountToDeduct || 0;
           const newTicketNumber = existingTicket?.ticketNumber + 1;
           updatedDetails[existingTicketIndex] = {
             ...existingTicket,
@@ -302,9 +296,9 @@ const TicketsSelection = () => {
             ticketFee: newTicketNumber * currentFee,
             ticketNumber: newTicketNumber,
             subTotal: discountCode
-              ? realPrice * newTicketNumber +
-                newTicketNumber * currentFee -
-                ticket?.discountToDeduct
+              ? (realPrice * newTicketNumber) +
+                (newTicketNumber * currentFee) -
+                realDiscount
               : realPrice * newTicketNumber + newTicketNumber * currentFee,
           };
         } else {
@@ -369,14 +363,7 @@ const TicketsSelection = () => {
         if (existingTicketIndex > -1) {
           const existingTicket = updatedDetails[existingTicketIndex];
           const newTicketNumber = existingTicket?.ticketNumber - 1;
-          const currentFee =
-            ticket?.ticketPrice < 10000 && ticket?.ticketPrice > 0
-              ? Math.round(ticket?.ticketPrice * 0.05 + 150)
-              : ticket?.ticketPrice >= 10000 && ticket?.ticketPrice < 25000
-              ? Math.round(ticket?.ticketPrice * 0.045 + 150)
-              : ticket?.ticketPrice >= 25000
-              ? Math.round(ticket?.ticketPrice * 0.035 + 150)
-              : 0;
+          const currentFee = Math.round(ticket?.ticketPrice * 0.45 + 100)
 
           if (newTicketNumber >= 0) {
             const price =
@@ -736,13 +723,13 @@ const TicketsSelection = () => {
   const isPending: boolean = getTickets?.isLoading;
 
   const { minutes, remainingSeconds, timer, stopTimer } = useTimer();
-  useEffect(() => {
-    if (minutes === 0 && remainingSeconds === 0 && successModal === false) {
-      setModal(true);
-    } else if (successModal === true){
-      stopTimer();
-    }
-  }, [minutes, remainingSeconds, successModal, stopTimer]);
+  // useEffect(() => {
+  //   if (minutes === 0 && remainingSeconds === 0 && successModal === false) {
+  //     setModal(true);
+  //   } else if (successModal === true){
+  //     stopTimer();
+  //   }
+  // }, [minutes, remainingSeconds, successModal, stopTimer]);
 
   const [termsAndCondition, setTermsAndCondition] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<
