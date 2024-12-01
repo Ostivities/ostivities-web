@@ -52,11 +52,11 @@ const DiscoverEvents = () => {
       ) : (
         discoveryEvents
           ?.filter((event: IEventDetails) => event?.unique_key !== lastPath)
-          .map((event: IEventDetails) => (
+          .map((event: IEventDetails, index: number) => (
             <>
               <OtherInfoCard
                 className="lg:flex hidden"
-                key={event?.id}
+                key={index}
                 title={event?.eventName}
                 about={event?.eventType}
                 status={
@@ -64,7 +64,7 @@ const DiscoverEvents = () => {
                     ? "Reg Closed"
                     : "Get Tickets"
                 }
-                image={event?.eventImage ? event.eventImage : placeholder}
+                image={event?.eventImage ? event?.eventImage : placeholder}
                 url={`/discover/${event?.unique_key}`}
                 titleClass="font-bricolage-grotesque font-medium"
                 aboutClass="font-bricolage-grotesque"

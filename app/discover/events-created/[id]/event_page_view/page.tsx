@@ -13,7 +13,7 @@ import { useCookies } from "react-cookie";
 import { Heading5, Paragraph } from "@/app/components/typography/Typography";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import ReadMoreHTML from "@/app/components/ReadMoreHTML";
-import placeholder from "@/public/placeholder.svg";
+import placeholder from "@/public/emptyimage2.png";
 import { ACCOUNT_TYPE, EVENT_INFO, EXHIBITION_SPACE } from "@/app/utils/enums";
 
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;

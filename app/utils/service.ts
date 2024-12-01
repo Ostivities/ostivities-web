@@ -21,6 +21,13 @@ import {
   IVerifyToken,
   IBulkMailData,
 } from "./interface";
+import CryptoJS from 'crypto-js';
+
+  const ciphertext = CryptoJS.AES.encrypt(
+    process.env.OSTIVITIES_REFERENCE_TEXT as string,
+    process.env.OSTIVITIES_REFERENCE_KEY as string,
+  ).toString();
+
 
 export class API_SERVICE {
   static async _registerUser(data: IUser) {
@@ -187,6 +194,9 @@ export class API_SERVICE {
     return await instance({
       url: `/ticket/get_event_ticket/${id}`,
       method: HttpMethod.GET,
+      headers: {
+        "Reference": ciphertext
+      }
     });
   }
 

@@ -98,10 +98,16 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
     }
 
   }, [ticketDetails]);
+
+  useEffect(() => {
+    if(showAdditionalField === false){
+      setAdditionalFields([]);
+    }
+  }, [showAdditionalField])
   console.log(groupPrices, "groupPrices")
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
-    const { ticketQuestions, ticketType, ...rest } = values;
+    const { ticketQuestions, ticketType, guestAsChargeBearer, ...rest } = values;
     // return console.log(values)
     if (
       // @ts-ignore
@@ -126,6 +132,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         event: params?.id,
         ticketEntity: "COLLECTIVE",
         user: cookies?.profileData?.id,
+        guestAsChargeBearer: guestAsChargeBearer,
         // groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
         ticketType
       };
@@ -137,7 +144,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         const response = await updateTicket.mutateAsync(payload);
         if (response.status === 200) {
           // console.log(response);
-          form.resetFields();
+          // form.resetFields();
           // linkRef.current?.click();
           if(pathname.startsWith("/discover/create-events")) {
             router.push(`/discover/create-events/${params?.id}/tickets_created`);
@@ -155,14 +162,16 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         event: params?.id,
         ticketEntity: "COLLECTIVE",
         user: cookies?.profileData?.id,
+        guestAsChargeBearer: guestAsChargeBearer,
         // groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
-        ticketType
+        ticketType,
+        ticketQuestions: []
       };
       if (payload) {
         const response = await updateTicket.mutateAsync(payload);
         if (response.status === 200) {
           // console.log(response);
-          form.resetFields();
+          // form.resetFields();
           // linkRef.current?.click();
           if(pathname.startsWith("/discover/create-events")) {
             router.push(`/discover/create-events/${params?.id}/tickets_created`);
@@ -229,6 +238,8 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
   useEffect(() => {
     if (guestAsChargeBearer === true) {
       form.setFieldsValue({ guestAsChargeBearer: true });
+    } else {
+      form.setFieldsValue({ guestAsChargeBearer: false });
     }
   }, [guestAsChargeBearer]);
 
@@ -272,7 +283,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
     <Form<ITicketData>
       form={form}
       name="basic"
-      initialValues={{ remember: true }}
+      initialValues={{ remember: true, guestAsChargeBearer: guestAsChargeBearer }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"

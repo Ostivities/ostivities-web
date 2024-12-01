@@ -59,12 +59,14 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
-  console.log(additionalFields)
+  console.log(additionalFields, "additionalFields")
 
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form);
   const guestAsChargeBearer = Form.useWatch("guestAsChargeBearer", form);
   const ticketQty = Form.useWatch("ticketQty", form);
+
+  console.log(guestAsChargeBearer, "guestAsChargeBearer")
 
   useEffect(() => {
     if (ticketStock === TICKET_STOCK.UNLIMITED) {
@@ -78,6 +80,8 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
   useEffect(() => {
     if (guestAsChargeBearer === true) {
       form.setFieldsValue({ guestAsChargeBearer: true });
+    } else {
+      form.setFieldsValue({ guestAsChargeBearer: false });
     }
   }, [guestAsChargeBearer]);
 
@@ -86,6 +90,12 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
       form.setFieldsValue({ ticketPrice: null });
     }
   }, [ticketType]);
+
+  useEffect(() => {
+    if(showAdditionalField === false){
+      setAdditionalFields([]);
+    }
+  }, [showAdditionalField])
 
   
   console.log(ticketDetails, "ticketDetails");
@@ -135,7 +145,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
   // }, [ticketDetails]);
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
-    const { ticketQuestions, ...rest } = values;
+    const { ticketQuestions, guestAsChargeBearer, ...rest } = values;
     // console.log(values)
 
     if (
@@ -162,7 +172,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
         event: params?.id,
         ticketEntity: "SINGLE",
         user: cookies?.profileData?.id,
-        guestAsChargeBearer: true
+        guestAsChargeBearer: guestAsChargeBearer
       };
       // console.log(payload, "kk");
 
@@ -172,7 +182,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
         const response = await updateTicket.mutateAsync(payload);
         if (response.status === 200) {
           console.log(response);
-          form.resetFields();
+          // form.resetFields();
           // linkRef.current?.click();
           if(pathname.startsWith("/discover/create-events")) {
             router.push(`/discover/create-events/${params?.id}/tickets_created`);
@@ -188,13 +198,14 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
         event: params?.id,
         ticketEntity: "SINGLE",
         user: cookies?.profileData?.id,
-        guestAsChargeBearer: true
+        guestAsChargeBearer: guestAsChargeBearer,
+        ticketQuestions: []
       };
       if (payload) {
         const response = await updateTicket.mutateAsync(payload);
         if (response.status === 200) {
           console.log(response);
-          form.resetFields();
+          // form.resetFields();
           // linkRef.current?.click();
           if(pathname.startsWith("/discover/create-events")) {
             router.push(`/discover/create-events/${params?.id}/tickets_created`);
@@ -254,7 +265,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
   return (
     <Form<ITicketData>
       name="basic"
-      initialValues={{ remember: true, guestAsChargeBearer: true }}
+      initialValues={{ remember: true, guestAsChargeBearer: guestAsChargeBearer }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
@@ -374,7 +385,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
           valuePropName="checked"
           noStyle
         >
-          <Checkbox style={{ marginRight: "10px" }}>
+          <Checkbox defaultChecked={ticketDetails?.guestAsChargeBearer} style={{ marginRight: "10px" }}>
             Transfer charge fees to guest
           </Checkbox>
         </Form.Item>

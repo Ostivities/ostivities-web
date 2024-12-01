@@ -13,10 +13,18 @@ import {
 
 interface FieldType {}
 
+interface BankData {
+  name: string
+  code: string;
+}
+
 const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
   const [form] = Form.useForm();
   const [accountName, setAccountName] = useState("");
   const { getAllBanks } = useGetAllBanks();
+  const { verifyBankAccount } = useVerifyBankAccount();
+  console.log(getAllBanks, "getAllBanks");
+  const allBanks = getAllBanks?.data?.data?.data;
   // const { getSettlementAccount } = useGetSettlementAccount("1");
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
@@ -42,21 +50,29 @@ const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
     return accountNames[key] || "";
   };
 
-  const handleBankNameChange = (value: string) => {
+  const handleBankNameChange = async (value: string) => {
     const accountNumber = form.getFieldValue("accountNumber");
     if (accountNumber) {
-      const fetchedAccountName = fetchAccountName(value, accountNumber);
-      setAccountName(fetchedAccountName);
+      const fetchedAccountName = await verifyBankAccount.mutateAsync({ 
+        bank_code: value, 
+        account_number: accountNumber 
+      });
+      console.log(fetchedAccountName, "fetchedAccountName");
+      // setAccountName(fetchedAccountName);
     }
   };
 
-  const handleAccountNumberChange = (
+  const handleAccountNumberChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const bankName = form.getFieldValue("bankName");
     if (bankName) {
-      const fetchedAccountName = fetchAccountName(bankName, e.target.value);
-      setAccountName(fetchedAccountName);
+      const fetchedAccountName = await verifyBankAccount.mutateAsync({ 
+        bank_code: bankName,
+        account_number: e.target.value
+      });
+      console.log(fetchedAccountName, "fetchedAccountName");
+      // setAccountName(fetchedAccountName);
     }
   };
 
@@ -100,9 +116,14 @@ const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
             style={{ width: "100%" }}
             onChange={handleBankNameChange}
           >
-            {NigerianBanks.map((_i) => (
+            {/* {NigerianBanks.map((_i) => (
               <Select.Option value={_i.value} key={_i.value}>
                 {_i.label}
+              </Select.Option>
+            ))} */}
+            {allBanks?.map((bank: BankData, index: any) => (
+              <Select.Option value={bank?.code} key={index}>
+                {bank?.name}
               </Select.Option>
             ))}
           </Select>

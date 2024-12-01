@@ -240,7 +240,13 @@ const EventsGuestList = () => {
             {getEventGuests?.isLoading ? (
               <Flex gap="middle" vertical>
                 <Skeleton.Button
-                  style={{ height: "200px", width: "50%", display: "flex", justifyContent: "center" }}
+                   style={{
+                    height: "80px",
+                    width: "35%",
+                    display: "flex",
+                    justifyContent: "center",
+                    borderRadius: "12px", 
+                  }}
                   active
                 />
               </Flex>

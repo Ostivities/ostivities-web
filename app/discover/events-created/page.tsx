@@ -36,8 +36,10 @@ function EventsCreated(): JSX.Element {
 
   return (
     <DashboardLayout title={header} isLoggedIn>
-      <div className="w-full mx-auto flex flex-col space-y-5 py-6">
-        {/* Content for Events Created */}
+     <div className="w-full mx-auto flex flex-col space-y-5 py-6">
+        <h1 className="text-black text-lg font-normal font-BricolageGrotesqueRegular mb-2" >
+          View & manage all your created events here.
+        </h1>
         <Details />
       </div>
     </DashboardLayout>
