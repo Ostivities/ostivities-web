@@ -5,7 +5,7 @@ import { EVENT_TYPE } from "./enums"
 
 export const NAV_LINKS: INavLinks[] = [
   {
-    link: "/", name: "Home",
+    link: "/", name: "Explore Events",
     target: undefined,
     rel: undefined
   },
@@ -16,6 +16,11 @@ export const NAV_LINKS: INavLinks[] = [
   },
   {
     link: "/faqs", name: "FAQs",
+    target: undefined,
+    rel: undefined
+  },
+  {
+    link: "/pricing", name: "Pricing",
     target: undefined,
     rel: undefined
   },
