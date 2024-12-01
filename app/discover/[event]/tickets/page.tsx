@@ -736,13 +736,13 @@ const TicketsSelection = () => {
   const isPending: boolean = getTickets?.isLoading;
 
   const { minutes, remainingSeconds, timer, stopTimer } = useTimer();
-  // useEffect(() => {
-  //   if (minutes === 0 && remainingSeconds === 0 && successModal === false) {
-  //     setModal(true);
-  //   } else if (successModal === true){
-  //     stopTimer();
-  //   }
-  // }, [minutes, remainingSeconds, successModal, stopTimer]);
+  useEffect(() => {
+    if (minutes === 0 && remainingSeconds === 0 && successModal === false) {
+      setModal(true);
+    } else if (successModal === true){
+      stopTimer();
+    }
+  }, [minutes, remainingSeconds, successModal, stopTimer]);
 
   const [termsAndCondition, setTermsAndCondition] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<
