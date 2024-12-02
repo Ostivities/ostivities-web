@@ -153,6 +153,7 @@ const TicketsSelection = () => {
       subTotal: number;
       ticketStock: string;
       ticketEntity: string;
+      guestAsChargeBearer: boolean;
       groupSize: number;
       additionalInformation: { question: string; is_compulsory: boolean }[];
     }[]
@@ -200,7 +201,7 @@ const TicketsSelection = () => {
       (discount: any) =>
         discount?.discountCode?.toLowerCase() === discountCode?.toLowerCase()
     );
-    console.log(discountCodeUsed, "discountCodeUsed");
+    // console.log(discountCodeUsed, "discountCodeUsed");
     const discountTypeUsed = discountCodeUsed && discountCodeUsed?.discountType; // Use null or a default value if not found
     const discountValueUsed =
       discountCodeUsed && discountCodeUsed?.discount_value; // Use null or a default value if not found
@@ -226,9 +227,12 @@ const TicketsSelection = () => {
               Math.max(discountedTicketPrice, 0)
             ), // Ensure price isn't negative
             discountToDeduct: Math.round(discountValue),
-            subTotal: Math.round(
-              ticket?.ticketPrice - discountValue + ticket?.ticketFee
-            ),
+            subTotal:
+              ticket?.guestAsChargeBearer === true
+                ? Math.round(
+                    ticket?.ticketPrice - discountValue + ticket?.ticketFee
+                  )
+                : Math.round(ticket?.ticketPrice - discountValue),
           };
         }
         return {
@@ -237,7 +241,10 @@ const TicketsSelection = () => {
           ticketDiscountValue: undefined,
           discountedTicketPrice: undefined,
           discountToDeduct: undefined,
-          subTotal: Math.round(ticket?.ticketPrice + ticket?.ticketFee),
+          subTotal:
+            ticket?.guestAsChargeBearer === true
+              ? Math.round(ticket?.ticketPrice + ticket?.ticketFee)
+              : ticket?.ticketPrice,
         }; // Return ticket unchanged if discountCode doesn't match
       })
     );
@@ -255,38 +262,17 @@ const TicketsSelection = () => {
         );
 
         const updatedDetails = [...prevDetails];
-        const discountedPrice = (() => {
-          if (ticket?.ticketEntity === TICKET_ENTITY.SINGLE) {
-            if (ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE) {
-              return (
-                ticket?.ticketPrice -
-                (ticket?.discount?.discount_value / 100) * ticket?.ticketPrice
-              );
-            } else if (ticket?.discount?.discountType === DISCOUNT_TYPE.FIXED) {
-              return ticket.ticketPrice - ticket.discount.discount_value;
-            }
-            return ticket.ticketPrice; // No discount
-          } else if (ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE) {
-            if (ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE) {
-              return (
-                ticket.groupPrice -
-                (ticket.discount.discount_value / 100) * ticket.groupPrice
-              );
-            } else if (ticket?.discount?.discountType === DISCOUNT_TYPE.FIXED) {
-              return ticket.groupPrice - ticket.discount.discount_value;
-            }
-            return ticket.groupPrice; // No discount
-          }
-          return 0; // Default if no conditions are met
-        })();
-        console.log(discountedPrice, "discountedPrice");
+        // console.log(discountedPrice, "discountedPrice");
         const realPrice =
           ticket?.ticketEntity === TICKET_ENTITY.SINGLE
             ? ticket?.ticketPrice
             : ticket?.groupPrice || 0;
 
         // const discountedPrice
-        const currentFee = Math.round(realPrice * 0.45 + 100)
+        const currentFee =
+          ticket?.ticketType === "PAID"
+            ? Math.round(realPrice * 0.045 + 100)
+            : 0;
         if (existingTicketIndex > -1) {
           const existingTicket = updatedDetails[existingTicketIndex];
           const realDiscount = existingTicket?.discountToDeduct || 0;
@@ -294,33 +280,36 @@ const TicketsSelection = () => {
           updatedDetails[existingTicketIndex] = {
             ...existingTicket,
             ticketPrice: realPrice * newTicketNumber,
-            ticketFee: newTicketNumber * currentFee,
+            ticketFee:
+              ticket?.ticketType === "PAID" ? newTicketNumber * currentFee : 0,
             ticketNumber: newTicketNumber,
-            subTotal: discountCode
-              ? (realPrice * newTicketNumber) +
-                (newTicketNumber * currentFee) -
-                realDiscount
-              : realPrice * newTicketNumber + newTicketNumber * currentFee,
+            subTotal:
+              existingTicket?.guestAsChargeBearer === false
+                ? discountCode
+                  ? realPrice * newTicketNumber - realDiscount
+                  : realPrice * newTicketNumber
+                : discountCode
+                ? realPrice * newTicketNumber +
+                  newTicketNumber * currentFee -
+                  realDiscount
+                : realPrice * newTicketNumber + newTicketNumber * currentFee,
           };
         } else {
           updatedDetails.push({
             ticketName: ticket?.ticketName,
             ticketPrice: realPrice,
-            discountedTicketPrice: discountedPrice,
-            discountToDeduct:
-              ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE
-                ? realPrice * (ticket?.discount?.discount_value / 100)
-                : ticket?.discount?.discount_value,
             ticketFee: currentFee,
             ticketNumber: 1,
             ticketStock: ticket?.ticketStock,
             ticketDiscountCode: ticket?.discountCode,
             ticketDiscountType: ticket?.discount?.discountType,
             ticketDiscountValue: ticket?.discount?.discount_value,
-            subTotal: discountCode
-              ? discountedPrice + currentFee
-              : realPrice + currentFee,
+            subTotal:
+              ticket?.guestAsChargeBearer === true
+                ? realPrice + currentFee
+                : realPrice,
             ticketId: ticket?.id,
+            guestAsChargeBearer: ticket?.guestAsChargeBearer,
             constantTicketPrice: ticket?.ticketPrice,
             ticketEntity: ticket?.ticketEntity,
             groupSize: ticket?.groupSize,
@@ -365,8 +354,11 @@ const TicketsSelection = () => {
         if (existingTicketIndex > -1) {
           const existingTicket = updatedDetails[existingTicketIndex];
           const newTicketNumber = existingTicket?.ticketNumber - 1;
-          const currentFee = Math.round(ticket?.ticketPrice * 0.45 + 100)
-          const existingDiscount = existingTicket?.discountToDeduct
+          const currentFee =
+            ticket?.ticketType === "PAID"
+              ? Math.round(ticket?.ticketPrice * 0.045 + 100)
+              : 0;
+          const existingDiscount = existingTicket?.discountToDeduct;
 
           if (newTicketNumber >= 0) {
             const price =
@@ -377,18 +369,18 @@ const TicketsSelection = () => {
             updatedDetails[existingTicketIndex] = {
               ...existingTicket,
               ticketPrice: price * newTicketNumber,
-              // discountedTicketPrice: discountApplied
-              //   ? existingTicket?.discountedTicketPrice
-              //   : undefined,
-              // discountToDeduct:
-              //   ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE
-              //     ? price *
-              //     (ticket?.discount?.discount_value / 100) *
-              //     newTicketNumber
-              //     : ticket?.discount?.discount_value * newTicketNumber,
               ticketFee: currentFee * newTicketNumber,
               ticketNumber: newTicketNumber,
-              subTotal: discountCode ? price * newTicketNumber + currentFee * newTicketNumber - (existingDiscount ?? 0) : price * newTicketNumber + currentFee * newTicketNumber,
+              subTotal:
+                ticket?.guestAsChargeBearer === false
+                  ? discountCode
+                    ? price * newTicketNumber - (existingDiscount ?? 0)
+                    : price * newTicketNumber
+                  : discountCode
+                  ? price * newTicketNumber +
+                    currentFee * newTicketNumber -
+                    (existingDiscount ?? 0)
+                  : price * newTicketNumber + currentFee * newTicketNumber,
             };
           }
         }
@@ -455,9 +447,10 @@ const TicketsSelection = () => {
       .reduce((acc, curr) => acc + (curr ?? 0), 0),
     total_amount_paid: 0,
     discountCode: ticketDetails?.[0]?.ticketDiscountCode?.[0] || "",
-    discount: (ticketDetails
-      ?.map((ticket) => ticket?.discountToDeduct ?? 0)
-      .reduce((acc, curr) => acc + curr, 0)) || 0,
+    discount:
+      ticketDetails
+        ?.map((ticket) => ticket?.discountToDeduct ?? 0)
+        .reduce((acc, curr) => acc + curr, 0) || 0,
     total_purchased: 0,
   });
   const [attendeesInformation, setAttendeesInformation] = useState<
@@ -547,9 +540,8 @@ const TicketsSelection = () => {
     setAdditionalFields(initialAdditionalFields);
   }, [ticketDetails]);
 
-  useEffect(() => {
-  }, [allInfo]);
-  console.log(allInfo, "Updated allInfo");
+  useEffect(() => {}, [allInfo]);
+  // console.log(allInfo, "Updated allInfo");
 
   const [loading, setLoading] = useState(false);
   const onFinish: FormProps<any>["onFinish"] = async (values: any) => {
@@ -601,7 +593,7 @@ const TicketsSelection = () => {
         total_amount: ticket?.subTotal,
         ticket_price: ticket?.ticketPrice === null ? 0 : ticket?.ticketPrice,
         ticket_type: ticket?.ticketEntity,
-        ticket_stock: ticket?.ticketStock
+        ticket_stock: ticket?.ticketStock,
       };
     });
 
@@ -610,15 +602,16 @@ const TicketsSelection = () => {
       personal_information,
       ticket_information,
       discount: ticketDetails
-      ?.map((ticket) => ticket?.discountToDeduct)
-      .reduce((acc, curr) => (acc ?? 0) + (curr ?? 0), 0),
+        ?.map((ticket) => ticket?.discountToDeduct)
+        .reduce((acc, curr) => (acc ?? 0) + (curr ?? 0), 0),
       discountCode: discountCode,
       additional_information: additionalFields,
       attendees_information,
       event: (eventDetails && eventDetails?.id) || ticketData?.event?.id,
       fees: ticketDetails
-        ?.map((ticket) => ticket?.ticketFee)
-        .reduce((acc, curr) => acc + curr, 0),
+      ?.filter((ticket) => ticket?.guestAsChargeBearer === true) 
+      ?.map((ticket) => ticket?.ticketFee || 0)
+      .reduce((acc, curr) => acc + curr, 0),
       total_amount_paid: ticketDetails
         ?.map((ticket) => ticket?.subTotal)
         .reduce((acc, curr) => acc + curr, 0),
@@ -630,16 +623,19 @@ const TicketsSelection = () => {
       return {
         ...prevInfo,
         personal_information,
-        discount: ticketDetails
-        ?.reduce((acc, ticket) => acc + (ticket?.discountToDeduct ?? 0), 0),
+        discount: ticketDetails?.reduce(
+          (acc, ticket) => acc + (ticket?.discountToDeduct ?? 0),
+          0
+        ),
         discountCode: discountCode,
         ticket_information,
         additional_information: additionalFields,
         attendees_information,
         event: (eventDetails && eventDetails?.id) || ticketData?.event?.id,
         fees: ticketDetails
-          ?.map((ticket) => ticket?.ticketFee)
-          .reduce((acc, curr) => acc + curr, 0),
+        ?.filter((ticket) => ticket?.guestAsChargeBearer === true) 
+        ?.map((ticket) => ticket?.ticketFee || 0)
+        .reduce((acc, curr) => acc + curr, 0),
         total_amount_paid: ticketDetails
           ?.map((ticket) => ticket?.subTotal)
           .reduce((acc, curr) => acc + curr, 0),
@@ -667,6 +663,7 @@ const TicketsSelection = () => {
         setLoading(false);
       }
     } else {
+      setLoading(false);
       setCurrentPage("payment");
     }
     // router.push(`discover/${params?.event}/payment`);
@@ -687,6 +684,8 @@ const TicketsSelection = () => {
     if (response.status === 200) {
       setLoading(false);
       setSuccessModal(true);
+    } else{
+      setLoading(false);
     }
   };
 
@@ -873,7 +872,7 @@ const TicketsSelection = () => {
                           <h3>
                             {ticket?.ticketPrice ? (
                               <>
-                                {ticket?.ticketPrice < 10000 && (
+                                {ticket?.guestAsChargeBearer === true ? (
                                   <>
                                     <span
                                       className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
@@ -884,8 +883,8 @@ const TicketsSelection = () => {
                                     >
                                       ₦
                                       {Math.round(
-                                        ticket?.ticketPrice * 0.05 +
-                                          150 +
+                                        ticket?.ticketPrice * 0.045 +
+                                          100 +
                                           ticket?.ticketPrice
                                       ).toLocaleString()}
                                     </span>{" "}
@@ -898,45 +897,12 @@ const TicketsSelection = () => {
                                     >
                                       Including ₦
                                       {Math.round(
-                                        ticket?.ticketPrice * 0.05 + 150
+                                        ticket?.ticketPrice * 0.045 + 100
                                       ).toLocaleString()}{" "}
                                       fee
                                     </span>
                                   </>
-                                )}
-                                {ticket?.ticketPrice >= 10000 &&
-                                  ticket?.ticketPrice < 25000 && (
-                                    <>
-                                      <span
-                                        className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
-                                        style={{
-                                          fontWeight: 600,
-                                          fontSize: "17px",
-                                        }}
-                                      >
-                                        ₦
-                                        {Math.round(
-                                          ticket?.ticketPrice * 0.045 +
-                                            150 +
-                                            ticket?.ticketPrice
-                                        ).toLocaleString()}
-                                      </span>{" "}
-                                      <span
-                                        className="text-s font-BricolageGrotesqueRegular"
-                                        style={{
-                                          fontWeight: 400,
-                                          fontSize: "12px",
-                                        }}
-                                      >
-                                        Including ₦
-                                        {Math.round(
-                                          ticket?.ticketPrice * 0.045 + 150
-                                        ).toLocaleString()}{" "}
-                                        fee
-                                      </span>
-                                    </>
-                                  )}
-                                {ticket?.ticketPrice >= 25000 && (
+                                ) : (
                                   <>
                                     <span
                                       className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
@@ -947,24 +913,9 @@ const TicketsSelection = () => {
                                     >
                                       ₦
                                       {Math.round(
-                                        ticket?.ticketPrice * 0.035 +
-                                          150 +
-                                          ticket?.ticketPrice
+                                        ticket?.ticketPrice
                                       ).toLocaleString()}
                                     </span>{" "}
-                                    <span
-                                      className="text-s font-BricolageGrotesqueRegular"
-                                      style={{
-                                        fontWeight: 400,
-                                        fontSize: "12px",
-                                      }}
-                                    >
-                                      Including ₦
-                                      {Math.round(
-                                        ticket?.ticketPrice * 0.035 + 150
-                                      ).toLocaleString()}{" "}
-                                      fee
-                                    </span>
                                   </>
                                 )}
                               </>
@@ -1011,7 +962,9 @@ const TicketsSelection = () => {
                             onClick={() => handleIncrement(ticket?.id)}
                             disabled={
                               selectedTickets[ticket?.id] ===
-                              ticket?.purchaseLimit
+                                ticket?.purchaseLimit ||
+                              selectedTickets[ticket?.id] ===
+                                ticket?.ticket_available
                             }
                             style={{
                               color:
@@ -1089,7 +1042,7 @@ const TicketsSelection = () => {
                           <h3>
                             {ticket?.groupPrice ? (
                               <>
-                                {ticket?.groupPrice < 10000 && (
+                                {ticket?.guestAsChargeBearer === true ? (
                                   <>
                                     <span
                                       className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
@@ -1100,8 +1053,8 @@ const TicketsSelection = () => {
                                     >
                                       ₦
                                       {Math.round(
-                                        ticket?.groupPrice * 0.05 +
-                                          150 +
+                                        ticket?.groupPrice * 0.045 +
+                                          100 +
                                           ticket?.groupPrice
                                       ).toLocaleString()}
                                     </span>{" "}
@@ -1114,45 +1067,12 @@ const TicketsSelection = () => {
                                     >
                                       Including ₦
                                       {Math.round(
-                                        ticket?.groupPrice * 0.05 + 150
+                                        ticket?.groupPrice * 0.045 + 100
                                       ).toLocaleString()}{" "}
                                       fee
                                     </span>
                                   </>
-                                )}
-                                {ticket?.groupPrice >= 10000 &&
-                                  ticket?.groupPrice < 25000 && (
-                                    <>
-                                      <span
-                                        className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
-                                        style={{
-                                          fontWeight: 600,
-                                          fontSize: "17px",
-                                        }}
-                                      >
-                                        ₦
-                                        {Math.round(
-                                          ticket?.groupPrice * 0.045 +
-                                            150 +
-                                            ticket?.groupPrice
-                                        ).toLocaleString()}
-                                      </span>{" "}
-                                      <span
-                                        className="text-s font-BricolageGrotesqueRegular"
-                                        style={{
-                                          fontWeight: 400,
-                                          fontSize: "12px",
-                                        }}
-                                      >
-                                        Including ₦
-                                        {Math.round(
-                                          ticket?.groupPrice * 0.045 + 150
-                                        ).toLocaleString()}{" "}
-                                        fee
-                                      </span>
-                                    </>
-                                  )}
-                                {ticket?.groupPrice >= 25000 && (
+                                ) : (
                                   <>
                                     <span
                                       className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
@@ -1163,24 +1083,9 @@ const TicketsSelection = () => {
                                     >
                                       ₦
                                       {Math.round(
-                                        ticket?.groupPrice * 0.035 +
-                                          150 +
-                                          ticket?.groupPrice
+                                        ticket?.groupPrice
                                       ).toLocaleString()}
                                     </span>{" "}
-                                    <span
-                                      className="text-s font-BricolageGrotesqueRegular"
-                                      style={{
-                                        fontWeight: 400,
-                                        fontSize: "12px",
-                                      }}
-                                    >
-                                      Including ₦
-                                      {Math.round(
-                                        ticket?.groupPrice * 0.035 + 150
-                                      ).toLocaleString()}{" "}
-                                      fee
-                                    </span>
                                   </>
                                 )}
                               </>
@@ -1225,7 +1130,11 @@ const TicketsSelection = () => {
                           <button
                             className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center rounded-full text-lg font-bold"
                             onClick={() => handleIncrement(ticket?.id)}
-                            disabled={selectedTickets[ticket?.id] === 1}
+                            disabled={
+                              selectedTickets[ticket?.id] === 1 ||
+                              selectedTickets[ticket?.id] ===
+                                ticket?.ticket_available 
+                            }
                             style={{
                               color:
                                 selectedTickets[ticket?.id] === 1

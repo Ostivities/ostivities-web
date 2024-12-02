@@ -35,6 +35,7 @@ interface SummaryProps {
     ticketFee: number;
     ticketNumber: number;
     subTotal: number;
+    guestAsChargeBearer: boolean;
   }[];
   eventName?: string;
   currentPage: string;
@@ -333,10 +334,15 @@ const Summary = ({
                   <div>Fee</div>
                   <div>
                     ₦
-                    {ticketDetails
+                    {/* {ticketDetails
                       ?.reduce((acc, ticket) => acc + ticket?.ticketFee, 0)
                       .toLocaleString()}
-                    {".00 "}
+                    {".00 "} */}
+                    {ticketDetails?.filter((ticket: any) => {
+                      return ticket?.guestAsChargeBearer === true
+                    })?.reduce((acc, ticket) => acc + ticket?.ticketFee, 0)
+                    .toLocaleString()}
+                  {".00 "}
                   </div>
                 </div>
                 {discountApplied && (
