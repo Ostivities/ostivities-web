@@ -66,7 +66,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
   const guestAsChargeBearer = Form.useWatch("guestAsChargeBearer", form);
   const ticketQty = Form.useWatch("ticketQty", form);
 
-  console.log(guestAsChargeBearer, "guestAsChargeBearer")
+  console.log(ticketQty, "ticketQty")
 
   useEffect(() => {
     if (ticketStock === TICKET_STOCK.UNLIMITED) {
@@ -304,7 +304,17 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
         rules={[
           {
             required: ticketStock === TICKET_STOCK.LIMITED,
-            message: "Please input your ticket stock",
+            message: "Please input your ticket stock", // Validation for required input
+          },
+          {
+            validator: (_, value) => {
+              if (ticketStock === TICKET_STOCK.LIMITED && value < ticketDetails?.ticket_sold) {
+                return Promise.reject(
+                  new Error("Ticket quantity cannot be less than tickets sold")
+                );
+              }
+              return Promise.resolve(); // No error
+            },
           },
         ]}
         style={{ marginBottom: "8px" }}

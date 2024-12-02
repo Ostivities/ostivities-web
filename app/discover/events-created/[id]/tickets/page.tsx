@@ -179,7 +179,7 @@ const EventTickets = () => {
               "Unlimited"
             ) : (
               <span>
-                {record?.ticket_available}/{record.ticketQty} Available
+                {record?.ticket_sold}/{record.ticketQty} Sold
               </span>
             )}
           </>
@@ -287,7 +287,7 @@ const EventTickets = () => {
       ticketQuestions: item?.ticketQuestions,
       groupSize: item?.groupSize,
       groupPrice: item?.groupPrice,
-      ticketSold: item?.ticket_sold,
+      ticket_sold: item?.ticket_sold,
       ticket_available: item?.ticket_available,
     };
   });

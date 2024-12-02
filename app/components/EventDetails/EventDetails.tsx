@@ -17,6 +17,9 @@ import {
   useAddEventToDiscovery,
   usePublishEvent,
 } from "@/app/hooks/event/event.hook";
+import {
+  useGetSettlementAccount,
+} from "@/app/hooks/settlement/settlement.hook";
 import { EVENT_INFO, PUBLISH_TYPE } from "@/app/utils/enums";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 
@@ -43,6 +46,7 @@ export default function EventDetailsComponent({
   const { publishEvent } = usePublishEvent();
   const [accountDetailsAdded, setAccountDetailsAdded] = useState(false);
   const eventDetails = getUserEvent?.data?.data?.data;
+  const { getSettlementAccount } = useGetSettlementAccount(eventDetails?.user?.id)
   const [isPublished, setIsPublished] = useState(false); // State to track publish status
   const [isDiscover, setIsDiscover] = useState(false); // State to track discovery status
   // console.log(isDiscover, "isDiscover")
@@ -416,7 +420,7 @@ export default function EventDetailsComponent({
             Sales
           </Button>
         </div>
-        {pathname.includes("sales") && accountDetailsAdded === false && (
+        {pathname.includes("sales") && getSettlementAccount?.data === undefined && (
           <div className="flex flex-row">
             <Button
               type={"default"}
