@@ -5,12 +5,13 @@ import { Skeleton } from "antd";
 import InfoCardM from "./OtherInfoCard2";
 import { IEventDetails } from "@/app/utils/interface";
 import placeholder from "@/public/placeholder.svg";
+import { useState } from "react";
 
 const PopularEvents = () => {
-  const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 5);
+  const [page, setPage] = useState(1);
+  const [pageSize, setpageSize] = useState(12);
+  const { getDiscoveryEvents } = useGetDiscoveryEvents(page, pageSize);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
-  console.log(discoveryEvents, "discoveryEvents");
-
   const isPending = getDiscoveryEvents?.isLoading;
 
   return (
@@ -18,7 +19,7 @@ const PopularEvents = () => {
       title="Popular Events"
       titleClass="custom-title-class"
       style={{
-        fontSize: "20px",
+        fontSize: "20px", 
         fontFamily: "Bricolage Grotesque, font-semibold",
       }} // Inline style
       uri="/discover/popularevents"
