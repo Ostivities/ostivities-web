@@ -11,7 +11,7 @@ const EventSearch = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setpageSize] = useState(12);
   const { getDiscoveryEvents } = useGetDiscoveryEvents(page, pageSize);
-  const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
+  const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
   console.log(discoveryEvents, "discoveryEvents");
 
   const isPending = getDiscoveryEvents?.isLoading;

@@ -58,7 +58,7 @@ const SearchResult = ({ params }: { params: { event: string } }) => {
   const [eventTypeValue, setEventTypeValue] = useState<SingleValue<{ label: string; value: string }> | null>(null);
 
   const { getDiscoveryEvents } = useGetDiscoveryEvents(page, pageSize);
-  const discoveryEvents = getDiscoveryEvents?.data?.data?.data || [];
+  const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
   const isPending = getDiscoveryEvents?.isLoading;
   const skeletonCount = Math.max(12, discoveryEvents.length);
 

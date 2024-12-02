@@ -151,13 +151,14 @@ const TicketsSelection = () => {
       ticketNumber: number;
       ticketId: string;
       subTotal: number;
+      ticketStock: string;
       ticketEntity: string;
       groupSize: number;
       additionalInformation: { question: string; is_compulsory: boolean }[];
     }[]
   >([]);
 
-  console.log(ticketDetails, "ticketDetails");
+  // console.log(ticketDetails, "ticketDetails");
 
   useEffect(() => {
     // When ticketData is updated, re-initialize selectedTickets
@@ -312,6 +313,7 @@ const TicketsSelection = () => {
                 : ticket?.discount?.discount_value,
             ticketFee: currentFee,
             ticketNumber: 1,
+            ticketStock: ticket?.ticketStock,
             ticketDiscountCode: ticket?.discountCode,
             ticketDiscountType: ticket?.discount?.discountType,
             ticketDiscountValue: ticket?.discount?.discount_value,
@@ -364,6 +366,7 @@ const TicketsSelection = () => {
           const existingTicket = updatedDetails[existingTicketIndex];
           const newTicketNumber = existingTicket?.ticketNumber - 1;
           const currentFee = Math.round(ticket?.ticketPrice * 0.45 + 100)
+          const existingDiscount = existingTicket?.discountToDeduct
 
           if (newTicketNumber >= 0) {
             const price =
@@ -385,7 +388,7 @@ const TicketsSelection = () => {
               //     : ticket?.discount?.discount_value * newTicketNumber,
               ticketFee: currentFee * newTicketNumber,
               ticketNumber: newTicketNumber,
-              subTotal: price * newTicketNumber + currentFee * newTicketNumber,
+              subTotal: discountCode ? price * newTicketNumber + currentFee * newTicketNumber - (existingDiscount ?? 0) : price * newTicketNumber + currentFee * newTicketNumber,
             };
           }
         }
@@ -449,10 +452,12 @@ const TicketsSelection = () => {
     event_unique_code: params?.event,
     fees: ticketDetails
       ?.map((ticket) => ticket?.ticketFee)
-      .reduce((acc, curr) => acc + curr, 0),
+      .reduce((acc, curr) => acc + (curr ?? 0), 0),
     total_amount_paid: 0,
-    discountCode: "",
-    discount: 0,
+    discountCode: ticketDetails?.[0]?.ticketDiscountCode?.[0] || "",
+    discount: (ticketDetails
+      ?.map((ticket) => ticket?.discountToDeduct ?? 0)
+      .reduce((acc, curr) => acc + curr, 0)) || 0,
     total_purchased: 0,
   });
   const [attendeesInformation, setAttendeesInformation] = useState<
@@ -543,8 +548,8 @@ const TicketsSelection = () => {
   }, [ticketDetails]);
 
   useEffect(() => {
-    // console.log(allInfo, "Updated allInfo");
   }, [allInfo]);
+  console.log(allInfo, "Updated allInfo");
 
   const [loading, setLoading] = useState(false);
   const onFinish: FormProps<any>["onFinish"] = async (values: any) => {
@@ -596,6 +601,7 @@ const TicketsSelection = () => {
         total_amount: ticket?.subTotal,
         ticket_price: ticket?.ticketPrice === null ? 0 : ticket?.ticketPrice,
         ticket_type: ticket?.ticketEntity,
+        ticket_stock: ticket?.ticketStock
       };
     });
 
@@ -603,6 +609,10 @@ const TicketsSelection = () => {
       ...allInfo,
       personal_information,
       ticket_information,
+      discount: ticketDetails
+      ?.map((ticket) => ticket?.discountToDeduct)
+      .reduce((acc, curr) => (acc ?? 0) + (curr ?? 0), 0),
+      discountCode: discountCode,
       additional_information: additionalFields,
       attendees_information,
       event: (eventDetails && eventDetails?.id) || ticketData?.event?.id,
@@ -620,6 +630,9 @@ const TicketsSelection = () => {
       return {
         ...prevInfo,
         personal_information,
+        discount: ticketDetails
+        ?.reduce((acc, ticket) => acc + (ticket?.discountToDeduct ?? 0), 0),
+        discountCode: discountCode,
         ticket_information,
         additional_information: additionalFields,
         attendees_information,

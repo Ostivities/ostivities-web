@@ -11,10 +11,10 @@ import Select, { StylesConfig } from "react-select";
 const DiscoverEvents = () => {
   const [searchText, setSearchText] = useState("");
   const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 5);
-  const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
+  const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
   const { addEventToDiscovery } = useAddEventToDiscovery();
   const [expiredEventsId, setExpiredEventsId] = useState<string[]>([]);
-  // console.log(discoveryEvents, "discoveryEvents")
+  // console.log(getDiscoveryEvents, "getDiscoveryEvents")
   const { publishEvent } = usePublishEvent();
 
   const isPending = getDiscoveryEvents?.isLoading;

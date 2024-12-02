@@ -30,6 +30,7 @@ const PaymentDetails = ({
   const { getAllBanks } = useGetAllBanks();
   const { verifyBankAccount } = useVerifyBankAccount();
   const { createSettlementAccount } = useCreateSettlementAccount();
+  const { getSettlementAccount } = useGetSettlementAccount(data)
   console.log(getAllBanks, "getAllBanks");
   const allBanks = getAllBanks?.data?.data?.data;
   // const { getSettlementAccount } = useGetSettlementAccount("1");

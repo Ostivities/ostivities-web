@@ -14,7 +14,7 @@ const DiscoverEvents = () => {
   const lastPath = pathname?.split("/").pop();
 
   const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 10);
-  const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
+  const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
   // console.log(discoveryEvents, 'discoveryEvents');
   const uniqueEvent = discoveryEvents?.map(
     (event: IEventDetails) => event?.unique_key

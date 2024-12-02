@@ -124,6 +124,8 @@ export const useGetDiscoveryEvents = (page: number, pageSize: number) => {
   return { getDiscoveryEvents };
 }
 
+
+
 export const useEnableEventRegistration = () => {
   const enableEventRegistration = useMutation({
     mutationFn: (data: { id: string, enable_registration: boolean}) => {
