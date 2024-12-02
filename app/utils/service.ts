@@ -194,11 +194,19 @@ export class API_SERVICE {
     return await instance({
       url: `/ticket/get_event_ticket/${id}`,
       method: HttpMethod.GET,
+    });
+  }
+
+  static async _getAllEventTicketsByUniqueKey(event_unique_key: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/ticket/get_event_tickets/${event_unique_key}`,
+      method: HttpMethod.GET,
       headers: {
         "Reference": ciphertext
       }
     });
   }
+
 
   static async _getSingleTicket(id: string): Promise<AxiosResponse> {
     return await instance({

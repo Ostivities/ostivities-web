@@ -360,30 +360,12 @@ const Summary = ({
                   <div>Subtotal</div>
                   <div>
                     ₦
-                    {ticketDetails &&
-                    ticketDetails.some(
-                      (ticket: any) => ticket?.ticketDiscountValue !== undefined
-                    )
-                      ? // If ticketDiscountValue is defined, calculate adjusted total
-                        (
-                          ticketDetails?.reduce(
-                            (acc: number, ticket: any) =>
-                              acc + (ticket?.subTotal ?? 0), // Regular subtotal
-                            0
-                          ) -
-                          ticketDetails?.reduce(
-                            (acc, ticket) =>
-                              acc + (ticket?.discountToDeduct ?? 0),
-                            0
-                          )
-                        ).toLocaleString() + ".00"
-                      : // Otherwise, sum up only the subTotal
-                        ticketDetails
-                          ?.reduce(
-                            (acc, ticket) => acc + (ticket?.subTotal ?? 0),
-                            0
-                          )
-                          .toLocaleString() + ".00"}
+                    {ticketDetails
+                      ?.reduce(
+                        (acc, ticket) => acc + (ticket?.subTotal ?? 0),
+                        0
+                      )
+                      .toLocaleString() + ".00"}
                   </div>
                 </div>
               </div>
@@ -393,26 +375,9 @@ const Summary = ({
             <div>Total</div>
             <div>
               ₦
-              {ticketDetails &&
-              ticketDetails.some(
-                (ticket: any) => ticket?.ticketDiscountValue !== undefined
-              )
-                ? // If ticketDiscountValue is defined, calculate adjusted total
-                  (
-                    ticketDetails?.reduce(
-                      (acc: number, ticket: any) =>
-                        acc + (ticket?.subTotal ?? 0), // Regular subtotal
-                      0
-                    ) -
-                    ticketDetails?.reduce(
-                      (acc, ticket) => acc + (ticket?.discountToDeduct ?? 0),
-                      0
-                    )
-                  ).toLocaleString() + ".00"
-                : // Otherwise, sum up only the subTotal
-                  ticketDetails
-                    ?.reduce((acc, ticket) => acc + (ticket?.subTotal ?? 0), 0)
-                    .toLocaleString() + ".00"}
+              {ticketDetails
+                ?.reduce((acc, ticket) => acc + (ticket?.subTotal ?? 0), 0)
+                .toLocaleString() + ".00"}
             </div>
             {/* Adjust this based on your calculation */}
           </div>

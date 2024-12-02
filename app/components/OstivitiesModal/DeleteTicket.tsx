@@ -28,6 +28,11 @@ const DeleteTicket = ({
     }
   };
 
+  const handleDetele = () => {
+    message.error("This ticket cannot be deleted as it already has existing orders.")
+
+  }
+
   console.log(dataToDelete?.[0]?.event?.eventStatus, "dataToDelete");
   const singleEventStatus = dataToDelete?.[0]?.eventStatus; // Use optional chaining to avoid errors
   console.log(singleEventStatus);
@@ -43,7 +48,7 @@ const DeleteTicket = ({
     <>
       {actionType === "delete" && dataToDelete?.[0]?.eventStatus > 0 ? (
         // `You cannot delete an active event.`
-        message.error("You cannot delete the ticket because it has been sold.")
+        handleDetele()
       ) : (
         <Modal
           title={null}

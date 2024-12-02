@@ -8,7 +8,7 @@ import placeholder from "@/public/placeholder.svg";
 
 const PopularEvents = () => {
   const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 5);
-  const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
+  const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
   console.log(discoveryEvents, "discoveryEvents");
 
   const isPending = getDiscoveryEvents?.isLoading;

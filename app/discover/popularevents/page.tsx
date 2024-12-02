@@ -40,7 +40,7 @@ const PopularEvent = ({ params }: { params: { event: string } }) => {
     "Explore Popular Events";
 
   const { getDiscoveryEvents } = useGetDiscoveryEvents(page, pageSize);
-  const discoveryEvents = getDiscoveryEvents?.data?.data?.data || []; // Ensure this is always an array
+  const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
   console.log(discoveryEvents.length, "Number of Discovery Events"); // Log the length
 
   const isPending = getDiscoveryEvents?.isLoading;
