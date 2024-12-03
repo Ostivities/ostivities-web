@@ -52,21 +52,7 @@ function Footer(): JSX.Element {
                 />
               </div>
             </div>
-            {/* 2 */}
-            <div className="flex flex-col space-y-3">
-              <Heading5 content="Legal" className="" />
-              {LEGAL.map((item, index) => (
-                <Link
-                  key={index} // Changed to index for uniqueness
-                  href={item.link}
-                  target={item.target}
-                  rel={item.rel}
-                  className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
+          
             {/* 3 */}
             <div className="flex flex-col space-y-3">
               <Heading5 content="Support" className="" />
@@ -96,26 +82,28 @@ function Footer(): JSX.Element {
                   {item.name}
                 </Link>
               ))}
+              
               <a
-                href="https://www.producthunt.com/products/ostivities/reviews?utm_source=badge-product_review&utm_medium=badge&utm_souce=badge-ostivities"
+                href="https://www.producthunt.com/products/ostivities?utm_source=badge-follow&utm_medium=badge&utm_souce=badge-ostivities"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <img
-                  src="https://api.producthunt.com/widgets/embed-image/v1/product_review.svg?product_id=599681&theme=light"
+                  src="https://api.producthunt.com/widgets/embed-image/v1/follow.svg?product_id=599681&theme=light"
                   alt="Ostivities - Revolutionizing&#0032;Social&#0032;Event&#0032;Management&#0032; | Product Hunt"
                   style={{ width: '250px', height: '54px' }}
                   width="250"
                   height="54"
                 />
               </a>
-              <a href="#"
+              {/* <a href="#"
                 onClick={() => window.open('https://www.sitelock.com/verify.php?site=ostivities.com', 'SiteLock', 'width=600,height=600,left=160,top=170')}>
                 <img
                   className="img-fluid"
                   alt="SiteLock"
                   title="SiteLock"
-                  src="https://shield.sitelock.com/shield/ostivities.com" /></a>
+                  src="https://shield.sitelock.com/shield/ostivities.com" />
+                  </a> */}
             </div>
           </div>
           <div className="flex flex-row items-center justify-start md:justify-end lg:justify-end xl:justify-end">
@@ -154,12 +142,35 @@ function Footer(): JSX.Element {
         </div>
         <hr className="hor-rule" />
         <div className="footer-bottom pt-5">
-          <Paragraph
-            className="text-center"
-            content={`Copyright © ${currentYear}. Ostivities Technology Limited. All rights reserved.`}
-          />
-        </div>
-      </div>
+  {/* Footer Wrapper */}
+  <div className="flex flex-col md:flex-row justify-between items-start md:space-y-0 space-y-6">
+    {/* Copyright Section */}
+    <div className="order-2 md:order-1 text-left mt-8 md:mt-0">
+    <Paragraph
+  content={`Copyright © ${currentYear}. Ostivities Technology Limited. All rights reserved.`}
+  className="text-center md:text-left text-OWANBE_H4 font-light font-BricolageGrotesqueLight text-[14px] md:text-base" // Adjusted alignment for mobile
+/>
+
+    </div>
+
+    {/* Legal Links Section */}
+    <div className="order-1 md:order-2 flex flex-wrap md:flex-row md:space-x-8 space-x-6 text-left md:mr-16">
+      {LEGAL.map((item, index) => (
+        <Link
+          key={index}
+          href={item.link}
+          target={item.target}
+          rel={item.rel}
+          className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+        >
+          {item.name}
+        </Link>
+      ))}
+    </div>
+  </div>
+</div>
+
+</div>
     </footer>
   );
 }

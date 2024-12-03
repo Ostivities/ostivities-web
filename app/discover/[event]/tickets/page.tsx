@@ -45,6 +45,7 @@ import PaymentSuccessModal from "@/app/components/OstivitiesModal/PaymentSuccess
 import ContactForm from "@/app/components/ContactForm/ContactForm";
 import PaymentValidation from "@/app/components/OstivitiesModal/PaymentValidation";
 import paystack from "@/public/paystack.png";
+import soldout from "@/public/Soldout.svg";
 
 const TicketsSelection = () => {
   const router = useRouter();
@@ -863,26 +864,20 @@ const TicketsSelection = () => {
                         key={index}
                         className={`card-shadow relative ${
                           ticket?.ticket_sold === ticket?.ticketQty
-                            ? "bg-gray-300"
+                            ? "bg-[#dedede]"
                             : ""
                         } flex justify-between items-start mb-6`}
                       >
                         {ticket?.ticket_sold === ticket?.ticketQty && (
-                          <div
-                            className="text-OWANBE_PRY text-2xl absolute inset-0 flex items-center justify-center"
-                            style={{
-                              zIndex: 10,
-                              display: "absolute",
-                              transform: "rotate(-15deg)",
-                              // fontSize: "24px",
-                              fontWeight: "bold",
-                              fontFamily: "BricolageGrotesqueRegular",
-                              textAlign: "center",
-                              pointerEvents: "none", // Prevent interaction with the overlay
-                            }}
-                          >
-                            SOLD OUT
-                          </div>
+                       <Image
+                       src={soldout}
+                       alt="soldout"
+                       className="w-24 h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex-shrink-0"
+                       style={{
+                         zIndex: 10,
+                         pointerEvents: "none", // Prevent interaction with the overlay
+                       }}
+                     />
                         )}
                         <div>
                           <h2
