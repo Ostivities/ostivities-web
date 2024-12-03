@@ -21,7 +21,7 @@ import {
   ITicketDetails,
   InfoNeeded,
 } from "@/app/utils/interface";
-import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
+import { useGetEventTickets, useGetEventTicketsByUniqueKey } from "@/app/hooks/ticket/ticket.hook";
 import { useRouter, useParams } from "next/navigation";
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
@@ -60,6 +60,7 @@ const TicketsSelection = () => {
   const [discountApplied, setDiscountApplied] = useState(false);
   const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
   const { getTickets } = useGetEventTickets(eventDetails?.id);
+  const { getTicketsByUniqueKey } = useGetEventTicketsByUniqueKey(eventDetails?.unique_key)
   const { getEventDiscount } = useGetEventDiscount(eventDetails?.id);
   const ticketData = getTickets?.data?.data?.data;
   const discountDetails = getEventDiscount?.data?.data?.data;
@@ -164,7 +165,7 @@ const TicketsSelection = () => {
   useEffect(() => {
     // When ticketData is updated, re-initialize selectedTickets
     if (ticketData?.length) {
-      const initialSelectedTickets = ticketData.reduce(
+      const initialSelectedTickets = ticketData?.reduce(
         (acc: { [key: string]: number }, ticket: ITicketDetails) => {
           acc[ticket.id] = 0;
           return acc;
@@ -607,7 +608,7 @@ const TicketsSelection = () => {
       discountCode: discountCode,
       additional_information: additionalFields,
       attendees_information,
-      event: (eventDetails && eventDetails?.id) || ticketData?.event?.id,
+      event: (eventDetails && eventDetails?.id) || ticketData?.event,
       fees: ticketDetails
         ?.filter((ticket) => ticket?.guestAsChargeBearer === true)
         ?.map((ticket) => ticket?.ticketFee || 0)
@@ -631,7 +632,7 @@ const TicketsSelection = () => {
         ticket_information,
         additional_information: additionalFields,
         attendees_information,
-        event: (eventDetails && eventDetails?.id) || ticketData?.event?.id,
+        event: (eventDetails && eventDetails?.id) || ticketData?.event,
         fees: ticketDetails
           ?.filter((ticket) => ticket?.guestAsChargeBearer === true)
           ?.map((ticket) => ticket?.ticketFee || 0)

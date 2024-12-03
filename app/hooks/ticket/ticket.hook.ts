@@ -1,4 +1,4 @@
-import { CREATE_TICKET, GET_EVENT_TICKETS, GET_SINGLE_TICKET, UPDATE_TICKET } from "@/app/utils/constants";
+import { CREATE_TICKET, GET_EVENT_TICKETS, GET_SINGLE_TICKET, GET_EVENT_TICKETS_BY_UNIQUE_KEY, UPDATE_TICKET } from "@/app/utils/constants";
 import { errorFormatter, successFormatter } from "@/app/utils/helper";
 import { ITicketCreate, ITicketUpdate } from "@/app/utils/interface";
 import { API_SERVICE } from "@/app/utils/service";
@@ -42,12 +42,23 @@ export const useGetEventTickets = (id: string) => {
   const getTickets = useQuery({
     queryKey: [GET_EVENT_TICKETS, id],
     queryFn: () => {
-      if (id) {
-        return API_SERVICE._getAllEventTickets(id);
-      }
+      return API_SERVICE._getAllEventTickets(id);
     },
+    enabled: !!id,
+
   });
   return { getTickets };
+}
+
+export const useGetEventTicketsByUniqueKey = (event_unique_key: string) => {
+  const getTicketsByUniqueKey = useQuery({
+    queryKey: [GET_EVENT_TICKETS_BY_UNIQUE_KEY, event_unique_key],
+    queryFn: () => {
+      return API_SERVICE._getAllEventTicketsByUniqueKey(event_unique_key)
+    },
+    enabled: !!event_unique_key,
+  })
+  return { getTicketsByUniqueKey }
 }
 
 export const useGetSingleTicket = (id: string) => {
