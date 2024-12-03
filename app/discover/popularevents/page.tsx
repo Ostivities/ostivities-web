@@ -41,10 +41,10 @@ const PopularEvent = ({ params }: { params: { event: string } }) => {
 
   const { getDiscoveryEvents } = useGetDiscoveryEvents(page, pageSize);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
-  console.log(discoveryEvents.length, "Number of Discovery Events"); // Log the length
+  // console.log(discoveryEvents.length, "Number of Discovery Events"); // Log the length
 
   const isPending = getDiscoveryEvents?.isLoading;
-  const skeletonCount = Math.max(12, discoveryEvents.length);
+  const skeletonCount = Math.max(12, getDiscoveryEvents?.data?.data?.data?.total);
 
   const title = (
     <div className="flex-center gap-2">
@@ -129,7 +129,7 @@ const PopularEvent = ({ params }: { params: { event: string } }) => {
           {isPending ? (
             // Display skeleton buttons dynamically based on the data length or fallback to 5
             <>
-              {Array(skeletonCount)
+              {Array(5)
                 .fill(null)
                 .map((_, index) => (
                   <Skeleton.Button

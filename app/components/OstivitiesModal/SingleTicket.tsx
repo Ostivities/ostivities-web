@@ -49,7 +49,11 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
-  const [cookies, setCookies] = useCookies(["ticket_created", "stage_three", "profileData"]);
+  const [cookies, setCookies] = useCookies([
+    "ticket_created",
+    "stage_three",
+    "profileData",
+  ]);
 
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form);
@@ -79,10 +83,10 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
   }, [guestAsChargeBearer]);
 
   useEffect(() => {
-    if(showAdditionalField === false){
+    if (showAdditionalField === false) {
       setAdditionalFields([]);
     }
-  }, [showAdditionalField])
+  }, [showAdditionalField]);
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, guestAsChargeBearer, ...rest } = values;
@@ -96,7 +100,11 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
       showAdditionalField === true
     ) {
       const reducedTicketQuestions = additionalFields?.map(
-        (questionObj: { id: number; is_compulsory: boolean; question: string }) => {
+        (questionObj: {
+          id: number;
+          is_compulsory: boolean;
+          question: string;
+        }) => {
           const { question, is_compulsory } = questionObj;
           console.log(question, is_compulsory, "question, is_compulsory");
           return { question, is_compulsory };
@@ -111,7 +119,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
         event: params?.id,
         ticketEntity: TICKET_ENTITY.SINGLE,
         user: cookies?.profileData?.id,
-        guestAsChargeBearer: guestAsChargeBearer
+        guestAsChargeBearer: guestAsChargeBearer,
       };
       // return console.log(payload, "kk");
 
@@ -126,8 +134,10 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
           // linkRef.current?.click();
           onOk && onOk();
           setLoading(false);
-          if(pathname.startsWith("/discover/create-events")) {
-            router.push(`/discover/create-events/${params?.id}/tickets_created`);
+          if (pathname.startsWith("/discover/create-events")) {
+            router.push(
+              `/discover/create-events/${params?.id}/tickets_created`
+            );
           }
         }
       }
@@ -138,7 +148,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
         event: params?.id,
         ticketEntity: TICKET_ENTITY.SINGLE,
         user: cookies?.profileData?.id,
-        guestAsChargeBearer: guestAsChargeBearer
+        guestAsChargeBearer: guestAsChargeBearer,
       };
       if (payload) {
         const response = await createTicket.mutateAsync(payload);
@@ -150,8 +160,10 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
           setCookies("ticket_created", "yes");
           setCookies("stage_three", "processing");
           setLoading(false);
-          if(pathname.startsWith("/discover/create-events")) {
-            router.push(`/discover/create-events/${params?.id}/tickets_created`);
+          if (pathname.startsWith("/discover/create-events")) {
+            router.push(
+              `/discover/create-events/${params?.id}/tickets_created`
+            );
           }
         }
       }
@@ -191,7 +203,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
         field.id === id ? { ...field, question } : field
       )
     );
-  }
+  };
 
   const prefixSelector = (
     <Form.Item name="ticketStock" noStyle>
@@ -295,11 +307,14 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
         ]}
         style={{ marginBottom: "15px" }}
       >
-        <InputNumber
-          placeholder="Enter purchase limit"
-          style={{ width: "100%" }}
-          min={0}
-        />
+        <Select placeholder="Select purchase limit">
+          <Option value={1}>1</Option>
+          <Option value={2}>2</Option>
+          <Option value={3}>3</Option>
+          <Option value={4}>4</Option>
+          <Option value={5}>5</Option>
+          <Option value={6}>6</Option>
+        </Select>{" "}
       </Form.Item>
 
       <Paragraph
@@ -308,12 +323,8 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
         styles={{ fontWeight: "bold !important" }}
       />
       <Form.Item className="mb-20 w-full mt-3">
-        <EmailEditor
-          initialValue=""
-          onChange={handleEditorChange}
-        />
+        <EmailEditor initialValue="" onChange={handleEditorChange} />
       </Form.Item>
-     
 
       <Form.Item
         style={{
@@ -354,7 +365,8 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
             {
               validator: async (_, ticketQuestions) => {
                 if (
-                  showAdditionalField && additionalFields.length === 0 &&
+                  showAdditionalField &&
+                  additionalFields.length === 0 &&
                   (!ticketQuestions || ticketQuestions.length === 0)
                 ) {
                   return Promise.reject(

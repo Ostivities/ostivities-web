@@ -60,7 +60,7 @@ const SearchResult = ({ params }: { params: { event: string } }) => {
   const { getDiscoveryEvents } = useGetDiscoveryEvents(page, pageSize);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
   const isPending = getDiscoveryEvents?.isLoading;
-  const skeletonCount = Math.max(12, discoveryEvents.length);
+  const skeletonCount = Math.max(12, getDiscoveryEvents?.data?.data?.data?.total);
 
   const COUNTRY_JSON: any = Country.getAllCountries().map((i: any) => {
     return { value: i?.name, label: i?.name, isoCode: i?.isoCode };

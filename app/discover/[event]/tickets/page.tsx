@@ -609,9 +609,9 @@ const TicketsSelection = () => {
       attendees_information,
       event: (eventDetails && eventDetails?.id) || ticketData?.event?.id,
       fees: ticketDetails
-      ?.filter((ticket) => ticket?.guestAsChargeBearer === true) 
-      ?.map((ticket) => ticket?.ticketFee || 0)
-      .reduce((acc, curr) => acc + curr, 0),
+        ?.filter((ticket) => ticket?.guestAsChargeBearer === true)
+        ?.map((ticket) => ticket?.ticketFee || 0)
+        .reduce((acc, curr) => acc + curr, 0),
       total_amount_paid: ticketDetails
         ?.map((ticket) => ticket?.subTotal)
         .reduce((acc, curr) => acc + curr, 0),
@@ -633,9 +633,9 @@ const TicketsSelection = () => {
         attendees_information,
         event: (eventDetails && eventDetails?.id) || ticketData?.event?.id,
         fees: ticketDetails
-        ?.filter((ticket) => ticket?.guestAsChargeBearer === true) 
-        ?.map((ticket) => ticket?.ticketFee || 0)
-        .reduce((acc, curr) => acc + curr, 0),
+          ?.filter((ticket) => ticket?.guestAsChargeBearer === true)
+          ?.map((ticket) => ticket?.ticketFee || 0)
+          .reduce((acc, curr) => acc + curr, 0),
         total_amount_paid: ticketDetails
           ?.map((ticket) => ticket?.subTotal)
           .reduce((acc, curr) => acc + curr, 0),
@@ -684,7 +684,7 @@ const TicketsSelection = () => {
     if (response.status === 200) {
       setLoading(false);
       setSuccessModal(true);
-    } else{
+    } else {
       setLoading(false);
     }
   };
@@ -860,8 +860,29 @@ const TicketsSelection = () => {
                     .map((ticket: ITicketDetails, index: any) => (
                       <div
                         key={index}
-                        className="card-shadow flex justify-between items-start mb-6"
+                        className={`card-shadow relative ${
+                          ticket?.ticket_sold === ticket?.ticketQty
+                            ? "bg-gray-300"
+                            : ""
+                        } flex justify-between items-start mb-6`}
                       >
+                        {ticket?.ticket_sold === ticket?.ticketQty && (
+                          <div
+                            className="text-OWANBE_PRY text-2xl absolute inset-0 flex items-center justify-center"
+                            style={{
+                              zIndex: 10,
+                              display: "absolute",
+                              transform: "rotate(-15deg)",
+                              // fontSize: "24px",
+                              fontWeight: "bold",
+                              fontFamily: "BricolageGrotesqueRegular",
+                              textAlign: "center",
+                              pointerEvents: "none", // Prevent interaction with the overlay
+                            }}
+                          >
+                            SOLD OUT
+                          </div>
+                        )}
                         <div>
                           <h2
                             className="text-lg font-BricolageGrotesqueMedium"
@@ -950,7 +971,16 @@ const TicketsSelection = () => {
                             className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
                             onClick={() => handleDecrement(ticket?.id)}
                             disabled={selectedTickets[ticket?.id] === 0}
-                            style={{ backgroundColor: "#FADEDE" }}
+                            style={{
+                              backgroundColor:
+                                selectedTickets[ticket?.id] === 0
+                                  ? "#ccc"
+                                  : "#FADEDE",
+                              color:
+                                selectedTickets[ticket?.id] === 0
+                                  ? "#fff"
+                                  : "#000",
+                            }}
                           >
                             -
                           </button>
@@ -969,13 +999,15 @@ const TicketsSelection = () => {
                             style={{
                               color:
                                 selectedTickets[ticket?.id] ===
-                                ticket?.purchaseLimit
+                                  ticket?.purchaseLimit ||
+                                ticket?.ticket_sold === ticket?.ticketQty
                                   ? "white"
                                   : "#e20000",
                               backgroundColor:
                                 selectedTickets[ticket?.id] ===
-                                ticket?.purchaseLimit
-                                  ? "#cccccc"
+                                  ticket?.purchaseLimit ||
+                                ticket?.ticket_sold === ticket?.ticketQty
+                                  ? "#ccc"
                                   : "#FADEDE",
                             }}
                           >
@@ -1030,7 +1062,11 @@ const TicketsSelection = () => {
                     .map((ticket: ITicketDetails, index: any) => (
                       <div
                         key={index}
-                        className="card-shadow flex justify-between items-start mb-6"
+                        className={`card-shadow ${
+                          ticket?.ticket_sold === ticket?.ticketQty
+                            ? "bg-gray-300"
+                            : ""
+                        } flex justify-between items-start mb-6`}
                       >
                         <div>
                           <h2
@@ -1120,7 +1156,16 @@ const TicketsSelection = () => {
                             className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
                             onClick={() => handleDecrement(ticket?.id)}
                             disabled={selectedTickets[ticket?.id] === 0}
-                            style={{ backgroundColor: "#FADEDE" }}
+                            style={{
+                              backgroundColor:
+                                selectedTickets[ticket?.id] === 0
+                                  ? "#ccc"
+                                  : "#FADEDE",
+                              color:
+                                selectedTickets[ticket?.id] === 0
+                                  ? "#fff"
+                                  : "#000",
+                            }}
                           >
                             -
                           </button>
@@ -1133,16 +1178,18 @@ const TicketsSelection = () => {
                             disabled={
                               selectedTickets[ticket?.id] === 1 ||
                               selectedTickets[ticket?.id] ===
-                                ticket?.ticket_available 
+                                ticket?.ticket_available
                             }
                             style={{
                               color:
-                                selectedTickets[ticket?.id] === 1
+                                selectedTickets[ticket?.id] === 1 ||
+                                ticket?.ticket_sold === ticket?.ticketQty
                                   ? "white"
                                   : "#e20000",
                               backgroundColor:
-                                selectedTickets[ticket?.id] === 1
-                                  ? "#cccccc"
+                                selectedTickets[ticket?.id] === 1 ||
+                                ticket?.ticket_sold === ticket?.ticketQty
+                                  ? "#ccc"
                                   : "#FADEDE",
                             }}
                           >

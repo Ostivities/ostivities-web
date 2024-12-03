@@ -28,6 +28,7 @@ const UpdateTicket = ({
 
   return (
     <Modal
+      maskClosable={false}
       title={<Heading5 content={"Update Ticket"} className="" />}
       open={open}
       onCancel={onCancel}

@@ -439,7 +439,7 @@ const EventTickets = () => {
                     setEventStatus([
                       {
                         id: record?.key || "",
-                        eventStatus: record?.ticketSold,
+                        eventStatus: record?.ticket_sold,
                       },
                     ]);
                     setDuplicateData({
