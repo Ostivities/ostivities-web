@@ -422,7 +422,7 @@ const Summary = ({
             </div>
           )} */}
           {continueBtn && (
-            <div className="continue-btn-container">
+            <div style={{ zIndex: 11 }} className="continue-btn-container">
               <Button
                 loading={loading}
                 onClick={onClick}
@@ -449,7 +449,7 @@ const Summary = ({
                   height: "50px",
                   fontSize: "16px",
                   border: "none",
-                  zIndex: 10,
+                  zIndex: 11,
                 }}
                 title={
                   currentPage === "tickets"

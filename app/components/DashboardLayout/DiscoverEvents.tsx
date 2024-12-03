@@ -69,9 +69,9 @@ const DiscoverEvents = () => {
           </>
         ) : (
           // Once data is loaded, map through discoveryEvents and render InfoCard components
-          filteredEvents?.map((event: IEventDetails) => (
+          filteredEvents?.map((event: IEventDetails, index: number) => (
             <InfoCard
-              key={event?.id}
+              key={index}
               title={event?.eventName}
               about={event?.eventType}
               startDate={event?.startDate}

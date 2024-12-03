@@ -1,7 +1,7 @@
 import useModal from "@/app/hooks/useModal";
 import { NigerianBanks } from "@/app/utils/data";
 import { IModal } from "@/app/utils/interface";
-import { Button, Form, FormProps, Input, Modal, Select, Space } from "antd";
+import { Button, Form, FormProps, Input, Modal, Select, Space, message } from "antd";
 import React, { useState, useEffect } from "react";
 import { Heading5, Label } from "../typography/Typography";
 import {
@@ -44,6 +44,7 @@ const PaymentDetails = ({
       user: data,
     });
     if(response.status === 201) {
+      // message.success("Account added successfully")
       onOk();
     }
     console.log(response, "response");
@@ -223,6 +224,10 @@ const PaymentDetails = ({
             </>
           }
           style={{ marginBottom: "12px" }} // Adjust spacing here
+          rules={[{
+            required: true,
+            message: "Account Name must be provided"
+          }]}
         >
           <Input
             type="text"

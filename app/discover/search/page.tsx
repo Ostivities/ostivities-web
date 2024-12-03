@@ -3,8 +3,8 @@
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import InfoCard from "@/app/components/DashboardLayout/OtherInfoCard";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
 import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
 import { Input, Button, Select as AntSelect, Skeleton } from "antd";
 import EventSearch from "@/app/components/DashboardLayout/EventSearch";
@@ -15,15 +15,15 @@ import { Country, State } from "country-state-city";
 const customStyles: StylesConfig = {
   control: (base) => ({
     ...base,
-    borderRadius: '12px',
-    borderColor: '#ccc',
+    borderRadius: "12px",
+    borderColor: "#ccc",
     fontFamily: "'Bricolage Grotesque', sans-serif",
-    fontSize: '14px',
-    padding: '2px 8px',
-    height: '30px',
-    display: 'flex',
-    alignItems: 'center',
-    lineHeight: '20px',
+    fontSize: "14px",
+    padding: "2px 8px",
+    height: "30px",
+    display: "flex",
+    alignItems: "center",
+    lineHeight: "20px",
   }),
   menu: (base) => ({
     ...base,
@@ -48,30 +48,51 @@ const customStyles: StylesConfig = {
   }),
 };
 
-const SearchResult = ({ params }: { params: { event: string } }) => {
+const SearchResult = () => {
   const router = useRouter();
+  const params = useParams();
+  const searchParams = useSearchParams();
+  const query = searchParams.get('query'); 
   const [page, setPage] = useState(1);
+  const [selectedValue, setSelectedValue] = useState<string | undefined>();
   const [pageSize, setPageSize] = useState(12);
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [searchText, setSearchText] = useState("");
-  const [stateValue, setStateValue] = useState<SingleValue<{ label: string; value: string }> | null>(null);
-  const [eventTypeValue, setEventTypeValue] = useState<SingleValue<{ label: string; value: string }> | null>(null);
+  const [stateValue, setStateValue] = useState<SingleValue<{
+    label: string;
+    value: string;
+  }> | null>(null);
+  const [eventTypeValue, setEventTypeValue] = useState<SingleValue<{
+    label: string;
+    value: string;
+  }> | null>(null);
 
   const { getDiscoveryEvents } = useGetDiscoveryEvents(page, pageSize);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
   const isPending = getDiscoveryEvents?.isLoading;
   // const skeletonCount = Math.max(12, getDiscoveryEvents?.data?.data?.data?.total);
 
+  console.log(query, "query");
+  console.log(selectedValue, "selectedValue")
   const COUNTRY_JSON: any = Country.getAllCountries().map((i: any) => {
     return { value: i?.name, label: i?.name, isoCode: i?.isoCode };
   });
 
-  const STATE_BY_COUNTRYCODE = (stateCode: string): { label: string; value: string }[] => {
+  const STATE_BY_COUNTRYCODE = (
+    stateCode: string
+  ): { label: string; value: string }[] => {
     const result: any = State.getStatesOfCountry(stateCode);
     return result.map((i: any) => {
       return { label: i?.name, value: i?.name };
     });
   };
+
+  useEffect(() => {
+    // Update the state with the query value when the component mounts or query changes
+    if (query) {
+      setSelectedValue(query);
+    }
+  }, [query]);
 
   const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -82,12 +103,22 @@ const SearchResult = ({ params }: { params: { event: string } }) => {
     }
   };
 
-  const handleStateChange = (newValue: unknown, actionMeta: ActionMeta<unknown>) => {
-    setStateValue(newValue as SingleValue<{ label: string; value: string }> | null);
+  const handleStateChange = (
+    newValue: unknown,
+    actionMeta: ActionMeta<unknown>
+  ) => {
+    setStateValue(
+      newValue as SingleValue<{ label: string; value: string }> | null
+    );
   };
 
-  const handleEventTypeChange = (newValue: unknown, actionMeta: ActionMeta<unknown>) => {
-    setEventTypeValue(newValue as SingleValue<{ label: string; value: string }> | null);
+  const handleEventTypeChange = (
+    newValue: unknown,
+    actionMeta: ActionMeta<unknown>
+  ) => {
+    setEventTypeValue(
+      newValue as SingleValue<{ label: string; value: string }> | null
+    );
   };
 
   const header = (
@@ -115,7 +146,10 @@ const SearchResult = ({ params }: { params: { event: string } }) => {
           <label htmlFor="name" className="flex-1 min-w-[200px]">
             <span
               className="text-OWANBE_PRY mb-1 block"
-              style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: "300" }}
+              style={{
+                fontFamily: "'Bricolage Grotesque', sans-serif",
+                fontWeight: "300",
+              }}
             >
               Event Name
             </span>
@@ -125,27 +159,32 @@ const SearchResult = ({ params }: { params: { event: string } }) => {
               onChange={(e) => setSearchText(e.target.value)}
               placeholder="Enter event name"
               style={{
-                borderRadius: '12px !important', // Rounded corners
-                borderColor: '#ccc', // Border color
-                borderWidth: '1px', // Adding border width to match react-select
+                borderRadius: "12px !important", // Rounded corners
+                borderColor: "#ccc", // Border color
+                borderWidth: "1px", // Adding border width to match react-select
                 fontFamily: "'Bricolage Grotesque', sans-serif", // Custom font
-                fontSize: '14px', // Font size to match react-select
-                padding: '2px 18px', // Adjust padding to make it more compact
-                height: '38px', // Set a custom height for the search bar
-                display: 'flex',
-                alignItems: 'center', // Vertically center the text inside the input
-                lineHeight: '20px', // Adjust line-height to vertically center the text
-                color: '#333', // Text color
-                backgroundColor: '#fff', // White background color
+                fontSize: "14px", // Font size to match react-select
+                padding: "2px 18px", // Adjust padding to make it more compact
+                height: "38px", // Set a custom height for the search bar
+                display: "flex",
+                alignItems: "center", // Vertically center the text inside the input
+                lineHeight: "20px", // Adjust line-height to vertically center the text
+                color: "#333", // Text color
+                backgroundColor: "#fff", // White background color
               }}
               className="w-full p-2 border border-gray-300 rounded-[12px] !important"
             />
           </label>
 
-
           {/* Event State (react-select) */}
           <label htmlFor="state" className="flex-1 min-w-[200px]">
-            <span className="text-OWANBE_PRY mb-1 block" style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: "300" }}>
+            <span
+              className="text-OWANBE_PRY mb-1 block"
+              style={{
+                fontFamily: "'Bricolage Grotesque', sans-serif",
+                fontWeight: "300",
+              }}
+            >
               Event State
             </span>
             <Select
@@ -159,10 +198,18 @@ const SearchResult = ({ params }: { params: { event: string } }) => {
 
           {/* Event Type (react-select) */}
           <label htmlFor="type" className="flex-1 min-w-[200px]">
-            <span className="text-OWANBE_PRY mb-1 block" style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontWeight: "300" }}>
+            <span
+              className="text-OWANBE_PRY mb-1 block"
+              style={{
+                fontFamily: "'Bricolage Grotesque', sans-serif",
+                fontWeight: "300",
+              }}
+            >
               Event Type
             </span>
             <Select
+              name="eventType"
+              value={selectedValue}
               placeholder="Select event type"
               onChange={handleEventTypeChange}
               className="w-full"
@@ -194,8 +241,8 @@ const SearchResult = ({ params }: { params: { event: string } }) => {
                 backgroundColor: searchText === "" ? "#cccccc" : "#e20000",
                 color: searchText === "" ? "#666666" : "white",
                 cursor: searchText === "" ? "not-allowed" : "pointer",
-                borderRadius: '25px',
-                height: '38px',
+                borderRadius: "25px",
+                height: "38px",
                 border: "none",
                 // Rounded corners (adjust this as needed)
               }}

@@ -1,6 +1,7 @@
 "use client";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import InfoCard from "@/app/components/DashboardLayout/OtherInfoCard";
+import InfoCardM from "@/app/components/DashboardLayout/OtherInfoCard2";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useLayoutEffect, useMemo, useState } from "react";
@@ -15,8 +16,8 @@ interface PropsI {
 
 const PopularEvent = ({ params }: { params: { event: string } }) => {
   const router = useRouter();
-  const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(12)
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(12);
 
   // Mapping event types to titles and subtitles
   const eventTitles = {
@@ -41,6 +42,8 @@ const PopularEvent = ({ params }: { params: { event: string } }) => {
 
   const { getDiscoveryEvents } = useGetDiscoveryEvents(page, pageSize);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
+  const pageNumber = getDiscoveryEvents?.data?.data?.data?.pages;
+
   // console.log(discoveryEvents.length, "Number of Discovery Events"); // Log the length
 
   const isPending = getDiscoveryEvents?.isLoading;
@@ -75,7 +78,14 @@ const PopularEvent = ({ params }: { params: { event: string } }) => {
   return (
     <DashboardLayout title={title} isLoggedIn>
       <section>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "60px" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "60px",
+          }}
+        >
           <h2
             style={{
               fontSize: "24px",
@@ -84,20 +94,20 @@ const PopularEvent = ({ params }: { params: { event: string } }) => {
           >
             {currentSubtitle}
           </h2>
-          <div style={{ display: "flex", gap: "10px"}}>
-            {pageSize > 1 && ( // Conditionally render Back button
+          <div style={{ display: "flex", gap: "10px" }}>
+            {page > 1 && ( // Conditionally render Back button
               <Button
                 onClick={() => {
-                  setPageSize(pageSize - 12); // Go back to the previous page
+                  setPage(page - 1); // Go back to the previous page
                 }}
                 style={{
                   backgroundColor: "#fff", // Default background
-                  borderRadius: "25px",    // Corner radius
+                  borderRadius: "25px", // Corner radius
                   border: "1px solid #ccc", // Border for default button
-                  color: "#000",           // Default text color
+                  color: "#000", // Default text color
                   fontFamily: "'Bricolage Grotesque', sans-serif", // Set custom font
-                  width: "100px",          // Adjust the width
-                  height: "40px",          // Adjust the height
+                  width: "100px", // Adjust the width
+                  height: "40px", // Adjust the height
                   fontSize: "16px",
                 }}
               >
@@ -105,27 +115,29 @@ const PopularEvent = ({ params }: { params: { event: string } }) => {
               </Button>
             )}
 
-            <Button
-              onClick={() => {
-                setPageSize(pageSize + 12);
-              }}
-              style={{
-                backgroundColor: "#fadede", // Background color
-                borderRadius: "25px",       // Corner radius
-                border: "none",             // Optional: remove border
-                color: "#e20000",           // Text color for contrast
-                fontFamily: "'Bricolage Grotesque', sans-serif", // Set custom font
-                width: "100px",             // Adjust the width
-                height: "40px", 
-                fontSize: "16px",           // Adjust the height
-              }}
-            >
-              Next
-            </Button>
+            {page < pageNumber && (
+              <Button
+                onClick={() => {
+                  setPage(page + 1);
+                }}
+                style={{
+                  backgroundColor: "#fadede", // Background color
+                  borderRadius: "25px", // Corner radius
+                  border: "none", // Optional: remove border
+                  color: "#e20000", // Text color for contrast
+                  fontFamily: "'Bricolage Grotesque', sans-serif", // Set custom font
+                  width: "100px", // Adjust the width
+                  height: "40px",
+                  fontSize: "16px", // Adjust the height
+                }}
+              >
+                Next
+              </Button>
+            )}
           </div>
         </div>
 
-        <div className="grid grid-cols-6 gap-6 gap-y-10 mt-7">
+        <div className="grid lg:grid-cols-6 grid-cols-1 md:grid-cols-2 gap-6">
           {isPending ? (
             // Display skeleton buttons dynamically based on the data length or fallback to 5
             <>
@@ -142,18 +154,43 @@ const PopularEvent = ({ params }: { params: { event: string } }) => {
             </>
           ) : (
             // Once data is loaded, map through discoveryEvents and render InfoCard components
-            discoveryEvents?.map((event: IEventDetails) => (
-              <InfoCard
-                key={event?.id}
-                title={event?.eventName}
-                about={event?.eventType}
-                status= {event?.enable_registration === false ? "Reg Closed" :  "Get Tickets"  }
-                image={event?.eventImage ? event.eventImage : placeholder}
-                url={`/discover/${event?.unique_key}`}
-                titleClass="font-bricolage-grotesque font-medium"
-                aboutClass="font-bricolage-grotesque"
-                statusClass="font-bricolage-grotesque font-medium"
-              />
+            discoveryEvents?.map((event: IEventDetails, index: number) => (
+              <>
+                <InfoCard
+                  className="lg:flex hidden"
+                  key={index}
+                  title={event?.eventName}
+                  about={event?.eventType}
+                  status={
+                    event?.enable_registration === false
+                      ? "Reg Closed"
+                      : "Get Tickets"
+                  }
+                  image={event?.eventImage ? event.eventImage : placeholder}
+                  url={`/discover/${event?.unique_key}`}
+                  titleClass="font-bricolage-grotesque font-medium"
+                  aboutClass="font-bricolage-grotesque"
+                  statusClass="font-bricolage-grotesque font-medium"
+                />
+                <InfoCardM
+                  className="flex lg:hidden"
+                  key={index}
+                  title={event?.eventName}
+                  about={event?.eventType}
+                  startDate={event?.startDate}
+                  endDate={event?.endDate}
+                  status={
+                    event?.enable_registration === false
+                      ? "Reg Closed"
+                      : "Get Tickets"
+                  }
+                  image={event?.eventImage ? event.eventImage : placeholder}
+                  url={`/discover/${event?.unique_key}`}
+                  titleClass="font-bricolage-grotesque font-medium"
+                  aboutClass="font-bricolage-grotesque"
+                  statusClass="font-bricolage-grotesque font-medium"
+                />
+              </>
             ))
           )}
         </div>

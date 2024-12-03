@@ -44,11 +44,11 @@ const PopularEvents = () => {
         </>
       ) : (
         // Once data is loaded, map through discoveryEvents and render InfoCard components
-        discoveryEvents?.map((event: IEventDetails) => (
+        discoveryEvents?.map((event: IEventDetails, index: number) => (
           <>
             <InfoCard
               className="lg:flex hidden"
-              key={event?.id}
+              key={index}
               title={event?.eventName}
               about={event?.eventType}
               status={
@@ -64,7 +64,7 @@ const PopularEvents = () => {
             />
             <InfoCardM
               className="flex lg:hidden"
-              key={event?.id}
+              key={index}
               title={event?.eventName}
               about={event?.eventType}
               startDate={event?.startDate}

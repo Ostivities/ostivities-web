@@ -1,7 +1,7 @@
 .scrollable-content {
     max-height: 100vh; /* Limit height to viewport */
     overflow-y: scroll; /* Enable vertical scrolling */
-    padding-right: 15px; /* Compensate for hidden scrollbar */
+    /* padding-right: 15px; Compensate for hidden scrollbar */
   }
   
   /* Hide scrollbar for WebKit browsers */

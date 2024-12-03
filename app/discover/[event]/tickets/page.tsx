@@ -864,7 +864,7 @@ const TicketsSelection = () => {
                         key={index}
                         className={`card-shadow relative ${
                           ticket?.ticket_sold === ticket?.ticketQty
-                            ? "bg-[#dedede]"
+                            ? "bg-[#dedede] cursor-not-allowed"
                             : ""
                         } flex justify-between items-start mb-6`}
                       >
@@ -881,7 +881,7 @@ const TicketsSelection = () => {
                         )}
                         <div>
                           <h2
-                            className="text-lg font-BricolageGrotesqueMedium"
+                            className={`${ ticket?.ticket_sold === ticket?.ticketQty ? "text-gray-400" : ""} text-lg font-BricolageGrotesqueMedium`}
                             style={{ fontWeight: 500, fontSize: "18px" }}
                           >
                             {ticket?.ticketName}
@@ -892,7 +892,7 @@ const TicketsSelection = () => {
                                 {ticket?.guestAsChargeBearer === true ? (
                                   <>
                                     <span
-                                      className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                      className={`${ ticket?.ticket_sold === ticket?.ticketQty ? "text-gray-400" : "text-OWANBE_PRY"} text-xl font-BricolageGrotesqueRegular`}
                                       style={{
                                         fontWeight: 600,
                                         fontSize: "17px",
@@ -906,7 +906,7 @@ const TicketsSelection = () => {
                                       ).toLocaleString()}
                                     </span>{" "}
                                     <span
-                                      className="text-s font-BricolageGrotesqueRegular"
+                                      className={`${ ticket?.ticket_sold === ticket?.ticketQty ? "text-gray-400" : ""} text-s font-BricolageGrotesqueRegular`}
                                       style={{
                                         fontWeight: 400,
                                         fontSize: "12px",
@@ -922,7 +922,7 @@ const TicketsSelection = () => {
                                 ) : (
                                   <>
                                     <span
-                                      className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                      className={`${ ticket?.ticket_sold === ticket?.ticketQty ? "text-gray-400" : "text-OWANBE_PRY"} text-xl font-BricolageGrotesqueRegular`}
                                       style={{
                                         fontWeight: 600,
                                         fontSize: "17px",
@@ -938,7 +938,7 @@ const TicketsSelection = () => {
                               </>
                             ) : (
                               <span
-                                className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                className={`${ ticket?.ticket_sold === ticket?.ticketQty ? "text-gray-400" : "text-OWANBE_PRY"} text-xl font-BricolageGrotesqueRegular`}
                                 style={{ fontWeight: 600, fontSize: "17px" }}
                               >
                                 Free
@@ -946,10 +946,10 @@ const TicketsSelection = () => {
                             )}
                           </h3>
                           <p
-                            className="text-s font-BricolageGrotesqueRegular"
+                            className={`${ ticket?.ticket_sold === ticket?.ticketQty ? "text-gray-400" : ""} text-s font-BricolageGrotesqueRegular`}
                             style={{
                               fontSize: "13px",
-                              color: "black",
+                              // color: "black",
                               marginTop: "17px",
                             }}
                           >
@@ -980,7 +980,7 @@ const TicketsSelection = () => {
                           >
                             -
                           </button>
-                          <span className="text-base sm:text-lg mx-2">
+                          <span className={`${ ticket?.ticket_sold === ticket?.ticketQty ? "text-gray-400" : ""} text-base sm:text-lg mx-2`}>
                             {selectedTickets[ticket?.id] || 0}
                           </span>
                           <button
@@ -1060,13 +1060,13 @@ const TicketsSelection = () => {
                         key={index}
                         className={`card-shadow ${
                           ticket?.ticket_sold === ticket?.ticketQty
-                            ? "bg-gray-300"
+                            ? "bg-gray-300 cursor-not-allowed"
                             : ""
                         } flex justify-between items-start mb-6`}
                       >
                         <div>
                           <h2
-                            className="text-lg font-BricolageGrotesqueMedium"
+                            className={`${ ticket?.ticket_sold === ticket?.ticketQty ? "text-gray-400" : ""} text-lg font-BricolageGrotesqueMedium`}
                             style={{ fontWeight: 500, fontSize: "18px" }}
                           >
                             Group Of {ticket?.groupSize} - {ticket.ticketName}
@@ -1077,7 +1077,7 @@ const TicketsSelection = () => {
                                 {ticket?.guestAsChargeBearer === true ? (
                                   <>
                                     <span
-                                      className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                      className={`${ ticket?.ticket_sold === ticket?.ticketQty ? "text-gray-400" : "text-OWANBE_PRY"} text-xl font-BricolageGrotesqueRegular`}
                                       style={{
                                         fontWeight: 600,
                                         fontSize: "17px",
@@ -1091,7 +1091,7 @@ const TicketsSelection = () => {
                                       ).toLocaleString()}
                                     </span>{" "}
                                     <span
-                                      className="text-s font-BricolageGrotesqueRegular"
+                                      className={`${ ticket?.ticket_sold === ticket?.ticketQty ? "text-gray-400" : ""} text-s font-BricolageGrotesqueRegular`}
                                       style={{
                                         fontWeight: 400,
                                         fontSize: "12px",
@@ -1107,7 +1107,7 @@ const TicketsSelection = () => {
                                 ) : (
                                   <>
                                     <span
-                                      className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                      className={`${ ticket?.ticket_sold === ticket?.ticketQty ? "text-gray-400" : "text-OWANBE_PRY"} text-xl font-BricolageGrotesqueRegular`}
                                       style={{
                                         fontWeight: 600,
                                         fontSize: "17px",
@@ -1123,8 +1123,8 @@ const TicketsSelection = () => {
                               </>
                             ) : (
                               <span
-                                className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
-                                style={{ fontWeight: 600, fontSize: "17px" }}
+                              className={`${ ticket?.ticket_sold === ticket?.ticketQty ? "text-gray-400" : "text-OWANBE_PRY"} text-xl font-BricolageGrotesqueRegular`}
+                              style={{ fontWeight: 600, fontSize: "17px" }}
                               >
                                 Free
                               </span>
@@ -1165,7 +1165,7 @@ const TicketsSelection = () => {
                           >
                             -
                           </button>
-                          <span className="text-base sm:text-lg mx-2">
+                          <span className={`${ ticket?.ticket_sold === ticket?.ticketQty ? "text-gray-400" : ""} text-base sm:text-lg mx-2`}>
                             {selectedTickets[ticket?.id] || 0}
                           </span>
                           <button
