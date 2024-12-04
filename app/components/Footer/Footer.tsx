@@ -87,7 +87,7 @@ function Footer(): JSX.Element {
             <div className="flex flex-col space-y-3">
               <Heading5 content="Newsletter" className="" />
               <Small
-                content={"Sign up to our newsletter to keep yourself updated us."}
+                content={"Sign up to our newsletter to keep yourself updated about us."}
                 className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
               />
               <div id="custom-substack-embed" className="mt-5">
