@@ -83,12 +83,12 @@ const PopularEvent = ({ params }: { params: { event: string } }) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBottom: "60px",
+            marginBottom: "50px",
           }}
         >
           <h2
             style={{
-              fontSize: "24px",
+              fontSize: "20px",
               fontFamily: "Bricolage Grotesque, font-semibold",
             }}
           >
