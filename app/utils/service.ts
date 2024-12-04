@@ -157,11 +157,11 @@ export class API_SERVICE {
     });
   }
 
-  static async _getDiscoveryEvents(page: number, pageSize: number): Promise<AxiosResponse> {
+  static async _getDiscoveryEvents(page: number, pageSize: number, eventName?: string, state?: string, eventCat?: string): Promise<AxiosResponse> {
     return await instance({
       url: `/events/discovery`,
       method: HttpMethod.GET,
-      params: { page, pageSize },
+      params: { page, pageSize, eventName, state, eventCat },
     });
   }
 
