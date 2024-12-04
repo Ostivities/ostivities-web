@@ -12,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { Heading5, Paragraph, Small } from "../typography/Typography";
+import Script from "next/script";
 
 
 
@@ -52,7 +53,21 @@ function Footer(): JSX.Element {
                 />
               </div>
             </div>
-          
+            {/* 2 */}
+            <div className="flex flex-col space-y-3">
+              <Heading5 content="Legal" className="" />
+              {LEGAL.map((item, index) => (
+                <Link
+                  key={index} // Changed to index for uniqueness
+                  href={item.link}
+                  target={item.target}
+                  rel={item.rel}
+                  className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
             {/* 3 */}
             <div className="flex flex-col space-y-3">
               <Heading5 content="Support" className="" />
@@ -71,7 +86,38 @@ function Footer(): JSX.Element {
             {/* 4 */}
             <div className="flex flex-col space-y-3">
               <Heading5 content="Newsletter" className="" />
-              {NEWSLETTER.map((item, index) => (
+              <Small
+                content={"Sign up to our newsletter to keep yourself updated about us."}
+                className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+              />
+              <div id="custom-substack-embed" className="mt-5">
+                <Script
+                  id="substack-widget"
+                  strategy="afterInteractive"
+                  dangerouslySetInnerHTML={{
+                    __html: `
+          window.CustomSubstackWidget = {
+            substackUrl: "ostivities.substack.com",
+            placeholder: "example@gmail.com",
+            buttonText: "Subscribe",
+            theme: "custom",
+            colors: {
+      primary: "#E20000",
+      input: "#FFFFFF",
+      email: "#000000",
+      text: "#FFFFFF",
+    },
+          };
+        `,
+                  }}
+                />
+                <Script
+                  src="https://substackapi.com/widget.js"
+                  strategy="afterInteractive"
+                />
+              </div>
+
+              {/* {NEWSLETTER.map((item, index) => (
                 <Link
                   key={index}
                   href={item.link}
@@ -81,9 +127,8 @@ function Footer(): JSX.Element {
                 >
                   {item.name}
                 </Link>
-              ))}
-              
-              <a
+              ))} */}
+              {/* <a
                 href="https://www.producthunt.com/products/ostivities?utm_source=badge-follow&utm_medium=badge&utm_souce=badge-ostivities"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -95,15 +140,15 @@ function Footer(): JSX.Element {
                   width="250"
                   height="54"
                 />
-              </a>
+              </a> */}
               {/* <a href="#"
                 onClick={() => window.open('https://www.sitelock.com/verify.php?site=ostivities.com', 'SiteLock', 'width=600,height=600,left=160,top=170')}>
                 <img
                   className="img-fluid"
                   alt="SiteLock"
                   title="SiteLock"
-                  src="https://shield.sitelock.com/shield/ostivities.com" />
-                  </a> */}
+                  src="https://shield.sitelock.com/shield/ostivities.com" /></a> */}
+
             </div>
           </div>
           <div className="flex flex-row items-center justify-start md:justify-end lg:justify-end xl:justify-end">
@@ -142,35 +187,12 @@ function Footer(): JSX.Element {
         </div>
         <hr className="hor-rule" />
         <div className="footer-bottom pt-5">
-  {/* Footer Wrapper */}
-  <div className="flex flex-col md:flex-row justify-between items-start md:space-y-0 space-y-6">
-    {/* Copyright Section */}
-    <div className="order-2 md:order-1 text-left mt-8 md:mt-0">
-    <Paragraph
-  content={`Copyright © ${currentYear}. Ostivities Technology Limited. All rights reserved.`}
-  className="text-center md:text-left text-OWANBE_H4 font-light font-BricolageGrotesqueLight text-[14px] md:text-base" // Adjusted alignment for mobile
-/>
-
-    </div>
-
-    {/* Legal Links Section */}
-    <div className="order-1 md:order-2 flex flex-wrap md:flex-row md:space-x-8 space-x-6 text-left md:mr-16">
-      {LEGAL.map((item, index) => (
-        <Link
-          key={index}
-          href={item.link}
-          target={item.target}
-          rel={item.rel}
-          className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
-        >
-          {item.name}
-        </Link>
-      ))}
-    </div>
-  </div>
-</div>
-
-</div>
+          <Paragraph
+            content={`Copyright © ${currentYear}. Ostivities Technology Limited. All rights reserved.`}
+            className="text-center md:text-center text-OWANBE_H4 font-light font-BricolageGrotesqueLight text-[14px] md:text-base" // Adjusted alignment for mobile
+          />
+        </div>
+      </div>
     </footer>
   );
 }
