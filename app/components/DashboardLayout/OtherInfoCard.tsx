@@ -33,7 +33,7 @@ const InfoCard: React.FC<PropsI> = ({
   return (
     <Link
       href={url}
-      className={`relative w-full max-w-[200px] h-[200px] rounded-[30px] overflow-hidden ${className}`}
+      className={`relative w-full max-w-[200px] h-[200px] rounded-[30px] overflow-hidden shadow-md ${className}`}
     >
       <Image src={image} alt="" fill className="object-cover" />
       <div className="absolute inset-0 bg-image-card text-white">
