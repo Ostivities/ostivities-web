@@ -23,7 +23,7 @@ function Pricing(): JSX.Element {
             description: "For growing businesses with expanding needs",
             features: [
                 "✔ No Fees for Free Tickets",
-                "✔ 4.5% + ₦100 fee per paid ticket",
+                "✔ 4% + ₦100 fee per paid ticket",
                 "✔ Chat support",
                 "✔ Full Control Over Ticket Inventory Management",
                 "✔ Option to start or stop ticket sales",

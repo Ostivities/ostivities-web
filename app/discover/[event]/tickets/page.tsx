@@ -273,7 +273,7 @@ const TicketsSelection = () => {
         // const discountedPrice
         const currentFee =
           ticket?.ticketType === "PAID"
-            ? Math.round(realPrice * 0.045 + 100)
+            ? Math.round(realPrice * 0.04 + 100)
             : 0;
         if (existingTicketIndex > -1) {
           const existingTicket = updatedDetails[existingTicketIndex];
@@ -358,7 +358,7 @@ const TicketsSelection = () => {
           const newTicketNumber = existingTicket?.ticketNumber - 1;
           const currentFee =
             ticket?.ticketType === "PAID"
-              ? Math.round(ticket?.ticketPrice * 0.045 + 100)
+              ? Math.round(ticket?.ticketPrice * 0.04 + 100)
               : 0;
           const existingDiscount = existingTicket?.discountToDeduct;
 
@@ -900,7 +900,7 @@ const TicketsSelection = () => {
                                     >
                                       ₦
                                       {Math.round(
-                                        ticket?.ticketPrice * 0.045 +
+                                        ticket?.ticketPrice * 0.04 +
                                           100 +
                                           ticket?.ticketPrice
                                       ).toLocaleString()}
@@ -914,7 +914,7 @@ const TicketsSelection = () => {
                                     >
                                       Including ₦
                                       {Math.round(
-                                        ticket?.ticketPrice * 0.045 + 100
+                                        ticket?.ticketPrice * 0.04 + 100
                                       ).toLocaleString()}{" "}
                                       fee
                                     </span>
@@ -1085,7 +1085,7 @@ const TicketsSelection = () => {
                                     >
                                       ₦
                                       {Math.round(
-                                        ticket?.groupPrice * 0.045 +
+                                        ticket?.groupPrice * 0.04 +
                                           100 +
                                           ticket?.groupPrice
                                       ).toLocaleString()}
@@ -1099,7 +1099,7 @@ const TicketsSelection = () => {
                                     >
                                       Including ₦
                                       {Math.round(
-                                        ticket?.groupPrice * 0.045 + 100
+                                        ticket?.groupPrice * 0.04 + 100
                                       ).toLocaleString()}{" "}
                                       fee
                                     </span>
