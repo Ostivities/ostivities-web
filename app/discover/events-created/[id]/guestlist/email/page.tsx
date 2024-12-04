@@ -58,6 +58,9 @@ const EventsGuestListEmail = () => {
   const eventDetails = getUserEvent?.data?.data?.data;
   const allGuestsData = getEventGuests?.data?.data?.data?.guests;
   const totalGuests = getEventGuests?.data?.data?.data?.total;
+  const senderEmail = Form.useWatch("sender_email", form)
+
+  console.log(senderEmail, "sender_email")
 
   // Update eventName when eventDetails is available
   useEffect(() => {
@@ -65,6 +68,14 @@ const EventsGuestListEmail = () => {
       setEventName(eventDetails.eventName);
     }
   }, [eventDetails]);
+
+  useEffect(() => {
+    if(senderEmail) {
+      form.setFieldsValue({
+        reply_to: senderEmail
+      })
+    }
+  }, [senderEmail])
 
   const handleEditorChange = (content: string) => {
     setEditorContent(content);
@@ -140,7 +151,7 @@ const EventsGuestListEmail = () => {
       ...rest,
      email_attachment: emailAttachment,
      email_content: editorContent,
-     sender_email: "kayode.raimi123@gmail.com"
+    //  sender_email: "kayode.raimi123@gmail.com"
     });
 
     if(response.status === 200) {
@@ -242,8 +253,8 @@ const EventsGuestListEmail = () => {
             </Form.Item>
 
             <Form.Item
-              label="Reply To"
-              name="reply_to"
+              label="Sender Email"
+              name="sender_email"
               rules={[
                 { required: true, message: "Please input your reply email!" },
               ]}
@@ -251,6 +262,18 @@ const EventsGuestListEmail = () => {
             >
               <Input placeholder="Enter reply email" />
             </Form.Item>
+
+            <Form.Item
+              label="Reply To"
+              name="reply_to"
+              rules={[
+                { required: true, message: "Please input your reply email!" },
+              ]}
+              style={{ display: "none" }}             
+            >
+              <Input style={{ display: "hidden" }} value={senderEmail} placeholder="Enter reply email" />
+            </Form.Item>
+
 
             <Form.Item
               label="Recipients"
@@ -416,9 +439,10 @@ const EventsGuestListEmail = () => {
             <Button
               type="primary"
               size={"large"}
+              loading={sendBulkEmail?.isPending}
               htmlType="submit"
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
-              onClick={() => message.success("Email sent successfully")}
+              // onClick={() => message.success("Email sent successfully")}
             >
               Send Email
             </Button>
