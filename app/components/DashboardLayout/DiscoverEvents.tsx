@@ -43,7 +43,7 @@ const DiscoverEvents = () => {
   return (
     <>
       <EventSection
-        title="Discover Events"
+        title="Featured Events"
         titleClass="custom-title-class"
         style={{
           // fontSize: "24px",
