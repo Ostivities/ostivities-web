@@ -296,6 +296,7 @@ const PaymentSetting = () => {
                 value={accountName}
                 placeholder="Account name will appear here"
                 readOnly
+                disabled={!isEditable}
               />
             </Form.Item>
           </Form>
