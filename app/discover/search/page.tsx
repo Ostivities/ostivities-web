@@ -75,9 +75,9 @@ const SearchResult = () => {
 
   const eventType = Form.useWatch("eventType", form);
 
-  console.log(eventName, "eventName")
-  console.log(state, "state")
-  console.log(eventCat, "eventCat")
+  console.log(eventName, "eventName");
+  console.log(state, "state");
+  console.log(eventCat, "eventCat");
 
   const { getDiscoveryEvents } = useGetDiscoveryEvents(
     page,
@@ -87,7 +87,7 @@ const SearchResult = () => {
     eventCat
   );
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
-  console.log(discoveryEvents, "discoveryEvents")
+  console.log(discoveryEvents, "discoveryEvents");
   const isPending = getDiscoveryEvents?.isLoading;
   // const skeletonCount = Math.max(12, getDiscoveryEvents?.data?.data?.data?.total);
 
@@ -196,9 +196,9 @@ const SearchResult = () => {
             <Input
               allowClear
               placeholder="Enter event name"
-              onChange={(e) =>{
-                setSearchText(e.target.value)
-                setEventName(e.target.value)
+              onChange={(e) => {
+                setSearchText(e.target.value);
+                setEventName(e.target.value);
               }}
               style={{
                 borderRadius: "12px",
@@ -218,9 +218,9 @@ const SearchResult = () => {
           >
             <Select
               placeholder="Select event state"
-               onChange={(value) => {
-                setState(value)
-               }}
+              onChange={(value) => {
+                setState(value);
+              }}
               style={{
                 borderRadius: "12px",
                 fontFamily: "'Bricolage Grotesque', sans-serif",
@@ -247,8 +247,8 @@ const SearchResult = () => {
               // value={selectedValue}
               // onChange={handleEventTypeChange}
               onChange={(value) => {
-                setEventCat(value)
-                handleEventTypeChange(value)
+                setEventCat(value);
+                handleEventTypeChange(value);
               }}
               style={{
                 borderRadius: "12px",
@@ -257,7 +257,8 @@ const SearchResult = () => {
               }}
               allowClear
             >
-              <Option value="">-- Select an Option --</Option>              <Option value={"Wedding"}>Wedding</Option>
+              <Option value="">-- Select an Option --</Option>{" "}
+              <Option value={"Wedding"}>Wedding</Option>
               <Option value={"Birthday"}>Birthday</Option>
               <Option value={"Concert"}>Concert</Option>
               <Option value={"Paint & Sip"}>Paint & Sip</Option>

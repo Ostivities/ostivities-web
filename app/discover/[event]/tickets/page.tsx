@@ -755,7 +755,7 @@ const TicketsSelection = () => {
     <DashboardLayout title={title} isLoggedIn>
       <section className="flex flex-col md:flex-row gap-6 md:gap-12">
         {currentPage === "tickets" ? (
-          <section className="flex-1 pb-4 scrollable-content overflow-y-auto scroll-smooth h-full">
+          <section className="flex-1 pb-4 md:px-5 scrollable-content overflow-y-auto scroll-smooth h-full">
             <div className="flex-center gap-10 sm:gap-10 md:gap-20">
               <div className="flex-center gap-3">
                 <div className="min-w-12 min-h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">

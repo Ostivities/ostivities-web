@@ -6,11 +6,10 @@ import React, { useState, useEffect } from "react";
 import { Heading5, Label } from "../typography/Typography";
 import {
   useCreateSettlementAccount,
-  useGetSettlementAccount,
   useGetAllBanks,
   useVerifyBankAccount,
 } from "@/app/hooks/settlement/settlement.hook";
-import { ISettlementData, IVerifyBankAccount } from "@/app/utils/interface";
+import { ISettlementData } from "@/app/utils/interface";
 
 interface FieldType {}
 
@@ -34,9 +33,8 @@ const PaymentDetails = ({
   const allBanks = getAllBanks?.data?.data?.data;
   // const { getSettlementAccount } = useGetSettlementAccount("1");
 
-  console.log(data, "data");
+  
   const onFinish: FormProps<ISettlementData>["onFinish"] = async(values) => {
-    console.log(values, "values");
     // return values;
 
     const response = await createSettlementAccount.mutateAsync({
@@ -153,6 +151,7 @@ const PaymentDetails = ({
           <Select
             placeholder="Select Bank"
             style={{ width: "100%" }}
+            allowClear
             showSearch
             onChange={(value) => {
               const selectedBank = allBanks?.find(

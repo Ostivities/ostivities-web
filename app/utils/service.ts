@@ -261,17 +261,25 @@ export class API_SERVICE {
     });
   }
 
-  static async _getEventGuests(eventId: string, page:number , limit: number): Promise<AxiosResponse> {
+  static async _getGuestInfo(event_unique_key: string, guest_id: string, ticket_id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/guest/${event_unique_key}/${guest_id}/${ticket_id}`,
+      method: HttpMethod.GET,
+      params: { event_unique_key, guest_id, ticket_id }
+    })
+  }
+
+  static async _getEventGuests(eventId: string, page:number , limit: number, search?: string): Promise<AxiosResponse> {
     return await instance({
       url: `/guest/event/${eventId}`,
       method: HttpMethod.GET,
-      params: { page, limit },
+      params: { page, limit, search },
     });
   }
 
-  static async _getTicketGuestd(id: string): Promise<AxiosResponse> {
+  static async _getTicketGuestId(ticket_id: string): Promise<AxiosResponse> {
     return await instance({
-      url: `/guest/ticket/${id}`,
+      url: `/guest/${ticket_id}`,
       method: HttpMethod.GET,
     });
   }

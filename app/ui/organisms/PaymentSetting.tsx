@@ -1,54 +1,148 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import H4 from "../atoms/H4";
 import ToggleSwitch from "../atoms/ToggleSwitch";
 import { NigerianBanks } from "@/app/utils/data";
-import { Button, Form, Input, Row, Col, Select, notification, message } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Row,
+  Col,
+  Select,
+  notification,
+  message,
+} from "antd";
 import { Label } from "@/app/components/typography/Typography";
+import {
+  useGetSettlementAccount,
+  useUpdateSettlementAccount,
+  useGetAllBanks,
+  useVerifyBankAccount,
+} from "@/app/hooks/settlement/settlement.hook";
+import { useCookies } from "react-cookie";
+import { ISettlementData } from "@/app/utils/interface";
+
+interface BankData {
+  name: string;
+  code: string;
+}
 
 const PaymentSetting = () => {
   const [activeToggle, setActiveToggle] = useState<string | null>(null);
   const [accountName, setAccountName] = useState("");
   const [form] = Form.useForm();
   const [isEditable, setIsEditable] = useState(false); // New state for edit mode
+  const [cookies, setCookie, removeCookie] = useCookies(["profileData"]);
+  const [loading, setLoading] = useState(false);
+  console.log(cookies?.profileData?.id, "cookies?.profileData?.id");
+  const { getAllBanks } = useGetAllBanks();
+  const { verifyBankAccount } = useVerifyBankAccount();
+  const { updateSettlementAccount } = useUpdateSettlementAccount();
+  const { getSettlementAccount } = useGetSettlementAccount(
+    cookies?.profileData?.id
+  );
+  const accountDetails = getSettlementAccount?.data?.data?.data;
+  const allBanks = getAllBanks?.data?.data?.data;
+  const accountNumber = form.getFieldValue("account_number");
+  const bankCode = form.getFieldValue("bank_code");
+  const bankName = form.getFieldValue("bank_name");
+
+  useEffect(() => {
+    if (accountDetails) {
+      form.setFieldsValue({
+        bank_code: accountDetails?.bank_name,
+        account_number: accountDetails?.account_number,
+        account_name: accountDetails?.account_name,
+      });
+      setAccountName(accountDetails?.account_name);
+    }
+  }, [accountDetails]);
+
+  useEffect(() => {
+    form.setFieldsValue({ account_name: accountName }); // Update the form field dynamically
+  }, [accountName]);
 
   const handleToggle = (label: string) => {
     setActiveToggle((prev) => (prev === label ? null : label));
   };
 
-  const accountNames: { [key: string]: string } = {
-    "bank1-123456": "John Doe",
-    "bank2-654321": "Jane Smith",
-  };
+  const handleBankNameChange = async (value: string) => {
+    // Ensure account number is at least 10 digits
+    if (accountNumber?.length >= 10 && value) {
+      try {
+        const fetchedAccountName = await verifyBankAccount.mutateAsync({
+          bank_code: value,
+          account_number: accountNumber,
+        });
 
-  const fetchAccountName = (bankName: string, accountNumber: string): string => {
-    const key = `${bankName}-${accountNumber}`;
-    return accountNames[key] || "";
-  };
+        if (fetchedAccountName.status === 200) {
+          setAccountName(fetchedAccountName?.data?.data?.data?.account_name);
+        }
 
-  const handleBankNameChange = (value: string) => {
-    const accountNumber = form.getFieldValue("accountNumber");
-    if (accountNumber) {
-      const fetchedAccountName = fetchAccountName(value, accountNumber);
-      setAccountName(fetchedAccountName);
-    }
-  };
-
-  const handleAccountNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const bankName = form.getFieldValue("bankName");
-    if (bankName) {
-      const fetchedAccountName = fetchAccountName(bankName, e.target.value);
-      setAccountName(fetchedAccountName);
-    }
-  };
-
-  const handleButtonClick = () => {
-    if (isEditable) {
-      form.validateFields().then(() => {
-        // Simulate account update
-        message.success ("Account details updated successfully!")       
-        setIsEditable(false); // Switch back to non-editable mode
-      });
+        // console.log(fetchedAccountName, "fetchedAccountName");
+      } catch (error) {
+        console.error("Error verifying account:", error);
+      }
     } else {
+      setAccountName(""); // Clear account name if the input is invalid
+      console.log("Account number must be at least 10 digits");
+    }
+  };
+
+  const handleAccountNumberChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const accountNumber = e.target.value;
+    // Ensure account number is exactly 10 digits
+    if (accountNumber?.length >= 10) {
+      const bankName = form.getFieldValue("bank_code");
+      if (bankName) {
+        console.log("thrid here");
+        try {
+          const fetchedAccountName = await verifyBankAccount.mutateAsync({
+            bank_code: bankName,
+            account_number: accountNumber,
+          });
+
+          if (fetchedAccountName.status === 200) {
+            setAccountName(fetchedAccountName?.data?.data?.data?.account_name);
+          }
+
+          // console.log(fetchedAccountName, "fetchedAccountName");
+        } catch (error) {
+          console.error("Error verifying account:", error);
+        }
+      }
+    } else {
+      setAccountName(""); // Clear account name if not 10 digits
+      console.log("Account number must be exactly 10 digits");
+    }
+  };
+
+  const handleButtonClick = async () => {
+    setLoading(true);
+    if (isEditable) {
+      form.validateFields();
+      const response = await updateSettlementAccount.mutateAsync({
+        account_number: accountNumber,
+        account_name: accountName,
+        bank_code: bankCode,
+        bank_name: bankName,
+        user: cookies?.profileData?.id,
+      });
+      console.log(response, "response");
+
+      if (response.status === 200) {
+        setLoading(false);
+        setIsEditable(false); // Switch back to non-editable mode
+      }
+      // .then(async() => {
+
+      //   // Simulate account update
+      //   message.success("Account details updated successfully!");
+      // });
+    } else {
+      setLoading(false);
       setIsEditable(true); // Enable editing
     }
   };
@@ -57,12 +151,12 @@ const PaymentSetting = () => {
     <form className="px-12 py-5 min-h-[60vh] flex flex-col items-center justify-between">
       <div className="self-start">
         <>
-          <H4 content="Payment Setting" style={{ fontSize: '22px' }} />
+          <H4 content="Payment Setting" style={{ fontSize: "22px" }} />
           <p
             style={{
               fontFamily: "Bricolage Grotesque, sans-serif",
               fontWeight: "350",
-              fontSize: '14px',
+              fontSize: "14px",
             }}
             className="text-OWANBE_PRY mt-1 mb-5"
           >
@@ -87,45 +181,92 @@ const PaymentSetting = () => {
         </div>
 
         <div className="mt-12">
-          <H4 content="Account Details" style={{ fontSize: '22px' }} />
+          <H4 content="Account Details" style={{ fontSize: "22px" }} />
           <p
             style={{
               fontFamily: "Bricolage Grotesque, sans-serif",
               fontWeight: "350",
-              fontSize: '14px',
+              fontSize: "14px",
             }}
             className="text-OWANBE_PRY mt-1 mb-3"
           >
-            Update your account details here. Please note that changes can only be made up to 2 days before your next payout date. 
+            Update your account details here. Please note that changes can only
+            be made up to 2 days before your next payout date.
           </p>
 
-          <Form layout="vertical" form={form} className="flex flex-col gap-y-1 mt-5">
+          <Form
+            layout="vertical"
+            form={form}
+            className="flex flex-col gap-y-1 mt-5"
+          >
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
-                  name="bankName"
-                  label={<Label content="Bank Name" className="text-sm font-medium" />}
-                  rules={[{ required: true, message: "Please select your bank" }]}
+                  name="bank_code"
+                  label={
+                    <Label
+                      content="Bank Name"
+                      className="text-sm font-medium"
+                    />
+                  }
+                  rules={[
+                    { required: true, message: "Please select your bank" },
+                  ]}
                 >
                   <Select
                     placeholder="Select Bank"
-                    onChange={handleBankNameChange}
+                    allowClear
+                    showSearch
+                    onChange={(value) => {
+                      const selectedBank = allBanks?.find(
+                        (bank: BankData) => bank?.code === value
+                      );
+                      if (selectedBank) {
+                        form.setFieldsValue({ bank_name: selectedBank?.name }); // Set the bank_code field
+                      }
+                      handleBankNameChange(selectedBank?.code); // Pass the bank code for further processing
+                    }}
+                    filterOption={(input, option) =>
+                      (option?.children as unknown as string)
+                        ?.toLowerCase()
+                        .includes(input.toLowerCase())
+                    }
                     disabled={!isEditable} // Disable if not editable
                   >
-                    {NigerianBanks.map((bank) => (
-                      <Select.Option value={bank.value} key={bank.value}>
-                        {bank.label}
+                    {allBanks?.map((bank: BankData, index: number) => (
+                      <Select.Option value={bank?.code} key={index}>
+                        {bank?.name}
                       </Select.Option>
                     ))}
                   </Select>
+                </Form.Item>
+
+                <Form.Item name="bank_name" style={{ display: "none" }}>
+                  <Input type="hidden" />
                 </Form.Item>
               </Col>
 
               <Col span={12}>
                 <Form.Item
-                  name="accountNumber"
-                  label={<Label content="Account Number" className="text-sm font-medium" />}
-                  rules={[{ required: true, message: "Please input your account number" }]}
+                  name="account_number"
+                  validateStatus={accountNumber?.length < 10 ? "error" : ""}
+                  help={
+                    accountNumber?.length < 10
+                      ? "Account number must be at least 10 digits"
+                      : ""
+                  }
+                  label={
+                    <Label
+                      content="Account Number"
+                      className="text-sm font-medium"
+                    />
+                  }
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your account number",
+                    },
+                  ]}
                 >
                   <Input
                     type="text"
@@ -138,9 +279,17 @@ const PaymentSetting = () => {
             </Row>
 
             <Form.Item
-              name="accountName"
-              label={<Label content="Account Name" className="text-sm font-medium" />}
+              name="account_name"
+              label={
+                <Label content="Account Name" className="text-sm font-medium" />
+              }
               style={{ marginTop: 1 }}
+              rules={[
+                {
+                  required: true,
+                  message: "Account Name must be provided",
+                },
+              ]}
             >
               <Input
                 type="text"
@@ -155,6 +304,8 @@ const PaymentSetting = () => {
 
       <Button
         type="primary"
+        loading={isEditable ? false : loading}
+        htmlType={isEditable ? "button" : "submit"}
         onClick={handleButtonClick} // Change from htmlType="submit" to onClick
         size="large"
         className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
