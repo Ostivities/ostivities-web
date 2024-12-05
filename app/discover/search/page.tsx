@@ -172,7 +172,7 @@ const SearchResult = () => {
   return (
     <DashboardLayout title={header} isLoggedIn>
      <div
-  className="border rounded-[24px] p-8 shadow-md"
+  className="border rounded-[24px] p-8 "
   style={{
     boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
     backgroundColor: "#ffffff",
