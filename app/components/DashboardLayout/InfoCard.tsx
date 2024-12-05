@@ -36,6 +36,8 @@ const InfoCard: React.FC<PropsI> = ({
 
       <div className=" text-white">
       <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-100"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-100"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-50"></div>
         <div
           className={`absolute top-0 right-0 py-2 px-3 bg-OWANBE_PRY rounded-bl-[1.25rem] ${statusClass}`}
         >
