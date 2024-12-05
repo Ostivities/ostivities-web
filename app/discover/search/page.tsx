@@ -171,7 +171,14 @@ const SearchResult = () => {
 
   return (
     <DashboardLayout title={header} isLoggedIn>
-      <div className="border-[1px] rounded-[24px] p-8 shadow-md">
+     <div
+  className="border rounded-[24px] p-8 shadow-md"
+  style={{
+    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+    backgroundColor: "#ffffff",
+  }}
+>
+
         <h3 className="font-semibold mb-3">
           Find events happening around you.
         </h3>
