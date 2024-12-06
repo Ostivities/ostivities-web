@@ -121,8 +121,8 @@ function CreateTicketPage(): JSX.Element {
                 );
               }}
               style={{
-                backgroundColor: !hasTickets ? "#cccccc" : "#e20000",
-                color: !hasTickets ? "#666666" : "white",
+                backgroundColor: !hasTickets ? "#cccccc !important" : "#e20000",
+                color: !hasTickets ? "#666666 !important" : "white",
               }}
               disabled={!hasTickets}
               // title="This button is disabled until the user creates a ticket"

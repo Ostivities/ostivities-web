@@ -1,32 +1,34 @@
-import EventSection from "./PopularEventSection";
+import { IEventDetails } from "@/app/utils/interface";
+import EventSection from "./EventSearchSection";
+import InfoCardM from "./OtherInfoCard2";
 import InfoCard from "./OtherInfoCard";
 import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
 import { Skeleton } from "antd";
-import InfoCardM from "./OtherInfoCard2";
-import { IEventDetails } from "@/app/utils/interface";
-import placeholder from "@/public/placeholder.svg";
 import { useState } from "react";
+import placeholder from "@/public/placeholder.svg";
 
-const PopularEvents = () => {
+const EventSearch = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setpageSize] = useState(12);
   const { getDiscoveryEvents } = useGetDiscoveryEvents(page, pageSize);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
+  console.log(discoveryEvents, "discoveryEvents");
+
   const isPending = getDiscoveryEvents?.isLoading;
 
   return (
     <EventSection
-      title="Popular Events"
+      title="Hangout Events"
       titleClass="custom-title-class"
       style={{
-        fontSize: "20px", 
+        fontSize: "20px",
         fontFamily: "Bricolage Grotesque, font-semibold",
       }} // Inline style
-      uri="/discover/popularevents"
+      uri="/discover/allevents"
     >
       {isPending ? (
         <>
-          {Array(10)
+          {Array(6)
             .fill(null)
             .map((_, index) => (
               <Skeleton.Button
@@ -51,6 +53,8 @@ const PopularEvents = () => {
               key={index}
               title={event?.eventName}
               about={event?.eventType}
+              startDate={event?.startDate}
+              endDate={event?.endDate}
               status={
                 event?.enable_registration === false
                   ? "Reg Closed"
@@ -87,4 +91,4 @@ const PopularEvents = () => {
   );
 };
 
-export default PopularEvents;
+export default EventSearch;

@@ -161,6 +161,7 @@ export interface IModal {
   actionType?: "delete" | "warning" | "detail";
   data?: any;
   selectedRowKeys?: string[];
+  dataToDelete?: any;
 
 }
 
@@ -425,7 +426,8 @@ export interface ITicketDetails {
   ticketStock: string
   ticketType: string
   revenue: string;
-  createdAt: string
+  createdAt: string;
+  ticket_available: number;
   discount?: {
     createdAt: string
     discountCode: string 

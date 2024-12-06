@@ -1374,3 +1374,21 @@ z-index: 99; */
   background-color: #e20000; /* Scrollbar color */
   border-radius: 25px; /* Rounded scrollbar ends */
 }
+@media (max-width: 1024px) {
+  .pricing-card {
+    flex: 1 1 calc(33.33% - 20px); /* 3 cards per row */
+  }
+}
+
+@media (max-width: 768px) {
+  .pricing-card {
+    flex: 1 1 calc(50% - 20px); /* 2 cards per row */
+  }
+}
+
+@media (max-width: 480px) {
+  .pricing-card {
+    flex: 1 1 100%; /* 1 card per row */
+    max-width: 100%; /* Full width for small devices */
+  }
+}

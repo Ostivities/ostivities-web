@@ -2,7 +2,7 @@
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import useModal from "@/app/hooks/useModal";
 import type { MenuProps } from "antd";
-import { Button, Card, Dropdown, message, Space, Switch } from "antd";
+import { Button, Card, Dropdown, message, Space, Switch, Tooltip } from "antd";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -17,7 +17,11 @@ import {
   useAddEventToDiscovery,
   usePublishEvent,
 } from "@/app/hooks/event/event.hook";
+import {
+  useGetSettlementAccount,
+} from "@/app/hooks/settlement/settlement.hook";
 import { EVENT_INFO, PUBLISH_TYPE } from "@/app/utils/enums";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 interface EventProps {
   totalTickets?: number;
@@ -40,7 +44,9 @@ export default function EventDetailsComponent({
   const { getUserEvent } = useGetUserEvent(params?.id);
   const { addEventToDiscovery } = useAddEventToDiscovery();
   const { publishEvent } = usePublishEvent();
+  const [accountDetailsAdded, setAccountDetailsAdded] = useState(false);
   const eventDetails = getUserEvent?.data?.data?.data;
+  const { getSettlementAccount } = useGetSettlementAccount(eventDetails?.user?.id)
   const [isPublished, setIsPublished] = useState(false); // State to track publish status
   const [isDiscover, setIsDiscover] = useState(false); // State to track discovery status
   // console.log(isDiscover, "isDiscover")
@@ -48,8 +54,6 @@ export default function EventDetailsComponent({
 
   const eventDate = eventDetails?.endDate;
   const eventdates = new Date(eventDate).getTime();
-
-
 
   useEffect(() => {
     if (eventDetails?.mode && eventDetails?.mode === PUBLISH_TYPE.ACTIVE) {
@@ -71,6 +75,11 @@ export default function EventDetailsComponent({
 
   const handlePublishEvent = async () => {
     if (eventDetails?.mode === PUBLISH_TYPE.ACTIVE) {
+      if(eventDetails?.total_ticket_sold > 0) {
+        message.error("Event with sold tickets cannot be unpublished");
+        return;
+      }
+
       const response = await publishEvent.mutateAsync({
         ids: [params?.id],
         mode: PUBLISH_TYPE.INACTIVE,
@@ -89,7 +98,7 @@ export default function EventDetailsComponent({
     ) {
       if (
         eventdates < new Date().getTime() &&
-        eventDetails?.eventInfo === EVENT_INFO.SINGLE_EVENT
+        eventDetails?.eventInfo === EVENT_INFO.SINGLE_EVENT 
       ) {
         message.error(
           "The event has ended and cannot be published. Please update the event details to republish."
@@ -208,7 +217,6 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            
             href={`/discover/events-created/${params?.id}/tickets/discounts`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
@@ -292,7 +300,9 @@ export default function EventDetailsComponent({
     ];
 
     return (
-      <div className={`flex flex-row overflow-x-scroll items-center justify-between`}>
+      <div
+        className={`flex flex-row overflow-x-scroll items-center justify-between`}
+      >
         <div className="flex flex-row items-center space-x-4">
           <Button
             type={pathname.includes("about") ? "primary" : "text"}
@@ -374,21 +384,23 @@ export default function EventDetailsComponent({
             </Button>
           </Dropdown>
 
-          <Dropdown menu={{ items: CoordinatorsItems, onClick: handleMenuClick }}>
-          <Button
-            type={pathname.includes("coordinators") ? "primary" : "text"}
-            className="font-BricolageGrotesqueRegular cursor-pointer font-medium w-40 rounded-2xl"
-            style={{
-              borderRadius: "25px",
-              fontFamily: "BricolageGrotesqueMedium",
-            }}
-            size="large"
+          <Dropdown
+            menu={{ items: CoordinatorsItems, onClick: handleMenuClick }}
           >
-            <Space>
-              Coordinators
-              <IoChevronDown />
-            </Space>
-          </Button>
+            <Button
+              type={pathname.includes("coordinators") ? "primary" : "text"}
+              className="font-BricolageGrotesqueRegular cursor-pointer font-medium w-40 rounded-2xl"
+              style={{
+                borderRadius: "25px",
+                fontFamily: "BricolageGrotesqueMedium",
+              }}
+              size="large"
+            >
+              <Space>
+                Coordinators
+                {/* <IoChevronDown /> */}
+              </Space>
+            </Button>
           </Dropdown>
 
           <Button
@@ -408,7 +420,7 @@ export default function EventDetailsComponent({
             Sales
           </Button>
         </div>
-        {pathname.includes("sales") && (
+        {pathname.includes("sales") && getSettlementAccount?.data === undefined && (
           <div className="flex flex-row">
             <Button
               type={"default"}
@@ -568,7 +580,16 @@ export default function EventDetailsComponent({
             />
             <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
               {isDiscover ? "Remove from discovery" : "Add to discovery"}
-              {/* Add to discovery page */}
+              <a
+                    href="https://ostivities.tawk.help/article/how-to-add-or-remove-events-from-discovery-on-ostivities" // Replace with your actual URL 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ marginLeft: "8px" }}
+                  >
+                    <Tooltip title="Click to learn more">
+                      <QuestionCircleOutlined style={{ fontSize: "18px", color: "#858990" }} />
+                    </Tooltip>
+                  </a>
             </span>
           </div>
         )}
@@ -581,6 +602,11 @@ export default function EventDetailsComponent({
         style={{
           borderRadius: "20px",
           fontFamily: "BricolageGrotesqueMedium",
+          backgroundColor:
+            eventDetails?.total_ticket_sold > 0
+              ? "#cccccc" // Gray for disabled
+              : "#e20000", // Red for active
+          color: eventDetails?.total_ticket_sold > 0 ? "#666666" : "white",
         }}
         onClick={handlePublishEvent}
         loading={publishEvent.isPending}
@@ -613,6 +639,11 @@ export default function EventDetailsComponent({
     <React.Fragment>
       <PaymentDetails
         open={isModalOpen}
+        data={eventDetails?.user?.id}
+        onOk={() => {
+          setAccountDetailsAdded(true)
+          setIsModalOpen(false)
+        }}
         onCancel={() => setIsModalOpen(false)}
       />
 

@@ -21,6 +21,13 @@ import {
   IVerifyToken,
   IBulkMailData,
 } from "./interface";
+import CryptoJS from 'crypto-js';
+
+  const ciphertext = CryptoJS.AES.encrypt(
+    process.env.OSTIVITIES_REFERENCE_TEXT as string,
+    process.env.OSTIVITIES_REFERENCE_KEY as string,
+  ).toString();
+
 
 export class API_SERVICE {
   static async _registerUser(data: IUser) {
@@ -150,11 +157,11 @@ export class API_SERVICE {
     });
   }
 
-  static async _getDiscoveryEvents(page: number, pageSize: number): Promise<AxiosResponse> {
+  static async _getDiscoveryEvents(page: number, pageSize: number, eventName?: string, state?: string, eventCat?: string): Promise<AxiosResponse> {
     return await instance({
       url: `/events/discovery`,
       method: HttpMethod.GET,
-      params: { page, pageSize },
+      params: { page, pageSize, eventName, state, eventCat },
     });
   }
 
@@ -189,6 +196,17 @@ export class API_SERVICE {
       method: HttpMethod.GET,
     });
   }
+
+  static async _getAllEventTicketsByUniqueKey(event_unique_key: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/ticket/get_event_tickets/${event_unique_key}`,
+      method: HttpMethod.GET,
+      headers: {
+        "Reference": ciphertext
+      }
+    });
+  }
+
 
   static async _getSingleTicket(id: string): Promise<AxiosResponse> {
     return await instance({
@@ -243,17 +261,25 @@ export class API_SERVICE {
     });
   }
 
-  static async _getEventGuests(eventId: string, page:number , limit: number): Promise<AxiosResponse> {
+  static async _getGuestInfo(event_unique_key: string, guest_id: string, ticket_id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/guest/${event_unique_key}/${guest_id}/${ticket_id}`,
+      method: HttpMethod.GET,
+      params: { event_unique_key, guest_id, ticket_id }
+    })
+  }
+
+  static async _getEventGuests(eventId: string, page:number , limit: number, search?: string): Promise<AxiosResponse> {
     return await instance({
       url: `/guest/event/${eventId}`,
       method: HttpMethod.GET,
-      params: { page, limit },
+      params: { page, limit, search },
     });
   }
 
-  static async _getTicketGuestd(id: string): Promise<AxiosResponse> {
+  static async _getTicketGuestId(ticket_id: string): Promise<AxiosResponse> {
     return await instance({
-      url: `/guest/ticket/${id}`,
+      url: `/guest/${ticket_id}`,
       method: HttpMethod.GET,
     });
   }

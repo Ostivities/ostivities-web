@@ -99,7 +99,7 @@ function Header2(): JSX.Element {
                       className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold" />
                     </Link>
                     <Link href="/signup" passHref>
-                      <Button label="Sign Up" />
+                      <Button label="Create Event" />
                     </Link>
                   </>
                 )

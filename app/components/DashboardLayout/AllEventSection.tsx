@@ -12,14 +12,14 @@ interface PropsI {
 
 const EventSection: React.FC<PropsI> = ({ title, uri, children, titleClass = 'font-bricolage-grotesque font-semibold text-2xl mb-6', style }) => {
   const childrenArray = React.Children.toArray(children);
-  const limitedChildren = childrenArray.slice(0, 10); // Get the first 6 children 
+  const limitedChildren = childrenArray.slice(0, 8); // Get the first 6 children 
 
   return (
     <section>
       <div className="flex-center justify-between">
-      <h2 className={`${titleClass} mb-8`} style={style}>{title}</h2>
+      <h2 className={`${titleClass} -mt-4`} style={style}>{title}</h2>
         {uri && (
-          <Link href={uri} className="font-bricolage-grotesque font-semibold text-OWANBE_PRY">
+          <Link href={uri} className="font-bricolage-grotesque font-semibold text-OWANBE_PRY mb-6">
             See More {<ForwardOutlined />}
           </Link>
         )}

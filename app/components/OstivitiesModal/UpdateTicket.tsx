@@ -1,10 +1,13 @@
 import { IModal } from "@/app/utils/interface";
-import { Modal, Button, message } from "antd";
+import { Modal, Button, message, Space } from "antd";
 import React from "react";
 import { Heading5 } from "../typography/Typography";
 import SingleTicket from "./SingleTicket";
 import EditSingleTicket from "./EditSingleTicket";
 import EditCollectiveTicket from "./EditCollectiveTicket";
+import { Paragraph } from "../typography/Typography";
+import ShieldIcon from "@/app/components/Icons/ShieldIcon";
+
 
 const UpdateTicket = ({
   open,
@@ -12,6 +15,7 @@ const UpdateTicket = ({
   onOk,
   id,
   ticketEntity,
+  dataToDelete,
 }: IModal): JSX.Element => {
   // console.log(id)
   // const { id } = data;
@@ -24,6 +28,7 @@ const UpdateTicket = ({
 
   return (
     <Modal
+      maskClosable={false}
       title={<Heading5 content={"Update Ticket"} className="" />}
       open={open}
       onCancel={onCancel}
@@ -49,7 +54,25 @@ const UpdateTicket = ({
         </div>
       }
     >
-      {ticketEntity === "SINGLE" ? (
+      {
+      // dataToDelete?.[0]?.eventStatus > 0 ? 
+      // <Space
+      //   direction="vertical"
+      //   style={{ width: "100%" }}
+      //   size={"small"}
+      //   className="pb-7 pt-8"
+      // >
+      //   <div className="mx-auto text-center flex flex-row w-full justify-center items-center">
+      //   <ShieldIcon />
+      //   </div>
+      //   <Paragraph
+      //     content={"You cannot update a ticket for an active event"}
+      //     className="text-OWANBE_DARK_SHADE text-sm font-normal font-BricolageGrotesqueRegular text-center mx-auto mt-5"
+      //     styles={{ fontWeight: "normal !important" }}
+      //   />
+      // </Space>
+      // : 
+      ticketEntity === "SINGLE" ? (
         <EditSingleTicket onCancel={onCancel} id={id} onOk={onOk} />
       ) : (
         <EditCollectiveTicket onCancel={onCancel} id={id} onOk={onOk} />

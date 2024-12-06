@@ -33,7 +33,7 @@ const InfoCard: React.FC<PropsI> = ({
   return (
     <Link
       href={url}
-      className={`relative w-full max-w-[200px] h-[200px] rounded-[30px] overflow-hidden ${className}`}
+      className={`relative w-full max-w-[200px] h-[200px] rounded-[30px] overflow-hidden shadow-md ${className}`}
     >
       <Image src={image} alt="" fill className="object-cover" />
       <div className="absolute inset-0 bg-image-card text-white">
@@ -45,8 +45,8 @@ const InfoCard: React.FC<PropsI> = ({
           </span>
         </div>
         <div className="absolute bottom-0 left-0 px-5 py-5">
-          <h3 className={titleClass}>{title}</h3>
-          <div className={`flex-center gap-2 mt-1 ${aboutClass}`}>
+        <h3 className={`${titleClass} text-md font-bold`}>{title}</h3>
+          <div className={`flex-center gap-1 mt-1 ${aboutClass}`}>
             <Image src="/icons/folder.svg" alt="" height={18} width={18} />
             <span className="text-xs">{about}</span>
           </div>

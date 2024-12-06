@@ -422,7 +422,7 @@ function DashboardLayout({
                       />
                     </Link>
                     <Link href="/signup" passHref>
-                      <Button label="Sign Up" />
+                      <Button label="Create Event" />
                     </Link>
                   </>
                 )}
@@ -713,7 +713,7 @@ function DashboardLayout({
                     />
                   </Link>
                   <Link href="/signup" passHref>
-                    <Button label="Sign Up" />
+                    <Button label="Create Event" />
                   </Link>
                 </>
               )

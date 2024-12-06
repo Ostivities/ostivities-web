@@ -6,14 +6,15 @@ import { useEffect, useState } from "react";
 import { IEventDetails } from "@/app/utils/interface";
 import { EVENT_INFO, PUBLISH_TYPE } from "@/app/utils/enums";
 import placeholder from "@/public/placeholder.svg";
+import Select, { StylesConfig } from "react-select";
 
 const DiscoverEvents = () => {
   const [searchText, setSearchText] = useState("");
   const { getDiscoveryEvents } = useGetDiscoveryEvents(1, 5);
-  const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
+  const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
   const { addEventToDiscovery } = useAddEventToDiscovery();
   const [expiredEventsId, setExpiredEventsId] = useState<string[]>([]);
-  // console.log(discoveryEvents, "discoveryEvents")
+  // console.log(getDiscoveryEvents, "getDiscoveryEvents")
   const { publishEvent } = usePublishEvent();
 
   const isPending = getDiscoveryEvents?.isLoading;
@@ -42,7 +43,7 @@ const DiscoverEvents = () => {
   return (
     <>
       <EventSection
-        title="Discover Events"
+        title="Featured Events"
         titleClass="custom-title-class"
         style={{
           // fontSize: "24px",
@@ -68,11 +69,13 @@ const DiscoverEvents = () => {
           </>
         ) : (
           // Once data is loaded, map through discoveryEvents and render InfoCard components
-          filteredEvents?.map((event: IEventDetails) => (
+          filteredEvents?.map((event: IEventDetails, index: number) => (
             <InfoCard
-              key={event?.id}
+              key={index}
               title={event?.eventName}
               about={event?.eventType}
+              startDate={event?.startDate}
+              endDate={event?.endDate}
               status= {event?.enable_registration === false ? "Reg Closed" :  "Get Tickets"  }
               image={event?.eventImage ? event.eventImage : placeholder}
               url={`/discover/${event?.unique_key}`}

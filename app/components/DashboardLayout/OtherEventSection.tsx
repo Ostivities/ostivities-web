@@ -13,7 +13,7 @@ interface PropsI {
 const EventSection: React.FC<PropsI> = ({ title, uri, children, titleClass = 'font-bricolage-grotesque font-semibold text-2xl mb-6', style }) => {
   // Convert children to an array to manage items and limit to 6
   const childrenArray = React.Children.toArray(children);
-  const limitedChildren = childrenArray.slice(0, 6); // Get the first 6 children
+  const limitedChildren = childrenArray.slice(0, 4); // Get the first 6 children
 
   return (
     <section>

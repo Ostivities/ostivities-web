@@ -48,6 +48,7 @@ import {
   Upload,
   UploadFile,
   UploadProps,
+  Tooltip,
 } from "antd";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -532,12 +533,9 @@ function EventDetailsEdit(): JSX.Element {
                             rel="noopener noreferrer"
                             style={{ marginLeft: "8px" }}
                           >
-                            <QuestionCircleOutlined
-                              style={{
-                                fontSize: "16px",
-                                color: "#858990",
-                              }}
-                            />
+                             <Tooltip title="Click to learn more">
+                      <QuestionCircleOutlined style={{ fontSize: "18px", color: "#858990" }} />
+                    </Tooltip>
                           </a>
                         </span>
                       </span>
@@ -574,9 +572,9 @@ function EventDetailsEdit(): JSX.Element {
                         rel="noopener noreferrer"
                         style={{ marginLeft: "8px" }}
                       >
-                        <QuestionCircleOutlined
-                          style={{ fontSize: "16px", color: "#858990" }}
-                        />
+                         <Tooltip title="Click to learn more">
+                      <QuestionCircleOutlined style={{ fontSize: "18px", color: "#858990" }} />
+                    </Tooltip>
                       </a>
                     </span>
                   </Checkbox>

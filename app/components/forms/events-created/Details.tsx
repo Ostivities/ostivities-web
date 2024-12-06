@@ -35,10 +35,13 @@ const EventsCreatedTable: React.FC = () => {
   const [pageSize, setPageSize] = useState(10);
   const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const [isShown, setIsShown] = useState(false);
-  const [eventStatus, setEventStatus] = useState("");
+  const [eventStatus, setEventStatus] = useState<{
+    id: string,
+    eventStatus: string
+  }[]>([]);
   const [actionType, setActionType] = useState<"delete" | "warning">();
   const { getAllUserEvents } = useGetAllUserEvents(currentPage, pageSize, searchText);
-  // console.log(getAllUserEvents,"getAllUserEvents")
+  console.log(selectedRowKeys,"selectedRowKeys")
   const { publishEvent } = usePublishEvent();
 
   useEffect(() => {
@@ -241,7 +244,6 @@ const EventsCreatedTable: React.FC = () => {
       "Event Type": item.eventType || "N/A",  // Ensure 'eventDetails' exists in the data
       "Ticket Sold": item.ticketSold || 0,          // Ensure 'ticketSold' exists in the data
       "Date Created": item.createdAt ? dateFormat(item.createdAt) : "N/A",
-      "End Date": item.endDate ? dateFormat(item.endDate): "N/A",
       "Status": item.status || "N/A",
     }));
   
@@ -293,7 +295,6 @@ const EventsCreatedTable: React.FC = () => {
         actionType={actionType}
         selectedRowKeys={selectedRowKeys}
       />
-      
         <div className="flex justify-between items-center mb-4">
           <Search
             placeholder="Search events"
@@ -338,10 +339,28 @@ const EventsCreatedTable: React.FC = () => {
 
           rowSelection={{
             selectedRowKeys,
-            onChange: (keys) => setSelectedRowKeys(keys.map(String)),
+            onChange: (keys, records) => {
+              setSelectedRowKeys(keys.map(String));
+        
+              // Update `eventStatus` for bulk selection
+              setEventStatus(() => {
+                const selectedEvents = records.map((record) => ({
+                  id: record?.key ?? "",
+                  eventStatus: record?.status ?? "",
+                }));
+        
+                return selectedEvents; // Replace with the full selected set
+              });
+            },
             onSelect: (record, selected) => {
-              setEventStatus(record?.status ?? "");
-              // console.log({record, selected}, "record and selected")
+              if (selected) {
+                setEventStatus((prev) => [
+                  ...prev.filter((item) => item.id !== record?.key), // Remove any existing record with the same ID
+                  { id: record?.key ?? "", eventStatus: record?.status ?? "" } // Add the new record
+                ]);
+              } else {
+                setEventStatus((prev) => prev.filter((item) => item.id !== record?.key)); // Remove the deselected record
+              }
             },
           }}
           columns={columns}

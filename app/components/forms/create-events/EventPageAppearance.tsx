@@ -10,13 +10,12 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { useQueryClient } from "@tanstack/react-query"
+import { useQueryClient } from "@tanstack/react-query";
 import { Heading5, Paragraph } from "../../typography/Typography";
 import { GET_EVENT } from "@/app/utils/constants";
 import ReadMoreHTML from "@/app/components/ReadMoreHTML";
-import placeholder from "@/public/placeholder.svg";
+import placeholder from "@/public/emptyimage2.png";
 import { ACCOUNT_TYPE, EVENT_INFO, EXHIBITION_SPACE } from "@/app/utils/enums";
-
 
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
 const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
@@ -26,7 +25,7 @@ const event_appearance_image: any =
 
 const EventPageAppearance: React.FC = () => {
   const router = useRouter();
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const [imageUrl, setImageUrl] = useState<string>("/images/emptyimage2.png");
   const [loader, setLoader] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies([
@@ -37,7 +36,7 @@ const EventPageAppearance: React.FC = () => {
     "stage_three",
     "ticket_created",
     "mapSrc",
-    "profileData"
+    "profileData",
   ]);
   const params = useParams<{ id: string }>();
   const { getUserEvent } = useGetUserEvent(params?.id);
@@ -53,42 +52,15 @@ const EventPageAppearance: React.FC = () => {
 
   const accountType = cookies?.profileData?.accountType;
 
-  const userFullName =  accountType === ACCOUNT_TYPE.PERSONAL
-    ? cookies?.profileData?.firstName +
-    " " +
-    cookies?.profileData?.lastName : cookies?.profileData?.businessName;
-
+  const userFullName =
+    accountType === ACCOUNT_TYPE.PERSONAL
+      ? cookies?.profileData?.firstName + " " + cookies?.profileData?.lastName
+      : cookies?.profileData?.businessName;
 
   const eventDetails = getUserEvent?.data?.data?.data;
   // console.log(eventDetails)
 
-  const API_KEY = "pk.78628ea993a1c84c0c71a9563edddb7f"
-
-  const mapLocation = async () => {
-    const link = `https://us1.locationiq.com/v1/search?key=${API_KEY}&q=${eventDetails?.address}&format=json`
-
-    try {
-      const response = await fetch(link);
-      const data = await response.json();
-      console.log(data)
-
-      // Extract latitude, longitude, and name from the API response
-      const { lat, lon, display_name } = data[0]; // Assuming the first result is the most accurate
-
-      // seperate the display_name at the point of coma
-      // const loc = display_name?.split(",")[0];
-      // If the display_name is available, encode it for a valid URL format
-      const locationName = display_name ? encodeURIComponent(display_name) : "";
-
-      // Construct a Google Maps URL with latitude, longitude, and the location name
-      const mapUrl = `https://www.google.com/maps?q=${locationName}+${lat},${lon}`;
-
-      // Open the Geoapify map in a new tab
-      window.open(mapUrl, '_blank');
-    } catch (error) {
-      console.error("Error fetching the location:", error);
-    }
-  };
+  const API_KEY = "pk.78628ea993a1c84c0c71a9563edddb7f";
 
   const props: UploadProps = {
     name: "image",
@@ -125,7 +97,7 @@ const EventPageAppearance: React.FC = () => {
           }
         }
         setLoader(false);
-      } catch (error) { }
+      } catch (error) {}
     },
     async onChange(info) {
       if (info.file.status !== "uploading") {
@@ -151,21 +123,22 @@ const EventPageAppearance: React.FC = () => {
     (link: any) => link?.name.toLowerCase() === "facebook"
   );
 
-  const validateFile = (file: { type: string; size: number; }) => {
-    const isAllowedFormat = ['image/png', 'image/jpeg', 'image/gif'].includes(file.type);
+  const validateFile = (file: { type: string; size: number }) => {
+    const isAllowedFormat = ["image/png", "image/jpeg", "image/gif"].includes(
+      file.type
+    );
     const isBelowSizeLimit = file.size / 1024 / 1024 < 10; // Convert file size to MB
 
     if (!isAllowedFormat) {
-      message.error('Only PNG, JPEG, and GIF files are allowed.');
+      message.error("Only PNG, JPEG, and GIF files are allowed.");
     }
 
     if (!isBelowSizeLimit) {
-      message.error('File must be smaller than 10MB.');
+      message.error("File must be smaller than 10MB.");
     }
 
     return isAllowedFormat && isBelowSizeLimit;
   };
-
 
   return (
     <Flex vertical gap={48} style={{ width: "100%" }}>
@@ -196,9 +169,7 @@ const EventPageAppearance: React.FC = () => {
             setCookie("stage_one", "process");
             setCookie("stage_two", "wait");
             setCookie("stage_three", "wait");
-            router.push(
-              `/discover/create-events/${params?.id}/event_details`
-            );
+            router.push(`/discover/create-events/${params?.id}/event_details`);
           }}
         >
           Back
@@ -207,13 +178,15 @@ const EventPageAppearance: React.FC = () => {
       <div className="flex gap-12">
         <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden">
           <Image
-            src={eventDetails?.eventImage ? eventDetails.eventImage : placeholder}
+            src={
+              eventDetails?.eventImage ? eventDetails.eventImage : placeholder
+            }
             alt="Event Image"
             fill
             style={{ objectFit: "cover" }}
             className=""
           />
-          <div className="absolute inset-0 bg-image-card"></div> 
+          <div className="absolute inset-0 bg-image-card"></div>
           <Upload
             className="absolute top-2 right-2 z-10"
             {...props}
@@ -248,15 +221,14 @@ const EventPageAppearance: React.FC = () => {
               ) : (
                 <CameraFilled
                   style={{
-                    fontSize: '24px',
-                    color: '#e20000',
-                    background: 'none',
+                    fontSize: "24px",
+                    color: "#e20000",
+                    background: "none",
                   }}
                 />
               )}
             </button>
           </Upload>
-
         </div>
         <div className="py-8">
           <Heading5 className="text-2xl" content={"About this event"} />
@@ -274,7 +246,13 @@ const EventPageAppearance: React.FC = () => {
 
               {/* Text Section */}
               <div className="ml-2">
-                <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                <div
+                  className="text-sm"
+                  style={{
+                    fontWeight: 600,
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                  }}
+                >
                   Date
                 </div>
                 <div
@@ -282,7 +260,8 @@ const EventPageAppearance: React.FC = () => {
                     width: "140px",
                     whiteSpace: "normal",
                     wordWrap: "break-word",
-                    fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif"
+                    fontWeight: 300,
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
                   }}
                 >
                   {dateFormat(eventDetails?.startDate)} -{" "}
@@ -292,18 +271,24 @@ const EventPageAppearance: React.FC = () => {
             </div>
             <div className="flex gap-3">
               <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
-                <Image
-                  src="/icons/time.svg"
-                  alt=""
-                  height={25}
-                  width={25}
-                />
+                <Image src="/icons/time.svg" alt="" height={25} width={25} />
               </div>
               <div>
-                <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                <div
+                  className="text-sm"
+                  style={{
+                    fontWeight: 600,
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                  }}
+                >
                   Time
                 </div>
-                <div style={{ fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                <div
+                  style={{
+                    fontWeight: 300,
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                  }}
+                >
                   {timeFormat(eventDetails?.startDate)} -{" "}
                   {timeFormat(eventDetails?.endDate)} {eventDetails?.timeZone}
                 </div>
@@ -319,11 +304,17 @@ const EventPageAppearance: React.FC = () => {
                 />
               </div>
               <div>
-                <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                <div
+                  className="text-sm"
+                  style={{
+                    fontWeight: 600,
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                  }}
+                >
                   Location
                 </div>
                 <div
-                   style={{
+                  style={{
                     width: "190px",
                     whiteSpace: "normal",
                     wordWrap: "break-word",
@@ -331,43 +322,46 @@ const EventPageAppearance: React.FC = () => {
                     fontFamily: "'Bricolage Grotesque', sans-serif",
                   }}
                 >
-                    {eventDetails?.address}
+                  {eventDetails?.address}
                 </div>
               </div>
             </div>
 
             <div className="flex gap-3">
               <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex-center justify-center">
-                <Image
-                  src="/icons/host.svg"
-                  alt=""
-                  height={25}
-                  width={25}
-                />
+                <Image src="/icons/host.svg" alt="" height={25} width={25} />
               </div>
               <div>
                 <div className="text-sm" style={{ fontWeight: 600 }}>
                   Host
                 </div>
-                <div style={{ fontWeight: 300, fontFamily: "'Bricolage Grotesque', sans-serif" }}>{userFullName}</div>
+                <div
+                  style={{
+                    fontWeight: 300,
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
+                  }}
+                >
+                  {userFullName}
+                </div>
               </div>
             </div>
 
             {twitterLink?.url ||
-              instagramLink?.url ||
-              websiteLink?.url ||
-              facebookLink?.url ? (
+            instagramLink?.url ||
+            websiteLink?.url ||
+            facebookLink?.url ? (
               <div className="flex gap-3 items-center">
                 <div className="bg-OWANBE_PRY/20 p-2 rounded-xl flex items-center justify-center">
-                  <Image
-                    src="/icons/phone.svg"
-                    alt=""
-                    height={25}
-                    width={25}
-                  />
+                  <Image src="/icons/phone.svg" alt="" height={25} width={25} />
                 </div>
                 <div>
-                  <div className="text-sm" style={{ fontWeight: 600, fontFamily: "'Bricolage Grotesque', sans-serif" }}>
+                  <div
+                    className="text-sm"
+                    style={{
+                      fontWeight: 600,
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    }}
+                  >
                     Contact Us
                   </div>
                   <div className="flex items-center gap-4 mt-1">
@@ -447,25 +441,24 @@ const EventPageAppearance: React.FC = () => {
               </h2>
             </div>
           </div>
-         
+
           <ReadMoreHTML
-                  htmlContent={eventDetails?.eventDetails || ""}
-                  maxLength={250}
-                />
-                <iframe
-                  src={cookies?.mapSrc}
-                  width="100%"
-                  height="120"
-                  style={{
-                    border: 0,
-                    marginTop: "20px",
-                    borderRadius: "0.5rem", // Corner radius
-                  }}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-          <div className="flex justify-center mt-12">
-          </div>
+            htmlContent={eventDetails?.eventDetails || ""}
+            maxLength={250}
+          />
+          <iframe
+            src={eventDetails?.event_coordinates}
+            width="100%"
+            height="120"
+            style={{
+              border: 0,
+              marginTop: "20px",
+              borderRadius: "0.5rem", // Corner radius
+            }}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+          <div className="flex justify-center mt-12"></div>
         </div>
       </div>
 
@@ -483,7 +476,9 @@ const EventPageAppearance: React.FC = () => {
             setCookie("stage_two", "finish");
             setCookie("stage_three", "process");
             if (cookies.ticket_created === "yes") {
-              router.push(`/discover/create-events/${params?.id}/tickets_created`);
+              router.push(
+                `/discover/create-events/${params?.id}/tickets_created`
+              );
             } else {
               router.push(
                 `/discover/create-events/${params?.id}/event_tickets`
@@ -504,7 +499,9 @@ const EventPageAppearance: React.FC = () => {
             setCookie("stage_two", "finish");
             setCookie("stage_three", "process");
             if (cookies.ticket_created === "yes") {
-              router.push(`/discover/create-events/${params?.id}/tickets_created`);
+              router.push(
+                `/discover/create-events/${params?.id}/tickets_created`
+              );
             } else {
               router.push(
                 `/discover/create-events/${params?.id}/event_tickets`

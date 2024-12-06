@@ -48,6 +48,7 @@ import {
   UploadFile,
   GetProps,
   message,
+  Tooltip,
 } from "antd";
 import axios from "axios";
 import Image from "next/image";
@@ -509,12 +510,9 @@ function Details(): JSX.Element {
                             rel="noopener noreferrer"
                             style={{ marginLeft: "8px" }}
                           >
-                            <QuestionCircleOutlined
-                              style={{
-                                fontSize: "16px",
-                                color: "#858990",
-                              }}
-                            />
+                            <Tooltip title="Click to learn more">
+                      <QuestionCircleOutlined style={{ fontSize: "18px", color: "#858990" }} />
+                    </Tooltip>
                           </a>
                         </span>
                       </span>
@@ -543,14 +541,14 @@ function Details(): JSX.Element {
                         (allows vendors to book exhibition space at your event)
                       </span>{" "}
                       <a
-                        href="https://ostivities.tawk.help/article/how-exhibition-space-booking-works" // Replace with your actual URL
+                        href="https://ostivities.tawk.help/article/how-exhibition-space-booking-works" // Replace with your actual URL 
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{ marginLeft: "8px" }}
                       >
-                        <QuestionCircleOutlined
-                          style={{ fontSize: "16px", color: "#858990" }}
-                        />
+                    <Tooltip title="Click to learn more">
+                      <QuestionCircleOutlined style={{ fontSize: "18px", color: "#858990" }} />
+                    </Tooltip>
                       </a>
                     </span>
                   </Checkbox>
