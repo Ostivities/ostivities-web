@@ -19,11 +19,11 @@ export const NAV_LINKS: INavLinks[] = [
     target: undefined,
     rel: undefined
   },
-  {
-    link: "/pricing", name: "Pricing",
-    target: undefined,
-    rel: undefined
-  },
+  // {
+  //   link: "/pricing", name: "Pricing",
+  //   target: undefined,
+  //   rel: undefined
+  // },
   { link: "https://wa.me/2348101218257", name: "Contact us", 
     target: "_blank", 
     rel: "noopener noreferrer" },
