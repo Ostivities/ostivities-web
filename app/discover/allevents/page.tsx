@@ -86,7 +86,7 @@ const AllEvent = ({ params }: { params: { event: string } }) => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBottom: "50px",
+            marginBottom: "35px",
           }}
         >
           <h2
