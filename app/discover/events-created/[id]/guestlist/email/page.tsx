@@ -17,12 +17,16 @@ import { UploadOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import PreviewEmail from "@/app/components/OstivitiesModal/GuestMailPreviewModal";
 import { useCookies } from "react-cookie";
-import { useGetEventGuests } from "@/app/hooks/guest/guest.hook";
+import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
+import {
+  useGetEventGuests,
+  useGetTicketGuests,
+} from "@/app/hooks/guest/guest.hook";
 import { useGetUserEvent, useUpdateEvent } from "@/app/hooks/event/event.hook";
 import { useSendBulkEmail } from "@/app/hooks/bulkemail/bulkemail.hook";
 import { useParams } from "next/navigation";
 import axios from "axios";
-import { IGuestData } from "@/app/utils/interface";
+import { IGuestData, ITicketDetails } from "@/app/utils/interface";
 
 const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET;
 const cloud_name: any = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
@@ -36,6 +40,7 @@ const EventsGuestListEmail = () => {
   const [editorContent, setEditorContent] = useState<string>("");
   const [recipientType, setRecipientType] = useState<string>("");
   const [selectedTickets, setSelectedTickets] = useState<string[]>([]);
+  const [selectedTicket, setSelectedTicket] = useState("");
   const [selectedAttendees, setSelectedAttendees] = useState<string[]>([]);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [loader, setLoader] = useState(false);
@@ -51,6 +56,9 @@ const EventsGuestListEmail = () => {
   const { updateEvent } = useUpdateEvent();
   const { sendBulkEmail } = useSendBulkEmail();
   const params = useParams<{ id: string }>();
+  const { getTickets } = useGetEventTickets(params?.id);
+  const ticketData = getTickets?.data?.data?.data;
+  const { getTicketGuests } = useGetTicketGuests(selectedTicket);
   const { getEventGuests } = useGetEventGuests(params?.id, 1, 10);
   const { getUserEvent } = useGetUserEvent(params?.id);
   console.log(emailAttachment, "emailAttachment");
@@ -58,6 +66,9 @@ const EventsGuestListEmail = () => {
   const eventDetails = getUserEvent?.data?.data?.data;
   const allGuestsData = getEventGuests?.data?.data?.data?.guests;
   const totalGuests = getEventGuests?.data?.data?.data?.total;
+  const senderEmail = Form.useWatch("sender_email", form);
+
+  console.log(senderEmail, "sender_email");
 
   // Update eventName when eventDetails is available
   useEffect(() => {
@@ -65,6 +76,14 @@ const EventsGuestListEmail = () => {
       setEventName(eventDetails.eventName);
     }
   }, [eventDetails]);
+
+  useEffect(() => {
+    if (senderEmail) {
+      form.setFieldsValue({
+        reply_to: senderEmail,
+      });
+    }
+  }, [senderEmail]);
 
   const handleEditorChange = (content: string) => {
     setEditorContent(content);
@@ -138,15 +157,14 @@ const EventsGuestListEmail = () => {
 
     const response = await sendBulkEmail.mutateAsync({
       ...rest,
-     email_attachment: emailAttachment,
-     email_content: editorContent,
-     sender_email: "kayode.raimi123@gmail.com"
+      email_attachment: emailAttachment,
+      email_content: editorContent,
+      //  sender_email: "kayode.raimi123@gmail.com"
     });
 
-    if(response.status === 200) {
+    if (response.status === 200) {
       console.log(response, "response");
     }
-
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -159,8 +177,8 @@ const EventsGuestListEmail = () => {
     setSelectedAttendees([]);
   };
 
-  const handleTicketTypeChange = (value: string[]) => {
-    setSelectedTickets(value);
+  const handleTicketTypeChange = (value: string) => {
+    setSelectedTicket(value);
   };
 
   const handleAttendeeSearch = (value: string) => {
@@ -242,14 +260,29 @@ const EventsGuestListEmail = () => {
             </Form.Item>
 
             <Form.Item
-              label="Reply To"
-              name="reply_to"
+              label="Sender Email"
+              name="sender_email"
               rules={[
                 { required: true, message: "Please input your reply email!" },
               ]}
               style={{ marginBottom: "8px" }}
             >
               <Input placeholder="Enter reply email" />
+            </Form.Item>
+
+            <Form.Item
+              label="Reply To"
+              name="reply_to"
+              rules={[
+                { required: true, message: "Please input your reply email!" },
+              ]}
+              style={{ display: "none" }}
+            >
+              <Input
+                style={{ display: "hidden" }}
+                value={senderEmail}
+                placeholder="Enter reply email"
+              />
             </Form.Item>
 
             <Form.Item
@@ -328,9 +361,14 @@ const EventsGuestListEmail = () => {
                 placeholder="Select tickets"
                 onChange={handleTicketTypeChange}
               >
-                <Select.Option value="ticketType1">Ticket Type 1</Select.Option>
+                {ticketData?.map((ticket: ITicketDetails) => {
+                  <Select.Option key={ticket?.id} value={ticket?.id}>
+                    {ticket?.ticketName}
+                  </Select.Option>;
+                })}
+                {/* <Select.Option value="ticketType1">Ticket Type 1</Select.Option>
                 <Select.Option value="ticketType2">Ticket Type 2</Select.Option>
-                <Select.Option value="ticketType3">Ticket Type 3</Select.Option>
+                <Select.Option value="ticketType3">Ticket Type 3</Select.Option> */}
               </Select>
             </Form.Item>
           )}
@@ -390,7 +428,11 @@ const EventsGuestListEmail = () => {
                 </div>
               )}
             >
-              <Button disabled={loader} loading={loader} icon={<UploadOutlined />}>
+              <Button
+                disabled={loader}
+                loading={loader}
+                icon={<UploadOutlined />}
+              >
                 Click to Upload
               </Button>
             </Upload>
@@ -416,9 +458,10 @@ const EventsGuestListEmail = () => {
             <Button
               type="primary"
               size={"large"}
+              loading={sendBulkEmail?.isPending}
               htmlType="submit"
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
-              onClick={() => message.success("Email sent successfully")}
+              // onClick={() => message.success("Email sent successfully")}
             >
               Send Email
             </Button>

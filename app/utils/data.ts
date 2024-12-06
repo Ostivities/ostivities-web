@@ -5,7 +5,7 @@ import { EVENT_TYPE } from "./enums"
 
 export const NAV_LINKS: INavLinks[] = [
   {
-    link: "/", name: "Home",
+    link: "/", name: "Explore Events",
     target: undefined,
     rel: undefined
   },
@@ -19,6 +19,11 @@ export const NAV_LINKS: INavLinks[] = [
     target: undefined,
     rel: undefined
   },
+  // {
+  //   link: "/pricing", name: "Pricing",
+  //   target: undefined,
+  //   rel: undefined
+  // },
   { link: "https://wa.me/2348101218257", name: "Contact us", 
     target: "_blank", 
     rel: "noopener noreferrer" },
@@ -136,9 +141,16 @@ export const LEGAL: INavLinks[] = [
 ];
 
 export const SUPPORT: INavLinks[] = [
-  { link: "https://ostivities.tawk.help", name: "Support Centre", target: "_blank", rel: "noopener noreferrer" },
+  { link: "https://ostivities.tawk.help", name: "Support Centre", 
+    target: "_blank", 
+    rel: "noopener noreferrer" },
   {
     link: "/feedback", name: "Feedback",
+    target: undefined,
+    rel: undefined
+  },
+  {
+    link: "/pricing", name: "Pricing",
     target: undefined,
     rel: undefined
   },

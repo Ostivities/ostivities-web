@@ -114,15 +114,17 @@ export const useAddEventToDiscovery = () => {
   return { addEventToDiscovery };
 }
 
-export const useGetDiscoveryEvents = (page: number, pageSize: number) => {
+export const useGetDiscoveryEvents = (page: number, pageSize: number, eventName?: string, state?: string, eventCat?: string) => {
   const getDiscoveryEvents = useQuery({
-    queryKey: [DISCOVERY_EVENTS, page, pageSize],
+    queryKey: [DISCOVERY_EVENTS, page, pageSize, eventName, state, eventCat],
     queryFn: () => {
-      return API_SERVICE._getDiscoveryEvents(page, pageSize);
+      return API_SERVICE._getDiscoveryEvents(page, pageSize, eventName, state, eventCat);
     },
   });
   return { getDiscoveryEvents };
 }
+
+
 
 export const useEnableEventRegistration = () => {
   const enableEventRegistration = useMutation({

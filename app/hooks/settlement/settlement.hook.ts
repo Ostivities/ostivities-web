@@ -48,7 +48,9 @@ export const useGetSettlementAccount = (id: string) => {
     const getSettlementAccount = useQuery({
         queryKey: [GET_SETTLEMENT_ACCOUNT, id],
         queryFn: () => {
-            return API_SERVICE._getSettlementAccount(id);
+            if (id) {
+                return API_SERVICE._getSettlementAccount(id);
+            }
         },
     });
     return { getSettlementAccount };

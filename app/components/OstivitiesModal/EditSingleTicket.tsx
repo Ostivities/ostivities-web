@@ -31,7 +31,7 @@ const { Option } = Select;
 
 interface SingleTicketProps {
   onCancel?: () => void; // Optional function with no parameters and no return value
-  onOk?: any // Optional function with no parameters and no return value
+  onOk?: any; // Optional function with no parameters and no return value
   id: string; // Optional object with properties of type ITicketData
 }
 
@@ -41,7 +41,10 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
   id,
 }) => {
   const [form] = Form.useForm();
-  const [cookies, setCookie, removeCookie] = useCookies(["ticket_id", "profileData"]);
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "ticket_id",
+    "profileData",
+  ]);
   const { updateTicket } = useUpdateTicket();
   const { profile } = useProfile();
   const { getSingleTicket } = useGetSingleTicket(id);
@@ -49,24 +52,26 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
   const router = useRouter();
   const pathname = usePathname();
   const [additionalFields, setAdditionalFields] = useState<
-    { id: number; is_compulsory: boolean, question: string }[]
+    { id: number; is_compulsory: boolean; question: string }[]
   >([]);
   const [showAdditionalField, setShowAdditionalField] =
     useState<boolean>(false);
   const [counter, setCounter] = useState<number>(0); // Counter for unique keys
   const ticketDetails = getSingleTicket?.data?.data?.data;
-  const [editorContent, setEditorContent] = useState(ticketDetails?.ticketDescription);
+  const [editorContent, setEditorContent] = useState(
+    ticketDetails?.ticketDescription
+  );
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
-  console.log(additionalFields, "additionalFields")
+  console.log(additionalFields, "additionalFields");
 
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form);
   const guestAsChargeBearer = Form.useWatch("guestAsChargeBearer", form);
   const ticketQty = Form.useWatch("ticketQty", form);
 
-  console.log(guestAsChargeBearer, "guestAsChargeBearer")
+  console.log(ticketQty, "ticketQty");
 
   useEffect(() => {
     if (ticketStock === TICKET_STOCK.UNLIMITED) {
@@ -92,12 +97,11 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
   }, [ticketType]);
 
   useEffect(() => {
-    if(showAdditionalField === false){
+    if (showAdditionalField === false) {
       setAdditionalFields([]);
     }
-  }, [showAdditionalField])
+  }, [showAdditionalField]);
 
-  
   console.log(ticketDetails, "ticketDetails");
 
   useEffect(() => {
@@ -115,15 +119,20 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
 
     if (ticketDetails?.ticketQuestions?.length > 0) {
       setAdditionalFields(
-        ticketDetails?.ticketQuestions?.map((question: { is_compulsory: boolean; question: string; }, index: any) => ({
-          id: index,
-          question: question?.question,
-          is_compulsory: question?.is_compulsory,
-        }))
+        ticketDetails?.ticketQuestions?.map(
+          (
+            question: { is_compulsory: boolean; question: string },
+            index: any
+          ) => ({
+            id: index,
+            question: question?.question,
+            is_compulsory: question?.is_compulsory,
+          })
+        )
       );
       form.setFieldsValue({
         ticketQuestions: ticketDetails?.ticketQuestions.map(
-          (question: { question: any; }) => ({
+          (question: { question: any }) => ({
             question: question?.question,
           })
         ),
@@ -156,7 +165,11 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
       showAdditionalField === true
     ) {
       const reducedTicketQuestions = additionalFields?.map(
-        (questionObj: { id: number; is_compulsory: boolean; question: string }) => {
+        (questionObj: {
+          id: number;
+          is_compulsory: boolean;
+          question: string;
+        }) => {
           const { question, is_compulsory } = questionObj;
           console.log(question, is_compulsory, "question, is_compulsory");
           return { question, is_compulsory };
@@ -172,7 +185,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
         event: params?.id,
         ticketEntity: "SINGLE",
         user: cookies?.profileData?.id,
-        guestAsChargeBearer: guestAsChargeBearer
+        guestAsChargeBearer: guestAsChargeBearer,
       };
       // console.log(payload, "kk");
 
@@ -184,8 +197,10 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
           console.log(response);
           // form.resetFields();
           // linkRef.current?.click();
-          if(pathname.startsWith("/discover/create-events")) {
-            router.push(`/discover/create-events/${params?.id}/tickets_created`);
+          if (pathname.startsWith("/discover/create-events")) {
+            router.push(
+              `/discover/create-events/${params?.id}/tickets_created`
+            );
           }
           onOk();
         }
@@ -199,7 +214,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
         ticketEntity: "SINGLE",
         user: cookies?.profileData?.id,
         guestAsChargeBearer: guestAsChargeBearer,
-        ticketQuestions: []
+        ticketQuestions: [],
       };
       if (payload) {
         const response = await updateTicket.mutateAsync(payload);
@@ -207,8 +222,10 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
           console.log(response);
           // form.resetFields();
           // linkRef.current?.click();
-          if(pathname.startsWith("/discover/create-events")) {
-            router.push(`/discover/create-events/${params?.id}/tickets_created`);
+          if (pathname.startsWith("/discover/create-events")) {
+            router.push(
+              `/discover/create-events/${params?.id}/tickets_created`
+            );
           }
           onOk();
         }
@@ -265,7 +282,10 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
   return (
     <Form<ITicketData>
       name="basic"
-      initialValues={{ remember: true, guestAsChargeBearer: guestAsChargeBearer }}
+      initialValues={{
+        remember: true,
+        guestAsChargeBearer: guestAsChargeBearer,
+      }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
@@ -304,7 +324,20 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
         rules={[
           {
             required: ticketStock === TICKET_STOCK.LIMITED,
-            message: "Please input your ticket stock",
+            message: "Please input your ticket stock", // Validation for required input
+          },
+          {
+            validator: (_, value) => {
+              if (
+                ticketStock === TICKET_STOCK.LIMITED &&
+                value < ticketDetails?.ticket_sold
+              ) {
+                return Promise.reject(
+                  new Error("Ticket quantity cannot be less than tickets sold")
+                );
+              }
+              return Promise.resolve(); // No error
+            },
           },
         ]}
         style={{ marginBottom: "8px" }}
@@ -353,11 +386,14 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
         ]}
         style={{ marginBottom: "15px" }}
       >
-        <InputNumber
-          placeholder="Enter purchase limit"
-          style={{ width: "100%" }}
-          min={0}
-        />
+        <Select placeholder="Select purchase limit">
+          <Option value={1}>1</Option>
+          <Option value={2}>2</Option>
+          <Option value={3}>3</Option>
+          <Option value={4}>4</Option>
+          <Option value={5}>5</Option>
+          <Option value={6}>6</Option>
+        </Select>
       </Form.Item>
 
       <Paragraph
@@ -378,19 +414,30 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
       </div>
 
       <Form.Item
-       style={{ marginBottom: "24px", display: "flex", alignItems: "center", gap: "20px" }}
+        style={{
+          marginBottom: "24px",
+          display: "flex",
+          alignItems: "center",
+          gap: "20px",
+        }}
       >
         <Form.Item<ITicketData>
           name="guestAsChargeBearer"
           valuePropName="checked"
           noStyle
         >
-          <Checkbox defaultChecked={ticketDetails?.guestAsChargeBearer} style={{ marginRight: "10px" }}>
+          <Checkbox
+            defaultChecked={ticketDetails?.guestAsChargeBearer}
+            style={{ marginRight: "10px" }}
+          >
             Transfer charge fees to guest
           </Checkbox>
         </Form.Item>
         <Form.Item noStyle>
-          <Checkbox checked={showAdditionalField} onChange={(e) => setShowAdditionalField(e.target.checked)}>
+          <Checkbox
+            checked={showAdditionalField}
+            onChange={(e) => setShowAdditionalField(e.target.checked)}
+          >
             Enable additional information
           </Checkbox>
         </Form.Item>
@@ -403,7 +450,8 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
             {
               validator: async (_, ticketQuestions) => {
                 if (
-                  showAdditionalField && additionalFields.length === 0 &&
+                  showAdditionalField &&
+                  additionalFields.length === 0 &&
                   (!ticketQuestions || ticketQuestions.length === 0)
                 ) {
                   return Promise.reject(
@@ -438,7 +486,6 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
                             handleQuestionChange(id, e.target.value)
                           }
                           value={question}
-
                         />
                         <Button
                           type="link"
@@ -483,7 +530,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
 
       <div className="flex flex-row items-center justify-center py-6 space-x-4">
         <Button
-          type="default" 
+          type="default"
           size={"large"}
           className={`font-BricolageGrotesqueSemiBold button-styles sign-in cursor-pointer font-bold`}
           onClick={onCancel}
@@ -500,7 +547,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
           style={{ width: "150px" }}
         >
           {updateTicket.isPending ? "Please Wait" : "Update Ticket"}
-          </Button>
+        </Button>
       </div>
     </Form>
   );

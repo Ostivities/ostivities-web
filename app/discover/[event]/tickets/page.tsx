@@ -21,7 +21,10 @@ import {
   ITicketDetails,
   InfoNeeded,
 } from "@/app/utils/interface";
-import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
+import {
+  useGetEventTickets,
+  useGetEventTicketsByUniqueKey,
+} from "@/app/hooks/ticket/ticket.hook";
 import { useRouter, useParams } from "next/navigation";
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
@@ -45,6 +48,8 @@ import PaymentSuccessModal from "@/app/components/OstivitiesModal/PaymentSuccess
 import ContactForm from "@/app/components/ContactForm/ContactForm";
 import PaymentValidation from "@/app/components/OstivitiesModal/PaymentValidation";
 import paystack from "@/public/paystack.png";
+import soldout from "@/public/Soldout.svg";
+import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
 
 const TicketsSelection = () => {
   const router = useRouter();
@@ -60,11 +65,15 @@ const TicketsSelection = () => {
   const [discountApplied, setDiscountApplied] = useState(false);
   const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
   const { getTickets } = useGetEventTickets(eventDetails?.id);
+  const { getTicketsByUniqueKey } = useGetEventTicketsByUniqueKey(
+    eventDetails?.unique_key
+  );
   const { getEventDiscount } = useGetEventDiscount(eventDetails?.id);
   const ticketData = getTickets?.data?.data?.data;
   const discountDetails = getEventDiscount?.data?.data?.data;
+  const [isToggled, setIsToggled] = useState(false);
   // console.log(eventDetails?.eventName, "eventName")
-  // console.log(discountCode, "discountCode")
+  console.log(isToggled, "isToggled");
   const title = (
     <div className="flex-center gap-2">
       <Image
@@ -151,18 +160,20 @@ const TicketsSelection = () => {
       ticketNumber: number;
       ticketId: string;
       subTotal: number;
+      ticketStock: string;
       ticketEntity: string;
+      guestAsChargeBearer: boolean;
       groupSize: number;
       additionalInformation: { question: string; is_compulsory: boolean }[];
     }[]
   >([]);
 
-  console.log(ticketDetails, "ticketDetails");
+  // console.log(ticketDetails, "ticketDetails");
 
   useEffect(() => {
     // When ticketData is updated, re-initialize selectedTickets
     if (ticketData?.length) {
-      const initialSelectedTickets = ticketData.reduce(
+      const initialSelectedTickets = ticketData?.reduce(
         (acc: { [key: string]: number }, ticket: ITicketDetails) => {
           acc[ticket.id] = 0;
           return acc;
@@ -189,8 +200,6 @@ const TicketsSelection = () => {
     setDiscountCode(code);
   };
 
-  // Filter the discount details for the matching discount code
-
   // console.log(discountValueUsed, "discountValueUsed");
   // console.log(discountTypeUsed, "discountTypeUsed");
 
@@ -199,7 +208,7 @@ const TicketsSelection = () => {
       (discount: any) =>
         discount?.discountCode?.toLowerCase() === discountCode?.toLowerCase()
     );
-    console.log(discountCodeUsed, "discountCodeUsed");
+    // console.log(discountCodeUsed, "discountCodeUsed");
     const discountTypeUsed = discountCodeUsed && discountCodeUsed?.discountType; // Use null or a default value if not found
     const discountValueUsed =
       discountCodeUsed && discountCodeUsed?.discount_value; // Use null or a default value if not found
@@ -225,9 +234,12 @@ const TicketsSelection = () => {
               Math.max(discountedTicketPrice, 0)
             ), // Ensure price isn't negative
             discountToDeduct: Math.round(discountValue),
-            subTotal: Math.round(
-              ticket?.ticketPrice - discountValue + ticket?.ticketFee
-            ),
+            subTotal:
+              ticket?.guestAsChargeBearer === true
+                ? Math.round(
+                    ticket?.ticketPrice - discountValue + ticket?.ticketFee
+                  )
+                : Math.round(ticket?.ticketPrice - discountValue),
           };
         }
         return {
@@ -236,7 +248,10 @@ const TicketsSelection = () => {
           ticketDiscountValue: undefined,
           discountedTicketPrice: undefined,
           discountToDeduct: undefined,
-          subTotal: Math.round(ticket?.ticketPrice + ticket?.ticketFee),
+          subTotal:
+            ticket?.guestAsChargeBearer === true
+              ? Math.round(ticket?.ticketPrice + ticket?.ticketFee)
+              : ticket?.ticketPrice,
         }; // Return ticket unchanged if discountCode doesn't match
       })
     );
@@ -254,38 +269,17 @@ const TicketsSelection = () => {
         );
 
         const updatedDetails = [...prevDetails];
-        const discountedPrice = (() => {
-          if (ticket?.ticketEntity === TICKET_ENTITY.SINGLE) {
-            if (ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE) {
-              return (
-                ticket?.ticketPrice -
-                (ticket?.discount?.discount_value / 100) * ticket?.ticketPrice
-              );
-            } else if (ticket?.discount?.discountType === DISCOUNT_TYPE.FIXED) {
-              return ticket.ticketPrice - ticket.discount.discount_value;
-            }
-            return ticket.ticketPrice; // No discount
-          } else if (ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE) {
-            if (ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE) {
-              return (
-                ticket.groupPrice -
-                (ticket.discount.discount_value / 100) * ticket.groupPrice
-              );
-            } else if (ticket?.discount?.discountType === DISCOUNT_TYPE.FIXED) {
-              return ticket.groupPrice - ticket.discount.discount_value;
-            }
-            return ticket.groupPrice; // No discount
-          }
-          return 0; // Default if no conditions are met
-        })();
-        console.log(discountedPrice, "discountedPrice");
+        // console.log(discountedPrice, "discountedPrice");
         const realPrice =
           ticket?.ticketEntity === TICKET_ENTITY.SINGLE
             ? ticket?.ticketPrice
             : ticket?.groupPrice || 0;
 
         // const discountedPrice
-        const currentFee = Math.round(realPrice * 0.45 + 100)
+        const currentFee =
+          ticket?.ticketType === "PAID"
+            ? Math.round(realPrice * 0.04 + 100)
+            : 0;
         if (existingTicketIndex > -1) {
           const existingTicket = updatedDetails[existingTicketIndex];
           const realDiscount = existingTicket?.discountToDeduct || 0;
@@ -293,32 +287,36 @@ const TicketsSelection = () => {
           updatedDetails[existingTicketIndex] = {
             ...existingTicket,
             ticketPrice: realPrice * newTicketNumber,
-            ticketFee: newTicketNumber * currentFee,
+            ticketFee:
+              ticket?.ticketType === "PAID" ? newTicketNumber * currentFee : 0,
             ticketNumber: newTicketNumber,
-            subTotal: discountCode
-              ? (realPrice * newTicketNumber) +
-                (newTicketNumber * currentFee) -
-                realDiscount
-              : realPrice * newTicketNumber + newTicketNumber * currentFee,
+            subTotal:
+              existingTicket?.guestAsChargeBearer === false
+                ? discountCode
+                  ? realPrice * newTicketNumber - realDiscount
+                  : realPrice * newTicketNumber
+                : discountCode
+                ? realPrice * newTicketNumber +
+                  newTicketNumber * currentFee -
+                  realDiscount
+                : realPrice * newTicketNumber + newTicketNumber * currentFee,
           };
         } else {
           updatedDetails.push({
             ticketName: ticket?.ticketName,
             ticketPrice: realPrice,
-            discountedTicketPrice: discountedPrice,
-            discountToDeduct:
-              ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE
-                ? realPrice * (ticket?.discount?.discount_value / 100)
-                : ticket?.discount?.discount_value,
             ticketFee: currentFee,
             ticketNumber: 1,
+            ticketStock: ticket?.ticketStock,
             ticketDiscountCode: ticket?.discountCode,
             ticketDiscountType: ticket?.discount?.discountType,
             ticketDiscountValue: ticket?.discount?.discount_value,
-            subTotal: discountCode
-              ? discountedPrice + currentFee
-              : realPrice + currentFee,
+            subTotal:
+              ticket?.guestAsChargeBearer === true
+                ? realPrice + currentFee
+                : realPrice,
             ticketId: ticket?.id,
+            guestAsChargeBearer: ticket?.guestAsChargeBearer,
             constantTicketPrice: ticket?.ticketPrice,
             ticketEntity: ticket?.ticketEntity,
             groupSize: ticket?.groupSize,
@@ -363,7 +361,11 @@ const TicketsSelection = () => {
         if (existingTicketIndex > -1) {
           const existingTicket = updatedDetails[existingTicketIndex];
           const newTicketNumber = existingTicket?.ticketNumber - 1;
-          const currentFee = Math.round(ticket?.ticketPrice * 0.45 + 100)
+          const currentFee =
+            ticket?.ticketType === "PAID"
+              ? Math.round(ticket?.ticketPrice * 0.04 + 100)
+              : 0;
+          const existingDiscount = existingTicket?.discountToDeduct;
 
           if (newTicketNumber >= 0) {
             const price =
@@ -374,18 +376,18 @@ const TicketsSelection = () => {
             updatedDetails[existingTicketIndex] = {
               ...existingTicket,
               ticketPrice: price * newTicketNumber,
-              // discountedTicketPrice: discountApplied
-              //   ? existingTicket?.discountedTicketPrice
-              //   : undefined,
-              // discountToDeduct:
-              //   ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE
-              //     ? price *
-              //     (ticket?.discount?.discount_value / 100) *
-              //     newTicketNumber
-              //     : ticket?.discount?.discount_value * newTicketNumber,
               ticketFee: currentFee * newTicketNumber,
               ticketNumber: newTicketNumber,
-              subTotal: price * newTicketNumber + currentFee * newTicketNumber,
+              subTotal:
+                ticket?.guestAsChargeBearer === false
+                  ? discountCode
+                    ? price * newTicketNumber - (existingDiscount ?? 0)
+                    : price * newTicketNumber
+                  : discountCode
+                  ? price * newTicketNumber +
+                    currentFee * newTicketNumber -
+                    (existingDiscount ?? 0)
+                  : price * newTicketNumber + currentFee * newTicketNumber,
             };
           }
         }
@@ -449,10 +451,13 @@ const TicketsSelection = () => {
     event_unique_code: params?.event,
     fees: ticketDetails
       ?.map((ticket) => ticket?.ticketFee)
-      .reduce((acc, curr) => acc + curr, 0),
+      .reduce((acc, curr) => acc + (curr ?? 0), 0),
     total_amount_paid: 0,
-    discountCode: "",
-    discount: 0,
+    discountCode: ticketDetails?.[0]?.ticketDiscountCode?.[0] || "",
+    discount:
+      ticketDetails
+        ?.map((ticket) => ticket?.discountToDeduct ?? 0)
+        .reduce((acc, curr) => acc + curr, 0) || 0,
     total_purchased: 0,
   });
   const [attendeesInformation, setAttendeesInformation] = useState<
@@ -542,9 +547,8 @@ const TicketsSelection = () => {
     setAdditionalFields(initialAdditionalFields);
   }, [ticketDetails]);
 
-  useEffect(() => {
-    // console.log(allInfo, "Updated allInfo");
-  }, [allInfo]);
+  useEffect(() => {}, [allInfo]);
+  // console.log(allInfo, "Updated allInfo");
 
   const [loading, setLoading] = useState(false);
   const onFinish: FormProps<any>["onFinish"] = async (values: any) => {
@@ -577,7 +581,7 @@ const TicketsSelection = () => {
     // Check if attendeesInformation exists and has items
     const attendees_information = attendeesInformation?.length
       ? attendeesInformation.map((attendee) => {
-          const { id, ...attendeeData } = attendee;
+          const { id, confirmEmail, ...attendeeData } = attendee;
           return attendeeData;
         })
       : [];
@@ -596,6 +600,7 @@ const TicketsSelection = () => {
         total_amount: ticket?.subTotal,
         ticket_price: ticket?.ticketPrice === null ? 0 : ticket?.ticketPrice,
         ticket_type: ticket?.ticketEntity,
+        ticket_stock: ticket?.ticketStock,
       };
     });
 
@@ -603,11 +608,16 @@ const TicketsSelection = () => {
       ...allInfo,
       personal_information,
       ticket_information,
+      discount: ticketDetails
+        ?.map((ticket) => ticket?.discountToDeduct)
+        .reduce((acc, curr) => (acc ?? 0) + (curr ?? 0), 0),
+      discountCode: discountCode,
       additional_information: additionalFields,
       attendees_information,
-      event: (eventDetails && eventDetails?.id) || ticketData?.event?.id,
+      event: (eventDetails && eventDetails?.id) || ticketData?.event,
       fees: ticketDetails
-        ?.map((ticket) => ticket?.ticketFee)
+        ?.filter((ticket) => ticket?.guestAsChargeBearer === true)
+        ?.map((ticket) => ticket?.ticketFee || 0)
         .reduce((acc, curr) => acc + curr, 0),
       total_amount_paid: ticketDetails
         ?.map((ticket) => ticket?.subTotal)
@@ -620,12 +630,18 @@ const TicketsSelection = () => {
       return {
         ...prevInfo,
         personal_information,
+        discount: ticketDetails?.reduce(
+          (acc, ticket) => acc + (ticket?.discountToDeduct ?? 0),
+          0
+        ),
+        discountCode: discountCode,
         ticket_information,
         additional_information: additionalFields,
         attendees_information,
-        event: (eventDetails && eventDetails?.id) || ticketData?.event?.id,
+        event: (eventDetails && eventDetails?.id) || ticketData?.event,
         fees: ticketDetails
-          ?.map((ticket) => ticket?.ticketFee)
+          ?.filter((ticket) => ticket?.guestAsChargeBearer === true)
+          ?.map((ticket) => ticket?.ticketFee || 0)
           .reduce((acc, curr) => acc + curr, 0),
         total_amount_paid: ticketDetails
           ?.map((ticket) => ticket?.subTotal)
@@ -654,6 +670,7 @@ const TicketsSelection = () => {
         setLoading(false);
       }
     } else {
+      setLoading(false);
       setCurrentPage("payment");
     }
     // router.push(`discover/${params?.event}/payment`);
@@ -674,6 +691,8 @@ const TicketsSelection = () => {
     if (response.status === 200) {
       setLoading(false);
       setSuccessModal(true);
+    } else {
+      setLoading(false);
     }
   };
 
@@ -697,12 +716,6 @@ const TicketsSelection = () => {
     }
   }, [currentPage, form.getFieldsValue()]);
 
-  // const handleSubmitForm = () => {
-  //   if (isFormValid === true) {
-
-  //   } else return;
-  // };
-
   const handleButtonClick = () => {
     if (currentPage === "tickets") {
       // Check if tickets are selected
@@ -722,12 +735,25 @@ const TicketsSelection = () => {
 
   const isPending: boolean = getTickets?.isLoading;
 
-  const { minutes, remainingSeconds, timer, stopTimer } = useTimer();
+  const {
+    minutes,
+    remainingSeconds,
+    timer,
+    startTimer,
+    pauseTimer,
+    resetTimer,
+  } = useTimer();
+
+  // useEffect(() => {
+  //   if (currentPage === "contactform" || currentPage === "payment") {
+  //     startTimer();
+  //   } else resetTimer();
+  // }, [currentPage]);
   // useEffect(() => {
   //   if (minutes === 0 && remainingSeconds === 0 && successModal === false) {
   //     setModal(true);
   //   } else if (successModal === true){
-  //     stopTimer();
+  //     pauseTimer();
   //   }
   // }, [minutes, remainingSeconds, successModal, stopTimer]);
 
@@ -736,12 +762,22 @@ const TicketsSelection = () => {
     PAYMENT_METHODS | undefined
   >(undefined);
 
-  // console.log(termsAndCondition, paymentMethod);
+  let ticketCounter = 1;
+
+  const disableConditionOne = ticketDetails?.some(
+    (ticket) =>
+      ticket?.ticketEntity === TICKET_ENTITY.SINGLE && ticket?.ticketNumber > 1
+  );
+  const disableConditionTwo = ticketDetails?.some(
+    (ticket) =>
+      ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE && ticket?.groupSize > 1
+  );
+
   return (
     <DashboardLayout title={title} isLoggedIn>
       <section className="flex flex-col md:flex-row gap-6 md:gap-12">
         {currentPage === "tickets" ? (
-          <section className="flex-1 pb-4 scrollable-content overflow-y-auto scroll-smooth h-full">
+          <section className="flex-1 pb-4 md:px-5 scrollable-content overflow-y-auto scroll-smooth h-full">
             <div className="flex-center gap-10 sm:gap-10 md:gap-20">
               <div className="flex-center gap-3">
                 <div className="min-w-12 min-h-12 rounded-xl bg-OWANBE_PRY/10 flex-center justify-center">
@@ -848,11 +884,30 @@ const TicketsSelection = () => {
                     .map((ticket: ITicketDetails, index: any) => (
                       <div
                         key={index}
-                        className="card-shadow flex justify-between items-start mb-6"
+                        className={`card-shadow relative ${
+                          ticket?.ticket_sold === ticket?.ticketQty
+                            ? "bg-[#dedede] cursor-not-allowed"
+                            : ""
+                        } flex justify-between items-start mb-6`}
                       >
+                        {ticket?.ticket_sold === ticket?.ticketQty && (
+                          <Image
+                            src={soldout}
+                            alt="soldout"
+                            className="w-24 h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex-shrink-0"
+                            style={{
+                              zIndex: 10,
+                              pointerEvents: "none", // Prevent interaction with the overlay
+                            }}
+                          />
+                        )}
                         <div>
                           <h2
-                            className="text-lg font-BricolageGrotesqueMedium"
+                            className={`${
+                              ticket?.ticket_sold === ticket?.ticketQty
+                                ? "text-gray-400"
+                                : ""
+                            } text-lg font-BricolageGrotesqueMedium`}
                             style={{ fontWeight: 500, fontSize: "18px" }}
                           >
                             {ticket?.ticketName}
@@ -860,10 +915,15 @@ const TicketsSelection = () => {
                           <h3>
                             {ticket?.ticketPrice ? (
                               <>
-                                {ticket?.ticketPrice < 10000 && (
+                                {ticket?.guestAsChargeBearer === true ? (
                                   <>
                                     <span
-                                      className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                      className={`${
+                                        ticket?.ticket_sold ===
+                                        ticket?.ticketQty
+                                          ? "text-gray-400"
+                                          : "text-OWANBE_PRY"
+                                      } text-xl font-BricolageGrotesqueRegular`}
                                       style={{
                                         fontWeight: 600,
                                         fontSize: "17px",
@@ -871,13 +931,18 @@ const TicketsSelection = () => {
                                     >
                                       ₦
                                       {Math.round(
-                                        ticket?.ticketPrice * 0.05 +
-                                          150 +
+                                        ticket?.ticketPrice * 0.04 +
+                                          100 +
                                           ticket?.ticketPrice
                                       ).toLocaleString()}
                                     </span>{" "}
                                     <span
-                                      className="text-s font-BricolageGrotesqueRegular"
+                                      className={`${
+                                        ticket?.ticket_sold ===
+                                        ticket?.ticketQty
+                                          ? "text-gray-400"
+                                          : ""
+                                      } text-s font-BricolageGrotesqueRegular`}
                                       style={{
                                         fontWeight: 400,
                                         fontSize: "12px",
@@ -885,48 +950,20 @@ const TicketsSelection = () => {
                                     >
                                       Including ₦
                                       {Math.round(
-                                        ticket?.ticketPrice * 0.05 + 150
+                                        ticket?.ticketPrice * 0.04 + 100
                                       ).toLocaleString()}{" "}
                                       fee
                                     </span>
                                   </>
-                                )}
-                                {ticket?.ticketPrice >= 10000 &&
-                                  ticket?.ticketPrice < 25000 && (
-                                    <>
-                                      <span
-                                        className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
-                                        style={{
-                                          fontWeight: 600,
-                                          fontSize: "17px",
-                                        }}
-                                      >
-                                        ₦
-                                        {Math.round(
-                                          ticket?.ticketPrice * 0.045 +
-                                            150 +
-                                            ticket?.ticketPrice
-                                        ).toLocaleString()}
-                                      </span>{" "}
-                                      <span
-                                        className="text-s font-BricolageGrotesqueRegular"
-                                        style={{
-                                          fontWeight: 400,
-                                          fontSize: "12px",
-                                        }}
-                                      >
-                                        Including ₦
-                                        {Math.round(
-                                          ticket?.ticketPrice * 0.045 + 150
-                                        ).toLocaleString()}{" "}
-                                        fee
-                                      </span>
-                                    </>
-                                  )}
-                                {ticket?.ticketPrice >= 25000 && (
+                                ) : (
                                   <>
                                     <span
-                                      className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                      className={`${
+                                        ticket?.ticket_sold ===
+                                        ticket?.ticketQty
+                                          ? "text-gray-400"
+                                          : "text-OWANBE_PRY"
+                                      } text-xl font-BricolageGrotesqueRegular`}
                                       style={{
                                         fontWeight: 600,
                                         fontSize: "17px",
@@ -934,30 +971,19 @@ const TicketsSelection = () => {
                                     >
                                       ₦
                                       {Math.round(
-                                        ticket?.ticketPrice * 0.035 +
-                                          150 +
-                                          ticket?.ticketPrice
+                                        ticket?.ticketPrice
                                       ).toLocaleString()}
                                     </span>{" "}
-                                    <span
-                                      className="text-s font-BricolageGrotesqueRegular"
-                                      style={{
-                                        fontWeight: 400,
-                                        fontSize: "12px",
-                                      }}
-                                    >
-                                      Including ₦
-                                      {Math.round(
-                                        ticket?.ticketPrice * 0.035 + 150
-                                      ).toLocaleString()}{" "}
-                                      fee
-                                    </span>
                                   </>
                                 )}
                               </>
                             ) : (
                               <span
-                                className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                className={`${
+                                  ticket?.ticket_sold === ticket?.ticketQty
+                                    ? "text-gray-400"
+                                    : "text-OWANBE_PRY"
+                                } text-xl font-BricolageGrotesqueRegular`}
                                 style={{ fontWeight: 600, fontSize: "17px" }}
                               >
                                 Free
@@ -965,10 +991,14 @@ const TicketsSelection = () => {
                             )}
                           </h3>
                           <p
-                            className="text-s font-BricolageGrotesqueRegular"
+                            className={`${
+                              ticket?.ticket_sold === ticket?.ticketQty
+                                ? "text-gray-400"
+                                : ""
+                            } text-s font-BricolageGrotesqueRegular`}
                             style={{
                               fontSize: "13px",
-                              color: "black",
+                              // color: "black",
                               marginTop: "17px",
                             }}
                           >
@@ -986,11 +1016,26 @@ const TicketsSelection = () => {
                             className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
                             onClick={() => handleDecrement(ticket?.id)}
                             disabled={selectedTickets[ticket?.id] === 0}
-                            style={{ backgroundColor: "#FADEDE" }}
+                            style={{
+                              backgroundColor:
+                                selectedTickets[ticket?.id] === 0
+                                  ? "#ccc"
+                                  : "#FADEDE",
+                              color:
+                                selectedTickets[ticket?.id] === 0
+                                  ? "#fff"
+                                  : "#000",
+                            }}
                           >
                             -
                           </button>
-                          <span className="text-base sm:text-lg mx-2">
+                          <span
+                            className={`${
+                              ticket?.ticket_sold === ticket?.ticketQty
+                                ? "text-gray-400"
+                                : ""
+                            } text-base sm:text-lg mx-2`}
+                          >
                             {selectedTickets[ticket?.id] || 0}
                           </span>
                           <button
@@ -998,18 +1043,22 @@ const TicketsSelection = () => {
                             onClick={() => handleIncrement(ticket?.id)}
                             disabled={
                               selectedTickets[ticket?.id] ===
-                              ticket?.purchaseLimit
+                                ticket?.purchaseLimit ||
+                              selectedTickets[ticket?.id] ===
+                                ticket?.ticket_available
                             }
                             style={{
                               color:
                                 selectedTickets[ticket?.id] ===
-                                ticket?.purchaseLimit
+                                  ticket?.purchaseLimit ||
+                                ticket?.ticket_sold === ticket?.ticketQty
                                   ? "white"
                                   : "#e20000",
                               backgroundColor:
                                 selectedTickets[ticket?.id] ===
-                                ticket?.purchaseLimit
-                                  ? "#cccccc"
+                                  ticket?.purchaseLimit ||
+                                ticket?.ticket_sold === ticket?.ticketQty
+                                  ? "#ccc"
                                   : "#FADEDE",
                             }}
                           >
@@ -1064,11 +1113,19 @@ const TicketsSelection = () => {
                     .map((ticket: ITicketDetails, index: any) => (
                       <div
                         key={index}
-                        className="card-shadow flex justify-between items-start mb-6"
+                        className={`card-shadow ${
+                          ticket?.ticket_sold === ticket?.ticketQty
+                            ? "bg-gray-300 cursor-not-allowed"
+                            : ""
+                        } flex justify-between items-start mb-6`}
                       >
                         <div>
                           <h2
-                            className="text-lg font-BricolageGrotesqueMedium"
+                            className={`${
+                              ticket?.ticket_sold === ticket?.ticketQty
+                                ? "text-gray-400"
+                                : ""
+                            } text-lg font-BricolageGrotesqueMedium`}
                             style={{ fontWeight: 500, fontSize: "18px" }}
                           >
                             Group Of {ticket?.groupSize} - {ticket.ticketName}
@@ -1076,10 +1133,15 @@ const TicketsSelection = () => {
                           <h3>
                             {ticket?.groupPrice ? (
                               <>
-                                {ticket?.groupPrice < 10000 && (
+                                {ticket?.guestAsChargeBearer === true ? (
                                   <>
                                     <span
-                                      className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                      className={`${
+                                        ticket?.ticket_sold ===
+                                        ticket?.ticketQty
+                                          ? "text-gray-400"
+                                          : "text-OWANBE_PRY"
+                                      } text-xl font-BricolageGrotesqueRegular`}
                                       style={{
                                         fontWeight: 600,
                                         fontSize: "17px",
@@ -1087,13 +1149,18 @@ const TicketsSelection = () => {
                                     >
                                       ₦
                                       {Math.round(
-                                        ticket?.groupPrice * 0.05 +
-                                          150 +
+                                        ticket?.groupPrice * 0.04 +
+                                          100 +
                                           ticket?.groupPrice
                                       ).toLocaleString()}
                                     </span>{" "}
                                     <span
-                                      className="text-s font-BricolageGrotesqueRegular"
+                                      className={`${
+                                        ticket?.ticket_sold ===
+                                        ticket?.ticketQty
+                                          ? "text-gray-400"
+                                          : ""
+                                      } text-s font-BricolageGrotesqueRegular`}
                                       style={{
                                         fontWeight: 400,
                                         fontSize: "12px",
@@ -1101,48 +1168,20 @@ const TicketsSelection = () => {
                                     >
                                       Including ₦
                                       {Math.round(
-                                        ticket?.groupPrice * 0.05 + 150
+                                        ticket?.groupPrice * 0.04 + 100
                                       ).toLocaleString()}{" "}
                                       fee
                                     </span>
                                   </>
-                                )}
-                                {ticket?.groupPrice >= 10000 &&
-                                  ticket?.groupPrice < 25000 && (
-                                    <>
-                                      <span
-                                        className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
-                                        style={{
-                                          fontWeight: 600,
-                                          fontSize: "17px",
-                                        }}
-                                      >
-                                        ₦
-                                        {Math.round(
-                                          ticket?.groupPrice * 0.045 +
-                                            150 +
-                                            ticket?.groupPrice
-                                        ).toLocaleString()}
-                                      </span>{" "}
-                                      <span
-                                        className="text-s font-BricolageGrotesqueRegular"
-                                        style={{
-                                          fontWeight: 400,
-                                          fontSize: "12px",
-                                        }}
-                                      >
-                                        Including ₦
-                                        {Math.round(
-                                          ticket?.groupPrice * 0.045 + 150
-                                        ).toLocaleString()}{" "}
-                                        fee
-                                      </span>
-                                    </>
-                                  )}
-                                {ticket?.groupPrice >= 25000 && (
+                                ) : (
                                   <>
                                     <span
-                                      className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                      className={`${
+                                        ticket?.ticket_sold ===
+                                        ticket?.ticketQty
+                                          ? "text-gray-400"
+                                          : "text-OWANBE_PRY"
+                                      } text-xl font-BricolageGrotesqueRegular`}
                                       style={{
                                         fontWeight: 600,
                                         fontSize: "17px",
@@ -1150,30 +1189,19 @@ const TicketsSelection = () => {
                                     >
                                       ₦
                                       {Math.round(
-                                        ticket?.groupPrice * 0.035 +
-                                          150 +
-                                          ticket?.groupPrice
+                                        ticket?.groupPrice
                                       ).toLocaleString()}
                                     </span>{" "}
-                                    <span
-                                      className="text-s font-BricolageGrotesqueRegular"
-                                      style={{
-                                        fontWeight: 400,
-                                        fontSize: "12px",
-                                      }}
-                                    >
-                                      Including ₦
-                                      {Math.round(
-                                        ticket?.groupPrice * 0.035 + 150
-                                      ).toLocaleString()}{" "}
-                                      fee
-                                    </span>
                                   </>
                                 )}
                               </>
                             ) : (
                               <span
-                                className="text-OWANBE_PRY text-xl font-BricolageGrotesqueRegular"
+                                className={`${
+                                  ticket?.ticket_sold === ticket?.ticketQty
+                                    ? "text-gray-400"
+                                    : "text-OWANBE_PRY"
+                                } text-xl font-BricolageGrotesqueRegular`}
                                 style={{ fontWeight: 600, fontSize: "17px" }}
                               >
                                 Free
@@ -1202,25 +1230,46 @@ const TicketsSelection = () => {
                             className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
                             onClick={() => handleDecrement(ticket?.id)}
                             disabled={selectedTickets[ticket?.id] === 0}
-                            style={{ backgroundColor: "#FADEDE" }}
+                            style={{
+                              backgroundColor:
+                                selectedTickets[ticket?.id] === 0
+                                  ? "#ccc"
+                                  : "#FADEDE",
+                              color:
+                                selectedTickets[ticket?.id] === 0
+                                  ? "#fff"
+                                  : "#000",
+                            }}
                           >
                             -
                           </button>
-                          <span className="text-base sm:text-lg mx-2">
+                          <span
+                            className={`${
+                              ticket?.ticket_sold === ticket?.ticketQty
+                                ? "text-gray-400"
+                                : ""
+                            } text-base sm:text-lg mx-2`}
+                          >
                             {selectedTickets[ticket?.id] || 0}
                           </span>
                           <button
                             className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center rounded-full text-lg font-bold"
                             onClick={() => handleIncrement(ticket?.id)}
-                            disabled={selectedTickets[ticket?.id] === 1}
+                            disabled={
+                              selectedTickets[ticket?.id] === 1 ||
+                              selectedTickets[ticket?.id] ===
+                                ticket?.ticket_available
+                            }
                             style={{
                               color:
-                                selectedTickets[ticket?.id] === 1
+                                selectedTickets[ticket?.id] === 1 ||
+                                ticket?.ticket_sold === ticket?.ticketQty
                                   ? "white"
                                   : "#e20000",
                               backgroundColor:
-                                selectedTickets[ticket?.id] === 1
-                                  ? "#cccccc"
+                                selectedTickets[ticket?.id] === 1 ||
+                                ticket?.ticket_sold === ticket?.ticketQty
+                                  ? "#ccc"
                                   : "#FADEDE",
                             }}
                           >
@@ -1238,6 +1287,8 @@ const TicketsSelection = () => {
             <div className="bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem] w-full">
               We have reserved your tickets, please complete checkout within{" "}
               <span className="text-OWANBE_PRY text-s font-BricolageGrotesqueRegular">
+                {/* {currentPage === "contactform" ||
+                  (currentPage === "payment") && timer} */}
                 {timer}
               </span>
               minutes to secure your tickets.
@@ -1275,6 +1326,15 @@ const TicketsSelection = () => {
                 Please fill out the form below with your information so we can
                 send you your ticket.
               </h3>
+              {isToggled === true && (
+                <div className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-4 custom-font-size mt-4">
+                  Ticket 1 -{" "}
+                  {ticketDetails?.[0]?.ticketEntity === TICKET_ENTITY.COLLECTIVE
+                    ? `Collective of ${ticketDetails?.[0]?.groupSize}`
+                    : "Single"}{" "}
+                  - {ticketDetails?.[0]?.ticketName}
+                </div>
+              )}
               <Form
                 form={form}
                 onFinish={onFinish}
@@ -1396,45 +1456,228 @@ const TicketsSelection = () => {
                     placeholder="Enter Phone Number"
                   />
                 </Form.Item>
-                {/* {ticketDetails?.map((ticketDetail, ticketIndex) => {
-                return ticketDetail?.additionalInformation?.map(
-                  (
-                    infoDetails: {
-                      question: string | number | ReactNode;
-                      is_compulsory: boolean;
-                    },
-                    infoIndex: Key | null | undefined
-                  ) => {
-                    return (
-                      <Form.Item
-                        key={`${ticketIndex}-${infoIndex}`} // Unique key combining ticketIndex and infoIndex
-                        label={
-                          <span>
-                            {infoDetails?.question}{" "}
-                            {infoDetails?.is_compulsory ? (
-                              <span style={{ color: "red" }}>*</span>
-                            ) : null}
-                          </span>
-                        }
-                        name={`additionalField${ticketIndex}-${infoIndex}`} // Unique name to avoid conflicts
-                        rules={
-                          infoDetails?.is_compulsory
-                            ? [
-                                {
-                                  required: true,
-                                  message: "This question is required",
-                                },
-                              ]
-                            : []
-                        }
-                        validateTrigger={["onChange", "onBlur"]} // Validate on change and blur
-                      >
-                        <Input type="text" placeholder="Enter your answer" />
-                      </Form.Item>
-                    );
-                  }
-                );
-              })} */}
+                <div className="flex flex-row items-center justify-between space-x-2">
+                  <span
+                    className={`font-BricolageGrotesqueMedium font-medium text-sm ${
+                      !disableConditionOne &&
+                      !disableConditionTwo &&
+                      ticketDetails?.length === 1
+                        ? "text-gray-400"
+                        : "text-OWANBE_DARK"
+                    }`}
+                  >
+                    Toggle to send tickets to multiple email addresses
+                  </span>
+                  <ToggleSwitch
+                    isActive={isToggled}
+                    onToggle={(checked: boolean) => {
+                      if (isToggled !== checked) {
+                        setIsToggled(checked); // Only update if there's a change
+                      }
+                    }}
+                    isDisabled={
+                      !disableConditionOne &&
+                      !disableConditionTwo &&
+                      ticketDetails?.length === 1
+                    }
+                    label="Registration toggle"
+                  />
+                </div>
+                {isToggled === true && (
+                  <>
+                    {ticketDetails?.map((ticketDetail, ticketIndex) => {
+                      // Adjust array length for the first object by subtracting 1
+                      const arrayLength =
+                        ticketIndex === 0
+                          ? ticketDetail?.ticketEntity ===
+                            TICKET_ENTITY.COLLECTIVE
+                            ? ticketDetail?.groupSize - 1
+                            : ticketDetail?.ticketNumber - 1
+                          : ticketDetail?.ticketEntity ===
+                            TICKET_ENTITY.COLLECTIVE
+                          ? ticketDetail?.groupSize
+                          : ticketDetail?.ticketNumber;
+
+                      return (
+                        <div key={ticketIndex}>
+                          {Array.from({ length: arrayLength })?.map(
+                            (_, index) => {
+                              // let ticketCounter = 1;
+                              ticketCounter++; // Increment ticketCounter globally
+                              const attendeeId = ticketCounter;
+
+                              return (
+                                <div key={index}>
+                                  <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-4 custom-font-size mt-4">
+                                    Ticket {ticketCounter} -{" "}
+                                    {ticketDetail?.ticketEntity ===
+                                    TICKET_ENTITY.COLLECTIVE
+                                      ? `Collective of ${ticketDetail?.groupSize}`
+                                      : "Single"}{" "}
+                                    - {ticketDetail?.ticketName}
+                                  </h3>
+                                  <Row gutter={16} className="mb-6">
+                                    <Col span={12}>
+                                      <Form.Item
+                                        name={[attendeeId, "firstName"]}
+                                        label={
+                                          <span>
+                                            Attendee First Name{" "}
+                                            <span style={{ color: "red" }}>
+                                              *
+                                            </span>
+                                          </span>
+                                        }
+                                        rules={[
+                                          {
+                                            required: true,
+                                            message:
+                                              "Please provide attendee first name",
+                                          },
+                                        ]}
+                                      >
+                                        <Input
+                                          placeholder="Enter Attendee First Name"
+                                          onChange={(e) =>
+                                            handleInputChange(
+                                              e.target.value,
+                                              attendeeId,
+                                              "firstName"
+                                            )
+                                          }
+                                        />
+                                      </Form.Item>
+                                    </Col>
+                                    <Col span={12}>
+                                      <Form.Item
+                                        name={[attendeeId, "lastName"]}
+                                        label={
+                                          <span>
+                                            Attendee Last Name{" "}
+                                            <span style={{ color: "red" }}>
+                                              *
+                                            </span>
+                                          </span>
+                                        }
+                                        rules={[
+                                          {
+                                            required: true,
+                                            message:
+                                              "Please provide attendee last name",
+                                          },
+                                        ]}
+                                      >
+                                        <Input
+                                          placeholder="Enter Attendee Last Name"
+                                          onChange={(e) =>
+                                            handleInputChange(
+                                              e.target.value,
+                                              attendeeId,
+                                              "lastName"
+                                            )
+                                          }
+                                        />
+                                      </Form.Item>
+                                    </Col>
+                                  </Row>
+                                  <Row gutter={16} className="mb-12">
+                                    <Col span={12}>
+                                      <Form.Item
+                                        name={[attendeeId, "attendeeEmail"]}
+                                        label={
+                                          <span>
+                                            Attendee Email Address{" "}
+                                            <span style={{ color: "red" }}>
+                                              *
+                                            </span>
+                                          </span>
+                                        }
+                                        rules={[
+                                          {
+                                            required: true,
+                                            message:
+                                              "Please provide attendee email",
+                                          },
+                                        ]}
+                                      >
+                                        <Input
+                                          type="email"
+                                          placeholder="Enter Attendee Email Address"
+                                          onChange={(e) =>
+                                            handleInputChange(
+                                              e.target.value,
+                                              attendeeId,
+                                              "attendeeEmail"
+                                            )
+                                          }
+                                        />
+                                      </Form.Item>
+                                    </Col>
+                                    <Col span={12}>
+                                      <Form.Item
+                                        name={[
+                                          attendeeId,
+                                          "confirmAttendeeEmail",
+                                        ]}
+                                        label={
+                                          <span>
+                                            Confirm Attendee Email{" "}
+                                            <span style={{ color: "red" }}>
+                                              *
+                                            </span>
+                                          </span>
+                                        }
+                                        rules={[
+                                          {
+                                            required: true,
+                                            message:
+                                              "Please confirm attendee email",
+                                          },
+                                          ({ getFieldValue }) => ({
+                                            validator(_, value) {
+                                              const emailValue = getFieldValue([
+                                                attendeeId,
+                                                "attendeeEmail",
+                                              ]); // Get the value of the email field
+                                              if (
+                                                !value ||
+                                                emailValue === value
+                                              ) {
+                                                return Promise.resolve();
+                                              }
+                                              return Promise.reject(
+                                                new Error(
+                                                  "Emails do not match!"
+                                                )
+                                              );
+                                            },
+                                          }),
+                                        ]}
+                                      >
+                                        <Input
+                                          type="email"
+                                          placeholder="Confirm Attendee Email Address"
+                                          onChange={(e) =>
+                                            handleInputChange(
+                                              e.target.value,
+                                              attendeeId,
+                                              "confirmAttendeeEmail"
+                                            )
+                                          }
+                                        />
+                                      </Form.Item>
+                                    </Col>
+                                  </Row>
+                                </div>
+                              );
+                            }
+                          )}
+                        </div>
+                      );
+                    })}
+                  </>
+                )}
+
                 {additionalFields && additionalFields.length > 0 && (
                   <>
                     <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-2 custom-font-size">
@@ -1486,180 +1729,6 @@ const TicketsSelection = () => {
                     <br />
                   </>
                 )}
-                {/* {ticketDetails?.map((ticketDetail, ticketIndex) => {
-                  return (
-                    ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE && (
-                      <div key={ticketIndex}>
-                        {[...Array(ticketDetail?.groupSize)]?.map(
-                          (_, index) => {
-                            ticketCounter++; // Increment ticketCounter globally
-                            const attendeeId = ticketCounter;
-
-                            return (
-                              <div key={index}>
-                                <h3 className="text-OWANBE_FADE text-md font-BricolageGrotesqueBold my-4 custom-font-size mt-4">
-                                  Ticket {ticketCounter} - Collective of{" "}
-                                  {ticketDetail?.groupSize} -{" "}
-                                  {ticketDetail?.ticketName}
-                                </h3>
-                                <Row gutter={16} className="mb-6">
-                                  <Col span={12}>
-                                    <Form.Item
-                                      name={[attendeeId, "firstName"]}
-                                      label={
-                                        <span>
-                                          Attendee First Name{" "}
-                                          <span style={{ color: "red" }}>
-                                            *
-                                          </span>
-                                        </span>
-                                      }
-                                      rules={[
-                                        {
-                                          required: true,
-                                          message:
-                                            "Please provide attendee first name",
-                                        },
-                                      ]}
-                                    >
-                                      <Input
-                                        placeholder="Enter Attendee First Name"
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            e.target.value,
-                                            attendeeId,
-                                            "firstName"
-                                          )
-                                        }
-                                      />
-                                    </Form.Item>
-                                  </Col>
-                                  <Col span={12}>
-                                    <Form.Item
-                                      name={[attendeeId, "lastName"]}
-                                      label={
-                                        <span>
-                                          Attendee Last Name{" "}
-                                          <span style={{ color: "red" }}>
-                                            *
-                                          </span>
-                                        </span>
-                                      }
-                                      rules={[
-                                        {
-                                          required: true,
-                                          message:
-                                            "Please provide attendee last name",
-                                        },
-                                      ]}
-                                    >
-                                      <Input
-                                        placeholder="Enter Attendee Last Name"
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            e.target.value,
-                                            attendeeId,
-                                            "lastName"
-                                          )
-                                        }
-                                      />
-                                    </Form.Item>
-                                  </Col>
-                                </Row>
-                                <Row gutter={16} className="mb-12">
-                                  <Col span={12}>
-                                    <Form.Item
-                                      name={[attendeeId, "attendeeEmail"]}
-                                      label={
-                                        <span>
-                                          Attendee Email Address{" "}
-                                          <span style={{ color: "red" }}>
-                                            *
-                                          </span>
-                                        </span>
-                                      }
-                                      rules={[
-                                        {
-                                          required: true,
-                                          message:
-                                            "Please provide attendee email",
-                                        },
-                                      ]}
-                                    >
-                                      <Input
-                                        type="email"
-                                        placeholder="Enter Attendee Email Address"
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            e.target.value,
-                                            attendeeId,
-                                            "attendeeEmail"
-                                          )
-                                        }
-                                      />
-                                    </Form.Item>
-                                  </Col>
-                                  <Col span={12}>
-                                    <Form.Item
-                                      name={[
-                                        attendeeId,
-                                        "confirmAttendeeEmail",
-                                      ]}
-                                      label={
-                                        <span>
-                                          Confirm Attendee Email{" "}
-                                          <span style={{ color: "red" }}>
-                                            *
-                                          </span>
-                                        </span>
-                                      }
-                                      rules={[
-                                        {
-                                          required: true,
-                                          message:
-                                            "Please confirm attendee email",
-                                        },
-                                        ({ getFieldValue }) => ({
-                                          validator(_, value) {
-                                            const emailValue = getFieldValue([
-                                              attendeeId,
-                                              "attendeeEmail",
-                                            ]); // Get the value of the email field
-                                            if (
-                                              !value ||
-                                              emailValue === value
-                                            ) {
-                                              return Promise.resolve();
-                                            }
-                                            return Promise.reject(
-                                              new Error("Emails do not match!")
-                                            );
-                                          },
-                                        }),
-                                      ]}
-                                    >
-                                      <Input
-                                        type="email"
-                                        placeholder="Confirm Attendee Email Address"
-                                        onChange={(e) =>
-                                          handleInputChange(
-                                            e.target.value,
-                                            attendeeId,
-                                            "confirmAttendeeEmail"
-                                          )
-                                        }
-                                      />
-                                    </Form.Item>
-                                  </Col>
-                                </Row>
-                              </div>
-                            );
-                          }
-                        )}
-                      </div>
-                    )
-                  );
-                })}{" "} */}
               </Form>
             </div>
             {modal && <TimerModal />}
@@ -1672,6 +1741,8 @@ const TicketsSelection = () => {
             <div className="w-full bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem]">
               We have reserved your tickets please complete checkout within{" "}
               <span className=" text-OWANBE_PRY text-s font-BricolageGrotesqueRegular">
+                {/* {currentPage === "contactform" ||
+                  (currentPage !== "tickets" && timer)} */}
                 {timer}
               </span>
               minutes to secure your tickets.

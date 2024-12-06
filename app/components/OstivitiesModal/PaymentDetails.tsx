@@ -1,34 +1,51 @@
 import useModal from "@/app/hooks/useModal";
 import { NigerianBanks } from "@/app/utils/data";
 import { IModal } from "@/app/utils/interface";
-import { Button, Form, FormProps, Input, Modal, Select, Space } from "antd";
-import React, { useState } from "react";
+import { Button, Form, FormProps, Input, Modal, Select, Space, message } from "antd";
+import React, { useState, useEffect } from "react";
 import { Heading5, Label } from "../typography/Typography";
 import {
   useCreateSettlementAccount,
-  useGetSettlementAccount,
   useGetAllBanks,
   useVerifyBankAccount,
 } from "@/app/hooks/settlement/settlement.hook";
+import { ISettlementData } from "@/app/utils/interface";
 
 interface FieldType {}
 
 interface BankData {
-  name: string
+  name: string;
   code: string;
 }
 
-const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
+const PaymentDetails = ({
+  open,
+  onCancel,
+  onOk,
+  data,
+}: IModal): JSX.Element => {
   const [form] = Form.useForm();
   const [accountName, setAccountName] = useState("");
   const { getAllBanks } = useGetAllBanks();
   const { verifyBankAccount } = useVerifyBankAccount();
+  const { createSettlementAccount } = useCreateSettlementAccount();
   console.log(getAllBanks, "getAllBanks");
   const allBanks = getAllBanks?.data?.data?.data;
   // const { getSettlementAccount } = useGetSettlementAccount("1");
 
-  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-    return values;
+  
+  const onFinish: FormProps<ISettlementData>["onFinish"] = async(values) => {
+    // return values;
+
+    const response = await createSettlementAccount.mutateAsync({
+      ...values,
+      user: data,
+    });
+    if(response.status === 201) {
+      // message.success("Account added successfully")
+      onOk();
+    }
+    console.log(response, "response");
   };
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
@@ -36,45 +53,65 @@ const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
   ) => {
     return errorInfo;
   };
-
-  const accountNames: { [key: string]: string } = {
-    "bank1-123456": "John Doe",
-    "bank2-654321": "Jane Smith",
-  };
-
-  const fetchAccountName = (
-    bankName: string,
-    accountNumber: string
-  ): string => {
-    const key = `${bankName}-${accountNumber}`;
-    return accountNames[key] || "";
-  };
+  console.log(accountName, "accountName");
+  const accountNumber = form.getFieldValue("account_number");
 
   const handleBankNameChange = async (value: string) => {
-    const accountNumber = form.getFieldValue("accountNumber");
-    if (accountNumber) {
-      const fetchedAccountName = await verifyBankAccount.mutateAsync({ 
-        bank_code: value, 
-        account_number: accountNumber 
-      });
-      console.log(fetchedAccountName, "fetchedAccountName");
-      // setAccountName(fetchedAccountName);
+    // Ensure account number is at least 10 digits
+    if (accountNumber?.length >= 10) {
+      try {
+        const fetchedAccountName = await verifyBankAccount.mutateAsync({
+          bank_code: value,
+          account_number: accountNumber,
+        });
+
+        if (fetchedAccountName.status === 200) {
+          setAccountName(fetchedAccountName?.data?.data?.data?.account_name);
+        }
+
+        // console.log(fetchedAccountName, "fetchedAccountName");
+      } catch (error) {
+        console.error("Error verifying account:", error);
+      }
+    } else {
+      setAccountName(""); // Clear account name if the input is invalid
+      console.log("Account number must be at least 10 digits");
     }
   };
 
   const handleAccountNumberChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const bankName = form.getFieldValue("bankName");
-    if (bankName) {
-      const fetchedAccountName = await verifyBankAccount.mutateAsync({ 
-        bank_code: bankName,
-        account_number: e.target.value
-      });
-      console.log(fetchedAccountName, "fetchedAccountName");
-      // setAccountName(fetchedAccountName);
+    const accountNumber = e.target.value;
+
+    // Ensure account number is exactly 10 digits
+    if (accountNumber.length >= 10) {
+      const bankName = form.getFieldValue("bank_code");
+
+      if (bankName) {
+        try {
+          const fetchedAccountName = await verifyBankAccount.mutateAsync({
+            bank_code: bankName,
+            account_number: accountNumber,
+          });
+
+          if (fetchedAccountName.status === 200) {
+            setAccountName(fetchedAccountName?.data?.data?.data?.account_name);
+          }
+
+          // console.log(fetchedAccountName, "fetchedAccountName");
+        } catch (error) {
+          console.error("Error verifying account:", error);
+        }
+      }
+    } else {
+      setAccountName(""); // Clear account name if not 10 digits
+      console.log("Account number must be exactly 10 digits");
     }
   };
+  useEffect(() => {
+    form.setFieldsValue({ account_name: accountName }); // Update the form field dynamically
+  }, [accountName]);
 
   return (
     <Modal
@@ -102,26 +139,36 @@ const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
         className="pt-3"
       >
         <Form.Item
-          name={"bankName"}
+          name="bank_code"
           label={
             <>
-              <Label content="Bank Name" className="" htmlFor="eventName" />
+              <Label content="Bank Name" className="" htmlFor="bank_name" />
             </>
           }
           rules={[{ required: true, message: "Please select your bank" }]}
-          style={{ marginBottom: "12px" }} // Adjust spacing here
+          style={{ marginBottom: "12px" }}
         >
           <Select
             placeholder="Select Bank"
             style={{ width: "100%" }}
-            onChange={handleBankNameChange}
+            allowClear
+            showSearch
+            onChange={(value) => {
+              const selectedBank = allBanks?.find(
+                (bank: BankData) => bank?.code === value
+              );
+              if (selectedBank) {
+                form.setFieldsValue({ bank_name: selectedBank?.name }); // Set the bank_code field
+              }
+              handleBankNameChange(selectedBank?.code); // Pass the bank code for further processing
+            }}
+            filterOption={(input, option) =>
+              (option?.children as unknown as string)
+                ?.toLowerCase()
+                .includes(input.toLowerCase())
+            }
           >
-            {/* {NigerianBanks.map((_i) => (
-              <Select.Option value={_i.value} key={_i.value}>
-                {_i.label}
-              </Select.Option>
-            ))} */}
-            {allBanks?.map((bank: BankData, index: any) => (
+            {allBanks?.map((bank: BankData, index: number) => (
               <Select.Option value={bank?.code} key={index}>
                 {bank?.name}
               </Select.Option>
@@ -129,8 +176,18 @@ const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
           </Select>
         </Form.Item>
 
+        <Form.Item name="bank_name" style={{ display: "none" }}>
+          <Input type="hidden" />
+        </Form.Item>
+
         <Form.Item
-          name={"accountNumber"}
+          name={"account_number"}
+          validateStatus={accountNumber?.length < 10 ? "error" : ""}
+          help={
+            accountNumber?.length < 10
+              ? "Account number must be at least 10 digits"
+              : ""
+          }
           label={
             <>
               <Label
@@ -155,7 +212,7 @@ const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
         </Form.Item>
 
         <Form.Item
-          name={"accountName"}
+          name={"account_name"}
           label={
             <>
               <Label
@@ -165,10 +222,11 @@ const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
               />
             </>
           }
-          rules={[
-            { required: false, message: "Please input your account name" },
-          ]}
           style={{ marginBottom: "12px" }} // Adjust spacing here
+          rules={[{
+            required: true,
+            message: "Account Name must be provided"
+          }]}
         >
           <Input
             type="text"
@@ -205,6 +263,7 @@ const PaymentDetails = ({ open, onCancel, onOk }: IModal): JSX.Element => {
           </Form.Item>
           <Form.Item>
             <Button
+              loading={createSettlementAccount?.isPending}
               type="primary"
               size={"large"}
               htmlType="submit"

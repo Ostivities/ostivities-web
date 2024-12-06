@@ -35,6 +35,7 @@ interface SummaryProps {
     ticketFee: number;
     ticketNumber: number;
     subTotal: number;
+    guestAsChargeBearer: boolean;
   }[];
   eventName?: string;
   currentPage: string;
@@ -228,7 +229,10 @@ const Summary = ({
           <h3 className="text-OWANBE_PRY text-lg font-BricolageGrotesqueRegular">
             Event name
           </h3>
-          <span className="text-OWANBE_FADE text-s font-BricolageGrotesqueRegular">
+          <span
+            className="font-BricolageGrotesqueRegular"
+            style={{ fontSize: "16px" }}
+          >
             {eventName}
           </span>
         </div>
@@ -237,22 +241,21 @@ const Summary = ({
             <div
               onClick={
                 ticketDetails &&
-                ticketDetails.length > 0 &&
-                ticketDetails
-                  .map((ticket) => ticket?.subTotal || 0)
-                  .reduce((acc, curr) => acc + curr, 0) > 0
+                  ticketDetails.length > 0 &&
+                  ticketDetails
+                    .map((ticket) => ticket?.subTotal || 0)
+                    .reduce((acc, curr) => acc + curr, 0) > 0
                   ? handleAddDiscountClick
                   : undefined
               }
-              className={`flex-center gap-2 text-lg font-BricolageGrotesqueRegular ${
-                ticketDetails &&
-                ticketDetails?.length > 0 &&
-                ticketDetails
-                  ?.map((ticket) => ticket?.subTotal || 0)
-                  ?.reduce((acc, curr) => acc + curr, 0) > 0
+              className={`flex-center gap-2 text-lg font-BricolageGrotesqueRegular ${ticketDetails &&
+                  ticketDetails?.length > 0 &&
+                  ticketDetails
+                    ?.map((ticket) => ticket?.subTotal || 0)
+                    ?.reduce((acc, curr) => acc + curr, 0) > 0
                   ? "text-OWANBE_PRY cursor-pointer"
                   : "text-gray-400 cursor-not-allowed"
-              }`}
+                }`}
             >
               <h3>Add discount code</h3>
               <MdOutlineDiscount />
@@ -274,9 +277,8 @@ const Summary = ({
                   <button
                     onClick={handleApplyDiscount}
                     disabled={!validDiscount} // Disable button if discountCode is empty or only whitespace
-                    className={`py-1 px-7 rounded-full bg-OWANBE_PRY font-semibold text-white ${
-                      !validDiscount && "opacity-50 cursor-not-allowed"
-                    }`}
+                    className={`py-1 px-7 rounded-full bg-OWANBE_PRY font-semibold text-white ${!validDiscount && "opacity-50 cursor-not-allowed"
+                      }`}
                   >
                     Apply
                   </button>
@@ -333,8 +335,13 @@ const Summary = ({
                   <div>Fee</div>
                   <div>
                     ₦
-                    {ticketDetails
+                    {/* {ticketDetails
                       ?.reduce((acc, ticket) => acc + ticket?.ticketFee, 0)
+                      .toLocaleString()}
+                    {".00 "} */}
+                    {ticketDetails?.filter((ticket: any) => {
+                      return ticket?.guestAsChargeBearer === true
+                    })?.reduce((acc, ticket) => acc + ticket?.ticketFee, 0)
                       .toLocaleString()}
                     {".00 "}
                   </div>
@@ -360,30 +367,12 @@ const Summary = ({
                   <div>Subtotal</div>
                   <div>
                     ₦
-                    {ticketDetails &&
-                    ticketDetails.some(
-                      (ticket: any) => ticket?.ticketDiscountValue !== undefined
-                    )
-                      ? // If ticketDiscountValue is defined, calculate adjusted total
-                        (
-                          ticketDetails?.reduce(
-                            (acc: number, ticket: any) =>
-                              acc + (ticket?.subTotal ?? 0), // Regular subtotal
-                            0
-                          ) -
-                          ticketDetails?.reduce(
-                            (acc, ticket) =>
-                              acc + (ticket?.discountToDeduct ?? 0),
-                            0
-                          )
-                        ).toLocaleString() + ".00"
-                      : // Otherwise, sum up only the subTotal
-                        ticketDetails
-                          ?.reduce(
-                            (acc, ticket) => acc + (ticket?.subTotal ?? 0),
-                            0
-                          )
-                          .toLocaleString() + ".00"}
+                    {ticketDetails
+                      ?.reduce(
+                        (acc, ticket) => acc + (ticket?.subTotal ?? 0),
+                        0
+                      )
+                      .toLocaleString() + ".00"}
                   </div>
                 </div>
               </div>
@@ -393,26 +382,9 @@ const Summary = ({
             <div>Total</div>
             <div>
               ₦
-              {ticketDetails &&
-              ticketDetails.some(
-                (ticket: any) => ticket?.ticketDiscountValue !== undefined
-              )
-                ? // If ticketDiscountValue is defined, calculate adjusted total
-                  (
-                    ticketDetails?.reduce(
-                      (acc: number, ticket: any) =>
-                        acc + (ticket?.subTotal ?? 0), // Regular subtotal
-                      0
-                    ) -
-                    ticketDetails?.reduce(
-                      (acc, ticket) => acc + (ticket?.discountToDeduct ?? 0),
-                      0
-                    )
-                  ).toLocaleString() + ".00"
-                : // Otherwise, sum up only the subTotal
-                  ticketDetails
-                    ?.reduce((acc, ticket) => acc + (ticket?.subTotal ?? 0), 0)
-                    .toLocaleString() + ".00"}
+              {ticketDetails
+                ?.reduce((acc, ticket) => acc + (ticket?.subTotal ?? 0), 0)
+                .toLocaleString() + ".00"}
             </div>
             {/* Adjust this based on your calculation */}
           </div>
@@ -451,7 +423,7 @@ const Summary = ({
             </div>
           )} */}
           {continueBtn && (
-            <div className="continue-btn-container">
+            <div style={{ zIndex: 11 }} className="continue-btn-container">
               <Button
                 loading={loading}
                 onClick={onClick}
@@ -462,30 +434,30 @@ const Summary = ({
                   backgroundColor:
                     (currentPage === "tickets" &&
                       ticketDetails?.length === 0) ||
-                    (currentPage === "contactform" && !isFormValid) ||
-                    (currentPage === "payment" &&
-                      (!termsAndCondition || !paymentMethod))
+                      (currentPage === "contactform" && !isFormValid) ||
+                      (currentPage === "payment" &&
+                        (!termsAndCondition || !paymentMethod))
                       ? "#cccccc" // Gray for disabled
                       : "#e20000", // Red for active
                   color:
                     (currentPage === "tickets" &&
                       ticketDetails?.length === 0) ||
-                    (currentPage === "contactform" && !isFormValid) ||
-                    (currentPage === "payment" &&
-                      (!termsAndCondition || !paymentMethod))
+                      (currentPage === "contactform" && !isFormValid) ||
+                      (currentPage === "payment" &&
+                        (!termsAndCondition || !paymentMethod))
                       ? "#666666"
                       : "white",
                   height: "50px",
                   fontSize: "16px",
                   border: "none",
-                  zIndex: 10,
+                  zIndex: 11,
                 }}
                 title={
                   currentPage === "tickets"
                     ? "Continue"
                     : currentPage === "contactform" && !isFormValid
-                    ? "Continue"
-                    : "Continue"
+                      ? "Continue"
+                      : "Continue"
                 }
                 disabled={
                   (currentPage === "tickets" && ticketDetails?.length === 0) ||
@@ -500,14 +472,14 @@ const Summary = ({
                     ticketDetails
                       ?.map((tickets) => tickets?.subTotal)
                       .reduce((acc, curr) => acc + curr, 0) === 0
-                  ? "Order Tickets"
-                  : currentPage === "contactform" &&
-                    ticketDetails &&
-                    ticketDetails
-                      ?.map((tickets) => tickets?.subTotal)
-                      .reduce((acc, curr) => acc + curr, 0) > 0
-                  ? "Continue"
-                  : "Checkout"}
+                    ? "Order Tickets"
+                    : currentPage === "contactform" &&
+                      ticketDetails &&
+                      ticketDetails
+                        ?.map((tickets) => tickets?.subTotal)
+                        .reduce((acc, curr) => acc + curr, 0) > 0
+                      ? "Continue"
+                      : "Checkout"}
               </Button>{" "}
             </div>
           )}

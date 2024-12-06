@@ -12,7 +12,7 @@ interface PropsI {
 
 const EventSection: React.FC<PropsI> = ({ title, uri, children, titleClass = 'font-bricolage-grotesque font-semibold text-2xl mb-6', style }) => {
   const childrenArray = React.Children.toArray(children);
-  const limitedChildren = childrenArray.slice(0, 10); // Get the first 6 children 
+  const limitedChildren = childrenArray.slice(0, 8); // Get the first 6 children 
 
   return (
     <section>

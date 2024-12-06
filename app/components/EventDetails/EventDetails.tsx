@@ -2,7 +2,7 @@
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import useModal from "@/app/hooks/useModal";
 import type { MenuProps } from "antd";
-import { Button, Card, Dropdown, message, Space, Switch } from "antd";
+import { Button, Card, Dropdown, message, Space, Switch, Tooltip } from "antd";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -17,7 +17,11 @@ import {
   useAddEventToDiscovery,
   usePublishEvent,
 } from "@/app/hooks/event/event.hook";
+import {
+  useGetSettlementAccount,
+} from "@/app/hooks/settlement/settlement.hook";
 import { EVENT_INFO, PUBLISH_TYPE } from "@/app/utils/enums";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 interface EventProps {
   totalTickets?: number;
@@ -40,7 +44,9 @@ export default function EventDetailsComponent({
   const { getUserEvent } = useGetUserEvent(params?.id);
   const { addEventToDiscovery } = useAddEventToDiscovery();
   const { publishEvent } = usePublishEvent();
+  const [accountDetailsAdded, setAccountDetailsAdded] = useState(false);
   const eventDetails = getUserEvent?.data?.data?.data;
+  const { getSettlementAccount } = useGetSettlementAccount(eventDetails?.user?.id)
   const [isPublished, setIsPublished] = useState(false); // State to track publish status
   const [isDiscover, setIsDiscover] = useState(false); // State to track discovery status
   // console.log(isDiscover, "isDiscover")
@@ -414,7 +420,7 @@ export default function EventDetailsComponent({
             Sales
           </Button>
         </div>
-        {pathname.includes("sales") && (
+        {pathname.includes("sales") && getSettlementAccount?.data === undefined && (
           <div className="flex flex-row">
             <Button
               type={"default"}
@@ -574,7 +580,16 @@ export default function EventDetailsComponent({
             />
             <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
               {isDiscover ? "Remove from discovery" : "Add to discovery"}
-              {/* Add to discovery page */}
+              <a
+                    href="https://ostivities.tawk.help/article/how-to-add-or-remove-events-from-discovery-on-ostivities" // Replace with your actual URL 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ marginLeft: "8px" }}
+                  >
+                    <Tooltip title="Click to learn more">
+                      <QuestionCircleOutlined style={{ fontSize: "18px", color: "#858990" }} />
+                    </Tooltip>
+                  </a>
             </span>
           </div>
         )}
@@ -624,6 +639,11 @@ export default function EventDetailsComponent({
     <React.Fragment>
       <PaymentDetails
         open={isModalOpen}
+        data={eventDetails?.user?.id}
+        onOk={() => {
+          setAccountDetailsAdded(true)
+          setIsModalOpen(false)
+        }}
         onCancel={() => setIsModalOpen(false)}
       />
 

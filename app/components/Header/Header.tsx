@@ -65,7 +65,7 @@ function Header(): JSX.Element {
           </div>
           {/* Conditionally render NAV_LINKS */}
           {showNavLinks && (
-            <div className="flex flex-row items-center space-x-8">
+            <div className="flex flex-row items-center space-x-7">
               {NAV_LINKS.map((link: INavLinks) => (
                 <Link
                   href={link.link}

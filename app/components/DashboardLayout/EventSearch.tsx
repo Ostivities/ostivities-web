@@ -11,7 +11,7 @@ const EventSearch = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setpageSize] = useState(12);
   const { getDiscoveryEvents } = useGetDiscoveryEvents(page, pageSize);
-  const discoveryEvents = getDiscoveryEvents?.data?.data?.data;
+  const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
   console.log(discoveryEvents, "discoveryEvents");
 
   const isPending = getDiscoveryEvents?.isLoading;
@@ -46,11 +46,11 @@ const EventSearch = () => {
         </>
       ) : (
         // Once data is loaded, map through discoveryEvents and render InfoCard components
-        discoveryEvents?.map((event: IEventDetails) => (
+        discoveryEvents?.map((event: IEventDetails, index: number) => (
           <>
             <InfoCard
               className="lg:flex hidden"
-              key={event?.id}
+              key={index}
               title={event?.eventName}
               about={event?.eventType}
               startDate={event?.startDate}
@@ -68,7 +68,7 @@ const EventSearch = () => {
             />
             <InfoCardM
               className="flex lg:hidden"
-              key={event?.id}
+              key={index}
               title={event?.eventName}
               about={event?.eventType}
               startDate={event?.startDate}
