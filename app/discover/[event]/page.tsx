@@ -188,20 +188,7 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
   );
 };
 
-interface EventProps {
-  totalTickets?: number;
-  totalRevenue?: number;
-  nextDate?: string;
-}
-
-export default function EventDetail({
-  children,
-  totalTickets,
-  totalRevenue,
-  nextDate,
-}: {
-  children: React.ReactNode;
-} & EventProps) {
+  const EventDetail = () => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams<{ event: string }>();
@@ -1619,4 +1606,4 @@ export default function EventDetail({
   );
 };
 
-// export default EventDetail;
+export default EventDetail;
