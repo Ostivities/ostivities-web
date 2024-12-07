@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { useCookies } from "react-cookie";
+import { useGetEventGuests } from "@/app/hooks/guest/guest.hook";
 import EventPageLoader from "@/app/components/Loaders/EventPageLoader";
 import {
   FacebookShareButton,
@@ -201,6 +202,10 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
       ? router.push("/not-found")
       : getUserEventByUniqueKey?.data?.data?.data;
   // console.log(eventDetails, "eventDetails");
+
+  const { getEventGuests } = useGetEventGuests(eventDetails?.id, 1, 10);
+  const allGuestsData = getEventGuests?.data?.data?.data?.guests;
+
 
   const handleMenuClick: MenuProps["onClick"] = (e) => {
     return e;
@@ -866,7 +871,7 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
                           fontFamily: "'Bricolage Grotesque', sans-serif", // Apply the font here as well
                         }}
                       >
-                        attendee 1, attendee 2 and {eventDetails?.total_ticket_sold - 2 || 0} others
+                        {allGuestsData?.[0]?.personal_information?.firstName}, {allGuestsData?.[1]?.personal_information?.firstName} and {eventDetails?.total_ticket_sold - 2 || 0} others
                       </p>
                     </div>
                   )}
@@ -1494,7 +1499,7 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
                     fontFamily: "'Bricolage Grotesque', sans-serif", // Apply the font here as well
                   }}
                 >
-                  attendee 1, attendee 2 and {eventDetails?.total_ticket_sold - 2 || 0} others
+                  {allGuestsData?.[0]?.personal_information?.firstName}, {allGuestsData?.[1]?.personal_information?.firstName} and {eventDetails?.total_ticket_sold - 2 || 0} others
                 </p>
               </div>
             )}

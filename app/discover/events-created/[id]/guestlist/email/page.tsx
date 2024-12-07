@@ -368,7 +368,7 @@ const EventsGuestListEmail = () => {
               })}
             >
               <Select
-                mode="multiple"
+                mode="multiple"               
                 placeholder="Select guest name"
                 value={allGuestsData?.map((guest: IGuestData) => {
                   return {
