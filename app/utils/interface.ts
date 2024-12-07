@@ -73,6 +73,7 @@ export interface IFormInput {
   space_available?: number;
   space_fee?: number;
   unique_key: string;
+  link: string;
 }
 
 

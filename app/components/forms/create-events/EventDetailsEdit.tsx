@@ -49,6 +49,7 @@ import {
   UploadFile,
   UploadProps,
   Tooltip,
+  RadioChangeEvent,
 } from "antd";
 import axios from "axios";
 import dayjs from "dayjs";
@@ -366,35 +367,42 @@ function EventDetailsEdit(): JSX.Element {
     }
   };
 
-  const [popoverVisible, setPopoverVisible] = useState(false);
-  const popoverRef = useRef<HTMLDivElement>(null);
-
-  const handleSelectLocation = (address: string) => {
-    setValue("address", address); // Update the form field value
-    setPopoverVisible(false); // Close the popover
-  };
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      popoverRef.current &&
-      !popoverRef.current.contains(event.target as Node)
-    ) {
-      setPopoverVisible(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+  const [locationType, setLocationType] = useState("virtual"); // virtual or physical
+    const [popoverVisible, setPopoverVisible] = useState(false);
+    const popoverRef = useRef<HTMLDivElement>(null);
+  
+    const handleSelectLocation = (address: string) => {
+      setValue("address", address); // Update the form field value
+      setPopoverVisible(false); // Close the popover
     };
-  }, []);
-
-  const content = (
-    <div style={{ padding: 10 }} ref={popoverRef}>
-      <LocationSearch onSelectLocation={handleSelectLocation} />
-    </div>
-  );
+  
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        popoverRef.current &&
+        !popoverRef.current.contains(event.target as Node)
+      ) {
+        setPopoverVisible(false);
+      }
+    };
+  
+    useEffect(() => {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, []);
+  
+    const content = (
+      <div style={{ padding: 10 }} ref={popoverRef}>
+        <LocationSearch onSelectLocation={handleSelectLocation} />
+      </div>
+    );
+  
+    const handleLocationChange = (e: RadioChangeEvent) => {
+      setLocationType(e.target.value); // Ant Design's RadioChangeEvent has 'target.value'
+      setValue("address", ""); // Clear the address field when switching
+      setValue("link", "");    // Clear the link field when switching
+    };
 
   const getGreeting = () => {
     const currentHour = new Date().getHours();
@@ -716,56 +724,102 @@ function EventDetailsEdit(): JSX.Element {
               )}
             />
 
-            <Controller
-              name="address"
-              control={control}
-              rules={{ required: "Address is required!" }}
-              render={({ field }) => (
-                <Space
-                  direction="vertical"
-                  size={"small"}
-                  style={{ width: "100%" }}
-                >
-                  <label htmlFor="address">Event Address</label>
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "8px",
-                      flexWrap: "wrap",
-                    }}
-                  >
-                    <Input
-                      {...field}
-                      placeholder="Enter Address"
-                      style={{
-                        flex: 1,
-                        minWidth: "200px",
-                        maxWidth: "calc(100% - 128px)",
-                      }}
-                    />
-                    <Popover
-                      content={content}
+<Space direction="vertical" size="large" style={{ width: "100%" }}>
+      {/* Radio Button to Toggle Views */}
+      <Radio.Group
+        onChange={handleLocationChange}
+        value={locationType}
+        style={{ marginBottom: "-15px" }}
+      >
+        <Radio value="physical">Physical Location</Radio>
+        <Radio value="virtual">Virtual Location</Radio>
+      </Radio.Group>
 
-                      trigger="click"
-                      open={popoverVisible}
-                    >
-                      <Button
-                        type="default"
-                        style={{ borderRadius: "5px", minWidth: "120px" }}
-                        onClick={() => setPopoverVisible(!popoverVisible)}
-                      >
-                        Select on Map
-                      </Button>
-                    </Popover>
-                  </div>
-                  {errors.address && (
-                    <span style={{ color: "red" }}>
-                      {errors.address.message}
-                    </span>
-                  )}
-                </Space>
+      {/* Offline Location Form */}
+      {locationType === "physical" && (
+        <Controller
+        name="address"
+        control={control}
+        rules={{ required: "Address is required!" }}
+        render={({ field }) => (
+          <Space
+            direction="vertical"
+            size={"small"}
+            style={{ width: "100%" }}
+          >
+            <label htmlFor="address">Event Address</label>
+            <div
+              style={{
+                display: "flex",
+                gap: "8px",
+                flexWrap: "wrap",
+              }}
+            >
+              <Input
+                {...field}
+                placeholder="Enter Address"
+                style={{
+                  flex: 1,
+                  minWidth: "200px",
+                  maxWidth: "calc(100% - 128px)",
+                }}
+              />
+              <Popover
+                content={content}
+                trigger="click"
+                open={popoverVisible}
+              >
+                <Button
+                  type="default"
+                  style={{ borderRadius: "5px", minWidth: "120px" }}
+                  onClick={() => setPopoverVisible(!popoverVisible)}
+                >
+                  Select on Map
+                </Button>
+              </Popover>
+            </div>
+            {errors.address && (
+              <span style={{ color: "red" }}>
+                {errors.address.message}
+              </span>
+            )}
+          </Space>
+        )}
+      />
+      )}
+
+      {/* Online Location Form */}
+      {locationType === "virtual" && (
+        <Controller
+          name="link"
+          control={control}
+          rules={{
+            required: "Link is required!",
+            pattern: {
+              value: /^(https?:\/\/)?([\w\-])+(\.[\w\-]+)+[/#?]?.*$/i,
+              message: "Please enter a valid URL!",
+            },
+          }}
+          render={({ field }) => (
+            <Space
+              direction="vertical"
+              size={"small"}
+              style={{ width: "100%" }}
+            >
+              <label htmlFor="link">Event Link</label>
+              <Input
+                {...field}
+                placeholder="Enter Zoom/Teams/Meet Link"
+                style={{ minWidth: "200px" }}
+              />
+              {errors.link && (
+                <span style={{ color: "red" }}>{errors.link.message}</span>
               )}
-            />
+            </Space>
+          )}
+        />
+      )}
+    </Space>
           </div>
           <div className="flex flex-col space-y-4 pl-6">
             <Controller
