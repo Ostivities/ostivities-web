@@ -73,7 +73,7 @@ const TicketsSelection = () => {
   const discountDetails = getEventDiscount?.data?.data?.data;
   const [isToggled, setIsToggled] = useState(false);
   // console.log(eventDetails?.eventName, "eventName")
-  console.log(isToggled, "isToggled");
+  // console.log(isToggled, "isToggled");
   const title = (
     <div className="flex-center gap-2">
       <Image
@@ -473,7 +473,7 @@ const TicketsSelection = () => {
   const [modal, setModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
-  // console.log(successModal, "successModal");
+  console.log(isFormValid, "isFormValid");
   const validateForm = async () => {
     try {
       await form.validateFields();
@@ -744,18 +744,18 @@ const TicketsSelection = () => {
     resetTimer,
   } = useTimer();
 
-  // useEffect(() => {
-  //   if (currentPage === "contactform" || currentPage === "payment") {
-  //     startTimer();
-  //   } else resetTimer();
-  // }, [currentPage]);
-  // useEffect(() => {
-  //   if (minutes === 0 && remainingSeconds === 0 && successModal === false) {
-  //     setModal(true);
-  //   } else if (successModal === true){
-  //     pauseTimer();
-  //   }
-  // }, [minutes, remainingSeconds, successModal, stopTimer]);
+  useEffect(() => {
+    if (currentPage === "contactform" || currentPage === "payment") {
+      startTimer();
+    } else resetTimer();
+  }, [currentPage]);
+  useEffect(() => {
+    if (minutes === 0 && remainingSeconds === 0 && successModal === false) {
+      setModal(true);
+    } else if (successModal === true){
+      pauseTimer();
+    }
+  }, [minutes, remainingSeconds, successModal, pauseTimer]);
 
   const [termsAndCondition, setTermsAndCondition] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<
@@ -1341,11 +1341,19 @@ const TicketsSelection = () => {
                 onFinishFailed={onFinishFailed}
                 layout="vertical"
                 className="form-spacing"
-                onValuesChange={() => {
-                  // Mark that fields have been touched
+                onValuesChange={(changedValues, allValues) => {
                   isFieldTouched.current = true;
+              
                   if (currentPage === "contactform") {
-                    validateForm();
+                    const changedField = Object.keys(changedValues)[0];
+                    form
+                      .validateFields([changedField])
+                      .then(() => {
+                        setIsFormValid(true);
+                      })
+                      .catch(() => {
+                        setIsFormValid(false);
+                      });
                   }
                 }}
               >

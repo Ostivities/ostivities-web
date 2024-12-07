@@ -287,8 +287,8 @@ const DiscountCode = (): JSX.Element => {
                 >
                   {/* Map through your created tickets here */}
                   {ticketData?.map((ticket: ITicketDetails) => (
-                    <Select.Option key={ticket.id} value={ticket.id}>
-                      {ticket.ticketName}
+                    <Select.Option key={ticket?.id} value={ticket?.id}>
+                      {ticket?.ticketName}
                     </Select.Option>
                   ))}
                 </Select>
