@@ -1,6 +1,7 @@
 "use client";
 
 import AvailableEvents from "@/app/components/DashboardLayout/OtherEvents";
+import EventStore from "@/app/components/DashboardLayout/EventStore";
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import { Heading5 } from "@/app/components/typography/Typography";
 import useFetch from "@/app/components/forms/create-events/auth";
@@ -499,7 +500,7 @@ const EventDetail = () => {
                         fontFamily: "'Bricolage Grotesque', sans-serif",
                       }}
                     >
-                      Location 
+                      Location
                     </div>
                     <div
                       style={{
@@ -1306,16 +1307,16 @@ const EventDetail = () => {
             )}
 
             <div
-            style={{
-              position: "fixed",
-              bottom: 0,
-              left: 0,
-              width: "100%",
-              padding: "20px",
-              backgroundColor: "white",
-              zIndex: 99,
-            }}
-             className="flex justify-center mt-12">
+              style={{
+                position: "fixed",
+                bottom: 0,
+                left: 0,
+                width: "100%",
+                padding: "20px",
+                backgroundColor: "white",
+                zIndex: 99,
+              }}
+              className="flex justify-center mt-12">
               {eventDetails?.vendor_registration === true ? (
                 <>
                   <Dropdown
@@ -1404,8 +1405,11 @@ const EventDetail = () => {
             <Dpmodal />
           </Modal>
         </div>
-        <br />
-        <br />
+        <br /><br />
+        <EventStore />
+        <br /><br /><br />
+        <hr style={{ border: "0.1px solid #d3d3d3", margin: "3px 0" }} />
+        <br /><br /><br />
         <AvailableEvents />
       </section>
     </DashboardLayout>
