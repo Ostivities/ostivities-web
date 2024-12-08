@@ -299,6 +299,42 @@ export default function EventDetailsComponent({
       },
     ];
 
+    const MerchandiseItems: MenuProps["items"] = [
+      {
+        label: (
+          <Link
+            href={`/discover/events-created/${params?.id}/`}
+            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          >
+            Product
+          </Link>
+        ),
+        key: "1",
+      },
+      {
+        label: (
+          <Link
+            href={`/discover/events-created/${params?.id}/`}
+            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          >
+            Orders
+          </Link>
+        ),
+        key: "2",
+      },
+      {
+        label: (
+          <Link
+            href={`/discover/events-created/${params?.id}/`}
+            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          >
+           Shipping
+          </Link>
+        ),
+        key: "3",
+      },
+    ];
+
     return (
       <div
         className={`flex flex-row overflow-x-scroll items-center justify-between`}
@@ -398,7 +434,7 @@ export default function EventDetailsComponent({
             >
               <Space>
                 Coordinators
-                {/* <IoChevronDown /> */}
+                <IoChevronDown />
               </Space>
             </Button>
           </Dropdown>
@@ -417,8 +453,28 @@ export default function EventDetailsComponent({
               router.push(`/discover/events-created/${params?.id}/sales`);
             }}
           >
-            Sales
+            Ticket Sales
           </Button>
+
+          <Dropdown
+            menu={{ items: MerchandiseItems, onClick: handleMenuClick }}
+          >
+            <Button
+              type={pathname.includes("merchandise") ? "primary" : "text"}
+              className="font-BricolageGrotesqueRegular cursor-pointer font-medium w-40 rounded-2xl"
+              style={{
+                borderRadius: "25px",
+                fontFamily: "BricolageGrotesqueMedium",
+              }}
+              size="large"
+            >
+              <Space>
+              Merchandise
+                <IoChevronDown />
+              </Space>
+            </Button>
+          </Dropdown>
+
         </div>
         {pathname.includes("sales") && getSettlementAccount?.data === undefined && (
           <div className="flex flex-row">
