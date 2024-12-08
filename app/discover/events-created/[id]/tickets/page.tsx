@@ -73,7 +73,7 @@ const EventTickets = () => {
   const { getUserEvent } = useGetUserEvent(params?.id);
   const eventDetails = getUserEvent?.data?.data?.data;
   // const {id, ...rest} = ticketData;
-  console.log(ticketData, "ticketData");
+  // console.log(ticketData, "ticketData");
   // console.log(duplicateData, "duplicateData")
 
   const handleActionSuccess = () => {
@@ -239,7 +239,8 @@ const EventTickets = () => {
           <>
             {record?.ticketEntity === TICKET_ENTITY.SINGLE
               ? "Single"
-              : "Collective"}
+              : "Collective"
+            }
           </>
         );
       },

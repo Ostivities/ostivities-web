@@ -29,7 +29,7 @@ const PaymentDetails = ({
   const { getAllBanks } = useGetAllBanks();
   const { verifyBankAccount } = useVerifyBankAccount();
   const { createSettlementAccount } = useCreateSettlementAccount();
-  console.log(getAllBanks, "getAllBanks");
+  // console.log(getAllBanks, "getAllBanks");
   const allBanks = getAllBanks?.data?.data?.data;
   // const { getSettlementAccount } = useGetSettlementAccount("1");
 
@@ -53,7 +53,7 @@ const PaymentDetails = ({
   ) => {
     return errorInfo;
   };
-  console.log(accountName, "accountName");
+  // console.log(accountName, "accountName");
   const accountNumber = form.getFieldValue("account_number");
 
   const handleBankNameChange = async (value: string) => {

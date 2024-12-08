@@ -79,3 +79,9 @@ export enum PAYMENT_METHODS {
   CARD = 'CARD',
   FREE='FREE',
 }
+
+export enum STAFF_ROLE {
+  AGENT = 'AGENT',
+  USHER = "USHER", 
+  AUDITOR = 'AUDITOR'
+}

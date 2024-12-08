@@ -1,7 +1,11 @@
 import { IModal } from "@/app/utils/interface";
 import { Button, Input, Modal, Space, Form, Row, Col, Select } from "antd";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Heading5 } from "../typography/Typography"; // Assuming this is a custom component
+import { useGetEventCoordinatorInfo } from "@/app/hooks/coordinators/coordinators.hook";
+import { ICoordinatorData } from "@/app/utils/interface";
+import { STAFF_ROLE } from "@/app/utils/enums";
+
 
 // Define the field types for the form
 interface FieldType {
@@ -12,12 +16,17 @@ interface FieldType {
   password?: string;
 }
 
-const CoordinatorsDetail = ({ open, onCancel, onOk, data }: IModal) => {
+const CoordinatorsDetail = ({ open, onCancel, onOk, data, id }: IModal) => {
   const { Option } = Select;
+  const { getEventCoordinatorInfo } = useGetEventCoordinatorInfo(id)
+  const coordinatorsDetails = getEventCoordinatorInfo?.data?.data?.data
+  console.log(getEventCoordinatorInfo, "getEventCoordinatorInfo")
   const [role, setRole] = useState<string | null>('Ticketing Agent'); // Preselect "Ticketing Agent"
   const [form] = Form.useForm(); 
+  const staffRole = Form.useWatch("staff_role", form)
 
-  const onFinish = (values: FieldType) => {
+  console.log(staffRole)
+  const onFinish = (values: ICoordinatorData) => {
     // handle form submission
     console.log('Form Values:', values);
     onOk(); // Close the modal on successful submission
@@ -26,6 +35,18 @@ const CoordinatorsDetail = ({ open, onCancel, onOk, data }: IModal) => {
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
+
+  useEffect(() => {
+    if(coordinatorsDetails) {
+      form.setFieldsValue({
+        staff_name: coordinatorsDetails?.staff_name,
+        staff_email: coordinatorsDetails?.staff_email,
+        staff_phone_number: coordinatorsDetails?.staff_phone_number,
+        staff_role: coordinatorsDetails?.staff_role,
+        password: coordinatorsDetails?.password
+      })
+    }
+  }, [coordinatorsDetails])
 
   return (
     <Modal
@@ -48,7 +69,7 @@ const CoordinatorsDetail = ({ open, onCancel, onOk, data }: IModal) => {
       }
       width={700}
     >
-      <Form<FieldType>
+      <Form<ICoordinatorData>
         id="add-event-coordinator-form"
         form={form}
         name="basic"
@@ -60,9 +81,9 @@ const CoordinatorsDetail = ({ open, onCancel, onOk, data }: IModal) => {
       >
         <Row gutter={[16, 16]}>
           <Col span={12}>
-            <Form.Item<FieldType>
+            <Form.Item<ICoordinatorData>
               label="Coordinator's Name"
-              name="coordinatorsName"
+              name="staff_name"
               rules={[{ required: true, message: "Please input coordinator's name!" }]}
               style={{ marginBottom: '8px' }}
             >
@@ -71,9 +92,9 @@ const CoordinatorsDetail = ({ open, onCancel, onOk, data }: IModal) => {
           </Col>
 
           <Col span={12}>
-            <Form.Item<FieldType>
+            <Form.Item<ICoordinatorData>
               label="Coordinator's Email"
-              name="coordinatorsEmail"
+              name="staff_email"
               rules={[{ required: true, message: "Please input coordinator's email!" }]}
               style={{ marginBottom: '8px' }}
             >
@@ -82,9 +103,9 @@ const CoordinatorsDetail = ({ open, onCancel, onOk, data }: IModal) => {
           </Col>
 
           <Col span={12}>
-            <Form.Item<FieldType>
+            <Form.Item<ICoordinatorData>
               label="Coordinator's Phone Number"
-              name="coordinatorsphoneNumber"
+              name="staff_phone_number"
               rules={[{ required: true, message: "Please input coordinator's phone number!" }]}
               style={{ marginBottom: '8px' }}
             >
@@ -93,9 +114,9 @@ const CoordinatorsDetail = ({ open, onCancel, onOk, data }: IModal) => {
           </Col>
 
           <Col span={12}>
-            <Form.Item<FieldType>
+            <Form.Item<ICoordinatorData>
               label="Coordinator's Role"
-              name="coordinatorsRole"
+              name="staff_role"
               rules={[{ required: true, message: "Please select coordinator's role!" }]}
               style={{ marginBottom: '8px' }}
             >
@@ -105,19 +126,19 @@ const CoordinatorsDetail = ({ open, onCancel, onOk, data }: IModal) => {
                 disabled // Disable the select input
                 value={role}
               >
-                <Option value="Ticketing Agent">Ticketing Agent</Option>
-                <Option value="Auditor">Auditor</Option>
-                <Option value="Usher">Usher</Option>
+                <Option value={STAFF_ROLE.AGENT}>Ticketing Agent</Option>
+                <Option value={STAFF_ROLE.AUDITOR}>Auditor</Option>
+                <Option value={STAFF_ROLE.USHER}>Usher</Option>
               </Select>
             </Form.Item>
           </Col>
         </Row>
 
         {/* Conditionally render the password field if "Ticketing Agent" is selected */}
-        {role === "Ticketing Agent" && (
+        {staffRole === STAFF_ROLE.AGENT && (
           <Row gutter={[16, 16]}>
             <Col span={24}>
-              <Form.Item<FieldType>
+              <Form.Item<ICoordinatorData>
                 label="Password"
                 name="password"
                 rules={[{ required: true, message: "Please generate a password for the Ticketing Agent!" }]}

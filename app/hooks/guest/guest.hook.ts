@@ -35,6 +35,7 @@ export const useGetGuestInfo = (event_unique_key: string, guest_id: string, tick
 export const useGetEventGuests = (eventId: string, page:number, limit:number, search?: string) => {
     const getEventGuests = useQuery({
         queryKey: [GET_EVENT_GUESTS, eventId, page, limit, search],
+        enabled: !!eventId,
         queryFn: () => {
         return API_SERVICE._getEventGuests(eventId, page, limit, search);
         },
