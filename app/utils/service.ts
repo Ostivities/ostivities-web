@@ -20,6 +20,7 @@ import {
   IUser,
   IVerifyToken,
   IBulkMailData,
+  ICoordinatorCreate,
 } from "./interface";
 import CryptoJS from 'crypto-js';
 
@@ -328,5 +329,35 @@ export class API_SERVICE {
       method: HttpMethod.POST,
       data,
     });
+  }
+
+  static async _createEventCoordinator(data: ICoordinatorCreate): Promise<AxiosResponse> {
+    const {eventId, ...rest} = data;
+    return await instance({
+      url: `/coordinators/create/${eventId}`,
+      method: HttpMethod.POST,
+      data: { ...rest },
+    })
+  }
+
+  static async _getEventCoordinatorInfo(coordinatorId: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/coordinators/${coordinatorId}`,
+      method: HttpMethod.GET,
+    })
+  }
+
+  static async _getAllEventCoordinators(eventId: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/coordinators/get_coordinators/${eventId}`,
+      method: HttpMethod.GET,
+    })
+  }
+
+  static async _deleteEventCoordinators(id: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/coordinators/delete/${id}`,
+      method: HttpMethod.DELETE
+    })
   }
 }

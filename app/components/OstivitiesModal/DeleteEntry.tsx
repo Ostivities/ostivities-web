@@ -3,11 +3,18 @@ import { IModal } from "@/app/utils/interface";
 import { Button, message, Modal, Space } from "antd";
 import React from "react";
 import { Paragraph } from "../typography/Typography";
+import { useDeleteEventCoordinator } from "@/app/hooks/coordinators/coordinators.hook";
 
-const DeleteEntry = ({ open, onCancel, onOk, actionType }: IModal) => {
-  const handleDeleteClick = () => {
-    message.success('Entry deleted successfully'); // Success message for delete
-    onOk(); // Trigger the onOk callback, which should close the modal
+
+const DeleteEntry = ({ open, onCancel, onOk, actionType, id }: IModal) => {
+  const { deleteEventCoordinator } = useDeleteEventCoordinator()
+
+  const handleDeleteClick = async() => {
+    const response = await deleteEventCoordinator.mutateAsync(id)
+    if(response.status === 20) {
+      onOk(); // Trigger the onOk callback, which should close the modal
+
+    }
   };
 
   const handleCancelClick = () => {

@@ -189,7 +189,7 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
   );
 };
 
-  const EventDetail = () => {
+const EventDetail = () => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams<{ event: string }>();
@@ -205,7 +205,6 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
 
   const { getEventGuests } = useGetEventGuests(eventDetails?.id, 1, 10);
   const allGuestsData = getEventGuests?.data?.data?.data?.guests;
-
 
   const handleMenuClick: MenuProps["onClick"] = (e) => {
     return e;
@@ -227,7 +226,8 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
 
   const userFullName =
     eventDetails?.user?.accountType === ACCOUNT_TYPE.PERSONAL
-      ? `${eventDetails?.user?.firstName ?? ""} ${eventDetails?.user?.lastName ?? ""
+      ? `${eventDetails?.user?.firstName ?? ""} ${
+          eventDetails?.user?.lastName ?? ""
         }`.trim()
       : `${eventDetails?.user?.businessName ?? ""}`;
 
@@ -403,7 +403,10 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
           <EventPageLoader />
         ) : (
           <div className="hidden min-[900px]:flex gap-10 md:flex-row">
-            <div className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden bg-white" style={{ boxShadow: '0 12px 24px rgba(0, 0, 0, 0.1)' }}>
+            <div
+              className="relative w-[400px] h-[520px] rounded-[3.125rem] overflow-hidden bg-white"
+              style={{ boxShadow: "0 12px 24px rgba(0, 0, 0, 0.1)" }}
+            >
               <Image
                 src={
                   eventDetails?.eventImage
@@ -551,9 +554,9 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
                   </div>
                 </div>
                 {twitterLink?.url ||
-                  instagramLink?.url ||
-                  websiteLink?.url ||
-                  facebookLink?.url ? (
+                instagramLink?.url ||
+                websiteLink?.url ||
+                facebookLink?.url ? (
                   <div className="flex gap-3 items-center">
                     <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex items-center justify-center">
                       <Image
@@ -640,6 +643,112 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
                     </div>
                   </div>
                 ) : null}
+                {eventDetails?.total_ticket_sold > 6 && (
+                  <div style={{ marginTop: "20px", textAlign: "start" }}>
+                    <p
+                      style={{
+                        fontWeight: "500", // Medium weight
+                        fontFamily: "'Bricolage Grotesque', sans-serif", // Use the font here
+                        fontSize: "16px",
+                        // color: "#e20000", // Font color
+                        borderBottom: "1px solid #ccc", // Adds the line
+                        paddingBottom: "5px", // Adds spacing between text and line
+                        marginBottom: "10px", // Adds spacing below the paragraph
+                      }}
+                    >
+                      {eventDetails?.total_ticket_sold || 0} Going
+                    </p>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "start",
+                        alignItems: "start",
+                        marginTop: "10px",
+                      }}
+                    >
+                      {/* Add circular images for attendees */}
+                      <img
+                        src="/Profile1.svg"
+                        alt="Attendee 1"
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          borderRadius: "50%",
+                          marginLeft: "-10px", // Overlap effect
+                          border: "2px solid white", // Border for better visibility
+                        }}
+                      />
+                      <img
+                        src="/Profile2.svg"
+                        alt="Attendee 2"
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          borderRadius: "50%",
+                          marginLeft: "-10px",
+                          border: "2px solid white",
+                        }}
+                      />
+                      <img
+                        src="/Profile3.svg"
+                        alt="Attendee 3"
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          borderRadius: "50%",
+                          marginLeft: "-10px",
+                          border: "2px solid white",
+                        }}
+                      />
+                      <img
+                        src="/Profile4.svg"
+                        alt="Attendee 4"
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          borderRadius: "50%",
+                          marginLeft: "-10px",
+                          border: "2px solid white",
+                        }}
+                      />
+                      <img
+                        src="/Profile3.svg"
+                        alt="Attendee 5"
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          borderRadius: "50%",
+                          marginLeft: "-10px",
+                          border: "2px solid white",
+                        }}
+                      />
+                      <img
+                        src="/Profile2.svg"
+                        alt="Attendee 6"
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          borderRadius: "50%",
+                          marginLeft: "-10px",
+                          border: "2px solid white",
+                        }}
+                      />
+                      {/* Add as many profile images as necessary */}
+                    </div>
+                    <p
+                      style={{
+                        marginTop: "10px",
+                        fontWeight: 400,
+                        color: "#000",
+                        fontFamily: "'Bricolage Grotesque', sans-serif", // Apply the font here as well
+                      }}
+                    >
+                      {allGuestsData?.[0]?.personal_information?.firstName},{" "}
+                      {allGuestsData?.[1]?.personal_information?.firstName} and{" "}
+                      {eventDetails?.total_ticket_sold - 2 || 0} others
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
             <div
@@ -656,11 +765,12 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
                     {" "}
                     {/* Wrapper for buttons with tighter spacing */}
                     <Button
-                      icon={<ShareAltOutlined className="text-black text-2xl" />}
+                      icon={
+                        <ShareAltOutlined className="text-black text-2xl" />
+                      }
                       onClick={handleOpenModal}
                       className="bg-white border-none p-0"
                     />
-
                     <Tooltip
                       title={
                         isLoggedIn
@@ -670,15 +780,22 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
                     >
                       {isLoggedIn ? (
                         <Button
-                          icon={<ScanOutlined className="text-black text-2xl" />}
+                          icon={
+                            <ScanOutlined className="text-black text-2xl" />
+                          }
                           onClick={() =>
-                            window.open("https://scanner.ostivities.com/", "_blank")
+                            window.open(
+                              "https://scanner.ostivities.com/",
+                              "_blank"
+                            )
                           }
                           className="bg-white border-none p-0"
                         />
                       ) : (
                         <Button
-                          icon={<EditOutlined className="text-black text-2xl" />}
+                          icon={
+                            <EditOutlined className="text-black text-2xl" />
+                          }
                           onClick={handleShowModal}
                           className="bg-white border-none p-0"
                         />
@@ -787,13 +904,20 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
                           fontSize: "16px",
                           // color: "#e20000", // Font color
                           borderBottom: "1px solid #ccc", // Adds the line
-                          paddingBottom: "5px",          // Adds spacing between text and line
-                          marginBottom: "10px",          // Adds spacing below the paragraph
+                          paddingBottom: "5px", // Adds spacing between text and line
+                          marginBottom: "10px", // Adds spacing below the paragraph
                         }}
                       >
                         {eventDetails?.total_ticket_sold || 0} Going
                       </p>
-                      <div style={{ display: "flex", justifyContent: "start", alignItems: "start", marginTop: "10px" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "start",
+                          alignItems: "start",
+                          marginTop: "10px",
+                        }}
+                      >
                         {/* Add circular images for attendees */}
                         <img
                           src="/Profile1.svg"
@@ -871,7 +995,9 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
                           fontFamily: "'Bricolage Grotesque', sans-serif", // Apply the font here as well
                         }}
                       >
-                        {allGuestsData?.[0]?.personal_information?.firstName}, {allGuestsData?.[1]?.personal_information?.firstName} and {eventDetails?.total_ticket_sold - 2 || 0} others
+                        {allGuestsData?.[0]?.personal_information?.firstName},{" "}
+                        {allGuestsData?.[1]?.personal_information?.firstName}{" "}
+                        and {eventDetails?.total_ticket_sold - 2 || 0} others
                       </p>
                     </div>
                   )}
@@ -1269,9 +1395,9 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
                 </div>
               </div>
               {twitterLink?.url ||
-                instagramLink?.url ||
-                websiteLink?.url ||
-                facebookLink?.url ? (
+              instagramLink?.url ||
+              websiteLink?.url ||
+              facebookLink?.url ? (
                 // If not loading and links exist, show the Contact Us section
                 <div className="flex gap-3 items-center">
                   <div className="bg-OWANBE_PRY/20 p-2 max-h-[41px] min-w-[41px] rounded-xl flex items-center justify-center">
@@ -1357,6 +1483,112 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
                   </div>
                 </div>
               ) : null}
+              {eventDetails?.total_ticket_sold > 6 && (
+                <div style={{ marginTop: "20px", textAlign: "start" }}>
+                  <p
+                    style={{
+                      fontWeight: "500", // Medium weight
+                      fontFamily: "'Bricolage Grotesque', sans-serif", // Use the font here
+                      fontSize: "16px",
+                      // color: "#e20000", // Font color
+                      borderBottom: "1px solid #ccc", // Adds the line
+                      paddingBottom: "5px", // Adds spacing between text and line
+                      marginBottom: "10px", // Adds spacing below the paragraph
+                    }}
+                  >
+                    {eventDetails?.total_ticket_sold || 0} Going
+                  </p>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "start",
+                      alignItems: "start",
+                      marginTop: "10px",
+                    }}
+                  >
+                    {/* Add circular images for attendees */}
+                    <img
+                      src="/Profile1.svg"
+                      alt="Attendee 1"
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                        marginLeft: "-10px", // Overlap effect
+                        border: "2px solid white", // Border for better visibility
+                      }}
+                    />
+                    <img
+                      src="/Profile2.svg"
+                      alt="Attendee 2"
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                        marginLeft: "-10px",
+                        border: "2px solid white",
+                      }}
+                    />
+                    <img
+                      src="/Profile3.svg"
+                      alt="Attendee 3"
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                        marginLeft: "-10px",
+                        border: "2px solid white",
+                      }}
+                    />
+                    <img
+                      src="/Profile4.svg"
+                      alt="Attendee 4"
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                        marginLeft: "-10px",
+                        border: "2px solid white",
+                      }}
+                    />
+                    <img
+                      src="/Profile3.svg"
+                      alt="Attendee 5"
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                        marginLeft: "-10px",
+                        border: "2px solid white",
+                      }}
+                    />
+                    <img
+                      src="/Profile2.svg"
+                      alt="Attendee 6"
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                        marginLeft: "-10px",
+                        border: "2px solid white",
+                      }}
+                    />
+                    {/* Add as many profile images as necessary */}
+                  </div>
+                  <p
+                    style={{
+                      marginTop: "10px",
+                      fontWeight: 400,
+                      color: "#000",
+                      fontFamily: "'Bricolage Grotesque', sans-serif", // Apply the font here as well
+                    }}
+                  >
+                    {allGuestsData?.[0]?.personal_information?.firstName},{" "}
+                    {allGuestsData?.[1]?.personal_information?.firstName} and{" "}
+                    {eventDetails?.total_ticket_sold - 2 || 0} others
+                  </p>
+                </div>
+              )}
             </div>
           )}
           <div>
@@ -1415,13 +1647,20 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
                     fontSize: "16px",
                     // color: "#e20000", // Font color
                     borderBottom: "1px solid #ccc", // Adds the line
-                    paddingBottom: "5px",          // Adds spacing between text and line
-                    marginBottom: "10px",          // Adds spacing below the paragraph
+                    paddingBottom: "5px", // Adds spacing between text and line
+                    marginBottom: "10px", // Adds spacing below the paragraph
                   }}
                 >
                   {eventDetails?.total_ticket_sold || 0} Going
                 </p>
-                <div style={{ display: "flex", justifyContent: "start", alignItems: "start", marginTop: "10px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "start",
+                    alignItems: "start",
+                    marginTop: "10px",
+                  }}
+                >
                   {/* Add circular images for attendees */}
                   <img
                     src="/Profile1.svg"
@@ -1499,7 +1738,9 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
                     fontFamily: "'Bricolage Grotesque', sans-serif", // Apply the font here as well
                   }}
                 >
-                  {allGuestsData?.[0]?.personal_information?.firstName}, {allGuestsData?.[1]?.personal_information?.firstName} and {eventDetails?.total_ticket_sold - 2 || 0} others
+                  {allGuestsData?.[0]?.personal_information?.firstName},{" "}
+                  {allGuestsData?.[1]?.personal_information?.firstName} and{" "}
+                  {eventDetails?.total_ticket_sold - 2 || 0} others
                 </p>
               </div>
             )}
@@ -1514,7 +1755,8 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
                 backgroundColor: "white",
                 zIndex: 99,
               }}
-              className="flex justify-center mt-12">
+              className="flex justify-center mt-12"
+            >
               {eventDetails?.vendor_registration === true ? (
                 <>
                   <Dropdown

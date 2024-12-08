@@ -33,7 +33,7 @@ import {
   useGetEventTickets,
   useGetEventTicketsByUniqueKey,
 } from "@/app/hooks/ticket/ticket.hook";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useParams, usePathname, useSearchParams } from "next/navigation";
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
 import "@/app/globals.css";
@@ -63,6 +63,8 @@ const TicketsSelection = () => {
   const router = useRouter();
   const params = useParams<{ event: string }>();
   const { registerGuest } = useRegisterGuest();
+  const pathname = usePathname(); // Get the current path
+  const searchParams = useSearchParams(); // Get query params
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
   const [currentPage, setCurrentPage] = useState<
     "tickets" | "contactform" | "payment"
@@ -841,6 +843,7 @@ const TicketsSelection = () => {
     } else {
       setLoading(false);
       setCurrentPage("payment");
+      router.push(`/discover/${params?.event}/tickets?page=payment`)
     }
     // router.push(`discover/${params?.event}/payment`);
   };
@@ -914,11 +917,35 @@ const TicketsSelection = () => {
       checkFormValidity();
     }
   }, [currentPage, form.getFieldsValue(), checkFormValidity]);
+
+
+  useEffect(() => {
+    // Function to determine the current page from the query parameter
+    const determinePage = () => {
+      const pageParam = searchParams.get("page");
+
+      if (pageParam) {
+        if (pageParam === "tickets" || pageParam === "contactform" || pageParam === "payment") {
+          setCurrentPage(pageParam);
+        }
+      } else {
+        // Default page based on the path
+        if (pathname.includes("")) setCurrentPage("tickets");
+        else if (pathname.includes("contactform")) setCurrentPage("contactform");
+        else if (pathname.includes("payment")) setCurrentPage("payment");
+      }
+    };
+
+    determinePage(); // Run on component mount
+  }, [pathname, searchParams]); 
+
+
   const handleButtonClick = () => {
     if (currentPage === "tickets") {
       // Check if tickets are selected
       if (ticketDetails?.length > 0) {
         setCurrentPage("contactform"); // Move to contact form page
+        router.push(`/discover/${params?.event}/tickets?page=contactform`)
       }
     } else if (currentPage === "contactform") {
       // Check if the form is valid

@@ -239,7 +239,8 @@ const EventTickets = () => {
           <>
             {record?.ticketEntity === TICKET_ENTITY.SINGLE
               ? "Single"
-              : "Collective"}
+              : "Collective"
+            }
           </>
         );
       },

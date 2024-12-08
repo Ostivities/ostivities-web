@@ -17,6 +17,7 @@ import {
   useGetTicketDiscount,
 } from "@/app/hooks/discount/discount.hook";
 
+
 interface SummaryProps {
   continueBtn?: boolean;
   allInfo?: any;
