@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useProfile } from "@/app/hooks/auth/auth.hook";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { IoChevronDown } from "react-icons/io5";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { useCookies } from "react-cookie";
@@ -205,6 +205,14 @@ const EventDetail = () => {
 
   const { getEventGuests } = useGetEventGuests(eventDetails?.id, 1, 10);
   const allGuestsData = getEventGuests?.data?.data?.data?.guests;
+  const totalGuests = getEventGuests?.data?.data?.data?.total;
+
+  interface Guest {
+    personal_information: {
+      firstName: string;
+    };
+  }
+
 
   const handleMenuClick: MenuProps["onClick"] = (e) => {
     return e;
@@ -643,112 +651,6 @@ const EventDetail = () => {
                     </div>
                   </div>
                 ) : null}
-                {eventDetails?.total_ticket_sold > 6 && (
-                  <div style={{ marginTop: "20px", textAlign: "start" }}>
-                    <p
-                      style={{
-                        fontWeight: "500", // Medium weight
-                        fontFamily: "'Bricolage Grotesque', sans-serif", // Use the font here
-                        fontSize: "16px",
-                        // color: "#e20000", // Font color
-                        borderBottom: "1px solid #ccc", // Adds the line
-                        paddingBottom: "5px", // Adds spacing between text and line
-                        marginBottom: "10px", // Adds spacing below the paragraph
-                      }}
-                    >
-                      {eventDetails?.total_ticket_sold || 0} Going
-                    </p>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "start",
-                        alignItems: "start",
-                        marginTop: "10px",
-                      }}
-                    >
-                      {/* Add circular images for attendees */}
-                      <img
-                        src="/Profile1.svg"
-                        alt="Attendee 1"
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          borderRadius: "50%",
-                          marginLeft: "-10px", // Overlap effect
-                          border: "2px solid white", // Border for better visibility
-                        }}
-                      />
-                      <img
-                        src="/Profile2.svg"
-                        alt="Attendee 2"
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          borderRadius: "50%",
-                          marginLeft: "-10px",
-                          border: "2px solid white",
-                        }}
-                      />
-                      <img
-                        src="/Profile3.svg"
-                        alt="Attendee 3"
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          borderRadius: "50%",
-                          marginLeft: "-10px",
-                          border: "2px solid white",
-                        }}
-                      />
-                      <img
-                        src="/Profile4.svg"
-                        alt="Attendee 4"
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          borderRadius: "50%",
-                          marginLeft: "-10px",
-                          border: "2px solid white",
-                        }}
-                      />
-                      <img
-                        src="/Profile3.svg"
-                        alt="Attendee 5"
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          borderRadius: "50%",
-                          marginLeft: "-10px",
-                          border: "2px solid white",
-                        }}
-                      />
-                      <img
-                        src="/Profile2.svg"
-                        alt="Attendee 6"
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          borderRadius: "50%",
-                          marginLeft: "-10px",
-                          border: "2px solid white",
-                        }}
-                      />
-                      {/* Add as many profile images as necessary */}
-                    </div>
-                    <p
-                      style={{
-                        marginTop: "10px",
-                        fontWeight: 400,
-                        color: "#000",
-                        fontFamily: "'Bricolage Grotesque', sans-serif", // Apply the font here as well
-                      }}
-                    >
-                      {allGuestsData?.[0]?.personal_information?.firstName},{" "}
-                      {allGuestsData?.[1]?.personal_information?.firstName} and{" "}
-                      {eventDetails?.total_ticket_sold - 2 || 0} others
-                    </p>
-                  </div>
-                )}
               </div>
             </div>
             <div
@@ -995,8 +897,7 @@ const EventDetail = () => {
                           fontFamily: "'Bricolage Grotesque', sans-serif", // Apply the font here as well
                         }}
                       >
-                        {allGuestsData?.[0]?.personal_information?.firstName},{" "}
-                        {allGuestsData?.[1]?.personal_information?.firstName}{" "}
+                        {/* <LatestGuests allGuestsData={allGuestsData} /> */}
                         and {eventDetails?.total_ticket_sold - 2 || 0} others
                       </p>
                     </div>
@@ -1638,113 +1539,6 @@ const EventDetail = () => {
                 )}
               </>
             )}
-            {eventDetails?.total_ticket_sold > 6 && (
-              <div style={{ marginTop: "20px", textAlign: "start" }}>
-                <p
-                  style={{
-                    fontWeight: "500", // Medium weight
-                    fontFamily: "'Bricolage Grotesque', sans-serif", // Use the font here
-                    fontSize: "16px",
-                    // color: "#e20000", // Font color
-                    borderBottom: "1px solid #ccc", // Adds the line
-                    paddingBottom: "5px", // Adds spacing between text and line
-                    marginBottom: "10px", // Adds spacing below the paragraph
-                  }}
-                >
-                  {eventDetails?.total_ticket_sold || 0} Going
-                </p>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "start",
-                    alignItems: "start",
-                    marginTop: "10px",
-                  }}
-                >
-                  {/* Add circular images for attendees */}
-                  <img
-                    src="/Profile1.svg"
-                    alt="Attendee 1"
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      marginLeft: "-10px", // Overlap effect
-                      border: "2px solid white", // Border for better visibility
-                    }}
-                  />
-                  <img
-                    src="/Profile2.svg"
-                    alt="Attendee 2"
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      marginLeft: "-10px",
-                      border: "2px solid white",
-                    }}
-                  />
-                  <img
-                    src="/Profile3.svg"
-                    alt="Attendee 3"
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      marginLeft: "-10px",
-                      border: "2px solid white",
-                    }}
-                  />
-                  <img
-                    src="/Profile4.svg"
-                    alt="Attendee 4"
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      marginLeft: "-10px",
-                      border: "2px solid white",
-                    }}
-                  />
-                  <img
-                    src="/Profile3.svg"
-                    alt="Attendee 5"
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      marginLeft: "-10px",
-                      border: "2px solid white",
-                    }}
-                  />
-                  <img
-                    src="/Profile2.svg"
-                    alt="Attendee 6"
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      marginLeft: "-10px",
-                      border: "2px solid white",
-                    }}
-                  />
-                  {/* Add as many profile images as necessary */}
-                </div>
-                <p
-                  style={{
-                    marginTop: "10px",
-                    fontWeight: 400,
-                    color: "#000",
-                    fontFamily: "'Bricolage Grotesque', sans-serif", // Apply the font here as well
-                  }}
-                >
-                  {allGuestsData?.[0]?.personal_information?.firstName},{" "}
-                  {allGuestsData?.[1]?.personal_information?.firstName} and{" "}
-                  {eventDetails?.total_ticket_sold - 2 || 0} others
-                </p>
-              </div>
-            )}
-
             <div
               style={{
                 position: "fixed",
