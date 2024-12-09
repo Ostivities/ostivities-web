@@ -166,10 +166,10 @@ const EventStore = () => {
             {/* Image with Quick View Overlay */}
             <div className="relative">
               <img
-                src="/test1.jpeg"
+                src="/test3.jpeg"
                 alt="Sherpa Mule"
-                className="w-full h-auto object-cover rounded-md mb-4"
-                style={{ maxWidth: "300px", margin: "0 auto" }}
+                className="w-full  object-cover rounded-md mb-4"
+                style={{ maxWidth: "250px", maxHeight: "150px", margin: "0 auto" }}
               />
               {/* Quick View Overlay */}
               <button

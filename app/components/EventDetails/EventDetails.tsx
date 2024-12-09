@@ -303,7 +303,7 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/discover/events-created/${params?.id}/`}
+            href={`/discover/events-created/${params?.id}/merchandise`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
             Product
@@ -314,7 +314,7 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/discover/events-created/${params?.id}/`}
+            href={`/discover/events-created/${params?.id}/merchandis/orders`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
             Orders
@@ -325,7 +325,7 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/discover/events-created/${params?.id}/`}
+            href={`/discover/events-created/${params?.id}/merchandis/shipping`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
            Shipping
@@ -543,38 +543,25 @@ export default function EventDetailsComponent({
         </Card>
       );
     };
-
-    const cardStyle = {
-      width: "full", // Adjust card width
-      height: "150px", // Adjust card height
-    };
-
-    const titleStyle = {
-      fontSize: "20px", // Adjust title text size
-    };
-
-    const valueStyle = {
-      fontSize: "19px", // Adjust value text size
-    };
-
-    const containerStyle = {
-      gap: "4px", // Adjust the spacing between title and value (you can customize this)
-    };
-
-    const salesRevenue = 250000;
-
+  
+    const cardStyle = { width: "full", height: "150px" };
+    const titleStyle = { fontSize: "20px" };
+    const valueStyle = { fontSize: "19px" };
+    const containerStyle = { gap: "4px" };
+  
+    const totalRevenue = 500000; // Example data
     const formattedRevenue = new Intl.NumberFormat("en-NG", {
       style: "currency",
       currency: "NGN",
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(totalRevenue ?? 0);
-
+  
     return (
       <div className="grid grid-cols-4 gap-x-6">
         <CardMetrics
           title="Total Tickets Sold"
-          value={totalTickets ?? ""}
+          value={250} // Example value
           cardStyle={cardStyle}
           titleStyle={titleStyle}
           valueStyle={valueStyle}
@@ -598,7 +585,7 @@ export default function EventDetailsComponent({
         />
         <CardMetrics
           title="Next Payout Date"
-          value={nextDate || "2024-04-07"}
+          value={"2024-04-07"}
           cardStyle={cardStyle}
           titleStyle={titleStyle}
           valueStyle={valueStyle}
@@ -607,6 +594,97 @@ export default function EventDetailsComponent({
       </div>
     );
   };
+
+  const StoreMetrics = (): JSX.Element => {
+    const CardsMetrics = ({
+      title,
+      value,
+      cardStyle = {},
+      titleStyle = {},
+      valueStyle = {},
+      containerStyle = {},
+    }: {
+      title: string;
+      value: number | string;
+      cardStyle?: React.CSSProperties;
+      titleStyle?: React.CSSProperties;
+      valueStyle?: React.CSSProperties;
+      containerStyle?: React.CSSProperties;
+    }): JSX.Element => {
+      return (
+        <Card
+          className="rounded-3xl p-0"
+          style={{
+            borderRadius: "30px",
+            padding: "0px",
+            boxShadow: "0px 8px 24px 0px #00000014",
+            ...cardStyle,
+          }}
+        >
+          <div
+            className="flex flex-col mx-auto text-center py-5"
+            style={containerStyle}
+          >
+            <p
+              className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_PRY"
+              style={titleStyle}
+            >
+              {title}
+            </p>
+            <p
+              className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_DARK"
+              style={valueStyle}
+            >
+              {value}
+            </p>
+          </div>
+        </Card>
+      );
+    };
+  
+    const cardStyle = { width: "full", height: "150px" };
+    const titleStyle = { fontSize: "20px" };
+    const valueStyle = { fontSize: "19px" };
+    const containerStyle = { gap: "4px" };
+
+    const totalRevenue = 500000; // Example data
+    const formattedRevenue = new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(totalRevenue ?? 0);
+  
+    return (
+      <div className="grid grid-cols-3 gap-4">
+        <CardsMetrics
+          title="Total Inventory Value"
+          value={formattedRevenue}
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+        <CardsMetrics
+          title="Products Sold"
+          value={120} // Example value
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+        <CardsMetrics
+          title="Out of Stock"
+          value={0}
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+      </div>
+    );
+  };
+  
 
   const title = (
     <div className="flex items-center w-full relative pb-2 space-x-8">
@@ -709,13 +787,15 @@ export default function EventDetailsComponent({
         extraComponents={
           <div
             className={`flex flex-col ${
-              pathname.includes("sales") ? "space-y-8" : ""
+              pathname.includes("sales") || pathname.includes("merchandise") ? "space-y-8" : ""
             }`}
           >
             <ExtraTab />
             {pathname.includes("sales") && <SalesMetrics />}
+            {pathname.includes("merchandise")  && <StoreMetrics/>}
           </div>
         }
+        
       >
         <div className="w-full mx-auto flex flex-col space-y-5 py-2">
           <>{children}</>

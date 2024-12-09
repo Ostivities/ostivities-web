@@ -319,6 +319,15 @@ export interface PaymentDataType {
   paymentDate: string;
 }
 
+export interface ProductDataType {
+  key: string;
+  product: string;
+  inStock: number;
+  price: number;
+  status: string;
+}
+
+
 export interface IUser {
   firstName: string;
   lastName: string;
