@@ -325,7 +325,7 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/discover/events-created/${params?.id}/merchandis/shipping`}
+            href={`/discover/events-created/${params?.id}/merchandise/shipping`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
            Shipping
