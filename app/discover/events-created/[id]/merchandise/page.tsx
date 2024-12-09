@@ -1,16 +1,16 @@
 "use client";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
-import { Heading5, Label } from "@/app/components/typography/Typography";
-import {ICoordinatorData, ProductDataType } from "@/app/utils/interface";
+import { Heading5, Label, Paragraph } from "@/app/components/typography/Typography";
+import { ICoordinatorData, ProductDataType } from "@/app/utils/interface";
 import { Button, Dropdown, Input, Space, Table, Tabs } from "antd";
-import { FileExcelOutlined, FilePdfOutlined, MenuOutlined } from "@ant-design/icons";
+import { DeleteOutlined, FileExcelOutlined, FilePdfOutlined, MenuOutlined, PlusOutlined } from "@ant-design/icons";
 import jsPDF from "jspdf";
 import { useGetUserEvent } from "@/app/hooks/event/event.hook";
 import { useParams } from "next/navigation";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
-import React, { useState } from "react"; 
-import { ColumnsType } from "antd/es/table"; 
+import React, { useState } from "react";
+import { ColumnsType } from "antd/es/table";
 import { MenuItemType } from "antd/es/menu/interface";
 
 
@@ -88,7 +88,7 @@ const Product = () => {
     {
       title: (
         <Label
-          content="Action" 
+          content="Action"
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),
@@ -195,28 +195,28 @@ const Product = () => {
 
   const { TabPane } = Tabs;
 
-const tabStyle = {
-  fontFamily: 'Bricolage Grotesque',
-  fontWeight: 500,
-};
+  const tabStyle = {
+    fontFamily: 'Bricolage Grotesque',
+    fontWeight: 500,
+  };
 
-const activeTabStyle = {
-  ...tabStyle, // Include common styles
-  color: '#e20000', // Active color
-  position: 'relative',
-};
+  const activeTabStyle = {
+    ...tabStyle, // Include common styles
+    color: '#e20000', // Active color
+    position: 'relative',
+  };
 
-const inactiveTabStyle = {
-  ...tabStyle, // Include common styles
-  color: 'grey', // Inactive color
-};
-  
-  
+  const inactiveTabStyle = {
+    ...tabStyle, // Include common styles
+    color: 'grey', // Inactive color
+  };
+
+
   return (
-    
+
     <EventDetailsComponent >
       <Space direction="vertical" size="middle" className="w-full">
-        <Tabs defaultActiveKey="1" className="w-full" onChange={setActiveKey}>
+        {/* <Tabs defaultActiveKey="1" className="w-full" onChange={setActiveKey}>
           <TabPane
             tab={
               <span style={activeKey === "1" ? activeTabStyle : inactiveTabStyle}>
@@ -225,57 +225,96 @@ const inactiveTabStyle = {
               </span>
             }
             key="1"
-          >
-            <Heading5 className="pt-4 pb-5" content={"Product"} />
-            <Space className="w-full justify-between">
-              <Input
-                placeholder="Search product Name"
-                onChange={handleProductSearch}
-                style={{ width: 300 }}
-              />
-              {selectedProductRowKeys.length > 0 && (
-                <Space>
-                  <Button
-                    type="default"
-                    className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
-                    style={{ borderRadius: 15, marginRight: 8 }}
-                    onClick={() => handleExport("excel", ProductData.filter((item) => selectedProductRowKeys.includes(item.key)), productColumns, "ProductHistory")}
-                  >
-                    <FileExcelOutlined />
-                  </Button>
-                  <Button
-                    type="default"
-                    className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
-                    style={{ borderRadius: 15 }}
-                    onClick={() => handleExport("pdf", ProductData.filter((item) => selectedProductRowKeys.includes(item.key)), productColumns, "ProductHistory")}
-                  >
-                    <FilePdfOutlined />
-                  </Button>
-                </Space>
-              )}
-            </Space>
-            <br /><br />
-            <Table
-              rowSelection={{
-                selectedRowKeys: selectedProductRowKeys,
-                onChange: (keys) => setSelectedProductRowKeys(keys),
-              }}
-              columns={productColumns}
-              dataSource={filteredProductData}
-              pagination={{
-                current: currentProductPage,
-                pageSize: productPageSize,
-                onChange: (page, size) => {
-                  setCurrentProductPage(page);
-                  setProductPageSize(size);
-                },
-              }}
-              scroll={{ x: "max-content" }}
-            />
-          </TabPane>
-        </Tabs>
+          > */}
+       <Space
+  direction="horizontal"
+  className="w-full justify-between items-center"
+  style={{ display: "flex", alignItems: "center" }}
+>
+  <Heading5 className="-mb-2" content={"Product"} />
+</Space>
+
+<Paragraph
+  className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
+  content={"Manage and create your event product here."}
+  styles={{ fontWeight: "normal !important" }}
+/>
+<Button
+  type="primary" 
+  size="large"
+  className="bg-OWANBE_PRY rounded-full px-4 py-2 text-xs font-semibold text-white float-end"
+  style={{
+    borderRadius: "20px",
+    fontFamily: "BricolageGrotesqueMedium",
+    margin: "5px",
+  }}
+  onClick={() => setShowNewVendorDetails(true)}
+>
+  <PlusOutlined />
+  <span className="pl-1">Add New Product</span>
+</Button>
+
+      <Space className="w-full justify-between">
+        <Input
+          placeholder="Search product Name"
+          onChange={handleProductSearch}
+          style={{ width: 300 }}
+        />
+        {selectedProductRowKeys.length > 0 && (
+          <Space>
+             <Button
+                type="primary"
+                className="font-BricolageGrotesqueSemiBold continue font-bold custom-button"
+                danger
+                style={{ borderRadius: 15, marginRight: 8 }}
+                onClick={() => {
+                  setIsShown(true);
+                  setActionType("delete");
+                }}
+              >
+                <DeleteOutlined />
+              </Button>
+            <Button
+              type="default"
+              className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+              style={{ borderRadius: 15, marginRight: 8 }}
+              onClick={() => handleExport("excel", ProductData.filter((item) => selectedProductRowKeys.includes(item.key)), productColumns, "ProductHistory")}
+            >
+              <FileExcelOutlined />
+            </Button>
+            <Button
+              type="default"
+              className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+              style={{ borderRadius: 15 }}
+              onClick={() => handleExport("pdf", ProductData.filter((item) => selectedProductRowKeys.includes(item.key)), productColumns, "ProductHistory")}
+            >
+              <FilePdfOutlined />
+            </Button>
+          </Space>
+        )}
       </Space>
-    </EventDetailsComponent>
+
+      <Table
+        rowSelection={{
+          selectedRowKeys: selectedProductRowKeys,
+          onChange: (keys) => setSelectedProductRowKeys(keys),
+        }}
+        columns={productColumns}
+        dataSource={filteredProductData}
+        pagination={{
+          current: currentProductPage,
+          pageSize: productPageSize,
+          onChange: (page, size) => {
+            setCurrentProductPage(page);
+            setProductPageSize(size);
+          },
+        }}
+        scroll={{ x: "max-content" }}
+      />
+      {/* </TabPane>
+        </Tabs> */}
+    </Space>
+    </EventDetailsComponent >
   );
 };
 

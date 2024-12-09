@@ -1,36 +1,18 @@
-'use client';
-import DashboardLayout from '@/app/components/DashboardLayout/DashboardLayout';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import "@/app/globals.css";
+"use client";
+import React, { useState } from 'react';
 import { Form, Input, Button, Upload, message, Modal, Row, Col, Space, Select, Checkbox } from 'antd';
+import Image from 'next/image';
 import "@/app/globals.css";
 import { LinkOutlined, XOutlined, FacebookFilled, InstagramFilled, TwitterOutlined } from '@ant-design/icons';
 import { Controller, useForm } from 'react-hook-form';
 import { IFormInput } from '@/app/utils/interface';
+import { useRouter } from 'next/navigation';
 import { Label } from '@/app/components/typography/Typography';
-import { useState } from 'react';
 
-const Vendorsregistration = () => {
-    const router = useRouter();
+const NewVendorsDetails = () => {
   const [profileImage, setProfileImage] = useState<string>("/images/emptyimage.png");
   const [uploadButton, setUploadButton] = useState<string>("Update");
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false);
- 
-    const title = (
-      <div className="flex-center gap-2">
-        <Image
-          src="/icons/back-arrow.svg"
-          alt=""
-          height={25}
-          width={25}
-          onClick={() => router.back()}
-          className="cursor-pointer"
-        />
-        <h1 style={{ fontSize: '24px' }}>Registration information</h1>
-      </div>
-    );
-  
 
   const {
     handleSubmit,
@@ -41,6 +23,8 @@ const Vendorsregistration = () => {
   } = useForm<IFormInput>({
     mode: "all",
   });
+
+  const router = useRouter(); // useRouter hook to navigate
 
   // Function to handle file upload
   const handleImageUpload = (options: any) => {
@@ -78,13 +62,13 @@ const Vendorsregistration = () => {
   // Function to handle image removal
   const handleRemoveImage = () => {
     Modal.confirm({
-      title: 'Are you sure you want to remove your image?',
+      title: 'Are you sure you want to remove the vendors image?',
       icon: null,
       onOk() {
         setProfileImage("/images/emptyimage.png");
         setUploadButton("Update");
         setIsImageUploaded(false);
-        message.success('Image removed successfully');
+        message.success('Vendors image removed successfully');
       },
     });
   };
@@ -112,10 +96,14 @@ const Vendorsregistration = () => {
     setstatus(value);
   };
 
-
+  const handleAddVendors = () => {
+    message.success('Vendor added successfully');
+    
+    // Navigate to the previous page
+    router.back();
+};
 
   return (
-    <DashboardLayout title={title} isLoggedIn>
     <div style={{ maxWidth: '1700px', marginLeft: '50px' }}>
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px' }}>
       </div>
@@ -201,8 +189,8 @@ const Vendorsregistration = () => {
         <Input placeholder="Enter vendors address" style={{ width: '100%' }} />
       </Form.Item>
 
-      {/* Third Row */}
-      <Form.Item label="Vendors Specialties"
+       {/* Third Row */}
+       <Form.Item label="Vendors Specialties"
           name="VendorsSpecialties"
           rules={[{ required: true, message: "Please select specialty type!" }]}
           style={{ marginBottom: '8px' }}
@@ -327,7 +315,7 @@ const Vendorsregistration = () => {
     <Form.Item
       style={{  marginTop: '20px', marginBottom: '1px' }}
     >
-      <Space align="center"> 
+      <Space align="center">
         <Checkbox
           {...field}
           checked={field.value}
@@ -362,17 +350,20 @@ const Vendorsregistration = () => {
               size="large"
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
               style={{ marginBottom: '20px' }}
-              
-  onClick={() => router.push('/discover/vendorstickets')}
+              onClick={handleAddVendors}
             >
-              Continue
+              Add Vendor
             </Button>
           </div>
         </Form>
       </div>
     </div>
-    </DashboardLayout>
+    
   );
 };
 
-export default Vendorsregistration;
+export default NewVendorsDetails;
+function togglevendorsrecord(arg0: string) {
+  throw new Error('Function not implemented.');
+}
+
