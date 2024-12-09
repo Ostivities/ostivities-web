@@ -16,6 +16,8 @@ import {
   useGetEventDiscount,
   useGetTicketDiscount,
 } from "@/app/hooks/discount/discount.hook";
+import { useCookies } from "react-cookie";
+
 
 interface SummaryProps {
   continueBtn?: boolean;
@@ -72,6 +74,7 @@ const Summary = ({
   const [discountMessage, setDiscountMessage] = useState("");
   const [totalTicketPrice, setTotalTicketPrice] = useState<number>();
   const [subTotal, setSubTotal] = useState(false);
+  const [cookies, setCookie] = useCookies(["ticketDetails"])
   const [adjustedTotal, setAdjustedTotal] = useState<string>("0.00");
   const [shownDicount, setShownDiscount] = useState<number>();
   const [validDiscount, setValidDiscount] = useState(false);
@@ -87,27 +90,11 @@ const Summary = ({
   const availableDiscountCode = discountDetails?.map(
     (discount: any) => discount?.discountCode
   );
-  // console.log(availableDiscountCode)
-
-  // const discountCodeUsed = discountDetails?.filter((discount: any) => discount?.discountCode === discountCode)
-
-  // console.log(discountCodeUsed, "discountCodeUsed")
-  // console.log(ticketWithDiscount, "ticketWithDiscount")
 
   // useEffect(() => {
-  //   const discountCodeUsedType = discountCodeUsed?.map((discount: any) => discount?.discountType)
+  //   setCookie("ticketDetails", JSON.stringify(ticketDetails))
+  // },[ticketDetails, setCookie])
 
-  //   if (discountCodeUsedType === "FIXED") {
-
-  //   } else if (discountCodeUsedType === "PERCENTAGE") {
-
-  //   }
-
-  // })
-
-  // useEffect(() => {
-  //   onDiscountApplied && onDiscountApplied(discountApplied);
-  // }, [discountApplied, onDiscountApplied]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -135,60 +122,6 @@ const Summary = ({
     }
   }, [discountCode, ticketDetails]);
 
-  // useEffect(() => {
-  //   if (ticketDetails) {
-  //     const total = ticketDetails?.some(
-  //       (ticket: any) => ticket?.ticketDiscountValue !== undefined
-  //     )
-  //       ? ticketDetails?.reduce(
-  //           (acc: number, ticket: any) => acc + (ticket?.subTotal ?? 0), // Regular subtotal
-  //           0
-  //         ) -
-  //         ticketDetails?.reduce(
-  //           (acc, ticket) => acc + (ticket?.discountToDeduct ?? 0),
-  //           0
-  //         )
-  //       : ticketDetails?.reduce(
-  //           (acc: number, ticket: any) => acc + (ticket?.subTotal ?? 0), // Regular subtotal
-  //           0
-  //         );
-
-  //     // Update the state with formatted value
-  //     setAdjustedTotal(total.toLocaleString() + ".00");
-  //   }
-  // }, [ticketDetails]);
-
-  // useEffect(() => {
-  //   const checkDiscountCode = async () => {
-  //     // Ensure `discountCode` and `discountDetails` are defined
-  //     if (!discountCode || !discountDetails || !ticketDetails) return;
-
-  //     const discount = discountDetails?.find(
-  //       (discount: any) => discount?.discountCode === discountCode
-  //     );
-
-  //     const ticketApplicable = discount?.ticket
-
-  //     const ticketIds = ticketApplicable?.map((tickets: any) => tickets?.id);
-  //     const discountPresent = ticketDetails?.map((ticket: any) => ticket?.ticketId);
-
-  //     const discountChecks = discountPresent?.map(ticketId => ticketIds?.includes(ticketId));
-
-  //     // console.log(discountChecks);
-  //     // console.log(ticketIds, "ticketIds", ticketApplicable)
-  //     console.log(ticketDetails, "ticketDetails")
-  //     // const discountApplicable = ticketApplicable?.map((tickets: any) => tickets?.map((ticket: ITicketDetails) => ticket?.id))
-  //     // console.log(discount)
-  //     if (!discount) {
-  //       setDiscountMessage("Discount Code isn't valid");
-  //     } else if (discount) {
-  //       setDiscountMessage("Discount code has been applied to checkout!");
-  //     }
-  //   };
-
-  //   checkDiscountCode();
-  // }, [discountCode, discountDetails, ticketDetails]);
-  // console.log(discountCode)
 
   const handleAddDiscountClick = () => {
     setShowInput(true);

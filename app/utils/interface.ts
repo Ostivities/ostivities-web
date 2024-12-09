@@ -1,5 +1,5 @@
 import React, { HTMLAttributeAnchorTarget, Key } from "react";
-import { EXHIBITION_SPACE, TICKET_STOCK, USAGE_LIMIT, DISCOUNT_TYPE, PAYMENT_METHODS } from "./enums";
+import { EXHIBITION_SPACE, TICKET_STOCK, USAGE_LIMIT, DISCOUNT_TYPE, PAYMENT_METHODS, STAFF_ROLE } from "./enums";
 export enum ACCOUNT_TYPE {
   PERSONAL = "PERSONAL",
   ORGANISATION = "ORGANISATION",
@@ -631,3 +631,25 @@ export interface IVerifyBankAccount {
   account_number: string,
   bank_code: string
 }
+
+export interface ICoordinatorCreate {
+  staff_email: string;
+  staff_name: string;
+  staff_role: STAFF_ROLE;
+  staff_phone_number: string;
+  password: string;
+  eventId: string;
+}
+
+export interface ICoordinatorData {
+  staff_email: string;
+  staff_name: string;
+  staff_role: STAFF_ROLE;
+  staff_phone_number: string;
+  password: string;
+  eventId: string;
+  id: string;
+  key: string;
+  createdAt: string;
+}
+

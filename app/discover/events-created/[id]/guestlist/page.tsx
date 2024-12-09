@@ -13,9 +13,10 @@ import { Button, Skeleton, Flex, Input, Space, Table } from "antd";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import React, { useState } from "react";
+import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
 import * as XLSX from "xlsx";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
-import { useGetEventGuests } from "@/app/hooks/guest/guest.hook";
+import { useGetEventGuests, useGetTicketGuests } from "@/app/hooks/guest/guest.hook";
 import { useParams } from "next/navigation";
 
 const { Search } = Input;
@@ -29,10 +30,12 @@ const EventsGuestList = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalData, setModalData] = useState<any>({});
   console.log(modalData, "modalData");
+  // const { getTicketGuests } = useGetTicketGuests()
   const { getEventGuests } = useGetEventGuests(
     params?.id,
     currentPage,
-    pageSize
+    pageSize,
+    searchText
   );
 
   const allGuestsData = getEventGuests?.data?.data?.data?.guests;
@@ -59,24 +62,10 @@ const EventsGuestList = () => {
     };
   });
 
-  const handleSearch = (value: string) => {
-    setSearchText(value.toLowerCase());
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
   };
 
-  const filteredData = data?.filter(
-    (item) =>
-      item?.personal_information?.firstName
-        ?.toLowerCase()
-        .includes(searchText) ||
-      item?.personal_information?.lastName
-        ?.toLowerCase()
-        .includes(searchText) ||
-      item?.ticket_information
-        ?.map((ticket) => ticket?.ticket_name)
-        .join(", ")
-        ?.toLowerCase()
-        .includes(searchText)
-  );
 
   const columns = [
     {
@@ -274,8 +263,8 @@ const EventsGuestList = () => {
           >
             <Search
               placeholder="Search Ticket Name or Guest Name"
-              onSearch={handleSearch}
-              onChange={(e) => handleSearch(e.target.value)}
+              // onSearch={handleSearch}
+              onChange={handleSearch}
               style={{ width: 300 }}
             />
             {selectedRowKeys?.length > 0 && (

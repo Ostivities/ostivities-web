@@ -2,93 +2,133 @@
 
 import React, { useState } from "react";
 import { Button, Input, Space, Table } from "antd";
-import { FileExcelOutlined, FilePdfOutlined, MenuOutlined } from "@ant-design/icons";
+import {
+  FileExcelOutlined,
+  FilePdfOutlined,
+  MenuOutlined,
+} from "@ant-design/icons";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
 import { useRouter } from "next/navigation";
-import { Heading5, Label, Paragraph } from "@/app/components/typography/Typography";
+import {
+  Heading5,
+  Label,
+  Paragraph,
+} from "@/app/components/typography/Typography";
 import { ColumnsType } from "antd/es/table";
 import {
-  getRandomName, getRandomNigerianPhoneNumber,
+  getRandomName,
+  getRandomNigerianPhoneNumber,
 } from "@/app/utils/helper";
+import {
+  useGetEventCoordinatorInfo,
+  useGetAllEventCoordinators,
+  useDeleteEventCoordinator,
+} from "@/app/hooks/coordinators/coordinators.hook";
+import { useParams } from "next/navigation";
 import CoordinatorsDetail from "@/app/components/OstivitiesModal/CoordinatorsDetail";
 import { CoordinatorsDataType } from "@/app/utils/interface";
 import { MenuItemType } from "antd/es/menu/interface";
 import Dropdown from "antd/es/dropdown/dropdown";
 import AddCoordinatorsModal from "@/app/components/OstivitiesModal/AddEventCoordinatorModal";
 import DeleteEntry from "@/app/components/OstivitiesModal/DeleteEntry";
+import { ICoordinatorData } from "@/app/utils/interface";
+import { dateFormat, timeFormat } from "@/app/utils/helper";
+import { STAFF_ROLE } from "@/app/utils/enums";
 
 const { Search } = Input;
 
 const CoordinatorsList = () => {
   const router = useRouter(); // Initialize useRouter
-
+  const params = useParams<{ id: string }>();
+  const { getAllEventCoordinators } = useGetAllEventCoordinators(params?.id);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [selectedCoordinator, setSelectedCoordinator] = useState<
+    string | undefined
+  >("");
   const [searchText, setSearchText] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isShown, setIsShown] = useState(false);
-  const [actionType, setActionType] = useState<"delete" | "warning" | "detail">();
-  const [showNewVendorDetails, setShowNewVendorDetails] = useState<boolean>(false);
+  const [actionType, setActionType] = useState<
+    "delete" | "warning" | "detail"
+  >();
+  const [showNewVendorDetails, setShowNewVendorDetails] =
+    useState<boolean>(false);
   const [modalData, setModalData] = useState<any>({});
 
-  const roles = ["Ticketing Agent", "Auditor", "Usher"]; // Define the roles
+  const allCoordinators = getAllEventCoordinators?.data?.data?.data?.data;
+  const totalCoordinators = getAllEventCoordinators?.data?.data?.data?.total;
+  const data: ICoordinatorData[] = allCoordinators?.map(
+    (coordinators: ICoordinatorData) => {
+      return {
+        key: coordinators?.id,
+        id: coordinators?.id,
+        staff_name: coordinators?.staff_name,
+        staff_email: coordinators?.staff_email,
+        staff_phone_number: coordinators?.staff_phone_number,
+        staff_role: coordinators?.staff_role,
+        createdAt: coordinators?.createdAt,
+      };
+    }
+  );
 
-  const data: CoordinatorsDataType[] = Array.from({ length: 50 }, (_, index) => ({
-    id: `${index + 1}`, // Add the required 'id' field
-    key: `${index + 1}`, // Add a key if used in the Table component
-    coordinatorsName: getRandomName(),
-    coordinatorsEmail: getRandomName(), // Use the correct field name
-    coordinatorsphoneNumber:getRandomNigerianPhoneNumber(),
-    coordinatorsRole: roles[Math.floor(Math.random() * roles.length)],
-    dateAdded: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
-  }));
-
-
-  const coordinatorsPhoneNumber = getRandomNigerianPhoneNumber();
-  console.log(coordinatorsPhoneNumber);
+  // console.log(allCoordinators, totalCoordinators);
 
   const handleSearch = (value: string) => {
     setSearchText(value.toLowerCase());
   };
-
 
   const handleAction = (record: CoordinatorsDataType) => {
     setIsModalOpen(true);
     setModalData(record);
   };
 
-
-  const filteredData = data.filter(
+  const filteredData = data?.filter(
     (item) =>
-      item.coordinatorsName.toLowerCase().includes(searchText) ||
-      item.coordinatorsRole.toLowerCase().includes(searchText)
+      item.staff_name.toLowerCase().includes(searchText) ||
+      item.staff_role.toLowerCase().includes(searchText)
   );
 
-  const columns: ColumnsType<CoordinatorsDataType> = [
+  const columns: ColumnsType<ICoordinatorData> = [
     {
       title: "Coordinator's Name", // Correct title if needed
-      dataIndex: "coordinatorsName", // Ensure dataIndex matches
-      sorter: (a, b) => a.coordinatorsName.localeCompare(b.coordinatorsName),
+      dataIndex: "staff_name", // Ensure dataIndex matches
+      sorter: (a, b) => a.staff_name.localeCompare(b.staff_name),
     },
     {
       title: "Role",
-      dataIndex: "coordinatorsRole", // Ensure dataIndex matches
-      filters: [
-        { text: "Ticketing Agent", value: "Ticketing Agent" },
-        { text: "Auditor", value: "Auditor" },
-        { text: "Usher", value: "Usher" },
-      ],
-      onFilter: (value, record) => record.coordinatorsRole.includes(value as string), // Ensure property name matches
-      sorter: (a, b) => a.coordinatorsRole.localeCompare(b.coordinatorsRole), // Ensure property name matches
+      dataIndex: "staff_role", // Ensure dataIndex matches
+      // filters: [
+      //   { text: "Ticketing Agent", value: "Ticketing Agent" },
+      //   { text: "Auditor", value: "Auditor" },
+      //   { text: "Usher", value: "Usher" },
+      // ],
+      render: (text, record: ICoordinatorData) => {
+        return (
+          <>
+            {record?.staff_role === STAFF_ROLE.AGENT
+              ? "Agent"
+              : record?.staff_role === STAFF_ROLE.AUDITOR
+              ? "Auditor"
+              : "Usher"
+            }
+          </>
+        );
+      },
+      onFilter: (value, record) => record.staff_role.includes(value as string), // Ensure property name matches
+      sorter: (a, b) => a.staff_role.localeCompare(b.staff_role), // Ensure property name matches
     },
     {
       title: "Date Added",
-      dataIndex: "dateAdded",
-      sorter: (a, b) => a.dateAdded.localeCompare(b.dateAdded),
+      dataIndex: "createdAt",
+      render: (text) => {
+        return dateFormat(text);
+      },
+      sorter: (a, b) => a.createdAt.localeCompare(b.createdAt),
     },
     {
       title: (
@@ -99,13 +139,13 @@ const CoordinatorsList = () => {
       ),
       dataIndex: "action",
       key: "action",
-      render: (text: any, record: CoordinatorsDataType) => (
+      render: (text: any, record: ICoordinatorData) => (
         <Space direction="vertical" size="small">
           <Dropdown
             menu={{
               items: GuestItems,
             }}
-            trigger={["click"]}
+            trigger={["click", "hover"]}
           >
             <MenuOutlined className="cursor-pointer text-lg" />
           </Dropdown>
@@ -116,21 +156,21 @@ const CoordinatorsList = () => {
 
   const GuestItems: MenuItemType[] = [
     {
-    label: (
-      <Button
-        type="link"
-        className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
-        style={{ color: "#000000", fontFamily: "BricolageGrotesqueRegular" }}
-        onClick={() => {
-          setIsModalOpen(true);
-          setActionType("detail");
-        }}
-      >
-        View
-      </Button>
-    ),
-    key: "1",
-  },
+      label: (
+        <Button
+          type="link"
+          className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          style={{ color: "#000000", fontFamily: "BricolageGrotesqueRegular" }}
+          onClick={() => {
+            setIsModalOpen(true);
+            setActionType("detail");
+          }}
+        >
+          View
+        </Button>
+      ),
+      key: "1",
+    },
 
     {
       label: (
@@ -150,22 +190,20 @@ const CoordinatorsList = () => {
         </Button>
       ),
       key: "3",
-
-      
     },
   ];
 
   const handleExport = (format: string) => {
     const exportData = selectedRowKeys.length
-      ? data.filter((item) => selectedRowKeys.includes(item.key))
+      ? data?.filter((item) => selectedRowKeys.includes(item.key))
       : data;
 
     const formattedExportData = exportData.map((item) => ({
-      "Coordinator Name": item.coordinatorsName, // Corrected property name
-      "Coordinator Email": item.coordinatorsEmail, // Corrected property name
-      "Coordinator Phone Number": item.coordinatorsphoneNumber, // Corrected property name
-      "Date Added": item.dateAdded,
-      "Role": item.coordinatorsRole, // Corrected property name
+      "Coordinator Name": item?.staff_name, // Corrected property name
+      "Coordinator Email": item?.staff_email, // Corrected property name
+      "Coordinator Phone Number": item?.staff_phone_number, // Corrected property name
+      "Date Added": dateFormat(item?.createdAt),
+      Role: item?.staff_role, // Corrected property name
     }));
 
     if (format === "excel") {
@@ -185,21 +223,24 @@ const CoordinatorsList = () => {
 
   return (
     <React.Fragment>
-        {isModalOpen && actionType === "detail" && (
+      {isModalOpen && actionType === "detail" && (
         <CoordinatorsDetail
           open={isModalOpen}
           onCancel={() => setIsModalOpen(false)}
           data={modalData}
+          id={selectedCoordinator}
         />
       )}
       {/* Render the DeleteEntryModal based on the isModalOpen state */}
       {isModalOpen && actionType === "delete" && (
         <DeleteEntry
           open={isModalOpen}
+          id={selectedCoordinator}
           onCancel={() => setIsModalOpen(false)}
           onOk={() => {
             // Perform delete action here if needed
             setIsModalOpen(false); // Close the modal after delete
+            getAllEventCoordinators?.refetch();
           }}
           actionType={actionType}
         />
@@ -209,38 +250,48 @@ const CoordinatorsList = () => {
         open={showNewVendorDetails}
         onCancel={() => setShowNewVendorDetails(false)}
         onOk={() => {
-          // handle modal OK action if needed
+          setShowNewVendorDetails(false);
+          getAllEventCoordinators?.refetch();
         }}
       />
 
       <Space direction="vertical" size={"large"}>
         <Space direction="vertical" size={"small"} style={{ width: "100%" }}>
           <div
-            style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+            }}
           >
             <Heading5 className="" content={"Coordinators"} />
-            </div>
+          </div>
           <Paragraph
             className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
             content={"Add and manage coordinators for your event."}
             styles={{ fontWeight: "normal !important" }}
           />
-            <Button
-              type="primary"
-              size="large"
-              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl float-end"
-              style={{
-                borderRadius: "20px",
-                fontFamily: "BricolageGrotesqueMedium",
-                margin: '10px'
-              }}
-              onClick={() => setShowNewVendorDetails(true)}
-            >
-              Add Coordinators
-            </Button>
+          <Button
+            type="primary"
+            size="large"
+            className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl float-end"
+            style={{
+              borderRadius: "20px",
+              fontFamily: "BricolageGrotesqueMedium",
+              margin: "10px",
+            }}
+            onClick={() => setShowNewVendorDetails(true)}
+          >
+            Add Coordinators
+          </Button>
           <Paragraph
             className="text-OWANBE_PRY font-normal font-BricolageGrotesqueRegular text-center mx-auto border border-OWANBE_PRY bg-OWANBE_PRY2 rounded-lg w-[500px] h-14 flex flex-row items-center justify-center text-3xl py-8 place-self-center"
-            content={`${filteredData.length} Coordinators`}
+            content={
+              totalCoordinators
+                ? `${totalCoordinators} Coordinators`
+                : "0 Coordinators"
+            }
             styles={{ fontWeight: "normal !important" }}
           />
         </Space>
@@ -262,21 +313,21 @@ const CoordinatorsList = () => {
             {selectedRowKeys.length > 0 && (
               <Space>
                 <Button
-                    type="default"
-                    className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
-                    style={{ borderRadius: 15, marginRight: 8 }}
-                    onClick={() => handleExport("excel")}
-                  >
-                    <FileExcelOutlined />
-                  </Button>
-                  <Button
-                    type="default"
-                    className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
-                    style={{ borderRadius: 15 }}
-                    onClick={() => handleExport("pdf")}
-                  >
-                    <FilePdfOutlined />
-                  </Button>
+                  type="default"
+                  className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                  style={{ borderRadius: 15, marginRight: 8 }}
+                  onClick={() => handleExport("excel")}
+                >
+                  <FileExcelOutlined />
+                </Button>
+                <Button
+                  type="default"
+                  className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                  style={{ borderRadius: 15 }}
+                  onClick={() => handleExport("pdf")}
+                >
+                  <FilePdfOutlined />
+                </Button>
               </Space>
             )}
           </Space>
@@ -285,18 +336,28 @@ const CoordinatorsList = () => {
               selectedRowKeys,
               onChange: (keys) => setSelectedRowKeys(keys),
             }}
+            onRow={(record, rowIndex) => {
+              return {
+                onClick: () => {
+                  setSelectedCoordinator(record?.id);
+                },
+              };
+            }}
+            className="font-BricolageGrotesqueRegular w-full"
             columns={columns}
+            loading={getAllEventCoordinators?.isFetching}
             dataSource={filteredData}
             pagination={{
               current: currentPage,
               pageSize: pageSize,
-              total: filteredData.length,
+              total: totalCoordinators,
               onChange: (page, size) => {
                 setCurrentPage(page);
                 setPageSize(size);
               },
+              showSizeChanger: true,
             }}
-            scroll={{ x: 1000 }}
+            scroll={{ x: "max-content" }}
           />
         </Space>
       </Space>

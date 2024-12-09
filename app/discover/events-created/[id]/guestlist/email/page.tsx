@@ -21,6 +21,7 @@ import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
 import {
   useGetEventGuests,
   useGetTicketGuests,
+  useGetGuestInfo
 } from "@/app/hooks/guest/guest.hook";
 import { useGetUserEvent, useUpdateEvent } from "@/app/hooks/event/event.hook";
 import { useSendBulkEmail } from "@/app/hooks/bulkemail/bulkemail.hook";
@@ -42,6 +43,7 @@ const EventsGuestListEmail = () => {
   const [selectedTickets, setSelectedTickets] = useState<string[]>([]);
   const [selectedTicket, setSelectedTicket] = useState("");
   const [selectedAttendees, setSelectedAttendees] = useState<string[]>([]);
+  const [searchText, setSearchText] = useState('')
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [loader, setLoader] = useState(false);
   const [editorError, setEditorError] = useState("");
@@ -57,18 +59,22 @@ const EventsGuestListEmail = () => {
   const { sendBulkEmail } = useSendBulkEmail();
   const params = useParams<{ id: string }>();
   const { getTickets } = useGetEventTickets(params?.id);
-  const ticketData = getTickets?.data?.data?.data;
   const { getTicketGuests } = useGetTicketGuests(selectedTicket);
-  const { getEventGuests } = useGetEventGuests(params?.id, 1, 10);
+  const { getEventGuests } = useGetEventGuests(params?.id, 1, 10, searchText);
   const { getUserEvent } = useGetUserEvent(params?.id);
-  console.log(emailAttachment, "emailAttachment");
-  console.log(attachmentUrl, "attachmentUrl");
+  const [recipientsDataTicket, setRecipientsDataTicket] = useState<{
+    name: string;
+    email: string;
+  }[]>([])
+  const ticketData = getTickets?.data?.data?.data;
   const eventDetails = getUserEvent?.data?.data?.data;
+  // const { getGuestInfo } = useGetGuestInfo(eventDetails?.unique_key, )
+  const ticketGuests = getTicketGuests?.data?.data?.data
   const allGuestsData = getEventGuests?.data?.data?.data?.guests;
   const totalGuests = getEventGuests?.data?.data?.data?.total;
   const senderEmail = Form.useWatch("sender_email", form);
-
-  console.log(senderEmail, "sender_email");
+  const recipientsApplicableForm = Form.useWatch("recipientsApplicable", form)
+  console.log(allGuestsData, "allGuestsData")
 
   // Update eventName when eventDetails is available
   useEffect(() => {
@@ -145,25 +151,55 @@ const EventsGuestListEmail = () => {
   };
 
   const onFinish = async (values: any) => {
-    const { attachments, recipientsApplicable, ...rest } = values;
-    if (editorContent === "" || editorContent === "<p><br></p>") {
-      setEditorError("Please provide event details!"); // Set error state
-      return; // Prevent form submission if no content
+    if(recipientsApplicableForm === "ticket") {
+      const { attachments, recipientsApplicable, receipients, ...rest } = values;
+      const recipientsTicketData = ticketGuests && ticketGuests?.map((guest: IGuestData) => {
+        return {
+          name: `${guest?.personal_information?.firstName}`,
+          email: guest?.personal_information?.email
+        }
+      })
+      if (editorContent === "" || editorContent === "<p><br></p>") {
+        setEditorError("Please provide event details!"); // Set error state
+        return; // Prevent form submission if no content
+      } else {
+        setEditorError(""); // Clear error if content is valid
+      }
+
+      const response = await sendBulkEmail.mutateAsync({
+        ...rest,
+        email_attachment: emailAttachment,
+        email_content: editorContent,
+        receipients: recipientsTicketData
+      });
+  
+      if (response.status === 200) {
+        console.log(response, "response");
+      }
+
+      console.log(recipientsTicketData, "recipientsTicketData")
     } else {
-      setEditorError(""); // Clear error if content is valid
-    }
-    console.log(values, "values");
-    // return values;
-
-    const response = await sendBulkEmail.mutateAsync({
-      ...rest,
-      email_attachment: emailAttachment,
-      email_content: editorContent,
-      //  sender_email: "kayode.raimi123@gmail.com"
-    });
-
-    if (response.status === 200) {
-      console.log(response, "response");
+      const { attachments, recipientsApplicable, ...rest } = values;
+      if (editorContent === "" || editorContent === "<p><br></p>") {
+        setEditorError("Please provide event details!"); // Set error state
+        return; // Prevent form submission if no content
+      } else {
+        setEditorError(""); // Clear error if content is valid
+      }
+      console.log(values, "values");
+      // return values;
+  
+  
+      const response = await sendBulkEmail.mutateAsync({
+        ...rest,
+        email_attachment: emailAttachment,
+        email_content: editorContent,
+        //  sender_email: "kayode.raimi123@gmail.com"
+      });
+  
+      if (response.status === 200) {
+        console.log(response, "response");
+      }
     }
   };
 
@@ -181,8 +217,8 @@ const EventsGuestListEmail = () => {
     setSelectedTicket(value);
   };
 
-  const handleAttendeeSearch = (value: string) => {
-    // Simulate fetching attendees based on search value
+  const handleAttendeeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
   };
 
   const handleSelectAttendee = (value: string) => {
@@ -332,7 +368,7 @@ const EventsGuestListEmail = () => {
               })}
             >
               <Select
-                mode="multiple"
+                mode="multiple"               
                 placeholder="Select guest name"
                 value={allGuestsData?.map((guest: IGuestData) => {
                   return {
@@ -357,18 +393,15 @@ const EventsGuestListEmail = () => {
               style={{ marginBottom: "8px" }}
             >
               <Select
-                mode="multiple"
+                // mode="multiple"
                 placeholder="Select tickets"
                 onChange={handleTicketTypeChange}
               >
-                {ticketData?.map((ticket: ITicketDetails) => {
+                {ticketData?.map((ticket: ITicketDetails) => (
                   <Select.Option key={ticket?.id} value={ticket?.id}>
                     {ticket?.ticketName}
-                  </Select.Option>;
-                })}
-                {/* <Select.Option value="ticketType1">Ticket Type 1</Select.Option>
-                <Select.Option value="ticketType2">Ticket Type 2</Select.Option>
-                <Select.Option value="ticketType3">Ticket Type 3</Select.Option> */}
+                  </Select.Option>
+                ))}
               </Select>
             </Form.Item>
           )}
@@ -381,7 +414,8 @@ const EventsGuestListEmail = () => {
             >
               <Input.Search
                 placeholder="Search and select attendees"
-                onSearch={handleAttendeeSearch}
+                // onSearch={handleAttendeeSearch}
+                onChange={handleAttendeeSearch}
                 enterButton
                 allowClear
                 style={{ width: "100%" }}
