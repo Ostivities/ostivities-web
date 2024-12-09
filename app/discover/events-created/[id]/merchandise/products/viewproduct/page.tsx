@@ -100,44 +100,44 @@ const ViewProductDetails = () => {
           fontFamily: "'Bricolage Grotesque', sans-serif",
         }}
       >
-       <div
-  style={{
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
-    marginBottom: "1rem",
-  }}
->
-  <Heading5
-    className="mb-2"
-    content={"Edit Product"}
-    styles={{
-      fontFamily: "'Bricolage Grotesque', sans-serif",
-    }}
-  />
-  <Button
-    type="primary"
-    size="large"
-    className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold equal-width-button"
-    style={{
-      borderRadius: "20px",
-      fontFamily: "BricolageGrotesqueMedium",
-      margin: "5px",
-    }}
-    onClick={() =>
-      openQuickView({
-        id: 1,
-        name: "Sherpa Mule",
-        price: 22000,
-        image: "/test1.jpeg",
-        images: []
-      })
-    }
-  >
-    <span className="pl-1">Preview</span>
-  </Button>
-</div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+            marginBottom: "1rem",
+          }}
+        >
+          <Heading5
+            className="mb-2"
+            content={"Edit Product"}
+            styles={{
+              fontFamily: "'Bricolage Grotesque', sans-serif",
+            }}
+          />
+          <Button
+            type="primary"
+            size="large"
+            className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold equal-width-button"
+            style={{
+              borderRadius: "20px",
+              fontFamily: "BricolageGrotesqueMedium",
+              margin: "5px",
+            }}
+            onClick={() =>
+              openQuickView({
+                id: 1,
+                name: "Sherpa Mule",
+                price: 22000,
+                image: "/test1.jpeg",
+                images: []
+              })
+            }
+          >
+            <span className="pl-1">Preview</span>
+          </Button>
+        </div>
 
         {/* Product Images */}
         <Form.Item
@@ -183,7 +183,7 @@ const ViewProductDetails = () => {
             }
             name="shortDescription"
           >
-            <Input placeholder="Enter short description" disabled/>
+            <Input placeholder="Enter short description" disabled />
           </Form.Item>
         </div>
         <Form.Item
@@ -277,17 +277,17 @@ const ViewProductDetails = () => {
         </div>
       </Form>
       <QuickViewModal
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          product={{
-            id: 1,
-            name: "Sherpa Mule",
-            price: 22000,
-            image: "/test1.jpeg",
-            images: ["/test1.jpeg", "/test2.jpeg", "/test3.jpeg","/test4.jpeg"],
-            description: "Introducing the Sherpa mules, a luxury mule silhouette ideal for normal and cool weather, with an internal and external sherpa construction and wrapped tonal leather detailing.",
-          }}
-        />
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        product={{
+          id: 1,
+          name: "Sherpa Mule",
+          price: 22000,
+          image: "/test1.jpeg",
+          images: ["/test1.jpeg", "/test2.jpeg", "/test3.jpeg", "/test4.jpeg"],
+          description: "Introducing the Sherpa mules, a luxury mule silhouette ideal for normal and cool weather, with an internal and external sherpa construction and wrapped tonal leather detailing.",
+        }}
+      />
     </div>
   );
 };

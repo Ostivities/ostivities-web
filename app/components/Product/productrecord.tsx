@@ -138,10 +138,7 @@ const Productlist = () => {
             color: "#000000",
             fontFamily: "BricolageGrotesqueRegular",
           }}
-          onClick={() => {
-            setIsModalOpen(true);
-            setActionType("delete");
-          }}
+        
         >
           Delete
         </Button>

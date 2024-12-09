@@ -327,6 +327,16 @@ export interface ProductDataType {
   status: string;
 }
 
+export interface OrderDataType {
+  key: string;
+  orderId: string;
+  productName: string;
+  total: number;
+  orderStatus: "Completed" | "Cancelled" | "Processing";
+  payment: string;
+  shipping: "Delivered" | "Shipped" | "Returned";
+  date: string;
+}
 
 export interface IUser {
   firstName: string;

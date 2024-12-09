@@ -303,10 +303,10 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/discover/events-created/${params?.id}/merchandise`}
+            href={`/discover/events-created/${params?.id}/merchandise/products`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
-            Product
+            Products
           </Link>
         ),
         key: "1",
@@ -314,7 +314,7 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/discover/events-created/${params?.id}/merchandis/orders`}
+            href={`/discover/events-created/${params?.id}/merchandise/orders`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
             Orders
@@ -543,25 +543,38 @@ export default function EventDetailsComponent({
         </Card>
       );
     };
-  
-    const cardStyle = { width: "full", height: "150px" };
-    const titleStyle = { fontSize: "20px" };
-    const valueStyle = { fontSize: "19px" };
-    const containerStyle = { gap: "4px" };
-  
-    const totalRevenue = 500000; // Example data
+
+    const cardStyle = {
+      width: "full", // Adjust card width
+      height: "150px", // Adjust card height
+    };
+
+    const titleStyle = {
+      fontSize: "20px", // Adjust title text size
+    };
+
+    const valueStyle = {
+      fontSize: "19px", // Adjust value text size
+    };
+
+    const containerStyle = {
+      gap: "4px", // Adjust the spacing between title and value (you can customize this)
+    };
+
+    const salesRevenue = 250000;
+
     const formattedRevenue = new Intl.NumberFormat("en-NG", {
       style: "currency",
       currency: "NGN",
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(totalRevenue ?? 0);
-  
+
     return (
       <div className="grid grid-cols-4 gap-x-6">
         <CardMetrics
           title="Total Tickets Sold"
-          value={250} // Example value
+          value={totalTickets ?? ""}
           cardStyle={cardStyle}
           titleStyle={titleStyle}
           valueStyle={valueStyle}
@@ -585,7 +598,7 @@ export default function EventDetailsComponent({
         />
         <CardMetrics
           title="Next Payout Date"
-          value={"2024-04-07"}
+          value={nextDate || "2024-04-07"}
           cardStyle={cardStyle}
           titleStyle={titleStyle}
           valueStyle={valueStyle}
@@ -596,7 +609,7 @@ export default function EventDetailsComponent({
   };
 
   const StoreMetrics = (): JSX.Element => {
-    const CardsMetrics = ({
+    const CardMetrics = ({
       title,
       value,
       cardStyle = {},
@@ -657,7 +670,7 @@ export default function EventDetailsComponent({
   
     return (
       <div className="grid grid-cols-3 gap-4">
-        <CardsMetrics
+        <CardMetrics
           title="Total Inventory Value"
           value={formattedRevenue}
           cardStyle={cardStyle}
@@ -665,7 +678,7 @@ export default function EventDetailsComponent({
           valueStyle={valueStyle}
           containerStyle={containerStyle}
         />
-        <CardsMetrics
+        <CardMetrics
           title="Products Sold"
           value={120} // Example value
           cardStyle={cardStyle}
@@ -673,7 +686,7 @@ export default function EventDetailsComponent({
           valueStyle={valueStyle}
           containerStyle={containerStyle}
         />
-        <CardsMetrics
+        <CardMetrics
           title="Out of Stock"
           value={0}
           cardStyle={cardStyle}
@@ -685,6 +698,96 @@ export default function EventDetailsComponent({
     );
   };
   
+
+  const OrderMetrics = (): JSX.Element => {
+    const CardMetrics = ({
+      title,
+      value,
+      cardStyle = {},
+      titleStyle = {},
+      valueStyle = {},
+      containerStyle = {},
+    }: {
+      title: string;
+      value: number | string;
+      cardStyle?: React.CSSProperties;
+      titleStyle?: React.CSSProperties;
+      valueStyle?: React.CSSProperties;
+      containerStyle?: React.CSSProperties;
+    }): JSX.Element => {
+      return (
+        <Card
+          className="rounded-3xl p-0"
+          style={{
+            borderRadius: "30px",
+            padding: "0px",
+            boxShadow: "0px 8px 24px 0px #00000014",
+            ...cardStyle,
+          }}
+        >
+          <div
+            className="flex flex-col mx-auto text-center py-5"
+            style={containerStyle}
+          >
+            <p
+              className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_PRY"
+              style={titleStyle}
+            >
+              {title}
+            </p>
+            <p
+              className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_DARK"
+              style={valueStyle}
+            >
+              {value}
+            </p>
+          </div>
+        </Card>
+      );
+    };
+  
+    const cardStyle = { width: "full", height: "150px" };
+    const titleStyle = { fontSize: "20px" };
+    const valueStyle = { fontSize: "19px" };
+    const containerStyle = { gap: "4px" };
+
+    const totalRevenue = 146000; // Example data
+    const formattedRevenue = new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(totalRevenue ?? 0);
+  
+    return (
+      <div className="grid grid-cols-3 gap-4">
+        <CardMetrics
+          title="Total Sales"
+          value={formattedRevenue}
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+        <CardMetrics
+          title="Total Orders"
+          value={120} // Example value
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+        <CardMetrics
+          title="Completed Orders"
+          value={0}
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+      </div>
+    );
+  };
 
   const title = (
     <div className="flex items-center w-full relative pb-2 space-x-8">
@@ -787,12 +890,13 @@ export default function EventDetailsComponent({
         extraComponents={
           <div
             className={`flex flex-col ${
-              pathname.includes("sales") || pathname.includes("merchandise") ? "space-y-8" : ""
+              pathname.includes("sales") ||  pathname.includes("order") || pathname.includes("product") ? "space-y-8" : ""
             }`}
           >
             <ExtraTab />
             {pathname.includes("sales") && <SalesMetrics />}
-            {pathname.includes("merchandise")  && <StoreMetrics/>}
+            {pathname.includes("product")  && <StoreMetrics/>}
+            {pathname.includes("order")  && <OrderMetrics/>}
           </div>
         }
         
