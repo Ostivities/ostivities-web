@@ -6,7 +6,7 @@ import React, {
   useState,
   useMemo,
   MutableRefObject,
-  useCallback ,
+  useCallback,
 } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import {
@@ -33,7 +33,12 @@ import {
   useGetEventTickets,
   useGetEventTicketsByUniqueKey,
 } from "@/app/hooks/ticket/ticket.hook";
-import { useRouter, useParams, usePathname, useSearchParams } from "next/navigation";
+import {
+  useRouter,
+  useParams,
+  usePathname,
+  useSearchParams,
+} from "next/navigation";
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
 import "@/app/globals.css";
@@ -58,6 +63,7 @@ import PaymentValidation from "@/app/components/OstivitiesModal/PaymentValidatio
 import paystack from "@/public/paystack.png";
 import soldout from "@/public/Soldout.svg";
 import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
+import { useCookies } from "react-cookie";
 
 const TicketsSelection = () => {
   const router = useRouter();
@@ -65,6 +71,10 @@ const TicketsSelection = () => {
   const { registerGuest } = useRegisterGuest();
   const pathname = usePathname(); // Get the current path
   const searchParams = useSearchParams(); // Get query params
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "ticketDetails",
+    "selectedTickets",
+  ]);
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
   const [currentPage, setCurrentPage] = useState<
     "tickets" | "contactform" | "payment"
@@ -112,49 +122,12 @@ const TicketsSelection = () => {
     </div>
   );
 
-  // useEffect(() => {
-  //   // Update the URL and history state when `currentPage` changes
-  //   const updateHistory = () => {
-  //     const url = `/discover/${params?.event}/tickets?page=${currentPage}`;
-  //     if (currentPage !== "tickets") {
-  //       window.history.pushState({ page: currentPage }, "", url);
-  //     }
-  //   };
-
-  //   updateHistory();
-  // }, [currentPage, params?.event]); // Only re-run when currentPage or event changes
-
-  // useEffect(() => {
-  //   const handlePopState = (event: PopStateEvent) => {
-  //     const page = event.state?.page;
-
-  //     if (page) {
-  //       // If `page` exists in state, update `currentPage`
-  //       setCurrentPage(page as "tickets" | "contactform" | "payment");
-  //     } else {
-  //       // If no `page` exists and `currentPage` is `tickets`, navigate back to the parent route
-  //       if (currentPage === "tickets") {
-  //         router.push(`/discover/${params?.event}`);
-  //       } else {
-  //         setCurrentPage("tickets"); // Default to `tickets` if undefined
-  //       }
-  //     }
-  //   };
-
-  //   window.addEventListener("popstate", handlePopState);
-
-  //   return () => {
-  //     window.removeEventListener("popstate", handlePopState);
-  //   };
-  // }, [currentPage, router, params?.event]);
-  // const ticketEnt = ticketEntity === TICKET_ENTITY.SINGLE ? "Single Ticket" : "Collective Ticket";
-
   // State to manage selected ticket counts
   const [selectedTickets, setSelectedTickets] = useState<{
     [key: string]: number;
   }>({});
 
-  // console.log(selectedTickets, "selectedTickets");
+  console.log(selectedTickets, "selectedTickets");
   const [ticketDetails, setTicketDetails] = useState<
     {
       ticketName: string;
@@ -178,7 +151,58 @@ const TicketsSelection = () => {
     }[]
   >([]);
 
-  // console.log(ticketDetails, "ticketDetails");
+  // const [ticketDetails, setTicketDetails] = useState(() => {
+  //   if (cookies?.ticketDetails) {
+  //     try {
+  //       const savedTicketDetails = JSON.parse(cookies.ticketDetails);
+  //       return Array.isArray(savedTicketDetails) ? savedTicketDetails : [];
+  //     } catch (error) {
+  //       console.error("Error parsing ticketDetails from cookies:", error);
+  //     }
+  //   }
+  //   // Return an empty array if no cookies found or error in parsing
+  //   return [];
+  // });
+
+  console.log(ticketDetails, "ticketDetails");
+
+  useEffect(() => {
+    if (!cookies?.ticketDetails || ticketDetails?.length > 0) {
+      return;
+    }
+    setTicketDetails(cookies?.ticketDetails);
+    setSelectedTickets(cookies?.selectedTickets);
+  }, [cookies?.ticketDetails, cookies?.selectedTickets, ticketDetails?.length]);
+
+  // Save state to cookies when ticketDetails or selectedTickets change
+  useEffect(() => {
+    if (ticketDetails?.length > 0) {
+      setCookie("ticketDetails", JSON.stringify(ticketDetails), {
+        maxAge: 600,
+        secure: true,
+        sameSite: "strict",
+        path: `/discover/${params?.event}/tickets`,
+      });
+      setCookie("selectedTickets", JSON.stringify(selectedTickets), {
+        maxAge: 600,
+        secure: true,
+        sameSite: "strict",
+        path: `/discover/${params?.event}/tickets`,
+      });
+    }
+  }, [ticketDetails, selectedTickets, setCookie, params?.event]);
+
+  useEffect(() => {
+    // Cleanup cookies when navigating away from the target path
+    if (!pathname.startsWith(`/discover/${params?.event}/tickets`)) {
+      removeCookie("ticketDetails", {
+        path: `/discover/${params?.event}/tickets`,
+      });
+      removeCookie("selectedTickets", {
+        path: `/discover/${params?.event}/tickets`,
+      });
+    }
+  }, [pathname, removeCookie, params?.event]);
 
   let ticketCounter = 1;
 
@@ -208,7 +232,7 @@ const TicketsSelection = () => {
                     : "Single"}{" "}
                   - {ticketDetail?.ticketName}
                 </h3>
-                <Row gutter={16} className="mb-6">
+                <Row gutter={16} className="">
                   <Col span={12}>
                     <Form.Item
                       name={[attendeeId, "firstName"]}
@@ -266,7 +290,7 @@ const TicketsSelection = () => {
                     </Form.Item>
                   </Col>
                 </Row>
-                <Row gutter={16} className="mb-12">
+                <Row gutter={16} className="">
                   <Col span={12}>
                     <Form.Item
                       name={[attendeeId, "attendeeEmail"]}
@@ -346,11 +370,11 @@ const TicketsSelection = () => {
         </div>
       );
     });
-  }, [ticketDetails, isToggled]); // Dependencies
+  }, [ticketDetails, ticketCounter]); // Dependencies
 
   useEffect(() => {
     // When ticketData is updated, re-initialize selectedTickets
-    if (ticketData?.length) {
+    if (ticketData?.length && !cookies?.selectedTickets) {
       const initialSelectedTickets = ticketData?.reduce(
         (acc: { [key: string]: number }, ticket: ITicketDetails) => {
           acc[ticket.id] = 0;
@@ -360,7 +384,7 @@ const TicketsSelection = () => {
       );
       setSelectedTickets(initialSelectedTickets);
     }
-  }, [ticketData]);
+  }, [ticketData, cookies?.selectedTickets]);
 
   useEffect(() => {
     // Create a new filtered list only if necessary
@@ -705,7 +729,7 @@ const TicketsSelection = () => {
           ticketDetail?.additionalInformation &&
           ticketDetail?.additionalInformation.length > 0
         ) {
-          return ticketDetail.additionalInformation.map((info) => ({
+          return ticketDetail.additionalInformation.map((info: any) => ({
             id: counter++,
             question: info.question,
             is_compulsory: info.is_compulsory,
@@ -839,11 +863,13 @@ const TicketsSelection = () => {
       if (response.status === 200) {
         setSuccessModal(true);
         setLoading(false);
+        removeCookie("ticketDetails");
+        removeCookie("selectedTickets");
       }
     } else {
       setLoading(false);
       setCurrentPage("payment");
-      router.push(`/discover/${params?.event}/tickets?page=payment`)
+      router.push(`/discover/${params?.event}/tickets?page=payment`);
     }
     // router.push(`discover/${params?.event}/payment`);
   };
@@ -862,6 +888,8 @@ const TicketsSelection = () => {
 
     if (response.status === 200) {
       setLoading(false);
+      removeCookie("ticketDetails");
+      removeCookie("selectedTickets");
       setSuccessModal(true);
     } else {
       setLoading(false);
@@ -870,36 +898,21 @@ const TicketsSelection = () => {
 
   const isFieldTouched = useRef(false);
 
-  // useEffect(() => {
-  //   const checkFormValidity = async () => {
-  //     try {
-  //       // Run validation and set `isFormValid` based on result
-  //       await form.validateFields();
-  //       // console.log("Valid values");
-  //       setIsFormValid(true);
-  //     } catch (errorInfo) {
-  //       // console.log(errorInfo, "Validation error info");
-  //       setIsFormValid(false);
-  //     }
-  //   };
-
-  //   if (currentPage === "contactform" && isFieldTouched.current) {
-  //     checkFormValidity();
-  //   }
-  // }, [currentPage, form.getFieldsValue()]);
-
   interface DebounceFunction {
     (...args: any[]): void;
   }
 
-  const debounce = (func: (...args: any[]) => void, delay: number): DebounceFunction => {
+  const debounce = (
+    func: (...args: any[]) => void,
+    delay: number
+  ): DebounceFunction => {
     let timer: NodeJS.Timeout;
     return (...args: any[]) => {
       clearTimeout(timer);
       timer = setTimeout(() => func(...args), delay);
     };
   };
-  
+
   const checkFormValidity = useCallback(
     debounce(async () => {
       try {
@@ -911,41 +924,46 @@ const TicketsSelection = () => {
     }, 1000), // Delay in milliseconds
     [form]
   );
-  
+
   useEffect(() => {
     if (currentPage === "contactform" && isFieldTouched.current) {
       checkFormValidity();
     }
   }, [currentPage, form.getFieldsValue(), checkFormValidity]);
 
+  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
 
   useEffect(() => {
-    // Function to determine the current page from the query parameter
-    const determinePage = () => {
-      const pageParam = searchParams.get("page");
+    const pageParam = searchParams.get("page");
 
-      if (pageParam) {
-        if (pageParam === "tickets" || pageParam === "contactform" || pageParam === "payment") {
-          setCurrentPage(pageParam);
-        }
+    // On the first load, determine the page
+    if (isInitialLoad) {
+      setIsInitialLoad(false); // Set the flag to false after initial load
+
+      if (pageParam === "payment") {
+        // Redirect to `contactform` on reload if on the `payment` page
+        router.push(`${pathname}?page=contactform`);
+        setCurrentPage("contactform");
+      } else if (
+        pageParam === "tickets" ||
+        pageParam === "contactform" ||
+        pageParam === "payment"
+      ) {
+        // Update state based on the query parameter
+        setCurrentPage(pageParam);
       } else {
-        // Default page based on the path
-        if (pathname.includes("")) setCurrentPage("tickets");
-        else if (pathname.includes("contactform")) setCurrentPage("contactform");
-        else if (pathname.includes("payment")) setCurrentPage("payment");
+        // Default to `tickets` if no valid page query exists
+        setCurrentPage("tickets");
       }
-    };
-
-    determinePage(); // Run on component mount
-  }, [pathname, searchParams]); 
-
+    }
+  }, [searchParams, pathname, router, isInitialLoad]);
 
   const handleButtonClick = () => {
     if (currentPage === "tickets") {
       // Check if tickets are selected
       if (ticketDetails?.length > 0) {
         setCurrentPage("contactform"); // Move to contact form page
-        router.push(`/discover/${params?.event}/tickets?page=contactform`)
+        router.push(`/discover/${params?.event}/tickets?page=contactform`);
       }
     } else if (currentPage === "contactform") {
       // Check if the form is valid
@@ -973,7 +991,7 @@ const TicketsSelection = () => {
     if (currentPage === "contactform" || currentPage === "payment") {
       startTimer();
     } else resetTimer();
-  }, [currentPage]);
+  }, [currentPage, resetTimer, startTimer]);
   useEffect(() => {
     if (minutes === 0 && remainingSeconds === 0 && successModal === false) {
       setModal(true);
@@ -1513,7 +1531,7 @@ const TicketsSelection = () => {
                 {/* {currentPage === "contactform" ||
                   (currentPage === "payment") && timer} */}
                 {timer}
-              </span>
+              </span>{" "}
               minutes to secure your tickets.
             </div>
 
@@ -1566,18 +1584,21 @@ const TicketsSelection = () => {
                 className="form-spacing"
                 onValuesChange={(changedValues, allValues) => {
                   isFieldTouched.current = true;
-              
+
                   // Track specific fields or debounce validation
                   if (currentPage === "contactform") {
                     const changedField = Object.keys(changedValues)[0];
-                    form.validateFields([changedField]).then(() => {
-                      setIsFormValid(true);
-                    }).catch(() => {
-                      setIsFormValid(false);
-                    });
+                    form
+                      .validateFields([changedField])
+                      .then(() => {
+                        setIsFormValid(true);
+                      })
+                      .catch(() => {
+                        setIsFormValid(false);
+                      });
                   }
-                }}              
-                >
+                }}
+              >
                 <Row gutter={16}>
                   <Col span={12}>
                     <Form.Item
@@ -1695,7 +1716,9 @@ const TicketsSelection = () => {
                         : "text-OWANBE_DARK"
                     }`}
                   >
-                    {isToggled ? "Toggle to stop sending tickets to multiple email addresses" : "Toggle to send tickets to multiple email addresses"}
+                    {isToggled
+                      ? "Toggle to stop sending tickets to multiple email addresses"
+                      : "Toggle to send tickets to multiple email addresses"}
                   </span>
                   <ToggleSwitch
                     isActive={isToggled}
@@ -1765,7 +1788,6 @@ const TicketsSelection = () => {
                   </>
                 )}
                 {isToggled && <>{renderedTickets}</>}
-
               </Form>
             </div>
             {modal && <TimerModal />}
@@ -1781,7 +1803,7 @@ const TicketsSelection = () => {
                 {/* {currentPage === "contactform" ||
                   (currentPage !== "tickets" && timer)} */}
                 {timer}
-              </span>
+              </span>{" "}
               minutes to secure your tickets.
             </div>
             <div className="pr-full w-full mt-16">
