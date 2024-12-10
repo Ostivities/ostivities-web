@@ -50,6 +50,17 @@ function Pricing(): JSX.Element {
             ],
         },
         {
+            title: "Event Merchandise",
+            description: "Your one-stop solution for creating and managing event merchandise.",
+            features: [
+                "✔ Design Custom Merchandise Tailored to Your Event",
+                "✔ Easy Integration with Your Event Registration Process",
+                "✔ Automated Inventory Management for Seamless Operations",
+                "✔ Flexible Shipping and Pickup Options",
+                "✔ Boost Brand Visibility with Professional and High-Quality Products",
+            ],
+        },
+        {
             title: "Promotion And Growth",
             description: "Perfect for technical teams and developers",
             features: [
