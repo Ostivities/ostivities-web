@@ -29,7 +29,7 @@ function CreateAccount(): JSX.Element {
   const onFinish: FormProps<IUser>["onFinish"] = async (values) => {
     if (values) {
       const response = await registerUser.mutateAsync(values);
-      console.log(response)
+      console.log(response);
       if (response.status === 201) {
         form.resetFields();
         linkRef.current?.click();
@@ -49,7 +49,7 @@ function CreateAccount(): JSX.Element {
     const hasAlphabet = /[a-zA-Z]/.test(value);
     const hasNumber = /[0-9]/.test(value);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
-    
+
     if (hasAlphabet && hasNumber && hasSpecialChar) {
       return Promise.resolve();
     }
@@ -70,14 +70,16 @@ function CreateAccount(): JSX.Element {
     >
       <Form.Item
         label="Choose an Account Type"
-        style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: "8px" }} // Reduced marginBottom
+        style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: "8px" }} 
         className="font-BricolageGrotesqueRegular"
         help={
-          !val ? null : (
+          val && (
             <span className="font-BricolageGrotesqueLight text-OWANBE_PRY">
               {val === ACCOUNT_TYPE.PERSONAL
                 ? "Are you an individual looking to sell tickets? This account type is tailored for you."
-                : "Are you a registered business looking to sell tickets? This account type is tailored for you."}
+                : val === ACCOUNT_TYPE.ORGANISATION
+                ? "Are you a registered business looking to sell tickets? This account type is tailored for you."
+                : "For hall managers trying to give their hall more awareness, this account type is tailored for you."}
             </span>
           )
         }
@@ -85,43 +87,32 @@ function CreateAccount(): JSX.Element {
         <Form.Item<IUser>
           name="accountType"
           noStyle
-          rules={[
-            {
-              required: true,
-              message: "Please select an account type",
-            },
-          ]}
+          rules={[{ required: true, message: "Please select an account type" }]}
         >
           <Select
             placeholder="Select"
-            onChange={(e) => {
-              setval(e);
-            }}
+            onChange={(e) => setval(e)}
           >
             <Option value={ACCOUNT_TYPE.PERSONAL}>Personal</Option>
             <Option value={ACCOUNT_TYPE.ORGANISATION}>Organization</Option>
+            <Option value={ACCOUNT_TYPE.HALLMANAGER}>Hall Manager</Option>
           </Select>
         </Form.Item>
       </Form.Item>
 
-      {val === ACCOUNT_TYPE.ORGANISATION ? (
+      {val === ACCOUNT_TYPE.ORGANISATION && (
         <Form.Item
           label="Business Name"
           style={{
             fontFamily: "BricolageGrotesqueRegular",
             marginBottom: "8px",
-          }} // Reduced marginBottom
+          }}
           className="font-BricolageGrotesqueRegular"
         >
           <Form.Item<IUser>
             name="businessName"
             noStyle
-            rules={[
-              {
-                required: val === ACCOUNT_TYPE.ORGANISATION,
-                message: "Please input your Business Name",
-              },
-            ]}
+            rules={[{ required: true, message: "Please input your Business Name" }]}
           >
             <Input
               type="text"
@@ -130,28 +121,46 @@ function CreateAccount(): JSX.Element {
             />
           </Form.Item>
         </Form.Item>
-      ) : (
+      )}
+
+      {val === ACCOUNT_TYPE.HALLMANAGER && (
+        <Form.Item
+          label="Hall Name"
+          style={{
+            fontFamily: "BricolageGrotesqueRegular",
+            marginBottom: "8px",
+          }}
+          className="font-BricolageGrotesqueRegular"
+        >
+          <Form.Item<IUser>
+            name="hallName"
+            noStyle
+            rules={[{ required: true, message: "Please input your Hall Name" }]}
+          >
+            <Input
+              type="text"
+              placeholder="Enter your Hall Name"
+              className="placeholder:font-BricolageGrotesqueRegular"
+            />
+          </Form.Item>
+        </Form.Item>
+      )}
+
+      {val === ACCOUNT_TYPE.PERSONAL && (
         <Row gutter={4}>
-          {" "}
-          {/* Reduced gutter size */}
           <Col span={12}>
             <Form.Item
               label="First Name"
               style={{
                 fontFamily: "BricolageGrotesqueRegular",
                 marginBottom: "8px",
-              }} // Reduced marginBottom
+              }}
               className="font-BricolageGrotesqueRegular"
             >
               <Form.Item<IUser>
                 name="firstName"
                 noStyle
-                rules={[
-                  {
-                    required: val === ACCOUNT_TYPE.PERSONAL,
-                    message: "Please input first name",
-                  },
-                ]}
+                rules={[{ required: true, message: "Please input your first name" }]}
               >
                 <Input
                   placeholder="Enter your first name"
@@ -166,18 +175,13 @@ function CreateAccount(): JSX.Element {
               style={{
                 fontFamily: "BricolageGrotesqueRegular",
                 marginBottom: "8px",
-              }} // Reduced marginBottom
+              }}
               className="font-BricolageGrotesqueRegular"
             >
               <Form.Item<IUser>
                 name="lastName"
                 noStyle
-                rules={[
-                  {
-                    required: val === ACCOUNT_TYPE.PERSONAL,
-                    message: "Please input last name",
-                  },
-                ]}
+                rules={[{ required: true, message: "Please input your last name" }]}
               >
                 <Input
                   placeholder="Enter your last name"
@@ -191,7 +195,7 @@ function CreateAccount(): JSX.Element {
 
       <Form.Item
         label="Email Address"
-        style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: "8px" }} // Reduced marginBottom
+        style={{ fontFamily: "BricolageGrotesqueRegular", marginBottom: "8px" }} 
         className="font-BricolageGrotesqueRegular"
       >
         <Form.Item<IUser>
@@ -257,11 +261,9 @@ function CreateAccount(): JSX.Element {
       <Form.Item<IUser>
         name="terms_and_condition"
         valuePropName="checked"
-        rules={[
-          { required: true, message: "Please accept the Terms and Conditions" },
-        ]}
+        rules={[{ required: true, message: "Please accept the Terms and Conditions" }]}
       >
-        <Checkbox>
+       <Checkbox>
           <span style={{ fontFamily: "Bricolage Grotesque, sans-serif" }}>
             I accept the{" "}
             <a

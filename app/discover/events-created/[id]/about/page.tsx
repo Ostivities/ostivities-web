@@ -506,7 +506,7 @@ const AboutEvent = () => {
               )}
             </div>
 
-            {/* <Controller
+            <Controller
               name="vendor_registration"
               control={control}
               render={({ field }) => (
@@ -655,7 +655,7 @@ const AboutEvent = () => {
                     </Form.Item>
                   )}
                 </Space>
-              )} */}
+              )}
 
             <Controller
               name="state"

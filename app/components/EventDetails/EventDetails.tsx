@@ -286,17 +286,53 @@ export default function EventDetailsComponent({
         ),
         key: "1",
       },
-      // {
-      //   label: (
-      //     <Link
-      //       href={`/discover/events-created/${params?.id}/coordinators/vendors`}
-      //       className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
-      //     >
-      //       Vendors Management
-      //     </Link>
-      //   ),
-      //   key: "2",
-      // },
+      {
+        label: (
+          <Link
+            href={`/discover/events-created/${params?.id}/coordinators/vendors`}
+            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          >
+            Vendors Management
+          </Link>
+        ),
+        key: "2",
+      },
+    ];
+
+    const MerchandiseItems: MenuProps["items"] = [
+      {
+        label: (
+          <Link
+            href={`/discover/events-created/${params?.id}/merchandise/products`}
+            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          >
+            Products
+          </Link>
+        ),
+        key: "1",
+      },
+      {
+        label: (
+          <Link
+            href={`/discover/events-created/${params?.id}/merchandise/orders`}
+            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          >
+            Orders
+          </Link>
+        ),
+        key: "2",
+      },
+      {
+        label: (
+          <Link
+            href={`/discover/events-created/${params?.id}/merchandise/shipping`}
+            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          >
+           Shipping
+          </Link>
+        ),
+        key: "3",
+      },
     ];
 
     return (
@@ -398,7 +434,7 @@ export default function EventDetailsComponent({
             >
               <Space>
                 Coordinators
-                {/* <IoChevronDown /> */}
+                <IoChevronDown />
               </Space>
             </Button>
           </Dropdown>
@@ -417,8 +453,28 @@ export default function EventDetailsComponent({
               router.push(`/discover/events-created/${params?.id}/sales`);
             }}
           >
-            Sales
+            Ticket Sales
           </Button>
+
+          <Dropdown
+            menu={{ items: MerchandiseItems, onClick: handleMenuClick }}
+          >
+            <Button
+              type={pathname.includes("merchandise") ? "primary" : "text"}
+              className="font-BricolageGrotesqueRegular cursor-pointer font-medium w-40 rounded-2xl"
+              style={{
+                borderRadius: "25px",
+                fontFamily: "BricolageGrotesqueMedium",
+              }}
+              size="large"
+            >
+              <Space>
+              Merchandise
+                <IoChevronDown />
+              </Space>
+            </Button>
+          </Dropdown>
+
         </div>
         {pathname.includes("sales") && getSettlementAccount?.data === undefined && (
           <div className="flex flex-row">
@@ -515,7 +571,7 @@ export default function EventDetailsComponent({
     }).format(totalRevenue ?? 0);
 
     return (
-      <div className="grid grid-cols-3 gap-x-6">
+      <div className="grid grid-cols-4 gap-x-6">
         <CardMetrics
           title="Total Tickets Sold"
           value={totalTickets ?? ""}
@@ -524,14 +580,14 @@ export default function EventDetailsComponent({
           valueStyle={valueStyle}
           containerStyle={containerStyle}
         />
-        {/* <CardMetrics
+        <CardMetrics
           title="Total Space Booked"
           value={10}
           cardStyle={cardStyle}
           titleStyle={titleStyle}
           valueStyle={valueStyle}
           containerStyle={containerStyle}
-        /> */}
+        />
         <CardMetrics
           title="Total Net Sales Revenue"
           value={formattedRevenue}
@@ -543,6 +599,187 @@ export default function EventDetailsComponent({
         <CardMetrics
           title="Next Payout Date"
           value={nextDate || "2024-04-07"}
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+      </div>
+    );
+  };
+
+  const StoreMetrics = (): JSX.Element => {
+    const CardMetrics = ({
+      title,
+      value,
+      cardStyle = {},
+      titleStyle = {},
+      valueStyle = {},
+      containerStyle = {},
+    }: {
+      title: string;
+      value: number | string;
+      cardStyle?: React.CSSProperties;
+      titleStyle?: React.CSSProperties;
+      valueStyle?: React.CSSProperties;
+      containerStyle?: React.CSSProperties;
+    }): JSX.Element => {
+      return (
+        <Card
+          className="rounded-3xl p-0"
+          style={{
+            borderRadius: "30px",
+            padding: "0px",
+            boxShadow: "0px 8px 24px 0px #00000014",
+            ...cardStyle,
+          }}
+        >
+          <div
+            className="flex flex-col mx-auto text-center py-5"
+            style={containerStyle}
+          >
+            <p
+              className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_PRY"
+              style={titleStyle}
+            >
+              {title}
+            </p>
+            <p
+              className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_DARK"
+              style={valueStyle}
+            >
+              {value}
+            </p>
+          </div>
+        </Card>
+      );
+    };
+  
+    const cardStyle = { width: "full", height: "150px" };
+    const titleStyle = { fontSize: "20px" };
+    const valueStyle = { fontSize: "19px" };
+    const containerStyle = { gap: "4px" };
+
+    const totalRevenue = 500000; // Example data
+    const formattedRevenue = new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(totalRevenue ?? 0);
+  
+    return (
+      <div className="grid grid-cols-3 gap-4">
+        <CardMetrics
+          title="Total Inventory Value"
+          value={formattedRevenue}
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+        <CardMetrics
+          title="Products Sold"
+          value={120} // Example value
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+        <CardMetrics
+          title="Out of Stock"
+          value={0}
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+      </div>
+    );
+  };
+  
+
+  const OrderMetrics = (): JSX.Element => {
+    const CardMetrics = ({
+      title,
+      value,
+      cardStyle = {},
+      titleStyle = {},
+      valueStyle = {},
+      containerStyle = {},
+    }: {
+      title: string;
+      value: number | string;
+      cardStyle?: React.CSSProperties;
+      titleStyle?: React.CSSProperties;
+      valueStyle?: React.CSSProperties;
+      containerStyle?: React.CSSProperties;
+    }): JSX.Element => {
+      return (
+        <Card
+          className="rounded-3xl p-0"
+          style={{
+            borderRadius: "30px",
+            padding: "0px",
+            boxShadow: "0px 8px 24px 0px #00000014",
+            ...cardStyle,
+          }}
+        >
+          <div
+            className="flex flex-col mx-auto text-center py-5"
+            style={containerStyle}
+          >
+            <p
+              className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_PRY"
+              style={titleStyle}
+            >
+              {title}
+            </p>
+            <p
+              className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_DARK"
+              style={valueStyle}
+            >
+              {value}
+            </p>
+          </div>
+        </Card>
+      );
+    };
+  
+    const cardStyle = { width: "full", height: "150px" };
+    const titleStyle = { fontSize: "20px" };
+    const valueStyle = { fontSize: "19px" };
+    const containerStyle = { gap: "4px" };
+
+    const totalRevenue = 146000; // Example data
+    const formattedRevenue = new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(totalRevenue ?? 0);
+  
+    return (
+      <div className="grid grid-cols-3 gap-4">
+        <CardMetrics
+          title="Total Sales"
+          value={formattedRevenue}
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+        <CardMetrics
+          title="Total Orders"
+          value={120} // Example value
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+        <CardMetrics
+          title="Completed Orders"
+          value={0}
           cardStyle={cardStyle}
           titleStyle={titleStyle}
           valueStyle={valueStyle}
@@ -653,13 +890,16 @@ export default function EventDetailsComponent({
         extraComponents={
           <div
             className={`flex flex-col ${
-              pathname.includes("sales") ? "space-y-8" : ""
+              pathname.includes("sales") ||  pathname.includes("order") || pathname.includes("product") ? "space-y-8" : ""
             }`}
           >
             <ExtraTab />
             {pathname.includes("sales") && <SalesMetrics />}
+            {pathname.includes("product")  && <StoreMetrics/>}
+            {pathname.includes("order")  && <OrderMetrics/>}
           </div>
         }
+        
       >
         <div className="w-full mx-auto flex flex-col space-y-5 py-2">
           <>{children}</>

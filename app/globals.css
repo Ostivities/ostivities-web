@@ -1268,7 +1268,7 @@ button {
 /* In your global CSS file, or within a CSS module */
 .info-card {
   font-family: 'Bricolage Grotesque', sans-serif;
-}
+} 
 
 .info-title {
   font-family: 'Bricolage Grotesque', sans-serif;
@@ -1391,4 +1391,14 @@ z-index: 99; */
     flex: 1 1 100%; /* 1 card per row */
     max-width: 100%; /* Full width for small devices */
   }
+}
+.custom-steps .ant-steps-item-process .ant-steps-item-icon {
+  background-color: #e20000 !important;
+}
+.custom-steps .ant-steps-item-process .ant-steps-item-title {
+  color: #e20000 !important;
+  font-weight: bold;
+}
+.custom-steps .ant-steps-item-title {
+  font-family: 'Bricolage Grotesque', sans-serif !important;
 }

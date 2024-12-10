@@ -133,7 +133,7 @@ const CoordinatorsList = () => {
     {
       title: (
         <Label
-          content="Action"
+          content="Action" 
           className="font-semibold text-OWANBE_TABLE_TITLE"
         />
       ),

@@ -191,7 +191,7 @@ const VendorsDetails = () => {
             <Option value="Declined">Declined</Option>
             <Option value="PendingApproval">Pending</Option>
           </Select>
-      </Form.Item>
+      </Form.Item> 
 
 
    {/* Forth Row */}

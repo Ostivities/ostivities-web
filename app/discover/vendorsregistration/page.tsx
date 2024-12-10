@@ -327,7 +327,7 @@ const Vendorsregistration = () => {
     <Form.Item
       style={{  marginTop: '20px', marginBottom: '1px' }}
     >
-      <Space align="center">
+      <Space align="center"> 
         <Checkbox
           {...field}
           checked={field.value}

@@ -46,6 +46,11 @@ export const EVENT_NAV_LINKS: INavLinks[] = [
     target: undefined,
     rel: undefined
   },
+  {
+    link: "/discover/venue-hub", name: "Venue Hub",
+    target: undefined,
+    rel: undefined
+  },
   { link: "/discover/settings", name: "Settings", 
     target: "_blank", 
     rel: "noopener noreferrer" },
@@ -141,7 +146,7 @@ export const LEGAL: INavLinks[] = [
 ];
 
 export const SUPPORT: INavLinks[] = [
-  { link: "https://ostivities.tawk.help", name: "Support Centre", 
+  { link: "https://ostivities.tawk.help", name: "Help", 
     target: "_blank", 
     rel: "noopener noreferrer" },
   {

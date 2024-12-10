@@ -382,7 +382,7 @@ const EventTickets = () => {
                     onChange(); // Additional logic if necessary
                   }}
                   isDisabled={ticketData?.length === 0}
-                  label="Registration toggle" // Provide the required label prop
+                  label="Registration toggle" // Provide the required label prop 
                 />
                 <span
                   className={`font-BricolageGrotesqueMedium font-medium text-sm ${ticketData?.length === 0

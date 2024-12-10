@@ -3,6 +3,7 @@ import { EXHIBITION_SPACE, TICKET_STOCK, USAGE_LIMIT, DISCOUNT_TYPE, PAYMENT_MET
 export enum ACCOUNT_TYPE {
   PERSONAL = "PERSONAL",
   ORGANISATION = "ORGANISATION",
+  HALLMANAGER = "HALL MANAGER",
 }
 
 export interface INavLinks {
@@ -72,6 +73,7 @@ export interface IFormInput {
   space_available?: number;
   space_fee?: number;
   unique_key: string;
+  link: string;
 }
 
 
@@ -156,12 +158,12 @@ export interface IModal {
   open?: boolean;
   onClose?: any;
   onCancel?: any;
+  visible?: any;
   onOk?: any;
   actionType?: "delete" | "warning" | "detail";
   data?: any;
   selectedRowKeys?: string[];
   dataToDelete?: any;
-
 }
 
 export interface IModal2 {
@@ -229,6 +231,8 @@ export interface DataType {
   address?: string; // Optional, since it's not used in the data generation
   id?: string; // Optional, since it's not used in the data generation
 }
+
+
 
 export interface SalesDataType {
   chargeBearer: any;
@@ -315,6 +319,25 @@ export interface PaymentDataType {
   paymentDate: string;
 }
 
+export interface ProductDataType {
+  key: string;
+  product: string;
+  inStock: number;
+  price: number;
+  status: string;
+}
+
+export interface OrderDataType {
+  key: string;
+  orderId: string;
+  productName: string;
+  total: number;
+  orderStatus: "Completed" | "Cancelled" | "Processing";
+  payment: string;
+  shipping: "Delivered" | "Shipped" | "Returned";
+  date: string;
+}
+
 export interface IUser {
   firstName: string;
   lastName: string;
@@ -324,6 +347,7 @@ export interface IUser {
   confirmPassword: string;
   terms_and_condition: boolean;
   businessName: string;
+  hallName: string;
   phonenumber: string;
   feedback: string;
 }

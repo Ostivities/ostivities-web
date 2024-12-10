@@ -9,7 +9,7 @@ const Coordinators = () => {
   return (
     <EventDetailsComponent>
       {discount === "Discount" && <Coordinatorss />}
-    </EventDetailsComponent>
+    </EventDetailsComponent> 
   );
 };
 

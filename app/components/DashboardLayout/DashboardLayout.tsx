@@ -18,6 +18,7 @@ import {
   PlusCircleOutlined,
   QuestionCircleOutlined,
   SettingOutlined,
+  ShopOutlined,
   UsergroupAddOutlined,
 } from "@ant-design/icons";
 import CloseIcon from "@/public/close.svg";
@@ -55,7 +56,10 @@ const items1: MenuProps["items"] = [
 ];
 
 const items2: MenuProps["items"] = [
-  { icon: CompassOutlined, title: "Discovery", link: "/discover" },
+  { icon: CompassOutlined, 
+    title: "Discovery", 
+    link: "/discover" 
+  },
   {
     icon: PlusCircleOutlined,
     title: "Create Event",
@@ -66,8 +70,16 @@ const items2: MenuProps["items"] = [
     title: "Events Created",
     link: "/discover/events-created",
   },
-  { icon: SettingOutlined, title: "Settings", link: "/discover/settings" },
+  { icon: ShopOutlined, 
+    title: 'Venue Hub', 
+    link: '/discover/venue-hub'
+  },
+  { icon: SettingOutlined, 
+    title: "Settings", 
+    link: "/discover/settings" 
+  },
   // { icon: FieldTimeOutlined, title: "Coming Soon", link: "/discover/coming-soon" },
+ 
 ].map((item) => {
   const key = item.link;
   return {
@@ -251,6 +263,7 @@ function DashboardLayout({
   const endpoints = [
     "create-events",
     "events-created",
+    "venue-hub",
     "coming-soon",
     "settings",
   ];
@@ -300,6 +313,7 @@ function DashboardLayout({
     pathname.split("/").includes("settings") ||
     pathname.split("/").includes("events-created") ||
     pathname.split("/").includes("coming-soon") ||
+    pathname.split("/").includes("venue-hub") ||
     pathname.split("/").includes("create-events");
 
   const showNavLinks = !pathCheck && pathname !== "/discover";

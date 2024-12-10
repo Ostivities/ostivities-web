@@ -493,7 +493,7 @@ const inactiveTabStyle = {
               scroll={{ x: "max-content" }}
             />
           </TabPane>
-          {/* <TabPane
+          <TabPane
             tab={
               <span style={activeKey === "2" ? activeTabStyle : inactiveTabStyle}>
                 Exhibition Space Booked Sales 
@@ -523,7 +523,7 @@ const inactiveTabStyle = {
               }}
               scroll={{ x: "max-content" }}
             />
-          </TabPane> */}
+          </TabPane>
           <TabPane
             tab={
               <span style={activeKey === "3" ? activeTabStyle : inactiveTabStyle}>
