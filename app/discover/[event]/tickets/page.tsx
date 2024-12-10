@@ -92,8 +92,6 @@ const TicketsSelection = () => {
   const ticketData = getTickets?.data?.data?.data;
   const discountDetails = getEventDiscount?.data?.data?.data;
   const [isToggled, setIsToggled] = useState(false);
-  // console.log(eventDetails?.eventName, "eventName")
-  console.log(currentPage, "currentPage");
   const title = (
     <div className="flex-center gap-2">
       <Image
@@ -127,7 +125,7 @@ const TicketsSelection = () => {
     [key: string]: number;
   }>({});
 
-  console.log(selectedTickets, "selectedTickets");
+  // console.log(currentPage, "currentPage");
   const [ticketDetails, setTicketDetails] = useState<
     {
       ticketName: string;
@@ -151,20 +149,8 @@ const TicketsSelection = () => {
     }[]
   >([]);
 
-  // const [ticketDetails, setTicketDetails] = useState(() => {
-  //   if (cookies?.ticketDetails) {
-  //     try {
-  //       const savedTicketDetails = JSON.parse(cookies.ticketDetails);
-  //       return Array.isArray(savedTicketDetails) ? savedTicketDetails : [];
-  //     } catch (error) {
-  //       console.error("Error parsing ticketDetails from cookies:", error);
-  //     }
-  //   }
-  //   // Return an empty array if no cookies found or error in parsing
-  //   return [];
-  // });
 
-  console.log(ticketDetails, "ticketDetails");
+  // console.log(ticketDetails, "ticketDetails");
 
   useEffect(() => {
     if (!cookies?.ticketDetails || ticketDetails?.length > 0) {
@@ -398,19 +384,15 @@ const TicketsSelection = () => {
   }, [ticketDetails]);
 
   const handleDiscountApplied = (code: string) => {
-    // setDiscountApplied(applied === true);
     setDiscountCode(code);
   };
 
-  // console.log(discountValueUsed, "discountValueUsed");
-  // console.log(discountTypeUsed, "discountTypeUsed");
 
   useEffect(() => {
     const discountCodeUsed = discountDetails?.find(
       (discount: any) =>
         discount?.discountCode?.toLowerCase() === discountCode?.toLowerCase()
     );
-    // console.log(discountCodeUsed, "discountCodeUsed");
     const discountTypeUsed = discountCodeUsed && discountCodeUsed?.discountType; // Use null or a default value if not found
     const discountValueUsed =
       discountCodeUsed && discountCodeUsed?.discount_value; // Use null or a default value if not found
@@ -471,7 +453,6 @@ const TicketsSelection = () => {
         );
 
         const updatedDetails = [...prevDetails];
-        // console.log(discountedPrice, "discountedPrice");
         const realPrice =
           ticket?.ticketEntity === TICKET_ENTITY.SINGLE
             ? ticket?.ticketPrice
@@ -610,7 +591,6 @@ const TicketsSelection = () => {
   const [additionalFields, setAdditionalFields] = useState<
     { id: number; question: string; answer: string; is_compulsory: boolean }[]
   >([]);
-  // console.log(additionalFields, "additionalFields");
   const [allInfo, setAllInfo] = useState<{
     personal_information: {
       firstName: string;
@@ -671,11 +651,9 @@ const TicketsSelection = () => {
       confirmEmail: string;
     }[]
   >([]);
-  // console.log(additionalFields, "additionalFields");
   const [modal, setModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
-  // console.log(isFormValid, "isFormValid");
 
   const handleInputChange = (
     value: string,
@@ -743,18 +721,13 @@ const TicketsSelection = () => {
   }, [ticketDetails]);
 
   useEffect(() => {}, [allInfo]);
-  // console.log(allInfo, "Updated allInfo");
 
   const [loading, setLoading] = useState(false);
   const onFinish: FormProps<any>["onFinish"] = async (values: any) => {
-    // console.log(values);
     const validateFields = await form.validateFields();
     if (!validateFields) {
-      // console.log("Form is not valid");
       return;
     }
-    // return
-    // console.log(ticketDetails, "ticketDetails");
     const {
       firstName,
       lastName,
@@ -846,7 +819,6 @@ const TicketsSelection = () => {
           .reduce((acc, curr) => acc + curr, 0),
       };
     });
-    // return console.log(allInfo, "allInfo")
 
     if (
       ticketDetails
@@ -874,7 +846,6 @@ const TicketsSelection = () => {
     // router.push(`discover/${params?.event}/payment`);
   };
   const onFinishFailed: FormProps<any>["onFinishFailed"] = (errorInfo) => {
-    // console.log(errorInfo, "errorInfo");
     return errorInfo;
   };
 
@@ -932,32 +903,66 @@ const TicketsSelection = () => {
   }, [currentPage, form.getFieldsValue(), checkFormValidity]);
 
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
+  // const pageParam = searchParams.get("page");
+  
+  // useEffect(() => {
+  //   const determinePage = () => {
+  //     const pageParam = searchParams.get("page");
+  //     const isReload = performance?.navigation?.type === 1; // Check if the page was reloaded
+  //     console.log(isReload, "isReload");
+  
+  //     if (isReload && pageParam === "payment") {
+  //       // Redirect to `contactform` only if page was reloaded and pageParam is `payment`
+  //       router.replace(`${pathname}?page=contactform`);
+  //       setCurrentPage("contactform");
+  //     } else if (pageParam === "contactform") {
+  //       setCurrentPage("contactform");
+  //     } else if (!pageParam) {
+  //       // Default page based on the path
+  //       if (pathname.includes("")) {
+  //         setCurrentPage("tickets");
+  //       } else if (pathname.includes("contactform")) {
+  //         setCurrentPage("contactform");
+  //       } else if (pathname.includes("payment")) {
+  //         setCurrentPage("payment");
+  //       }
+  //     }
+  //   };
+  
+  //   determinePage(); // Run on component mount
+  // }, [pathname, searchParams, router]);
+      
+useEffect(() => {
+  const pageParam = searchParams.get("page");
 
-  useEffect(() => {
-    const pageParam = searchParams.get("page");
+console.log(pageParam)
+console.log(currentPage, "currentPage")
+  // Handle reloads or initial load
+  if (isInitialLoad) {
+    setIsInitialLoad(false); // Set the flag to false after initial load
 
-    // On the first load, determine the page
-    if (isInitialLoad) {
-      setIsInitialLoad(false); // Set the flag to false after initial load
+    if (pageParam === "payment") {
+      // Redirect to `contactform` on reload if on the `payment` page
+      router.replace(`${pathname}?page=contactform`);
+      setCurrentPage("contactform");
+    } else if (pageParam === "contactform" || pageParam === "payment") {
+      // Update state based on the query parameter
+      setCurrentPage(pageParam);
 
-      if (pageParam === "payment") {
-        // Redirect to `contactform` on reload if on the `payment` page
-        router.push(`${pathname}?page=contactform`);
-        setCurrentPage("contactform");
-      } else if (
-        pageParam === "tickets" ||
-        pageParam === "contactform" ||
-        pageParam === "payment"
-      ) {
-        // Update state based on the query parameter
-        setCurrentPage(pageParam);
-      } else {
-        // Default to `tickets` if no valid page query exists
-        setCurrentPage("tickets");
-      }
+    } else if (pageParam === null) {
+      // Default to `tickets` if no valid page query exists
+      setCurrentPage("tickets");
     }
-  }, [searchParams, pathname, router, isInitialLoad]);
+  } else {
+    // Handle navigation changes after the initial load
+    if (pageParam === "contactform" || pageParam === "payment") {
+      setCurrentPage(pageParam);
+    }else if(pageParam === null) {
+      setCurrentPage("tickets");
+    }
 
+  }
+}, [searchParams, pathname, router, isInitialLoad]);
 
   const handleButtonClick = () => {
     if (currentPage === "tickets") {
