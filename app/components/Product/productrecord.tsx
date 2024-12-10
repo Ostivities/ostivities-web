@@ -6,14 +6,16 @@ import ViewProduct from "@/app/discover/events-created/[id]/merchandise/products
 import NewProduct from "@/app/discover/events-created/[id]/merchandise/products/newproduct/page";
 import { Heading5, Label, Paragraph } from "@/app/components/typography/Typography";
 import { ICoordinatorData, ProductDataType } from "@/app/utils/interface";
-import { Button, Dropdown, Input, Space, Table, Tabs } from "antd";
-import { DeleteOutlined, FileExcelOutlined, FilePdfOutlined, MenuOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Dropdown, Input, Space, Table, Tabs, Tooltip } from "antd";
+import { DeleteOutlined, FileExcelOutlined, FilePdfOutlined, MenuOutlined, PlusOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import * as XLSX from "xlsx";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/es/table";
 import { MenuItemType } from "antd/es/menu/interface";
+import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
+
 
 const { Search } = Input;
 
@@ -25,6 +27,12 @@ const Productlist = () => {
   const [productPageSize, setProductPageSize] = useState(10);
   const [searchText, setSearchText] = useState<string>("");
   const [showViewProduct, setShowViewProduct] = useState<boolean>(false);
+  const [isToggled, setIsToggled] = useState(false);
+
+  
+  const handleToggle = () => {
+    setIsToggled((prev) => !prev); // Toggles the state between true and false
+  };
 
   const ProductData: ProductDataType[] = Array.from({ length: 20 }, (_, index) => ({
     key: `${index + 1}`,
@@ -210,27 +218,13 @@ const Productlist = () => {
     color: 'grey', // Inactive color
   };
 
+
   return (
     <React.Fragment>
       {
         !showViewProduct && !showNewProduct && (
           <>
-            <GuestDetail
-              open={isModalOpen}
-              onCancel={() => setIsModalOpen(false)}
-              data={modalData}
-            />
            <Space direction="vertical" size="middle" className="w-full">
-        {/* <Tabs defaultActiveKey="1" className="w-full" onChange={setActiveKey}>
-          <TabPane
-            tab={
-              <span style={activeKey === "1" ? activeTabStyle : inactiveTabStyle}>
-                Product
-                {activeKey === "1" && <span />}
-              </span>
-            }
-            key="1"
-          > */}
        <Space
   direction="horizontal"
   className="w-full justify-between items-center"
@@ -244,6 +238,34 @@ const Productlist = () => {
   content={"Manage and create your event product here."}
   styles={{ fontWeight: "normal !important" }}
 />
+<div className="flex items-center">
+  <ToggleSwitch
+    isActive={isToggled}
+    onToggle={handleToggle}
+    label="Registration toggle"
+  />
+  
+  <span
+    className={`font-BricolageGrotesqueMedium font-medium text-sm ${isToggled ? "text-OWANBE_DARK" : "text-gray-400"}`}
+    style={{ marginLeft: "12px" }}
+  >
+    {isToggled ? "Stop Product sales" : "Start product sales"}
+    
+    <a
+      href="https://ostivities.tawk.help/article/how-to-start-and-stop-ticket-registration-on-ostivities"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ marginLeft: "8px" }}
+    >
+      <Tooltip title="Click to learn more">
+        <QuestionCircleOutlined style={{ fontSize: "18px", color: "#858990" }} />
+      </Tooltip>
+    </a>
+  </span>
+</div>
+
+
+
 <Button
   type="primary" 
   size="large"

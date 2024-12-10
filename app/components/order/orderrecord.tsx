@@ -222,11 +222,6 @@ const OrderList = () => {
       {
         !showVieworder && (
           <>
-            <GuestDetail
-              open={isModalOpen}
-              onCancel={() => setIsModalOpen(false)}
-              data={modalData}
-            />
             <Space direction="vertical" size="middle" className="w-full">
               <Space
                 direction="horizontal"
