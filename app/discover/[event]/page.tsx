@@ -1641,9 +1641,9 @@ const EventDetail = () => {
         </div>
         <br /><br />
         <EventStore />
-        <br /><br /><br />
+        <br /><br />
         <hr style={{ border: "0.1px solid #d3d3d3", margin: "3px 0" }} />
-        <br /><br /><br />
+        <br /><br />
         <AvailableEvents />
       </section>
     </DashboardLayout>
