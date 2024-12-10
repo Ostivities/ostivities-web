@@ -147,7 +147,7 @@ const EventStore = () => {
         style={{
           padding: "0rem",
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
         }}
       >
         {[...Array(6)].map((_, index) => (
