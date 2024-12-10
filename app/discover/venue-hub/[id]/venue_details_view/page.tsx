@@ -215,7 +215,7 @@ const VenueHubView = () => {
 
             With its flexible layout, the hall can be configured to accommodate various event types, from formal dinners to casual receptions. The modern decor features elegant lighting and a beautiful stage area, creating a stunning backdrop for your special occasions.
 
-            In addition, the venue offers dedicated staff to assist with event planning and coordination, ensuring a seamless experience from start to finish. Whether you're hosting a corporate event, a birthday celebration, or a community gathering, this event hall provides the perfect setting for unforgettable moments.
+            In addition, the venue offers dedicated staff to assist with event planning and coordination, ensuring a seamless experience from start to finish. Whether you&apos;re hosting a corporate event, a birthday celebration, or a community gathering, this event hall provides the perfect setting for unforgettable moments.
           </p>
         </div>
 
@@ -229,12 +229,12 @@ const VenueHubView = () => {
             <li className="border-b pb-4">
               <p className="font-semibold text-lg">John Doe</p>
               <Rate defaultValue={5} disabled />
-              <p className="mt-2 text-lg">"Amazing venue! The staff were incredibly helpful, and the amenities exceeded our expectations."</p>
+              <p className="mt-2 text-lg">&quot;Amazing venue! The staff were incredibly helpful, and the amenities exceeded our expectations.&quot;</p>
             </li>
             <li>
               <p className="font-semibold text-lg">Jane Smith</p>
               <Rate defaultValue={4} disabled />
-              <p className="mt-2 text-lg">"Great experience, but the Wi-Fi was a bit slow during our event."</p>
+              <p className="mt-2 text-lg">&quot;Great experience, but the Wi-Fi was a bit slow during our event.&quot;</p>
             </li>
           </ul>
         </div>

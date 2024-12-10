@@ -18,12 +18,7 @@ export default function EventDetailsComponent({
   const { addEventToDiscovery } = useAddEventToDiscovery();
   const eventDetails = getUserEvent?.data?.data?.data;
 
-  const handleSwitchChange = async () => {
-    if (!eventDetails?.discover) {
-      await addEventToDiscovery.mutateAsync({ id: params?.id, discover: true });
-    }
-  };
-
+ 
   useEffect(() => {
     setIsActive(!!eventDetails?.discover);
   }, [eventDetails]);
