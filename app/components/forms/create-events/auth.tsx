@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useParams } from "next/navigation";
 // import { useProfile } from "../../../hooks/auth/auth.hook";
 import { useCookies } from "react-cookie";
 
@@ -7,12 +7,15 @@ const useFetch = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [cookies, setCookie, removeCookie] = useCookies([
-    "profileData",
+    "profileData", "ticketDetails", "selectedTickets"
   ]);
+  const params = useParams<{ event: string }>();
+
 
 
   const router = useRouter();
   const pathname = usePathname();
+  console.log(pathname, "pathname")
 
   // Private paths for authentication
   const privatePaths = [
@@ -75,10 +78,14 @@ const useFetch = () => {
 
     window.addEventListener("storage", handleStorageChange);
 
+    if(pathname !== `/discover/${params?.event}/tickets`){
+      removeCookie("ticketDetails")
+      removeCookie("selectedTickets")
+    }
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
-  }, [pathname, router]);
+  }, [pathname, router, params?.event, removeCookie]);
 
   return { isLoggedIn, loading };
 };

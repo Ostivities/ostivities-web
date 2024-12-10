@@ -93,7 +93,7 @@ const TicketsSelection = () => {
   const discountDetails = getEventDiscount?.data?.data?.data;
   const [isToggled, setIsToggled] = useState(false);
   // console.log(eventDetails?.eventName, "eventName")
-  // console.log(isToggled, "isToggled");
+  console.log(currentPage, "currentPage");
   const title = (
     <div className="flex-center gap-2">
       <Image
@@ -957,6 +957,7 @@ const TicketsSelection = () => {
       }
     }
   }, [searchParams, pathname, router, isInitialLoad]);
+
 
   const handleButtonClick = () => {
     if (currentPage === "tickets") {
