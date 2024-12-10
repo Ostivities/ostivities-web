@@ -195,17 +195,17 @@ const EventDetail = () => {
   const params = useParams<{ event: string }>();
   // console.log(params, 'params');
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
-  // console.log(getUserEventByUniqueKey, "getUserEventByUniqueKey");
   const { isLoggedIn, loading } = useFetch();
   const eventDetails =
     getUserEventByUniqueKey?.data?.data?.data === null
       ? router.push("/not-found")
       : getUserEventByUniqueKey?.data?.data?.data;
   // console.log(eventDetails, "eventDetails");
-
+  const [cookies, setCookie] = useCookies(["profileData"])
   const { getEventGuests } = useGetEventGuests(eventDetails?.id, 1, 10);
   const allGuestsData = getEventGuests?.data?.data?.data?.guests;
   const totalGuests = getEventGuests?.data?.data?.data?.total;
+  const loggedInUser = `${cookies?.profileData?.firstName} ${cookies?.profileData?.lastName}`
 
   interface Guest {
     personal_information: {
@@ -675,12 +675,12 @@ const EventDetail = () => {
                     />
                     <Tooltip
                       title={
-                        isLoggedIn
+                        isLoggedIn && userFullName === loggedInUser
                           ? "Click to Scan Event Tickets"
                           : "Click to Create Your Attendee Flyer"
                       }
                     >
-                      {isLoggedIn ? (
+                      {isLoggedIn && userFullName === loggedInUser ? (
                         <Button
                           icon={
                             <ScanOutlined className="text-black text-2xl" />
@@ -1063,12 +1063,12 @@ const EventDetail = () => {
 
               <Tooltip
                 title={
-                  isLoggedIn
+                  isLoggedIn && userFullName === loggedInUser
                     ? "Click to Scan Event Tickets"
                     : "Click to Create Your Attendee Flyer"
                 }
               >
-                {isLoggedIn ? (
+                {isLoggedIn && userFullName === loggedInUser ? (
                   <Button
                     icon={<ScanOutlined className="text-black text-2xl" />}
                     onClick={() =>
