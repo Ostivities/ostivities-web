@@ -125,7 +125,7 @@ const TicketsSelection = () => {
     [key: string]: number;
   }>({});
 
-  // console.log(currentPage, "currentPage");
+  console.log(cookies?.ticketDetails, "cookies?.ticketDetails");
   const [ticketDetails, setTicketDetails] = useState<
     {
       ticketName: string;
@@ -150,7 +150,7 @@ const TicketsSelection = () => {
   >([]);
 
 
-  // console.log(ticketDetails, "ticketDetails");
+  console.log(ticketDetails, "ticketDetails");
 
   useEffect(() => {
     if (!cookies?.ticketDetails || ticketDetails?.length > 0) {
@@ -162,8 +162,12 @@ const TicketsSelection = () => {
 
   // Save state to cookies when ticketDetails or selectedTickets change
   useEffect(() => {
-    if (ticketDetails?.length > 0) {
-      setCookie("ticketDetails", JSON.stringify(ticketDetails), {
+    const nonZeroTickets = ticketDetails?.filter(
+      (ticket) => ticket.ticketNumber > 0
+    ); // Remove tickets with zero count
+    if (ticketDetails.length > 0) {
+      // Save non-empty state to cookies
+      setCookie("ticketDetails", JSON.stringify(nonZeroTickets), {
         maxAge: 600,
         secure: true,
         sameSite: "strict",
@@ -175,9 +179,12 @@ const TicketsSelection = () => {
         sameSite: "strict",
         path: `/discover/${params?.event}/tickets`,
       });
+    } else if (ticketDetails.length === 0) {
+      // Remove cookies if `ticketDetails` is empty
+      removeCookie("ticketDetails", { path: `/discover/${params?.event}/tickets` });
+      removeCookie("selectedTickets", { path: `/discover/${params?.event}/tickets` });
     }
-  }, [ticketDetails, selectedTickets, setCookie, params?.event]);
-
+  }, [ticketDetails, selectedTickets, setCookie, removeCookie, params?.event]);
   useEffect(() => {
     // Cleanup cookies when navigating away from the target path
     if (!pathname.startsWith(`/discover/${params?.event}/tickets`)) {
@@ -903,40 +910,13 @@ const TicketsSelection = () => {
   }, [currentPage, form.getFieldsValue(), checkFormValidity]);
 
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
-  // const pageParam = searchParams.get("page");
   
-  // useEffect(() => {
-  //   const determinePage = () => {
-  //     const pageParam = searchParams.get("page");
-  //     const isReload = performance?.navigation?.type === 1; // Check if the page was reloaded
-  //     console.log(isReload, "isReload");
-  
-  //     if (isReload && pageParam === "payment") {
-  //       // Redirect to `contactform` only if page was reloaded and pageParam is `payment`
-  //       router.replace(`${pathname}?page=contactform`);
-  //       setCurrentPage("contactform");
-  //     } else if (pageParam === "contactform") {
-  //       setCurrentPage("contactform");
-  //     } else if (!pageParam) {
-  //       // Default page based on the path
-  //       if (pathname.includes("")) {
-  //         setCurrentPage("tickets");
-  //       } else if (pathname.includes("contactform")) {
-  //         setCurrentPage("contactform");
-  //       } else if (pathname.includes("payment")) {
-  //         setCurrentPage("payment");
-  //       }
-  //     }
-  //   };
-  
-  //   determinePage(); // Run on component mount
-  // }, [pathname, searchParams, router]);
       
 useEffect(() => {
   const pageParam = searchParams.get("page");
 
-console.log(pageParam)
-console.log(currentPage, "currentPage")
+// console.log(pageParam)
+// console.log(currentPage, "currentPage")
   // Handle reloads or initial load
   if (isInitialLoad) {
     setIsInitialLoad(false); // Set the flag to false after initial load
