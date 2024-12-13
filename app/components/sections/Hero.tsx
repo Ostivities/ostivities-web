@@ -89,7 +89,7 @@ function Hero(): JSX.Element {
   });
 
   useEffect(() => {
-    const targetDate = new Date("December 15, 2024 00:00:00").getTime();
+    const targetDate = new Date("December 30, 2024 00:00:00").getTime();
 
     const countdownInterval = setInterval(() => {
       const currentDate = new Date().getTime();
