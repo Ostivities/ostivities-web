@@ -70,7 +70,7 @@ export const FEATURES: IFeatures[] = [
     icon: Star,
     title: "Secure Access with Barcodes:",
     content:
-      "For paid and Private events, our barcode system guarantees secure access, making entry hassle-free for you and your guests.",
+      "Our barcode system guarantees secure access, making entry hassle-free for you and your guests.",
   },
 
 ];
@@ -98,7 +98,7 @@ export const ADVANTAGES: IFeatures[] = [
     icon: Star,
     title: "Event Merchandise Management:",
     content:
-      "Easily manage your event merchandise, track inventory, and ensure a seamless shopping experience for attendees. With Ostivities, merchandise management becomes simple and efficient, allowing you to focus on delivering unforgettable events.",
+      "Easily manage your event merchandise, track inventory, and ensure a seamless shopping experience for attendees.",
   },
 ];
 
@@ -107,13 +107,13 @@ export const ADVANTAGES_TWO: IFeatures[] = [
     icon: Cube,
     title: "Connect with Attendees:",
     content:
-      "Engage with attendees, share details and make your event truly unforgettable. Ostivities is your canvas to paint the perfect celebration.",
+      "Engage with attendees, share details and make your event truly unforgettable.",
   },
   {
     icon: Star,
     title: "Streamline Your Vendor Management:",
     content:
-      "Effortlessly manage vendors, coordinate logistics, and ensure a seamless event experience. With Ostivities, vendor management becomes a breeze, letting you focus on creating memorable moments.",
+      "Effortlessly manage vendors and ensure a seamless event experience. With Ostivities, vendor management becomes a breeze, letting you focus on creating memorable moments.",
   },
   {
     icon: Cube,
@@ -172,7 +172,6 @@ export const Questions: string[] = [
   "How do I find events near me?",
   "How do I create an event on Ostivities?",
   "Is Ostivities secure, especially for payment transactions?",
-  "How does ticketing works on Ostivities?",
 ];
 
 export const Answers: IFeatures[] = [
@@ -195,11 +194,6 @@ export const Answers: IFeatures[] = [
     title: "Is Ostivities secure, especially for payment transactions?",
     content:
       "Absolutely, we prioritize your security. For paid events, our trusted payment system ensures seamless and safe transactions.",
-  },
-  {
-    title: "How does ticketing works on Ostivities?",
-    content:
-      "Event hosts can sell tickets directly through our platform. Attendees can purchase tickets online, and each ticket will include a unique, scannable barcode for secure entry.",
   },
 ];
 

@@ -26,7 +26,7 @@ function Pricing(): JSX.Element {
                 "✔ 4% + ₦100 fee per paid ticket",
                 "✔ Chat support",
                 "✔ Full Control Over Ticket Inventory Management",
-                "✔ Option to start or stop ticket sales",
+                "✔ Option to start or stop ticket sales with ease",
             ],
         },
         {
