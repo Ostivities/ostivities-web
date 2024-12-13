@@ -172,6 +172,7 @@ export const Questions: string[] = [
   "How do I find events near me?",
   "How do I create an event on Ostivities?",
   "Is Ostivities secure, especially for payment transactions?",
+  "How does ticketing works on Ostivities?",
 ];
 
 export const Answers: IFeatures[] = [
@@ -194,6 +195,11 @@ export const Answers: IFeatures[] = [
     title: "Is Ostivities secure, especially for payment transactions?",
     content:
       "Absolutely, we prioritize your security. For paid events, our trusted payment system ensures seamless and safe transactions.",
+  },
+  {
+    title: "How does ticketing works on Ostivities?",
+    content:
+      "Event hosts can sell tickets directly through our platform. Attendees can purchase tickets online, and each ticket will include a unique, scannable barcode for secure entry.",
   },
 ];
 
