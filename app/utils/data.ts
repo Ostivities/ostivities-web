@@ -96,7 +96,7 @@ export const ADVANTAGES: IFeatures[] = [
   },
   {
     icon: Star,
-    title: "Event Merchandise Management:",
+    title: "Merchandise Management:",
     content:
       "Easily manage your event merchandise, track inventory, and ensure a seamless shopping experience for attendees.",
   },
@@ -111,7 +111,7 @@ export const ADVANTAGES_TWO: IFeatures[] = [
   },
   {
     icon: Star,
-    title: "Streamline Your Vendor Management:",
+    title: "Vendor Management:",
     content:
       "Effortlessly manage vendors and ensure a seamless event experience. With Ostivities, vendor management becomes a breeze, letting you focus on creating memorable moments.",
   },
