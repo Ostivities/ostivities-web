@@ -14,6 +14,7 @@ import {
   UploadFile,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import AsyncSelect from "react-select/async";
 import React, { useEffect, useState } from "react";
 import PreviewEmail from "@/app/components/OstivitiesModal/GuestMailPreviewModal";
 import { useCookies } from "react-cookie";
@@ -21,7 +22,7 @@ import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
 import {
   useGetEventGuests,
   useGetTicketGuests,
-  useGetGuestInfo
+  useGetGuestInfo,
 } from "@/app/hooks/guest/guest.hook";
 import { useGetUserEvent, useUpdateEvent } from "@/app/hooks/event/event.hook";
 import { useSendBulkEmail } from "@/app/hooks/bulkemail/bulkemail.hook";
@@ -43,7 +44,7 @@ const EventsGuestListEmail = () => {
   const [selectedTickets, setSelectedTickets] = useState<string[]>([]);
   const [selectedTicket, setSelectedTicket] = useState("");
   const [selectedAttendees, setSelectedAttendees] = useState<string[]>([]);
-  const [searchText, setSearchText] = useState('')
+  const [searchText, setSearchText] = useState("");
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [loader, setLoader] = useState(false);
   const [editorError, setEditorError] = useState("");
@@ -62,24 +63,28 @@ const EventsGuestListEmail = () => {
   const { getTicketGuests } = useGetTicketGuests(selectedTicket);
   const { getEventGuests } = useGetEventGuests(params?.id, 1, 10, searchText);
   const { getUserEvent } = useGetUserEvent(params?.id);
-  const [recipientsDataTicket, setRecipientsDataTicket] = useState<{
-    name: string;
-    email: string;
-  }[]>([])
+  const [recipientsDataTicket, setRecipientsDataTicket] = useState<
+    {
+      name: string;
+      email: string;
+    }[]
+  >([]);
   const ticketData = getTickets?.data?.data?.data;
   const eventDetails = getUserEvent?.data?.data?.data;
   // const { getGuestInfo } = useGetGuestInfo(eventDetails?.unique_key, )
-  const ticketGuests = getTicketGuests?.data?.data?.data
+  const ticketGuests = getTicketGuests?.data?.data?.data;
   const allGuestsData = getEventGuests?.data?.data?.data?.guests;
   const totalGuests = getEventGuests?.data?.data?.data?.total;
   const senderEmail = Form.useWatch("sender_email", form);
-  const recipientsApplicableForm = Form.useWatch("recipientsApplicable", form)
-  console.log(allGuestsData, "allGuestsData")
-
+  const recipientsApplicableForm = Form.useWatch("recipientsApplicable", form);
+  const rep = Form.useWatch("receipients", form);
+  // console.log(rep, "rep")
+  console.log(allGuestsData, "allGuestsData");
+  // console.log(recipientsDataTicket, "recipientsDataTicket")
   // Update eventName when eventDetails is available
   useEffect(() => {
-    if (eventDetails && eventDetails.eventName) {
-      setEventName(eventDetails.eventName);
+    if (eventDetails && eventDetails?.eventName) {
+      setEventName(eventDetails?.eventName);
     }
   }, [eventDetails]);
 
@@ -116,7 +121,7 @@ const EventsGuestListEmail = () => {
           `${cloud_api}/${cloud_name}/auto/upload`,
           formData
         );
-        console.log(response, "fileupload");
+        // console.log(response, "fileupload");
         if (response.status === 200) {
           const name = response?.data?.display_name;
           const content = response?.data?.resource_type;
@@ -150,15 +155,49 @@ const EventsGuestListEmail = () => {
     fileList,
   };
 
-  const onFinish = async (values: any) => {
-    if(recipientsApplicableForm === "ticket") {
-      const { attachments, recipientsApplicable, receipients, ...rest } = values;
-      const recipientsTicketData = ticketGuests && ticketGuests?.map((guest: IGuestData) => {
+  const fetchOptions = async (inputValue: string) => {
+    // Filter or fetch options based on inputValue
+    const filteredGuests = allGuestsData
+      ?.filter((guest: IGuestData) =>
+        guest?.personal_information?.firstName
+          .toLowerCase()
+          .startsWith(inputValue.toLowerCase())
+      )
+      .map((guest: IGuestData) => ({
+        value: guest?.id,
+        label: guest?.personal_information?.firstName,
+      }));
+    return filteredGuests;
+  };
+
+  const handleSelectChange = (selectedOptions: any) => {
+    // Extract the selected values
+    const selectedValues = selectedOptions?.map(
+      (option: { value: string }) => option.value
+    );
+    const selected = allGuestsData
+      ?.filter((guest: any) => selectedValues?.includes(guest?.id))
+      ?.map((guest: IGuestData) => {
         return {
           name: `${guest?.personal_information?.firstName}`,
-          email: guest?.personal_information?.email
-        }
-      })
+          email: guest?.personal_information?.email,
+        };
+      });
+    setRecipientsDataTicket(selected);
+  };
+
+  const onFinish = async (values: any) => {
+    if (recipientsApplicableForm === "ticket") {
+      const { attachments, recipientsApplicable, receipients, ...rest } =
+        values;
+      const recipientsTicketData =
+        ticketGuests &&
+        ticketGuests?.map((guest: IGuestData) => {
+          return {
+            name: `${guest?.personal_information?.firstName}`,
+            email: guest?.personal_information?.email,
+          };
+        });
       if (editorContent === "" || editorContent === "<p><br></p>") {
         setEditorError("Please provide event details!"); // Set error state
         return; // Prevent form submission if no content
@@ -170,14 +209,35 @@ const EventsGuestListEmail = () => {
         ...rest,
         email_attachment: emailAttachment,
         email_content: editorContent,
-        receipients: recipientsTicketData
+        receipients: recipientsTicketData,
       });
-  
+
       if (response.status === 200) {
-        console.log(response, "response");
+        // console.log(response, "response");
       }
 
-      console.log(recipientsTicketData, "recipientsTicketData")
+      // console.log(recipientsTicketData, "recipientsTicketData");
+    } else if (recipientsApplicableForm === "selected") {
+      const { attachments, recipientsApplicable, receipients, ...rest } =
+        values;
+
+      if (editorContent === "" || editorContent === "<p><br></p>") {
+        setEditorError("Please provide event details!"); // Set error state
+        return; // Prevent form submission if no content
+      } else {
+        setEditorError(""); // Clear error if content is valid
+      }
+
+      const response = await sendBulkEmail.mutateAsync({
+        ...rest,
+        email_attachment: emailAttachment,
+        email_content: editorContent,
+        receipients: recipientsDataTicket,
+      });
+
+      if (response.status === 200) {
+        // console.log(response, "response");
+      }
     } else {
       const { attachments, recipientsApplicable, ...rest } = values;
       if (editorContent === "" || editorContent === "<p><br></p>") {
@@ -186,19 +246,14 @@ const EventsGuestListEmail = () => {
       } else {
         setEditorError(""); // Clear error if content is valid
       }
-      console.log(values, "values");
-      // return values;
-  
-  
+
       const response = await sendBulkEmail.mutateAsync({
         ...rest,
         email_attachment: emailAttachment,
         email_content: editorContent,
-        //  sender_email: "kayode.raimi123@gmail.com"
       });
-  
+
       if (response.status === 200) {
-        console.log(response, "response");
       }
     }
   };
@@ -217,12 +272,8 @@ const EventsGuestListEmail = () => {
     setSelectedTicket(value);
   };
 
-  const handleAttendeeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(e.target.value);
-  };
-
-  const handleSelectAttendee = (value: string) => {
-    setSelectedAttendees([...selectedAttendees, value]);
+  const handleAttendeeSearch = (value: string) => {
+    setSearchText(value);
   };
 
   const handleFileChange = ({
@@ -368,7 +419,7 @@ const EventsGuestListEmail = () => {
               })}
             >
               <Select
-                mode="multiple"               
+                mode="multiple"
                 placeholder="Select guest name"
                 value={allGuestsData?.map((guest: IGuestData) => {
                   return {
@@ -409,35 +460,21 @@ const EventsGuestListEmail = () => {
           {recipientType === "selected" && (
             <Form.Item
               label="Select Attendees"
-              name="selectedAttendees"
+              name="receipients"
               style={{ marginBottom: "8px" }}
             >
-              <Input.Search
-                placeholder="Search and select attendees"
-                // onSearch={handleAttendeeSearch}
-                onChange={handleAttendeeSearch}
-                enterButton
-                allowClear
-                style={{ width: "100%" }}
+              <AsyncSelect
+                cacheOptions
+                loadOptions={fetchOptions} 
+                defaultOptions={allGuestsData?.map((guest: IGuestData) => ({
+                  value: guest.id,
+                  label: guest?.personal_information?.firstName,
+                }))} 
+                isMulti 
+                placeholder="Select tickets"
+                isClearable
+                onChange={handleSelectChange}
               />
-              <Space direction="vertical" style={{ marginTop: "8px" }}>
-                {selectedAttendees.map((attendee) => (
-                  <Space key={attendee}>
-                    {attendee}
-                    <Button
-                      type="text"
-                      size="small"
-                      onClick={() =>
-                        setSelectedAttendees(
-                          selectedAttendees.filter((item) => item !== attendee)
-                        )
-                      }
-                    >
-                      Remove
-                    </Button>
-                  </Space>
-                ))}
-              </Space>
             </Form.Item>
           )}
 
