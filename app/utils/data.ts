@@ -72,6 +72,12 @@ export const FEATURES: IFeatures[] = [
     content:
       "Filter events based on regions and states, bringing you closer to rich experiences right in your community.",
   },
+  {
+    icon: Cube,
+    title: "Event Merchandise Management:",
+    content:
+      "Effortlessly manage your event merchandise, track inventory, and ensure a seamless shopping experience for attendees. With Ostivities, merchandise management becomes simple and efficient, allowing you to focus on delivering unforgettable events.",
+  },
 ];
 
 export const ADVANTAGES: IFeatures[] = [
