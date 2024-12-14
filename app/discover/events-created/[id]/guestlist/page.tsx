@@ -12,6 +12,7 @@ import { FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
 import { Button, Skeleton, Flex, Input, Space, Table } from "antd";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { useDebounce } from "use-debounce";
 import React, { useState } from "react";
 import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
 import * as XLSX from "xlsx";
@@ -30,12 +31,12 @@ const EventsGuestList = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalData, setModalData] = useState<any>({});
   console.log(modalData, "modalData");
-  // const { getTicketGuests } = useGetTicketGuests()
+  const [debouncedSearchText] = useDebounce(searchText, 1000);
   const { getEventGuests } = useGetEventGuests(
     params?.id,
     currentPage,
     pageSize,
-    searchText
+    debouncedSearchText
   );
 
   const allGuestsData = getEventGuests?.data?.data?.data?.guests;
@@ -263,7 +264,6 @@ const EventsGuestList = () => {
           >
             <Search
               placeholder="Search Ticket Name or Guest Name"
-              // onSearch={handleSearch}
               onChange={handleSearch}
               style={{ width: 300 }}
             />

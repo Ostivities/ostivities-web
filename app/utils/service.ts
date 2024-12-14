@@ -174,6 +174,14 @@ export class API_SERVICE {
     })
   }
 
+  static async _getCheckInSummary(event_id: string, page: number, limit: number, search?: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/events/check_in_summary/${event_id}`,
+      method: HttpMethod.GET,
+      params: { page, limit, search },
+    });
+  }
+
   static async _createTicket(data: ITicketCreate): Promise<AxiosResponse> {
     return await instance({
       url: `/ticket/create_ticket`,
