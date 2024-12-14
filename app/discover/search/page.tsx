@@ -64,38 +64,7 @@ const SearchResult = () => {
   const [selectedValue, setSelectedValue] = useState<string | undefined>();
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [searchText, setSearchText] = useState("");
-  const [stateValue, setStateValue] = useState<SingleValue<{
-    label: string;
-    value: string;
-  }> | null>(null);
-  const [eventTypeValue, setEventTypeValue] = useState<SingleValue<{
-    label: string;
-    value: string;
-  }> | null>(null);
-
   const eventType = Form.useWatch("eventType", form);
-
-  console.log(eventName, "eventName");
-  console.log(state, "state");
-  console.log(eventCat, "eventCat");
-
-  const { getDiscoveryEvents } = useGetDiscoveryEvents(
-    page,
-    pageSize,
-    eventName,
-    state,
-    eventCat
-  );
-  const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
-  console.log(discoveryEvents, "discoveryEvents");
-  const isPending = getDiscoveryEvents?.isLoading;
-  // const skeletonCount = Math.max(12, getDiscoveryEvents?.data?.data?.data?.total);
-
-  console.log(query, "query");
-  console.log(selectedValue, "selectedValue");
-  const COUNTRY_JSON: any = Country.getAllCountries().map((i: any) => {
-    return { value: i?.name, label: i?.name, isoCode: i?.isoCode };
-  });
 
   const STATE_BY_COUNTRYCODE = (
     stateCode: string
@@ -137,24 +106,6 @@ const SearchResult = () => {
     }
   };
 
-  const handleStateChange = (
-    newValue: unknown,
-    actionMeta: ActionMeta<unknown>
-  ) => {
-    setStateValue(
-      newValue as SingleValue<{ label: string; value: string }> | null
-    );
-  };
-
-  // const handleEventTypeChange = (
-  //   newValue: unknown,
-  //   actionMeta: ActionMeta<unknown>
-  // ) => {
-  //   setEventTypeValue(
-  //     newValue as SingleValue<{ label: string; value: string }> | null
-  //   );
-  // };
-
   const header = (
     <div className="flex-center gap-2">
       <Image
@@ -171,14 +122,13 @@ const SearchResult = () => {
 
   return (
     <DashboardLayout title={header} isLoggedIn>
-     <div
-  className="border rounded-[24px] p-8 "
-  style={{
-    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-    backgroundColor: "#ffffff",
-  }}
->
-
+      <div
+        className="border rounded-[24px] p-8 "
+        style={{
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+          backgroundColor: "#ffffff",
+        }}
+      >
         <h3 className="font-semibold mb-3">
           Find events happening around you.
         </h3>
@@ -212,7 +162,7 @@ const SearchResult = () => {
                 fontFamily: "'Bricolage Grotesque', sans-serif",
                 fontSize: "14px",
                 padding: "2px 18px",
-                height: "38px",
+                height: "32px",
               }}
             />
           </Form.Item>
@@ -221,7 +171,7 @@ const SearchResult = () => {
           <Form.Item
             label="Event State"
             name="eventState"
-            className="flex-1 min-w-[200px]"
+            className="flex-1 min-w-[200px] h-[38px]"
           >
             <Select
               placeholder="Select event state"
@@ -229,7 +179,7 @@ const SearchResult = () => {
                 setState(value);
               }}
               style={{
-                borderRadius: "12px",
+                borderRadius: "20px",
                 fontFamily: "'Bricolage Grotesque', sans-serif",
                 fontSize: "14px",
               }}
@@ -247,18 +197,16 @@ const SearchResult = () => {
           <Form.Item
             label="Event Type"
             name="eventType"
-            className="flex-1 min-w-[200px]"
+            className="flex-1 min-w-[200px] h-[38px]"
           >
             <Select
               placeholder="Select event type"
-              // value={selectedValue}
-              // onChange={handleEventTypeChange}
               onChange={(value) => {
                 setEventCat(value);
                 handleEventTypeChange(value);
               }}
               style={{
-                borderRadius: "12px",
+                borderRadius: "20px",
                 fontFamily: "'Bricolage Grotesque', sans-serif",
                 fontSize: "14px",
               }}
@@ -281,7 +229,7 @@ const SearchResult = () => {
           </Form.Item>
 
           {/* Search Button */}
-          <div className="flex items-end">
+          {/* <div className="flex items-end">
             <Button
               type="primary"
               htmlType="submit"
@@ -298,11 +246,11 @@ const SearchResult = () => {
             >
               Search
             </Button>
-          </div>
+          </div> */}
         </Form>{" "}
       </div>
 
-      <EventSearch />
+      <EventSearch eventName={eventName} state={state} eventCat={eventCat} />
     </DashboardLayout>
   );
 };

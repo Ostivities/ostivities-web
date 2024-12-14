@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Button, Input, Space, Table } from "antd";
 import {
   FileExcelOutlined,
@@ -16,6 +16,7 @@ import {
   Label,
   Paragraph,
 } from "@/app/components/typography/Typography";
+import { useDebounce } from "use-debounce";
 import { ColumnsType } from "antd/es/table";
 import {
   getRandomName,
@@ -78,20 +79,17 @@ const CoordinatorsList = () => {
 
   // console.log(allCoordinators, totalCoordinators);
 
-  const handleSearch = (value: string) => {
-    setSearchText(value.toLowerCase());
-  };
+  const [debouncedSearchText] = useDebounce(searchText, 1000); // Debounce delay: 300ms
 
-  const handleAction = (record: CoordinatorsDataType) => {
-    setIsModalOpen(true);
-    setModalData(record);
-  };
+const handleSearch = (value: string) => {
+  setSearchText(value.toLowerCase());
+};
 
-  const filteredData = data?.filter(
-    (item) =>
-      item.staff_name.toLowerCase().includes(searchText) ||
-      item.staff_role.toLowerCase().includes(searchText)
-  );
+const filteredData = data?.filter(
+  (item) =>
+    item.staff_name.toLowerCase().includes(debouncedSearchText) ||
+    item.staff_role.toLowerCase().includes(debouncedSearchText)
+);
 
   const columns: ColumnsType<ICoordinatorData> = [
     {

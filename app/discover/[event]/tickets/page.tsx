@@ -79,17 +79,13 @@ const TicketsSelection = () => {
   const [currentPage, setCurrentPage] = useState<
     "tickets" | "contactform" | "payment"
   >("tickets");
-  const [externalTrigger, setExternalTrigger] =
-    useState<() => void | undefined>();
   const [discountCode, setDiscountCode] = useState("");
-  const [discountApplied, setDiscountApplied] = useState(false);
   const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
-  const { getTickets } = useGetEventTickets(eventDetails?.id);
   const { getTicketsByUniqueKey } = useGetEventTicketsByUniqueKey(
     eventDetails?.unique_key
   );
   const { getEventDiscount } = useGetEventDiscount(eventDetails?.id);
-  const ticketData = getTickets?.data?.data?.data;
+  const ticketData = getTicketsByUniqueKey?.data?.data?.data;
   const discountDetails = getEventDiscount?.data?.data?.data;
   const [isToggled, setIsToggled] = useState(false);
   const title = (
@@ -120,12 +116,18 @@ const TicketsSelection = () => {
     </div>
   );
 
+  const generateOrderNumber = (): string => {
+    const randomDigits = Math.floor(1000 + Math.random() * 9000);
+    return randomDigits.toString();
+  };
+
+  const order_number = `ORD${generateOrderNumber()}`;
   // State to manage selected ticket counts
   const [selectedTickets, setSelectedTickets] = useState<{
     [key: string]: number;
   }>({});
 
-  console.log(cookies?.ticketDetails, "cookies?.ticketDetails");
+  // console.log(cookies?.ticketDetails, "cookies?.ticketDetails");
   const [ticketDetails, setTicketDetails] = useState<
     {
       ticketName: string;
@@ -149,8 +151,7 @@ const TicketsSelection = () => {
     }[]
   >([]);
 
-
-  console.log(ticketDetails, "ticketDetails");
+  // console.log(ticketDetails, "ticketDetails");
 
   useEffect(() => {
     if (!cookies?.ticketDetails || ticketDetails?.length > 0) {
@@ -179,12 +180,17 @@ const TicketsSelection = () => {
         sameSite: "strict",
         path: `/discover/${params?.event}/tickets`,
       });
-    } else if (ticketDetails.length === 0) {
+    } else if (ticketDetails?.length === 0) {
       // Remove cookies if `ticketDetails` is empty
-      removeCookie("ticketDetails", { path: `/discover/${params?.event}/tickets` });
-      removeCookie("selectedTickets", { path: `/discover/${params?.event}/tickets` });
+      removeCookie("ticketDetails", {
+        path: `/discover/${params?.event}/tickets`,
+      });
+      removeCookie("selectedTickets", {
+        path: `/discover/${params?.event}/tickets`,
+      });
     }
   }, [ticketDetails, selectedTickets, setCookie, removeCookie, params?.event]);
+
   useEffect(() => {
     // Cleanup cookies when navigating away from the target path
     if (!pathname.startsWith(`/discover/${params?.event}/tickets`)) {
@@ -367,7 +373,11 @@ const TicketsSelection = () => {
 
   useEffect(() => {
     // When ticketData is updated, re-initialize selectedTickets
-    if (ticketData?.length && !cookies?.selectedTickets) {
+    if (
+      ticketData?.length &&
+      !cookies?.selectedTickets &&
+      cookies?.ticketDetails?.length < 1
+    ) {
       const initialSelectedTickets = ticketData?.reduce(
         (acc: { [key: string]: number }, ticket: ITicketDetails) => {
           acc[ticket.id] = 0;
@@ -377,7 +387,7 @@ const TicketsSelection = () => {
       );
       setSelectedTickets(initialSelectedTickets);
     }
-  }, [ticketData, cookies?.selectedTickets]);
+  }, [ticketData, cookies?.selectedTickets, cookies?.ticketDetails]);
 
   useEffect(() => {
     // Create a new filtered list only if necessary
@@ -393,7 +403,6 @@ const TicketsSelection = () => {
   const handleDiscountApplied = (code: string) => {
     setDiscountCode(code);
   };
-
 
   useEffect(() => {
     const discountCodeUsed = discountDetails?.find(
@@ -910,39 +919,33 @@ const TicketsSelection = () => {
   }, [currentPage, form.getFieldsValue(), checkFormValidity]);
 
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
-  
-      
-useEffect(() => {
-  const pageParam = searchParams.get("page");
 
-// console.log(pageParam)
-// console.log(currentPage, "currentPage")
-  // Handle reloads or initial load
-  if (isInitialLoad) {
-    setIsInitialLoad(false); // Set the flag to false after initial load
+  useEffect(() => {
+    const pageParam = searchParams.get("page");
 
-    if (pageParam === "payment") {
-      // Redirect to `contactform` on reload if on the `payment` page
-      router.replace(`${pathname}?page=contactform`);
-      setCurrentPage("contactform");
-    } else if (pageParam === "contactform" || pageParam === "payment") {
-      // Update state based on the query parameter
-      setCurrentPage(pageParam);
+    if (isInitialLoad) {
+      setIsInitialLoad(false); // Set the flag to false after initial load
 
-    } else if (pageParam === null) {
-      // Default to `tickets` if no valid page query exists
-      setCurrentPage("tickets");
+      if (pageParam === "payment") {
+        // Redirect to `contactform` on reload if on the `payment` page
+        router.replace(`${pathname}?page=contactform`);
+        setCurrentPage("contactform");
+      } else if (pageParam === "contactform" || pageParam === "payment") {
+        // Update state based on the query parameter
+        setCurrentPage(pageParam);
+      } else if (pageParam === null) {
+        // Default to `tickets` if no valid page query exists
+        setCurrentPage("tickets");
+      }
+    } else {
+      // Handle navigation changes after the initial load
+      if (pageParam === "contactform" || pageParam === "payment") {
+        setCurrentPage(pageParam);
+      } else if (pageParam === null) {
+        setCurrentPage("tickets");
+      }
     }
-  } else {
-    // Handle navigation changes after the initial load
-    if (pageParam === "contactform" || pageParam === "payment") {
-      setCurrentPage(pageParam);
-    }else if(pageParam === null) {
-      setCurrentPage("tickets");
-    }
-
-  }
-}, [searchParams, pathname, router, isInitialLoad]);
+  }, [searchParams, pathname, router, isInitialLoad]);
 
   const handleButtonClick = () => {
     if (currentPage === "tickets") {
@@ -962,7 +965,7 @@ useEffect(() => {
     }
   };
 
-  const isPending: boolean = getTickets?.isLoading;
+  const isPending: boolean = getTicketsByUniqueKey?.isLoading;
 
   const {
     minutes,

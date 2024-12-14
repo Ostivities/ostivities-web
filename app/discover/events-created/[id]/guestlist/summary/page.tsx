@@ -2,11 +2,13 @@
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
 import { Heading5, Label, Paragraph } from "@/app/components/typography/Typography";
 import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
-import { SummaryDataType } from "@/app/utils/interface";
+import { SummaryDataType, ICheckInSummary } from "@/app/utils/interface";
+import { useGetCheckInSummary } from "@/app/hooks/event/event.hook";
 import { Button, Input, Space, Table } from "antd";
 import { FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { useRouter, useParams } from "next/navigation";
 import * as XLSX from "xlsx";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/es/table";
@@ -29,21 +31,29 @@ function getRandomTicketType(): string {
 }
 
 const EventsGuestListSummary = () => {
-  const [searchText, setSearchText] = useState("");
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const params = useParams<{ id: string }>();
+  const [searchText, setSearchText] = useState<string>("");
+  const { getCheckInSummary } = useGetCheckInSummary(params?.id, currentPage, pageSize, searchText);
+  const summaryInfo = getCheckInSummary?.data?.data?.data?.check_in_summary;
+  const totalCheckedIn = getCheckInSummary?.data?.data?.data?.total;
+  // console.log(getCheckInSummary, "getCheckInSummary");
 
-  const data: SummaryDataType[] = Array.from({ length: 50 }, (_, index) => ({
-    key: `${index + 1}`,
-    guestName: getRandomGuestName(),
-    ticketName: `Ticket ${index + 1}`,
-    ticketType: getRandomTicketType(),
-    checkedInTime: `2024-07-${(index + 1).toString().padStart(2, "0")}, ${Math.floor(Math.random() * 12)}:${Math.floor(Math.random() * 60).toString().padStart(2, "0")}${Math.random() > 0.5 ? 'am' : 'pm'}`,
-    checkedInBy: getRandomCheckInName(), // New field for checked-in by
-  }));
 
-  const columns: ColumnsType<SummaryDataType> = [
+  const data: ICheckInSummary[] = summaryInfo?.map((item: ICheckInSummary) => {
+    return {
+      key: item?.id,
+      guestName: `${item?.personal_information?.firstName} ${item?.personal_information?.lastName}`,
+      ticketName: item?.ticket_information?.[0]?.ticket_name,
+      // ticketType: item?.ticket_information?.[0]?.ticket_type,
+      checkedInTime: item?.check_in_date_time,
+      checkedInBy: item?.check_in_by,
+    }
+  })
+
+  const columns: ColumnsType<ICheckInSummary> = [
     {
       title: (
         <Label
@@ -52,7 +62,7 @@ const EventsGuestListSummary = () => {
         />
       ),
       dataIndex: "guestName",
-      sorter: (a, b) => a.guestName.localeCompare(b.guestName),
+      // sorter: (a, b) => a.guestName.localeCompare(b.guestName),
     },
     {
       title: (
@@ -62,18 +72,18 @@ const EventsGuestListSummary = () => {
         />
       ),
       dataIndex: "ticketName",
-      sorter: (a, b) => a.ticketName.localeCompare(b.ticketName),
+      // sorter: (a, b) => a.ticketName.localeCompare(b.ticketName),
     },
-    {
-      title: (
-        <Label
-          content="Ticket Type"
-          className="font-semibold text-OWANBE_TABLE_TITLE"
-        />
-      ),
-      dataIndex: "ticketType",
-      sorter: (a, b) => a.ticketType.localeCompare(b.ticketType),
-    },
+    // {
+    //   title: (
+    //     <Label
+    //       content="Ticket Type"
+    //       className="font-semibold text-OWANBE_TABLE_TITLE"
+    //     />
+    //   ),
+    //   dataIndex: "ticketType",
+    //   sorter: (a, b) => a.ticketType.localeCompare(b.ticketType),
+    // },
     {
       title: (
         <Label
@@ -82,7 +92,7 @@ const EventsGuestListSummary = () => {
         />
       ),
       dataIndex: "checkedInTime",
-      sorter: (a, b) => new Date(a.checkedInTime).getTime() - new Date(b.checkedInTime).getTime(),
+      // sorter: (a, b) => new Date(a.checkedInTime).getTime() - new Date(b.checkedInTime).getTime(),
     },
     {
       title: (
@@ -92,7 +102,7 @@ const EventsGuestListSummary = () => {
         />
       ),
       dataIndex: "checkedInBy", // New column for the person who checked the guest in
-      sorter: (a, b) => a.checkedInBy.localeCompare(b.checkedInBy),
+      // sorter: (a, b) => a.checkedInBy.localeCompare(b.checkedInBy),
     },
   ];
 
@@ -102,15 +112,15 @@ const EventsGuestListSummary = () => {
 
   const handleExport = (format: string) => {
     const exportData = selectedRowKeys.length
-      ? data.filter((item) => selectedRowKeys.includes(item.key))
+      ? data?.filter((item: ICheckInSummary) => selectedRowKeys.includes(item?.key!))
       : data;
 
-    const formattedExportData = exportData.map((item) => ({
-      "Guest Name": item.guestName,
-      "Ticket Name": item.ticketName,
-      "Ticket Type": item.ticketType,
-      "Checked in Time": item.checkedInTime,
-      "Checked in By": item.checkedInBy, // Include in the export data
+    const formattedExportData = exportData.map((item: ICheckInSummary) => ({
+      "Guest Name": `${item?.personal_information?.firstName} ${item?.personal_information?.lastName}`,
+      "Ticket Name": item?.ticket_information?.[0]?.ticket_name,
+      // "Ticket Type": item.ticketType,
+      "Checked in Time": item?.check_in_date_time,
+      "Checked in By": item?.check_in_by, // Include in the export data
     }));
 
     if (format === "excel") {
@@ -127,10 +137,6 @@ const EventsGuestListSummary = () => {
       doc.save("GuestListSummary.pdf");
     }
   };
-
-  const filteredData = data.filter((item) =>
-    item.guestName.toLowerCase().includes(searchText.toLowerCase())
-  );
 
   return (
     <EventDetailsComponent>
@@ -155,14 +161,14 @@ const EventsGuestListSummary = () => {
                 fontFamily: "BricolageGrotesqueMedium",
                 margin: '10px'
               }}
-              // onClick={() => setShowNewVendorDetails(true)}
+              onClick={() => getCheckInSummary.refetch()}
             >
               Refresh
             </Button> 
 
         <Paragraph
               className="text-OWANBE_PRY font-normal font-BricolageGrotesqueRegular text-center mx-auto border border-OWANBE_PRY bg-OWANBE_PRY2 rounded-lg w-[500px] h-14 flex flex-row items-center justify-center text-3xl py-8 place-self-center"
-              content={`${filteredData.length} Checked In Guests`}
+              content={`${totalCheckedIn} Checked In Guests`}
               styles={{ fontWeight: "normal !important" }}
             />
           </Space>
@@ -208,16 +214,17 @@ const EventsGuestListSummary = () => {
             onChange: (keys) => setSelectedRowKeys(keys),
           }}
           columns={columns}
-          dataSource={filteredData}
+          dataSource={data}
           className="font-BricolageGrotesqueRegular w-full"
           pagination={{
             current: currentPage,
             pageSize: pageSize,
-            total: filteredData.length,
+            total: totalCheckedIn,
             onChange: (page, size) => {
               setCurrentPage(page);
               setPageSize(size);
             },
+            showSizeChanger: true,
           }}
           scroll={{ x: "max-content" }}
         />
