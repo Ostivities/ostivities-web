@@ -17,7 +17,10 @@ import React, { useState } from "react";
 import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
 import * as XLSX from "xlsx";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
-import { useGetEventGuests, useGetTicketGuests } from "@/app/hooks/guest/guest.hook";
+import {
+  useGetEventGuests,
+  useGetTicketGuests,
+} from "@/app/hooks/guest/guest.hook";
 import { useParams } from "next/navigation";
 
 const { Search } = Input;
@@ -66,7 +69,6 @@ const EventsGuestList = () => {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
-
 
   const columns = [
     {
@@ -228,21 +230,29 @@ const EventsGuestList = () => {
 
           <div className="w-full">
             {getEventGuests?.isLoading ? (
-              <Flex gap="middle" vertical>
+              <Flex
+                gap="middle"
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                vertical
+              >
                 <Skeleton.Button
-                   style={{
+                  style={{
                     height: "80px",
-                    width: "35%",
+                    minWidth: "320px",
+                    maxWidth: "1000px",
                     display: "flex",
                     justifyContent: "center",
-                    borderRadius: "12px", 
+                    borderRadius: "12px",
                   }}
                   active
                 />
               </Flex>
             ) : (
               <Paragraph
-                className="text-OWANBE_PRY font-normal font-BricolageGrotesqueRegular text-center mx-auto border border-OWANBE_PRY bg-OWANBE_PRY2 rounded-lg w-[500px] h-14 flex flex-row items-center justify-center text-3xl py-8 place-self-center"
+                className="text-OWANBE_PRY font-normal font-BricolageGrotesqueRegular text-center mx-auto border border-OWANBE_PRY bg-OWANBE_PRY2 rounded-lg max-w-[500px] h-14 flex flex-row items-center justify-center text-3xl py-8 place-self-center"
                 content={
                   totalGuests > 0
                     ? `${totalGuests} Ticketed Guests`

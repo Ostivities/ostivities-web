@@ -633,7 +633,7 @@ export interface ICoordinatorData {
   staff_name: string;
   staff_role: STAFF_ROLE;
   staff_phone_number: string;
-  password: string;
+  password_text: string;
   eventId: string;
   id: string;
   key: string;

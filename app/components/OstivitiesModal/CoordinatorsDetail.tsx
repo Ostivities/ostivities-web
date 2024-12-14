@@ -8,13 +8,6 @@ import { STAFF_ROLE } from "@/app/utils/enums";
 
 
 // Define the field types for the form
-interface FieldType {
-  coordinatorsName: string;
-  coordinatorsEmail: string;
-  coordinatorsphoneNumber: string;
-  coordinatorsRole: string;
-  password?: string;
-}
 
 const CoordinatorsDetail = ({ open, onCancel, onOk, data, id }: IModal) => {
   const { Option } = Select;
@@ -43,7 +36,7 @@ const CoordinatorsDetail = ({ open, onCancel, onOk, data, id }: IModal) => {
         staff_email: coordinatorsDetails?.staff_email,
         staff_phone_number: coordinatorsDetails?.staff_phone_number,
         staff_role: coordinatorsDetails?.staff_role,
-        password: coordinatorsDetails?.password
+        password: coordinatorsDetails?.password_text
       })
     }
   }, [coordinatorsDetails])
@@ -140,7 +133,7 @@ const CoordinatorsDetail = ({ open, onCancel, onOk, data, id }: IModal) => {
             <Col span={24}>
               <Form.Item<ICoordinatorData>
                 label="Password"
-                name="password"
+                name="password_text"
                 rules={[{ required: true, message: "Please generate a password for the Ticketing Agent!" }]}
                 style={{ marginBottom: '24px' }} // Add margin bottom to the last form item
               >
