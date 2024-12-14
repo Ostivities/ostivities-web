@@ -129,9 +129,13 @@ const SearchResult = () => {
           backgroundColor: "#ffffff",
         }}
       >
-        <h3 className="font-semibold mb-3">
+        <h3
+          className="font-BricolageGrotesqueMedium mb-3"
+          style={{ color: '#e20000' }}
+        >
           Find events happening around you.
         </h3>
+
         <Form
           form={form}
           layout="vertical"

@@ -6,6 +6,8 @@ import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
 import { Skeleton } from "antd";
 import { useState } from "react";
 import placeholder from "@/public/placeholder.svg";
+import notfound from '@/public/notfound.svg';
+import Image from 'next/image';
 
 interface IEventSearchProps {
   eventName?: string;
@@ -101,10 +103,22 @@ const EventSearch = ({ eventName, state, eventCat }: IEventSearchProps) => {
         )}
       </EventSection>
       {discoveryEvents?.length === 0 && (
-        <div className="text-center w-full">
-          <h1 className="font-bricolage-grotesque font-medium">
-            No events found
-          </h1>
+        <div className="flex flex-col items-center justify-center gap-8 p-8 text-center">
+          <Image
+            src={notfound}
+            alt="Event not found"
+            width={230}
+            height={230}
+            style={{ objectFit: "contain" }}
+          />
+          <div>
+            <h2 className="font-BricolageGrotesqueMedium text-xl font-semibold">
+              Oops.... event not found!
+            </h2>
+            <p className="font-BricolageGrotesqueMedium text-md">
+              We suggest you confirm the search parameters and try again.
+            </p>
+          </div>
         </div>
       )}
     </>
