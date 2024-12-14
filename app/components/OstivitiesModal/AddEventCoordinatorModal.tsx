@@ -77,6 +77,7 @@ const AddCoordinators = ({ open, onCancel, onOk, data }: IModal) => {
               type="primary"
               size="large"
               loading={createEventCoordinator?.isPending}
+              disabled={createEventCoordinator?.isPending}
               form="add-event-coordinator-form"
               htmlType="submit"
               className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold button-styles"

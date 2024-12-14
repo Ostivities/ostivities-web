@@ -109,7 +109,7 @@ const filteredData = data?.filter(
         return (
           <>
             {record?.staff_role === STAFF_ROLE.AGENT
-              ? "Agent"
+              ? "Ticketing Agent"
               : record?.staff_role === STAFF_ROLE.AUDITOR
               ? "Auditor"
               : "Usher"
