@@ -1,5 +1,5 @@
 import { IModal } from "@/app/utils/interface";
-import { Button, Input, Modal, Space, Form, Row, Col, Select } from "antd";
+import { Button, Input, Modal, Space, Form, Row, Col, Select, Tooltip } from "antd";
 import React, { useState } from "react";
 
 import { Heading5 } from "../typography/Typography"; // Assuming this is a custom component
@@ -7,6 +7,7 @@ import { useCreateEventCoordinator } from "@/app/hooks/coordinators/coordinators
 import { ICoordinatorCreate } from "@/app/utils/interface";
 import { STAFF_ROLE } from "@/app/utils/enums";
 import { useParams } from "next/navigation";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 // Define the field types for the form
 // interface FieldType {
@@ -33,7 +34,7 @@ const AddCoordinators = ({ open, onCancel, onOk, data }: IModal) => {
       eventId: params?.id,
     });
 
-    if(response.status === 201) {
+    if (response.status === 201) {
       onOk(); // Close the modal on successful submission
     }
   };
@@ -41,6 +42,22 @@ const AddCoordinators = ({ open, onCancel, onOk, data }: IModal) => {
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
+
+  const validatePassword = (_: any, value: string) => {
+    if (!value) {
+      return Promise.reject(new Error("Please input agent password"));
+    }
+    const hasAlphabet = /[a-zA-Z]/.test(value);
+    const hasNumber = /[0-9]/.test(value);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
+
+    if (hasAlphabet && hasNumber && hasSpecialChar) {
+      return Promise.resolve();
+    }
+
+    return Promise.reject(new Error("Must contain at least one alphabet, number and special character"));
+  };
+
 
   return (
     <Modal
@@ -176,15 +193,16 @@ const AddCoordinators = ({ open, onCancel, onOk, data }: IModal) => {
           <Row gutter={[16, 16]}>
             <Col span={24}>
               <Form.Item<ICoordinatorCreate>
-                label="Password"
+                label={
+                  <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
+                    Password{" "}
+                    <Tooltip title="A ticketing agent requires login credentials to access the ticket scanning portal.">
+                      <QuestionCircleOutlined style={{ fontSize: "16px", color: "#858990" }} />
+                    </Tooltip>
+                  </span>
+                }
                 name="password"
-                rules={[
-                  {
-                    required: true,
-                    message:
-                      "Please generate a password for the Ticketing Agent!",
-                  },
-                ]}
+                rules={[{ required: true, validator: validatePassword }]}
                 style={{ marginBottom: "24px" }} // Add margin bottom to the last form item
               >
                 <Input.Password
