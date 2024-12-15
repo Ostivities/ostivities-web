@@ -208,6 +208,7 @@ const AddCoordinators = ({ open, onCancel, onOk, data }: IModal) => {
                 <Input.Password
                   placeholder="Enter password"
                   style={{ width: "100%" }}
+                  autoComplete="new-password"
                 />
               </Form.Item>
             </Col>
