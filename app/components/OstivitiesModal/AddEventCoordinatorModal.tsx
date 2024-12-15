@@ -196,7 +196,9 @@ const AddCoordinators = ({ open, onCancel, onOk, data }: IModal) => {
                 label={
                   <span style={{ fontFamily: "Bricolage Grotesque Light" }}>
                     Password{" "}
-                    <Tooltip title="A ticketing agent requires login credentials to access the ticket scanning portal.">
+                    <Tooltip title="A ticketing agent needs login credentials 
+                    to access the ticket scanning portal. Upon creating an agent, 
+                    their login credentials will be sent to their email address.">
                       <QuestionCircleOutlined style={{ fontSize: "16px", color: "#858990" }} />
                     </Tooltip>
                   </span>
