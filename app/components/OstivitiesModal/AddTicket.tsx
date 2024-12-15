@@ -25,6 +25,7 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
   return (
     <>
       <Modal
+        maskClosable={false}
         title={
           <>
             <Heading5
