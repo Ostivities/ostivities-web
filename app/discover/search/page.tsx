@@ -81,6 +81,7 @@ const SearchResult = () => {
       form.setFieldsValue({
         eventType: query,
       });
+      setEventCat(query);
       setSelectedValue(query);
     }
   }, [query]);

@@ -147,11 +147,12 @@ const TicketsSelection = () => {
       ticketEntity: string;
       guestAsChargeBearer: boolean;
       groupSize: number;
+      orderNumber: string;
       additionalInformation: { question: string; is_compulsory: boolean }[];
     }[]
   >([]);
 
-  // console.log(ticketDetails, "ticketDetails");
+  console.log(ticketDetails, "ticketDetails");
 
   useEffect(() => {
     if (!cookies?.ticketDetails || ticketDetails?.length > 0) {
@@ -228,7 +229,8 @@ const TicketsSelection = () => {
                   Ticket {ticketCounter} -{" "}
                   {ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE
                     ? `Collective of ${ticketDetail?.groupSize}`
-                    : "Single"}{" "}
+                    : "Single"
+                  }{" "}
                   - {ticketDetail?.ticketName}
                 </h3>
                 <Row gutter={16} className="">
@@ -254,6 +256,8 @@ const TicketsSelection = () => {
                           handleInputChange(
                             e.target.value,
                             attendeeId,
+                            ticketDetail?.ticketName,
+                            ticketDetail?.ticketPrice?.toString(),
                             "firstName"
                           )
                         }
@@ -282,6 +286,8 @@ const TicketsSelection = () => {
                           handleInputChange(
                             e.target.value,
                             attendeeId,
+                            ticketDetail?.ticketName,
+                            ticketDetail?.ticketPrice?.toString(),
                             "lastName"
                           )
                         }
@@ -313,6 +319,8 @@ const TicketsSelection = () => {
                           handleInputChange(
                             e.target.value,
                             attendeeId,
+                            ticketDetail?.ticketName,
+                            ticketDetail?.ticketPrice?.toString(),
                             "attendeeEmail"
                           )
                         }
@@ -356,6 +364,8 @@ const TicketsSelection = () => {
                           handleInputChange(
                             e.target.value,
                             attendeeId,
+                            ticketDetail?.ticketName,
+                            ticketDetail?.ticketPrice?.toString(),
                             "confirmAttendeeEmail"
                           )
                         }
@@ -519,6 +529,7 @@ const TicketsSelection = () => {
             constantTicketPrice: ticket?.ticketPrice,
             ticketEntity: ticket?.ticketEntity,
             groupSize: ticket?.groupSize,
+            orderNumber: order_number,
             additionalInformation: ticket?.ticketQuestions?.map(
               (questionDetails: {
                 question: string;
@@ -626,6 +637,9 @@ const TicketsSelection = () => {
       lastName: string;
       email: string;
       confirmEmail: string;
+      phoneNumber: string;
+      ticket_name: string;
+      ticket_price: string
     }[];
     event: string;
     event_unique_code: string;
@@ -665,15 +679,20 @@ const TicketsSelection = () => {
       lastName: string;
       email: string;
       confirmEmail: string;
+      ticket_name: string;
+      ticket_price: string;
     }[]
   >([]);
   const [modal, setModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
+  console.log(attendeesInformation, "attendeesInformation")
 
   const handleInputChange = (
     value: string,
     attendeeId: number,
+    ticket_name: string,
+    ticket_price: string,
     field: "firstName" | "lastName" | "attendeeEmail" | "confirmAttendeeEmail"
   ) => {
     setAttendeesInformation((prevInfo) => {
@@ -701,19 +720,25 @@ const TicketsSelection = () => {
           lastName: "",
           email: "",
           confirmEmail: "",
+          ticket_name,
+          ticket_price,
         });
         attendeeIndex = updatedInfo.length - 1;
       }
 
       // Update the specified field for this attendee
       updatedInfo[attendeeIndex] = {
-        ...updatedInfo[attendeeIndex],
-        [actualField]: value,
-      };
+      ...updatedInfo[attendeeIndex],
+      [actualField]: value,
+      ticket_name, // Ensure ticket name is updated
+      ticket_price, // Ensure ticket price is updated
+    };
 
       return updatedInfo;
     });
   };
+
+
   useEffect(() => {
     let counter = 0;
 
@@ -785,6 +810,7 @@ const TicketsSelection = () => {
         ticket_price: ticket?.ticketPrice === null ? 0 : ticket?.ticketPrice,
         ticket_type: ticket?.ticketEntity,
         ticket_stock: ticket?.ticketStock,
+        order_number: ticket?.orderNumber,
       };
     });
 

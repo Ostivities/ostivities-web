@@ -116,6 +116,7 @@ function CreateTicketPage(): JSX.Element {
               size="large"
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
               onClick={() => {
+                removeCookie("ticket_created");
                 router.push(
                   `/discover/create-events/${params?.id}/publish-events`
                 );
