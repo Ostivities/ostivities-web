@@ -84,6 +84,7 @@ const TicketsSelection = () => {
   const { getTicketsByUniqueKey } = useGetEventTicketsByUniqueKey(
     eventDetails?.unique_key
   );
+  // const { getTickets } = useGetEventTickets(eventDetails?.id);
   const { getEventDiscount } = useGetEventDiscount(eventDetails?.id);
   const ticketData = getTicketsByUniqueKey?.data?.data?.data;
   const discountDetails = getEventDiscount?.data?.data?.data;
@@ -127,7 +128,7 @@ const TicketsSelection = () => {
     [key: string]: number;
   }>({});
 
-  // console.log(cookies?.ticketDetails, "cookies?.ticketDetails");
+  console.log(selectedTickets, "selectedTickets");
   const [ticketDetails, setTicketDetails] = useState<
     {
       ticketName: string;
@@ -229,8 +230,7 @@ const TicketsSelection = () => {
                   Ticket {ticketCounter} -{" "}
                   {ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE
                     ? `Collective of ${ticketDetail?.groupSize}`
-                    : "Single"
-                  }{" "}
+                    : "Single"}{" "}
                   - {ticketDetail?.ticketName}
                 </h3>
                 <Row gutter={16} className="">
@@ -639,7 +639,7 @@ const TicketsSelection = () => {
       confirmEmail: string;
       phoneNumber: string;
       ticket_name: string;
-      ticket_price: string
+      ticket_price: string;
     }[];
     event: string;
     event_unique_code: string;
@@ -686,7 +686,7 @@ const TicketsSelection = () => {
   const [modal, setModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
-  console.log(attendeesInformation, "attendeesInformation")
+  console.log(attendeesInformation, "attendeesInformation");
 
   const handleInputChange = (
     value: string,
@@ -728,16 +728,15 @@ const TicketsSelection = () => {
 
       // Update the specified field for this attendee
       updatedInfo[attendeeIndex] = {
-      ...updatedInfo[attendeeIndex],
-      [actualField]: value,
-      ticket_name, // Ensure ticket name is updated
-      ticket_price, // Ensure ticket price is updated
-    };
+        ...updatedInfo[attendeeIndex],
+        [actualField]: value,
+        ticket_name, // Ensure ticket name is updated
+        ticket_price, // Ensure ticket price is updated
+      };
 
       return updatedInfo;
     });
   };
-
 
   useEffect(() => {
     let counter = 0;
@@ -1274,13 +1273,17 @@ const TicketsSelection = () => {
                             disabled={selectedTickets[ticket?.id] === 0}
                             style={{
                               backgroundColor:
-                                selectedTickets[ticket?.id] === 0
+                                selectedTickets[ticket?.id] === 0 || !selectedTickets[ticket?.id]
                                   ? "#ccc"
                                   : "#FADEDE",
                               color:
-                                selectedTickets[ticket?.id] === 0
+                                selectedTickets[ticket?.id] === 0 || !selectedTickets[ticket?.id]
                                   ? "#fff"
                                   : "#000",
+                              cursor: 
+                                selectedTickets[ticket?.id] === 0 || !selectedTickets[ticket?.id]
+                                ? "not-allowed"
+                                : "pointer"
                             }}
                           >
                             -
@@ -1369,12 +1372,23 @@ const TicketsSelection = () => {
                     .map((ticket: ITicketDetails, index: any) => (
                       <div
                         key={index}
-                        className={`card-shadow ${
+                        className={`card-shadow relative ${
                           ticket?.ticket_sold === ticket?.ticketQty
-                            ? "bg-gray-300 cursor-not-allowed"
+                            ? "bg-[#dedede] cursor-not-allowed"
                             : ""
                         } flex justify-between items-start mb-6`}
                       >
+                        {ticket?.ticket_sold === ticket?.ticketQty && (
+                          <Image
+                            src={soldout}
+                            alt="soldout"
+                            className="w-24 h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex-shrink-0"
+                            style={{
+                              zIndex: 10,
+                              pointerEvents: "none", // Prevent interaction with the overlay
+                            }}
+                          />
+                        )}
                         <div>
                           <h2
                             className={`${
@@ -1465,10 +1479,14 @@ const TicketsSelection = () => {
                             )}
                           </h3>
                           <p
-                            className="text-s font-BricolageGrotesqueRegular"
+                            className={`${
+                              ticket?.ticket_sold === ticket?.ticketQty
+                                ? "text-gray-400"
+                                : ""
+                            } text-s font-BricolageGrotesqueRegular`}
                             style={{
                               fontSize: "13px",
-                              color: "black",
+                              // color: "black",
                               marginTop: "17px",
                             }}
                           >
@@ -1483,18 +1501,22 @@ const TicketsSelection = () => {
                           style={{ marginBlockStart: "10px" }}
                         >
                           <button
-                            className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
+                            className={`sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold`}
                             onClick={() => handleDecrement(ticket?.id)}
                             disabled={selectedTickets[ticket?.id] === 0}
                             style={{
                               backgroundColor:
-                                selectedTickets[ticket?.id] === 0
+                                selectedTickets[ticket?.id] === 0 || !selectedTickets[ticket?.id]
                                   ? "#ccc"
                                   : "#FADEDE",
                               color:
-                                selectedTickets[ticket?.id] === 0
+                                selectedTickets[ticket?.id] === 0 || !selectedTickets[ticket?.id]
                                   ? "#fff"
                                   : "#000",
+                              cursor: 
+                                selectedTickets[ticket?.id] === 0 || !selectedTickets[ticket?.id]
+                                ? "not-allowed"
+                                : "pointer"
                             }}
                           >
                             -
@@ -1509,12 +1531,16 @@ const TicketsSelection = () => {
                             {selectedTickets[ticket?.id] || 0}
                           </span>
                           <button
-                            className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center rounded-full text-lg font-bold"
+                            className={`sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center rounded-full text-lg font-bold ${
+                            ticket?.ticket_sold === ticket?.ticketQty
+                            ? "cursor-not-allowed"
+                            : ""
+                            } `}
                             onClick={() => handleIncrement(ticket?.id)}
                             disabled={
-                              selectedTickets[ticket?.id] === 1 ||
-                              selectedTickets[ticket?.id] ===
-                                ticket?.ticket_available
+                              selectedTickets[ticket?.id] === 1 ||                   
+                              ticket?.ticket_available === 0 || 
+                              ticket?.ticket_sold === ticket?.ticketQty
                             }
                             style={{
                               color:
