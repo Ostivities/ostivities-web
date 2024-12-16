@@ -20,17 +20,17 @@ function EventNotFound(): JSX.Element {
             src={notfound}
             alt="Event not found"
             className="ms-1"
-            width={530}
-            height={530}
+            width={430}
+            height={430}
             style={{ objectFit: 'contain' }}
           />
         </div>
         <div className="w-full md:w-1/2 flex flex-col gap-2 p-8 md:p-[8rem] justify-center md:order-1">
-          <h2 className="w-full font-BricolageGrotesqueMedium text-3xl font-bold mb-4">Oops.... page not found!</h2>
+          <h2 className="w-full font-BricolageGrotesqueMedium text-2xl font-bold mb-4">Oops.... page not found!</h2>
           <p className="w-full font-BricolageGrotesqueMedium text-md mb-6">This Page doesn`t exist or was removed! We suggest you confirm the search parameters or if the URL is correct and try again.</p>
           <button
             onClick={handleBackToDiscovery}
-            className="primary-btn w-full md:w-80 text-center text-white py-2 px-6 rounded-full text-lg font-bricolage"
+            className="primary-btn w-full md:w-80 text-center text-white py-2 px-6 rounded-full font-BricolageGrotesqueMedium text-[14px] md:text-[18px]"
             style={{ borderRadius: '25px' }}
           >
             Back to discovery

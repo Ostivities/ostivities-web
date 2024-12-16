@@ -11,7 +11,7 @@ const DeleteEntry = ({ open, onCancel, onOk, actionType, id }: IModal) => {
 
   const handleDeleteClick = async() => {
     const response = await deleteEventCoordinator.mutateAsync(id)
-    if(response.status === 20) {
+    if(response.status === 200) {
       onOk(); // Trigger the onOk callback, which should close the modal
 
     }

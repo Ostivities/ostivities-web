@@ -58,9 +58,9 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form);
   const guestAsChargeBearer = Form.useWatch("guestAsChargeBearer", form);
-  const ticketQty = Form.useWatch("ticketQty", form);
-  // console.log(additionalFields, "additionalFields");
-
+  const purchaseLimit: number = Form.useWatch("purchaseLimit", form);
+  console.log(purchaseLimit, "purchaseLimit");
+  console.log(ticketType, "ticketType")
   useEffect(() => {
     if (ticketStock === TICKET_STOCK.UNLIMITED) {
       form.setFieldsValue({ ticketStock: TICKET_STOCK.UNLIMITED });
@@ -90,7 +90,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, guestAsChargeBearer, ...rest } = values;
-    console.log(ticketQuestions, "ticketQuestions");
+    // return console.log(values, "values");
     setLoading(true);
     if (
       // @ts-ignore
@@ -297,7 +297,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
       </Form.Item>
 
       <Form.Item<ITicketData>
-        label="Purchase limit"
+        label="Purchase Limit"
         name="purchaseLimit"
         rules={[
           {
@@ -307,14 +307,14 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
         ]}
         style={{ marginBottom: "15px" }}
       >
-        <Select placeholder="Select purchase limit">
+        <Select placeholder="Select ticket type">
           <Option value={1}>1</Option>
           <Option value={2}>2</Option>
           <Option value={3}>3</Option>
           <Option value={4}>4</Option>
           <Option value={5}>5</Option>
           <Option value={6}>6</Option>
-        </Select>{" "}
+        </Select>
       </Form.Item>
 
       <Paragraph

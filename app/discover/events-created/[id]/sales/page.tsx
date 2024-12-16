@@ -6,6 +6,7 @@ import { SalesDataType,ExhibitionDataType, PaymentDataType, ITicketDetails } fro
 import { Button, Input, Space, Table, Tabs } from "antd";
 import { FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
 import jsPDF from "jspdf";
+import { useDebounce } from "use-debounce";
 import { useGetUserEvent } from "@/app/hooks/event/event.hook";
 import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
 import { useParams } from "next/navigation";
@@ -30,13 +31,12 @@ const EventSales = () => {
   const [selectedPaymentRowKeys, setSelectedPaymentRowKeys] = useState<React.Key[]>([]);
   const [currentPaymentPage, setCurrentPaymentPage] = useState(1);
   const [paymentPageSize, setPaymentPageSize] = useState(10);
-
+  const [debouncedSearchText] = useDebounce(searchText, 1000); // Debounce delay: 300ms
   const [spaceSearchText, setSpaceSearchText] = useState("");
   const [selectedSpaceRowKeys, setSelectedSpaceRowKeys] = useState<React.Key[]>([]);
   const [currentSpacePage, setCurrentSpacePage] = useState(1);
   const [spacePageSize, setSpacePageSize] = useState(10);
 
-  console.log(getUserEvent, "getuserevent")
 
   const eventDetails = getUserEvent?.data?.data?.data;
   console.log(eventDetails, "eventdetails")
@@ -58,23 +58,6 @@ const EventSales = () => {
       id: ticket?.id,
     };
   })
-
-  // const data: SalesDataType[] = Array.from({ length: 50 }, (_, index) => ({
-  //   key: `${index + 1}`,
-  //   eventName: getRandomEventName(),
-  //   eventType: `Type ${index + 1}`,
-  //   ticketSold: Math.floor(Math.random() * 100),
-  //   sales: Math.floor(Math.random() * 100),
-  //   revenue: Math.floor(Math.random() * 10000),
-  //   fees: Math.floor(Math.random() * 1000),
-  //   dateCreated: `2024-07-${(index + 1).toString().padStart(2, "0")}`,
-  //   chargeBearer: ["Guest", "Organizer"][Math.floor(Math.random() * 2)],
-  //   status: ["Active", "Closed", "Pending"][Math.floor(Math.random() * 3)] as
-  //     | "Active"
-  //     | "Closed"
-  //     | "Pending",
-  //   id: generateRandomString(10),
-  // }));
 
   const paymentData: PaymentDataType[] = Array.from({ length: 20 }, (_, index) => ({
     key: `${index + 1}`,
@@ -395,9 +378,15 @@ const EventSales = () => {
     setPaymentSearchText(e.target.value);
   };
 
-  const filteredData = data?.filter(item =>
-    item?.ticketName?.toLowerCase()?.includes(searchText?.toLowerCase())
+  // const filteredData = data?.filter(item =>
+  //   item?.ticketName?.toLowerCase()?.includes(searchText?.toLowerCase())
+  // );
+  const filteredData = data?.filter(
+    (item) =>
+      item?.ticketName.toLowerCase().includes(debouncedSearchText) ||
+      item?.ticketName.toLowerCase().includes(debouncedSearchText)
   );
+  
   
   const filteredspaceData = exhibitionData.filter(item =>
     item.eventName.toLowerCase().includes(spaceSearchText.toLowerCase())
