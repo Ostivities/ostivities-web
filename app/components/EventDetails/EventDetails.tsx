@@ -75,7 +75,7 @@ export default function EventDetailsComponent({
 
   const handlePublishEvent = async () => {
     if (eventDetails?.mode === PUBLISH_TYPE.ACTIVE) {
-      if(eventDetails?.total_ticket_sold > 0) {
+      if (eventDetails?.total_ticket_sold > 0) {
         message.error("Event with sold tickets cannot be unpublished");
         return;
       }
@@ -98,7 +98,7 @@ export default function EventDetailsComponent({
     ) {
       if (
         eventdates < new Date().getTime() &&
-        eventDetails?.eventInfo === EVENT_INFO.SINGLE_EVENT 
+        eventDetails?.eventInfo === EVENT_INFO.SINGLE_EVENT
       ) {
         message.error(
           "The event has ended and cannot be published. Please update the event details to republish."
@@ -203,11 +203,10 @@ export default function EventDetailsComponent({
         label: (
           <Link
             href={`/discover/events-created/${params?.id}/tickets`}
-            className={`font-BricolageGrotesqueRegular font-normal text-sm ${
-              pathname.includes("tickets")
+            className={`font-BricolageGrotesqueRegular font-normal text-sm ${pathname.includes("tickets")
                 ? "text-OWANBE_PRY"
                 : "text-OWANBE_DARK"
-            }`}
+              }`}
           >
             Tickets
           </Link>
@@ -277,16 +276,20 @@ export default function EventDetailsComponent({
       },
       {
         label: (
-          <Link
-            href={`/discover/events-created/${params?.id}/coordinators/vendors`}
-            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
-          >
-            Vendors Management
-          </Link>
+          <Tooltip title="Coming Soon">
+            <span>
+              <Link
+                href={`/discover/events-created/${params?.id}/coordinators/vendors`}
+                className="font-BricolageGrotesqueRegular font-normal text-sm text-gray-400 cursor-not-allowed"
+              >
+                Vendors Management
+              </Link>
+            </span>
+          </Tooltip>
         ),
         key: "2",
-        disabled: true,
-      },
+        disabled: true, // Keeps the item disabled
+      }
     ];
 
     const MerchandiseItems: MenuProps["items"] = [
@@ -320,7 +323,7 @@ export default function EventDetailsComponent({
             href={`/discover/events-created/${params?.id}/merchandise/shipping`}
             className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           >
-           Shipping
+            Shipping
           </Link>
         ),
         key: "3",
@@ -336,9 +339,8 @@ export default function EventDetailsComponent({
           <Button
             type={pathname.includes("about") ? "primary" : "text"}
             size={"large"}
-            className={`font-BricolageGrotesqueRegular ${
-              pathname.includes("about") ? "sign-up" : ""
-            } cursor-pointer font-medium w-32 rounded-2xl`}
+            className={`font-BricolageGrotesqueRegular ${pathname.includes("about") ? "sign-up" : ""
+              } cursor-pointer font-medium w-32 rounded-2xl`}
             style={{
               borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
@@ -357,9 +359,8 @@ export default function EventDetailsComponent({
           >
             <Button
               type={pathname.includes("tickets") ? "primary" : "text"}
-              className={`font-BricolageGrotesqueRegular cursor-pointer font-medium w-32 rounded-2xl ${
-                pathname.includes("tickets") ? "sign-up" : ""
-              }`}
+              className={`font-BricolageGrotesqueRegular cursor-pointer font-medium w-32 rounded-2xl ${pathname.includes("tickets") ? "sign-up" : ""
+                }`}
               style={{
                 borderRadius: "25px",
                 fontFamily: "BricolageGrotesqueMedium",
@@ -369,9 +370,8 @@ export default function EventDetailsComponent({
               <Space>
                 Tickets
                 <IoChevronDown
-                  color={`${
-                    pathname.includes("tickets") ? "#ffffff" : "#000000"
-                  }`}
+                  color={`${pathname.includes("tickets") ? "#ffffff" : "#000000"
+                    }`}
                 />
               </Space>
             </Button>
@@ -380,9 +380,8 @@ export default function EventDetailsComponent({
           <Button
             type={pathname.includes("event_page_view") ? "primary" : "text"}
             size="large"
-            className={`font-BricolageGrotesqueRegular ${
-              pathname.includes("event_page_view") ? "sign-up" : ""
-            } cursor-pointer font-medium w-40 rounded-2xl`}
+            className={`font-BricolageGrotesqueRegular ${pathname.includes("event_page_view") ? "sign-up" : ""
+              } cursor-pointer font-medium w-40 rounded-2xl`}
             style={{
               borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
@@ -435,9 +434,8 @@ export default function EventDetailsComponent({
           <Button
             type={pathname.includes("sales") ? "primary" : "text"}
             size="large"
-            className={`font-BricolageGrotesqueRegular ${
-              pathname.includes("sales") ? "sign-up" : ""
-            } cursor-pointer font-medium w-32 rounded-2xl`}
+            className={`font-BricolageGrotesqueRegular ${pathname.includes("sales") ? "sign-up" : ""
+              } cursor-pointer font-medium w-32 rounded-2xl`}
             style={{
               borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
@@ -451,23 +449,25 @@ export default function EventDetailsComponent({
 
           <Dropdown
             menu={{ items: MerchandiseItems, onClick: handleMenuClick }}
-            disabled
+            disabled // Disables the dropdown functionality
           >
-            <Button
-              type={pathname.includes("merchandise") ? "primary" : "text"}
-              className="font-BricolageGrotesqueRegular cursor-pointer font-medium w-40 rounded-2xl"
-              style={{
-                borderRadius: "25px",
-                fontFamily: "BricolageGrotesqueMedium",
-              }}
-              size="large"
-              disabled
-            >
-              <Space>
-              Merchandise
-                <IoChevronDown />
-              </Space>
-            </Button>
+            <Tooltip title="Coming Soon">
+              <Button
+                type={pathname.includes("merchandise") ? "primary" : "text"}
+                className="font-BricolageGrotesqueRegular cursor-pointer font-medium w-40 rounded-2xl"
+                style={{
+                  borderRadius: "25px",
+                  fontFamily: "BricolageGrotesqueMedium",
+                }}
+                size="large"
+                disabled // Disables the button
+              >
+                <Space>
+                  Merchandise
+                  <IoChevronDown />
+                </Space>
+              </Button>
+            </Tooltip>
           </Dropdown>
 
         </div>
@@ -649,7 +649,7 @@ export default function EventDetailsComponent({
         </Card>
       );
     };
-  
+
     const cardStyle = { width: "full", height: "150px" };
     const titleStyle = { fontSize: "20px" };
     const valueStyle = { fontSize: "19px" };
@@ -662,7 +662,7 @@ export default function EventDetailsComponent({
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(totalRevenue ?? 0);
-  
+
     return (
       <div className="grid grid-cols-3 gap-4">
         <CardMetrics
@@ -692,7 +692,7 @@ export default function EventDetailsComponent({
       </div>
     );
   };
-  
+
 
   const OrderMetrics = (): JSX.Element => {
     const CardMetrics = ({
@@ -740,7 +740,7 @@ export default function EventDetailsComponent({
         </Card>
       );
     };
-  
+
     const cardStyle = { width: "full", height: "150px" };
     const titleStyle = { fontSize: "20px" };
     const valueStyle = { fontSize: "19px" };
@@ -753,7 +753,7 @@ export default function EventDetailsComponent({
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     }).format(totalRevenue ?? 0);
-  
+
     return (
       <div className="grid grid-cols-3 gap-4">
         <CardMetrics
@@ -813,15 +813,15 @@ export default function EventDetailsComponent({
             <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
               {isDiscover ? "Remove from discovery" : "Add to discovery"}
               <a
-                    href="https://ostivities.tawk.help/article/how-to-add-or-remove-events-from-discovery-on-ostivities" // Replace with your actual URL 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ marginLeft: "8px" }}
-                  >
-                    <Tooltip title="Click to learn more">
-                      <QuestionCircleOutlined style={{ fontSize: "18px", color: "#858990" }} />
-                    </Tooltip>
-                  </a>
+                href="https://ostivities.tawk.help/article/how-to-add-or-remove-events-from-discovery-on-ostivities" // Replace with your actual URL 
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ marginLeft: "8px" }}
+              >
+                <Tooltip title="Click to learn more">
+                  <QuestionCircleOutlined style={{ fontSize: "18px", color: "#858990" }} />
+                </Tooltip>
+              </a>
             </span>
           </div>
         )}
@@ -884,17 +884,16 @@ export default function EventDetailsComponent({
         isLoggedIn
         extraComponents={
           <div
-            className={`flex flex-col ${
-              pathname.includes("sales") ||  pathname.includes("order") || pathname.includes("product") ? "space-y-8" : ""
-            }`}
+            className={`flex flex-col ${pathname.includes("sales") || pathname.includes("order") || pathname.includes("product") ? "space-y-8" : ""
+              }`}
           >
             <ExtraTab />
             {pathname.includes("sales") && <SalesMetrics />}
-            {pathname.includes("product")  && <StoreMetrics/>}
-            {pathname.includes("order")  && <OrderMetrics/>}
+            {pathname.includes("product") && <StoreMetrics />}
+            {pathname.includes("order") && <OrderMetrics />}
           </div>
         }
-        
+
       >
         <div className="w-full mx-auto flex flex-col space-y-5 py-2">
           <>{children}</>
