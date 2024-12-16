@@ -64,14 +64,14 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
   const handleEditorChange = (content: React.SetStateAction<string>) => {
     setEditorContent(content);
   };
-  console.log(additionalFields, "additionalFields");
+  
 
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form);
   const guestAsChargeBearer = Form.useWatch("guestAsChargeBearer", form);
   const ticketQty = Form.useWatch("ticketQty", form);
 
-  console.log(ticketQty, "ticketQty");
+  
 
   useEffect(() => {
     if (ticketStock === TICKET_STOCK.UNLIMITED) {
@@ -102,7 +102,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
     }
   }, [showAdditionalField]);
 
-  console.log(ticketDetails, "ticketDetails");
+  
 
   useEffect(() => {
     if (ticketDetails) {
@@ -155,7 +155,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, guestAsChargeBearer, ...rest } = values;
-    // console.log(values)
+    // 
 
     if (
       // @ts-ignore
@@ -171,11 +171,11 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
           question: string;
         }) => {
           const { question, is_compulsory } = questionObj;
-          console.log(question, is_compulsory, "question, is_compulsory");
+          
           return { question, is_compulsory };
         }
       );
-      // console.log("values")
+      // 
 
       const payload: ITicketUpdate = {
         id: ticketDetails?.id,
@@ -187,14 +187,14 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
         user: cookies?.profileData?.id,
         guestAsChargeBearer: guestAsChargeBearer,
       };
-      // console.log(payload, "kk");
+      // 
 
       // make api call here
 
       if (payload) {
         const response = await updateTicket.mutateAsync(payload);
         if (response.status === 200) {
-          console.log(response);
+          
           // form.resetFields();
           // linkRef.current?.click();
           if (pathname.startsWith("/discover/create-events")) {
@@ -219,7 +219,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
       if (payload) {
         const response = await updateTicket.mutateAsync(payload);
         if (response.status === 200) {
-          console.log(response);
+          
           // form.resetFields();
           // linkRef.current?.click();
           if (pathname.startsWith("/discover/create-events")) {
@@ -236,7 +236,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
   const onFinishFailed: FormProps<ITicketData>["onFinishFailed"] = (
     errorInfo
   ) => {
-    // console.log(errorInfo);
+    // 
     return errorInfo;
   };
 
@@ -277,7 +277,7 @@ const EditSingleTicket: React.FC<SingleTicketProps> = ({
     </Form.Item>
   );
 
-  // console.log(ticketStock, "ticketStock");
+  // 
 
   return (
     <Form<ITicketData>

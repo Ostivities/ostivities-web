@@ -67,7 +67,7 @@ const Sidebar = ({ collapsed }: { collapsed: boolean }) => {
         fontFamily: "BricolageGrotesqueMedium !important",
       }}
       onBreakpoint={(broken: any) => {
-        console.log(broken, "broken");
+        
       }}
     >
       <Menu

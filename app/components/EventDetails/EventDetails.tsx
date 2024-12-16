@@ -49,8 +49,8 @@ export default function EventDetailsComponent({
   const { getSettlementAccount } = useGetSettlementAccount(eventDetails?.user?.id)
   const [isPublished, setIsPublished] = useState(false); // State to track publish status
   const [isDiscover, setIsDiscover] = useState(false); // State to track discovery status
-  // console.log(isDiscover, "isDiscover")
-  // console.log(isPublished, "isPublished")
+  // 
+  // 
 
   const eventDate = eventDetails?.endDate;
   const eventdates = new Date(eventDate).getTime();
@@ -90,7 +90,7 @@ export default function EventDetailsComponent({
         getUserEvent.refetch();
         setIsDiscover(false);
         message.success("Event unpublished successfully");
-        // console.log(response, 'response inactive')
+        // 
       }
     } else if (
       eventDetails?.mode === PUBLISH_TYPE.INACTIVE ||
@@ -113,7 +113,7 @@ export default function EventDetailsComponent({
         getUserEvent.refetch();
         setIsPublished(!isPublished);
         message.success("Event published successfully");
-        // console.log(response, 'response active')
+        // 
       }
     }
   };
@@ -139,7 +139,7 @@ export default function EventDetailsComponent({
         message.success("Event added to discovery successfully");
         setIsDiscover(true);
         getUserEvent.refetch();
-        // console.log(res, 'res discover true')
+        // 
       }
     } else if (eventDetails?.discover === true) {
       const res = await addEventToDiscovery.mutateAsync({

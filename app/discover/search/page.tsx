@@ -103,7 +103,7 @@ const SearchResult = () => {
     if (searchResults.length === 0) {
       router.push("/discover/event-not-found");
     } else {
-      console.log("Search results found:", searchResults);
+      
     }
   };
 

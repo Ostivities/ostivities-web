@@ -99,7 +99,7 @@ function Details(): JSX.Element {
     "profileData",
   ]);
 
-  console.log(cookies?.profileData?.id, "profileData");
+  
   const [vendorRegRadio, setVendorRegRadio] = useState(false);
   const [showRadio, setShowRadio] = useState(false);
   const [editorContent, setEditorContent] = useState("");
@@ -213,7 +213,7 @@ function Details(): JSX.Element {
           `${cloud_api}/${cloud_name}/auto/upload`,
           formData
         );
-        console.log(response, "fileupload");
+        
         if (response.status === 200) {
           const urlString: string | any =
             response?.data?.secure_url || response?.data?.url;
@@ -239,7 +239,7 @@ function Details(): JSX.Element {
     showUploadList: false,
     fileList,
   };
-  // console.log(fileList);
+  // 
 
   useEffect(() => {
     const storedFiles = localStorage.getItem("uploadedFiles");
@@ -299,8 +299,8 @@ function Details(): JSX.Element {
     } = data;
     const start_date_time = dateFormat(startDate);
     const end_date_time = dateFormat(endDate);
-    console.log(start_date_time, end_date_time);
-    // return console.log(data);
+    
+    // return 
 
     if (editorContent === "" || editorContent === "<p><br></p>") {
       setEditorError("Please provide event details"); // Set error state
@@ -332,7 +332,7 @@ function Details(): JSX.Element {
       const randomNumber = Math.floor(Math.random() * 100).toString();
       const unique_key =
         eventURL.replace(/\s+/g, "_").toLocaleLowerCase() + `${randomNumber}`;
-      // return console.log(`${discovery_url}${unique_key}${randomNumber}`);
+      // return 
       const response = await createEvent.mutateAsync({
         ...rest,
         supportingDocument: {

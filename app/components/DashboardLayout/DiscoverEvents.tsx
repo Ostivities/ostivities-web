@@ -14,7 +14,7 @@ const DiscoverEvents = () => {
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
   const { addEventToDiscovery } = useAddEventToDiscovery();
   const [expiredEventsId, setExpiredEventsId] = useState<string[]>([]);
-  // console.log(getDiscoveryEvents, "getDiscoveryEvents")
+  // 
   const { publishEvent } = usePublishEvent();
 
   const isPending = getDiscoveryEvents?.isLoading;

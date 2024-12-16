@@ -27,7 +27,7 @@ const AddCoordinators = ({ open, onCancel, onOk, data }: IModal) => {
 
   const onFinish = async (values: ICoordinatorCreate) => {
     // handle form submission
-    console.log("Form Values:", values);
+    
 
     const response = await createEventCoordinator.mutateAsync({
       ...values,
@@ -40,7 +40,7 @@ const AddCoordinators = ({ open, onCancel, onOk, data }: IModal) => {
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
+    
   };
 
   const validatePassword = (_: any, value: string) => {

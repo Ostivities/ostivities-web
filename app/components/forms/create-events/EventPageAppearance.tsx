@@ -58,7 +58,7 @@ const EventPageAppearance: React.FC = () => {
       : cookies?.profileData?.businessName;
 
   const eventDetails = getUserEvent?.data?.data?.data;
-  // console.log(eventDetails)
+  // 
 
   const API_KEY = "pk.78628ea993a1c84c0c71a9563edddb7f";
 

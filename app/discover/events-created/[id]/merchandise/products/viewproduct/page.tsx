@@ -69,7 +69,7 @@ const ViewProductDetails = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const handleCloseModal = () => {
-    console.log("Closing modal");
+    
     setModalOpen(false);
   };
 

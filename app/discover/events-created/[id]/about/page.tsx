@@ -114,7 +114,7 @@ const AboutEvent = () => {
     return errorInfo;
   };
   const eventDetails = getUserEvent?.data?.data?.data;
-  // console.log(eventDetails);
+  // 
   const [vendorRegRadio, setVendorRegRadio] = useState(false);
 
   const {
@@ -259,7 +259,7 @@ const AboutEvent = () => {
   }, [vendorRegRadio]);
 
   const onSubmit: FormProps<IFormInput>["onFinish"] = async (data) => {
-    // return console.log(data, "data");
+    // return 
 
     const {
       exhibitionspace,
@@ -305,7 +305,7 @@ const AboutEvent = () => {
         { name: "website", url: websiteUrl },
       ].filter((social) => social.url);
 
-      console.log(rest, "rest");
+      
       const response = await updateEvent.mutateAsync({
         id: params?.id,
         ...rest,

@@ -12,7 +12,7 @@ const EventTicketsEmail = () => {
     setEditorContent(content);
   };
 
-  console.log(editorContent, "Editor content");
+  
 
   return (
     <EventDetailsComponent>

@@ -59,8 +59,8 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
   const ticketType: string = Form.useWatch("ticketType", form);
   const guestAsChargeBearer = Form.useWatch("guestAsChargeBearer", form);
   const purchaseLimit: number = Form.useWatch("purchaseLimit", form);
-  console.log(purchaseLimit, "purchaseLimit");
-  console.log(ticketType, "ticketType")
+  
+  
   useEffect(() => {
     if (ticketStock === TICKET_STOCK.UNLIMITED) {
       form.setFieldsValue({ ticketStock: TICKET_STOCK.UNLIMITED });
@@ -90,7 +90,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, guestAsChargeBearer, ...rest } = values;
-    // return console.log(values, "values");
+    // return 
     setLoading(true);
     if (
       // @ts-ignore
@@ -106,11 +106,11 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
           question: string;
         }) => {
           const { question, is_compulsory } = questionObj;
-          console.log(question, is_compulsory, "question, is_compulsory");
+          
           return { question, is_compulsory };
         }
       );
-      //  console.log(reducedTicketQuestions, "reducedTicketQuestions");
+      //  
 
       const payload: ITicketCreate = {
         ...rest,
@@ -121,14 +121,14 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
         user: cookies?.profileData?.id,
         guestAsChargeBearer: guestAsChargeBearer,
       };
-      // return console.log(payload, "kk");
+      // return 
 
       // make api call here
 
       if (payload) {
         const response = await createTicket.mutateAsync(payload);
         if (response.status === 201) {
-          console.log(response);
+          
           form.resetFields();
           setCookies("stage_three", "processing");
           // linkRef.current?.click();
@@ -153,7 +153,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
       if (payload) {
         const response = await createTicket.mutateAsync(payload);
         if (response.status === 201) {
-          console.log(response);
+          
           form.resetFields();
           // linkRef.current?.click();
           onOk && onOk();
@@ -173,7 +173,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
   const onFinishFailed: FormProps<ITicketData>["onFinishFailed"] = (
     errorInfo
   ) => {
-    console.log(errorInfo);
+    
     return errorInfo;
   };
 
@@ -214,7 +214,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
     </Form.Item>
   );
 
-  // console.log(ticketStock, "ticketStock");
+  // 
 
   return (
     <Form<ITicketData>

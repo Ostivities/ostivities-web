@@ -29,7 +29,7 @@ const DiscountRecord = (): JSX.Element => {
   const { getEventDiscount } = useGetEventDiscount(params?.id);
   const { getTickets } = useGetEventTickets(params?.id);
   const ticketData = getTickets?.data?.data?.data;
-  // console.log(selectedRowKeys, "selectedRowKeys");
+  // 
   const eventDiscountDetails = getEventDiscount?.data?.data?.data;
 
   useEffect(() => {

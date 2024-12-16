@@ -52,17 +52,17 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
   const [cookies, setCookies] = useCookies(["ticket_id", "stage_three", "profileData"]);
 
   const pathname = usePathname()
-  // console.log(pathname)
+  // 
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form); // Watch ticketType changes
   const groupPrice: number = Form.useWatch("groupPrice", form);
   const groupSize: number = Form.useWatch("groupSize", form);
   const guestAsChargeBearer = Form.useWatch("guestAsChargeBearer", form);
 
-  console.log(showAdditionalField, "showAdditionalField");
+  
 
 
-  console.log(ticketDetails, "ticketDetails");
+  
   useEffect(() => {
     if (ticketDetails){
       form.setFieldsValue({
@@ -104,11 +104,11 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
       setAdditionalFields([]);
     }
   }, [showAdditionalField])
-  console.log(groupPrices, "groupPrices")
+  
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ticketType, guestAsChargeBearer, ...rest } = values;
-    // return console.log(values)
+    // return 
     if (
       // @ts-ignore
       ticketQuestions?.length > 0 &&
@@ -119,7 +119,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
       const reducedTicketQuestions = additionalFields?.map(
         (questionObj: { id: number; is_compulsory: boolean; question: string }) => {
           const { question, is_compulsory } = questionObj;
-          console.log(question, is_compulsory, "question, is_compulsory");
+          
           return { question, is_compulsory };
         }
       );
@@ -136,14 +136,14 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
         // groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
         ticketType
       };
-      // console.log(payload, "kk");
+      // 
 
       // make api call here
 
       if (payload) {
         const response = await updateTicket.mutateAsync(payload);
         if (response.status === 200) {
-          // console.log(response);
+          // 
           // form.resetFields();
           // linkRef.current?.click();
           if(pathname.startsWith("/discover/create-events")) {
@@ -170,7 +170,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
       if (payload) {
         const response = await updateTicket.mutateAsync(payload);
         if (response.status === 200) {
-          // console.log(response);
+          // 
           // form.resetFields();
           // linkRef.current?.click();
           if(pathname.startsWith("/discover/create-events")) {
@@ -185,7 +185,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
   const onFinishFailed: FormProps<ITicketData>["onFinishFailed"] = (
     errorInfo
   ) => {
-    console.log("Failed:", errorInfo);
+    
     return errorInfo;
   };
 
@@ -225,7 +225,7 @@ const EditCollectiveTicket: React.FC<CollectiveTicketProps> = ({ onCancel, onOk,
       if(price_per_ticket) {
         form.setFieldValue("ticketPrice", price_per_ticket)
       }
-      // console.log(pricePerTicket)
+      // 
     } else if( groupPrice === 0 && groupPrice === null) {
       form.setFieldValue('ticketPrice', "")
     }

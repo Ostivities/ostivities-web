@@ -194,14 +194,14 @@ const EventDetail = () => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams<{ event: string }>();
-  // console.log(params, 'params');
+  // 
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
   const { isLoggedIn, loading } = useFetch();
   const eventDetails =
     getUserEventByUniqueKey?.data?.data?.data === null
       ? router.push("/not-found")
       : getUserEventByUniqueKey?.data?.data?.data;
-  // console.log(eventDetails, "eventDetails");
+  // 
   const [cookies, setCookie] = useCookies(["profileData"])
   const { getEventGuests } = useGetEventGuests(eventDetails?.id, 1, 10);
   const allGuestsData = getEventGuests?.data?.data?.data?.guests;

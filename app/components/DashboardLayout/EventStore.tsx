@@ -15,7 +15,7 @@ const EventStore = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const handleCountryChange = (value: string) => {
     // Logic to dynamically update states based on selected country
-    console.log("Selected Country: ", value);
+    
   };
   const [shippingMethod, setShippingMethod] = useState("flatRate");
 
@@ -89,7 +89,7 @@ const EventStore = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const handleCloseModal = () => {
-    console.log("Closing modal");
+    
     setModalOpen(false);
   };
 

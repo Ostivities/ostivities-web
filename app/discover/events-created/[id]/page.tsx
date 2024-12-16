@@ -17,7 +17,7 @@ export default function Page(): JSX.Element {
   const params = useParams();
   const router = useRouter();
   const onChange = (checked: boolean) => {
-    console.log(`switch to ${checked}`);
+    
   };
 
   const ExtraTab = (): JSX.Element => {

@@ -14,7 +14,7 @@ const DeleteEvent = ({
   selectedRowKeys,
   data,
 }: IModal) => {
-  console.log(data, "data");
+  
 
   const { deleteEvent } = useDeleteEvent();
 
@@ -28,7 +28,7 @@ const DeleteEvent = ({
       message.error("No rows selected for deletion");
     }
   };
-  console.log(selectedRowKeys, "selectedRowKeys");
+  
 
   const handleDuplicateClick = () => {
     message.success("Entry duplicated successfully"); // Success message for duplicate

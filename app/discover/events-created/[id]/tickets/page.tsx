@@ -73,8 +73,8 @@ const EventTickets = () => {
   const { getUserEvent } = useGetUserEvent(params?.id);
   const eventDetails = getUserEvent?.data?.data?.data;
   // const {id, ...rest} = ticketData;
-  // console.log(ticketData, "ticketData");
-  // console.log(duplicateData, "duplicateData")
+  // 
+  // 
 
   const handleActionSuccess = () => {
     // Refetch the tickets after an action (delete, edit, duplicate)
@@ -97,7 +97,7 @@ const EventTickets = () => {
             fontFamily: "BricolageGrotesqueRegular",
           }}
           onClick={(e) => {
-            // console.log(e)
+            // 
             // setSelectedTicket(e);  // Set the selected ticket's data here
             setIsOpen(true);
           }}
@@ -148,7 +148,7 @@ const EventTickets = () => {
 
   const handleMenuClick = (key: string) => {
     // Handle menu item clicks
-    console.log("Clicked on:", key);
+    
   };
 
   const columns: ColumnsType<ITicketDetails> = [
@@ -196,8 +196,8 @@ const EventTickets = () => {
       dataIndex: ["ticketPrice", "groupPrice"],
       sorter: (a, b) => (a?.ticketPrice ?? 0) - (b?.ticketPrice ?? 0),
       render: (text, record: ITicketDetails) => {
-        // console.log(text, "text");
-        // console.log(record, "record");
+        // 
+        // 
 
         // Safeguard against missing properties with optional chaining
         if (record?.ticketType === TICKET_TYPE.FREE) {
@@ -292,7 +292,7 @@ const EventTickets = () => {
       ticket_available: item?.ticket_available,
     };
   });
-  // console.log(data, "data")
+  // 
 
   const [isToggled, setIsToggled] = useState(false);
 
@@ -434,7 +434,7 @@ const EventTickets = () => {
               onRow={(record, rowIndex) => {
                 return {
                   onClick: () => {
-                    // console.log(record, "record")
+                    // 
                     setSelectedTicket(record?.key);
                     setSelectedTicketEntity(record?.ticketEntity);
                     setEventStatus([

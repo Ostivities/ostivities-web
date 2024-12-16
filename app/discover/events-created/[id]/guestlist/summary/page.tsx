@@ -39,7 +39,7 @@ const EventsGuestListSummary = () => {
   const { getCheckInSummary } = useGetCheckInSummary(params?.id, currentPage, pageSize, searchText);
   const summaryInfo = getCheckInSummary?.data?.data?.data?.check_in_summary;
   const totalCheckedIn = getCheckInSummary?.data?.data?.data?.total;
-  // console.log(getCheckInSummary, "getCheckInSummary");
+  // 
 
 
   const data: ICheckInSummary[] = summaryInfo?.map((item: ICheckInSummary) => {

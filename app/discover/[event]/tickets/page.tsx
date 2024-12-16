@@ -128,7 +128,7 @@ const TicketsSelection = () => {
     [key: string]: number;
   }>({});
 
-  console.log(selectedTickets, "selectedTickets");
+  
   const [ticketDetails, setTicketDetails] = useState<
     {
       ticketName: string;
@@ -153,7 +153,7 @@ const TicketsSelection = () => {
     }[]
   >([]);
 
-  console.log(ticketDetails, "ticketDetails");
+  
 
   useEffect(() => {
     if (!cookies?.ticketDetails || ticketDetails?.length > 0) {
@@ -686,7 +686,7 @@ const TicketsSelection = () => {
   const [modal, setModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
-  console.log(attendeesInformation, "attendeesInformation");
+  
 
   const handleInputChange = (
     value: string,

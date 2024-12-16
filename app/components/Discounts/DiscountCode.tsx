@@ -50,9 +50,9 @@ const DiscountCode = (): JSX.Element => {
   const { profile } = useProfile();
   const { getTickets } = useGetEventTickets(params?.id);
   const ticketData = getTickets?.data?.data?.data;
-  // console.log(ticketData, "ticketData");
-  // console.log(selectedTickets, "selectedTickets");
-  // console.log(ticketApplicable, "ticketApplicable")
+  // 
+  // 
+  // 
 
   dayjs.extend(customParseFormat);
 
@@ -85,17 +85,17 @@ const DiscountCode = (): JSX.Element => {
 
   useEffect(() => {
     if (ticketApplicable === "All Tickets") {
-      console.log("effect");
+      
       // Set selected tickets to all ticket IDs
       setSelectedTickets(ticketData.map((ticket: ITicketDetails) => ticket.id));
     }
   }, [ticketApplicable, ticketData]);
 
   const userID = ticketData?.[0]?.user?.id || null; // Use optional chaining to handle undefined cases
-  // console.log(userID, "userID");
+  // 
 
   const onFinish: FormProps<IDiscountData>["onFinish"] = async (values) => {
-    // return console.log(values, "values");
+    // return 
     const { ticketApplicable, ...rest } = values;
 
     const response = await createDiscount.mutateAsync({

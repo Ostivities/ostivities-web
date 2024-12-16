@@ -39,7 +39,7 @@ const EventSales = () => {
 
 
   const eventDetails = getUserEvent?.data?.data?.data;
-  console.log(eventDetails, "eventdetails")
+  
 
   const totalTicketSold = eventDetails?.total_ticket_sold;
 

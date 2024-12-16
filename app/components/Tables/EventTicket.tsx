@@ -23,7 +23,7 @@ const formatCurrency = (amount: number) => {
     currency: "NGN",
     minimumFractionDigits: 0,
   });
-  // console.log(amount)
+  // 
   return formatter.format(amount);
 };
 
@@ -73,7 +73,7 @@ const EventTicketTable = ({ onTicketDataCount }: { onTicketDataCount: (count: nu
           className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
           style={{ color: "#000000", fontFamily: "BricolageGrotesqueRegular" }}
           onClick={(e) => {
-            // console.log(e)
+            // 
             // setSelectedTicket(e);  // Set the selected ticket's data here
             setIsOpen(true);
           }}
@@ -160,8 +160,8 @@ const EventTicketTable = ({ onTicketDataCount }: { onTicketDataCount: (count: nu
       dataIndex: ["ticketPrice", "groupPrice"],
       sorter: (a, b) => (a?.ticketPrice ?? 0) - (b?.ticketPrice ?? 0),
       render: (text, record: ITicketDetails) => {
-        // console.log(text, "text");
-        // console.log(record, "record");
+        // 
+        // 
 
         // Safeguard against missing properties with optional chaining
         if (record?.ticketType === TICKET_TYPE.FREE) {
@@ -252,7 +252,7 @@ const EventTicketTable = ({ onTicketDataCount }: { onTicketDataCount: (count: nu
     };
   });
 
-  // console.log(data, "data")
+  // 
 
   return (
     <React.Fragment>
@@ -308,7 +308,7 @@ const EventTicketTable = ({ onTicketDataCount }: { onTicketDataCount: (count: nu
           onRow={(record, rowIndex) => {
             return {
               onClick: () => {
-                // console.log(record, "record")
+                // 
                 setSelectedTicket(record?.key);
                 setSelectedTicketEntity(record?.ticketEntity);
                 setDuplicateData({

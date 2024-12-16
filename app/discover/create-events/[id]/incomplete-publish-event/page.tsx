@@ -50,7 +50,7 @@ export default function PublishEvent(): JSX.Element {
 
   const { getUserEvent } = useGetUserEvent(params?.id || cookies.event_id);
   const eventDetails = getUserEvent?.data?.data?.data;
-  // console.log(eventDetails, "eventDetails");
+  // 
 
   const handlePublishEvent = async () => {
     setIsModalOpen(true);

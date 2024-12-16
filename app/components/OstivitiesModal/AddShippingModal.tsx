@@ -8,13 +8,13 @@ const AddShipping = ({ visible, onCancel, onOk, data }: IModal) => {
   const [form] = Form.useForm();
 
   const onFinish = (values: any) => {
-    console.log("Form Values:", values);
+    
     // Handle form submission logic here
     onOk(); // Close the modal after submission
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
+    
   };
 
   return (

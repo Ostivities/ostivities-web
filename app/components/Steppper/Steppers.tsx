@@ -17,8 +17,8 @@ function Steppers(): JSX.Element {
   ]);
 
   const stepsCount = formState?.stages?.length || 3; // Handle potential missing stages
-  // console.log(cookies?.form_stage, "form stage");
-  // console.log(cookies?.stage_one, "stage_one");
+  // 
+  // 
 
   return (
     <>

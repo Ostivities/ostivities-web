@@ -33,12 +33,12 @@ const DeleteTicket = ({
 
   }
 
-  console.log(dataToDelete?.[0]?.event?.eventStatus, "dataToDelete");
+  
   const singleEventStatus = dataToDelete?.[0]?.eventStatus; // Use optional chaining to avoid errors
-  console.log(singleEventStatus);
+  
   const handleDuplicateClick = async () => {
     const response = await createTicket.mutateAsync(data);
-    console.log(response);
+    
     if (response.status === 201) {
       onOk(); // Close the modal
     }

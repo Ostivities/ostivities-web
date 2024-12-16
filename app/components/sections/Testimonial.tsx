@@ -13,7 +13,7 @@ const Slider = dynamic(() => import("react-slick"), { ssr: false });
 
 function Faqs(): JSX.Element {
   const onChange = (key: string | string[]) => {
-    console.log(key);
+    
   };
   const settings = {
     dots: false,
