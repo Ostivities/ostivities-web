@@ -75,7 +75,7 @@ export default function EventDetailsComponent({
 
   const handlePublishEvent = async () => {
     if (eventDetails?.mode === PUBLISH_TYPE.ACTIVE) {
-      if(eventDetails?.total_ticket_sold > 0) {
+      if (eventDetails?.total_ticket_sold > 0) {
         message.error("Event with sold tickets cannot be unpublished");
         return;
       }
@@ -98,7 +98,7 @@ export default function EventDetailsComponent({
     ) {
       if (
         eventdates < new Date().getTime() &&
-        eventDetails?.eventInfo === EVENT_INFO.SINGLE_EVENT 
+        eventDetails?.eventInfo === EVENT_INFO.SINGLE_EVENT
       ) {
         message.error(
           "The event has ended and cannot be published. Please update the event details to republish."
@@ -203,11 +203,10 @@ export default function EventDetailsComponent({
         label: (
           <Link
             href={`/discover/events-created/${params?.id}/tickets`}
-            className={`font-BricolageGrotesqueRegular font-normal text-sm ${
-              pathname.includes("tickets")
+            className={`font-BricolageGrotesqueRegular font-normal text-sm ${pathname.includes("tickets")
                 ? "text-OWANBE_PRY"
                 : "text-OWANBE_DARK"
-            }`}
+              }`}
           >
             Tickets
           </Link>
@@ -225,17 +224,6 @@ export default function EventDetailsComponent({
         ),
         key: "2",
       },
-      // {
-      //   label: (
-      //     <Link
-      //       href={`/discover/events-created/${params?.id}/tickets/email`}
-      //       className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
-      //     >
-      //       Ticket E-mail
-      //     </Link>
-      //   ),
-      //   key: "3",
-      // },
     ];
 
     const GuestItems: MenuProps["items"] = [
@@ -286,17 +274,61 @@ export default function EventDetailsComponent({
         ),
         key: "1",
       },
-      // {
-      //   label: (
-      //     <Link
-      //       href={`/discover/events-created/${params?.id}/coordinators/vendors`}
-      //       className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
-      //     >
-      //       Vendors Management
-      //     </Link>
-      //   ),
-      //   key: "2",
-      // },
+      {
+        label: (
+          <Tooltip title="Coming Soon">
+            <span>
+              <Link
+                href={`/discover/events-created/${params?.id}/coordinators/vendors`}
+                className="font-BricolageGrotesqueRegular font-normal text-sm text-gray-400 cursor-not-allowed"
+              >
+                Vendors Management
+              </Link>
+            </span>
+          </Tooltip>
+        ),
+        key: "2",
+        disabled: true, // Keeps the item disabled
+      }
+    ];
+
+    const MerchandiseItems: MenuProps["items"] = [
+      {
+        label: (
+          <Link
+            href={`/discover/events-created/${params?.id}/merchandise/products`}
+            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          >
+            Products
+          </Link>
+        ),
+        key: "1",
+        disabled: true,
+      },
+      {
+        label: (
+          <Link
+            href={`/discover/events-created/${params?.id}/merchandise/orders`}
+            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          >
+            Orders
+          </Link>
+        ),
+        key: "2",
+        disabled: true,
+      },
+      {
+        label: (
+          <Link
+            href={`/discover/events-created/${params?.id}/merchandise/shipping`}
+            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+          >
+            Shipping
+          </Link>
+        ),
+        key: "3",
+        disabled: true,
+      },
     ];
 
     return (
@@ -307,9 +339,8 @@ export default function EventDetailsComponent({
           <Button
             type={pathname.includes("about") ? "primary" : "text"}
             size={"large"}
-            className={`font-BricolageGrotesqueRegular ${
-              pathname.includes("about") ? "sign-up" : ""
-            } cursor-pointer font-medium w-32 rounded-2xl`}
+            className={`font-BricolageGrotesqueRegular ${pathname.includes("about") ? "sign-up" : ""
+              } cursor-pointer font-medium w-32 rounded-2xl`}
             style={{
               borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
@@ -328,9 +359,8 @@ export default function EventDetailsComponent({
           >
             <Button
               type={pathname.includes("tickets") ? "primary" : "text"}
-              className={`font-BricolageGrotesqueRegular cursor-pointer font-medium w-32 rounded-2xl ${
-                pathname.includes("tickets") ? "sign-up" : ""
-              }`}
+              className={`font-BricolageGrotesqueRegular cursor-pointer font-medium w-32 rounded-2xl ${pathname.includes("tickets") ? "sign-up" : ""
+                }`}
               style={{
                 borderRadius: "25px",
                 fontFamily: "BricolageGrotesqueMedium",
@@ -340,9 +370,8 @@ export default function EventDetailsComponent({
               <Space>
                 Tickets
                 <IoChevronDown
-                  color={`${
-                    pathname.includes("tickets") ? "#ffffff" : "#000000"
-                  }`}
+                  color={`${pathname.includes("tickets") ? "#ffffff" : "#000000"
+                    }`}
                 />
               </Space>
             </Button>
@@ -351,9 +380,8 @@ export default function EventDetailsComponent({
           <Button
             type={pathname.includes("event_page_view") ? "primary" : "text"}
             size="large"
-            className={`font-BricolageGrotesqueRegular ${
-              pathname.includes("event_page_view") ? "sign-up" : ""
-            } cursor-pointer font-medium w-40 rounded-2xl`}
+            className={`font-BricolageGrotesqueRegular ${pathname.includes("event_page_view") ? "sign-up" : ""
+              } cursor-pointer font-medium w-40 rounded-2xl`}
             style={{
               borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
@@ -398,7 +426,7 @@ export default function EventDetailsComponent({
             >
               <Space>
                 Coordinators
-                {/* <IoChevronDown /> */}
+                <IoChevronDown />
               </Space>
             </Button>
           </Dropdown>
@@ -406,9 +434,8 @@ export default function EventDetailsComponent({
           <Button
             type={pathname.includes("sales") ? "primary" : "text"}
             size="large"
-            className={`font-BricolageGrotesqueRegular ${
-              pathname.includes("sales") ? "sign-up" : ""
-            } cursor-pointer font-medium w-32 rounded-2xl`}
+            className={`font-BricolageGrotesqueRegular ${pathname.includes("sales") ? "sign-up" : ""
+              } cursor-pointer font-medium w-32 rounded-2xl`}
             style={{
               borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
@@ -417,8 +444,32 @@ export default function EventDetailsComponent({
               router.push(`/discover/events-created/${params?.id}/sales`);
             }}
           >
-            Sales
+            Ticket Sales
           </Button>
+
+          <Dropdown
+            menu={{ items: MerchandiseItems, onClick: handleMenuClick }}
+            disabled // Disables the dropdown functionality
+          >
+            <Tooltip title="Coming Soon">
+              <Button
+                type={pathname.includes("merchandise") ? "primary" : "text"}
+                className="font-BricolageGrotesqueRegular cursor-pointer font-medium w-40 rounded-2xl"
+                style={{
+                  borderRadius: "25px",
+                  fontFamily: "BricolageGrotesqueMedium",
+                }}
+                size="large"
+                disabled // Disables the button
+              >
+                <Space>
+                  Merchandise
+                  <IoChevronDown />
+                </Space>
+              </Button>
+            </Tooltip>
+          </Dropdown>
+
         </div>
         {pathname.includes("sales") && getSettlementAccount?.data === undefined && (
           <div className="flex flex-row">
@@ -552,6 +603,187 @@ export default function EventDetailsComponent({
     );
   };
 
+  const StoreMetrics = (): JSX.Element => {
+    const CardMetrics = ({
+      title,
+      value,
+      cardStyle = {},
+      titleStyle = {},
+      valueStyle = {},
+      containerStyle = {},
+    }: {
+      title: string;
+      value: number | string;
+      cardStyle?: React.CSSProperties;
+      titleStyle?: React.CSSProperties;
+      valueStyle?: React.CSSProperties;
+      containerStyle?: React.CSSProperties;
+    }): JSX.Element => {
+      return (
+        <Card
+          className="rounded-3xl p-0"
+          style={{
+            borderRadius: "30px",
+            padding: "0px",
+            boxShadow: "0px 8px 24px 0px #00000014",
+            ...cardStyle,
+          }}
+        >
+          <div
+            className="flex flex-col mx-auto text-center py-5"
+            style={containerStyle}
+          >
+            <p
+              className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_PRY"
+              style={titleStyle}
+            >
+              {title}
+            </p>
+            <p
+              className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_DARK"
+              style={valueStyle}
+            >
+              {value}
+            </p>
+          </div>
+        </Card>
+      );
+    };
+
+    const cardStyle = { width: "full", height: "150px" };
+    const titleStyle = { fontSize: "20px" };
+    const valueStyle = { fontSize: "19px" };
+    const containerStyle = { gap: "4px" };
+
+    const totalRevenue = 500000; // Example data
+    const formattedRevenue = new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(totalRevenue ?? 0);
+
+    return (
+      <div className="grid grid-cols-3 gap-4">
+        <CardMetrics
+          title="Total Inventory Value"
+          value={formattedRevenue}
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+        <CardMetrics
+          title="Products Sold"
+          value={120} // Example value
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+        <CardMetrics
+          title="Out of Stock"
+          value={0}
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+      </div>
+    );
+  };
+
+
+  const OrderMetrics = (): JSX.Element => {
+    const CardMetrics = ({
+      title,
+      value,
+      cardStyle = {},
+      titleStyle = {},
+      valueStyle = {},
+      containerStyle = {},
+    }: {
+      title: string;
+      value: number | string;
+      cardStyle?: React.CSSProperties;
+      titleStyle?: React.CSSProperties;
+      valueStyle?: React.CSSProperties;
+      containerStyle?: React.CSSProperties;
+    }): JSX.Element => {
+      return (
+        <Card
+          className="rounded-3xl p-0"
+          style={{
+            borderRadius: "30px",
+            padding: "0px",
+            boxShadow: "0px 8px 24px 0px #00000014",
+            ...cardStyle,
+          }}
+        >
+          <div
+            className="flex flex-col mx-auto text-center py-5"
+            style={containerStyle}
+          >
+            <p
+              className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_PRY"
+              style={titleStyle}
+            >
+              {title}
+            </p>
+            <p
+              className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_DARK"
+              style={valueStyle}
+            >
+              {value}
+            </p>
+          </div>
+        </Card>
+      );
+    };
+
+    const cardStyle = { width: "full", height: "150px" };
+    const titleStyle = { fontSize: "20px" };
+    const valueStyle = { fontSize: "19px" };
+    const containerStyle = { gap: "4px" };
+
+    const totalRevenue = 146000; // Example data
+    const formattedRevenue = new Intl.NumberFormat("en-NG", {
+      style: "currency",
+      currency: "NGN",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(totalRevenue ?? 0);
+
+    return (
+      <div className="grid grid-cols-3 gap-4">
+        <CardMetrics
+          title="Total Sales"
+          value={formattedRevenue}
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+        <CardMetrics
+          title="Total Orders"
+          value={120} // Example value
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+        <CardMetrics
+          title="Completed Orders"
+          value={0}
+          cardStyle={cardStyle}
+          titleStyle={titleStyle}
+          valueStyle={valueStyle}
+          containerStyle={containerStyle}
+        />
+      </div>
+    );
+  };
+
   const title = (
     <div className="flex items-center w-full relative pb-2 space-x-8">
       <div className="flex flex-row items-center space-x-2 cursor-pointer">
@@ -581,15 +813,15 @@ export default function EventDetailsComponent({
             <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
               {isDiscover ? "Remove from discovery" : "Add to discovery"}
               <a
-                    href="https://ostivities.tawk.help/article/how-to-add-or-remove-events-from-discovery-on-ostivities" // Replace with your actual URL 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ marginLeft: "8px" }}
-                  >
-                    <Tooltip title="Click to learn more">
-                      <QuestionCircleOutlined style={{ fontSize: "18px", color: "#858990" }} />
-                    </Tooltip>
-                  </a>
+                href="https://ostivities.tawk.help/article/how-to-add-or-remove-events-from-discovery-on-ostivities" // Replace with your actual URL 
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ marginLeft: "8px" }}
+              >
+                <Tooltip title="Click to learn more">
+                  <QuestionCircleOutlined style={{ fontSize: "18px", color: "#858990" }} />
+                </Tooltip>
+              </a>
             </span>
           </div>
         )}
@@ -652,14 +884,16 @@ export default function EventDetailsComponent({
         isLoggedIn
         extraComponents={
           <div
-            className={`flex flex-col ${
-              pathname.includes("sales") ? "space-y-8" : ""
-            }`}
+            className={`flex flex-col ${pathname.includes("sales") || pathname.includes("order") || pathname.includes("product") ? "space-y-8" : ""
+              }`}
           >
             <ExtraTab />
             {pathname.includes("sales") && <SalesMetrics />}
+            {pathname.includes("product") && <StoreMetrics />}
+            {pathname.includes("order") && <OrderMetrics />}
           </div>
         }
+
       >
         <div className="w-full mx-auto flex flex-col space-y-5 py-2">
           <>{children}</>
