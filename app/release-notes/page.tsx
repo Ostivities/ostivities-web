@@ -6,10 +6,10 @@ import Script from 'next/script';
 function ReleaseNote(): JSX.Element {
   const releaseNotes = [
     // {
-    //   date: "DECEMBER 14",
-    //   title: "xxxxxxx",
+    //   date: "January 15, 2025",
+    //   title: "Bugs Fixes",
     //   description:
-    //     "xxxx",
+    //     "Updates were made to.....",
     //   tags: ["Improvement"],
     // },
     {
@@ -17,7 +17,7 @@ function ReleaseNote(): JSX.Element {
       title: "Ostivities Launch",
       description:
         "Ostivities officially launches, empowering event creators to seamlessly create, manage, and promote events on the platform. With user-friendly tools for event planning, and ticketing, Ostivities provides a streamlined experience for both creators and attendees. The launch marks the beginning of an exciting journey, introducing new features and continuous improvements to enhance event management.",
-      tags: ["Improvement", "New Features"],
+      tags: ["Version 1.0.0","Improvement", "New Features"],
     },    
   ];
 
