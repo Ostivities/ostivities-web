@@ -317,6 +317,25 @@ export interface PaymentDataType {
   paymentDate: string;
 }
 
+export interface ProductDataType {
+  key: string;
+  product: string;
+  inStock: number;
+  price: number;
+  status: string;
+}
+
+export interface OrderDataType {
+  key: string;
+  orderId: string;
+  productName: string;
+  total: number;
+  orderStatus: "Completed" | "Cancelled" | "Processing";
+  payment: string;
+  shipping: "Delivered" | "Shipped" | "Returned";
+  date: string;
+}
+
 export interface IUser {
   firstName: string;
   lastName: string;
