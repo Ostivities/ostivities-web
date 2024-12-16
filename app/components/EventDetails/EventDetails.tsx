@@ -225,17 +225,6 @@ export default function EventDetailsComponent({
         ),
         key: "2",
       },
-      // {
-      //   label: (
-      //     <Link
-      //       href={`/discover/events-created/${params?.id}/tickets/email`}
-      //       className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
-      //     >
-      //       Ticket E-mail
-      //     </Link>
-      //   ),
-      //   key: "3",
-      // },
     ];
 
     const GuestItems: MenuProps["items"] = [
