@@ -4,6 +4,7 @@ import React from "react";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import ScrollToTopButton from "@/app/ScrollToTopButton";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 function OwanbeWebLayout({
   children,
@@ -30,6 +31,7 @@ function OwanbeWebLayout({
   {/* Other children */}
   <div className="max-w-full sm:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl mx-auto">
     {children}
+    <SpeedInsights />
   </div>
 </main>
 

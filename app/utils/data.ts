@@ -141,7 +141,7 @@ export const LEGAL: INavLinks[] = [
 ];
 
 export const SUPPORT: INavLinks[] = [
-  { link: "https://ostivities.tawk.help", name: "Help", 
+  { link: "https://ostivities.tawk.help", name: "Help Center", 
     target: "_blank", 
     rel: "noopener noreferrer" },
   {
@@ -151,6 +151,11 @@ export const SUPPORT: INavLinks[] = [
   },
   {
     link: "/pricing", name: "Pricing",
+    target: undefined,
+    rel: undefined
+  },
+  {
+    link: "/release-notes", name: "What's New",
     target: undefined,
     rel: undefined
   },
