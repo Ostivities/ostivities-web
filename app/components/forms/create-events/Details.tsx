@@ -50,6 +50,7 @@ import {
   message,
   Tooltip,
 } from "antd";
+import { dateFormat, timeFormat } from "@/app/utils/helper";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -95,7 +96,7 @@ function Details(): JSX.Element {
     "stage_two",
     "stage_three",
     "mapSrc",
-    "profileData"
+    "profileData",
   ]);
 
   console.log(cookies?.profileData?.id, "profileData");
@@ -133,6 +134,17 @@ function Details(): JSX.Element {
   });
 
   const watchEventInfo = watch("eventInfo");
+  const watchStartDate = watch("startDate");
+  const watchEndDate = watch("endDate");
+
+  // useEffect(() => {
+  //   if(watchStartDate) {
+  //     setValue("start_date_time", dateFormat(watchStartDate));
+  //   }
+  //   if(watchEndDate) {
+  //     setValue("end_date_time", dateFormat(watchEndDate));
+  //   }
+  // }, [watchStartDate, watchEndDate, setValue]);
 
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
     const startDate = dayjs(startDateValue); // Replace `startDateValue` with your actual start date
@@ -144,22 +156,22 @@ function Details(): JSX.Element {
     );
   };
 
-
-
   const disabledTime = (current: dayjs.Dayjs | null): Partial<DisabledTime> => {
     const startDate = dayjs(startDateValue); // Your specified start date
 
     // Disable past times only if the selected date is the start date
     if (current && current.isSame(startDate, "day")) {
       return {
-        disabledHours: () => Array.from({ length: startDate.hour() }, (_, i) => i),
-        disabledMinutes: () => Array.from({ length: startDate.minute() }, (_, i) => i),
-        disabledSeconds: () => Array.from({ length: startDate.second() }, (_, i) => i),
+        disabledHours: () =>
+          Array.from({ length: startDate.hour() }, (_, i) => i),
+        disabledMinutes: () =>
+          Array.from({ length: startDate.minute() }, (_, i) => i),
+        disabledSeconds: () =>
+          Array.from({ length: startDate.second() }, (_, i) => i),
       };
     }
     return {};
   };
-
 
   useEffect(() => {
     const subscription: any = watch(() => {
@@ -281,8 +293,13 @@ function Details(): JSX.Element {
       websiteUrl,
       eventDocument,
       eventURL,
+      startDate,
+      endDate,
       ...rest
     } = data;
+    const start_date_time = dateFormat(startDate);
+    const end_date_time = dateFormat(endDate);
+    console.log(start_date_time, end_date_time);
     // return console.log(data);
 
     if (editorContent === "" || editorContent === "<p><br></p>") {
@@ -328,6 +345,10 @@ function Details(): JSX.Element {
         socials,
         eventInfo: EVENT_INFO.SINGLE_EVENT,
         event_coordinates: cookies?.mapSrc,
+        start_date_time,
+        end_date_time,
+        startDate,
+        endDate,
       });
 
       if (response.status === 201) {
@@ -414,8 +435,8 @@ function Details(): JSX.Element {
               formStep === 1
                 ? `${greeting} ${icon}, ${userName}`
                 : formStep === 2
-                  ? "Event Page Appearance"
-                  : "Event Ticket"
+                ? "Event Page Appearance"
+                : "Event Ticket"
             }
           />
           <Paragraph
@@ -424,8 +445,8 @@ function Details(): JSX.Element {
               formStep === 1
                 ? "Welcome! Ready to create your next event?"
                 : formStep === 2
-                  ? "Upload your event image here by clicking the camera icon (File size should not be more than 10MB)."
-                  : "For free events, Ostivities is free. For paid events, we charge a percentage-based transaction fee on ticket sales."
+                ? "Upload your event image here by clicking the camera icon (File size should not be more than 10MB)."
+                : "For free events, Ostivities is free. For paid events, we charge a percentage-based transaction fee on ticket sales."
             }
             styles={{ fontWeight: "normal !important" }}
           />
@@ -436,8 +457,8 @@ function Details(): JSX.Element {
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col space-y-16 pb-5"
       >
-        <div className="grid grid-cols-2 gap-x-4">
-          <div className="flex flex-col space-y-4 pr-6">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-x-4">
+          <div className="flex flex-col space-y-4 md:pr-6">
             <Controller
               name="eventName"
               rules={{ required: "Event Name is required!" }}
@@ -741,7 +762,7 @@ function Details(): JSX.Element {
               )}
             />
           </div>
-          <div className="flex flex-col space-y-4 pl-6">
+          <div className="flex flex-col space-y-4 md:pl-6">
             <Controller
               name="eventURL"
               control={control}
@@ -772,9 +793,9 @@ function Details(): JSX.Element {
                       // value={eventUrl}
                       {...field}
                       placeholder="your event url name will show here"
-                    // onChange={(e) => {
-                    //   field.onChange(e.target.value.replace(/\s+/g, "")); // Remove spaces as the user types
-                    // }}
+                      // onChange={(e) => {
+                      //   field.onChange(e.target.value.replace(/\s+/g, "")); // Remove spaces as the user types
+                      // }}
                     />
                   </Space.Compact>
                   {errors.eventURL && (
@@ -988,7 +1009,9 @@ function Details(): JSX.Element {
                             showTime={{ format: "h:mm:ss A" }} // Time picker shows 12-hour format
                             onChange={(date) => {
                               // Set the selected value in 12-hour format
-                              const formattedDate = date?.format("YYYY-MM-DD h:mm:ss A");
+                              const formattedDate = date?.format(
+                                "YYYY-MM-DD h:mm:ss A"
+                              );
                               field.onChange(date); // Still pass the full date object to the form's field
                               setStartDateValue(formattedDate); // Store the 12-hour format value in state
                             }}
@@ -1244,9 +1267,10 @@ function Details(): JSX.Element {
                               showTime
                               onChange={(date) => {
                                 field.onChange(date);
-                                setStartDateValue(date?.format("YYYY-MM-DD HH:mm:ss"));
-                              }
-                              }
+                                setStartDateValue(
+                                  date?.format("YYYY-MM-DD HH:mm:ss")
+                                );
+                              }}
                               format="YYYY-MM-DD HH:mm:ss"
                               style={{ width: "100%", height: "33px" }}
                               disabledDate={disabledDate}
@@ -1418,6 +1442,7 @@ function Details(): JSX.Element {
           <Button
             type="primary"
             htmlType="submit"
+            disabled={createEvent.isPending}
             size="large"
             className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
             // onClick={nextStep}

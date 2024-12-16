@@ -339,6 +339,7 @@ export default function PublishEvent(): JSX.Element {
                     fontSize: "16px", // Increase text size
                     border: "none", // Remove border if needed
                   }}
+                  disabled={publishEvent.isPending}
                   loading={publishEvent.isPending}
                   onClick={handlePublishEvent}
                 >

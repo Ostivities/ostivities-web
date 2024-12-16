@@ -897,7 +897,7 @@ const EventDetail = () => {
                           fontFamily: "'Bricolage Grotesque', sans-serif", // Apply the font here as well
                         }}
                       >
-                        {/* <LatestGuests allGuestsData={allGuestsData} /> */}
+                        {`${allGuestsData?.[0]?.personal_information?.firstName}, ${allGuestsData?.[1]?.personal_information?.firstName}`}{" "}
                         and {eventDetails?.total_ticket_sold - 2 || 0} others
                       </p>
                     </div>

@@ -1,4 +1,4 @@
-import { CREATE_EVENT, DISCOVERY_EVENTS, GET_EVENT, UPDATE_EVENT, GET_ALL_USER_EVENTS, GET_EVENT_BY_UNIQUE_KEY } from "@/app/utils/constants";
+import { CREATE_EVENT, DISCOVERY_EVENTS, GET_CHECK_IN_SUMMARY, GET_EVENT, UPDATE_EVENT, GET_ALL_USER_EVENTS, GET_EVENT_BY_UNIQUE_KEY } from "@/app/utils/constants";
 import { errorFormatter, successFormatter } from "@/app/utils/helper";
 import { ICreateEvent, IFormInput, IUpdateEvent } from "@/app/utils/interface";
 import { API_SERVICE } from "@/app/utils/service";
@@ -140,4 +140,14 @@ export const useEnableEventRegistration = () => {
   })
   return { enableEventRegistration };
 
+}
+
+export const useGetCheckInSummary = (event_id: string, page: number, limit: number, search?: string) => {
+  const getCheckInSummary = useQuery({
+    queryKey: [GET_CHECK_IN_SUMMARY, event_id, page, limit, search],
+    queryFn: () => {
+      return API_SERVICE._getCheckInSummary(event_id, page, limit, search);
+    },
+  });
+  return { getCheckInSummary };
 }

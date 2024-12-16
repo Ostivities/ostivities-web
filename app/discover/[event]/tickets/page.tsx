@@ -79,17 +79,14 @@ const TicketsSelection = () => {
   const [currentPage, setCurrentPage] = useState<
     "tickets" | "contactform" | "payment"
   >("tickets");
-  const [externalTrigger, setExternalTrigger] =
-    useState<() => void | undefined>();
   const [discountCode, setDiscountCode] = useState("");
-  const [discountApplied, setDiscountApplied] = useState(false);
   const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
-  const { getTickets } = useGetEventTickets(eventDetails?.id);
   const { getTicketsByUniqueKey } = useGetEventTicketsByUniqueKey(
     eventDetails?.unique_key
   );
+  // const { getTickets } = useGetEventTickets(eventDetails?.id);
   const { getEventDiscount } = useGetEventDiscount(eventDetails?.id);
-  const ticketData = getTickets?.data?.data?.data;
+  const ticketData = getTicketsByUniqueKey?.data?.data?.data;
   const discountDetails = getEventDiscount?.data?.data?.data;
   const [isToggled, setIsToggled] = useState(false);
   const title = (
@@ -120,12 +117,18 @@ const TicketsSelection = () => {
     </div>
   );
 
+  const generateOrderNumber = (): string => {
+    const randomDigits = Math.floor(1000 + Math.random() * 9000);
+    return randomDigits.toString();
+  };
+
+  const order_number = `ORD${generateOrderNumber()}`;
   // State to manage selected ticket counts
   const [selectedTickets, setSelectedTickets] = useState<{
     [key: string]: number;
   }>({});
 
-  console.log(cookies?.ticketDetails, "cookies?.ticketDetails");
+  console.log(selectedTickets, "selectedTickets");
   const [ticketDetails, setTicketDetails] = useState<
     {
       ticketName: string;
@@ -145,10 +148,10 @@ const TicketsSelection = () => {
       ticketEntity: string;
       guestAsChargeBearer: boolean;
       groupSize: number;
+      orderNumber: string;
       additionalInformation: { question: string; is_compulsory: boolean }[];
     }[]
   >([]);
-
 
   console.log(ticketDetails, "ticketDetails");
 
@@ -179,12 +182,17 @@ const TicketsSelection = () => {
         sameSite: "strict",
         path: `/discover/${params?.event}/tickets`,
       });
-    } else if (ticketDetails.length === 0) {
+    } else if (ticketDetails?.length === 0) {
       // Remove cookies if `ticketDetails` is empty
-      removeCookie("ticketDetails", { path: `/discover/${params?.event}/tickets` });
-      removeCookie("selectedTickets", { path: `/discover/${params?.event}/tickets` });
+      removeCookie("ticketDetails", {
+        path: `/discover/${params?.event}/tickets`,
+      });
+      removeCookie("selectedTickets", {
+        path: `/discover/${params?.event}/tickets`,
+      });
     }
   }, [ticketDetails, selectedTickets, setCookie, removeCookie, params?.event]);
+
   useEffect(() => {
     // Cleanup cookies when navigating away from the target path
     if (!pathname.startsWith(`/discover/${params?.event}/tickets`)) {
@@ -248,6 +256,8 @@ const TicketsSelection = () => {
                           handleInputChange(
                             e.target.value,
                             attendeeId,
+                            ticketDetail?.ticketName,
+                            ticketDetail?.ticketPrice?.toString(),
                             "firstName"
                           )
                         }
@@ -276,6 +286,8 @@ const TicketsSelection = () => {
                           handleInputChange(
                             e.target.value,
                             attendeeId,
+                            ticketDetail?.ticketName,
+                            ticketDetail?.ticketPrice?.toString(),
                             "lastName"
                           )
                         }
@@ -307,6 +319,8 @@ const TicketsSelection = () => {
                           handleInputChange(
                             e.target.value,
                             attendeeId,
+                            ticketDetail?.ticketName,
+                            ticketDetail?.ticketPrice?.toString(),
                             "attendeeEmail"
                           )
                         }
@@ -350,6 +364,8 @@ const TicketsSelection = () => {
                           handleInputChange(
                             e.target.value,
                             attendeeId,
+                            ticketDetail?.ticketName,
+                            ticketDetail?.ticketPrice?.toString(),
                             "confirmAttendeeEmail"
                           )
                         }
@@ -367,7 +383,11 @@ const TicketsSelection = () => {
 
   useEffect(() => {
     // When ticketData is updated, re-initialize selectedTickets
-    if (ticketData?.length && !cookies?.selectedTickets) {
+    if (
+      ticketData?.length &&
+      !cookies?.selectedTickets &&
+      cookies?.ticketDetails?.length < 1
+    ) {
       const initialSelectedTickets = ticketData?.reduce(
         (acc: { [key: string]: number }, ticket: ITicketDetails) => {
           acc[ticket.id] = 0;
@@ -377,7 +397,7 @@ const TicketsSelection = () => {
       );
       setSelectedTickets(initialSelectedTickets);
     }
-  }, [ticketData, cookies?.selectedTickets]);
+  }, [ticketData, cookies?.selectedTickets, cookies?.ticketDetails]);
 
   useEffect(() => {
     // Create a new filtered list only if necessary
@@ -393,7 +413,6 @@ const TicketsSelection = () => {
   const handleDiscountApplied = (code: string) => {
     setDiscountCode(code);
   };
-
 
   useEffect(() => {
     const discountCodeUsed = discountDetails?.find(
@@ -510,6 +529,7 @@ const TicketsSelection = () => {
             constantTicketPrice: ticket?.ticketPrice,
             ticketEntity: ticket?.ticketEntity,
             groupSize: ticket?.groupSize,
+            orderNumber: order_number,
             additionalInformation: ticket?.ticketQuestions?.map(
               (questionDetails: {
                 question: string;
@@ -617,6 +637,9 @@ const TicketsSelection = () => {
       lastName: string;
       email: string;
       confirmEmail: string;
+      phoneNumber: string;
+      ticket_name: string;
+      ticket_price: string;
     }[];
     event: string;
     event_unique_code: string;
@@ -656,15 +679,20 @@ const TicketsSelection = () => {
       lastName: string;
       email: string;
       confirmEmail: string;
+      ticket_name: string;
+      ticket_price: string;
     }[]
   >([]);
   const [modal, setModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
+  console.log(attendeesInformation, "attendeesInformation");
 
   const handleInputChange = (
     value: string,
     attendeeId: number,
+    ticket_name: string,
+    ticket_price: string,
     field: "firstName" | "lastName" | "attendeeEmail" | "confirmAttendeeEmail"
   ) => {
     setAttendeesInformation((prevInfo) => {
@@ -692,6 +720,8 @@ const TicketsSelection = () => {
           lastName: "",
           email: "",
           confirmEmail: "",
+          ticket_name,
+          ticket_price,
         });
         attendeeIndex = updatedInfo.length - 1;
       }
@@ -700,11 +730,14 @@ const TicketsSelection = () => {
       updatedInfo[attendeeIndex] = {
         ...updatedInfo[attendeeIndex],
         [actualField]: value,
+        ticket_name, // Ensure ticket name is updated
+        ticket_price, // Ensure ticket price is updated
       };
 
       return updatedInfo;
     });
   };
+
   useEffect(() => {
     let counter = 0;
 
@@ -776,6 +809,7 @@ const TicketsSelection = () => {
         ticket_price: ticket?.ticketPrice === null ? 0 : ticket?.ticketPrice,
         ticket_type: ticket?.ticketEntity,
         ticket_stock: ticket?.ticketStock,
+        order_number: ticket?.orderNumber,
       };
     });
 
@@ -910,39 +944,33 @@ const TicketsSelection = () => {
   }, [currentPage, form.getFieldsValue(), checkFormValidity]);
 
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
-  
-      
-useEffect(() => {
-  const pageParam = searchParams.get("page");
 
-// console.log(pageParam)
-// console.log(currentPage, "currentPage")
-  // Handle reloads or initial load
-  if (isInitialLoad) {
-    setIsInitialLoad(false); // Set the flag to false after initial load
+  useEffect(() => {
+    const pageParam = searchParams.get("page");
 
-    if (pageParam === "payment") {
-      // Redirect to `contactform` on reload if on the `payment` page
-      router.replace(`${pathname}?page=contactform`);
-      setCurrentPage("contactform");
-    } else if (pageParam === "contactform" || pageParam === "payment") {
-      // Update state based on the query parameter
-      setCurrentPage(pageParam);
+    if (isInitialLoad) {
+      setIsInitialLoad(false); // Set the flag to false after initial load
 
-    } else if (pageParam === null) {
-      // Default to `tickets` if no valid page query exists
-      setCurrentPage("tickets");
+      if (pageParam === "payment") {
+        // Redirect to `contactform` on reload if on the `payment` page
+        router.replace(`${pathname}?page=contactform`);
+        setCurrentPage("contactform");
+      } else if (pageParam === "contactform" || pageParam === "payment") {
+        // Update state based on the query parameter
+        setCurrentPage(pageParam);
+      } else if (pageParam === null) {
+        // Default to `tickets` if no valid page query exists
+        setCurrentPage("tickets");
+      }
+    } else {
+      // Handle navigation changes after the initial load
+      if (pageParam === "contactform" || pageParam === "payment") {
+        setCurrentPage(pageParam);
+      } else if (pageParam === null) {
+        setCurrentPage("tickets");
+      }
     }
-  } else {
-    // Handle navigation changes after the initial load
-    if (pageParam === "contactform" || pageParam === "payment") {
-      setCurrentPage(pageParam);
-    }else if(pageParam === null) {
-      setCurrentPage("tickets");
-    }
-
-  }
-}, [searchParams, pathname, router, isInitialLoad]);
+  }, [searchParams, pathname, router, isInitialLoad]);
 
   const handleButtonClick = () => {
     if (currentPage === "tickets") {
@@ -962,7 +990,7 @@ useEffect(() => {
     }
   };
 
-  const isPending: boolean = getTickets?.isLoading;
+  const isPending: boolean = getTicketsByUniqueKey?.isLoading;
 
   const {
     minutes,
@@ -1245,13 +1273,17 @@ useEffect(() => {
                             disabled={selectedTickets[ticket?.id] === 0}
                             style={{
                               backgroundColor:
-                                selectedTickets[ticket?.id] === 0
+                                selectedTickets[ticket?.id] === 0 || !selectedTickets[ticket?.id]
                                   ? "#ccc"
                                   : "#FADEDE",
                               color:
-                                selectedTickets[ticket?.id] === 0
+                                selectedTickets[ticket?.id] === 0 || !selectedTickets[ticket?.id]
                                   ? "#fff"
                                   : "#000",
+                              cursor: 
+                                selectedTickets[ticket?.id] === 0 || !selectedTickets[ticket?.id]
+                                ? "not-allowed"
+                                : "pointer"
                             }}
                           >
                             -
@@ -1340,12 +1372,23 @@ useEffect(() => {
                     .map((ticket: ITicketDetails, index: any) => (
                       <div
                         key={index}
-                        className={`card-shadow ${
+                        className={`card-shadow relative ${
                           ticket?.ticket_sold === ticket?.ticketQty
-                            ? "bg-gray-300 cursor-not-allowed"
+                            ? "bg-[#dedede] cursor-not-allowed"
                             : ""
                         } flex justify-between items-start mb-6`}
                       >
+                        {ticket?.ticket_sold === ticket?.ticketQty && (
+                          <Image
+                            src={soldout}
+                            alt="soldout"
+                            className="w-24 h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex-shrink-0"
+                            style={{
+                              zIndex: 10,
+                              pointerEvents: "none", // Prevent interaction with the overlay
+                            }}
+                          />
+                        )}
                         <div>
                           <h2
                             className={`${
@@ -1436,10 +1479,14 @@ useEffect(() => {
                             )}
                           </h3>
                           <p
-                            className="text-s font-BricolageGrotesqueRegular"
+                            className={`${
+                              ticket?.ticket_sold === ticket?.ticketQty
+                                ? "text-gray-400"
+                                : ""
+                            } text-s font-BricolageGrotesqueRegular`}
                             style={{
                               fontSize: "13px",
-                              color: "black",
+                              // color: "black",
                               marginTop: "17px",
                             }}
                           >
@@ -1454,18 +1501,22 @@ useEffect(() => {
                           style={{ marginBlockStart: "10px" }}
                         >
                           <button
-                            className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
+                            className={`sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold`}
                             onClick={() => handleDecrement(ticket?.id)}
                             disabled={selectedTickets[ticket?.id] === 0}
                             style={{
                               backgroundColor:
-                                selectedTickets[ticket?.id] === 0
+                                selectedTickets[ticket?.id] === 0 || !selectedTickets[ticket?.id]
                                   ? "#ccc"
                                   : "#FADEDE",
                               color:
-                                selectedTickets[ticket?.id] === 0
+                                selectedTickets[ticket?.id] === 0 || !selectedTickets[ticket?.id]
                                   ? "#fff"
                                   : "#000",
+                              cursor: 
+                                selectedTickets[ticket?.id] === 0 || !selectedTickets[ticket?.id]
+                                ? "not-allowed"
+                                : "pointer"
                             }}
                           >
                             -
@@ -1480,12 +1531,16 @@ useEffect(() => {
                             {selectedTickets[ticket?.id] || 0}
                           </span>
                           <button
-                            className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center rounded-full text-lg font-bold"
+                            className={`sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center rounded-full text-lg font-bold ${
+                            ticket?.ticket_sold === ticket?.ticketQty
+                            ? "cursor-not-allowed"
+                            : ""
+                            } `}
                             onClick={() => handleIncrement(ticket?.id)}
                             disabled={
-                              selectedTickets[ticket?.id] === 1 ||
-                              selectedTickets[ticket?.id] ===
-                                ticket?.ticket_available
+                              selectedTickets[ticket?.id] === 1 ||                   
+                              ticket?.ticket_available === 0 || 
+                              ticket?.ticket_sold === ticket?.ticketQty
                             }
                             style={{
                               color:

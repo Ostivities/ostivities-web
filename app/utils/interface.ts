@@ -60,6 +60,8 @@ export interface IFormInput {
   timeZone: string;
   startDate: any;
   endDate: any;
+  start_date_time?: any;
+  end_date_time?: any;
   frequency?: string;
   eventImage?: string;
   websiteUrl?: string;
@@ -511,21 +513,6 @@ export interface IDiscountCreate extends Partial<IDiscountData> {
   user: string;
 }
 
-// export interface IGuestData {
-//   ticket: string;
-//   personal_information: {
-//     firstName: string;
-//     lastName: string;
-//     email: string;
-//     terms_and_condition: boolean;
-//     phoneNumber: boolean;
-//   };
-//   fees: number;
-//   total_amount_paid: number;
-//   discountCode?: string; // Optional field (fixed typo from original "disocuntCode")
-//   quantity: number;
-//   payment_method: PAYMENT_METHOD;
-// }
 export interface InfoNeeded {
   ticketDetails?: {
     ticketName: string;
@@ -646,10 +633,35 @@ export interface ICoordinatorData {
   staff_name: string;
   staff_role: STAFF_ROLE;
   staff_phone_number: string;
-  password: string;
+  password_text: string;
   eventId: string;
   id: string;
   key: string;
   createdAt: string;
 }
+export interface ICheckInSummary {
+  key?: string;
+  ticket_information: {
+    ticket_id: string;
+    ticket_name: string;
+    quantity: number;
+    total_amount: number;
+    createdAt: string;
+    id: string;
+  }[];
+  personal_information: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+    createdAt: string;
+    id: string;
+  };
+  check_in_date_time: string;
+  check_in_by: string;
+  event: string;
+  createdAt: string;
+  id: string;
+}
+
 
