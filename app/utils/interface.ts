@@ -158,12 +158,12 @@ export interface IModal {
   open?: boolean;
   onClose?: any;
   onCancel?: any;
+  visible?: any;
   onOk?: any;
   actionType?: "delete" | "warning" | "detail";
   data?: any;
   selectedRowKeys?: string[];
   dataToDelete?: any;
-
 }
 
 export interface IModal2 {
