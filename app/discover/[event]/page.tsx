@@ -43,6 +43,7 @@ import { Tooltip, Skeleton } from "antd";
 import Dpmodal from "@/app/components/OstivitiesModal/CreateDp";
 import { Heading3 } from "@/app/components/typography/Heading3";
 import { ACCOUNT_TYPE } from "@/app/utils/enums";
+// import EventStore from "@/app/components/DashboardLayout/EventStore";
 
 const ShareModalContent: React.FC<{ url: string; title: string }> = ({
   url,
@@ -1639,8 +1640,11 @@ const EventDetail = () => {
             <Dpmodal />
           </Modal>
         </div>
-        <br />
-        <br />
+        {/* <br /><br />
+        <EventStore />
+        <br /><br />
+        <hr style={{ border: "0.1px solid #d3d3d3", margin: "3px 0" }} /> */}
+        <br /><br />
         <AvailableEvents />
       </section>
     </DashboardLayout>
