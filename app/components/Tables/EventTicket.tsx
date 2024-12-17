@@ -160,8 +160,6 @@ const EventTicketTable = ({ onTicketDataCount }: { onTicketDataCount: (count: nu
       dataIndex: ["ticketPrice", "groupPrice"],
       sorter: (a, b) => (a?.ticketPrice ?? 0) - (b?.ticketPrice ?? 0),
       render: (text, record: ITicketDetails) => {
-        // 
-        // 
 
         // Safeguard against missing properties with optional chaining
         if (record?.ticketType === TICKET_TYPE.FREE) {

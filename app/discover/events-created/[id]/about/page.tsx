@@ -951,7 +951,7 @@ const AboutEvent = () => {
                       render={({ field }) => (
                         <DatePicker
                           {...field}
-                          disabled={componentDisabled}
+                          disabled={componentDisabled || eventDetails?.total_ticket_sold > 0}
                           onChange={(date) => {
                             field.onChange(date);
                             setStartDateValue(date);

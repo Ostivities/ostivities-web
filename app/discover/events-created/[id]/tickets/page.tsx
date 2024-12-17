@@ -38,11 +38,6 @@ const formatCurrency = (amount: number) => {
 };
 
 const EventTickets = () => {
-  // const { isLoggedIn } = useFetch();
-
-  // if(!isLoggedIn) {
-  //   return <div>Loading...</div>;
-  // }
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -347,7 +342,6 @@ const EventTickets = () => {
         }}
         id={selectedTicket}
         ticketEntity={selectedTicketEntity}
-        dataToDelete={eventStatus}
       />
       <DeleteTicket
         open={isShown}
