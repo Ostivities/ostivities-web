@@ -28,6 +28,7 @@ import {
   ITicketCreate,
   ITicketDetails,
   InfoNeeded,
+  IGuestCreate,
 } from "@/app/utils/interface";
 import {
   useGetEventTickets,
@@ -48,6 +49,7 @@ import {
   DISCOUNT_TYPE,
   PAYMENT_METHODS,
   TICKET_ENTITY,
+  GUEST_CATEGORY,
 } from "@/app/utils/enums";
 import { Skeleton } from "antd";
 import { useTimer } from "@/app/hooks/countdown";
@@ -74,6 +76,8 @@ const TicketsSelection = () => {
   const [cookies, setCookie, removeCookie] = useCookies([
     "ticketDetails",
     "selectedTickets",
+    "ticketDataQ",
+    "allInfo",
   ]);
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
   const [currentPage, setCurrentPage] = useState<
@@ -100,6 +104,7 @@ const TicketsSelection = () => {
           if (currentPage === "tickets") {
             router.back();
           } else if (currentPage === "contactform") {
+            setIsToggled(false);
             setCurrentPage("tickets");
           } else if (currentPage === "payment") {
             setCurrentPage("contactform");
@@ -128,7 +133,6 @@ const TicketsSelection = () => {
     [key: string]: number;
   }>({});
 
-  
   const [ticketDetails, setTicketDetails] = useState<
     {
       ticketName: string;
@@ -142,6 +146,7 @@ const TicketsSelection = () => {
       ticketDiscountCode: string[];
       ticketDiscountValue: number;
       ticketNumber: number;
+      ticketType: string;
       ticketId: string;
       subTotal: number;
       ticketStock: string;
@@ -153,22 +158,155 @@ const TicketsSelection = () => {
     }[]
   >([]);
 
-  
+  const [ticketDataQ, setTicketDataQ] = useState<{
+    ticket_information: {
+      ticket_name: string;
+      ticket_price: number;
+      constantTicketPrice: number;
+      discountedTicketPrice?: number;
+      discountToDeduct?: number;
+      ticketFee: number;
+      eventName?: string;
+      ticketDiscountType: string;
+      ticketDiscountCode: string[];
+      ticketDiscountValue: number;
+      ticketNumber: number;
+      ticket_type: string;
+      ticket_id: string;
+      subTotal: number;
+      quantity: number;
+      total_amount: number;
+      ticket_stock: string;
+      ticketEntity: string;
+      guestAsChargeBearer: boolean;
+      groupSize: number;
+      order_number: string;
+    }[];
+    fees: number;
+    discount: number;
+    total_amount_paid: number;
+    discountCode: string;
+    total_purchased: number;
+    payment_method: PAYMENT_METHODS;
+  }>({
+    ticket_information: [],
+    fees: 0,
+    discount: 0,
+    total_amount_paid: 0,
+    discountCode: "",
+    total_purchased: 0,
+    payment_method: PAYMENT_METHODS.CARD,
+  });
+
+
+  const [allInfo, setAllInfo] = useState<{
+    personal_information: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      phoneNumber: string;
+    };
+    ticket_information: {
+      ticket_id: string;
+      ticket_name: string;
+      quantity: number;
+      total_amount: number;
+      ticket_price: number;
+      ticket_type: string;
+      ticket_stock: string;
+      order_number: string;
+    }[];
+    additional_information: {
+      question: string;
+      answer: string;
+    }[];
+    attendees_information: {
+      id: number;
+      event: string;
+      event_unique_code: string;
+      ticket_information: {
+        ticket_id: string;
+        quantity: number;
+        ticket_name: string;
+        total_amount: number;
+        ticket_price: number;
+        ticket_type: string;
+        ticket_stock: string;
+        order_number: string;
+      }[];
+      personal_information: {
+        firstName: string;
+        lastName: string;
+        email: string;
+      };
+      guest_category: GUEST_CATEGORY;
+      total_purchased: number;
+      payment_method?: PAYMENT_METHODS;
+      fees: number;
+      total_amount_paid: number;
+      discount: number;
+    }[];
+    guest_category: GUEST_CATEGORY;
+    event: string;
+    event_unique_code: string;
+    fees: number;
+    total_amount_paid: number;
+    discountCode?: string;
+    discount: number;
+    total_purchased: number;
+    payment_method: PAYMENT_METHODS;
+  }>({
+    personal_information: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+    },
+    additional_information: [],
+    attendees_information: [],
+    ticket_information: [],
+    event: eventDetails?.id,
+    guest_category: GUEST_CATEGORY.BUYER,
+    event_unique_code: params?.event,
+    fees: ticketDetails
+      ?.map((ticket) => ticket?.ticketFee)
+      .reduce((acc, curr) => acc + (curr ?? 0), 0),
+    total_amount_paid: 0,
+    discountCode: ticketDetails?.[0]?.ticketDiscountCode?.[0] || "",
+    discount:
+      ticketDetails
+        ?.map((ticket) => ticket?.discountToDeduct ?? 0)
+        .reduce((acc, curr) => acc + curr, 0) || 0,
+    total_purchased: 0,
+    payment_method: PAYMENT_METHODS.FREE,
+  });
+
+  // console.log(ticketDataQ, "ticketDataQ");
 
   useEffect(() => {
-    if (!cookies?.ticketDetails || ticketDetails?.length > 0) {
+    if (
+      !cookies?.ticketDetails ||
+      ticketDetails?.length > 0 ||
+      ticketDataQ?.ticket_information?.length > 0
+    ) {
       return;
     }
     setTicketDetails(cookies?.ticketDetails);
     setSelectedTickets(cookies?.selectedTickets);
-  }, [cookies?.ticketDetails, cookies?.selectedTickets, ticketDetails?.length]);
+  }, [
+    cookies?.ticketDetails,
+    cookies?.selectedTickets,
+    ticketDetails?.length,
+    ticketDataQ?.ticket_information?.length,
+  ]);
 
   // Save state to cookies when ticketDetails or selectedTickets change
   useEffect(() => {
     const nonZeroTickets = ticketDetails?.filter(
       (ticket) => ticket.ticketNumber > 0
     ); // Remove tickets with zero count
-    if (ticketDetails.length > 0) {
+    const nonZero = ticketDataQ?.total_purchased > 0 && ticketDataQ;
+    if (ticketDetails?.length > 0) {
       // Save non-empty state to cookies
       setCookie("ticketDetails", JSON.stringify(nonZeroTickets), {
         maxAge: 600,
@@ -182,6 +320,18 @@ const TicketsSelection = () => {
         sameSite: "strict",
         path: `/discover/${params?.event}/tickets`,
       });
+      setCookie("ticketDataQ", JSON.stringify(nonZero), {
+        maxAge: 600,
+        secure: true,
+        sameSite: "strict",
+        path: `/discover/${params?.event}/tickets`,
+      });
+      setCookie("allInfo", JSON.stringify(allInfo), {
+        maxAge: 600,
+        secure: true,
+        sameSite: "strict",
+        path: `/discover/${params?.event}/tickets`,
+      });
     } else if (ticketDetails?.length === 0) {
       // Remove cookies if `ticketDetails` is empty
       removeCookie("ticketDetails", {
@@ -190,8 +340,22 @@ const TicketsSelection = () => {
       removeCookie("selectedTickets", {
         path: `/discover/${params?.event}/tickets`,
       });
+      removeCookie("ticketDataQ", {
+        path: `/discover/${params?.event}/tickets`,
+      });
+      removeCookie("allInfo", {
+        path: `/discover/${params?.event}/tickets`
+      });
     }
-  }, [ticketDetails, selectedTickets, setCookie, removeCookie, params?.event]);
+  }, [
+    ticketDetails,
+    ticketDataQ,
+    selectedTickets,
+    setCookie,
+    removeCookie,
+    params?.event,
+    allInfo,
+  ]);
 
   useEffect(() => {
     // Cleanup cookies when navigating away from the target path
@@ -202,184 +366,218 @@ const TicketsSelection = () => {
       removeCookie("selectedTickets", {
         path: `/discover/${params?.event}/tickets`,
       });
+      removeCookie("ticketDataQ", {
+        path: `/discover/${params?.event}/tickets`,
+      });
+      removeCookie("allInfo", {
+        path: `/discover/${params?.event}/tickets`,
+      });
     }
   }, [pathname, removeCookie, params?.event]);
 
   let ticketCounter = 1;
 
-  const renderedTickets = useMemo(() => {
-    return ticketDetails?.map((ticketDetail, ticketIndex) => {
-      const arrayLength =
-        ticketIndex === 0
-          ? ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE
-            ? ticketDetail?.groupSize - 1
-            : ticketDetail?.ticketNumber - 1
-          : ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE
-          ? ticketDetail?.groupSize
-          : ticketDetail?.ticketNumber;
+  // const renderedTickets = useMemo(() => {
+  //   return ticketDetails?.map((ticketDetail, ticketIndex) => {
+  //     const arrayLength =
+  //       ticketIndex === 0
+  //         ? ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE
+  //           ? ticketDetail?.groupSize - 1
+  //           : ticketDetail?.ticketNumber - 1
+  //         : ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE
+  //         ? ticketDetail?.groupSize
+  //         : ticketDetail?.ticketNumber;
 
-      return (
-        <div key={ticketIndex}>
-          {Array.from({ length: arrayLength })?.map((_, index) => {
-            ticketCounter++; // Increment ticketCounter globally
-            const attendeeId = ticketCounter;
+  //     return (
+  //       <div key={ticketIndex}>
+  //         {Array.from({ length: arrayLength })?.map((_, index) => {
+  //           ticketCounter++; // Increment ticketCounter globally
+  //           const attendeeId = ticketCounter;
 
-            return (
-              <div key={index}>
-                <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-4 custom-font-size mt-4">
-                  Ticket {ticketCounter} -{" "}
-                  {ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE
-                    ? `Collective of ${ticketDetail?.groupSize}`
-                    : "Single"}{" "}
-                  - {ticketDetail?.ticketName}
-                </h3>
-                <Row gutter={16} className="">
-                  <Col span={12}>
-                    <Form.Item
-                      name={[attendeeId, "firstName"]}
-                      label={
-                        <span>
-                          Attendee First Name{" "}
-                          <span style={{ color: "red" }}>*</span>
-                        </span>
-                      }
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please provide attendee first name",
-                        },
-                      ]}
-                    >
-                      <Input
-                        placeholder="Enter Attendee First Name"
-                        onChange={(e) =>
-                          handleInputChange(
-                            e.target.value,
-                            attendeeId,
-                            ticketDetail?.ticketName,
-                            ticketDetail?.ticketPrice?.toString(),
-                            "firstName"
-                          )
-                        }
-                      />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item
-                      name={[attendeeId, "lastName"]}
-                      label={
-                        <span>
-                          Attendee Last Name{" "}
-                          <span style={{ color: "red" }}>*</span>
-                        </span>
-                      }
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please provide attendee last name",
-                        },
-                      ]}
-                    >
-                      <Input
-                        placeholder="Enter Attendee Last Name"
-                        onChange={(e) =>
-                          handleInputChange(
-                            e.target.value,
-                            attendeeId,
-                            ticketDetail?.ticketName,
-                            ticketDetail?.ticketPrice?.toString(),
-                            "lastName"
-                          )
-                        }
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Row gutter={16} className="">
-                  <Col span={12}>
-                    <Form.Item
-                      name={[attendeeId, "attendeeEmail"]}
-                      label={
-                        <span>
-                          Attendee Email Address{" "}
-                          <span style={{ color: "red" }}>*</span>
-                        </span>
-                      }
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please provide attendee email",
-                        },
-                      ]}
-                    >
-                      <Input
-                        type="email"
-                        placeholder="Enter Attendee Email Address"
-                        onChange={(e) =>
-                          handleInputChange(
-                            e.target.value,
-                            attendeeId,
-                            ticketDetail?.ticketName,
-                            ticketDetail?.ticketPrice?.toString(),
-                            "attendeeEmail"
-                          )
-                        }
-                      />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item
-                      name={[attendeeId, "confirmAttendeeEmail"]}
-                      label={
-                        <span>
-                          Confirm Attendee Email{" "}
-                          <span style={{ color: "red" }}>*</span>
-                        </span>
-                      }
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please confirm attendee email",
-                        },
-                        ({ getFieldValue }) => ({
-                          validator(_, value) {
-                            const emailValue = getFieldValue([
-                              attendeeId,
-                              "attendeeEmail",
-                            ]); // Get the value of the email field
-                            if (!value || emailValue === value) {
-                              return Promise.resolve();
-                            }
-                            return Promise.reject(
-                              new Error("Emails do not match!")
-                            );
-                          },
-                        }),
-                      ]}
-                    >
-                      <Input
-                        type="email"
-                        placeholder="Confirm Attendee Email Address"
-                        onChange={(e) =>
-                          handleInputChange(
-                            e.target.value,
-                            attendeeId,
-                            ticketDetail?.ticketName,
-                            ticketDetail?.ticketPrice?.toString(),
-                            "confirmAttendeeEmail"
-                          )
-                        }
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </div>
-            );
-          })}
-        </div>
-      );
-    });
-  }, [ticketDetails, ticketCounter]); // Dependencies
+  //           return (
+  //             <div key={index}>
+  //               <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-4 custom-font-size mt-4">
+  //                 Ticket {ticketCounter} -{" "}
+  //                 {ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE
+  //                   ? `Collective of ${ticketDetail?.groupSize}`
+  //                   : "Single"}{" "}
+  //                 - {ticketDetail?.ticketName}
+  //               </h3>
+  //               <Row gutter={16} className="">
+  //                 <Col span={12}>
+  //                   <Form.Item
+  //                     name={[attendeeId, "firstName"]}
+  //                     label={
+  //                       <span>
+  //                         Attendee First Name{" "}
+  //                         <span style={{ color: "red" }}>*</span>
+  //                       </span>
+  //                     }
+  //                     rules={[
+  //                       {
+  //                         required: true,
+  //                         message: "Please provide attendee first name",
+  //                       },
+  //                     ]}
+  //                   >
+  //                     <Input
+  //                       placeholder="Enter Attendee First Name"
+  //                       onChange={(e) =>
+  //                         handleInputChange(
+  //                           e.target.value,
+  //                           attendeeId,
+  //                           eventDetails?.id || "",
+  //                           params?.event,
+  //                           ticketDetail?.ticketNumber,
+  //                           ticketDetail?.ticketFee,
+  //                           ticketDetails?.reduce(
+  //                             (acc, ticket) => acc + (ticket?.subTotal ?? 0),
+  //                             0
+  //                           ),
+  //                           "firstName",
+  //                           ticketDetail?.discountToDeduct
+  //                         )
+  //                       }
+  //                     />
+  //                   </Form.Item>
+  //                 </Col>
+  //                 <Col span={12}>
+  //                   <Form.Item
+  //                     name={[attendeeId, "lastName"]}
+  //                     label={
+  //                       <span>
+  //                         Attendee Last Name{" "}
+  //                         <span style={{ color: "red" }}>*</span>
+  //                       </span>
+  //                     }
+  //                     rules={[
+  //                       {
+  //                         required: true,
+  //                         message: "Please provide attendee last name",
+  //                       },
+  //                     ]}
+  //                   >
+  //                     <Input
+  //                       placeholder="Enter Attendee Last Name"
+  //                       onChange={(e) =>
+  //                         handleInputChange(
+  //                           e.target.value,
+  //                           attendeeId,
+  //                           eventDetails?.id || "",
+  //                           params?.event,
+  //                           ticketDetail?.ticketNumber,
+  //                           ticketDetail?.ticketFee,
+  //                           ticketDetails?.reduce(
+  //                             (acc, ticket) => acc + (ticket?.subTotal ?? 0),
+  //                             0
+  //                           ),
+  //                           "lastName",
+  //                           ticketDetail?.discountToDeduct
+  //                         )
+  //                       }
+  //                     />
+  //                   </Form.Item>
+  //                 </Col>
+  //               </Row>
+  //               <Row gutter={16} className="">
+  //                 <Col span={12}>
+  //                   <Form.Item
+  //                     name={[attendeeId, "attendeeEmail"]}
+  // label={
+  //   <span>
+  //     Attendee Email Address{" "}
+  //     <span style={{ color: "red" }}>*</span>
+  //   </span>
+  // }
+  //                     rules={[
+  //                       {
+  //                         required: true,
+  //                         message: "Please provide attendee email",
+  //                       },
+  //                     ]}
+  //                   >
+  //                     <Input
+  //                       type="email"
+  //                       placeholder="Enter Attendee Email Address"
+  //                       onChange={(e) =>
+  //                         handleInputChange(
+  //                           e.target.value,
+  //                           attendeeId,
+  //                           eventDetails?.id || "",
+  //                           params?.event,
+  //                           ticketDetail?.ticketNumber,
+  //                           ticketDetail?.ticketFee,
+  //                           ticketDetails?.reduce(
+  //                             (acc, ticket) => acc + (ticket?.subTotal ?? 0),
+  //                             0
+  //                           ),
+  //                           "attendeeEmail",
+  //                           ticketDetail?.discountToDeduct
+  //                         )
+  //                       }
+  //                     />
+  //                   </Form.Item>
+  //                 </Col>
+  //                 <Col span={12}>
+  //                   <Form.Item
+  //                     name={[attendeeId, "confirmAttendeeEmail"]}
+  // label={
+  //   <span>
+  //     Confirm Attendee Email{" "}
+  //     <span style={{ color: "red" }}>*</span>
+  //   </span>
+  // }
+  //                     rules={[
+  //                       {
+  //                         required: true,
+  //                         message: "Please confirm attendee email",
+  //                       },
+  //                       ({ getFieldValue }) => ({
+  //                         validator(_, value) {
+  //                           const emailValue = getFieldValue([
+  //                             attendeeId,
+  //                             "attendeeEmail",
+  //                           ]); // Get the value of the email field
+  //                           if (!value || emailValue === value) {
+  //                             return Promise.resolve();
+  //                           }
+  //                           return Promise.reject(
+  //                             new Error("Emails do not match!")
+  //                           );
+  //                         },
+  //                       }),
+  //                     ]}
+  //                   >
+  //                     <Input
+  //                       type="email"
+  //                       placeholder="Confirm Attendee Email Address"
+  //                       onChange={(e) =>
+  //                         handleInputChange(
+  //                           e.target.value,
+  //                           attendeeId,
+  //                           eventDetails?.id || "",
+  //                           params?.event,
+  //                           ticketDetail?.ticketNumber,
+  //                           ticketDetail?.ticketFee,
+  //                           ticketDetails?.reduce(
+  //                             (acc, ticket) => acc + (ticket?.subTotal ?? 0),
+  //                             0
+  //                           ),
+  //                           "confirmAttendeeEmail",
+  //                           ticketDetail?.discountToDeduct
+  //                         )
+  //                       }
+  //                     />
+  //                   </Form.Item>
+  //                 </Col>
+  //               </Row>
+  //             </div>
+  //           );
+  //         })}
+  //       </div>
+  //     );
+  //   });
+  // }, [ticketDetails, ticketCounter]); // Dependencies
 
   useEffect(() => {
     // When ticketData is updated, re-initialize selectedTickets
@@ -516,6 +714,7 @@ const TicketsSelection = () => {
             ticketPrice: realPrice,
             ticketFee: currentFee,
             ticketNumber: 1,
+            ticketType: ticket?.ticketType,
             ticketStock: ticket?.ticketStock,
             ticketDiscountCode: ticket?.discountCode,
             ticketDiscountType: ticket?.discount?.discountType,
@@ -551,6 +750,111 @@ const TicketsSelection = () => {
         ...prevTickets,
         [ticketId]: (prevTickets[ticketId] || 0) + 1,
       }));
+    }
+  };
+
+  const handleIncrementWithUniqueOrder = (ticketId: string) => {
+    const ticket = ticketData?.find(
+      (ticket: ITicketDetails) => ticket?.id === ticketId
+    );
+
+    if (ticket) {
+      const newOrderNumber = `ORD${generateOrderNumber()}`; // Generate a unique order number for each addition
+
+      setTicketDataQ((prevData) => {
+        const realPrice =
+          ticket?.ticketEntity === TICKET_ENTITY.SINGLE
+            ? ticket?.ticketPrice
+            : ticket?.groupPrice || 0;
+
+        const currentFee =
+          ticket?.ticketType === "PAID"
+            ? Math.round(realPrice * 0.04 + 100)
+            : 0;
+
+        // Create a new ticket entry
+        const newTicket = {
+          ticket_name: ticket?.ticketName,
+          ticket_price: realPrice,
+          constantTicketPrice: ticket?.ticketPrice,
+          discountedTicketPrice: ticket?.discountedTicketPrice,
+          discountToDeduct: ticket?.discountToDeduct,
+          ticketFee: currentFee,
+          eventName: ticket?.eventName,
+          ticketDiscountType: ticket?.discount?.discountType,
+          ticketDiscountCode: ticket?.discountCode,
+          ticketDiscountValue: ticket?.discount?.discount_value,
+          ticketNumber: 1,
+          ticket_type: ticket?.ticketType,
+          ticket_id: ticket?.id,
+          subTotal:
+            ticket?.guestAsChargeBearer === true
+              ? realPrice + currentFee
+              : realPrice,
+          total_amount:
+            ticket?.guestAsChargeBearer === true
+              ? realPrice + currentFee
+              : realPrice,
+          ticket_stock: ticket?.ticketStock,
+          ticketEntity: ticket?.ticketEntity,
+          guestAsChargeBearer: ticket?.guestAsChargeBearer,
+          groupSize: ticket?.groupSize,
+          order_number: newOrderNumber,
+          quantity: 1,
+        };
+
+        // Update the ticket_information array and recalculate totals
+        const updatedTicketInformation = [
+          ...prevData.ticket_information,
+          newTicket,
+        ];
+
+        const updatedFees = updatedTicketInformation
+          .filter((ticket) => ticket?.guestAsChargeBearer === true)
+          .reduce((acc, ticket) => acc + (ticket.ticketFee || 0), 0);
+
+        const updatedDiscount = updatedTicketInformation
+          .map((ticket) => ticket?.discountToDeduct || 0)
+          .reduce((acc, curr) => acc + curr, 0);
+
+        const updatedTotalAmountPaid = updatedTicketInformation
+          .map((ticket) => ticket?.subTotal)
+          .reduce((acc, curr) => acc + curr, 0);
+
+        const updatedTotalPurchased = updatedTicketInformation
+          .map((ticket) => ticket?.ticketNumber)
+          .reduce((acc, curr) => acc + curr, 0);
+
+        // Update allInfo state with the new ticket information
+        setAllInfo((prevAllInfo) => {
+          return {
+            ...prevAllInfo,
+            ticket_information: updatedTicketInformation.map((ticket) => ({
+              ticket_id: ticket.ticket_id,
+              ticket_name: ticket.ticket_name,
+              quantity: ticket.quantity,
+              total_amount: ticket.total_amount,
+              ticket_price: ticket.ticket_price,
+              ticket_type: ticket.ticket_type,
+              ticket_stock: ticket.ticket_stock,
+              order_number: ticket.order_number,
+            })),
+            fees: updatedFees,
+            discount: updatedDiscount,
+            total_amount_paid: updatedTotalAmountPaid,
+            total_purchased: updatedTotalPurchased,
+          };
+        });
+
+        return {
+          ...prevData,
+          ticket_information: updatedTicketInformation,
+          fees: ticket?.ticketFee,
+          discount: updatedDiscount,
+          total_amount_paid: updatedTotalAmountPaid,
+          total_purchased: updatedTotalPurchased,
+        };
+      });
     }
   };
 
@@ -613,130 +917,330 @@ const TicketsSelection = () => {
     }
   };
 
+  const handleDecreaseWithUniqueOrder = (ticketId: string) => {
+    setTicketDataQ((prevData) => {
+      // Find the last occurrence of the ticket by `ticketId`
+      const lastOrderTicketIndex = prevData.ticket_information
+        .map((ticket, index) => ({ ...ticket, index }))
+        .filter((ticket) => ticket.ticket_id === ticketId)
+        .pop(); // Get the last ticket object for this `ticketId`
+
+      if (!lastOrderTicketIndex) {
+        // If no matching ticket is found, return the state as-is
+        return prevData;
+      }
+
+      const { index: lastOrderIndex } = lastOrderTicketIndex;
+
+      // Remove the ticket with the last `order_number`
+      const updatedTicketInformation = prevData.ticket_information.filter(
+        (_, idx) => idx !== lastOrderIndex
+      );
+
+      // Recalculate totals after the ticket removal
+      const updatedFees = updatedTicketInformation
+        .filter((ticket) => ticket?.guestAsChargeBearer === true)
+        .reduce((acc, ticket) => acc + (ticket.ticketFee || 0), 0);
+
+      const updatedDiscount = updatedTicketInformation
+        .map((ticket) => ticket?.discountToDeduct || 0)
+        .reduce((acc, curr) => acc + curr, 0);
+
+      const updatedTotalAmountPaid = updatedTicketInformation
+        .map((ticket) => ticket?.subTotal)
+        .reduce((acc, curr) => acc + curr, 0);
+
+      const updatedTotalPurchased = updatedTicketInformation
+        .map((ticket) => ticket?.quantity)
+        .reduce((acc, curr) => acc + curr, 0);
+
+      // Update `allInfo` to reflect the changes
+      setAllInfo((prevAllInfo) => ({
+        ...prevAllInfo,
+        ticket_information: updatedTicketInformation.map((ticket) => ({
+          ticket_id: ticket.ticket_id,
+          ticket_name: ticket.ticket_name,
+          quantity: ticket.quantity,
+          total_amount: ticket.total_amount,
+          ticket_price: ticket.ticket_price,
+          ticket_type: ticket.ticket_type,
+          ticket_stock: ticket.ticket_stock,
+          order_number: ticket.order_number,
+        })),
+        fees: updatedFees,
+        discount: updatedDiscount,
+        total_amount_paid: updatedTotalAmountPaid,
+        total_purchased: updatedTotalPurchased,
+      }));
+
+      return {
+        ...prevData,
+        ticket_information: updatedTicketInformation,
+        fees: updatedFees,
+        discount: updatedDiscount,
+        total_amount_paid: updatedTotalAmountPaid,
+        total_purchased: updatedTotalPurchased,
+      };
+    });
+  };
+
   const [form] = Form.useForm();
   // ! contactform
   const [additionalFields, setAdditionalFields] = useState<
     { id: number; question: string; answer: string; is_compulsory: boolean }[]
   >([]);
-  const [allInfo, setAllInfo] = useState<{
-    personal_information: {
-      firstName: string;
-      lastName: string;
-      email: string;
-      confirmEmail: string;
-      phoneNumber: string;
-    };
-    additional_information: {
-      id: number;
-      question: string;
-      answer: string;
-    }[];
-    attendees_information: {
-      id: number;
-      firstName: string;
-      lastName: string;
-      email: string;
-      confirmEmail: string;
-      phoneNumber: string;
-      ticket_name: string;
-      ticket_price: string;
-    }[];
-    event: string;
-    event_unique_code: string;
-    fees: number;
-    total_amount_paid: number;
-    discountCode?: string;
-    discount: number;
-    total_purchased: number;
-    payment_method?: PAYMENT_METHODS;
-  }>({
-    personal_information: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      confirmEmail: "",
-      phoneNumber: "",
-    },
-    additional_information: [],
-    attendees_information: [],
-    event: "",
-    event_unique_code: params?.event,
-    fees: ticketDetails
-      ?.map((ticket) => ticket?.ticketFee)
-      .reduce((acc, curr) => acc + (curr ?? 0), 0),
-    total_amount_paid: 0,
-    discountCode: ticketDetails?.[0]?.ticketDiscountCode?.[0] || "",
-    discount:
-      ticketDetails
-        ?.map((ticket) => ticket?.discountToDeduct ?? 0)
-        .reduce((acc, curr) => acc + curr, 0) || 0,
-    total_purchased: 0,
-  });
+
+  console.log(allInfo, "allInfo");
+
   const [attendeesInformation, setAttendeesInformation] = useState<
     {
+      event: string;
+      event_unique_code: string;
+      ticket_information: {
+        ticket_id: string;
+        quantity: number;
+        ticket_name: string;
+        total_amount: number;
+        ticket_price: number;
+        ticket_type: string;
+        ticket_stock: string;
+        order_number: string;
+      }[];
+      personal_information: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        confirmEmail: string;
+      };
       id: number;
-      firstName: string;
-      lastName: string;
-      email: string;
-      confirmEmail: string;
-      ticket_name: string;
-      ticket_price: string;
+      guest_category: GUEST_CATEGORY;
+      total_purchased: number;
+      payment_method: PAYMENT_METHODS;
+      fees: number;
+      discount: number;
+      total_amount_paid: number;
     }[]
   >([]);
+  // console.log(attendeesInformation, "attendeesInformation");
   const [modal, setModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
-  
 
-  const handleInputChange = (
+  const renderedAttendees = useMemo(() => {
+    return allInfo?.attendees_information?.map((attendee) => (
+      <div key={attendee.id}>
+        <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-4 custom-font-size mt-4">
+          Ticket {attendee?.id + 2} -{" "}
+          {attendee.ticket_information[0]?.ticket_name}
+        </h3>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              name={[attendee?.id + 2, "firstName"]}
+              label={
+                <span>
+                  Attendee First Name <span style={{ color: "red" }}>*</span>
+                </span>
+              }
+              rules={[
+                {
+                  required: true,
+                  message: "Please provide attendee first name",
+                },
+              ]}
+            >
+              <Input
+                placeholder="Enter Attendee First Name"
+                onChange={(e) =>
+                  handlePersonalInfoChange(
+                    e.target.value,
+                    attendee.id,
+                    "firstName"
+                  )
+                }
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              name={[attendee?.id + 2, "lastName"]}
+              label={
+                <span>
+                  Attendee Last Name <span style={{ color: "red" }}>*</span>
+                </span>
+              }
+              rules={[
+                {
+                  required: true,
+                  message: "Please provide attendee last name",
+                },
+              ]}
+            >
+              <Input
+                placeholder="Enter Attendee Last Name"
+                onChange={(e) =>
+                  handlePersonalInfoChange(
+                    e.target.value,
+                    attendee.id,
+                    "lastName"
+                  )
+                }
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={16}>
+          <Col span={12}>
+            <Form.Item
+              name={[attendee?.id + 2, "attendeeEmail"]}
+              label={
+                <span>
+                  Attendee Email Address <span style={{ color: "red" }}>*</span>
+                </span>
+              }
+              rules={[
+                { required: true, message: "Please provide attendee email" },
+              ]}
+            >
+              <Input
+                type="email"
+                placeholder="Enter Attendee Email Address"
+                onChange={(e) =>
+                  handlePersonalInfoChange(e.target.value, attendee.id, "email")
+                }
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              name={[attendee?.id + 2, "confirmAttendeeEmail"]}
+              label={
+                <span>
+                  Confirm Attendee Email <span style={{ color: "red" }}>*</span>
+                </span>
+              }
+              rules={[
+                { required: true, message: "Please confirm attendee email" },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    const emailValue = getFieldValue([
+                      attendee?.id + 2,
+                      "attendeeEmail",
+                    ]); // Get the value of the email field
+                    if (!value || emailValue === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error("Emails do not match!"));
+                  },
+                }),
+              ]}
+            >
+              <Input
+                type="email"
+                placeholder="Confirm Attendee Email Address"
+                onChange={(e) =>
+                  handlePersonalInfoChange(
+                    e.target.value,
+                    attendee.id,
+                    "confirmEmail"
+                  )
+                }
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+      </div>
+    ));
+  }, [allInfo]);
+
+  const handlePersonalInfoChange = (
     value: string,
     attendeeId: number,
-    ticket_name: string,
-    ticket_price: string,
-    field: "firstName" | "lastName" | "attendeeEmail" | "confirmAttendeeEmail"
+    field: "firstName" | "lastName" | "email" | "confirmEmail"
   ) => {
-    setAttendeesInformation((prevInfo) => {
-      const updatedInfo = [...prevInfo];
-
-      // Map 'attendeeEmail' and 'confirmAttendeeEmail' to 'email' and 'confirmEmail'
-      const stateFieldMap: Record<string, "email" | "confirmEmail"> = {
-        attendeeEmail: "email",
-        confirmAttendeeEmail: "confirmEmail",
-      };
-
-      // Determine the actual field name in the state
-      const actualField = stateFieldMap[field] || field;
-
-      // Find index based on attendee ID; if not found, add a new attendee
-      let attendeeIndex = updatedInfo.findIndex(
+    setAllInfo((prevAllInfo) => {
+      const updatedAttendees = [...prevAllInfo.attendees_information];
+      const attendeeIndex = updatedAttendees?.findIndex(
         (attendee) => attendee.id === attendeeId
       );
+      if (attendeeIndex !== -1) {
+        updatedAttendees[attendeeIndex].personal_information = {
+          ...updatedAttendees[attendeeIndex].personal_information,
+          [field]: value,
+        };
+      }
 
-      if (attendeeIndex === -1) {
-        // If attendee doesn't exist, add a new entry with default values
-        updatedInfo.push({
-          id: attendeeId,
+      return {
+        ...prevAllInfo,
+        attendees_information: updatedAttendees,
+      };
+    });
+
+    setAttendeesInformation((prevAttendeesInformation) => {
+      const updatedAttendees = [...prevAttendeesInformation];
+      const attendeeIndex = updatedAttendees?.findIndex(
+        (attendee) => attendee.id === attendeeId
+      );
+      if (attendeeIndex !== -1) {
+        updatedAttendees[attendeeIndex].personal_information = {
+          ...updatedAttendees[attendeeIndex].personal_information,
+          [field]: value,
+        };
+      }
+
+      return updatedAttendees;
+    });
+  };
+
+  const distributeTicketsToAttendees = useCallback(() => {
+    setAllInfo((prevAllInfo) => {
+      if (!isToggled) {
+        return {
+          ...prevAllInfo,
+          attendees_information: [], // Clear attendees completely
+          ticket_information: [
+            ...prevAllInfo.ticket_information,
+            ...prevAllInfo.attendees_information.flatMap(
+              (attendee) => attendee.ticket_information // Restore tickets
+            ),
+          ],
+        };
+      }
+
+      // Exclude the first ticket
+      const remainingTickets = prevAllInfo.ticket_information.slice(1);
+
+      // Map remaining tickets to updated attendees
+      const updatedAttendees = remainingTickets.map((ticket, index) => ({
+        event: prevAllInfo.event,
+        event_unique_code: prevAllInfo.event_unique_code,
+        ticket_information: [ticket],
+        personal_information: {
           firstName: "",
           lastName: "",
           email: "",
           confirmEmail: "",
-          ticket_name,
-          ticket_price,
-        });
-        attendeeIndex = updatedInfo.length - 1;
-      }
+        },
+        guest_category: GUEST_CATEGORY.ATTENDEE,
+        total_purchased: ticket.quantity,
+        fees: ticket.ticket_price,
+        total_amount_paid: ticket.total_amount,
+        discount: prevAllInfo.discount,
+        payment_method: PAYMENT_METHODS.FREE,
+        id: index, // Ensure IDs start from 1
+      }));
 
-      // Update the specified field for this attendee
-      updatedInfo[attendeeIndex] = {
-        ...updatedInfo[attendeeIndex],
-        [actualField]: value,
-        ticket_name, // Ensure ticket name is updated
-        ticket_price, // Ensure ticket price is updated
+      return {
+        ...prevAllInfo,
+        attendees_information: updatedAttendees,
+        ticket_information: prevAllInfo.ticket_information.slice(0, 1), // Retain only the first ticket
       };
-
-      return updatedInfo;
     });
-  };
+  }, [isToggled]);
+
+  useEffect(() => {
+    distributeTicketsToAttendees();
+  }, [isToggled, distributeTicketsToAttendees]);
 
   useEffect(() => {
     let counter = 0;
@@ -759,8 +1263,6 @@ const TicketsSelection = () => {
 
     setAdditionalFields(initialAdditionalFields);
   }, [ticketDetails]);
-
-  useEffect(() => {}, [allInfo]);
 
   const [loading, setLoading] = useState(false);
   const onFinish: FormProps<any>["onFinish"] = async (values: any) => {
@@ -787,12 +1289,22 @@ const TicketsSelection = () => {
       : [];
 
     // Check if attendeesInformation exists and has items
-    const attendees_information = attendeesInformation?.length
-      ? attendeesInformation.map((attendee) => {
-          const { id, confirmEmail, ...attendeeData } = attendee;
-          return attendeeData;
-        })
-      : [];
+    const attendees_information =
+      attendeesInformation?.length > 0
+        ? attendeesInformation.map(
+            ({ id, personal_information, ...attendeeData }) => {
+              // Destructure confirmEmail from personal_information
+              const { confirmEmail, ...filteredPersonalInfo } =
+                personal_information;
+
+              // Return the updated attendee object without id and confirmEmail
+              return {
+                ...attendeeData,
+                personal_information: filteredPersonalInfo,
+              };
+            }
+          )
+        : [];
 
     const personal_information = {
       firstName: firstName.trim(),
@@ -800,65 +1312,17 @@ const TicketsSelection = () => {
       email: email.trim(),
       phoneNumber: phoneNumber.trim(),
     };
-    const ticket_information = ticketDetails?.map((ticket) => {
-      return {
-        ticket_id: ticket?.ticketId,
-        quantity: ticket?.ticketNumber,
-        ticket_name: ticket?.ticketName,
-        total_amount: ticket?.subTotal,
-        ticket_price: ticket?.ticketPrice === null ? 0 : ticket?.ticketPrice,
-        ticket_type: ticket?.ticketEntity,
-        ticket_stock: ticket?.ticketStock,
-        order_number: ticket?.orderNumber,
-      };
-    });
+    const newAllInfo = (({ personal_information, ...rest }) => rest)(allInfo);
 
-    const updatedInfo = {
-      ...allInfo,
+    const guestCreateData: IGuestCreate = {
       personal_information,
-      ticket_information,
-      discount: ticketDetails
-        ?.map((ticket) => ticket?.discountToDeduct)
-        .reduce((acc, curr) => (acc ?? 0) + (curr ?? 0), 0),
-      discountCode: discountCode,
-      additional_information: additionalFields,
-      attendees_information,
-      event: (eventDetails && eventDetails?.id) || ticketData?.event,
-      fees: ticketDetails
-        ?.filter((ticket) => ticket?.guestAsChargeBearer === true)
-        ?.map((ticket) => ticket?.ticketFee || 0)
-        .reduce((acc, curr) => acc + curr, 0),
-      total_amount_paid: ticketDetails
-        ?.map((ticket) => ticket?.subTotal)
-        .reduce((acc, curr) => acc + curr, 0),
-      total_purchased: ticketDetails
-        ?.map((ticket) => ticket?.ticketNumber)
-        .reduce((acc, curr) => acc + curr, 0),
+      ...newAllInfo,
+      eventId: eventDetails?.id,
     };
-    setAllInfo((prevInfo: any) => {
-      return {
-        ...prevInfo,
-        personal_information,
-        discount: ticketDetails?.reduce(
-          (acc, ticket) => acc + (ticket?.discountToDeduct ?? 0),
-          0
-        ),
-        discountCode: discountCode,
-        ticket_information,
-        additional_information: additionalFields,
-        attendees_information,
-        event: (eventDetails && eventDetails?.id) || ticketData?.event,
-        fees: ticketDetails
-          ?.filter((ticket) => ticket?.guestAsChargeBearer === true)
-          ?.map((ticket) => ticket?.ticketFee || 0)
-          .reduce((acc, curr) => acc + curr, 0),
-        total_amount_paid: ticketDetails
-          ?.map((ticket) => ticket?.subTotal)
-          .reduce((acc, curr) => acc + curr, 0),
-        total_purchased: ticketDetails
-          ?.map((ticket) => ticket?.ticketNumber)
-          .reduce((acc, curr) => acc + curr, 0),
-      };
+
+    setAllInfo({
+      ...newAllInfo,
+      personal_information,
     });
 
     if (
@@ -868,17 +1332,17 @@ const TicketsSelection = () => {
     ) {
       setLoading(true);
       const response = await registerGuest.mutateAsync({
-        ...updatedInfo,
-        payment_method: PAYMENT_METHODS.FREE,
-        eventId: eventDetails && eventDetails?.id,
+        ...newAllInfo,
+        personal_information,
+        eventId: eventDetails?.id,
       });
 
-      if (response.status === 200) {
-        setSuccessModal(true);
-        setLoading(false);
-        removeCookie("ticketDetails");
-        removeCookie("selectedTickets");
-      }
+      // if (response.status === 200) {
+      //   setSuccessModal(true);
+      //   setLoading(false);
+      //   removeCookie("ticketDetails");
+      //   removeCookie("selectedTickets");
+      // }
     } else {
       setLoading(false);
       setCurrentPage("payment");
@@ -891,11 +1355,25 @@ const TicketsSelection = () => {
   };
 
   const handleFinalSubmit = async () => {
+    // console.log(allInfo, "allInfo");
     setLoading(true);
+    const sanitizedData = {
+      ...allInfo, // Spread the existing data
+      attendees_information: allInfo.attendees_information.map(
+        ({ id, personal_information, ...attendee }) => ({
+          ...attendee,
+          personal_information: {
+            ...personal_information,
+            confirmEmail: undefined, // Remove `confirmEmail`
+          },
+          payment_method: PAYMENT_METHODS.CARD, // Update the payment method for each attendee
+        })
+      ),
+    };
     const response = await registerGuest.mutateAsync({
-      ...allInfo,
+      ...sanitizedData,
       payment_method: PAYMENT_METHODS.CARD,
-      eventId: eventDetails && eventDetails?.id,
+      eventId: eventDetails?.id,
     });
 
     if (response.status === 200) {
@@ -909,39 +1387,57 @@ const TicketsSelection = () => {
   };
 
   const isFieldTouched = useRef(false);
+  console.log(isFieldTouched, "isFieldTouched");
+  interface DebounceFunction {
+    (...args: any[]): void;
+  }
+
+  // const debounce = (
+  //   func: (...args: any[]) => void,
+  //   delay: number
+  // ): DebounceFunction => {
+  //   let timer: NodeJS.Timeout;
+  //   return (...args: any[]) => {
+  //     clearTimeout(timer);
+  //     timer = setTimeout(() => func(...args), delay);
+  //   };
+  // };
 
   interface DebounceFunction {
     (...args: any[]): void;
   }
 
-  const debounce = (
+  const useDebounce = (
     func: (...args: any[]) => void,
     delay: number
   ): DebounceFunction => {
-    let timer: NodeJS.Timeout;
+    const timer = useRef<NodeJS.Timeout | null>(null);
+
     return (...args: any[]) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => func(...args), delay);
+      if (timer.current) {
+        clearTimeout(timer.current);
+      }
+      timer.current = setTimeout(() => func(...args), delay);
     };
   };
 
-  const checkFormValidity = useCallback(
-    debounce(async () => {
-      try {
-        await form.validateFields();
-        setIsFormValid(true);
-      } catch (errorInfo) {
-        setIsFormValid(false);
-      }
-    }, 1000), // Delay in milliseconds
-    [form]
-  );
+  const checkFormValidity = useDebounce(async () => {
+    console.log("here");
+    try {
+      await form.validateFields();
+      setIsFormValid(true);
+    } catch (errorInfo) {
+      setIsFormValid(false);
+    }
+  }, 1000);
+
+  console.log(isFormValid, "isFormValid");
 
   useEffect(() => {
-    if (currentPage === "contactform" && isFieldTouched.current) {
+    if (currentPage === "contactform" && isFieldTouched.current === true) {
       checkFormValidity();
     }
-  }, [currentPage, form.getFieldsValue(), checkFormValidity]);
+  }, [currentPage, form.getFieldsValue(), checkFormValidity, isFieldTouched]);
 
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
 
@@ -961,6 +1457,7 @@ const TicketsSelection = () => {
       } else if (pageParam === null) {
         // Default to `tickets` if no valid page query exists
         setCurrentPage("tickets");
+        setIsToggled(false);
       }
     } else {
       // Handle navigation changes after the initial load
@@ -968,6 +1465,7 @@ const TicketsSelection = () => {
         setCurrentPage(pageParam);
       } else if (pageParam === null) {
         setCurrentPage("tickets");
+        setIsToggled(false);
       }
     }
   }, [searchParams, pathname, router, isInitialLoad]);
@@ -992,27 +1490,27 @@ const TicketsSelection = () => {
 
   const isPending: boolean = getTicketsByUniqueKey?.isLoading;
 
-  const {
-    minutes,
-    remainingSeconds,
-    timer,
-    startTimer,
-    pauseTimer,
-    resetTimer,
-  } = useTimer();
+  // const {
+  //   minutes,
+  //   remainingSeconds,
+  //   timer,
+  //   startTimer,
+  //   pauseTimer,
+  //   resetTimer,
+  // } = useTimer();
 
-  useEffect(() => {
-    if (currentPage === "contactform" || currentPage === "payment") {
-      startTimer();
-    } else resetTimer();
-  }, [currentPage, resetTimer, startTimer]);
-  useEffect(() => {
-    if (minutes === 0 && remainingSeconds === 0 && successModal === false) {
-      setModal(true);
-    } else if (successModal === true) {
-      pauseTimer();
-    }
-  }, [minutes, remainingSeconds, successModal, pauseTimer]);
+  // useEffect(() => {
+  //   if (currentPage === "contactform" || currentPage === "payment") {
+  //     startTimer();
+  //   } else resetTimer();
+  // }, [currentPage, resetTimer, startTimer]);
+  // useEffect(() => {
+  //   if (minutes === 0 && remainingSeconds === 0 && successModal === false) {
+  //     setModal(true);
+  //   } else if (successModal === true) {
+  //     pauseTimer();
+  //   }
+  // }, [minutes, remainingSeconds, successModal, pauseTimer]);
 
   const [termsAndCondition, setTermsAndCondition] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<
@@ -1269,21 +1767,27 @@ const TicketsSelection = () => {
                         >
                           <button
                             className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold"
-                            onClick={() => handleDecrement(ticket?.id)}
+                            onClick={() => {
+                              handleDecrement(ticket?.id),
+                                handleDecreaseWithUniqueOrder(ticket?.id);
+                            }}
                             disabled={selectedTickets[ticket?.id] === 0}
                             style={{
                               backgroundColor:
-                                selectedTickets[ticket?.id] === 0 || !selectedTickets[ticket?.id]
+                                selectedTickets[ticket?.id] === 0 ||
+                                !selectedTickets[ticket?.id]
                                   ? "#ccc"
                                   : "#FADEDE",
                               color:
-                                selectedTickets[ticket?.id] === 0 || !selectedTickets[ticket?.id]
+                                selectedTickets[ticket?.id] === 0 ||
+                                !selectedTickets[ticket?.id]
                                   ? "#fff"
                                   : "#000",
-                              cursor: 
-                                selectedTickets[ticket?.id] === 0 || !selectedTickets[ticket?.id]
-                                ? "not-allowed"
-                                : "pointer"
+                              cursor:
+                                selectedTickets[ticket?.id] === 0 ||
+                                !selectedTickets[ticket?.id]
+                                  ? "not-allowed"
+                                  : "pointer",
                             }}
                           >
                             -
@@ -1299,7 +1803,10 @@ const TicketsSelection = () => {
                           </span>
                           <button
                             className="sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center rounded-full text-lg font-bold"
-                            onClick={() => handleIncrement(ticket?.id)}
+                            onClick={() => {
+                              handleIncrement(ticket?.id),
+                                handleIncrementWithUniqueOrder(ticket?.id);
+                            }}
                             disabled={
                               selectedTickets[ticket?.id] ===
                                 ticket?.purchaseLimit ||
@@ -1502,21 +2009,27 @@ const TicketsSelection = () => {
                         >
                           <button
                             className={`sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center bg-gray-200 rounded-full text-lg font-bold`}
-                            onClick={() => handleDecrement(ticket?.id)}
+                            onClick={() => {
+                              handleDecrement(ticket?.id),
+                                handleDecreaseWithUniqueOrder(ticket?.id);
+                            }}
                             disabled={selectedTickets[ticket?.id] === 0}
                             style={{
                               backgroundColor:
-                                selectedTickets[ticket?.id] === 0 || !selectedTickets[ticket?.id]
+                                selectedTickets[ticket?.id] === 0 ||
+                                !selectedTickets[ticket?.id]
                                   ? "#ccc"
                                   : "#FADEDE",
                               color:
-                                selectedTickets[ticket?.id] === 0 || !selectedTickets[ticket?.id]
+                                selectedTickets[ticket?.id] === 0 ||
+                                !selectedTickets[ticket?.id]
                                   ? "#fff"
                                   : "#000",
-                              cursor: 
-                                selectedTickets[ticket?.id] === 0 || !selectedTickets[ticket?.id]
-                                ? "not-allowed"
-                                : "pointer"
+                              cursor:
+                                selectedTickets[ticket?.id] === 0 ||
+                                !selectedTickets[ticket?.id]
+                                  ? "not-allowed"
+                                  : "pointer",
                             }}
                           >
                             -
@@ -1532,14 +2045,17 @@ const TicketsSelection = () => {
                           </span>
                           <button
                             className={`sm:w-8 w-6 h-6 sm:h-8 flex-center justify-center rounded-full text-lg font-bold ${
-                            ticket?.ticket_sold === ticket?.ticketQty
-                            ? "cursor-not-allowed"
-                            : ""
+                              ticket?.ticket_sold === ticket?.ticketQty
+                                ? "cursor-not-allowed"
+                                : ""
                             } `}
-                            onClick={() => handleIncrement(ticket?.id)}
+                            onClick={() => {
+                              handleIncrement(ticket?.id),
+                                handleIncrementWithUniqueOrder(ticket?.id);
+                            }}
                             disabled={
-                              selectedTickets[ticket?.id] === 1 ||                   
-                              ticket?.ticket_available === 0 || 
+                              selectedTickets[ticket?.id] === 1 ||
+                              ticket?.ticket_available === 0 ||
                               ticket?.ticket_sold === ticket?.ticketQty
                             }
                             style={{
@@ -1571,7 +2087,7 @@ const TicketsSelection = () => {
               <span className="text-OWANBE_PRY text-s font-BricolageGrotesqueRegular">
                 {/* {currentPage === "contactform" ||
                   (currentPage === "payment") && timer} */}
-                {timer}
+                {/* {timer} */}
               </span>{" "}
               minutes to secure your tickets.
             </div>
@@ -1625,19 +2141,7 @@ const TicketsSelection = () => {
                 className="form-spacing"
                 onValuesChange={(changedValues, allValues) => {
                   isFieldTouched.current = true;
-
-                  // Track specific fields or debounce validation
-                  if (currentPage === "contactform") {
-                    const changedField = Object.keys(changedValues)[0];
-                    form
-                      .validateFields([changedField])
-                      .then(() => {
-                        setIsFormValid(true);
-                      })
-                      .catch(() => {
-                        setIsFormValid(false);
-                      });
-                  }
+                  checkFormValidity();
                 }}
               >
                 <Row gutter={16}>
@@ -1828,7 +2332,7 @@ const TicketsSelection = () => {
                     <br />
                   </>
                 )}
-                {isToggled && <>{renderedTickets}</>}
+                {isToggled && <>{renderedAttendees}</>}
               </Form>
             </div>
             {modal && <TimerModal />}
@@ -1843,7 +2347,7 @@ const TicketsSelection = () => {
               <span className=" text-OWANBE_PRY text-s font-BricolageGrotesqueRegular">
                 {/* {currentPage === "contactform" ||
                   (currentPage !== "tickets" && timer)} */}
-                {timer}
+                {/* {timer} */}
               </span>{" "}
               minutes to secure your tickets.
             </div>
