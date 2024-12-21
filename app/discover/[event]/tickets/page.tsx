@@ -233,7 +233,7 @@ const TicketsSelection = () => {
         ticket_type: string;
         ticket_stock: string;
         order_number: string;
-      }[];
+      };
       personal_information: {
         firstName: string;
         lastName: string;
@@ -281,7 +281,7 @@ const TicketsSelection = () => {
     payment_method: PAYMENT_METHODS.FREE,
   });
 
-  // console.log(ticketDataQ, "ticketDataQ");
+  console.log(ticketDataQ, "ticketDataQ");
 
   useEffect(() => {
     if (
@@ -376,208 +376,6 @@ const TicketsSelection = () => {
   }, [pathname, removeCookie, params?.event]);
 
   let ticketCounter = 1;
-
-  // const renderedTickets = useMemo(() => {
-  //   return ticketDetails?.map((ticketDetail, ticketIndex) => {
-  //     const arrayLength =
-  //       ticketIndex === 0
-  //         ? ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE
-  //           ? ticketDetail?.groupSize - 1
-  //           : ticketDetail?.ticketNumber - 1
-  //         : ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE
-  //         ? ticketDetail?.groupSize
-  //         : ticketDetail?.ticketNumber;
-
-  //     return (
-  //       <div key={ticketIndex}>
-  //         {Array.from({ length: arrayLength })?.map((_, index) => {
-  //           ticketCounter++; // Increment ticketCounter globally
-  //           const attendeeId = ticketCounter;
-
-  //           return (
-  //             <div key={index}>
-  //               <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-4 custom-font-size mt-4">
-  //                 Ticket {ticketCounter} -{" "}
-  //                 {ticketDetail?.ticketEntity === TICKET_ENTITY.COLLECTIVE
-  //                   ? `Collective of ${ticketDetail?.groupSize}`
-  //                   : "Single"}{" "}
-  //                 - {ticketDetail?.ticketName}
-  //               </h3>
-  //               <Row gutter={16} className="">
-  //                 <Col span={12}>
-  //                   <Form.Item
-  //                     name={[attendeeId, "firstName"]}
-  //                     label={
-  //                       <span>
-  //                         Attendee First Name{" "}
-  //                         <span style={{ color: "red" }}>*</span>
-  //                       </span>
-  //                     }
-  //                     rules={[
-  //                       {
-  //                         required: true,
-  //                         message: "Please provide attendee first name",
-  //                       },
-  //                     ]}
-  //                   >
-  //                     <Input
-  //                       placeholder="Enter Attendee First Name"
-  //                       onChange={(e) =>
-  //                         handleInputChange(
-  //                           e.target.value,
-  //                           attendeeId,
-  //                           eventDetails?.id || "",
-  //                           params?.event,
-  //                           ticketDetail?.ticketNumber,
-  //                           ticketDetail?.ticketFee,
-  //                           ticketDetails?.reduce(
-  //                             (acc, ticket) => acc + (ticket?.subTotal ?? 0),
-  //                             0
-  //                           ),
-  //                           "firstName",
-  //                           ticketDetail?.discountToDeduct
-  //                         )
-  //                       }
-  //                     />
-  //                   </Form.Item>
-  //                 </Col>
-  //                 <Col span={12}>
-  //                   <Form.Item
-  //                     name={[attendeeId, "lastName"]}
-  //                     label={
-  //                       <span>
-  //                         Attendee Last Name{" "}
-  //                         <span style={{ color: "red" }}>*</span>
-  //                       </span>
-  //                     }
-  //                     rules={[
-  //                       {
-  //                         required: true,
-  //                         message: "Please provide attendee last name",
-  //                       },
-  //                     ]}
-  //                   >
-  //                     <Input
-  //                       placeholder="Enter Attendee Last Name"
-  //                       onChange={(e) =>
-  //                         handleInputChange(
-  //                           e.target.value,
-  //                           attendeeId,
-  //                           eventDetails?.id || "",
-  //                           params?.event,
-  //                           ticketDetail?.ticketNumber,
-  //                           ticketDetail?.ticketFee,
-  //                           ticketDetails?.reduce(
-  //                             (acc, ticket) => acc + (ticket?.subTotal ?? 0),
-  //                             0
-  //                           ),
-  //                           "lastName",
-  //                           ticketDetail?.discountToDeduct
-  //                         )
-  //                       }
-  //                     />
-  //                   </Form.Item>
-  //                 </Col>
-  //               </Row>
-  //               <Row gutter={16} className="">
-  //                 <Col span={12}>
-  //                   <Form.Item
-  //                     name={[attendeeId, "attendeeEmail"]}
-  // label={
-  //   <span>
-  //     Attendee Email Address{" "}
-  //     <span style={{ color: "red" }}>*</span>
-  //   </span>
-  // }
-  //                     rules={[
-  //                       {
-  //                         required: true,
-  //                         message: "Please provide attendee email",
-  //                       },
-  //                     ]}
-  //                   >
-  //                     <Input
-  //                       type="email"
-  //                       placeholder="Enter Attendee Email Address"
-  //                       onChange={(e) =>
-  //                         handleInputChange(
-  //                           e.target.value,
-  //                           attendeeId,
-  //                           eventDetails?.id || "",
-  //                           params?.event,
-  //                           ticketDetail?.ticketNumber,
-  //                           ticketDetail?.ticketFee,
-  //                           ticketDetails?.reduce(
-  //                             (acc, ticket) => acc + (ticket?.subTotal ?? 0),
-  //                             0
-  //                           ),
-  //                           "attendeeEmail",
-  //                           ticketDetail?.discountToDeduct
-  //                         )
-  //                       }
-  //                     />
-  //                   </Form.Item>
-  //                 </Col>
-  //                 <Col span={12}>
-  //                   <Form.Item
-  //                     name={[attendeeId, "confirmAttendeeEmail"]}
-  // label={
-  //   <span>
-  //     Confirm Attendee Email{" "}
-  //     <span style={{ color: "red" }}>*</span>
-  //   </span>
-  // }
-  //                     rules={[
-  //                       {
-  //                         required: true,
-  //                         message: "Please confirm attendee email",
-  //                       },
-  //                       ({ getFieldValue }) => ({
-  //                         validator(_, value) {
-  //                           const emailValue = getFieldValue([
-  //                             attendeeId,
-  //                             "attendeeEmail",
-  //                           ]); // Get the value of the email field
-  //                           if (!value || emailValue === value) {
-  //                             return Promise.resolve();
-  //                           }
-  //                           return Promise.reject(
-  //                             new Error("Emails do not match!")
-  //                           );
-  //                         },
-  //                       }),
-  //                     ]}
-  //                   >
-  //                     <Input
-  //                       type="email"
-  //                       placeholder="Confirm Attendee Email Address"
-  //                       onChange={(e) =>
-  //                         handleInputChange(
-  //                           e.target.value,
-  //                           attendeeId,
-  //                           eventDetails?.id || "",
-  //                           params?.event,
-  //                           ticketDetail?.ticketNumber,
-  //                           ticketDetail?.ticketFee,
-  //                           ticketDetails?.reduce(
-  //                             (acc, ticket) => acc + (ticket?.subTotal ?? 0),
-  //                             0
-  //                           ),
-  //                           "confirmAttendeeEmail",
-  //                           ticketDetail?.discountToDeduct
-  //                         )
-  //                       }
-  //                     />
-  //                   </Form.Item>
-  //                 </Col>
-  //               </Row>
-  //             </div>
-  //           );
-  //         })}
-  //       </div>
-  //     );
-  //   });
-  // }, [ticketDetails, ticketCounter]); // Dependencies
 
   useEffect(() => {
     // When ticketData is updated, re-initialize selectedTickets
@@ -829,7 +627,7 @@ const TicketsSelection = () => {
         setAllInfo((prevAllInfo) => {
           return {
             ...prevAllInfo,
-            ticket_information: updatedTicketInformation.map((ticket) => ({
+            ticket_information: updatedTicketInformation?.map((ticket) => ({
               ticket_id: ticket.ticket_id,
               ticket_name: ticket.ticket_name,
               quantity: ticket.quantity,
@@ -849,7 +647,7 @@ const TicketsSelection = () => {
         return {
           ...prevData,
           ticket_information: updatedTicketInformation,
-          fees: ticket?.ticketFee,
+          fees: updatedFees,
           discount: updatedDiscount,
           total_amount_paid: updatedTotalAmountPaid,
           total_purchased: updatedTotalPurchased,
@@ -1031,7 +829,7 @@ const TicketsSelection = () => {
       <div key={attendee.id}>
         <h3 className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-4 custom-font-size mt-4">
           Ticket {attendee?.id + 2} -{" "}
-          {attendee.ticket_information[0]?.ticket_name}
+          {attendee?.ticket_information?.ticket_name}
         </h3>
         <Row gutter={16}>
           <Col span={12}>
@@ -1206,20 +1004,29 @@ const TicketsSelection = () => {
           ],
         };
       }
-
+    
       // Exclude the first ticket
       const remainingTickets = prevAllInfo.ticket_information.slice(1);
-
+    
       // Map remaining tickets to updated attendees
       const updatedAttendees = remainingTickets.map((ticket, index) => ({
+        id: index, // Ensure IDs start from 1
         event: prevAllInfo.event,
         event_unique_code: prevAllInfo.event_unique_code,
-        ticket_information: [ticket],
+        ticket_information: {
+          ticket_id: ticket.ticket_id,
+          quantity: ticket.quantity,
+          ticket_name: ticket.ticket_name,
+          total_amount: ticket.total_amount,
+          ticket_price: ticket.ticket_price,
+          ticket_type: ticket.ticket_type,
+          ticket_stock: ticket.ticket_stock,
+          order_number: ticket.order_number,
+        },
         personal_information: {
           firstName: "",
           lastName: "",
           email: "",
-          confirmEmail: "",
         },
         guest_category: GUEST_CATEGORY.ATTENDEE,
         total_purchased: ticket.quantity,
@@ -1227,9 +1034,8 @@ const TicketsSelection = () => {
         total_amount_paid: ticket.total_amount,
         discount: prevAllInfo.discount,
         payment_method: PAYMENT_METHODS.FREE,
-        id: index, // Ensure IDs start from 1
       }));
-
+    
       return {
         ...prevAllInfo,
         attendees_information: updatedAttendees,
@@ -1387,7 +1193,6 @@ const TicketsSelection = () => {
   };
 
   const isFieldTouched = useRef(false);
-  console.log(isFieldTouched, "isFieldTouched");
   interface DebounceFunction {
     (...args: any[]): void;
   }
@@ -1422,7 +1227,6 @@ const TicketsSelection = () => {
   };
 
   const checkFormValidity = useDebounce(async () => {
-    console.log("here");
     try {
       await form.validateFields();
       setIsFormValid(true);
@@ -1431,7 +1235,6 @@ const TicketsSelection = () => {
     }
   }, 1000);
 
-  console.log(isFormValid, "isFormValid");
 
   useEffect(() => {
     if (currentPage === "contactform" && isFieldTouched.current === true) {

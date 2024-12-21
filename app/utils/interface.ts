@@ -630,7 +630,7 @@ export interface IGuestCreate  {
       ticket_type: string;
       ticket_stock: string;
       order_number: string;
-    }[];
+    };
     personal_information: {
       firstName: string;
       lastName: string;
