@@ -78,6 +78,7 @@ const TicketsSelection = () => {
     "selectedTickets",
     "ticketDataQ",
     "allInfo",
+    "isToggled",
   ]);
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
   const [currentPage, setCurrentPage] = useState<
@@ -88,7 +89,6 @@ const TicketsSelection = () => {
   const { getTicketsByUniqueKey } = useGetEventTicketsByUniqueKey(
     eventDetails?.unique_key
   );
-  // const { getTickets } = useGetEventTickets(eventDetails?.id);
   const { getEventDiscount } = useGetEventDiscount(eventDetails?.id);
   const ticketData = getTicketsByUniqueKey?.data?.data?.data;
   const discountDetails = getEventDiscount?.data?.data?.data;
@@ -198,7 +198,6 @@ const TicketsSelection = () => {
     payment_method: PAYMENT_METHODS.CARD,
   });
 
-
   const [allInfo, setAllInfo] = useState<{
     personal_information: {
       firstName: string;
@@ -293,9 +292,13 @@ const TicketsSelection = () => {
     }
     setTicketDetails(cookies?.ticketDetails);
     setSelectedTickets(cookies?.selectedTickets);
+    setTicketDataQ(cookies?.ticketDataQ);
+    setAllInfo(cookies?.allInfo);
   }, [
     cookies?.ticketDetails,
     cookies?.selectedTickets,
+    cookies?.ticketDataQ,
+    cookies?.allInfo,
     ticketDetails?.length,
     ticketDataQ?.ticket_information?.length,
   ]);
@@ -344,7 +347,10 @@ const TicketsSelection = () => {
         path: `/discover/${params?.event}/tickets`,
       });
       removeCookie("allInfo", {
-        path: `/discover/${params?.event}/tickets`
+        path: `/discover/${params?.event}/tickets`,
+      });
+      removeCookie("isToggled", {
+        path: `/discover/${params?.event}/tickets`,
       });
     }
   }, [
@@ -356,6 +362,12 @@ const TicketsSelection = () => {
     params?.event,
     allInfo,
   ]);
+
+  useEffect(() => {
+    if (cookies?.isToggled) {
+      setIsToggled(cookies?.isToggled);
+    }
+  }, [cookies?.isToggled]);
 
   useEffect(() => {
     // Cleanup cookies when navigating away from the target path
@@ -370,6 +382,9 @@ const TicketsSelection = () => {
         path: `/discover/${params?.event}/tickets`,
       });
       removeCookie("allInfo", {
+        path: `/discover/${params?.event}/tickets`,
+      });
+      removeCookie("isToggled", {
         path: `/discover/${params?.event}/tickets`,
       });
     }
@@ -1004,10 +1019,10 @@ const TicketsSelection = () => {
           ],
         };
       }
-    
+
       // Exclude the first ticket
       const remainingTickets = prevAllInfo.ticket_information.slice(1);
-    
+
       // Map remaining tickets to updated attendees
       const updatedAttendees = remainingTickets.map((ticket, index) => ({
         id: index, // Ensure IDs start from 1
@@ -1035,7 +1050,7 @@ const TicketsSelection = () => {
         discount: prevAllInfo.discount,
         payment_method: PAYMENT_METHODS.FREE,
       }));
-    
+
       return {
         ...prevAllInfo,
         attendees_information: updatedAttendees,
@@ -1148,6 +1163,10 @@ const TicketsSelection = () => {
       //   setLoading(false);
       //   removeCookie("ticketDetails");
       //   removeCookie("selectedTickets");
+      //  removeCookie("ticketDataQ");
+      //  removeCookie("allInfo");
+      //  removeCookie("isToggled");
+
       // }
     } else {
       setLoading(false);
@@ -1186,6 +1205,9 @@ const TicketsSelection = () => {
       setLoading(false);
       removeCookie("ticketDetails");
       removeCookie("selectedTickets");
+      removeCookie("ticketDataQ");
+      removeCookie("allInfo");
+      removeCookie("isToggled");
       setSuccessModal(true);
     } else {
       setLoading(false);
@@ -1193,20 +1215,6 @@ const TicketsSelection = () => {
   };
 
   const isFieldTouched = useRef(false);
-  interface DebounceFunction {
-    (...args: any[]): void;
-  }
-
-  // const debounce = (
-  //   func: (...args: any[]) => void,
-  //   delay: number
-  // ): DebounceFunction => {
-  //   let timer: NodeJS.Timeout;
-  //   return (...args: any[]) => {
-  //     clearTimeout(timer);
-  //     timer = setTimeout(() => func(...args), delay);
-  //   };
-  // };
 
   interface DebounceFunction {
     (...args: any[]): void;
@@ -1235,7 +1243,6 @@ const TicketsSelection = () => {
     }
   }, 1000);
 
-
   useEffect(() => {
     if (currentPage === "contactform" && isFieldTouched.current === true) {
       checkFormValidity();
@@ -1261,6 +1268,12 @@ const TicketsSelection = () => {
         // Default to `tickets` if no valid page query exists
         setCurrentPage("tickets");
         setIsToggled(false);
+        setCookie("isToggled", "false", {
+          maxAge: 600,
+          secure: true,
+          sameSite: "strict",
+          path: `/discover/${params?.event}/tickets`,
+        });
       }
     } else {
       // Handle navigation changes after the initial load
@@ -1269,9 +1282,15 @@ const TicketsSelection = () => {
       } else if (pageParam === null) {
         setCurrentPage("tickets");
         setIsToggled(false);
+        setCookie("isToggled", "false", {
+          maxAge: 600,
+          secure: true,
+          sameSite: "strict",
+          path: `/discover/${params?.event}/tickets`,
+        });
       }
     }
-  }, [searchParams, pathname, router, isInitialLoad]);
+  }, [searchParams, pathname, router, isInitialLoad, setCookie, params?.event]);
 
   const handleButtonClick = () => {
     if (currentPage === "tickets") {
@@ -2072,7 +2091,13 @@ const TicketsSelection = () => {
                     isActive={isToggled}
                     onToggle={(checked: boolean) => {
                       if (isToggled !== checked) {
-                        setIsToggled(checked); // Only update if there's a change
+                        setIsToggled(checked);
+                        setCookie("isToggled", checked, {
+                          maxAge: 600,
+                          secure: true,
+                          sameSite: "strict",
+                          path: `/discover/${params?.event}/tickets`,
+                        });
                       }
                     }}
                     isDisabled={
