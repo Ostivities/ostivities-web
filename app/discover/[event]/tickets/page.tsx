@@ -1758,7 +1758,7 @@ const TicketsSelection = () => {
                     }`}
                   >
                     {isToggled
-                      ? "Toggle to stop sending tickets to multiple email addresses"
+                      ? "Toggle to disable sending tickets to multiple email addresses"
                       : "Toggle to send tickets to multiple email addresses"}
                   </span>
                   <ToggleSwitch
