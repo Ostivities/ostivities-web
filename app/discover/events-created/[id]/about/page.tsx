@@ -27,6 +27,7 @@ import {
   UploadOutlined,
   XOutlined,
 } from "@ant-design/icons";
+import { dateFormat, timeFormat } from "@/app/utils/helper";
 import {
   Button,
   Checkbox,
@@ -270,8 +271,13 @@ const AboutEvent = () => {
       websiteUrl,
       eventDocument,
       eventURL,
+      startDate,
+      endDate,
       ...rest
     } = data;
+    const start_date_time = dateFormat(startDate);
+    const end_date_time = dateFormat(endDate);
+
     try {
       if (data.vendor_registration === false) {
         data.exhibitionspace = false;
@@ -315,6 +321,10 @@ const AboutEvent = () => {
         },
         eventDetails: editorContent,
         socials,
+        start_date_time,
+        end_date_time,
+        startDate,
+        endDate,
         event_coordinates: cookies?.mapSrc && cookies?.mapSrc
       });
 
@@ -1373,7 +1383,7 @@ const AboutEvent = () => {
               type="default"
               htmlType="submit" // This will only trigger the submit when 'Save Changes' is clicked
               size={"large"}
-              disabled={false}
+              disabled={updateEvent.isPending}
               loading={updateEvent.isPending}
               className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
               style={{

@@ -267,26 +267,21 @@ const TicketsSelection = () => {
     event: eventDetails?.id,
     guest_category: GUEST_CATEGORY.BUYER,
     event_unique_code: params?.event,
-    fees: ticketDetails
-      ?.map((ticket) => ticket?.ticketFee)
-      .reduce((acc, curr) => acc + (curr ?? 0), 0),
+    fees: 0,
     total_amount_paid: 0,
-    discountCode: ticketDetails?.[0]?.ticketDiscountCode?.[0] || "",
-    discount:
-      ticketDetails
-        ?.map((ticket) => ticket?.discountToDeduct ?? 0)
-        .reduce((acc, curr) => acc + curr, 0) || 0,
+    discountCode: "",
+    discount: 0,
     total_purchased: 0,
     payment_method: PAYMENT_METHODS.FREE,
   });
 
-  console.log(ticketDataQ, "ticketDataQ");
+  console.log(ticketDetails, "ticketDetails");
+  console.log(allInfo, "allInfo");
 
   useEffect(() => {
     if (
       !cookies?.ticketDetails ||
-      ticketDetails?.length > 0 ||
-      ticketDataQ?.ticket_information?.length > 0
+      ticketDetails?.length > 0
     ) {
       return;
     }
@@ -300,7 +295,6 @@ const TicketsSelection = () => {
     cookies?.ticketDataQ,
     cookies?.allInfo,
     ticketDetails?.length,
-    ticketDataQ?.ticket_information?.length,
   ]);
 
   // Save state to cookies when ticketDetails or selectedTickets change
@@ -323,7 +317,7 @@ const TicketsSelection = () => {
         sameSite: "strict",
         path: `/discover/${params?.event}/tickets`,
       });
-      setCookie("ticketDataQ", JSON.stringify(nonZero), {
+      setCookie("ticketDataQ", JSON.stringify(ticketDataQ), {
         maxAge: 600,
         secure: true,
         sameSite: "strict",
@@ -441,8 +435,10 @@ const TicketsSelection = () => {
         ) {
           // Calculate the discounted ticket price or any other property you want to update
           const discountValue =
-            discountTypeUsed === "PERCENTAGE"
-              ? (ticket?.constantTicketPrice * discountValueUsed) / 100
+            discountTypeUsed === DISCOUNT_TYPE.PERCENTAGE
+              ? ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE
+                ? (ticket?.ticketPrice * discountValueUsed) / 100
+                : (ticket?.constantTicketPrice * discountValueUsed) / 100
               : discountValueUsed;
 
           const discountedTicketPrice = ticket?.ticketPrice - discountValue;
@@ -476,6 +472,117 @@ const TicketsSelection = () => {
         }; // Return ticket unchanged if discountCode doesn't match
       })
     );
+
+    setTicketDataQ((prevTicketData) => {
+      const appliedDiscountTicketIds = new Set<string>();
+
+      const updatedTicketInformation = prevTicketData?.ticket_information.map(
+        (ticket) => {
+          if (
+            discountCode &&
+            discountCodeUsed &&
+            ticket?.ticketDiscountCode?.includes(discountCode) &&
+            !appliedDiscountTicketIds.has(ticket?.ticket_id)
+          ) {
+            // Apply the discount
+            const discountValue =
+              discountTypeUsed === DISCOUNT_TYPE.PERCENTAGE
+                ? ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE
+                  ? (ticket?.ticket_price * discountValueUsed) / 100
+                  : (ticket?.constantTicketPrice * discountValueUsed) / 100
+                : discountValueUsed;
+
+            const discountedTicketPrice = ticket?.ticket_price - discountValue;
+
+            appliedDiscountTicketIds.add(ticket?.ticket_id);
+
+            return {
+              ...ticket,
+              ticketDiscountType: discountTypeUsed,
+              ticketDiscountValue: Math.round(discountValue),
+              discountedTicketPrice: Math.round(
+                Math.max(discountedTicketPrice, 0)
+              ),
+              discountToDeduct: Math.round(discountValue),
+              subTotal:
+                ticket?.guestAsChargeBearer === true
+                  ? Math.round(discountedTicketPrice + ticket?.ticketFee)
+                  : Math.round(discountedTicketPrice),
+            };
+          }
+
+          // Reset to original state if no discount is applied
+          return {
+            ...ticket,
+            ticketDiscountType: "",
+            ticketDiscountValue: 0,
+            discountedTicketPrice: undefined,
+            discountToDeduct: undefined,
+            subTotal:
+              ticket?.guestAsChargeBearer === true
+                ? Math.round(ticket?.ticket_price + ticket?.ticketFee)
+                : ticket?.ticket_price,
+          };
+        }
+      );
+
+      const updatedFees = updatedTicketInformation
+        .filter((ticket) => ticket?.guestAsChargeBearer === true)
+        .reduce((acc, ticket) => acc + (ticket.ticketFee || 0), 0);
+
+      const updatedDiscount = updatedTicketInformation
+        .map((ticket) => ticket?.discountToDeduct || 0)
+        .reduce((acc, curr) => acc + curr, 0);
+
+        const updatedTotalAmountPaid = updatedTicketInformation.reduce(
+          (acc, ticket) => {
+            if (ticket.ticketEntity === TICKET_ENTITY.COLLECTIVE) {
+              // Only use the `subTotal` for collective tickets
+              return acc + Math.max(
+                ticket?.total_amount - (ticket?.discountToDeduct || 0),
+                0
+              );
+            }
+            return acc + (ticket?.total_amount || 0); // Add subtotal for single tickets
+          },
+          0
+        );
+
+      const updatedTotalPurchased = updatedTicketInformation
+        .map((ticket) => ticket?.quantity)
+        .reduce((acc, curr) => acc + curr, 0);
+
+      setAllInfo((prevTicketData) => {
+        return {
+          ...prevTicketData,
+          ticket_information: updatedTicketInformation?.map((ticket) => ({
+            ticket_id: ticket.ticket_id,
+            ticket_name: ticket.ticket_name,
+            quantity: ticket.quantity,
+            total_amount: ticket.subTotal,
+            ticket_price: ticket.ticket_price,
+            ticket_type: ticket.ticket_type,
+            ticket_stock: ticket.ticket_stock,
+            order_number: ticket.order_number,
+          })),
+          fees: updatedFees,
+          discount: updatedDiscount,
+          total_amount_paid: updatedTotalAmountPaid,
+          total_purchased: updatedTotalPurchased,
+          discountCode: discountCodeUsed ? discountCode : "",
+        };
+      });
+
+      return {
+        ...prevTicketData,
+        ticket_information: updatedTicketInformation,
+        fees: updatedFees,
+        discount: updatedDiscount,
+        total_amount_paid: updatedTotalAmountPaid,
+        total_purchased: updatedTotalPurchased,
+        discountCode: discountCodeUsed ? discountCode : "",
+      };
+    });
   }, [discountCode, discountDetails]);
 
   const handleIncrement = (ticketId: string) => {
@@ -570,95 +677,135 @@ const TicketsSelection = () => {
     const ticket = ticketData?.find(
       (ticket: ITicketDetails) => ticket?.id === ticketId
     );
-
+  
     if (ticket) {
-      const newOrderNumber = `ORD${generateOrderNumber()}`; // Generate a unique order number for each addition
-
       setTicketDataQ((prevData) => {
         const realPrice =
           ticket?.ticketEntity === TICKET_ENTITY.SINGLE
             ? ticket?.ticketPrice
             : ticket?.groupPrice || 0;
-
+  
+        // Calculate the fee (only once for collective tickets)
         const currentFee =
           ticket?.ticketType === "PAID"
             ? Math.round(realPrice * 0.04 + 100)
             : 0;
-
-        // Create a new ticket entry
-        const newTicket = {
-          ticket_name: ticket?.ticketName,
-          ticket_price: realPrice,
-          constantTicketPrice: ticket?.ticketPrice,
-          discountedTicketPrice: ticket?.discountedTicketPrice,
-          discountToDeduct: ticket?.discountToDeduct,
-          ticketFee: currentFee,
-          eventName: ticket?.eventName,
-          ticketDiscountType: ticket?.discount?.discountType,
-          ticketDiscountCode: ticket?.discountCode,
-          ticketDiscountValue: ticket?.discount?.discount_value,
-          ticketNumber: 1,
-          ticket_type: ticket?.ticketType,
-          ticket_id: ticket?.id,
-          subTotal:
-            ticket?.guestAsChargeBearer === true
-              ? realPrice + currentFee
-              : realPrice,
-          total_amount:
-            ticket?.guestAsChargeBearer === true
-              ? realPrice + currentFee
-              : realPrice,
-          ticket_stock: ticket?.ticketStock,
-          ticketEntity: ticket?.ticketEntity,
-          guestAsChargeBearer: ticket?.guestAsChargeBearer,
-          groupSize: ticket?.groupSize,
-          order_number: newOrderNumber,
-          quantity: 1,
-        };
-
+  
+        // Create tickets based on ticket entity type
+        const newTickets =
+          ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE
+            ? Array.from({ length: ticket?.groupSize || 1 }, (_, index) => ({
+                ticket_name: ticket?.ticketName,
+                ticket_price: realPrice,
+                constantTicketPrice:
+                  ticket?.guestAsChargeBearer === true
+                    ? realPrice / ticket?.groupSize
+                    : realPrice / ticket?.groupSize,
+                discountedTicketPrice: ticket?.discountedTicketPrice,
+                discountToDeduct: ticket?.discountToDeduct,
+                ticketFee: index === 0 ? currentFee : 0, // Fee applied only for the first ticket
+                eventName: ticket?.eventName,
+                ticketDiscountType: ticket?.discount?.discountType,
+                ticketDiscountCode: ticket?.discountCode,
+                ticketDiscountValue: ticket?.discount?.discount_value,
+                ticketNumber: 1,
+                ticket_type: ticket?.ticketType,
+                ticket_id: ticket?.id,
+                subTotal:
+                  index === 0
+                    ? realPrice + currentFee
+                    : 0, // Only add fee once for the first ticket
+                total_amount:
+                  index === 0
+                    ? realPrice + currentFee
+                    : 0, // Only add fee once for the first ticket
+                ticket_stock: ticket?.ticketStock,
+                ticketEntity: ticket?.ticketEntity,
+                guestAsChargeBearer: ticket?.guestAsChargeBearer,
+                groupSize: ticket?.groupSize,
+                order_number: `ORD${generateOrderNumber()}`, // Unique order number
+                quantity: 1,
+              }))
+            : [
+                {
+                  ticket_name: ticket?.ticketName,
+                  ticket_price: realPrice,
+                  constantTicketPrice: ticket?.ticketPrice,
+                  discountedTicketPrice: ticket?.discountedTicketPrice,
+                  discountToDeduct: ticket?.discountToDeduct,
+                  ticketFee: currentFee,
+                  eventName: ticket?.eventName,
+                  ticketDiscountType: ticket?.discount?.discountType,
+                  ticketDiscountCode: ticket?.discountCode,
+                  ticketDiscountValue: ticket?.discount?.discount_value,
+                  ticketNumber: 1,
+                  ticket_type: ticket?.ticketType,
+                  ticket_id: ticket?.id,
+                  subTotal:
+                    ticket?.guestAsChargeBearer === true
+                      ? realPrice + currentFee
+                      : realPrice,
+                  total_amount:
+                    ticket?.guestAsChargeBearer === true
+                      ? realPrice + currentFee
+                      : realPrice,
+                  ticket_stock: ticket?.ticketStock,
+                  ticketEntity: ticket?.ticketEntity,
+                  guestAsChargeBearer: ticket?.guestAsChargeBearer,
+                  groupSize: ticket?.groupSize,
+                  order_number: `ORD${generateOrderNumber()}`, // Unique order number
+                  quantity: 1,
+                },
+              ];
+  
         // Update the ticket_information array and recalculate totals
         const updatedTicketInformation = [
-          ...prevData.ticket_information,
-          newTicket,
+          ...prevData?.ticket_information,
+          ...newTickets,
         ];
-
-        const updatedFees = updatedTicketInformation
-          .filter((ticket) => ticket?.guestAsChargeBearer === true)
-          .reduce((acc, ticket) => acc + (ticket.ticketFee || 0), 0);
-
+  
+        const updatedFees = updatedTicketInformation.reduce((acc, ticket) => {
+          if (ticket.ticketEntity === TICKET_ENTITY.COLLECTIVE) {
+            return acc + (ticket.ticketFee || 0); // Only count the single collective fee
+          }
+          return acc + (ticket.ticketFee || 0); // Sum individual fees for single tickets
+        }, 0);
+  
         const updatedDiscount = updatedTicketInformation
           .map((ticket) => ticket?.discountToDeduct || 0)
           .reduce((acc, curr) => acc + curr, 0);
-
-        const updatedTotalAmountPaid = updatedTicketInformation
-          .map((ticket) => ticket?.subTotal)
-          .reduce((acc, curr) => acc + curr, 0);
-
+  
+        const updatedTotalAmountPaid = updatedTicketInformation.reduce(
+          (acc, ticket) => {
+            if (ticket.ticketEntity === TICKET_ENTITY.COLLECTIVE) {
+              return acc + (ticket.subTotal || 0); // Only count the first collective fee
+            }
+            return acc + ticket.subTotal; // Add subtotal for single tickets
+          }, 0);
+  
         const updatedTotalPurchased = updatedTicketInformation
           .map((ticket) => ticket?.ticketNumber)
           .reduce((acc, curr) => acc + curr, 0);
-
+  
         // Update allInfo state with the new ticket information
-        setAllInfo((prevAllInfo) => {
-          return {
-            ...prevAllInfo,
-            ticket_information: updatedTicketInformation?.map((ticket) => ({
-              ticket_id: ticket.ticket_id,
-              ticket_name: ticket.ticket_name,
-              quantity: ticket.quantity,
-              total_amount: ticket.total_amount,
-              ticket_price: ticket.ticket_price,
-              ticket_type: ticket.ticket_type,
-              ticket_stock: ticket.ticket_stock,
-              order_number: ticket.order_number,
-            })),
-            fees: updatedFees,
-            discount: updatedDiscount,
-            total_amount_paid: updatedTotalAmountPaid,
-            total_purchased: updatedTotalPurchased,
-          };
-        });
-
+        setAllInfo((prevAllInfo) => ({
+          ...prevAllInfo,
+          ticket_information: updatedTicketInformation?.map((ticket) => ({
+            ticket_id: ticket.ticket_id,
+            ticket_name: ticket.ticket_name,
+            quantity: ticket.quantity,
+            total_amount: ticket.total_amount,
+            ticket_price: ticket.ticket_price,
+            ticket_type: ticket.ticket_type,
+            ticket_stock: ticket.ticket_stock,
+            order_number: ticket.order_number,
+          })),
+          fees: updatedFees,
+          discount: updatedDiscount,
+          total_amount_paid: updatedTotalAmountPaid,
+          total_purchased: updatedTotalPurchased,
+        }));
+  
         return {
           ...prevData,
           ticket_information: updatedTicketInformation,
@@ -670,7 +817,7 @@ const TicketsSelection = () => {
       });
     }
   };
-
+      
   // Function to handle ticket decrement
   const handleDecrement = (ticketId: string) => {
     const ticket = ticketData?.find(
@@ -732,41 +879,91 @@ const TicketsSelection = () => {
 
   const handleDecreaseWithUniqueOrder = (ticketId: string) => {
     setTicketDataQ((prevData) => {
-      // Find the last occurrence of the ticket by `ticketId`
-      const lastOrderTicketIndex = prevData.ticket_information
-        .map((ticket, index) => ({ ...ticket, index }))
-        .filter((ticket) => ticket.ticket_id === ticketId)
-        .pop(); // Get the last ticket object for this `ticketId`
-
-      if (!lastOrderTicketIndex) {
-        // If no matching ticket is found, return the state as-is
-        return prevData;
-      }
-
-      const { index: lastOrderIndex } = lastOrderTicketIndex;
-
-      // Remove the ticket with the last `order_number`
-      const updatedTicketInformation = prevData.ticket_information.filter(
-        (_, idx) => idx !== lastOrderIndex
+      console.log("Previous State:", prevData); // Debug previous state
+  
+      // Check if the ticket is collective
+      const isCollectiveTicket = prevData.ticket_information.some(
+        (ticket) => ticket.ticket_id === ticketId && ticket.ticketEntity === TICKET_ENTITY.COLLECTIVE
       );
-
-      // Recalculate totals after the ticket removal
+  
+      let updatedTicketInformation;
+  
+      if (isCollectiveTicket) {
+        // Remove all tickets with the same `ticketId` for collective tickets
+        updatedTicketInformation = prevData.ticket_information.filter(
+          (ticket) => ticket.ticket_id !== ticketId
+        );
+      } else {
+        // For non-collective tickets, remove only the last occurrence
+        const lastOrderTicketIndex = prevData.ticket_information
+          .map((ticket, index) => ({ ...ticket, index }))
+          .filter((ticket) => ticket.ticket_id === ticketId)
+          .pop(); // Get the last ticket object for this `ticketId`
+  
+        if (!lastOrderTicketIndex) {
+          // If no matching ticket is found, return the state as-is
+          return prevData;
+        }
+  
+        const { index: lastOrderIndex } = lastOrderTicketIndex;
+  
+        // Remove the ticket with the last `order_number`
+        updatedTicketInformation = prevData.ticket_information.filter(
+          (_, idx) => idx !== lastOrderIndex
+        );
+      }
+  
+      // Reset to default state if no tickets remain
+      if (updatedTicketInformation.length === 0) {
+        const defaultState = {
+          ticket_information: [],
+          fees: 0,
+          discount: 0,
+          total_amount_paid: 0,
+          discountCode: "",
+          total_purchased: 0,
+          payment_method: prevData.payment_method || "CARD", // Ensure fallback value for payment_method
+        };
+  
+        console.log("Resetting to Default State:", defaultState); // Debug reset state
+  
+        // Update `allInfo` state to match
+        setAllInfo((prevAllInfo) => ({
+          ...prevAllInfo,
+          ...defaultState,
+        }));
+  
+        return defaultState;
+      }
+  
+      // Recalculate totals if tickets remain
       const updatedFees = updatedTicketInformation
         .filter((ticket) => ticket?.guestAsChargeBearer === true)
         .reduce((acc, ticket) => acc + (ticket.ticketFee || 0), 0);
-
+  
       const updatedDiscount = updatedTicketInformation
         .map((ticket) => ticket?.discountToDeduct || 0)
         .reduce((acc, curr) => acc + curr, 0);
-
+  
       const updatedTotalAmountPaid = updatedTicketInformation
         .map((ticket) => ticket?.subTotal)
         .reduce((acc, curr) => acc + curr, 0);
-
+  
       const updatedTotalPurchased = updatedTicketInformation
         .map((ticket) => ticket?.quantity)
         .reduce((acc, curr) => acc + curr, 0);
-
+  
+      const updatedState = {
+        ...prevData,
+        ticket_information: updatedTicketInformation,
+        fees: updatedFees,
+        discount: updatedDiscount,
+        total_amount_paid: updatedTotalAmountPaid,
+        total_purchased: updatedTotalPurchased,
+      };
+  
+      console.log("Updated State:", updatedState); // Debug updated state
+  
       // Update `allInfo` to reflect the changes
       setAllInfo((prevAllInfo) => ({
         ...prevAllInfo,
@@ -785,25 +982,18 @@ const TicketsSelection = () => {
         total_amount_paid: updatedTotalAmountPaid,
         total_purchased: updatedTotalPurchased,
       }));
-
-      return {
-        ...prevData,
-        ticket_information: updatedTicketInformation,
-        fees: updatedFees,
-        discount: updatedDiscount,
-        total_amount_paid: updatedTotalAmountPaid,
-        total_purchased: updatedTotalPurchased,
-      };
+  
+      return updatedState;
     });
   };
-
+        
   const [form] = Form.useForm();
   // ! contactform
   const [additionalFields, setAdditionalFields] = useState<
     { id: number; question: string; answer: string; is_compulsory: boolean }[]
   >([]);
 
-  console.log(allInfo, "allInfo");
+  console.log(ticketDataQ, "ticketDataQ");
 
   const [attendeesInformation, setAttendeesInformation] = useState<
     {
@@ -1045,7 +1235,7 @@ const TicketsSelection = () => {
         },
         guest_category: GUEST_CATEGORY.ATTENDEE,
         total_purchased: ticket.quantity,
-        fees: ticket.ticket_price,
+        fees: Math.round(ticket.ticket_price * 0.04 + 100),
         total_amount_paid: ticket.total_amount,
         discount: prevAllInfo.discount,
         payment_method: PAYMENT_METHODS.FREE,
@@ -1109,41 +1299,22 @@ const TicketsSelection = () => {
         })
       : [];
 
-    // Check if attendeesInformation exists and has items
-    const attendees_information =
-      attendeesInformation?.length > 0
-        ? attendeesInformation.map(
-            ({ id, personal_information, ...attendeeData }) => {
-              // Destructure confirmEmail from personal_information
-              const { confirmEmail, ...filteredPersonalInfo } =
-                personal_information;
-
-              // Return the updated attendee object without id and confirmEmail
-              return {
-                ...attendeeData,
-                personal_information: filteredPersonalInfo,
-              };
-            }
-          )
-        : [];
-
     const personal_information = {
       firstName: firstName.trim(),
       lastName: lastName.trim(),
       email: email.trim(),
       phoneNumber: phoneNumber.trim(),
     };
-    const newAllInfo = (({ personal_information, ...rest }) => rest)(allInfo);
-
-    const guestCreateData: IGuestCreate = {
+    const newAllInfo = (({
       personal_information,
-      ...newAllInfo,
-      eventId: eventDetails?.id,
-    };
+      additional_information,
+      ...rest
+    }) => rest)(allInfo);
 
     setAllInfo({
       ...newAllInfo,
       personal_information,
+      additional_information: additionalFields,
     });
 
     if (
@@ -1155,19 +1326,19 @@ const TicketsSelection = () => {
       const response = await registerGuest.mutateAsync({
         ...newAllInfo,
         personal_information,
+        additional_information: additionalFields,
         eventId: eventDetails?.id,
       });
 
-      // if (response.status === 200) {
-      //   setSuccessModal(true);
-      //   setLoading(false);
-      //   removeCookie("ticketDetails");
-      //   removeCookie("selectedTickets");
-      //  removeCookie("ticketDataQ");
-      //  removeCookie("allInfo");
-      //  removeCookie("isToggled");
-
-      // }
+      if (response.status === 200) {
+        setSuccessModal(true);
+        setLoading(false);
+        removeCookie("ticketDetails");
+        removeCookie("selectedTickets");
+        removeCookie("ticketDataQ");
+        removeCookie("allInfo");
+        removeCookie("isToggled");
+      }
     } else {
       setLoading(false);
       setCurrentPage("payment");
@@ -1257,7 +1428,7 @@ const TicketsSelection = () => {
     if (isInitialLoad) {
       setIsInitialLoad(false); // Set the flag to false after initial load
 
-      if (pageParam === "payment") {
+      if (pageParam === "payment" && successModal === false) {
         // Redirect to `contactform` on reload if on the `payment` page
         router.replace(`${pathname}?page=contactform`);
         setCurrentPage("contactform");
@@ -1290,7 +1461,7 @@ const TicketsSelection = () => {
         });
       }
     }
-  }, [searchParams, pathname, router, isInitialLoad, setCookie, params?.event]);
+  }, [searchParams, pathname, router, isInitialLoad, setCookie, params?.event, successModal]);
 
   const handleButtonClick = () => {
     if (currentPage === "tickets") {

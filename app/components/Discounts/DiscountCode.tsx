@@ -91,8 +91,7 @@ const DiscountCode = (): JSX.Element => {
     }
   }, [ticketApplicable, ticketData]);
 
-  const userID = ticketData?.[0]?.user?.id || null; // Use optional chaining to handle undefined cases
-  // 
+  const userID = ticketData?.[0]?.user // Use optional chaining to handle undefined cases
 
   const onFinish: FormProps<IDiscountData>["onFinish"] = async (values) => {
     // return 
@@ -413,6 +412,7 @@ const DiscountCode = (): JSX.Element => {
               type="default"
               htmlType="submit"
               size="large"
+              disabled={createDiscount.isPending}
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
               loading={createDiscount.isPending}
             >
