@@ -84,3 +84,8 @@ export enum STAFF_ROLE {
   USHER = "USHER", 
   AUDITOR = 'AUDITOR'
 }
+
+export enum GUEST_CATEGORY {
+  BUYER = "BUYER",
+  ATTENDEE = "ATTENDEE",
+}
