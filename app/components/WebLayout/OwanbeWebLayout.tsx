@@ -1,10 +1,10 @@
 import RootLayout from "@/app/layout";
-import Script from 'next/script'
+import Script from "next/script";
 import React from "react";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import ScrollToTopButton from "@/app/ScrollToTopButton";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 function OwanbeWebLayout({
   children,
@@ -25,27 +25,23 @@ function OwanbeWebLayout({
       </div>
 
       {/* Main content with top margin to avoid overlap with fixed header */}
-      <main
- className={`min-h-screen pt-[90px] px-0 w-full ${className}`}
->
-  {/* Other children */}
-  <div className="max-w-full sm:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl mx-auto">
-    {children}
-    <SpeedInsights />
-  </div>
-</main>
+      <main className={`min-h-screen pt-[90px] px-0 w-full ${className}`}>
+        {/* Other children */}
+        <div className="max-w-full sm:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl mx-auto">
+          {children}
+          <SpeedInsights />
+        </div>
+      </main>
 
       {/* Scroll to Top Button */}
       <ScrollToTopButton />
-      
-        {/* <Script
+
+      {/* <Script
           src="https://embed.tawk.to/66aa1bcd32dca6db2cb7f021/1i447p70n"
           strategy="afterInteractive"
         /> */}
 
-         <Script 
-         src="https://ostivities.statuspage.io/embed/script.js"
-         />
+      <Script src="https://ostivities.statuspage.io/embed/script.js" />
 
       {/* Full-width footer background container */}
       <div style={{ backgroundColor: "#FFF2F2" }} className="w-full">

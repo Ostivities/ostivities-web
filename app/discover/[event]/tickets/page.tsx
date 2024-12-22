@@ -534,19 +534,21 @@ const TicketsSelection = () => {
         .map((ticket) => ticket?.discountToDeduct || 0)
         .reduce((acc, curr) => acc + curr, 0);
 
-        const updatedTotalAmountPaid = updatedTicketInformation.reduce(
-          (acc, ticket) => {
-            if (ticket.ticketEntity === TICKET_ENTITY.COLLECTIVE) {
-              // Only use the `subTotal` for collective tickets
-              return acc + Math.max(
-                ticket?.total_amount - (ticket?.discountToDeduct || 0),
-                0
-              );
-            }
-            return acc + (ticket?.total_amount || 0); // Add subtotal for single tickets
-          },
-          0
-        );
+        // const updatedTotalAmountPaid = updatedTicketInformation.reduce(
+        //   (acc, ticket) => {
+        //     if (ticket.ticketEntity === TICKET_ENTITY.COLLECTIVE) {
+        //       // Only use the `subTotal` for collective tickets
+        //       return acc + Math.max(
+        //         ticket?.total_amount - (ticket?.discountToDeduct || 0),
+        //         0
+        //       );
+        //     }
+        //     return acc + (ticket?.total_amount || 0); // Add subtotal for single tickets
+        //   },
+        //   0
+        // );
+
+        const updatedTotalAmountPaid = prevTicketData?.total_amount_paid - updatedDiscount;
 
       const updatedTotalPurchased = updatedTicketInformation
         .map((ticket) => ticket?.quantity)
