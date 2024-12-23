@@ -1,5 +1,5 @@
 import React, { HTMLAttributeAnchorTarget, Key } from "react";
-import { EXHIBITION_SPACE, TICKET_STOCK, USAGE_LIMIT, DISCOUNT_TYPE, PAYMENT_METHODS, STAFF_ROLE } from "./enums";
+import { EXHIBITION_SPACE, GUEST_CATEGORY, TICKET_STOCK, USAGE_LIMIT, DISCOUNT_TYPE, PAYMENT_METHODS, STAFF_ROLE } from "./enums";
 export enum ACCOUNT_TYPE {
   PERSONAL = "PERSONAL",
   ORGANISATION = "ORGANISATION",
@@ -158,12 +158,12 @@ export interface IModal {
   open?: boolean;
   onClose?: any;
   onCancel?: any;
+  visible?: any;
   onOk?: any;
   actionType?: "delete" | "warning" | "detail";
   data?: any;
   selectedRowKeys?: string[];
   dataToDelete?: any;
-
 }
 
 export interface IModal2 {
@@ -315,6 +315,25 @@ export interface PaymentDataType {
   payout: number;
   status?: string;
   paymentDate: string;
+}
+
+export interface ProductDataType {
+  key: string;
+  product: string;
+  inStock: number;
+  price: number;
+  status: string;
+}
+
+export interface OrderDataType {
+  key: string;
+  orderId: string;
+  productName: string;
+  total: number;
+  orderStatus: "Completed" | "Cancelled" | "Processing";
+  payment: string;
+  shipping: "Delivered" | "Shipped" | "Returned";
+  date: string;
 }
 
 export interface IUser {
@@ -580,7 +599,61 @@ export interface IGuestData {
 }
 
 
-export interface IGuestCreate extends Partial<IGuestData> {
+export interface IGuestCreate  {
+  event: string;
+  event_unique_code: string;
+  ticket_information: {
+    ticket_id: string;
+    ticket_name: string;
+    quantity: number;
+    total_amount: number;
+    ticket_price: number;
+    ticket_type: string;
+    ticket_stock: string;
+    order_number: string;
+  }[];
+  personal_information: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+  };
+  attendees_information: {
+    event: string;
+    event_unique_code: string;
+    ticket_information: {
+      ticket_id: string;
+      ticket_name: string;
+      quantity: number;
+      total_amount: number;
+      ticket_price: number;
+      ticket_type: string;
+      ticket_stock: string;
+      order_number: string;
+    };
+    personal_information: {
+      firstName: string;
+      lastName: string;
+      email: string;
+    };
+    guest_category: GUEST_CATEGORY;
+    total_purchased: number;
+    payment_method?: PAYMENT_METHODS;
+    total_amount_paid: number;
+    fees: number;
+    discount: number;
+  }[];
+  additional_information: {
+    question: string;
+    answer: string;
+  }[];
+  guest_category: GUEST_CATEGORY;
+  fees: number;
+  discount: number;
+  total_amount_paid: number;
+  discountCode?: string;
+  total_purchased: number;
+  payment_method: PAYMENT_METHODS;  
   eventId: string;
 }
 

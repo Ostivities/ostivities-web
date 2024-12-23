@@ -57,7 +57,7 @@ const OrganizationProfile = () => {
   const [profileData, setProfileData] = useState(initialProfileData);
   const [isProfileReady, setIsProfileReady] = useState(false);
 
-  // console.log(profileData, "profileData from the component");
+  // 
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -177,7 +177,7 @@ const OrganizationProfile = () => {
         id: profileData?.id,
       });
       if (response.status === 200) {
-        console.log(response, "response");
+        
         successFormatter(response);
         setSaveLoader(false);
         // profile.refetch();

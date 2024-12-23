@@ -17,7 +17,7 @@ const UpdateTicket = ({
   ticketEntity,
   dataToDelete,
 }: IModal): JSX.Element => {
-  // console.log(id)
+  // 
   // const { id } = data;
 
   // Function to handle the update button click

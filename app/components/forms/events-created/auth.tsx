@@ -6,7 +6,7 @@ const useFetch = () => {
     useEffect(() => {
         if (typeof window !== 'undefined' && window.localStorage) {
           localStorage.removeItem('user')
-          console.log("user")
+          
         }
       }, []);
       

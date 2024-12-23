@@ -33,7 +33,7 @@ const EventsGuestList = () => {
   const [searchText, setSearchText] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalData, setModalData] = useState<any>({});
-  console.log(modalData, "modalData");
+  
   const [debouncedSearchText] = useDebounce(searchText, 1000);
   const { getEventGuests } = useGetEventGuests(
     params?.id,
@@ -45,7 +45,7 @@ const EventsGuestList = () => {
   const allGuestsData = getEventGuests?.data?.data?.data?.guests;
   const totalGuests = getEventGuests?.data?.data?.data?.total;
   // const totalPages = getEventGuests?.data?.data?.data?.pages
-  console.log(allGuestsData, "allGuestsData");
+  
   const data: IGuestData[] = allGuestsData?.map((item: IGuestData) => {
     return {
       key: item?.id,
@@ -133,8 +133,8 @@ const EventsGuestList = () => {
       : data;
 
     // Log filtered data
-    console.log("Selected Rows:", selectedRowKeys);
-    console.log("Export Data:", exportData);
+    
+    
 
     // Format data for export
     const formattedExportData = exportData.map((item) => ({
@@ -152,7 +152,7 @@ const EventsGuestList = () => {
       return;
     }
 
-    console.log("Formatted Export Data:", formattedExportData);
+    
 
     // Handle Excel Export
     if (format === "excel") {
@@ -182,7 +182,7 @@ const EventsGuestList = () => {
   };
 
   const handleAction = (record: IGuestData) => {
-    // console.log(record, "record");
+    // 
     const mockModalData = {
       ticketName: record?.ticketName,
       ticketSold: record?.eachTicketQuantity, // Quantities for each ticket

@@ -14,7 +14,10 @@ import React, { useEffect, useState, useMemo } from "react";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { useCookies } from "react-cookie";
-import { useGetEventGuests } from "@/app/hooks/guest/guest.hook";
+import {
+  useGetEventGuests,
+  useGetEventGuestsByUniqueKey,
+} from "@/app/hooks/guest/guest.hook";
 import EventPageLoader from "@/app/components/Loaders/EventPageLoader";
 import {
   FacebookShareButton,
@@ -43,6 +46,7 @@ import { Tooltip, Skeleton } from "antd";
 import Dpmodal from "@/app/components/OstivitiesModal/CreateDp";
 import { Heading3 } from "@/app/components/typography/Heading3";
 import { ACCOUNT_TYPE } from "@/app/utils/enums";
+// import EventStore from "@/app/components/DashboardLayout/EventStore";
 
 const ShareModalContent: React.FC<{ url: string; title: string }> = ({
   url,
@@ -193,26 +197,36 @@ const EventDetail = () => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams<{ event: string }>();
-  // console.log(params, 'params');
+  //
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
   const { isLoggedIn, loading } = useFetch();
   const eventDetails =
     getUserEventByUniqueKey?.data?.data?.data === null
       ? router.push("/not-found")
       : getUserEventByUniqueKey?.data?.data?.data;
-  // console.log(eventDetails, "eventDetails");
-  const [cookies, setCookie] = useCookies(["profileData"])
-  const { getEventGuests } = useGetEventGuests(eventDetails?.id, 1, 10);
-  const allGuestsData = getEventGuests?.data?.data?.data?.guests;
-  const totalGuests = getEventGuests?.data?.data?.data?.total;
-  const loggedInUser = `${cookies?.profileData?.firstName} ${cookies?.profileData?.lastName}`
+  //
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "profileData",
+    "ticketDetails",
+    "selectedTickets",
+    "ticketDataQ",
+    "allInfo",
+    "isToggled",
+  ]);
+  const { getEventGuestsByUniqueKey } = useGetEventGuestsByUniqueKey(
+    params?.event,
+    1,
+    10
+  );
+  const allGuestsData = getEventGuestsByUniqueKey?.data?.data?.data?.guests;
+  const totalGuests = getEventGuestsByUniqueKey?.data?.data?.data?.total;
+  const loggedInUser = `${cookies?.profileData?.firstName} ${cookies?.profileData?.lastName}`;
 
   interface Guest {
     personal_information: {
       firstName: string;
     };
   }
-
 
   const handleMenuClick: MenuProps["onClick"] = (e) => {
     return e;
@@ -268,6 +282,17 @@ const EventDetail = () => {
 
   const [isEventStarted, setIsEventStarted] = useState(false);
   const [isRegistrationClosed, setIsRegistrationClosed] = useState(false);
+
+  useEffect(() => {
+    // Clear cookies when the event changes
+    removeCookie("ticketDetails");
+    removeCookie("selectedTickets");
+    removeCookie("ticketDataQ");
+    removeCookie("allInfo");
+    removeCookie("isToggled");
+
+    // Optionally, reset local state
+  }, [removeCookie]);
 
   useEffect(() => {
     if (eventDetails?.enable_registration === false) {
@@ -1639,6 +1664,10 @@ const EventDetail = () => {
             <Dpmodal />
           </Modal>
         </div>
+        {/* <br /><br />
+        <EventStore />
+        <br /><br />
+        <hr style={{ border: "0.1px solid #d3d3d3", margin: "3px 0" }} /> */}
         <br />
         <br />
         <AvailableEvents />

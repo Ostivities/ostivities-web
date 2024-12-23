@@ -29,16 +29,15 @@ const DeleteTicket = ({
   };
 
   const handleDetele = () => {
-    message.error("This ticket cannot be deleted as it already has existing orders.")
+    message.error(
+      "This ticket cannot be deleted as it already has existing orders."
+    );
+    onCancel();
+  };
 
-  }
-
-  console.log(dataToDelete?.[0]?.event?.eventStatus, "dataToDelete");
-  const singleEventStatus = dataToDelete?.[0]?.eventStatus; // Use optional chaining to avoid errors
-  console.log(singleEventStatus);
   const handleDuplicateClick = async () => {
     const response = await createTicket.mutateAsync(data);
-    console.log(response);
+
     if (response.status === 201) {
       onOk(); // Close the modal
     }
@@ -46,7 +45,9 @@ const DeleteTicket = ({
 
   return (
     <>
-      {actionType === "delete" && dataToDelete?.[0]?.eventStatus > 0 ? (
+      {actionType === "delete" &&
+      open === true &&
+      dataToDelete?.[0]?.eventStatus > 0 ? (
         // `You cannot delete an active event.`
         handleDetele()
       ) : (

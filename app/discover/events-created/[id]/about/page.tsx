@@ -27,6 +27,7 @@ import {
   UploadOutlined,
   XOutlined,
 } from "@ant-design/icons";
+import { dateFormat, timeFormat } from "@/app/utils/helper";
 import {
   Button,
   Checkbox,
@@ -45,6 +46,7 @@ import {
   Space,
   Upload,
   UploadFile,
+  Tooltip,
 } from "antd";
 import { useRouter, useParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
@@ -56,7 +58,6 @@ import axios from "axios";
 import useFetch from "@/app/components/forms/create-events/auth";
 import { RangePickerProps } from "antd/es/date-picker";
 import { useCookies } from "react-cookie";
-
 
 interface FieldType {}
 
@@ -98,9 +99,10 @@ const AboutEvent = () => {
   const [showRadio, setShowRadio] = useState(false);
   const { updateEvent } = useUpdateEvent();
   const { profile } = useProfile();
-  const [mapSrc, setMapSrc] = useState<string>(''); // State to store the iframe URL
+  const [mapSrc, setMapSrc] = useState<string>(""); // State to store the iframe URL
   const [cookies, setCookie, removeCookie] = useCookies([
-    "profileData", "mapSrc"
+    "profileData",
+    "mapSrc",
   ]);
 
   const [editorContent, setEditorContent] = useState("");
@@ -114,7 +116,7 @@ const AboutEvent = () => {
     return errorInfo;
   };
   const eventDetails = getUserEvent?.data?.data?.data;
-  // console.log(eventDetails);
+  //
   const [vendorRegRadio, setVendorRegRadio] = useState(false);
 
   const {
@@ -259,7 +261,7 @@ const AboutEvent = () => {
   }, [vendorRegRadio]);
 
   const onSubmit: FormProps<IFormInput>["onFinish"] = async (data) => {
-    // return console.log(data, "data");
+    // return
 
     const {
       exhibitionspace,
@@ -270,8 +272,13 @@ const AboutEvent = () => {
       websiteUrl,
       eventDocument,
       eventURL,
+      startDate,
+      endDate,
       ...rest
     } = data;
+    const start_date_time = dateFormat(startDate);
+    const end_date_time = dateFormat(endDate);
+
     try {
       if (data.vendor_registration === false) {
         data.exhibitionspace = false;
@@ -305,7 +312,6 @@ const AboutEvent = () => {
         { name: "website", url: websiteUrl },
       ].filter((social) => social.url);
 
-      console.log(rest, "rest");
       const response = await updateEvent.mutateAsync({
         id: params?.id,
         ...rest,
@@ -315,7 +321,11 @@ const AboutEvent = () => {
         },
         eventDetails: editorContent,
         socials,
-        event_coordinates: cookies?.mapSrc && cookies?.mapSrc
+        start_date_time,
+        end_date_time,
+        startDate,
+        endDate,
+        event_coordinates: cookies?.mapSrc && cookies?.mapSrc,
       });
 
       if (response.status === 200) {
@@ -377,27 +387,29 @@ const AboutEvent = () => {
     );
   };
 
-
-
   const disabledTime = (current: dayjs.Dayjs | null): Partial<DisabledTime> => {
     const startDate = dayjs(startDateValue); // Your specified start date
 
     // Disable past times only if the selected date is the start date
     if (current && current.isSame(startDate, "day")) {
       return {
-        disabledHours: () => Array.from({ length: startDate.hour() }, (_, i) => i),
-        disabledMinutes: () => Array.from({ length: startDate.minute() }, (_, i) => i),
-        disabledSeconds: () => Array.from({ length: startDate.second() }, (_, i) => i),
+        disabledHours: () =>
+          Array.from({ length: startDate.hour() }, (_, i) => i),
+        disabledMinutes: () =>
+          Array.from({ length: startDate.minute() }, (_, i) => i),
+        disabledSeconds: () =>
+          Array.from({ length: startDate.second() }, (_, i) => i),
       };
     }
     return {};
   };
 
-
   const accountType = cookies?.profileData?.accountType;
 
-  const userName =  accountType === ACCOUNT_TYPE.PERSONAL
-    ? cookies?.profileData?.firstName || "" : cookies?.profileData?.businessName || "";
+  const userName =
+    accountType === ACCOUNT_TYPE.PERSONAL
+      ? cookies?.profileData?.firstName || ""
+      : cookies?.profileData?.businessName || "";
 
   const getGreeting = () => {
     const currentHour = new Date().getHours();
@@ -949,23 +961,34 @@ const AboutEvent = () => {
                       name="startDate"
                       control={control}
                       render={({ field }) => (
-                        <DatePicker
-                          {...field}
-                          disabled={componentDisabled}
-                          onChange={(date) => {
-                            field.onChange(date);
-                            setStartDateValue(date);
-                          }}
-                          showTime
-                          format="YYYY-MM-DD HH:mm:ss"
-                          style={{ width: "100%", height: "33px" }}
-                          disabledDate={disabledDate}
-                        />
+                        <Tooltip
+                          title={
+                            componentDisabled === false &&
+                            eventDetails?.total_ticket_sold > 0
+                              ? "Start Date & Time cannot be edited as tickets have already been sold."
+                              : ""
+                          }
+                        >
+                          <DatePicker
+                            {...field}
+                            disabled={
+                              componentDisabled ||
+                              eventDetails?.total_ticket_sold > 0
+                            }
+                            onChange={(date) => {
+                              field.onChange(date);
+                              setStartDateValue(date);
+                            }}
+                            showTime
+                            format="YYYY-MM-DD HH:mm:ss"
+                            style={{ width: "100%", height: "33px" }}
+                            disabledDate={disabledDate}
+                          />
+                        </Tooltip>
                       )}
                     />
                   </div>
-
-                  {/* End Date & Time */}
+                  ;{/* End Date & Time */}
                   <div style={{ flex: "1 1 auto", minWidth: "150px" }}>
                     <Label content="End Date & Time" htmlFor="endDate" />
                     <Controller
@@ -1373,7 +1396,7 @@ const AboutEvent = () => {
               type="default"
               htmlType="submit" // This will only trigger the submit when 'Save Changes' is clicked
               size={"large"}
-              disabled={false}
+              disabled={updateEvent.isPending}
               loading={updateEvent.isPending}
               className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
               style={{

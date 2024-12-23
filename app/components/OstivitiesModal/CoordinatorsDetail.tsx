@@ -13,20 +13,20 @@ const CoordinatorsDetail = ({ open, onCancel, onOk, data, id }: IModal) => {
   const { Option } = Select;
   const { getEventCoordinatorInfo } = useGetEventCoordinatorInfo(id)
   const coordinatorsDetails = getEventCoordinatorInfo?.data?.data?.data
-  console.log(getEventCoordinatorInfo, "getEventCoordinatorInfo")
+  
   const [role, setRole] = useState<string | null>('Ticketing Agent'); // Preselect "Ticketing Agent"
   const [form] = Form.useForm(); 
   const staffRole = Form.useWatch("staff_role", form)
 
-  console.log(staffRole)
+  
   const onFinish = (values: ICoordinatorData) => {
     // handle form submission
-    console.log('Form Values:', values);
+    
     onOk(); // Close the modal on successful submission
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
+    
   };
 
   useEffect(() => {

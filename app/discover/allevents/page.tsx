@@ -43,7 +43,7 @@ const AllEvent = ({ params }: { params: { event: string } }) => {
   const { getDiscoveryEvents } = useGetDiscoveryEvents(page, pageSize);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
   const pageNumber = getDiscoveryEvents?.data?.data?.data?.pages;
-  // console.log(discoveryEvents?.length, "Number of Discovery Events"); // Log the length
+  //  // Log the length
 
   const isPending = getDiscoveryEvents?.isLoading;
   const skeletonCount = Math.max(
@@ -51,7 +51,7 @@ const AllEvent = ({ params }: { params: { event: string } }) => {
     getDiscoveryEvents?.data?.data?.data?.total
   );
 
-  console.log(skeletonCount);
+  
   const title = (
     <div className="flex-center gap-2">
       <Image

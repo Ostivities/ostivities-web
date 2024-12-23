@@ -29,7 +29,7 @@ const PaymentDetails = ({
   const { getAllBanks } = useGetAllBanks();
   const { verifyBankAccount } = useVerifyBankAccount();
   const { createSettlementAccount } = useCreateSettlementAccount();
-  // console.log(getAllBanks, "getAllBanks");
+  // 
   const allBanks = getAllBanks?.data?.data?.data;
   // const { getSettlementAccount } = useGetSettlementAccount("1");
 
@@ -45,7 +45,7 @@ const PaymentDetails = ({
       // message.success("Account added successfully")
       onOk();
     }
-    console.log(response, "response");
+    
   };
 
   const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
@@ -53,7 +53,7 @@ const PaymentDetails = ({
   ) => {
     return errorInfo;
   };
-  // console.log(accountName, "accountName");
+  // 
   const accountNumber = form.getFieldValue("account_number");
 
   const handleBankNameChange = async (value: string) => {
@@ -69,13 +69,13 @@ const PaymentDetails = ({
           setAccountName(fetchedAccountName?.data?.data?.data?.account_name);
         }
 
-        // console.log(fetchedAccountName, "fetchedAccountName");
+        // 
       } catch (error) {
         console.error("Error verifying account:", error);
       }
     } else {
       setAccountName(""); // Clear account name if the input is invalid
-      console.log("Account number must be at least 10 digits");
+      
     }
   };
 
@@ -99,14 +99,14 @@ const PaymentDetails = ({
             setAccountName(fetchedAccountName?.data?.data?.data?.account_name);
           }
 
-          // console.log(fetchedAccountName, "fetchedAccountName");
+          // 
         } catch (error) {
           console.error("Error verifying account:", error);
         }
       }
     } else {
       setAccountName(""); // Clear account name if not 10 digits
-      console.log("Account number must be exactly 10 digits");
+      
     }
   };
   useEffect(() => {

@@ -78,9 +78,9 @@ const EventsGuestListEmail = () => {
   const senderEmail = Form.useWatch("sender_email", form);
   const recipientsApplicableForm = Form.useWatch("recipientsApplicable", form);
   const rep = Form.useWatch("receipients", form);
-  // console.log(rep, "rep")
-  console.log(allGuestsData, "allGuestsData");
-  // console.log(recipientsDataTicket, "recipientsDataTicket")
+  // 
+  
+  // 
   // Update eventName when eventDetails is available
   useEffect(() => {
     if (eventDetails && eventDetails?.eventName) {
@@ -121,7 +121,7 @@ const EventsGuestListEmail = () => {
           `${cloud_api}/${cloud_name}/auto/upload`,
           formData
         );
-        // console.log(response, "fileupload");
+        // 
         if (response.status === 200) {
           const name = response?.data?.display_name;
           const content = response?.data?.resource_type;
@@ -213,10 +213,10 @@ const EventsGuestListEmail = () => {
       });
 
       if (response.status === 200) {
-        // console.log(response, "response");
+        // 
       }
 
-      // console.log(recipientsTicketData, "recipientsTicketData");
+      // 
     } else if (recipientsApplicableForm === "selected") {
       const { attachments, recipientsApplicable, receipients, ...rest } =
         values;
@@ -236,7 +236,7 @@ const EventsGuestListEmail = () => {
       });
 
       if (response.status === 200) {
-        // console.log(response, "response");
+        // 
       }
     } else {
       const { attachments, recipientsApplicable, ...rest } = values;

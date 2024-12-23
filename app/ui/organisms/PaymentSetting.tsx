@@ -34,7 +34,7 @@ const PaymentSetting = () => {
   const [isEditable, setIsEditable] = useState(false); // New state for edit mode
   const [cookies, setCookie, removeCookie] = useCookies(["profileData"]);
   const [loading, setLoading] = useState(false);
-  console.log(cookies?.profileData?.id, "cookies?.profileData?.id");
+  
   const { getAllBanks } = useGetAllBanks();
   const { verifyBankAccount } = useVerifyBankAccount();
   const { updateSettlementAccount } = useUpdateSettlementAccount();
@@ -79,13 +79,13 @@ const PaymentSetting = () => {
           setAccountName(fetchedAccountName?.data?.data?.data?.account_name);
         }
 
-        // console.log(fetchedAccountName, "fetchedAccountName");
+        // 
       } catch (error) {
         console.error("Error verifying account:", error);
       }
     } else {
       setAccountName(""); // Clear account name if the input is invalid
-      console.log("Account number must be at least 10 digits");
+      
     }
   };
 
@@ -97,7 +97,7 @@ const PaymentSetting = () => {
     if (accountNumber?.length >= 10) {
       const bankName = form.getFieldValue("bank_code");
       if (bankName) {
-        console.log("thrid here");
+        
         try {
           const fetchedAccountName = await verifyBankAccount.mutateAsync({
             bank_code: bankName,
@@ -108,14 +108,14 @@ const PaymentSetting = () => {
             setAccountName(fetchedAccountName?.data?.data?.data?.account_name);
           }
 
-          // console.log(fetchedAccountName, "fetchedAccountName");
+          // 
         } catch (error) {
           console.error("Error verifying account:", error);
         }
       }
     } else {
       setAccountName(""); // Clear account name if not 10 digits
-      console.log("Account number must be exactly 10 digits");
+      
     }
   };
 
@@ -130,7 +130,7 @@ const PaymentSetting = () => {
         bank_name: bankName,
         user: cookies?.profileData?.id,
       });
-      console.log(response, "response");
+      
 
       if (response.status === 200) {
         setLoading(false);

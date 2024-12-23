@@ -16,7 +16,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Heading5, Label, Paragraph } from "../typography/Typography"; // Ensure Label component is correctly imported
 import { useCreateDiscount } from "@/app/hooks/discount/discount.hook";
-import { DISCOUNT_TYPE, USAGE_LIMIT } from "@/app/utils/enums";
+import { DISCOUNT_TYPE, USAGE_LIMIT, TICKET_TYPE } from "@/app/utils/enums";
 import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
 import { useProfile } from "@/app/hooks/auth/auth.hook";
 import {
@@ -50,9 +50,9 @@ const DiscountCode = (): JSX.Element => {
   const { profile } = useProfile();
   const { getTickets } = useGetEventTickets(params?.id);
   const ticketData = getTickets?.data?.data?.data;
-  // console.log(ticketData, "ticketData");
-  // console.log(selectedTickets, "selectedTickets");
-  // console.log(ticketApplicable, "ticketApplicable")
+  // 
+  // 
+  // 
 
   dayjs.extend(customParseFormat);
 
@@ -85,17 +85,18 @@ const DiscountCode = (): JSX.Element => {
 
   useEffect(() => {
     if (ticketApplicable === "All Tickets") {
-      console.log("effect");
+      
       // Set selected tickets to all ticket IDs
-      setSelectedTickets(ticketData.map((ticket: ITicketDetails) => ticket.id));
+      setSelectedTickets(ticketData?.filter((ticket: ITicketDetails) => {
+        return ticket?.ticketType === TICKET_TYPE.PAID
+      })?.map((ticket: ITicketDetails) => ticket.id) || []);
     }
   }, [ticketApplicable, ticketData]);
 
-  const userID = ticketData?.[0]?.user?.id || null; // Use optional chaining to handle undefined cases
-  // console.log(userID, "userID");
+  const userID = ticketData?.[0]?.user // Use optional chaining to handle undefined cases
 
   const onFinish: FormProps<IDiscountData>["onFinish"] = async (values) => {
-    // return console.log(values, "values");
+    // return 
     const { ticketApplicable, ...rest } = values;
 
     const response = await createDiscount.mutateAsync({
@@ -286,7 +287,9 @@ const DiscountCode = (): JSX.Element => {
                   onChange={handleTicketTypeChange}
                 >
                   {/* Map through your created tickets here */}
-                  {ticketData?.map((ticket: ITicketDetails) => (
+                  {ticketData?.filter((ticket: ITicketDetails) => {
+                    return ticket?.ticketType === TICKET_TYPE.PAID
+                  })?.map((ticket: ITicketDetails) => (
                     <Select.Option key={ticket?.id} value={ticket?.id}>
                       {ticket?.ticketName}
                     </Select.Option>
@@ -413,6 +416,7 @@ const DiscountCode = (): JSX.Element => {
               type="default"
               htmlType="submit"
               size="large"
+              disabled={createDiscount.isPending}
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
               loading={createDiscount.isPending}
             >

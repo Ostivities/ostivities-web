@@ -75,16 +75,16 @@ const VendorsDetails = () => {
 
   // Function to save changes
   const handleSaveChanges = () => {
-    console.log("Image saved:", profileImage);
+    
     setUploadButton("Update");
     setIsImageUploaded(false);
   };
   const handleApprove = () => {
-    console.log("Vendor approved");
+    
   };
 
   const handleDecline = () => {
-    console.log("Vendor declined");
+    
   };
   
   const handleBack = () => {

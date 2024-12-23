@@ -1,6 +1,6 @@
 import { API_SERVICE } from "@/app/utils/service";
 import { useMutation, useQuery, } from "@tanstack/react-query";
-import { CREATE_GUEST, GET_EVENT_GUESTS, GET_TICKET_GUESTS, GET_GUEST_INFO } from "@/app/utils/constants";
+import { CREATE_GUEST, GET_EVENT_GUESTS, GET_EVENT_GUESTS_BY_UNIQUE_KEY, GET_TICKET_GUESTS, GET_GUEST_INFO } from "@/app/utils/constants";
 import { IGuestCreate, IGuestData } from "@/app/utils/interface";
 import { AxiosError, AxiosResponse } from "axios";
 import { errorFormatter, successFormatter } from "@/app/utils/helper";
@@ -42,6 +42,18 @@ export const useGetEventGuests = (eventId: string, page:number, limit:number, se
     });
     return { getEventGuests };
 }
+
+export const useGetEventGuestsByUniqueKey = (event_unique_key: string, page:number, limit:number, search?: string) => {
+    const getEventGuestsByUniqueKey = useQuery({
+        queryKey: [GET_EVENT_GUESTS_BY_UNIQUE_KEY, event_unique_key, page, limit, search],
+        enabled: !!event_unique_key,
+        queryFn: () => {
+        return API_SERVICE._getEventGuestsByUniqueKey(event_unique_key, page, limit, search);
+        },
+    });
+    return { getEventGuestsByUniqueKey };
+}
+
 
 export const useGetTicketGuests = (ticket_id: string) => {
     const getTicketGuests = useQuery({

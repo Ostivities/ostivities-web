@@ -286,6 +286,14 @@ export class API_SERVICE {
     });
   }
 
+  static async _getEventGuestsByUniqueKey(event_unique_key: string, page:number , limit: number, search?: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/guest/event/guests/${event_unique_key}`,
+      method: HttpMethod.GET,
+      params: { page, limit, search },
+    });
+  }
+
   static async _getTicketGuestId(ticket_id: string): Promise<AxiosResponse> {
     return await instance({
       url: `/guest/${ticket_id}`,

@@ -44,7 +44,7 @@ const PopularEvent = ({ params }: { params: { event: string } }) => {
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
   const pageNumber = getDiscoveryEvents?.data?.data?.data?.pages;
 
-  // console.log(discoveryEvents.length, "Number of Discovery Events"); // Log the length
+  //  // Log the length
 
   const isPending = getDiscoveryEvents?.isLoading;
   // const skeletonCount = Math.max(12, getDiscoveryEvents?.data?.data?.data?.total);

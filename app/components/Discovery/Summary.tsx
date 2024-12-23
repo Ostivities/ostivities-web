@@ -321,40 +321,6 @@ const Summary = ({
             </div>
             {/* Adjust this based on your calculation */}
           </div>
-          {/* {continueBtn && (
-            <div className="flex justify-center mt-12 mb-6 w-full">
-              <Button
-                loading={loading}
-                onClick={() => {
-                  handleClick();
-                }}
-                className="primary-btn hover:none w-full text-center"
-                style={{
-                  borderRadius: "25px",
-                  fontFamily: "BricolageGrotesqueMedium",
-                  backgroundColor:
-                    ticketDetails && ticketDetails?.length === 0
-                      ? "#cccccc"
-                      : "#e20000", // Gray for disabled, red for active
-                  color:
-                    ticketDetails && ticketDetails?.length === 0
-                      ? "#666666"
-                      : "white",
-                  height: "50px", // Adjust height as needed
-                  fontSize: "16px", // Increase text size
-                  border: "none", // Remove border if needed
-                }}
-                title={
-                  ticketDetails && ticketDetails?.length === 0
-                    ? "Add Ticket"
-                    : "Continue"
-                }
-                disabled={!isFormValid ||(ticketDetails && ticketDetails?.length === 0)}
-              >
-                Continue
-              </Button>
-            </div>
-          )} */}
           {continueBtn && (
             <div style={{ zIndex: 11 }} className="continue-btn-container">
               <Button

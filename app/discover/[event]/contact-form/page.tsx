@@ -47,7 +47,7 @@ const ContactForm = () => {
   const [isFormValid, setIsFormValid] = useState(false);
 
   const onFinish = (values: Inputs) => {
-    console.log(values);
+    
   };
 
   const validateForm = async () => {

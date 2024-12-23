@@ -25,7 +25,7 @@ const EventSearch = ({ eventName, state, eventCat }: IEventSearchProps) => {
     eventCat
   );
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
-  console.log(discoveryEvents, "discoveryEvents");
+  
 
   const isPending = getDiscoveryEvents?.isLoading;
 

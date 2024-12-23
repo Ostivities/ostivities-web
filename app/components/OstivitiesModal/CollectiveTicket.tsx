@@ -58,7 +58,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
   ]);
 
   const pathname = usePathname();
-  // console.log(pathname)
+  // 
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form); // Watch ticketType changes
   const groupPrice: number = Form.useWatch("groupPrice", form);
@@ -66,7 +66,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
   const guestAsChargeBearer = Form.useWatch("guestAsChargeBearer", form);
   const ticketQty = Form.useWatch("ticketQty", form);
 
-  // console.log(groupPrice, groupSize);
+  // 
 
   useEffect(() => {
     if(showAdditionalField === false){
@@ -77,7 +77,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ticketType, guestAsChargeBearer, ...rest } =
       values;
-    // return console.log(values)
+    // return 
     setLoading(true);
     if (
       // @ts-ignore
@@ -93,7 +93,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
           question: string;
         }) => {
           const { question, is_compulsory } = questionObj;
-          console.log(question, is_compulsory, "question, is_compulsory");
+          
           return { question, is_compulsory };
         }
       );
@@ -110,14 +110,14 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
         guestAsChargeBearer: guestAsChargeBearer,
         purchaseLimit: 1,
       };
-      // console.log(payload, "kk");
+      // 
 
       // make api call here
 
       if (payload) {
         const response = await createTicket.mutateAsync(payload);
         if (response.status === 201) {
-          console.log(response);
+          
           form.resetFields();
           setCookies("stage_three", "processing");
           // linkRef.current?.click();
@@ -148,7 +148,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
       if (payload) {
         const response = await createTicket.mutateAsync(payload);
         if (response.status === 201) {
-          console.log(response);
+          
           form.resetFields();
           setCookies("stage_three", "processing");
           onOk && onOk();
@@ -169,7 +169,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
   const onFinishFailed: FormProps<ITicketData>["onFinishFailed"] = (
     errorInfo
   ) => {
-    console.log("Failed:", errorInfo);
+    
     return errorInfo;
   };
 
@@ -209,7 +209,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
       if (price_per_ticket) {
         form.setFieldValue("ticketPrice", price_per_ticket);
       }
-      // console.log(pricePerTicket)
+      // 
     } else if (groupPrice === 0 && groupPrice === null) {
       form.setFieldValue("ticketPrice", "");
     } else {

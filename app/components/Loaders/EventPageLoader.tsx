@@ -3,7 +3,7 @@ import React from "react";
 
 const EventPageLoader = () => {
   return (
-<div className="hidden w-full min-[870px]:flex gap-10 md:flex-row">
+<div className="hidden w-full min-[900px]:flex gap-10 md:flex-row">
   {/* First Skeleton */}
   <div className="w-full md:w-[400px] h-[520px] rounded-[3.125rem]">
     <Skeleton.Button

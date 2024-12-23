@@ -36,7 +36,7 @@ const EventPageView = () => {
   const { updateEvent } = useUpdateEvent();
   const params = useParams<{ id: string }>();
   const { getUserEvent } = useGetUserEvent(params?.id);
-  // console.log(getUserEvent, "getUserEvent");
+  // 
 
   const eventDetails = getUserEvent?.data?.data?.data;
 

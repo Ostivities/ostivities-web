@@ -17,8 +17,8 @@ function Steppers(): JSX.Element {
   ]);
 
   const stepsCount = formState?.stages?.length || 3; // Handle potential missing stages
-  // console.log(cookies?.form_stage, "form stage");
-  // console.log(cookies?.stage_one, "stage_one");
+  // 
+  // 
 
   return (
     <>
@@ -158,16 +158,15 @@ function Steppers(): JSX.Element {
           labelPlacement="vertical"
           className="mx-auto"
           size= "small"
-          style={{ width: "500px" }}
+          // style={{ width: "500px" }}
           items={[
             {
               title: <Label content="Event Details" />,
-              description: "",
               className: "font-BricolageGrotesqueRegular",
+              description: "",
               icon: (
                 <div
                   style={{
-                    width: "33px",
                     height: "33px",
                     background: "#E20000",
                     borderRadius: "100%",
@@ -184,12 +183,11 @@ function Steppers(): JSX.Element {
             },
             {
               title: <Label content="Event Page" />,
-              description: "",
               className: "font-BricolageGrotesqueRegular",
+              description: "",
               icon: (
                 <div
                   style={{
-                    width: "33px",
                     height: "33px",
                     background:
                       cookies?.stage_two === "finish" ? "#E20000" : "#fff", // Background color based on stage
@@ -210,12 +208,11 @@ function Steppers(): JSX.Element {
             },
             {
               title: <Label content="Tickets Creation" />,
-              description: "",
               className: "font-BricolageGrotesqueRegular",
+              description: "",
               icon: (
                 <div
                   style={{
-                    width: "33px",
                     height: "33px",
                     background:
                       cookies.stage_three === "finish" ? "#E20000" : "#fff", // Background color based on stage

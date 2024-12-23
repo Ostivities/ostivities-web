@@ -23,7 +23,7 @@ const PersonalProfile = () => {
   const [isImageUploaded, setIsImageUploaded] = useState<boolean>(false); // State to track if image is uploaded
   const [form] = Form.useForm();
   const { profile } = useProfile();
-  // console.log(profile?.data?.data?.data);
+  // 
   const { updateProfile } = useUpdateProfile();
   const [loader, setLoader] = useState(false);
   const [saveLoader, setSaveLoader] = useState(false);
@@ -49,7 +49,7 @@ const PersonalProfile = () => {
   const [profileData, setProfileData] = useState(initialProfileData);
   const [isProfileReady, setIsProfileReady] = useState(false);
 
-  // console.log(profileData, "profileData from the component");
+  // 
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -83,7 +83,7 @@ const PersonalProfile = () => {
   }, [profile, profileData]);
 
 
-  // console.log("personal")
+  // 
 
   const props: UploadProps = {
     name: "image",

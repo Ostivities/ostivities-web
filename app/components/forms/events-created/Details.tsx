@@ -41,7 +41,7 @@ const EventsCreatedTable: React.FC = () => {
   }[]>([]);
   const [actionType, setActionType] = useState<"delete" | "warning">();
   const { getAllUserEvents } = useGetAllUserEvents(currentPage, pageSize, searchText);
-  console.log(selectedRowKeys,"selectedRowKeys")
+  
   const { publishEvent } = usePublishEvent();
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const EventsCreatedTable: React.FC = () => {
 
 
   const totalEvents = getAllUserEvents?.data?.data?.data?.total;
-  // console.log(selectedRowKeys)
+  // 
 
   const allUserEventDetails = getAllUserEvents?.data?.data?.data?.data;
 
@@ -149,7 +149,7 @@ const EventsCreatedTable: React.FC = () => {
         return 0;
       },
       render: (status, endDate) => {
-        // console.log(status)
+        // 
         let displayStatus = status ?? "Inactive";
         let style = {};
         let dotColor = "";
@@ -248,7 +248,7 @@ const EventsCreatedTable: React.FC = () => {
     }));
   
     // Log the formatted data for debugging
-  console.log("Formatted Export Data:", formattedExportData);
+  
 
   // Handle Excel Export
   if (format === "excel") {

@@ -25,7 +25,7 @@ const Profile = () => {
   const [profileData, setProfileData] = useState(initialProfileData);
   const [isProfileReady, setIsProfileReady] = useState(false);
 
-  console.log(profileData, "profileData");
+  
 
   useEffect(() => {
     if (typeof window !== "undefined") {

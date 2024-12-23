@@ -100,7 +100,7 @@ function EventDetailsEdit(): JSX.Element {
     setEditorContent(content);
   };
 
-  // console.log(showRadio, "showradio")
+  // 
   dayjs.extend(customParseFormat);
 
   const { RangePicker } = DatePicker;
@@ -109,7 +109,7 @@ function EventDetailsEdit(): JSX.Element {
 
   const { getUserEvent } = useGetUserEvent(params?.id || cookies.event_id);
   const eventDetails: IEventDetails = getUserEvent?.data?.data?.data;
-  // console.log(eventDetails);
+  // 
   const { Option } = Select;
 
   const userName =
@@ -243,7 +243,7 @@ function EventDetailsEdit(): JSX.Element {
           const urlString: string | any =
             response?.data?.secure_url || response?.data?.url;
           setValue("eventDocument", urlString);
-          // console.log(urlString);
+          // 
         }
         setLoader(false);
       } catch (error) { }
@@ -259,7 +259,7 @@ function EventDetailsEdit(): JSX.Element {
     showUploadList: false,
     fileList,
   };
-  // console.log(fileList);
+  // 
 
   useEffect(() => {
     const storedFiles = localStorage.getItem("uploadedFiles");
@@ -295,7 +295,7 @@ function EventDetailsEdit(): JSX.Element {
   };
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    // return console.log(data)
+    // return 
     const {
       exhibitionspace,
       twitterUrl,

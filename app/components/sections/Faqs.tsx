@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 function Faqs(): JSX.Element {
   const onChange = (key: string | string[]) => {
-    console.log(key);
+    
   };
 
   return (

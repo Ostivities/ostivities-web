@@ -52,7 +52,7 @@ export default function PublishEvent(): JSX.Element {
 
   const { getUserEvent } = useGetUserEvent(params?.id || cookies.event_id);
   const eventDetails = getUserEvent?.data?.data?.data;
-  // console.log(eventDetails, "eventDetails");
+  // 
 
   const handlePublishEvent = async () => {
     const response = await publishEvent.mutateAsync({
@@ -60,7 +60,7 @@ export default function PublishEvent(): JSX.Element {
       mode: PUBLISH_TYPE.ACTIVE
     });
 
-    console.log(response, "response");
+    
     if (response.status === 200) {
       await addEventToDiscovery.mutateAsync({
         ids: [params?.id],

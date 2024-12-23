@@ -91,7 +91,7 @@ const Vendorsregistration = () => {
 
   // Function to save changes
   const handleSaveChanges = () => {
-    console.log("Image saved:", profileImage);
+    
     setUploadButton("Update");
     setIsImageUploaded(false);
   };
