@@ -147,13 +147,8 @@ const SearchResult = () => {
           <Form.Item
             label="Event Name"
             name="eventName"
-            rules={[
-              {
-                required: true,
-                message: "Please input the event name",
-              },
-            ]}
-            className="flex-1 min-w-[200px]"
+            style={{ marginBottom: "0" }}
+            className="flex-1 min-w-[200px] mb-0"
           >
             <Input
               allowClear
@@ -163,11 +158,12 @@ const SearchResult = () => {
                 setEventName(e.target.value);
               }}
               style={{
-                borderRadius: "12px",
+                borderRadius: "6px",
                 fontFamily: "'Bricolage Grotesque', sans-serif",
                 fontSize: "14px",
                 padding: "2px 18px",
                 height: "32px",
+                // marginBottom: "0",
               }}
             />
           </Form.Item>
