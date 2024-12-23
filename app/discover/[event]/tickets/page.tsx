@@ -329,7 +329,7 @@ const TicketsSelection = () => {
         sameSite: "strict",
         path: `/discover/${params?.event}/tickets`,
       });
-    } else if (ticketDetails?.length === 0) {
+    } else {
       // Remove cookies if `ticketDetails` is empty
       removeCookie("ticketDetails", {
         path: `/discover/${params?.event}/tickets`,
@@ -357,32 +357,23 @@ const TicketsSelection = () => {
     allInfo,
   ]);
 
+
+  useEffect(() => {
+    // Cleanup cookies when navigating away from the current event
+    if (!pathname.startsWith(`/discover/${params?.event}/tickets`)) {
+      removeCookie("ticketDetails", { path: `/discover/${params?.event}/tickets` });
+      removeCookie("selectedTickets", { path: `/discover/${params?.event}/tickets` });
+      removeCookie("ticketDataQ", { path: `/discover/${params?.event}/tickets` });
+      removeCookie("allInfo", { path: `/discover/${params?.event}/tickets` });
+      removeCookie("isToggled", { path: `/discover/${params?.event}/tickets` });
+    }
+  }, [pathname, params?.event, removeCookie]);
+  
   useEffect(() => {
     if (cookies?.isToggled) {
       setIsToggled(cookies?.isToggled);
     }
   }, [cookies?.isToggled]);
-
-  useEffect(() => {
-    // Cleanup cookies when navigating away from the target path
-    if (!pathname.startsWith(`/discover/${params?.event}/tickets`)) {
-      removeCookie("ticketDetails", {
-        path: `/discover/${params?.event}/tickets`,
-      });
-      removeCookie("selectedTickets", {
-        path: `/discover/${params?.event}/tickets`,
-      });
-      removeCookie("ticketDataQ", {
-        path: `/discover/${params?.event}/tickets`,
-      });
-      removeCookie("allInfo", {
-        path: `/discover/${params?.event}/tickets`,
-      });
-      removeCookie("isToggled", {
-        path: `/discover/${params?.event}/tickets`,
-      });
-    }
-  }, [pathname, removeCookie, params?.event]);
 
   let ticketCounter = 1;
 
@@ -533,20 +524,6 @@ const TicketsSelection = () => {
       const updatedDiscount = updatedTicketInformation
         .map((ticket) => ticket?.discountToDeduct || 0)
         .reduce((acc, curr) => acc + curr, 0);
-
-        // const updatedTotalAmountPaid = updatedTicketInformation.reduce(
-        //   (acc, ticket) => {
-        //     if (ticket.ticketEntity === TICKET_ENTITY.COLLECTIVE) {
-        //       // Only use the `subTotal` for collective tickets
-        //       return acc + Math.max(
-        //         ticket?.total_amount - (ticket?.discountToDeduct || 0),
-        //         0
-        //       );
-        //     }
-        //     return acc + (ticket?.total_amount || 0); // Add subtotal for single tickets
-        //   },
-        //   0
-        // );
 
         const updatedTotalAmountPaid = prevTicketData?.total_amount_paid - updatedDiscount;
 
@@ -1346,14 +1323,12 @@ const TicketsSelection = () => {
       setCurrentPage("payment");
       router.push(`/discover/${params?.event}/tickets?page=payment`);
     }
-    // router.push(`discover/${params?.event}/payment`);
   };
   const onFinishFailed: FormProps<any>["onFinishFailed"] = (errorInfo) => {
     return errorInfo;
   };
 
   const handleFinalSubmit = async () => {
-    // console.log(allInfo, "allInfo");
     setLoading(true);
     const sanitizedData = {
       ...allInfo, // Spread the existing data
@@ -1485,27 +1460,27 @@ const TicketsSelection = () => {
 
   const isPending: boolean = getTicketsByUniqueKey?.isLoading;
 
-  // const {
-  //   minutes,
-  //   remainingSeconds,
-  //   timer,
-  //   startTimer,
-  //   pauseTimer,
-  //   resetTimer,
-  // } = useTimer();
+  const {
+    minutes,
+    remainingSeconds,
+    timer,
+    startTimer,
+    pauseTimer,
+    resetTimer,
+  } = useTimer();
 
-  // useEffect(() => {
-  //   if (currentPage === "contactform" || currentPage === "payment") {
-  //     startTimer();
-  //   } else resetTimer();
-  // }, [currentPage, resetTimer, startTimer]);
-  // useEffect(() => {
-  //   if (minutes === 0 && remainingSeconds === 0 && successModal === false) {
-  //     setModal(true);
-  //   } else if (successModal === true) {
-  //     pauseTimer();
-  //   }
-  // }, [minutes, remainingSeconds, successModal, pauseTimer]);
+  useEffect(() => {
+    if (currentPage === "contactform" || currentPage === "payment") {
+      startTimer();
+    } else resetTimer();
+  }, [currentPage, resetTimer, startTimer]);
+  useEffect(() => {
+    if (minutes === 0 && remainingSeconds === 0 && successModal === false) {
+      setModal(true);
+    } else if (successModal === true) {
+      pauseTimer();
+    }
+  }, [minutes, remainingSeconds, successModal, pauseTimer]);
 
   const [termsAndCondition, setTermsAndCondition] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<
@@ -2080,8 +2055,8 @@ const TicketsSelection = () => {
             <div className="bg-OWANBE_NOTIFICATION text-s font-BricolageGrotesqueRegular px-4 py-2 border-[0.5px] border-OWANBE_PRY rounded-[0.625rem] w-full">
               We have reserved your tickets, please complete checkout within{" "}
               <span className="text-OWANBE_PRY text-s font-BricolageGrotesqueRegular">
-                {/* {currentPage === "contactform" ||
-                  (currentPage === "payment") && timer} */}
+                {currentPage === "contactform" ||
+                  (currentPage === "payment") && timer}
                 {/* {timer} */}
               </span>{" "}
               minutes to secure your tickets.
@@ -2348,7 +2323,7 @@ const TicketsSelection = () => {
               <span className=" text-OWANBE_PRY text-s font-BricolageGrotesqueRegular">
                 {/* {currentPage === "contactform" ||
                   (currentPage !== "tickets" && timer)} */}
-                {/* {timer} */}
+                {timer}
               </span>{" "}
               minutes to secure your tickets.
             </div>
@@ -2463,7 +2438,6 @@ const TicketsSelection = () => {
           onClick={handleButtonClick}
           ticketDetails={ticketDetails}
           continueBtn
-          // {currentPage === "tickets" ? continueBtn : paymentBtn}
         />
         {modal && <TimerModal />}
       </section>

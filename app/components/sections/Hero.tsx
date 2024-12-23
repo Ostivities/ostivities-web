@@ -129,7 +129,7 @@ function Hero(): JSX.Element {
       
       {/* Slider Section */}
       <motion.div
-      className="w-screen overflow-hidden pt-12 -mx-16" // Ensure full width and no margin
+      className="w-screen overflow-hidden pt-12 -mr-16 md:-ml-16 -ml-4" // Ensure full width and no margin
       initial={{ x: "100%" }} // Start from the right side
       animate={{ x: 0 }} // Move into the left side
       transition={{ duration: 1.5, ease: "easeOut" }} // Slide-in animation
