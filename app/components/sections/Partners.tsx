@@ -37,20 +37,19 @@ function Partners(): JSX.Element {
 
   const slides = [
     "/partner1.svg",
-    "/partner2.svg",
     "/partner3.svg",
     "/partner4.svg",
     "/partner5.svg",
     "/partner1.svg",
     "/partner4.svg",
-   "/partner2.svg",
+   "/partner3.svg",
   ];
 
   return (
     <Section>
       {/* Slider Section */}
       <motion.div
-     className="w-screen overflow-hidden pb-4 sm:pb-24 -mx-16"
+     className="w-screen overflow-hidden pt-6 pb-12 -mr-16 md:-ml-16 -ml-4"
      // Ensure full width and no margin
       initial={{ x: "100%" }} // Start from the right side
       animate={{ x: 0 }} // Move into the left side
