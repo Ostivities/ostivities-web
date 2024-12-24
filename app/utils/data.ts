@@ -68,9 +68,9 @@ export const FEATURES: IFeatures[] = [
   },
   {
     icon: Star,
-    title: "Secure Access with Barcodes:",
+    title: "Secure Access with QR Code:",
     content:
-      "Our barcode system guarantees secure access, making entry hassle-free for you and your guests.",
+      "Our Qr code system guarantees secure access, making entry hassle-free for you and your guests.",
   },
 
 ];
@@ -117,12 +117,6 @@ export const ADVANTAGES_TWO: IFeatures[] = [
   },
   {
     icon: Cube,
-    title: "User-Friendly Interface:",
-    content:
-      "Our easy-to-use and intuitive interface makes navigating and managing your events effortless and enjoyable.",
-  },
-  {
-    icon: Star,
     title: "Admin Oversight:",
     content:
       "Rest easy knowing our vigilant administrators maintain a vibrant and respectful community, ensuring the highest standards.",
