@@ -56,66 +56,67 @@ export const EVENT_NAV_LINKS: INavLinks[] = [
 export const FEATURES: IFeatures[] = [
   {
     icon: Star,
+    title: "User-Friendly Interface:",
+    content:
+      "Our easy-to-use and intuitive interface makes navigating and managing your events effortless and enjoyable.",
+  },
+  {
+    icon: Cube,
     title: "Instant Ticketing Made Easy",
     content:
       "Be the architect of your celebration! Create event tickets effortlessly with our user-friendly event creation tools.",
   },
   {
-    icon: Cube,
-    title: "Secure Access with Barcodes:",
-    content:
-      "For paid and Private events, our barcode system guarantees secure access, making entry hassle-free for you and your guests.",
-  },
-  {
     icon: Star,
-    title: "Localized Discovery:",
+    title: "Secure Access with QR Code:",
     content:
-      "Filter events based on regions and states, bringing you closer to rich experiences right in your community.",
+      "Our Qr code system guarantees secure access, making entry hassle-free for you and your guests.",
   },
+
 ];
 
 export const ADVANTAGES: IFeatures[] = [
   {
-    icon: Star,
+    icon: Cube,
     title: "Diverse Celebrations:",
     content:
       "Explore a rich tapestry of events, from weddings, Hangouts, Birthdays, music shows. Ostivities ensures there's a celebration for every taste.",
   },
   {
-    icon: Cube,
+    icon: Star,
     title: "Community Connection:",
     content:
       "Forge meaningful connections by joining and creating events that resonate with your inner spirit. Ostivities is where like-minded individuals unite!",
   },
   {
-    icon: Star,
-    title: "Secure Transactions:",
+    icon: Cube,
+    title: "Localized Discovery:",
     content:
-      "For paid and private events, trust our secure payment system, ensuring seamless transactions while you focus on enjoying the celebration.",
+      "Filter events based on regions and states, bringing you closer to rich experiences right in your community.",
+  },
+  {
+    icon: Star,
+    title: "Merchandise Management:",
+    content:
+      "Easily manage your event merchandise, track inventory, and ensure a seamless shopping experience for attendees.",
   },
 ];
 
 export const ADVANTAGES_TWO: IFeatures[] = [
   {
     icon: Cube,
-    title: "Streamline Your Vendor Management:",
+    title: "Connect with Attendees:",
     content:
-      "Effortlessly manage vendors, coordinate logistics, and ensure a seamless event experience. With Ostivities, vendor management becomes a breeze, letting you focus on creating memorable moments.",
+      "Engage with attendees, share details and make your event truly unforgettable.",
   },
   {
     icon: Star,
-    title: "Connect with Attendees:",
+    title: "Vendor Management:",
     content:
-      "Engage with attendees, share details and make your event truly unforgettable. Ostivities is your canvas to paint the perfect celebration.",
+      "Effortlessly manage vendors and ensure a seamless event experience. With Ostivities, vendor management becomes a breeze, letting you focus on creating memorable moments.",
   },
   {
     icon: Cube,
-    title: "User-Friendly Interface:",
-    content:
-      "Our easy-to-use and intuitive interface makes navigating and managing your events effortless and enjoyable.",
-  },
-  {
-    icon: Star,
     title: "Admin Oversight:",
     content:
       "Rest easy knowing our vigilant administrators maintain a vibrant and respectful community, ensuring the highest standards.",
