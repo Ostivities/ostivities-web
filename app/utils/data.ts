@@ -80,7 +80,7 @@ export const ADVANTAGES: IFeatures[] = [
     icon: Cube,
     title: "Diverse Celebrations:",
     content:
-      "Explore a rich tapestry of events, from weddings, Hangouts, Birthdays, music shows. Ostivities ensures there's a celebration for every taste.",
+      "Explore a rich tapestry of events, from weddings and hangouts to birthdays, music shows, and more. Ostivities ensures there's a celebration to suit every taste.",
   },
   {
     icon: Star,
