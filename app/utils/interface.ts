@@ -167,7 +167,7 @@ export interface IModal {
 }
 
 export interface downloadDataItem {
- downloadDetails: {
+ downloadDetails?: {
   order_number: string,
   order_date: string,
   event_date_time: string,
@@ -179,7 +179,9 @@ export interface downloadDataItem {
   qr_code?: string,
   ostivities_logo?: string,
   ticket_banner?: string
- }[]
+ }[];
+ open?: boolean;
+ onClose?: any;
 }
 
 export interface IModal2 {

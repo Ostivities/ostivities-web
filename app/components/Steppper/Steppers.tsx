@@ -130,7 +130,7 @@ function Steppers(): JSX.Element {
           size="default"
         />
       </div>
-      <div className="block md:hidden pt-10 pr-3">
+      <div className="block md:hidden pt-10 pl-3">
         <style>
           {`
           /* Change color for lines after finished and processing steps */
