@@ -18,11 +18,10 @@ interface PdfDto {
     ticket_name: string;
     ticket_type: string;
     event_name: string;
-    qr_code: string;
-    ostivities_logo: string;
-    ticket_banner: string;
+    qr_code?: string;
+    ostivities_logo?: string;
+    ticket_banner?: string;
   }[];
-  order_number: string;
 }
 export const pdfGenerator = (dto: PdfDto)=>{
 
@@ -40,19 +39,19 @@ export const pdfGenerator = (dto: PdfDto)=>{
     isLastPage?: boolean,
   ) => {
     const pageContent: any = [
-      {
-        image: data.ostivities_logo,
-        margin: [5, 2, 10, 15],
-        fit: [100, 100],
-        style: 'header',
-      },
-      '\n\n',
-      {
-        image: data.ticket_banner,
-        fit: [500, 500],
-      },
-      '\n',
-      { text: data.event_name, margin: [5, 10, 10, 30], style: 'header' },
+      // {
+      //   image: data?.ostivities_logo,
+      //   margin: [5, 2, 10, 15],
+      //   fit: [100, 100],
+      //   style: 'header',
+      // },
+      // '\n\n',
+      // {
+      //   image: data?.ticket_banner,
+      //   fit: [500, 500],
+      // },
+      // '\n',
+      { text: data?.event_name, margin: [5, 10, 10, 30], style: 'header' },
       {
         alignment: 'justify',
         columns: [
@@ -70,7 +69,7 @@ export const pdfGenerator = (dto: PdfDto)=>{
             stack: [
               { text: 'Order Date', margin: [5, 2, 10, 8], bold: true },
               {
-                text: data.order_date,
+                text: data?.order_date,
                 margin: [5, 2, 10, 8],
                 color: '#e20000',
               },
@@ -85,7 +84,7 @@ export const pdfGenerator = (dto: PdfDto)=>{
             stack: [
               { text: 'Event Date & Time', margin: [5, 2, 10, 8], bold: true },
               {
-                text: data.event_date_time,
+                text: data?.event_date_time,
                 margin: [5, 2, 10, 8],
                 color: '#e20000',
               },
@@ -95,7 +94,7 @@ export const pdfGenerator = (dto: PdfDto)=>{
             stack: [
               { text: 'Event Address', margin: [5, 2, 10, 8], bold: true },
               {
-                text: data.event_address,
+                text: data?.event_address,
                 margin: [5, 2, 10, 8],
                 color: '#e20000',
               },
@@ -131,9 +130,9 @@ export const pdfGenerator = (dto: PdfDto)=>{
               },
             ],
           },
-          {
-            stack: [{ qr: data.qr_code, fit: '200' }],
-          },
+          // {
+          //   stack: [{ qr: data?.qr_code, fit: '200' }],
+          // },
         ],
       },
     ];
@@ -143,7 +142,7 @@ export const pdfGenerator = (dto: PdfDto)=>{
     }
     return pageContent;
   };
-const content = dto.content.flatMap((data, index) =>
+const content = dto?.content?.flatMap((data, index) =>
   generatePageContent(data, index === dto.content.length - 1),
   );
 
@@ -176,5 +175,5 @@ const content = dto.content.flatMap((data, index) =>
   const options = {};
 
   // const pdfDoc = printer.createPdfKitDocument(docDefinition, options).download();
-  pdfMake.createPdf(docDefinition).download(`${dto.order_number}.pdf`);
+  pdfMake.createPdf(docDefinition).download(`${dto?.content?.map(con => con?.order_number)}.pdf`);
 }

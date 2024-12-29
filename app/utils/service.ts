@@ -21,6 +21,7 @@ import {
   IVerifyToken,
   IBulkMailData,
   ICoordinatorCreate,
+  IPaymentInitialise,
 } from "./interface";
 import CryptoJS from 'crypto-js';
 
@@ -375,5 +376,20 @@ export class API_SERVICE {
       url: `/coordinators/delete/${id}`,
       method: HttpMethod.DELETE
     })
+  }
+
+  static async _initialisePayment(data: IPaymentInitialise): Promise<AxiosResponse> {
+    return await instance({
+      url: `/payment/initialise`,
+      method: HttpMethod.POST,
+      data,
+    });
+  }
+
+  static async _verifyPayment(reference: string): Promise<AxiosResponse> {
+    return await instance({
+      url: `/payment/verify/${reference}`,
+      method: HttpMethod.GET,
+    });
   }
 }

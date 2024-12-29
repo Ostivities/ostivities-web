@@ -350,7 +350,7 @@ function DashboardLayout({
               <Content className="flex flex-col space-y-8 py-8">
                 {steppers && (
                   <div
-                    className={`mx-auto text-center flex flex-row items-center justify-center pb-3 ${
+                    className={`min-[577px]:mx-auto text-center min-[577px]:flex flex-row items-center min-[577px]:justify-center pb-3 ${
                       !isValidElement(steppers) ? "hidden" : ""
                     }`}
                   >

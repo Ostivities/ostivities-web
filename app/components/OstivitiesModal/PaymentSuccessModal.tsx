@@ -1,6 +1,6 @@
 'use client';
 
-import { IModal } from '@/app/utils/interface';
+import { IModal, downloadDataItem } from '@/app/utils/interface';
 import Image from 'next/image';
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { useParams, useRouter } from "next/navigation";
@@ -8,11 +8,12 @@ import { pdfGenerator } from "../../TicketPdfGenerator";
 import { Tooltip } from 'antd';
 
 
-const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): JSX.Element => {
+
+const PaymentSuccessModal = ({ downloadDetails }: downloadDataItem): JSX.Element => {
   const router = useRouter();
   const params = useParams<{ event: string }>();
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
-
+  console.log(downloadDetails, "downloadDetails")
   // Check for event details
   const eventDetails = getUserEventByUniqueKey?.data?.data?.data === null ? router.push('/not-found') : getUserEventByUniqueKey?.data?.data?.data;
 
@@ -108,7 +109,9 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
           <div className="flex flex-col items-center space-y-4 mt-10">
           <div className="flex items-center space-x-4 w-[20rem]">
               <button
-                onClick={() => pdfGenerator(payload)}
+                onClick={() => pdfGenerator({
+                  content: downloadDetails, // Wrap the array with the 'content' key
+                })}
                 className="primary-btn font-normal text-base flex-1 whitespace-nowrap px-3 py-2"
               >
                 Download Ticket
@@ -131,7 +134,7 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
             </div>
             <div className="flex items-center space-x-4 w-[20rem]">
               <button
-                onClick={() => router.push(`/discover/${params?.event}`)}
+                onClick={() => router.push(`/discover/${params?.event}/tickets`)}
                 className="primary-btn font-normal continue cursor-pointer text-base flex-1 whitespace-nowrap px-3 py-2"
               >
                 Buy Again

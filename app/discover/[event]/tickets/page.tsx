@@ -55,6 +55,10 @@ import { Skeleton } from "antd";
 import { useTimer } from "@/app/hooks/countdown";
 import { useRegisterGuest } from "@/app/hooks/guest/guest.hook";
 import {
+  useInitialisePayment,
+  useVerifyPayment,
+} from "@/app/hooks/payment/payment.hook";
+import {
   useGetEventDiscount,
   useGetTicketDiscount,
 } from "@/app/hooks/discount/discount.hook";
@@ -67,10 +71,13 @@ import soldout from "@/public/Soldout.svg";
 import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
 import { useCookies } from "react-cookie";
 
+
 const TicketsSelection = () => {
   const router = useRouter();
   const params = useParams<{ event: string }>();
   const { registerGuest } = useRegisterGuest();
+  const { initialisePayment } = useInitialisePayment();
+  // const { verifyPayment } = useVerifyPayment()
   const pathname = usePathname(); // Get the current path
   const searchParams = useSearchParams(); // Get query params
   const [cookies, setCookie, removeCookie] = useCookies([
@@ -275,14 +282,11 @@ const TicketsSelection = () => {
     payment_method: PAYMENT_METHODS.FREE,
   });
 
-  console.log(ticketDetails, "ticketDetails");
-  console.log(allInfo, "allInfo");
+  // console.log(ticketDetails, "ticketDetails");
+  // console.log(allInfo, "allInfo");
 
   useEffect(() => {
-    if (
-      !cookies?.ticketDetails ||
-      ticketDetails?.length > 0
-    ) {
+    if (!cookies?.ticketDetails || ticketDetails?.length > 0) {
       return;
     }
     setTicketDetails(cookies?.ticketDetails);
@@ -357,18 +361,23 @@ const TicketsSelection = () => {
     allInfo,
   ]);
 
-
   useEffect(() => {
     // Cleanup cookies when navigating away from the current event
     if (!pathname.startsWith(`/discover/${params?.event}/tickets`)) {
-      removeCookie("ticketDetails", { path: `/discover/${params?.event}/tickets` });
-      removeCookie("selectedTickets", { path: `/discover/${params?.event}/tickets` });
-      removeCookie("ticketDataQ", { path: `/discover/${params?.event}/tickets` });
+      removeCookie("ticketDetails", {
+        path: `/discover/${params?.event}/tickets`,
+      });
+      removeCookie("selectedTickets", {
+        path: `/discover/${params?.event}/tickets`,
+      });
+      removeCookie("ticketDataQ", {
+        path: `/discover/${params?.event}/tickets`,
+      });
       removeCookie("allInfo", { path: `/discover/${params?.event}/tickets` });
       removeCookie("isToggled", { path: `/discover/${params?.event}/tickets` });
     }
   }, [pathname, params?.event, removeCookie]);
-  
+
   useEffect(() => {
     if (cookies?.isToggled) {
       setIsToggled(cookies?.isToggled);
@@ -525,7 +534,8 @@ const TicketsSelection = () => {
         .map((ticket) => ticket?.discountToDeduct || 0)
         .reduce((acc, curr) => acc + curr, 0);
 
-        const updatedTotalAmountPaid = prevTicketData?.total_amount_paid - updatedDiscount;
+      const updatedTotalAmountPaid =
+        prevTicketData?.total_amount_paid - updatedDiscount;
 
       const updatedTotalPurchased = updatedTicketInformation
         .map((ticket) => ticket?.quantity)
@@ -656,116 +666,84 @@ const TicketsSelection = () => {
     const ticket = ticketData?.find(
       (ticket: ITicketDetails) => ticket?.id === ticketId
     );
-  
+
     if (ticket) {
       setTicketDataQ((prevData) => {
         const realPrice =
-          ticket?.ticketEntity === TICKET_ENTITY.SINGLE
-            ? ticket?.ticketPrice
-            : ticket?.groupPrice || 0;
-  
+          ticket?.ticketType === "PAID"
+            ? ticket?.ticketEntity === TICKET_ENTITY.SINGLE
+              ? ticket?.ticketPrice
+              : ticket?.groupPrice
+            : 0;
+
         // Calculate the fee (only once for collective tickets)
         const currentFee =
           ticket?.ticketType === "PAID"
             ? Math.round(realPrice * 0.04 + 100)
             : 0;
-  
+
         // Create tickets based on ticket entity type
-        const newTickets =
-          ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE
-            ? Array.from({ length: ticket?.groupSize || 1 }, (_, index) => ({
-                ticket_name: ticket?.ticketName,
-                ticket_price: realPrice,
-                constantTicketPrice:
-                  ticket?.guestAsChargeBearer === true
-                    ? realPrice / ticket?.groupSize
-                    : realPrice / ticket?.groupSize,
-                discountedTicketPrice: ticket?.discountedTicketPrice,
-                discountToDeduct: ticket?.discountToDeduct,
-                ticketFee: index === 0 ? currentFee : 0, // Fee applied only for the first ticket
-                eventName: ticket?.eventName,
-                ticketDiscountType: ticket?.discount?.discountType,
-                ticketDiscountCode: ticket?.discountCode,
-                ticketDiscountValue: ticket?.discount?.discount_value,
-                ticketNumber: 1,
-                ticket_type: ticket?.ticketType,
-                ticket_id: ticket?.id,
-                subTotal:
-                  index === 0
-                    ? realPrice + currentFee
-                    : 0, // Only add fee once for the first ticket
-                total_amount:
-                  index === 0
-                    ? realPrice + currentFee
-                    : 0, // Only add fee once for the first ticket
-                ticket_stock: ticket?.ticketStock,
-                ticketEntity: ticket?.ticketEntity,
-                guestAsChargeBearer: ticket?.guestAsChargeBearer,
-                groupSize: ticket?.groupSize,
-                order_number: `ORD${generateOrderNumber()}`, // Unique order number
-                quantity: 1,
-              }))
-            : [
-                {
-                  ticket_name: ticket?.ticketName,
-                  ticket_price: realPrice,
-                  constantTicketPrice: ticket?.ticketPrice,
-                  discountedTicketPrice: ticket?.discountedTicketPrice,
-                  discountToDeduct: ticket?.discountToDeduct,
-                  ticketFee: currentFee,
-                  eventName: ticket?.eventName,
-                  ticketDiscountType: ticket?.discount?.discountType,
-                  ticketDiscountCode: ticket?.discountCode,
-                  ticketDiscountValue: ticket?.discount?.discount_value,
-                  ticketNumber: 1,
-                  ticket_type: ticket?.ticketType,
-                  ticket_id: ticket?.id,
-                  subTotal:
-                    ticket?.guestAsChargeBearer === true
-                      ? realPrice + currentFee
-                      : realPrice,
-                  total_amount:
-                    ticket?.guestAsChargeBearer === true
-                      ? realPrice + currentFee
-                      : realPrice,
-                  ticket_stock: ticket?.ticketStock,
-                  ticketEntity: ticket?.ticketEntity,
-                  guestAsChargeBearer: ticket?.guestAsChargeBearer,
-                  groupSize: ticket?.groupSize,
-                  order_number: `ORD${generateOrderNumber()}`, // Unique order number
-                  quantity: 1,
-                },
-              ];
-  
+        const newTickets = {
+          ticket_name: ticket?.ticketName,
+          ticket_price: realPrice,
+          constantTicketPrice: ticket?.ticketPrice,
+          discountedTicketPrice: ticket?.discountedTicketPrice,
+          discountToDeduct: ticket?.discountToDeduct,
+          ticketFee: currentFee,
+          eventName: ticket?.eventName,
+          ticketDiscountType: ticket?.discount?.discountType,
+          ticketDiscountCode: ticket?.discountCode,
+          ticketDiscountValue: ticket?.discount?.discount_value,
+          ticketNumber: 1,
+          ticket_type: ticket?.ticketType,
+          ticket_id: ticket?.id,
+          subTotal:
+            ticket?.guestAsChargeBearer === true
+              ? realPrice + currentFee
+              : realPrice,
+          total_amount:
+            ticket?.guestAsChargeBearer === true
+              ? realPrice + currentFee
+              : realPrice,
+          ticket_stock: ticket?.ticketStock,
+          ticketEntity: ticket?.ticketEntity,
+          guestAsChargeBearer: ticket?.guestAsChargeBearer,
+          groupSize: ticket?.groupSize,
+          order_number: `ORD${generateOrderNumber()}`, // Unique order number
+          quantity: 1,
+        };
+
         // Update the ticket_information array and recalculate totals
         const updatedTicketInformation = [
           ...prevData?.ticket_information,
-          ...newTickets,
+          newTickets,
         ];
-  
+
         const updatedFees = updatedTicketInformation.reduce((acc, ticket) => {
           if (ticket.ticketEntity === TICKET_ENTITY.COLLECTIVE) {
             return acc + (ticket.ticketFee || 0); // Only count the single collective fee
           }
           return acc + (ticket.ticketFee || 0); // Sum individual fees for single tickets
         }, 0);
-  
+
         const updatedDiscount = updatedTicketInformation
           .map((ticket) => ticket?.discountToDeduct || 0)
           .reduce((acc, curr) => acc + curr, 0);
-  
+
         const updatedTotalAmountPaid = updatedTicketInformation.reduce(
           (acc, ticket) => {
             if (ticket.ticketEntity === TICKET_ENTITY.COLLECTIVE) {
               return acc + (ticket.subTotal || 0); // Only count the first collective fee
             }
             return acc + ticket.subTotal; // Add subtotal for single tickets
-          }, 0);
-  
+          },
+          0
+        );
+
         const updatedTotalPurchased = updatedTicketInformation
           .map((ticket) => ticket?.ticketNumber)
           .reduce((acc, curr) => acc + curr, 0);
-  
+
         // Update allInfo state with the new ticket information
         setAllInfo((prevAllInfo) => ({
           ...prevAllInfo,
@@ -784,7 +762,7 @@ const TicketsSelection = () => {
           total_amount_paid: updatedTotalAmountPaid,
           total_purchased: updatedTotalPurchased,
         }));
-  
+
         return {
           ...prevData,
           ticket_information: updatedTicketInformation,
@@ -796,7 +774,7 @@ const TicketsSelection = () => {
       });
     }
   };
-      
+
   // Function to handle ticket decrement
   const handleDecrement = (ticketId: string) => {
     const ticket = ticketData?.find(
@@ -858,15 +836,16 @@ const TicketsSelection = () => {
 
   const handleDecreaseWithUniqueOrder = (ticketId: string) => {
     setTicketDataQ((prevData) => {
-      console.log("Previous State:", prevData); // Debug previous state
-  
+
       // Check if the ticket is collective
       const isCollectiveTicket = prevData.ticket_information.some(
-        (ticket) => ticket.ticket_id === ticketId && ticket.ticketEntity === TICKET_ENTITY.COLLECTIVE
+        (ticket) =>
+          ticket.ticket_id === ticketId &&
+          ticket.ticketEntity === TICKET_ENTITY.COLLECTIVE
       );
-  
+
       let updatedTicketInformation;
-  
+
       if (isCollectiveTicket) {
         // Remove all tickets with the same `ticketId` for collective tickets
         updatedTicketInformation = prevData.ticket_information.filter(
@@ -878,20 +857,20 @@ const TicketsSelection = () => {
           .map((ticket, index) => ({ ...ticket, index }))
           .filter((ticket) => ticket.ticket_id === ticketId)
           .pop(); // Get the last ticket object for this `ticketId`
-  
+
         if (!lastOrderTicketIndex) {
           // If no matching ticket is found, return the state as-is
           return prevData;
         }
-  
+
         const { index: lastOrderIndex } = lastOrderTicketIndex;
-  
+
         // Remove the ticket with the last `order_number`
         updatedTicketInformation = prevData.ticket_information.filter(
           (_, idx) => idx !== lastOrderIndex
         );
       }
-  
+
       // Reset to default state if no tickets remain
       if (updatedTicketInformation.length === 0) {
         const defaultState = {
@@ -903,35 +882,33 @@ const TicketsSelection = () => {
           total_purchased: 0,
           payment_method: prevData.payment_method || "CARD", // Ensure fallback value for payment_method
         };
-  
-        console.log("Resetting to Default State:", defaultState); // Debug reset state
-  
+
         // Update `allInfo` state to match
         setAllInfo((prevAllInfo) => ({
           ...prevAllInfo,
           ...defaultState,
         }));
-  
+
         return defaultState;
       }
-  
+
       // Recalculate totals if tickets remain
       const updatedFees = updatedTicketInformation
         .filter((ticket) => ticket?.guestAsChargeBearer === true)
         .reduce((acc, ticket) => acc + (ticket.ticketFee || 0), 0);
-  
+
       const updatedDiscount = updatedTicketInformation
         .map((ticket) => ticket?.discountToDeduct || 0)
         .reduce((acc, curr) => acc + curr, 0);
-  
+
       const updatedTotalAmountPaid = updatedTicketInformation
         .map((ticket) => ticket?.subTotal)
         .reduce((acc, curr) => acc + curr, 0);
-  
+
       const updatedTotalPurchased = updatedTicketInformation
         .map((ticket) => ticket?.quantity)
         .reduce((acc, curr) => acc + curr, 0);
-  
+
       const updatedState = {
         ...prevData,
         ticket_information: updatedTicketInformation,
@@ -940,9 +917,7 @@ const TicketsSelection = () => {
         total_amount_paid: updatedTotalAmountPaid,
         total_purchased: updatedTotalPurchased,
       };
-  
-      console.log("Updated State:", updatedState); // Debug updated state
-  
+
       // Update `allInfo` to reflect the changes
       setAllInfo((prevAllInfo) => ({
         ...prevAllInfo,
@@ -961,18 +936,18 @@ const TicketsSelection = () => {
         total_amount_paid: updatedTotalAmountPaid,
         total_purchased: updatedTotalPurchased,
       }));
-  
+
       return updatedState;
     });
   };
-        
+
   const [form] = Form.useForm();
   // ! contactform
   const [additionalFields, setAdditionalFields] = useState<
     { id: number; question: string; answer: string; is_compulsory: boolean }[]
   >([]);
 
-  console.log(ticketDataQ, "ticketDataQ");
+  // console.log(ticketDataQ, "ticketDataQ");
 
   const [attendeesInformation, setAttendeesInformation] = useState<
     {
@@ -1006,6 +981,22 @@ const TicketsSelection = () => {
   // console.log(attendeesInformation, "attendeesInformation");
   const [modal, setModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
+  const [downloadDetails, setDownloadDetails] = useState<
+    {
+      order_number: string;
+      order_date: string;
+      event_date_time: string;
+      event_address: string;
+      buyer_name: string;
+      ticket_name: string;
+      ticket_type: string;
+      event_name: string;
+      // qr_code: string;
+      // ostivities_logo?: string;
+      // ticket_banner?: string;
+    }[]
+  >([]);
+  console.log(downloadDetails, "downloadDetails")
   const [isFormValid, setIsFormValid] = useState(false);
 
   const renderedAttendees = useMemo(() => {
@@ -1330,6 +1321,11 @@ const TicketsSelection = () => {
 
   const handleFinalSubmit = async () => {
     setLoading(true);
+    // const res = await initialisePayment.mutateAsync({
+    //   amount: allInfo.total_amount_paid.toString(),
+    //   email: allInfo?.personal_information?.email,
+    //   event_unique_key: params?.event,
+    // });
     const sanitizedData = {
       ...allInfo, // Spread the existing data
       attendees_information: allInfo.attendees_information.map(
@@ -1350,6 +1346,7 @@ const TicketsSelection = () => {
     });
 
     if (response.status === 200) {
+      // console.log(response, "response")
       setLoading(false);
       removeCookie("ticketDetails");
       removeCookie("selectedTickets");
@@ -1357,6 +1354,37 @@ const TicketsSelection = () => {
       removeCookie("allInfo");
       removeCookie("isToggled");
       setSuccessModal(true);
+      const details = response?.data?.data?.ticket_information?.map((ticket: any) => ({
+        order_number: ticket?.order_number,
+        order_date: dateFormat(response?.data?.data?.createdAt),
+        event_date_time: dateFormat(eventDetails?.startDate),
+        event_address: eventDetails?.address,
+        buyer_name: response?.data?.data?.personal_information?.firstName,
+        ticket_name: ticket?.ticket_name,
+        ticket_type: ticket?.ticket_type,
+        event_name: eventDetails?.eventName,
+        // qr_code: ticket?.qr_code,
+        // ostivities_logo: "",
+        // ticket_banner: ticket?.ticket_banner,
+      }));
+      let combinedDetails = [...details];
+      if (response?.data?.data?.attendees_information?.length > 0) {
+        const extraDetails = response?.data?.data?.attendees_information?.map((attendees: any) => ({
+          order_number: attendees?.ticket_information?.order_number,
+          order_date: dateFormat(response?.data?.data?.createdAt),
+          event_date_time: dateFormat(eventDetails?.startDate),
+          event_address: eventDetails?.address,
+          buyer_name: attendees?.personal_information?.firstName,
+          ticket_name: attendees?.ticket_information?.ticket_name,
+          ticket_type: attendees?.ticket_information?.ticket_type,
+          event_name: eventDetails?.eventName,
+          // qr_code: attendees?.ticket_information?.qr_code,
+          // ostivities_logo: "",
+          // ticket_banner: attendees?.ticket_information?.ticket_banner,
+        }))
+        combinedDetails = [...details, ...extraDetails];
+      }
+      setDownloadDetails(combinedDetails);
     } else {
       setLoading(false);
     }
@@ -1438,7 +1466,15 @@ const TicketsSelection = () => {
         });
       }
     }
-  }, [searchParams, pathname, router, isInitialLoad, setCookie, params?.event, successModal]);
+  }, [
+    searchParams,
+    pathname,
+    router,
+    isInitialLoad,
+    setCookie,
+    params?.event,
+    successModal,
+  ]);
 
   const handleButtonClick = () => {
     if (currentPage === "tickets") {
@@ -2056,8 +2092,8 @@ const TicketsSelection = () => {
               We have reserved your tickets, please complete checkout within{" "}
               <span className="text-OWANBE_PRY text-s font-BricolageGrotesqueRegular">
                 {currentPage === "contactform" ||
-                  (currentPage === "payment") && timer}
-                {/* {timer} */}
+                  (currentPage === "payment" && timer)}
+                {timer}
               </span>{" "}
               minutes to secure your tickets.
             </div>
@@ -2313,7 +2349,7 @@ const TicketsSelection = () => {
             </div>
             {modal && <TimerModal />}
             {successModal && (
-              <PaymentSuccessModal data={eventDetails?.user?.firstName} />
+              <PaymentSuccessModal downloadDetails={downloadDetails} />
             )}
           </section>
         ) : (
@@ -2420,7 +2456,7 @@ const TicketsSelection = () => {
               </div>
             </div>
             {successModal && (
-              <PaymentSuccessModal data={eventDetails?.user?.firstName} />
+              <PaymentSuccessModal downloadDetails={downloadDetails} />
             )}
           </section>
         )}
