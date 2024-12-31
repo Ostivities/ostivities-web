@@ -56,7 +56,7 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(url);
-    setCopySuccess("Copied!");
+    setCopySuccess("Event link Copied!");
     setTimeout(() => setCopySuccess(""), 2000);
   };
 
