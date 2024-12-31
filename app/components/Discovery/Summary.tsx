@@ -382,6 +382,7 @@ const Summary = ({
               </Button>{" "}
             </div>
           )}
+          {/* <PaystackButton {...componentProps} /> */}
           {/* {paymentBtn && (
             <div className="flex justify-center mt-12 mb-6 w-full">
               <button

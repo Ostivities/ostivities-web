@@ -70,14 +70,17 @@ import paystack from "@/public/paystack.png";
 import soldout from "@/public/Soldout.svg";
 import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
 import { useCookies } from "react-cookie";
+import { PaystackButton, usePaystackPayment } from "react-paystack";
 
+const paystack_public_key: any = process.env.OSTIVITIES_PAYSTACK_TEST_KEY;
 
 const TicketsSelection = () => {
   const router = useRouter();
   const params = useParams<{ event: string }>();
+  const [reference, setReference] = useState("");
   const { registerGuest } = useRegisterGuest();
+  const { verifyPayment } = useVerifyPayment();
   const { initialisePayment } = useInitialisePayment();
-  // const { verifyPayment } = useVerifyPayment()
   const pathname = usePathname(); // Get the current path
   const searchParams = useSearchParams(); // Get query params
   const [cookies, setCookie, removeCookie] = useCookies([
@@ -836,7 +839,6 @@ const TicketsSelection = () => {
 
   const handleDecreaseWithUniqueOrder = (ticketId: string) => {
     setTicketDataQ((prevData) => {
-
       // Check if the ticket is collective
       const isCollectiveTicket = prevData.ticket_information.some(
         (ticket) =>
@@ -996,7 +998,7 @@ const TicketsSelection = () => {
       // ticket_banner?: string;
     }[]
   >([]);
-  console.log(downloadDetails, "downloadDetails")
+  // console.log(downloadDetails, "downloadDetails")
   const [isFormValid, setIsFormValid] = useState(false);
 
   const renderedAttendees = useMemo(() => {
@@ -1318,75 +1320,110 @@ const TicketsSelection = () => {
   const onFinishFailed: FormProps<any>["onFinishFailed"] = (errorInfo) => {
     return errorInfo;
   };
-
+  const config = {
+    reference: new Date().getTime().toString(),
+    email: allInfo?.personal_information?.email,
+    amount: allInfo.total_amount_paid, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+    publicKey: paystack_public_key,
+  };
+  // console.log(reference, "reference");
+  const initializePayment = usePaystackPayment(config);
   const handleFinalSubmit = async () => {
     setLoading(true);
-    // const res = await initialisePayment.mutateAsync({
-    //   amount: allInfo.total_amount_paid.toString(),
-    //   email: allInfo?.personal_information?.email,
-    //   event_unique_key: params?.event,
-    // });
-    const sanitizedData = {
-      ...allInfo, // Spread the existing data
-      attendees_information: allInfo.attendees_information.map(
-        ({ id, personal_information, ...attendee }) => ({
-          ...attendee,
-          personal_information: {
-            ...personal_information,
-            confirmEmail: undefined, // Remove `confirmEmail`
-          },
-          payment_method: PAYMENT_METHODS.CARD, // Update the payment method for each attendee
-        })
-      ),
-    };
-    const response = await registerGuest.mutateAsync({
-      ...sanitizedData,
-      payment_method: PAYMENT_METHODS.CARD,
-      eventId: eventDetails?.id,
-    });
 
-    if (response.status === 200) {
-      // console.log(response, "response")
-      setLoading(false);
-      removeCookie("ticketDetails");
-      removeCookie("selectedTickets");
-      removeCookie("ticketDataQ");
-      removeCookie("allInfo");
-      removeCookie("isToggled");
-      setSuccessModal(true);
-      const details = response?.data?.data?.ticket_information?.map((ticket: any) => ({
-        order_number: ticket?.order_number,
-        order_date: dateFormat(response?.data?.data?.createdAt),
-        event_date_time: dateFormat(eventDetails?.startDate),
-        event_address: eventDetails?.address,
-        buyer_name: response?.data?.data?.personal_information?.firstName,
-        ticket_name: ticket?.ticket_name,
-        ticket_type: ticket?.ticket_type,
-        event_name: eventDetails?.eventName,
-        // qr_code: ticket?.qr_code,
-        // ostivities_logo: "",
-        // ticket_banner: ticket?.ticket_banner,
-      }));
-      let combinedDetails = [...details];
-      if (response?.data?.data?.attendees_information?.length > 0) {
-        const extraDetails = response?.data?.data?.attendees_information?.map((attendees: any) => ({
-          order_number: attendees?.ticket_information?.order_number,
-          order_date: dateFormat(response?.data?.data?.createdAt),
-          event_date_time: dateFormat(eventDetails?.startDate),
-          event_address: eventDetails?.address,
-          buyer_name: attendees?.personal_information?.firstName,
-          ticket_name: attendees?.ticket_information?.ticket_name,
-          ticket_type: attendees?.ticket_information?.ticket_type,
-          event_name: eventDetails?.eventName,
-          // qr_code: attendees?.ticket_information?.qr_code,
-          // ostivities_logo: "",
-          // ticket_banner: attendees?.ticket_information?.ticket_banner,
-        }))
-        combinedDetails = [...details, ...extraDetails];
-      }
-      setDownloadDetails(combinedDetails);
-    } else {
-      setLoading(false);
+    const res = await initialisePayment.mutateAsync({
+      amount: allInfo.total_amount_paid.toString(),
+      email: allInfo?.personal_information?.email,
+      event_unique_key: params?.event,
+    });
+    if (res.status === 200) {
+      const onSuccess = async () => {
+        const verify = await verifyPayment.mutateAsync(
+          res?.data?.data?.data?.reference as string
+        );
+        // Implementation for whatever you want to do with reference and after success call.
+        console.log(reference, "reference");
+        console.log(verify, "verify");
+        if(verify.status === 200) {
+          const sanitizedData = {
+            ...allInfo, // Spread the existing data
+            attendees_information: allInfo.attendees_information.map(
+              ({ id, personal_information, ...attendee }) => ({
+                ...attendee,
+                personal_information: {
+                  ...personal_information,
+                  confirmEmail: undefined, // Remove `confirmEmail`
+                },
+                payment_method: PAYMENT_METHODS.CARD, // Update the payment method for each attendee
+              })
+            ),
+          };
+          const response = await registerGuest.mutateAsync({
+            ...sanitizedData,
+            payment_method: PAYMENT_METHODS.CARD,
+            eventId: eventDetails?.id,
+          });
+  
+          if (response.status === 200) {
+            setLoading(false);
+            removeCookie("ticketDetails");
+            removeCookie("selectedTickets");
+            removeCookie("ticketDataQ");
+            removeCookie("allInfo");
+            removeCookie("isToggled");
+            setSuccessModal(true);
+            const details = response?.data?.data?.ticket_information?.map(
+              (ticket: any) => ({
+                order_number: ticket?.order_number,
+                order_date: dateFormat(response?.data?.data?.createdAt),
+                event_date_time: dateFormat(eventDetails?.startDate),
+                event_address: eventDetails?.address,
+                buyer_name: response?.data?.data?.personal_information?.firstName,
+                ticket_name: ticket?.ticket_name,
+                ticket_type: ticket?.ticket_type,
+                event_name: eventDetails?.eventName,
+                // qr_code: ticket?.qr_code,
+                // ostivities_logo: "",
+                // ticket_banner: ticket?.ticket_banner,
+              })
+            );
+            let combinedDetails = [...details];
+            if (response?.data?.data?.attendees_information?.length > 0) {
+              const extraDetails =
+                response?.data?.data?.attendees_information?.map(
+                  (attendees: any) => ({
+                    order_number: attendees?.ticket_information?.order_number,
+                    order_date: dateFormat(response?.data?.data?.createdAt),
+                    event_date_time: dateFormat(eventDetails?.startDate),
+                    event_address: eventDetails?.address,
+                    buyer_name: attendees?.personal_information?.firstName,
+                    ticket_name: attendees?.ticket_information?.ticket_name,
+                    ticket_type: attendees?.ticket_information?.ticket_type,
+                    event_name: eventDetails?.eventName,
+                    // qr_code: attendees?.ticket_information?.qr_code,
+                    // ostivities_logo: "",
+                    // ticket_banner: attendees?.ticket_information?.ticket_banner,
+                  })
+                );
+              combinedDetails = [...details, ...extraDetails];
+            }
+            setDownloadDetails(combinedDetails);
+          } else {
+            setLoading(false);
+          }
+        }
+      };
+
+      // you can call this function anything
+      const onClose = () => {
+        // implementation for  whatever you want to do when the Paystack dialog closed.
+        console.log("closed");
+      };
+      initializePayment({
+        onSuccess,
+        onClose,
+        config,
+      });
     }
   };
 

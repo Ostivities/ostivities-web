@@ -22,12 +22,18 @@ export const useInitialisePayment = () => {
     return { initialisePayment };
 }
 
-export const useVerifyPayment = (reference: string) => {
-    const verifyPayment = useQuery({
-        queryKey: [VERIFY_PAYMENT, reference],
-        queryFn: () => {
-            return API_SERVICE._verifyPayment(reference)
+export const useVerifyPayment = () => {
+    const verifyPayment = useMutation({
+        mutationFn: (reference: string) => {
+        return API_SERVICE._verifyPayment(reference);
+        },
+        mutationKey: [VERIFY_PAYMENT],
+        onSuccess: (data: AxiosResponse) => {
+        successFormatter(data);
+        },
+        onError: (error: AxiosError | any) => {
+        errorFormatter(error);
         },
     });
-    return { verifyPayment }
+    return { verifyPayment };
 }
