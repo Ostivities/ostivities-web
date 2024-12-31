@@ -18,7 +18,6 @@ import {
 } from "@/app/hooks/discount/discount.hook";
 import { useCookies } from "react-cookie";
 
-
 interface SummaryProps {
   continueBtn?: boolean;
   allInfo?: any;
@@ -74,7 +73,7 @@ const Summary = ({
   const [discountMessage, setDiscountMessage] = useState("");
   const [totalTicketPrice, setTotalTicketPrice] = useState<number>();
   const [subTotal, setSubTotal] = useState(false);
-  const [cookies, setCookie] = useCookies(["ticketDetails"])
+  const [cookies, setCookie] = useCookies(["ticketDetails"]);
   const [adjustedTotal, setAdjustedTotal] = useState<string>("0.00");
   const [shownDicount, setShownDiscount] = useState<number>();
   const [validDiscount, setValidDiscount] = useState(false);
@@ -83,18 +82,8 @@ const Summary = ({
   const params = useParams<{ event: string }>();
   const router = useRouter();
 
-  // const { getTicketDiscount } = useGetTicketDiscount(ticketDetails?.map)
   const { getEventDiscount } = useGetEventDiscount(eventId ?? "");
   const discountDetails = getEventDiscount?.data?.data?.data;
-
-  const availableDiscountCode = discountDetails?.map(
-    (discount: any) => discount?.discountCode
-  );
-
-  // useEffect(() => {
-  //   setCookie("ticketDetails", JSON.stringify(ticketDetails))
-  // },[ticketDetails, setCookie])
-
 
   useEffect(() => {
     const handleScroll = () => {
@@ -112,16 +101,16 @@ const Summary = ({
       ticketDetails?.some((ticket) =>
         ticket?.ticketDiscountCode?.includes(discountCode.trim())
       ) ?? false;
-
+  
     setValidDiscount(isValid); // Update validDiscount based on the check
-
+  
     if (!isValid && discountCode.trim()) {
       setDiscountMessage("Invalid discount code for the ticket(s)"); // Set the message if the code is invalid
-    } else {
-      setDiscountMessage(""); // Clear the message when the code is valid or empty
+    } else if (isValid && discountCode.trim()) {
+      setDiscountMessage(""); // Clear the message when the code is valid
     }
   }, [discountCode, ticketDetails]);
-
+  
 
   const handleAddDiscountClick = () => {
     setShowInput(true);
@@ -133,7 +122,16 @@ const Summary = ({
       setDiscountApplied(true);
       onDiscountApplied && onDiscountApplied(discountCode);
     }
+    
+    if (validDiscount) {
+      // Display success message when the discount is valid
+      setDiscountMessage("Discount applied successfully");
+    } else {
+      // Show error message if the discount code is invalid
+      setDiscountMessage("Invalid discount code for the ticket(s)");
+    }
   };
+  
 
   useEffect(() => {
     if (ticketDetails?.length === 0) {
@@ -146,9 +144,6 @@ const Summary = ({
     setDiscountApplied(false);
     onDiscountApplied && onDiscountApplied("");
     setShowInput(false); // Disable input after clearing
-  };
-  const handleClick = () => {
-    onClick && onClick();
   };
 
   return (
@@ -174,21 +169,22 @@ const Summary = ({
             <div
               onClick={
                 ticketDetails &&
-                  ticketDetails.length > 0 &&
-                  ticketDetails
-                    .map((ticket) => ticket?.subTotal || 0)
-                    .reduce((acc, curr) => acc + curr, 0) > 0
+                ticketDetails.length > 0 &&
+                ticketDetails
+                  .map((ticket) => ticket?.subTotal || 0)
+                  .reduce((acc, curr) => acc + curr, 0) > 0
                   ? handleAddDiscountClick
                   : undefined
               }
-              className={`flex-center gap-2 text-lg font-BricolageGrotesqueRegular ${ticketDetails &&
-                  ticketDetails?.length > 0 &&
-                  ticketDetails
-                    ?.map((ticket) => ticket?.subTotal || 0)
-                    ?.reduce((acc, curr) => acc + curr, 0) > 0
+              className={`flex-center gap-2 text-lg font-BricolageGrotesqueRegular ${
+                ticketDetails &&
+                ticketDetails?.length > 0 &&
+                ticketDetails
+                  ?.map((ticket) => ticket?.subTotal || 0)
+                  ?.reduce((acc, curr) => acc + curr, 0) > 0
                   ? "text-OWANBE_PRY cursor-pointer"
                   : "text-gray-400 cursor-not-allowed"
-                }`}
+              }`}
             >
               <h3>Add discount code</h3>
               <MdOutlineDiscount />
@@ -210,8 +206,9 @@ const Summary = ({
                   <button
                     onClick={handleApplyDiscount}
                     disabled={!validDiscount} // Disable button if discountCode is empty or only whitespace
-                    className={`py-1 px-7 rounded-full bg-OWANBE_PRY font-semibold text-white ${!validDiscount && "opacity-50 cursor-not-allowed"
-                      }`}
+                    className={`py-1 px-7 rounded-full bg-OWANBE_PRY font-semibold text-white ${
+                      !validDiscount && "opacity-50 cursor-not-allowed"
+                    }`}
                   >
                     Apply
                   </button>
@@ -272,9 +269,11 @@ const Summary = ({
                       ?.reduce((acc, ticket) => acc + ticket?.ticketFee, 0)
                       .toLocaleString()}
                     {".00 "} */}
-                    {ticketDetails?.filter((ticket: any) => {
-                      return ticket?.guestAsChargeBearer === true
-                    })?.reduce((acc, ticket) => acc + ticket?.ticketFee, 0)
+                    {ticketDetails
+                      ?.filter((ticket: any) => {
+                        return ticket?.guestAsChargeBearer === true;
+                      })
+                      ?.reduce((acc, ticket) => acc + ticket?.ticketFee, 0)
                       .toLocaleString()}
                     {".00 "}
                   </div>
@@ -333,17 +332,17 @@ const Summary = ({
                   backgroundColor:
                     (currentPage === "tickets" &&
                       ticketDetails?.length === 0) ||
-                      (currentPage === "contactform" && !isFormValid) ||
-                      (currentPage === "payment" &&
-                        (!termsAndCondition || !paymentMethod))
+                    (currentPage === "contactform" && !isFormValid) ||
+                    (currentPage === "payment" &&
+                      (!termsAndCondition || !paymentMethod))
                       ? "#cccccc" // Gray for disabled
                       : "#e20000", // Red for active
                   color:
                     (currentPage === "tickets" &&
                       ticketDetails?.length === 0) ||
-                      (currentPage === "contactform" && !isFormValid) ||
-                      (currentPage === "payment" &&
-                        (!termsAndCondition || !paymentMethod))
+                    (currentPage === "contactform" && !isFormValid) ||
+                    (currentPage === "payment" &&
+                      (!termsAndCondition || !paymentMethod))
                       ? "#666666"
                       : "white",
                   height: "50px",
@@ -355,8 +354,8 @@ const Summary = ({
                   currentPage === "tickets"
                     ? "Continue"
                     : currentPage === "contactform" && !isFormValid
-                      ? "Continue"
-                      : "Continue"
+                    ? "Continue"
+                    : "Continue"
                 }
                 disabled={
                   (currentPage === "tickets" && ticketDetails?.length === 0) ||
@@ -371,14 +370,14 @@ const Summary = ({
                     ticketDetails
                       ?.map((tickets) => tickets?.subTotal)
                       .reduce((acc, curr) => acc + curr, 0) === 0
-                    ? "Order Tickets"
-                    : currentPage === "contactform" &&
-                      ticketDetails &&
-                      ticketDetails
-                        ?.map((tickets) => tickets?.subTotal)
-                        .reduce((acc, curr) => acc + curr, 0) > 0
-                      ? "Continue"
-                      : "Checkout"}
+                  ? "Order Tickets"
+                  : currentPage === "contactform" &&
+                    ticketDetails &&
+                    ticketDetails
+                      ?.map((tickets) => tickets?.subTotal)
+                      .reduce((acc, curr) => acc + curr, 0) > 0
+                  ? "Continue"
+                  : "Checkout"}
               </Button>{" "}
             </div>
           )}

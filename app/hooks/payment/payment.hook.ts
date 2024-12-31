@@ -13,7 +13,7 @@ export const useInitialisePayment = () => {
         },
         mutationKey: [INITIALISE_PAYMENT],
         onSuccess: (data: AxiosResponse) => {
-        successFormatter(data);
+        // successFormatter(data);
         },
         onError: (error: AxiosError | any) => {
         errorFormatter(error);
@@ -29,7 +29,7 @@ export const useVerifyPayment = () => {
         },
         mutationKey: [VERIFY_PAYMENT],
         onSuccess: (data: AxiosResponse) => {
-        successFormatter(data);
+        // successFormatter(data);
         },
         onError: (error: AxiosError | any) => {
         errorFormatter(error);

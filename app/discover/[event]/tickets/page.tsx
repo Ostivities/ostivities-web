@@ -103,6 +103,7 @@ const TicketsSelection = () => {
   const ticketData = getTicketsByUniqueKey?.data?.data?.data;
   const discountDetails = getEventDiscount?.data?.data?.data;
   const [isToggled, setIsToggled] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
   const title = (
     <div className="flex-center gap-2">
       <Image
@@ -143,6 +144,7 @@ const TicketsSelection = () => {
     [key: string]: number;
   }>({});
 
+  console.log(selectedTickets, "selectedTickets")
   const [ticketDetails, setTicketDetails] = useState<
     {
       ticketName: string;
@@ -285,8 +287,8 @@ const TicketsSelection = () => {
     payment_method: PAYMENT_METHODS.FREE,
   });
 
-  // console.log(ticketDetails, "ticketDetails");
-  // console.log(allInfo, "allInfo");
+  console.log(ticketDetails, "ticketDetails");
+  console.log(allInfo, "allInfo");
 
   useEffect(() => {
     if (!cookies?.ticketDetails || ticketDetails?.length > 0) {
@@ -366,7 +368,7 @@ const TicketsSelection = () => {
 
   useEffect(() => {
     // Cleanup cookies when navigating away from the current event
-    if (!pathname.startsWith(`/discover/${params?.event}/tickets`)) {
+    if (!pathname.startsWith(`/discover/${params?.event}/tickets`) || successModal === true) {
       removeCookie("ticketDetails", {
         path: `/discover/${params?.event}/tickets`,
       });
@@ -378,8 +380,9 @@ const TicketsSelection = () => {
       });
       removeCookie("allInfo", { path: `/discover/${params?.event}/tickets` });
       removeCookie("isToggled", { path: `/discover/${params?.event}/tickets` });
+
     }
-  }, [pathname, params?.event, removeCookie]);
+  }, [pathname, params?.event, removeCookie, successModal]);
 
   useEffect(() => {
     if (cookies?.isToggled) {
@@ -982,7 +985,6 @@ const TicketsSelection = () => {
   >([]);
   // console.log(attendeesInformation, "attendeesInformation");
   const [modal, setModal] = useState(false);
-  const [successModal, setSuccessModal] = useState(false);
   const [downloadDetails, setDownloadDetails] = useState<
     {
       order_number: string;
@@ -1326,8 +1328,32 @@ const TicketsSelection = () => {
     amount: allInfo.total_amount_paid, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
     publicKey: paystack_public_key,
   };
-  // console.log(reference, "reference");
   const initializePayment = usePaystackPayment(config);
+
+  const initialState = {
+    personal_information: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phoneNumber: '',
+    },
+    additional_information: [],
+    attendees_information: [],
+    ticket_information: [],
+    event: eventDetails?.id, // Example default value, you can modify
+    guest_category: GUEST_CATEGORY.BUYER,
+    event_unique_code: params?.event,
+    fees: 0,
+    total_amount_paid: 0,
+    discountCode: '',
+    discount: 0,
+    total_purchased: 0,
+    payment_method: PAYMENT_METHODS.FREE,
+  };
+  
+  const handleResetState = () => {
+    setAllInfo(initialState); // Reset the state to initialState
+  };
   const handleFinalSubmit = async () => {
     setLoading(true);
 
@@ -1342,9 +1368,12 @@ const TicketsSelection = () => {
           res?.data?.data?.data?.reference as string
         );
         // Implementation for whatever you want to do with reference and after success call.
-        console.log(reference, "reference");
-        console.log(verify, "verify");
-        if(verify.status === 200) {
+        console.log(
+          allInfo.total_amount_paid.toString(),
+          "allInfo.total_amount_paid.toString()"
+        );
+        // console.log(verify, "verify");
+        if (verify.status === 200) {
           const sanitizedData = {
             ...allInfo, // Spread the existing data
             attendees_information: allInfo.attendees_information.map(
@@ -1363,7 +1392,12 @@ const TicketsSelection = () => {
             payment_method: PAYMENT_METHODS.CARD,
             eventId: eventDetails?.id,
           });
-  
+          removeCookie("ticketDetails");
+          removeCookie("selectedTickets");
+          removeCookie("ticketDataQ");
+          removeCookie("allInfo");
+          removeCookie("isToggled");
+
           if (response.status === 200) {
             setLoading(false);
             removeCookie("ticketDetails");
@@ -1372,13 +1406,17 @@ const TicketsSelection = () => {
             removeCookie("allInfo");
             removeCookie("isToggled");
             setSuccessModal(true);
+            handleResetState();
+            setTicketDetails([]);
+            setSelectedTickets({})
             const details = response?.data?.data?.ticket_information?.map(
               (ticket: any) => ({
                 order_number: ticket?.order_number,
                 order_date: dateFormat(response?.data?.data?.createdAt),
                 event_date_time: dateFormat(eventDetails?.startDate),
                 event_address: eventDetails?.address,
-                buyer_name: response?.data?.data?.personal_information?.firstName,
+                buyer_name:
+                  response?.data?.data?.personal_information?.firstName,
                 ticket_name: ticket?.ticket_name,
                 ticket_type: ticket?.ticket_type,
                 event_name: eventDetails?.eventName,
@@ -2169,11 +2207,7 @@ const TicketsSelection = () => {
               </h3>
               {isToggled === true && (
                 <div className="text-OWANBE_PRY text-md font-BricolageGrotesqueBold my-4 custom-font-size mt-4">
-                  Ticket 1 -{" "}
-                  {ticketDetails?.[0]?.ticketEntity === TICKET_ENTITY.COLLECTIVE
-                    ? `Collective of ${ticketDetails?.[0]?.groupSize}`
-                    : "Single"}{" "}
-                  - {ticketDetails?.[0]?.ticketName}
+                  Ticket - {ticketDetails?.[0]?.ticketName}
                 </div>
               )}
               <Form
