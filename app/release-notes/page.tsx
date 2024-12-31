@@ -13,7 +13,7 @@ function ReleaseNote(): JSX.Element {
     //   tags: ["Improvement"],
     // },
     {
-      date: "January 1, 2025",
+      date: "-------, 2025",
       title: "Ostivities Launch",
       description:
         "Ostivities officially launches, empowering event creators to seamlessly create, manage, and promote events on the platform. With user-friendly tools for event planning, and ticketing, Ostivities provides a streamlined experience for both creators and attendees. The launch marks the beginning of an exciting journey, introducing new features and continuous improvements to enhance event management.",
