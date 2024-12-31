@@ -56,7 +56,7 @@ const ShareModalContent: React.FC<{ url: string; title: string }> = ({
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(url);
-    setCopySuccess("Copied!");
+    setCopySuccess("Event link Copied!");
     setTimeout(() => setCopySuccess(""), 2000);
   };
 
@@ -696,7 +696,7 @@ const EventDetail = () => {
                         <ShareAltOutlined className="text-black text-2xl" />
                       }
                       onClick={handleOpenModal}
-                      className="bg-white border-none p-0"
+                      className="bg-white border-grey p-0 shadow-sm"
                     />
                     <Tooltip
                       title={
@@ -716,7 +716,7 @@ const EventDetail = () => {
                               "_blank"
                             )
                           }
-                          className="bg-white border-none p-0"
+                          className="bg-white border-grey p-0 shadow-sm"
                         />
                       ) : (
                         <Button
@@ -724,7 +724,7 @@ const EventDetail = () => {
                             <EditOutlined className="text-black text-2xl" />
                           }
                           onClick={handleShowModal}
-                          className="bg-white border-none p-0"
+                          className="bg-white border-grey p-0 shadow-sm"
                         />
                       )}
                     </Tooltip>
