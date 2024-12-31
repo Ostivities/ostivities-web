@@ -61,22 +61,24 @@ function CreateTicketPage(): JSX.Element {
               />
             </Space>
           </div>
-          <Button 
-            type="default"
-            size={"large"}
-            className="font-BricolageGrotesqueSemiBold button-style sign-in cursor-pointer font-bold float-end place-self-end"
-            style={{ width: "150px" }}
-            onClick={() => {
-              setCookie("stage_one", "process");
-              setCookie("stage_two", "process");
-              setCookie("stage_three", "wait");
-              router.push(
-                `/discover/create-events/${params?.id}/event_appearance`
-              );
-            }}
-          >
-            Back
-          </Button>
+          <div className="hidden md:flex">
+            <Button
+              type="default"
+              size={"large"}
+              className="font-BricolageGrotesqueSemiBold button-style sign-in cursor-pointer font-bold float-end place-self-end"
+              style={{ width: "150px" }}
+              onClick={() => {
+                setCookie("stage_one", "process");
+                setCookie("stage_two", "process");
+                setCookie("stage_three", "wait");
+                router.push(
+                  `/discover/create-events/${params?.id}/event_appearance`
+                );
+              }}
+            >
+              Back
+            </Button>
+          </div>
         </Flex>
         <div className="w-full mx-auto flex flex-col space-y-5 py-6">
           <div
@@ -117,7 +119,9 @@ function CreateTicketPage(): JSX.Element {
               size={"large"}
               className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold equal-width-button"
               onClick={() => {
-                router.push(`/discover/create-events/${params?.id}/incomplete-publish-event`);
+                router.push(
+                  `/discover/create-events/${params?.id}/incomplete-publish-event`
+                );
               }}
             >
               Skip & do this later
@@ -128,14 +132,15 @@ function CreateTicketPage(): JSX.Element {
               size="large"
               className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
               onClick={() => {
-                router.push(`/discover/create-events/${params?.id}/publish-events`);
+                router.push(
+                  `/discover/create-events/${params?.id}/publish-events`
+                );
               }}
               disabled={true}
               style={{
                 backgroundColor: "#cccccc !important",
                 color: "#666666 !important",
               }}
-
               title="This button is disabled until the user creates a ticket"
             >
               Save & continue

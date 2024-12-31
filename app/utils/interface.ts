@@ -166,6 +166,24 @@ export interface IModal {
   dataToDelete?: any;
 }
 
+export interface downloadDataItem {
+ downloadDetails?: {
+  order_number: string,
+  order_date: string,
+  event_date_time: string,
+  event_address: string,
+  buyer_name: string,
+  ticket_name: string,
+  ticket_type: string,
+  event_name: string,
+  qr_code?: string,
+  ostivities_logo?: string,
+  ticket_banner?: string
+ }[];
+ open?: boolean;
+ onClose?: any;
+}
+
 export interface IModal2 {
   id?: any;
   ticketEntity?: string;
@@ -735,6 +753,12 @@ export interface ICheckInSummary {
   event: string;
   createdAt: string;
   id: string;
+}
+
+export interface IPaymentInitialise {
+  amount: string,
+  email: string,
+  event_unique_key: string,
 }
 
 

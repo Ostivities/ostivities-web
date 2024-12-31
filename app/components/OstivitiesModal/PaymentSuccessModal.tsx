@@ -1,39 +1,74 @@
-'use client';
+"use client";
 
-import { IModal } from '@/app/utils/interface';
-import Image from 'next/image';
+import { IModal, downloadDataItem } from "@/app/utils/interface";
+import Image from "next/image";
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { useParams, useRouter } from "next/navigation";
 import { pdfGenerator } from "../../TicketPdfGenerator";
-import { Tooltip } from 'antd';
+import { Tooltip } from "antd";
 
-
-const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): JSX.Element => {
+const PaymentSuccessModal = ({
+  downloadDetails, open, onClose
+}: downloadDataItem): JSX.Element => {
   const router = useRouter();
   const params = useParams<{ event: string }>();
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
-
+  console.log(downloadDetails, "downloadDetails");
   // Check for event details
-  const eventDetails = getUserEventByUniqueKey?.data?.data?.data === null ? router.push('/not-found') : getUserEventByUniqueKey?.data?.data?.data;
-
+  const eventDetails =
+    getUserEventByUniqueKey?.data?.data?.data === null
+      ? router.push("/not-found")
+      : getUserEventByUniqueKey?.data?.data?.data;
 
   // Function to sync event to calendar
   const handleSyncToCalendar = () => {
-    const eventName = encodeURIComponent(eventDetails.eventName || 'Event Name');
+    const eventName = encodeURIComponent(
+      eventDetails.eventName || "Event Name"
+    );
     const startDate = new Date(eventDetails.startDate);
     const endDate = new Date(eventDetails.endDate);
 
     // Format dates for Google Calendar
-    const startFormatted = `${startDate.getUTCFullYear()}${(startDate.getUTCMonth() + 1).toString().padStart(2, '0')}${startDate.getUTCDate().toString().padStart(2, '0')}T${startDate.getUTCHours().toString().padStart(2, '0')}${startDate.getUTCMinutes().toString().padStart(2, '0')}00Z`;
-    const endFormatted = `${endDate.getUTCFullYear()}${(endDate.getUTCMonth() + 1).toString().padStart(2, '0')}${endDate.getUTCDate().toString().padStart(2, '0')}T${endDate.getUTCHours().toString().padStart(2, '0')}${endDate.getUTCMinutes().toString().padStart(2, '0')}00Z`;
+    const startFormatted = `${startDate.getUTCFullYear()}${(
+      startDate.getUTCMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}${startDate
+      .getUTCDate()
+      .toString()
+      .padStart(2, "0")}T${startDate
+      .getUTCHours()
+      .toString()
+      .padStart(2, "0")}${startDate
+      .getUTCMinutes()
+      .toString()
+      .padStart(2, "0")}00Z`;
+    const endFormatted = `${endDate.getUTCFullYear()}${(
+      endDate.getUTCMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}${endDate
+      .getUTCDate()
+      .toString()
+      .padStart(2, "0")}T${endDate
+      .getUTCHours()
+      .toString()
+      .padStart(2, "0")}${endDate
+      .getUTCMinutes()
+      .toString()
+      .padStart(2, "0")}00Z`;
 
-    const timeZone = encodeURIComponent(eventDetails.timeZone || 'UTC');
-    const location = encodeURIComponent(eventDetails.address || 'Event Location');
-    const details = encodeURIComponent(`Event Details: ${eventDetails.eventDetails || 'No details provided'}`); // Get event details for calendar
+    const timeZone = encodeURIComponent(eventDetails.timeZone || "UTC");
+    const location = encodeURIComponent(
+      eventDetails.address || "Event Location"
+    );
+    const details = encodeURIComponent(
+      `Event Details: ${eventDetails.eventDetails || "No details provided"}`
+    ); // Get event details for calendar
 
     const eventLink = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${eventName}&dates=${startFormatted}/${endFormatted}&details=${details}&location=${location}&ctz=${timeZone}`;
 
-    window.open(eventLink, '_blank');
+    window.open(eventLink, "_blank");
   };
 
   const payload = {
@@ -49,7 +84,7 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
         event_name: "Ostivities Fest 2024",
         qr_code: "https://example.com/qrcode123456",
         ostivities_logo: "../../public/owanbe.svg",
-        ticket_banner: "../../public/owanbe.svg"
+        ticket_banner: "../../public/owanbe.svg",
       },
       {
         order_number: "789012",
@@ -62,7 +97,7 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
         event_name: "Ostivities Concert Night",
         qr_code: "https://example.com/qrcode789012",
         ostivities_logo: "../../public/owanbe.svg",
-        ticket_banner: "../../public/owanbe.svg"
+        ticket_banner: "../../public/owanbe.svg",
       },
       {
         order_number: "345678",
@@ -75,11 +110,11 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
         event_name: "Ostivities Winter Gala",
         qr_code: "https://example.com/qrcode345678",
         ostivities_logo: "../../public/owanbe.svg",
-        ticket_banner: "../../public/owanbe.svg"
-      }
+        ticket_banner: "../../public/owanbe.svg",
+      },
     ],
     order_number: "345678",
-  }
+  };
 
   return (
     <div className="fixed inset-0 bg-black/20 grid place-items-center z-20">
@@ -102,13 +137,23 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
             Success!
           </h2>
           <p className="font-bricolage-grotesque font-semibold text-OWAMBE_FADE_TEXT mx-auto mt-5">
-            Your order was successful. We&apos;ve also sent a copy to your email address. If you do not receive your ticket,
-            please email us at <a href={`mailto:${eventDetails?.user?.email}`} style={{ color: "#e20000", textDecoration: "none" }}>{eventDetails?.user?.email}</a>
+            Your order was successful. We&apos;ve also sent a copy to your email
+            address. If you do not receive your ticket, please email us at{" "}
+            <a
+              href={`mailto:${eventDetails?.user?.email}`}
+              style={{ color: "#e20000", textDecoration: "none" }}
+            >
+              {eventDetails?.user?.email}
+            </a>
           </p>
           <div className="flex flex-col items-center space-y-4 mt-10">
-          <div className="flex items-center space-x-4 w-[20rem]">
+            <div className="flex items-center space-x-4 w-[20rem]">
               <button
-                onClick={() => pdfGenerator(payload)}
+                onClick={() =>
+                  pdfGenerator({
+                    content: downloadDetails ?? [], // Wrap the array with the 'content' key
+                  })
+                }
                 className="primary-btn font-normal text-base flex-1 whitespace-nowrap px-3 py-2"
               >
                 Download Ticket
@@ -117,7 +162,7 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
                 <button
                   onClick={handleSyncToCalendar}
                   className="flex items-center justify-center p-2 rounded-full"
-                  style={{ backgroundColor: '#fadede' }}
+                  style={{ backgroundColor: "#fadede" }}
                   aria-label="Sync to Calendar"
                 >
                   <Image
@@ -131,7 +176,9 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
             </div>
             <div className="flex items-center space-x-4 w-[20rem]">
               <button
-                onClick={() => router.push(`/discover/${params?.event}`)}
+                onClick={() =>
+                  router.push(`/discover/${params?.event}/tickets`)
+                }
                 className="primary-btn font-normal continue cursor-pointer text-base flex-1 whitespace-nowrap px-3 py-2"
               >
                 Buy Again
@@ -140,7 +187,7 @@ const PaymentSuccessModal = ({ open, onCancel, onClose, onOk, data }: IModal): J
                 <button
                   onClick={() => router.push(`/discover`)}
                   className="flex items-center justify-center p-2 rounded-full"
-                  style={{ backgroundColor: '#fadede' }}
+                  style={{ backgroundColor: "#fadede" }}
                   aria-label="Go back to discovery"
                 >
                   <Image

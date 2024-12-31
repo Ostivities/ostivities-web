@@ -130,7 +130,7 @@ function Steppers(): JSX.Element {
           size="default"
         />
       </div>
-      <div className="block md:hidden">
+      <div className="block md:hidden pt-10 pl-3">
         <style>
           {`
           /* Change color for lines after finished and processing steps */
@@ -156,7 +156,7 @@ function Steppers(): JSX.Element {
           current={cookies?.form_stage}
           direction="horizontal"
           labelPlacement="vertical"
-          className="mx-auto"
+          className="min-[577px]:mx-auto "
           size= "small"
           // style={{ width: "500px" }}
           items={[
