@@ -13,6 +13,7 @@ const nextConfig = {
     NEXT_PUBLIC_GOOGLE_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
     OSTIVITIES_REFERENCE_KEY: process.env.OSTIVITIES_REFERENCE_KEY,
     OSTIVITIES_REFERENCE_TEXT: process.env.OSTIVITIES_REFERENCE_TEXT,
+    OSTIVITIES_PAYSTACK_TEST_KEY: process.env.OSTIVITIES_PAYSTACK_TEST_KEY,
   },
   experimental: {
     missingSuspenseWithCSRBailout: false,

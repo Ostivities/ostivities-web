@@ -380,7 +380,7 @@ export class API_SERVICE {
 
   static async _initialisePayment(data: IPaymentInitialise): Promise<AxiosResponse> {
     return await instance({
-      url: `/payment/initialise`,
+      url: `/payments/initialise`,
       method: HttpMethod.POST,
       data,
     });
@@ -388,7 +388,7 @@ export class API_SERVICE {
 
   static async _verifyPayment(reference: string): Promise<AxiosResponse> {
     return await instance({
-      url: `/payment/verify/${reference}`,
+      url: `/payments/verify/${reference}`,
       method: HttpMethod.GET,
     });
   }

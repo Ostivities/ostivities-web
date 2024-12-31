@@ -97,7 +97,7 @@ function AddTicketModal({ open, onCancel, onOk }: IModal): JSX.Element {
             )}
           </>
         ) : (
-          <div className="grid grid-cols-2 gap-x-6 gap-y-6 py-9">
+          <div className="md:grid md:grid-cols-2 md:gap-x-6 gap-y-6 py-9 flex flex-col">
             <div
               className={`w-full flex flex-col space-y-9 items-center justify-center py-9 px-6 ticket-category ${
                 activeItem === "Single Ticket"
