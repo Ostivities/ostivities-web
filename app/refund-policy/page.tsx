@@ -22,7 +22,7 @@ function RefundPolicy(): JSX.Element {
                 }}
               >
                 <p style={{ fontSize: "16px", marginBottom: "15px" }}>
-                <strong>Effective Date:</strong> January 1, 2025
+                <strong>Effective Date:</strong> -------, 2025
                 </p>
                 <p style={{ fontSize: "16px", marginBottom: "24px" }}>
                 <strong>Last Updated:</strong> November 1, 2024     
