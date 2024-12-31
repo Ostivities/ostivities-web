@@ -144,7 +144,7 @@ const TicketsSelection = () => {
     [key: string]: number;
   }>({});
 
-  console.log(selectedTickets, "selectedTickets")
+  // console.log(selectedTickets, "selectedTickets")
   const [ticketDetails, setTicketDetails] = useState<
     {
       ticketName: string;
@@ -287,8 +287,8 @@ const TicketsSelection = () => {
     payment_method: PAYMENT_METHODS.FREE,
   });
 
-  console.log(ticketDetails, "ticketDetails");
-  console.log(allInfo, "allInfo");
+  // console.log(ticketDetails, "ticketDetails");
+  // console.log(allInfo, "allInfo");
 
   useEffect(() => {
     if (!cookies?.ticketDetails || ticketDetails?.length > 0) {
@@ -1325,7 +1325,7 @@ const TicketsSelection = () => {
   const config = {
     reference: new Date().getTime().toString(),
     email: allInfo?.personal_information?.email,
-    amount: allInfo.total_amount_paid, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+    amount: allInfo.total_amount_paid * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
     publicKey: paystack_public_key,
   };
   const initializePayment = usePaystackPayment(config);
@@ -1350,7 +1350,6 @@ const TicketsSelection = () => {
     total_purchased: 0,
     payment_method: PAYMENT_METHODS.FREE,
   };
-  
   const handleResetState = () => {
     setAllInfo(initialState); // Reset the state to initialState
   };
@@ -1367,12 +1366,7 @@ const TicketsSelection = () => {
         const verify = await verifyPayment.mutateAsync(
           res?.data?.data?.data?.reference as string
         );
-        // Implementation for whatever you want to do with reference and after success call.
-        console.log(
-          allInfo.total_amount_paid.toString(),
-          "allInfo.total_amount_paid.toString()"
-        );
-        // console.log(verify, "verify");
+
         if (verify.status === 200) {
           const sanitizedData = {
             ...allInfo, // Spread the existing data
@@ -1454,8 +1448,7 @@ const TicketsSelection = () => {
 
       // you can call this function anything
       const onClose = () => {
-        // implementation for  whatever you want to do when the Paystack dialog closed.
-        console.log("closed");
+        setLoading(false);
       };
       initializePayment({
         onSuccess,
@@ -1592,6 +1585,12 @@ const TicketsSelection = () => {
       pauseTimer();
     }
   }, [minutes, remainingSeconds, successModal, pauseTimer]);
+
+  useEffect(() => {
+    if(currentPage === "tickets") {
+      setSuccessModal(false)
+    }
+  }, [currentPage])
 
   const [termsAndCondition, setTermsAndCondition] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<
