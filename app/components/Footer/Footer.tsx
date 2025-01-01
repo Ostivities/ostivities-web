@@ -11,7 +11,7 @@ import { Space } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { Heading3, Heading5, Paragraph, Small } from "../typography/Typography";
+import { Paragraph, Small } from "../typography/Typography";
 import Script from "next/script";
 
 
