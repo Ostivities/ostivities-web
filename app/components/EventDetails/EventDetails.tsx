@@ -860,7 +860,7 @@ export default function EventDetailsComponent({
               height={14}
               className="cursor-pointer text-lg"
             />
-            <span className="font-BricolageGrotesqueMedium">Copy Link</span>
+            <span className="font-BricolageGrotesqueMedium">Copy Event Link</span>
           </Button>
         </div>
       )}
