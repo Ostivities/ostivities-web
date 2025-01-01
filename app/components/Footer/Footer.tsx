@@ -11,7 +11,7 @@ import { Space } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { Heading5, Paragraph, Small } from "../typography/Typography";
+import { Heading3, Heading5, Paragraph, Small } from "../typography/Typography";
 import Script from "next/script";
 
 
@@ -55,7 +55,17 @@ function Footer(): JSX.Element {
             </div>
             {/* 2 */}
             <div className="flex flex-col space-y-3">
-              <Heading5 content="Legal" className="" />
+              <h3
+                style={{
+                  fontFamily: "'Bricolage Grotesque', sans-serif",
+                  fontWeight: '500', // Medium weight
+                  fontSize: '18px',
+                  lineHeight: '1.5',
+                }}
+              >
+                Legal
+              </h3>
+
               {LEGAL.map((item, index) => (
                 <Link
                   key={index} // Changed to index for uniqueness
@@ -70,7 +80,17 @@ function Footer(): JSX.Element {
             </div>
             {/* 3 */}
             <div className="flex flex-col space-y-3">
-              <Heading5 content="Support" className="" />
+              <h3
+                style={{
+                  fontFamily: "'Bricolage Grotesque', sans-serif",
+                  fontWeight: '500', // Medium weight
+                  fontSize: '18px',
+                  lineHeight: '1.5',
+                }}
+              >
+                Support
+              </h3>
+
               {SUPPORT.map((item, index) => (
                 <Link
                   key={index} // Changed to index for uniqueness
@@ -85,7 +105,17 @@ function Footer(): JSX.Element {
             </div>
             {/* 4 */}
             <div className="flex flex-col space-y-3">
-              <Heading5 content="Newsletter" className="" />
+              <h3
+                style={{
+                  fontFamily: "'Bricolage Grotesque', sans-serif",
+                  fontWeight: '500', // Medium weight
+                  fontSize: '18px',
+                  lineHeight: '1.5',
+                }}
+              >
+                Newsletter
+              </h3>
+
               <Small
                 content={"Sign up to our newsletter to keep yourself updated about us."}
                 className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
