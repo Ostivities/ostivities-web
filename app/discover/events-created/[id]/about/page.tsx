@@ -988,7 +988,7 @@ const AboutEvent = () => {
                       )}
                     />
                   </div>
-                  ;{/* End Date & Time */}
+                  {/* End Date & Time */}
                   <div style={{ flex: "1 1 auto", minWidth: "150px" }}>
                     <Label content="End Date & Time" htmlFor="endDate" />
                     <Controller

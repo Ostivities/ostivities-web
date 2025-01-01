@@ -96,21 +96,21 @@ const Summary = ({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    const isValid =
-      ticketDetails?.some((ticket) =>
-        ticket?.ticketDiscountCode?.includes(discountCode.trim())
-      ) ?? false;
-  
-    setValidDiscount(isValid); // Update validDiscount based on the check
-  
-    if (!isValid && discountCode.trim()) {
-      setDiscountMessage("Invalid discount code for the ticket(s)"); // Set the message if the code is invalid
-    } else if (isValid && discountCode.trim()) {
-      setDiscountMessage(""); // Clear the message when the code is valid
-    }
-  }, [discountCode, ticketDetails]);
-  
+useEffect(() => {
+  const isValid =
+    ticketDetails?.some((ticket) =>
+      ticket?.ticketDiscountCode?.includes(discountCode.trim())
+    ) ?? false;
+
+  setValidDiscount(isValid); // Update validDiscount based on the check
+
+  if (!isValid && discountCode.trim()) {
+    setDiscountMessage("Invalid discount code for the ticket(s)"); // Set the message if the code is invalid
+  } else if (isValid && discountCode.trim() && validDiscount === false) {
+    setDiscountMessage(""); // Clear the message when the code is valid
+  }
+}, [discountCode, ticketDetails, validDiscount]);
+
 
   const handleAddDiscountClick = () => {
     setShowInput(true);
@@ -122,16 +122,10 @@ const Summary = ({
       setDiscountApplied(true);
       onDiscountApplied && onDiscountApplied(discountCode);
     }
-    
-    if (validDiscount) {
-      // Display success message when the discount is valid
+    if (validDiscount === true) {
       setDiscountMessage("Discount applied successfully");
-    } else {
-      // Show error message if the discount code is invalid
-      setDiscountMessage("Invalid discount code for the ticket(s)");
     }
   };
-  
 
   useEffect(() => {
     if (ticketDetails?.length === 0) {

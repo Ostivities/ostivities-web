@@ -288,7 +288,7 @@ const TicketsSelection = () => {
   });
 
   // console.log(ticketDetails, "ticketDetails");
-  // console.log(allInfo, "allInfo");
+  console.log(allInfo, "allInfo");
 
   useEffect(() => {
     if (!cookies?.ticketDetails || ticketDetails?.length > 0) {
