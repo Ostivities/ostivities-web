@@ -53,7 +53,7 @@ const ValidatePayment = ({ open, onCancel, onOk, actionType, id, data }: IModal)
           </svg>
           {/* Text under loader */}
           <h2 className="font-bricolage-grotesque font-regular text-xl mt-4">
-            Validating Payment!
+            Verifying Payment!
           </h2>
         </div>
       </Space>
