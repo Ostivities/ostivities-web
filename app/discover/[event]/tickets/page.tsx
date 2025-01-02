@@ -144,7 +144,7 @@ const TicketsSelection = () => {
     [key: string]: number;
   }>({});
 
-  // console.log(selectedTickets, "selectedTickets")
+  console.log(selectedTickets, "selectedTickets")
   const [ticketDetails, setTicketDetails] = useState<
     {
       ticketName: string;
@@ -287,7 +287,7 @@ const TicketsSelection = () => {
     payment_method: PAYMENT_METHODS.FREE,
   });
 
-  // console.log(ticketDetails, "ticketDetails");
+  console.log(ticketDetails, "ticketDetails");
   console.log(allInfo, "allInfo");
 
   useEffect(() => {
@@ -1350,9 +1350,17 @@ const TicketsSelection = () => {
     total_purchased: 0,
     payment_method: PAYMENT_METHODS.FREE,
   };
-  const handleResetState = () => {
-    setAllInfo(initialState); // Reset the state to initialState
-  };
+  const initialTicketDataQ = {
+    ticket_information: [],
+    fees: 0,
+    discount: 0,
+    total_amount_paid: 0,
+    discountCode: "",
+    total_purchased: 0,
+    payment_method: PAYMENT_METHODS.CARD
+  }
+  const isFieldTouched = useRef(false);
+
   const handleFinalSubmit = async () => {
     setLoading(true);
 
@@ -1400,9 +1408,14 @@ const TicketsSelection = () => {
             removeCookie("allInfo");
             removeCookie("isToggled");
             setSuccessModal(true);
-            handleResetState();
+            // handleResetState();
             setTicketDetails([]);
+            setTicketDataQ(initialTicketDataQ)
+            setAllInfo(initialState);
             setSelectedTickets({})
+            isFieldTouched.current = false
+            form.resetFields()
+            setTermsAndCondition(false)
             const details = response?.data?.data?.ticket_information?.map(
               (ticket: any) => ({
                 order_number: ticket?.order_number,
@@ -1415,8 +1428,8 @@ const TicketsSelection = () => {
                 ticket_type: ticket?.ticket_type,
                 event_name: eventDetails?.eventName,
                 // qr_code: ticket?.qr_code,
-                // ostivities_logo: "",
-                // ticket_banner: ticket?.ticket_banner,
+                ostivities_logo: "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
+                ticket_banner: "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735773616/ticketheader_vihwar.png",
               })
             );
             let combinedDetails = [...details];
@@ -1433,8 +1446,8 @@ const TicketsSelection = () => {
                     ticket_type: attendees?.ticket_information?.ticket_type,
                     event_name: eventDetails?.eventName,
                     // qr_code: attendees?.ticket_information?.qr_code,
-                    // ostivities_logo: "",
-                    // ticket_banner: attendees?.ticket_information?.ticket_banner,
+                    ostivities_logo: "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
+                    ticket_banner: "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735773616/ticketheader_vihwar.png",
                   })
                 );
               combinedDetails = [...details, ...extraDetails];
@@ -1458,7 +1471,6 @@ const TicketsSelection = () => {
     }
   };
 
-  const isFieldTouched = useRef(false);
 
   interface DebounceFunction {
     (...args: any[]): void;
