@@ -1429,7 +1429,7 @@ const TicketsSelection = () => {
                 event_name: eventDetails?.eventName,
                 // qr_code: ticket?.qr_code,
                 ostivities_logo: "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
-                // ticket_banner: ticket?.ticket_banner,
+                ticket_banner: "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735773616/ticketheader_vihwar.png",
               })
             );
             let combinedDetails = [...details];
@@ -1447,7 +1447,7 @@ const TicketsSelection = () => {
                     event_name: eventDetails?.eventName,
                     // qr_code: attendees?.ticket_information?.qr_code,
                     ostivities_logo: "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
-                    // ticket_banner: attendees?.ticket_information?.ticket_banner,
+                    ticket_banner: "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735773616/ticketheader_vihwar.png",
                   })
                 );
               combinedDetails = [...details, ...extraDetails];
