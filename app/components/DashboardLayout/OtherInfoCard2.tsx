@@ -33,7 +33,7 @@ const InfoCardM: React.FC<PropsI> = ({
   return (
     <Link
       href={url}
-      className={`relative min-w-[250px] py-2 pl-3 pr-20 flex justify-between items-stretch shadow-md h-[120px] rounded-[20px] overflow-hidden gap-4 ${className}`}
+      className={`relative min-w-[250px] py-2 pl-3 pr-20 flex justify-between items-stretch shadow-md h-[120px] rounded-[20px] overflow-hidden gap-6 ${className}`}
     >
       {/* Image Container */}
       <div className="w-[120px] h-full relative rounded-[15px] overflow-hidden">
@@ -48,7 +48,7 @@ const InfoCardM: React.FC<PropsI> = ({
      </div>
 
       {/* Content Container */}
-      <div className="w-1/2 flex h-full text-black justify-between py-4 bg-white rounded-[20px]">
+      <div className="w-1/2 flex h-full text-black py-4 bg-white rounded-[20px]">
         <div
           className={`px-2 py-1 bg-OWANBE_PRY absolute top-0 right-0 rounded-bl-[1.25rem] ${statusClass}`}
         >

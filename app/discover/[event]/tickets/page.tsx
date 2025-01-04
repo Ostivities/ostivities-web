@@ -104,6 +104,8 @@ const TicketsSelection = () => {
   const discountDetails = getEventDiscount?.data?.data?.data;
   const [isToggled, setIsToggled] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
+  const [verifyPaymentModal, setVerifyPaymentModal] = useState(false);
+
   const title = (
     <div className="flex-center gap-2">
       <Image
@@ -144,7 +146,7 @@ const TicketsSelection = () => {
     [key: string]: number;
   }>({});
 
-  console.log(selectedTickets, "selectedTickets")
+  // console.log(selectedTickets, "selectedTickets");
   const [ticketDetails, setTicketDetails] = useState<
     {
       ticketName: string;
@@ -287,8 +289,8 @@ const TicketsSelection = () => {
     payment_method: PAYMENT_METHODS.FREE,
   });
 
-  console.log(ticketDetails, "ticketDetails");
-  console.log(allInfo, "allInfo");
+  // console.log(ticketDetails, "ticketDetails");
+  // console.log(allInfo, "allInfo");
 
   useEffect(() => {
     if (!cookies?.ticketDetails || ticketDetails?.length > 0) {
@@ -368,7 +370,10 @@ const TicketsSelection = () => {
 
   useEffect(() => {
     // Cleanup cookies when navigating away from the current event
-    if (!pathname.startsWith(`/discover/${params?.event}/tickets`) || successModal === true) {
+    if (
+      !pathname.startsWith(`/discover/${params?.event}/tickets`) ||
+      successModal === true
+    ) {
       removeCookie("ticketDetails", {
         path: `/discover/${params?.event}/tickets`,
       });
@@ -380,7 +385,6 @@ const TicketsSelection = () => {
       });
       removeCookie("allInfo", { path: `/discover/${params?.event}/tickets` });
       removeCookie("isToggled", { path: `/discover/${params?.event}/tickets` });
-
     }
   }, [pathname, params?.event, removeCookie, successModal]);
 
@@ -1322,20 +1326,13 @@ const TicketsSelection = () => {
   const onFinishFailed: FormProps<any>["onFinishFailed"] = (errorInfo) => {
     return errorInfo;
   };
-  const config = {
-    reference: new Date().getTime().toString(),
-    email: allInfo?.personal_information?.email,
-    amount: allInfo.total_amount_paid * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
-    publicKey: paystack_public_key,
-  };
-  const initializePayment = usePaystackPayment(config);
 
   const initialState = {
     personal_information: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      phoneNumber: '',
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
     },
     additional_information: [],
     attendees_information: [],
@@ -1345,7 +1342,7 @@ const TicketsSelection = () => {
     event_unique_code: params?.event,
     fees: 0,
     total_amount_paid: 0,
-    discountCode: '',
+    discountCode: "",
     discount: 0,
     total_purchased: 0,
     payment_method: PAYMENT_METHODS.FREE,
@@ -1357,119 +1354,243 @@ const TicketsSelection = () => {
     total_amount_paid: 0,
     discountCode: "",
     total_purchased: 0,
-    payment_method: PAYMENT_METHODS.CARD
-  }
+    payment_method: PAYMENT_METHODS.CARD,
+  };
   const isFieldTouched = useRef(false);
+
+  const config = {
+    email: allInfo?.personal_information?.email,
+    amount: allInfo.total_amount_paid * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+    publicKey: paystack_public_key,
+    event_unique_key: params?.event,
+  };
+  const initializePayment = usePaystackPayment(config);
+
+  const onSuccess = async (reference: any) => {
+    setVerifyPaymentModal(true);
+    const sanitizedData = {
+      ...allInfo, // Spread the existing data
+      attendees_information: allInfo.attendees_information.map(
+        ({ id, personal_information, ...attendee }) => ({
+          ...attendee,
+          personal_information: {
+            ...personal_information,
+            confirmEmail: undefined, // Remove `confirmEmail`
+          },
+          payment_method: PAYMENT_METHODS.CARD, // Update the payment method for each attendee
+        })
+      ),
+    };
+    const response = await registerGuest.mutateAsync({
+      ...sanitizedData,
+      payment_method: PAYMENT_METHODS.CARD,
+      eventId: eventDetails?.id,
+    });
+    removeCookie("ticketDetails");
+    removeCookie("selectedTickets");
+    removeCookie("ticketDataQ");
+    removeCookie("allInfo");
+    removeCookie("isToggled");
+
+    if (response.status === 200) {
+      setLoading(false);
+      removeCookie("ticketDetails");
+      removeCookie("selectedTickets");
+      removeCookie("ticketDataQ");
+      removeCookie("allInfo");
+      removeCookie("isToggled");
+      setVerifyPaymentModal(false);
+      setSuccessModal(true);
+      setTicketDetails([]);
+      setTicketDataQ(initialTicketDataQ);
+      setAllInfo(initialState);
+      setSelectedTickets({});
+      isFieldTouched.current = false;
+      form.resetFields();
+      setTermsAndCondition(false);
+      const details = response?.data?.data?.ticket_information?.map(
+        (ticket: any) => ({
+          order_number: ticket?.order_number,
+          order_date: dateFormat(response?.data?.data?.createdAt),
+          event_date_time: dateFormat(eventDetails?.startDate),
+          event_address: eventDetails?.address,
+          buyer_name: response?.data?.data?.personal_information?.firstName,
+          ticket_name: ticket?.ticket_name,
+          ticket_type: ticket?.ticket_type,
+          event_name: eventDetails?.eventName,
+          // qr_code: ticket?.qr_code,
+          ostivities_logo:
+            "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
+          ticket_banner:
+            "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735773616/ticketheader_vihwar.png",
+        })
+      );
+      let combinedDetails = [...details];
+      if (response?.data?.data?.attendees_information?.length > 0) {
+        const extraDetails = response?.data?.data?.attendees_information?.map(
+          (attendees: any) => ({
+            order_number: attendees?.ticket_information?.order_number,
+            order_date: dateFormat(response?.data?.data?.createdAt),
+            event_date_time: dateFormat(eventDetails?.startDate),
+            event_address: eventDetails?.address,
+            buyer_name: attendees?.personal_information?.firstName,
+            ticket_name: attendees?.ticket_information?.ticket_name,
+            ticket_type: attendees?.ticket_information?.ticket_type,
+            event_name: eventDetails?.eventName,
+            // qr_code: attendees?.ticket_information?.qr_code,
+            ostivities_logo:
+              "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
+            ticket_banner:
+              "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735773616/ticketheader_vihwar.png",
+          })
+        );
+        combinedDetails = [...details, ...extraDetails];
+      }
+      setDownloadDetails(combinedDetails);
+    }
+  };
+
+  // // you can call this function anything
+  const onClose = () => {
+    setLoading(false);
+  };
 
   const handleFinalSubmit = async () => {
     setLoading(true);
-
-    const res = await initialisePayment.mutateAsync({
-      amount: allInfo.total_amount_paid.toString(),
-      email: allInfo?.personal_information?.email,
-      event_unique_key: params?.event,
+    initializePayment({
+      onSuccess,
+      onClose,
+      config,
     });
-    if (res.status === 200) {
-      const onSuccess = async () => {
-        const verify = await verifyPayment.mutateAsync(
-          res?.data?.data?.data?.reference as string
-        );
-
-        if (verify.status === 200) {
-          const sanitizedData = {
-            ...allInfo, // Spread the existing data
-            attendees_information: allInfo.attendees_information.map(
-              ({ id, personal_information, ...attendee }) => ({
-                ...attendee,
-                personal_information: {
-                  ...personal_information,
-                  confirmEmail: undefined, // Remove `confirmEmail`
-                },
-                payment_method: PAYMENT_METHODS.CARD, // Update the payment method for each attendee
-              })
-            ),
-          };
-          const response = await registerGuest.mutateAsync({
-            ...sanitizedData,
-            payment_method: PAYMENT_METHODS.CARD,
-            eventId: eventDetails?.id,
-          });
-          removeCookie("ticketDetails");
-          removeCookie("selectedTickets");
-          removeCookie("ticketDataQ");
-          removeCookie("allInfo");
-          removeCookie("isToggled");
-
-          if (response.status === 200) {
-            setLoading(false);
-            removeCookie("ticketDetails");
-            removeCookie("selectedTickets");
-            removeCookie("ticketDataQ");
-            removeCookie("allInfo");
-            removeCookie("isToggled");
-            setSuccessModal(true);
-            // handleResetState();
-            setTicketDetails([]);
-            setTicketDataQ(initialTicketDataQ)
-            setAllInfo(initialState);
-            setSelectedTickets({})
-            isFieldTouched.current = false
-            form.resetFields()
-            setTermsAndCondition(false)
-            const details = response?.data?.data?.ticket_information?.map(
-              (ticket: any) => ({
-                order_number: ticket?.order_number,
-                order_date: dateFormat(response?.data?.data?.createdAt),
-                event_date_time: dateFormat(eventDetails?.startDate),
-                event_address: eventDetails?.address,
-                buyer_name:
-                  response?.data?.data?.personal_information?.firstName,
-                ticket_name: ticket?.ticket_name,
-                ticket_type: ticket?.ticket_type,
-                event_name: eventDetails?.eventName,
-                // qr_code: ticket?.qr_code,
-                ostivities_logo: "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
-                ticket_banner: "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735773616/ticketheader_vihwar.png",
-              })
-            );
-            let combinedDetails = [...details];
-            if (response?.data?.data?.attendees_information?.length > 0) {
-              const extraDetails =
-                response?.data?.data?.attendees_information?.map(
-                  (attendees: any) => ({
-                    order_number: attendees?.ticket_information?.order_number,
-                    order_date: dateFormat(response?.data?.data?.createdAt),
-                    event_date_time: dateFormat(eventDetails?.startDate),
-                    event_address: eventDetails?.address,
-                    buyer_name: attendees?.personal_information?.firstName,
-                    ticket_name: attendees?.ticket_information?.ticket_name,
-                    ticket_type: attendees?.ticket_information?.ticket_type,
-                    event_name: eventDetails?.eventName,
-                    // qr_code: attendees?.ticket_information?.qr_code,
-                    ostivities_logo: "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
-                    ticket_banner: "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735773616/ticketheader_vihwar.png",
-                  })
-                );
-              combinedDetails = [...details, ...extraDetails];
-            }
-            setDownloadDetails(combinedDetails);
-          } else {
-            setLoading(false);
-          }
-        }
-      };
-
-      // you can call this function anything
-      const onClose = () => {
-        setLoading(false);
-      };
-      initializePayment({
-        onSuccess,
-        onClose,
-        config,
-      });
-    }
   };
+  
+  // const res = await initialisePayment.mutateAsync({
+  //   amount: allInfo.total_amount_paid.toString(),
+  //   email: allInfo?.personal_information?.email,
+  //   event_unique_key: params?.event,
+  // });
+  // if (res.status === 200) {
+
+  // }
+
+  // const config = {
+  //   reference: new Date().getTime().toString(),
+  //   email: allInfo?.personal_information?.email,
+  //   amount: allInfo.total_amount_paid * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+  //   publicKey: paystack_public_key,
+  // };
+  // const initializePayment = usePaystackPayment(config);
+
+  // const handleFinalSubmit = async () => {
+  //   setLoading(true);
+
+  //   const res = await initialisePayment.mutateAsync({
+  //     amount: allInfo.total_amount_paid.toString(),
+  //     email: allInfo?.personal_information?.email,
+  //     event_unique_key: params?.event,
+  //   });
+  //   console.log(res, "initialisePayment")
+  //   if (res.status === 200) {
+  //     const onSuccess = async () => {
+  //       const verify = await verifyPayment.mutateAsync(
+  //         res?.data?.data?.data?.reference as string
+  //       );
+
+  //       if (verify.status === 200) {
+  //         const sanitizedData = {
+  //           ...allInfo, // Spread the existing data
+  //           attendees_information: allInfo.attendees_information.map(
+  //             ({ id, personal_information, ...attendee }) => ({
+  //               ...attendee,
+  //               personal_information: {
+  //                 ...personal_information,
+  //                 confirmEmail: undefined, // Remove confirmEmail
+  //               },
+  //               payment_method: PAYMENT_METHODS.CARD, // Update the payment method for each attendee
+  //             })
+  //           ),
+  //         };
+  //         const response = await registerGuest.mutateAsync({
+  //           ...sanitizedData,
+  //           payment_method: PAYMENT_METHODS.CARD,
+  //           eventId: eventDetails?.id,
+  //         });
+  //         removeCookie("ticketDetails");
+  //         removeCookie("selectedTickets");
+  //         removeCookie("ticketDataQ");
+  //         removeCookie("allInfo");
+  //         removeCookie("isToggled");
+
+  //         if (response.status === 200) {
+  //           setLoading(false);
+  //           removeCookie("ticketDetails");
+  //           removeCookie("selectedTickets");
+  //           removeCookie("ticketDataQ");
+  //           removeCookie("allInfo");
+  //           removeCookie("isToggled");
+  //           setSuccessModal(true);
+  //           // handleResetState();
+  //           setTicketDetails([]);
+  //           setTicketDataQ(initialTicketDataQ)
+  //           setAllInfo(initialState);
+  //           setSelectedTickets({})
+  //           isFieldTouched.current = false
+  //           form.resetFields()
+  //           setTermsAndCondition(false)
+  //           const details = response?.data?.data?.ticket_information?.map(
+  //             (ticket: any) => ({
+  //               order_number: ticket?.order_number,
+  //               order_date: dateFormat(response?.data?.data?.createdAt),
+  //               event_date_time: dateFormat(eventDetails?.startDate),
+  //               event_address: eventDetails?.address,
+  //               buyer_name:
+  //                 response?.data?.data?.personal_information?.firstName,
+  //               ticket_name: ticket?.ticket_name,
+  //               ticket_type: ticket?.ticket_type,
+  //               event_name: eventDetails?.eventName,
+  //               // qr_code: ticket?.qr_code,
+  //               ostivities_logo: "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
+  //               ticket_banner: "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735773616/ticketheader_vihwar.png",
+  //             })
+  //           );
+  //           let combinedDetails = [...details];
+  //           if (response?.data?.data?.attendees_information?.length > 0) {
+  //             const extraDetails =
+  //               response?.data?.data?.attendees_information?.map(
+  //                 (attendees: any) => ({
+  //                   order_number: attendees?.ticket_information?.order_number,
+  //                   order_date: dateFormat(response?.data?.data?.createdAt),
+  //                   event_date_time: dateFormat(eventDetails?.startDate),
+  //                   event_address: eventDetails?.address,
+  //                   buyer_name: attendees?.personal_information?.firstName,
+  //                   ticket_name: attendees?.ticket_information?.ticket_name,
+  //                   ticket_type: attendees?.ticket_information?.ticket_type,
+  //                   event_name: eventDetails?.eventName,
+  //                   // qr_code: attendees?.ticket_information?.qr_code,
+  //                   ostivities_logo: "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
+  //                   ticket_banner: "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735773616/ticketheader_vihwar.png",
+  //                 })
+  //               );
+  //             combinedDetails = [...details, ...extraDetails];
+  //           }
+  //           setDownloadDetails(combinedDetails);
+  //         } else {
+  //           setLoading(false);
+  //         }
+  //       }
+  //     };
+
+  //     // you can call this function anything
+  //     const onClose = () => {
+  //       setLoading(false);
+  //     };
+  //     initializePayment({
+  //       onSuccess,
+  //       onClose,
+  //       config,
+  //     });
+  //   }
+  // }; 
 
 
   interface DebounceFunction {
@@ -1599,10 +1720,10 @@ const TicketsSelection = () => {
   }, [minutes, remainingSeconds, successModal, pauseTimer]);
 
   useEffect(() => {
-    if(currentPage === "tickets") {
-      setSuccessModal(false)
+    if (currentPage === "tickets") {
+      setSuccessModal(false);
     }
-  }, [currentPage])
+  }, [currentPage]);
 
   const [termsAndCondition, setTermsAndCondition] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<
@@ -2430,6 +2551,7 @@ const TicketsSelection = () => {
               </Form>
             </div>
             {modal && <TimerModal />}
+            {/* {verifyPaymentModal && <PaymentValidation />} */}
             {successModal && (
               <PaymentSuccessModal downloadDetails={downloadDetails} />
             )}
@@ -2537,6 +2659,7 @@ const TicketsSelection = () => {
                 </Checkbox>
               </div>
             </div>
+            {verifyPaymentModal && (<PaymentValidation />)}
             {successModal && (
               <PaymentSuccessModal downloadDetails={downloadDetails} />
             )}
