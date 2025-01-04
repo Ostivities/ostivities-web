@@ -59,7 +59,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
   const ticketType: string = Form.useWatch("ticketType", form);
   const guestAsChargeBearer = Form.useWatch("guestAsChargeBearer", form);
   const purchaseLimit: number = Form.useWatch("purchaseLimit", form);
-  
+  const ticketPrice: number = Form.useWatch("ticketPrice", form);
   
   useEffect(() => {
     if (ticketStock === TICKET_STOCK.UNLIMITED) {
@@ -88,6 +88,12 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
     }
   }, [showAdditionalField]);
 
+  useEffect(() => {
+    if (ticketPrice) {
+      const fee = ticketPrice * 0.04 + 100;
+      form.setFieldsValue({ ticketee: fee });
+    }
+  },[ticketPrice])
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, guestAsChargeBearer, ...rest } = values;
     // return 
@@ -271,6 +277,20 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
           style={{ width: "100%" }}
           disabled={ticketStock === TICKET_STOCK.UNLIMITED}
         />
+      </Form.Item>
+
+      <Form.Item<ITicketData>
+        label="Ticket category"
+        name="ticketFee"
+        rules={[
+          {
+            required: true,
+            message: "Please input your ticket category!",
+          },
+        ]}
+        style={{ marginBottom: "8px", display: "none" }}
+      >
+        <Input placeholder="Enter ticket category" />
       </Form.Item>
 
       <Form.Item<ITicketData>

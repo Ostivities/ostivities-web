@@ -419,6 +419,7 @@ export interface ITicketData {
   event: string | number;
   ticketEntity: string | number;
   ticketType: string;
+  ticketFee: number;
   ticketName: string;
   ticketStock: TICKET_STOCK;
   ticketQty: number;

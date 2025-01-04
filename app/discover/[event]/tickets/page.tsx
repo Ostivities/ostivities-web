@@ -1418,7 +1418,7 @@ const TicketsSelection = () => {
           ticket_name: ticket?.ticket_name,
           ticket_type: ticket?.ticket_type,
           event_name: eventDetails?.eventName,
-          // qr_code: ticket?.qr_code,
+          // qr_code: JSON.stringify({order_numer: ticket?.order_number, guest}),
           ostivities_logo:
             "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
           ticket_banner:
@@ -1463,7 +1463,7 @@ const TicketsSelection = () => {
       config,
     });
   };
-  
+
   // const res = await initialisePayment.mutateAsync({
   //   amount: allInfo.total_amount_paid.toString(),
   //   email: allInfo?.personal_information?.email,
