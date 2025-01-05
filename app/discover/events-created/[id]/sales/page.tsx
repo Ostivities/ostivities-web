@@ -60,7 +60,7 @@ const EventSales = () => {
       ticketSold: ticket?.ticket_sold,
       sales: ticket?.ticket_sales_revenue,
       revenue: ticket?.ticket_net_sales_revenue,
-      fees: ticket?.fees,
+      fees: ticket?.ticket_fee,
       dateCreated: ticket?.createdAt,
       guestAsChargeBearer:
         ticket?.guestAsChargeBearer === true ? "Guest" : "Organizer",
@@ -147,13 +147,13 @@ const EventSales = () => {
         />
       ),
       dataIndex: "fees",
-      sorter: (a, b) => (a.fees ?? 0) - (b.fees ?? 0),
+      sorter: (a, b) => (a.ticket_fee ?? 0) - (b.ticket_fee ?? 0),
       render: (record, text) => {
         return (
           <>
             {text?.ticketType === TICKET_TYPE.FREE
               ? `Free`
-              : `₦${record.toLocaleString()}`}
+              : `₦${record?.toLocaleString()}`}
           </>
         );
       },

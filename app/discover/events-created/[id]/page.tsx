@@ -10,12 +10,17 @@ import { HiMiniArrowLongLeft } from "react-icons/hi2";
 import { IoChevronDown } from "react-icons/io5";
 import { LiaExternalLinkAltSolid } from "react-icons/lia";
 import Image from 'next/image';
+import {
+  useGetEventTickets,
+} from "@/app/hooks/ticket/ticket.hook";
+
 
 
 export default function Page(): JSX.Element {
   const pathname = usePathname();
-  const params = useParams();
+  const params = useParams<{ id: string }>();
   const router = useRouter();
+  // const { getTickets } = useGetEventTickets(params?.id);
   const onChange = (checked: boolean) => {
     
   };

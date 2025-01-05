@@ -50,9 +50,6 @@ const DiscountCode = (): JSX.Element => {
   const { profile } = useProfile();
   const { getTickets } = useGetEventTickets(params?.id);
   const ticketData = getTickets?.data?.data?.data;
-  // 
-  // 
-  // 
 
   dayjs.extend(customParseFormat);
 
@@ -150,7 +147,7 @@ const DiscountCode = (): JSX.Element => {
           />
           <br />
 
-          <div className="grid grid-cols-2 gap-x-8">
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-x-8">
             <Form.Item
               label={<Label content="Discount code" />} // Correct usage of Label component
               name="discountCode"
@@ -301,7 +298,7 @@ const DiscountCode = (): JSX.Element => {
         </Space>
         <Space direction="vertical" size="small" style={{ width: "100%" }}>
           <Heading5 content="Usage Limit" />
-          <div className="grid grid-cols-2 gap-x-8">
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-x-8">
             <Form.Item
               label={<Label content="Start Date & Time" />} // Correct usage of Label component
               name="startDateAndTime"

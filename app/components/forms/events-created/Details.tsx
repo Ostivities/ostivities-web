@@ -336,7 +336,6 @@ const EventsCreatedTable: React.FC = () => {
         </div>
         <Table
           loading={getAllUserEvents?.isFetching}
-
           rowSelection={{
             selectedRowKeys,
             onChange: (keys, records) => {
@@ -365,7 +364,7 @@ const EventsCreatedTable: React.FC = () => {
           }}
           columns={columns}
           dataSource={data}
-          className="font-BricolageGrotesqueRegular w-full"
+          className="font-BricolageGrotesqueRegular w-full custom-scrollbar"
           pagination={{
             current: currentPage,
             pageSize: pageSize,
@@ -377,6 +376,7 @@ const EventsCreatedTable: React.FC = () => {
             showSizeChanger: true,
           }}
           scroll={{ x: "max-content" }}
+          
         />
     </React.Fragment>
   );

@@ -31,7 +31,6 @@ import {
   IGuestCreate,
 } from "@/app/utils/interface";
 import {
-  useGetEventTickets,
   useGetEventTicketsByUniqueKey,
 } from "@/app/hooks/ticket/ticket.hook";
 import {
@@ -1363,6 +1362,8 @@ const TicketsSelection = () => {
     amount: allInfo.total_amount_paid * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
     publicKey: paystack_public_key,
     event_unique_key: params?.event,
+    firstName: allInfo?.personal_information?.firstName,
+    lastName: allInfo?.personal_information?.lastName,
   };
   const initializePayment = usePaystackPayment(config);
 

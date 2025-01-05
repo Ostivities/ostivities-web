@@ -419,7 +419,7 @@ export interface ITicketData {
   event: string | number;
   ticketEntity: string | number;
   ticketType: string;
-  ticketFee: number;
+  ticket_fee: number;
   ticketName: string;
   ticketStock: TICKET_STOCK;
   ticketQty: number;
@@ -453,7 +453,7 @@ export interface ITicketDetails {
   ticket_sold: number;
   ticket_net_sales_revenue: number;
   ticket_sales_revenue: number;
-  fees: number;
+  ticket_fee: number;
   status: string;
   ticketPrice?: number
   ticketSold: number
@@ -578,6 +578,7 @@ export interface IGuestData {
     ticket_id: string,
     ticket_name: string,
     quantity: number,
+    order_number: string,
     total_amount: number
   }[],
   personal_information?: {

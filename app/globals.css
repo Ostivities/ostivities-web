@@ -1374,6 +1374,29 @@ z-index: 99; */
   background-color: #e20000; /* Scrollbar color */
   border-radius: 25px; /* Rounded scrollbar ends */
 }
+.custom-scrollbar .ant-table-body {
+  background-color: red !important;
+  overflow-x: auto; /* Ensure horizontal scroll appears */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  height: 8px; /* Set the height of the horizontal scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #e20000; /* Set the color of the scrollbar thumb */
+  border-radius: 4px; /* Rounded corners for the thumb */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Darker thumb on hover */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Set the track color */
+  border-radius: 4px; /* Rounded corners for the track */
+}
+
 @media (max-width: 1024px) {
   .pricing-card {
     flex: 1 1 calc(33.33% - 20px); /* 3 cards per row */
