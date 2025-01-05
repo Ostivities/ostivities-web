@@ -402,7 +402,7 @@ const EventTickets = () => {
               <Button
                 type="primary"
                 size="large"
-                className="font-BricolageGrotesqueSemiBold continue font-bold custom-button equal-width-button"
+                className="font-BricolageGrotesqueSemiBold continue max-[450px]:font-bold custom-button max-[450px]:equal-width-button"
                 style={{
                   borderRadius: "20px",
                   fontFamily: "BricolageGrotesqueMedium",

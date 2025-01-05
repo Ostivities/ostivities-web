@@ -54,7 +54,7 @@ const EventsGuestList = () => {
         (ticket) => ticket?.ticket_name
       ),
       ticketQuantity: item?.total_purchased,
-      orderNumber: item?.order_number,
+      orderNumber: item?.ticket_information?.[0]?.order_number,
       createdAt: item?.createdAt,
       eachTicketQuantity:
         item?.ticket_information?.map((ticket) => ticket?.quantity) || [],

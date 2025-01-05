@@ -91,7 +91,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
   useEffect(() => {
     if (ticketPrice) {
       const fee = ticketPrice * 0.04 + 100;
-      form.setFieldsValue({ ticketee: fee });
+      form.setFieldsValue({ ticket_fee: fee });
     }
   },[ticketPrice])
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
@@ -281,7 +281,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
 
       <Form.Item<ITicketData>
         label="Ticket category"
-        name="ticketFee"
+        name="ticket_fee"
         rules={[
           {
             required: true,
