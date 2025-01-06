@@ -47,7 +47,7 @@ const ValidatePayment = ({
               ></path>
             </svg>
             {/* Text under loader */}
-            <h2 className="font-bricolage-grotesque text-xl mt-4">
+            <h2 className="text-xl font-BricolageGrotesqueRegular mt-4">
               Verifying Payment!
             </h2>
 
