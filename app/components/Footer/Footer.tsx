@@ -181,13 +181,23 @@ function Footer(): JSX.Element {
 
             </div>
           </div>
-          <div className="flex flex-row items-center justify-start md:justify-end lg:justify-end xl:justify-end">
-            <Space direction="horizontal" size={24}>
+        </div>
+        <hr className="hor-rule" />
+        <div className="footer-bottom pt-5 flex flex-row justify-between items-center w-full">
+          <Paragraph
+            content={`© ${currentYear} Ostivities, Inc.`}
+            className="text-start text-OWANBE_H4 font-light font-BricolageGrotesqueLight text-[12px] md:text-base"
+          // Align text to the start (left)
+          />
+          <div className="flex flex-row items-center">
+            <Space direction="horizontal" size={12}>
               <a href="https://www.instagram.com/ostivities" target="_blank" rel="noopener noreferrer">
                 <Image
                   src={Instagram}
                   alt="Instagram"
                   className="cursor-pointer"
+                  width={24}
+                  height={24} 
                 />
               </a>
               <a href="https://x.com/Ostivities" target="_blank" rel="noopener noreferrer">
@@ -195,13 +205,18 @@ function Footer(): JSX.Element {
                   src={Twitter}
                   alt="Twitter"
                   className="cursor-pointer"
+                  width={24}
+                  height={24} 
                 />
+
               </a>
               <a href="https://www.linkedin.com/company/ostivities" target="_blank" rel="noopener noreferrer">
                 <Image
                   src={Linkedln}
                   alt="LinkedIn"
                   className="cursor-pointer"
+                  width={24}
+                  height={24} 
                 />
               </a>
               <a href="https://whatsapp.com/channel/0029ValuXFsC6Zvq6enUQe1z" target="_blank" rel="noopener noreferrer">
@@ -209,19 +224,15 @@ function Footer(): JSX.Element {
                   src={Whatsapp}
                   alt="Whatsapp"
                   className="cursor-pointer"
+                  width={24}
+                  height={24} 
                 />
-
               </a>
             </Space>
           </div>
         </div>
-        <hr className="hor-rule" />
-        <div className="footer-bottom pt-5">
-          <Paragraph
-            content={`Copyright © ${currentYear}. Ostivities Technology Limited. All rights reserved.`}
-            className="text-center md:text-center text-OWANBE_H4 font-light font-BricolageGrotesqueLight text-[14px] md:text-base" // Adjusted alignment for mobile
-          />
-        </div>
+
+
       </div>
     </footer>
   );
