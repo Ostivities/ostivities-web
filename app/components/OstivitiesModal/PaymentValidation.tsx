@@ -50,6 +50,7 @@ const ValidatePayment = ({
             <h2 className="font-bricolage-grotesque font-regular text-xl mt-4">
               Verifying Payment!
             </h2>
+
           </div>
         </Space>
       </div>
