@@ -58,9 +58,9 @@ const EventSales = () => {
       key: ticket?.id,
       ticketName: ticket?.ticketName,
       ticketSold: ticket?.ticket_sold,
-      sales: ticket?.ticket_sales_revenue,
-      revenue: ticket?.ticket_net_sales_revenue,
-      fees: ticket?.ticket_fee,
+      sales: ticket?.ticket_net_sales_revenue,
+      revenue: ticket?.ticket_sales_revenue,
+      fees: ticket?.cummulative_ticket_fee ?? 0,
       dateCreated: ticket?.createdAt,
       guestAsChargeBearer:
         ticket?.guestAsChargeBearer === true ? "Guest" : "Organizer",

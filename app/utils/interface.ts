@@ -455,7 +455,8 @@ export interface ITicketDetails {
   ticket_sales_revenue: number;
   ticket_fee: number;
   status: string;
-  ticketPrice?: number
+  ticketPrice?: number;
+  cummulative_ticket_fee?: number;
   ticketSold: number
   groupSize?: number
   groupPrice?: number
@@ -631,6 +632,8 @@ export interface IGuestCreate  {
     ticket_type: string;
     ticket_stock: string;
     order_number: string;
+    discount: number;
+    discountCode?: string;  
   }[];
   personal_information: {
     firstName: string;
@@ -650,6 +653,8 @@ export interface IGuestCreate  {
       ticket_type: string;
       ticket_stock: string;
       order_number: string;
+      discount: number;
+      discountCode?: string;    
     };
     personal_information: {
       firstName: string;
@@ -669,9 +674,7 @@ export interface IGuestCreate  {
   }[];
   guest_category: GUEST_CATEGORY;
   fees: number;
-  discount: number;
   total_amount_paid: number;
-  discountCode?: string;
   total_purchased: number;
   payment_method: PAYMENT_METHODS;  
   eventId: string;

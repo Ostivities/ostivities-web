@@ -24,15 +24,8 @@ import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import Summary from "@/app/components/Discovery/Summary";
 import Image from "next/image";
 // import { debounce } from "lodash";
-import {
-  ITicketCreate,
-  ITicketDetails,
-  InfoNeeded,
-  IGuestCreate,
-} from "@/app/utils/interface";
-import {
-  useGetEventTicketsByUniqueKey,
-} from "@/app/hooks/ticket/ticket.hook";
+import { ITicketDetails } from "@/app/utils/interface";
+import { useGetEventTicketsByUniqueKey } from "@/app/hooks/ticket/ticket.hook";
 import {
   useRouter,
   useParams,
@@ -145,7 +138,6 @@ const TicketsSelection = () => {
     [key: string]: number;
   }>({});
 
-  // console.log(selectedTickets, "selectedTickets");
   const [ticketDetails, setTicketDetails] = useState<
     {
       ticketName: string;
@@ -170,6 +162,7 @@ const TicketsSelection = () => {
       additionalInformation: { question: string; is_compulsory: boolean }[];
     }[]
   >([]);
+  // console.log(ticketDetails, "ticketDetails");
 
   const [ticketDataQ, setTicketDataQ] = useState<{
     ticket_information: {
@@ -181,7 +174,7 @@ const TicketsSelection = () => {
       ticketFee: number;
       eventName?: string;
       ticketDiscountType: string;
-      ticketDiscountCode: string[];
+      ticketDiscountCode: string;
       ticketDiscountValue: number;
       ticketNumber: number;
       ticket_type: string;
@@ -227,6 +220,8 @@ const TicketsSelection = () => {
       ticket_type: string;
       ticket_stock: string;
       order_number: string;
+      discount: number;
+      discountCode?: string;
     }[];
     additional_information: {
       question: string;
@@ -245,6 +240,8 @@ const TicketsSelection = () => {
         ticket_type: string;
         ticket_stock: string;
         order_number: string;
+        discount: number;
+        discountCode?: string;
       };
       personal_information: {
         firstName: string;
@@ -263,8 +260,6 @@ const TicketsSelection = () => {
     event_unique_code: string;
     fees: number;
     total_amount_paid: number;
-    discountCode?: string;
-    discount: number;
     total_purchased: number;
     payment_method: PAYMENT_METHODS;
   }>({
@@ -282,14 +277,12 @@ const TicketsSelection = () => {
     event_unique_code: params?.event,
     fees: 0,
     total_amount_paid: 0,
-    discountCode: "",
-    discount: 0,
     total_purchased: 0,
     payment_method: PAYMENT_METHODS.FREE,
   });
 
-  // console.log(ticketDetails, "ticketDetails");
-  // console.log(allInfo, "allInfo");
+  console.log(ticketDataQ, "ticketDataQ");
+  console.log(allInfo, "allInfo");
 
   useEffect(() => {
     if (!cookies?.ticketDetails || ticketDetails?.length > 0) {
@@ -447,7 +440,7 @@ const TicketsSelection = () => {
             discountTypeUsed === DISCOUNT_TYPE.PERCENTAGE
               ? ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE
                 ? (ticket?.ticketPrice * discountValueUsed) / 100
-                : (ticket?.constantTicketPrice * discountValueUsed) / 100
+                : (ticket?.ticketPrice * discountValueUsed) / 100
               : discountValueUsed;
 
           const discountedTicketPrice = ticket?.ticketPrice - discountValue;
@@ -487,13 +480,12 @@ const TicketsSelection = () => {
 
       const updatedTicketInformation = prevTicketData?.ticket_information.map(
         (ticket) => {
+          // Apply the discount to all tickets that have the discount code
           if (
             discountCode &&
-            discountCodeUsed &&
-            ticket?.ticketDiscountCode?.includes(discountCode) &&
-            !appliedDiscountTicketIds.has(ticket?.ticket_id)
+            ticket?.ticketDiscountCode?.includes(discountCode)
           ) {
-            // Apply the discount
+            // Calculate the discount based on type
             const discountValue =
               discountTypeUsed === DISCOUNT_TYPE.PERCENTAGE
                 ? ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE
@@ -511,7 +503,7 @@ const TicketsSelection = () => {
               ticketDiscountValue: Math.round(discountValue),
               discountedTicketPrice: Math.round(
                 Math.max(discountedTicketPrice, 0)
-              ),
+              ), // Prevent negative price
               discountToDeduct: Math.round(discountValue),
               subTotal:
                 ticket?.guestAsChargeBearer === true
@@ -520,7 +512,7 @@ const TicketsSelection = () => {
             };
           }
 
-          // Reset to original state if no discount is applied
+          // Reset ticket state if no discount code applied
           return {
             ...ticket,
             ticketDiscountType: "",
@@ -562,12 +554,12 @@ const TicketsSelection = () => {
             ticket_type: ticket.ticket_type,
             ticket_stock: ticket.ticket_stock,
             order_number: ticket.order_number,
+            discount: ticket.ticketDiscountValue,
+            discountCode: discountCode,
           })),
           fees: updatedFees,
-          discount: updatedDiscount,
           total_amount_paid: updatedTotalAmountPaid,
           total_purchased: updatedTotalPurchased,
-          discountCode: discountCodeUsed ? discountCode : "",
         };
       });
 
@@ -600,31 +592,36 @@ const TicketsSelection = () => {
             ? ticket?.ticketPrice
             : ticket?.groupPrice || 0;
 
-        // const discountedPrice
         const currentFee =
           ticket?.ticketType === "PAID"
             ? Math.round(realPrice * 0.04 + 100)
             : 0;
+
         if (existingTicketIndex > -1) {
           const existingTicket = updatedDetails[existingTicketIndex];
-          const realDiscount = existingTicket?.discountToDeduct || 0;
           const newTicketNumber = existingTicket?.ticketNumber + 1;
+          const discountValue = existingTicket?.discountToDeduct
+            ? existingTicket?.ticketDiscountType === DISCOUNT_TYPE.PERCENTAGE
+              ? (realPrice *
+                  newTicketNumber *
+                  existingTicket?.ticketDiscountValue) /
+                100
+              : existingTicket?.ticketDiscountValue * newTicketNumber
+            : 0;
+
           updatedDetails[existingTicketIndex] = {
             ...existingTicket,
             ticketPrice: realPrice * newTicketNumber,
             ticketFee:
               ticket?.ticketType === "PAID" ? newTicketNumber * currentFee : 0,
             ticketNumber: newTicketNumber,
+            discountToDeduct: Math.round(discountValue),
             subTotal:
               existingTicket?.guestAsChargeBearer === false
-                ? discountCode
-                  ? realPrice * newTicketNumber - realDiscount
-                  : realPrice * newTicketNumber
-                : discountCode
-                ? realPrice * newTicketNumber +
+                ? realPrice * newTicketNumber - discountValue
+                : realPrice * newTicketNumber +
                   newTicketNumber * currentFee -
-                  realDiscount
-                : realPrice * newTicketNumber + newTicketNumber * currentFee,
+                  discountValue,
           };
         } else {
           updatedDetails.push({
@@ -678,6 +675,7 @@ const TicketsSelection = () => {
 
     if (ticket) {
       setTicketDataQ((prevData) => {
+        // Create the new ticket object
         const realPrice =
           ticket?.ticketType === "PAID"
             ? ticket?.ticketEntity === TICKET_ENTITY.SINGLE
@@ -685,14 +683,13 @@ const TicketsSelection = () => {
               : ticket?.groupPrice
             : 0;
 
-        // Calculate the fee (only once for collective tickets)
         const currentFee =
           ticket?.ticketType === "PAID"
             ? Math.round(realPrice * 0.04 + 100)
             : 0;
 
-        // Create tickets based on ticket entity type
-        const newTickets = {
+        // Create the new ticket object for the new ticket
+        const newTicket = {
           ticket_name: ticket?.ticketName,
           ticket_price: realPrice,
           constantTicketPrice: ticket?.ticketPrice,
@@ -701,9 +698,9 @@ const TicketsSelection = () => {
           ticketFee: currentFee,
           eventName: ticket?.eventName,
           ticketDiscountType: ticket?.discount?.discountType,
-          ticketDiscountCode: ticket?.discountCode,
+          ticketDiscountCode: discountCode,
           ticketDiscountValue: ticket?.discount?.discount_value,
-          ticketNumber: 1,
+          ticketNumber: 1, // Default quantity for the new ticket
           ticket_type: ticket?.ticketType,
           ticket_id: ticket?.id,
           subTotal:
@@ -718,45 +715,59 @@ const TicketsSelection = () => {
           ticketEntity: ticket?.ticketEntity,
           guestAsChargeBearer: ticket?.guestAsChargeBearer,
           groupSize: ticket?.groupSize,
-          order_number: `ORD${generateOrderNumber()}`, // Unique order number
+          order_number: `ORD${generateOrderNumber()}`, // Unique order number for each new ticket
           quantity: 1,
         };
 
-        // Update the ticket_information array and recalculate totals
+        // Find if there's an existing ticket with the same ID that has a discount to deduct
+        const existingTicket = prevData?.ticket_information.find(
+          (existingTicket) => existingTicket?.ticket_id === ticket?.id
+        );
+
+        // If an existing ticket with the same ID has a discountToDeduct, apply that discount to the new ticket
+        if (existingTicket?.discountToDeduct) {
+          // Apply the same discount for the new ticket
+          newTicket.discountToDeduct = existingTicket?.discountToDeduct;
+          newTicket.subTotal = existingTicket?.subTotal;
+          newTicket.total_amount = existingTicket?.total_amount;
+          newTicket.ticketDiscountValue = existingTicket?.ticketDiscountValue;
+          newTicket.discountedTicketPrice =
+            existingTicket?.discountedTicketPrice;
+          newTicket.ticketDiscountCode = existingTicket?.ticketDiscountCode;
+          newTicket.discountedTicketPrice = existingTicket?.ticketDiscountType;
+        }
+
+        // Update the ticket information with the new ticket
         const updatedTicketInformation = [
           ...prevData?.ticket_information,
-          newTickets,
+          newTicket,
         ];
 
+        // Recalculate the fees for all tickets (sum of individual ticket fees)
         const updatedFees = updatedTicketInformation.reduce((acc, ticket) => {
-          if (ticket.ticketEntity === TICKET_ENTITY.COLLECTIVE) {
-            return acc + (ticket.ticketFee || 0); // Only count the single collective fee
-          }
-          return acc + (ticket.ticketFee || 0); // Sum individual fees for single tickets
+          return acc + (ticket.ticketFee || 0); // Add all ticket fees (individual or collective)
         }, 0);
 
+        // Recalculate the total discount for all tickets
         const updatedDiscount = updatedTicketInformation
           .map((ticket) => ticket?.discountToDeduct || 0)
           .reduce((acc, curr) => acc + curr, 0);
 
+        // Calculate the total amount paid, applying the discount
         const updatedTotalAmountPaid = updatedTicketInformation.reduce(
-          (acc, ticket) => {
-            if (ticket.ticketEntity === TICKET_ENTITY.COLLECTIVE) {
-              return acc + (ticket.subTotal || 0); // Only count the first collective fee
-            }
-            return acc + ticket.subTotal; // Add subtotal for single tickets
-          },
+          (acc, ticket) => acc + ticket.subTotal, // Total of all ticket amounts
           0
         );
 
+        // Calculate the total number of purchased tickets (sum of quantities)
         const updatedTotalPurchased = updatedTicketInformation
-          .map((ticket) => ticket?.ticketNumber)
+          .map((ticket) => ticket?.quantity)
           .reduce((acc, curr) => acc + curr, 0);
 
-        // Update allInfo state with the new ticket information
+        // Update allInfo state with the newly calculated totals
         setAllInfo((prevAllInfo) => ({
           ...prevAllInfo,
-          ticket_information: updatedTicketInformation?.map((ticket) => ({
+          ticket_information: updatedTicketInformation.map((ticket) => ({
             ticket_id: ticket.ticket_id,
             ticket_name: ticket.ticket_name,
             quantity: ticket.quantity,
@@ -765,18 +776,19 @@ const TicketsSelection = () => {
             ticket_type: ticket.ticket_type,
             ticket_stock: ticket.ticket_stock,
             order_number: ticket.order_number,
+            discount: ticket.ticketDiscountValue,
+            discountCode: ticket?.ticketDiscountCode,
           })),
           fees: updatedFees,
-          discount: updatedDiscount,
           total_amount_paid: updatedTotalAmountPaid,
           total_purchased: updatedTotalPurchased,
         }));
 
+        // Return the updated ticket data state
         return {
           ...prevData,
           ticket_information: updatedTicketInformation,
           fees: updatedFees,
-          discount: updatedDiscount,
           total_amount_paid: updatedTotalAmountPaid,
           total_purchased: updatedTotalPurchased,
         };
@@ -805,7 +817,6 @@ const TicketsSelection = () => {
             ticket?.ticketType === "PAID"
               ? Math.round(ticket?.ticketPrice * 0.04 + 100)
               : 0;
-          const existingDiscount = existingTicket?.discountToDeduct;
 
           if (newTicketNumber >= 0) {
             const price =
@@ -813,21 +824,27 @@ const TicketsSelection = () => {
                 ? ticket.ticketPrice
                 : ticket.groupPrice || 0;
 
+            const discountValue = existingTicket?.discountToDeduct
+              ? existingTicket?.ticketDiscountType === DISCOUNT_TYPE.PERCENTAGE
+                ? (price *
+                    newTicketNumber *
+                    existingTicket?.ticketDiscountValue) /
+                  100
+                : existingTicket?.ticketDiscountValue * newTicketNumber
+              : 0;
+            console.log(discountValue, "discotbjsf");
             updatedDetails[existingTicketIndex] = {
               ...existingTicket,
               ticketPrice: price * newTicketNumber,
               ticketFee: currentFee * newTicketNumber,
               ticketNumber: newTicketNumber,
+              discountToDeduct: Math.round(discountValue),
               subTotal:
                 ticket?.guestAsChargeBearer === false
-                  ? discountCode
-                    ? price * newTicketNumber - (existingDiscount ?? 0)
-                    : price * newTicketNumber
-                  : discountCode
-                  ? price * newTicketNumber +
+                  ? price * newTicketNumber - discountValue
+                  : price * newTicketNumber +
                     currentFee * newTicketNumber -
-                    (existingDiscount ?? 0)
-                  : price * newTicketNumber + currentFee * newTicketNumber,
+                    discountValue,
             };
           }
         }
@@ -890,11 +907,18 @@ const TicketsSelection = () => {
           total_purchased: 0,
           payment_method: prevData.payment_method || "CARD", // Ensure fallback value for payment_method
         };
+        const allInfoDefaultState = {
+          ticket_information: [],
+          fees: 0,
+          total_amount_paid: 0,
+          total_purchased: 0,
+          payment_method: prevData.payment_method || "CARD",
+        };
 
         // Update `allInfo` state to match
         setAllInfo((prevAllInfo) => ({
           ...prevAllInfo,
-          ...defaultState,
+          ...allInfoDefaultState,
         }));
 
         return defaultState;
@@ -921,7 +945,6 @@ const TicketsSelection = () => {
         ...prevData,
         ticket_information: updatedTicketInformation,
         fees: updatedFees,
-        discount: updatedDiscount,
         total_amount_paid: updatedTotalAmountPaid,
         total_purchased: updatedTotalPurchased,
       };
@@ -938,9 +961,9 @@ const TicketsSelection = () => {
           ticket_type: ticket.ticket_type,
           ticket_stock: ticket.ticket_stock,
           order_number: ticket.order_number,
+          discount: ticket.ticketDiscountValue,
         })),
         fees: updatedFees,
-        discount: updatedDiscount,
         total_amount_paid: updatedTotalAmountPaid,
         total_purchased: updatedTotalPurchased,
       }));
@@ -1204,6 +1227,7 @@ const TicketsSelection = () => {
           ticket_type: ticket.ticket_type,
           ticket_stock: ticket.ticket_stock,
           order_number: ticket.order_number,
+          discount: ticket.discount,
         },
         personal_information: {
           firstName: "",
@@ -1214,8 +1238,8 @@ const TicketsSelection = () => {
         total_purchased: ticket.quantity,
         fees: Math.round(ticket.ticket_price * 0.04 + 100),
         total_amount_paid: ticket.total_amount,
-        discount: prevAllInfo.discount,
         payment_method: PAYMENT_METHODS.FREE,
+        discount: ticket.discount,
       }));
 
       return {
@@ -1254,72 +1278,77 @@ const TicketsSelection = () => {
 
   const [loading, setLoading] = useState(false);
   const onFinish: FormProps<any>["onFinish"] = async (values: any) => {
-    const validateFields = await form.validateFields();
-    if (!validateFields) {
-      return;
-    }
-    const {
-      firstName,
-      lastName,
-      email,
-      confirmEmail,
-      phoneNumber,
-      additional_information,
-      ...rest
-    } = values;
+    try {
+      const validateFields = await form.validateFields();
+      if (!validateFields) {
+        return;
+      }
+      const {
+        firstName,
+        lastName,
+        email,
+        confirmEmail,
+        phoneNumber,
+        additional_information,
+        ...rest
+      } = values;
 
-    // Check if additional_information exists and has items
-    const additionalFields = additional_information?.length
-      ? additional_information.map((field: any) => {
-          const { id, ...fieldData } = field;
-          return fieldData;
-        })
-      : [];
+      // Check if additional_information exists and has items
+      const additionalFields = additional_information?.length
+        ? additional_information.map((field: any) => {
+            const { id, ...fieldData } = field;
+            return fieldData;
+          })
+        : [];
 
-    const personal_information = {
-      firstName: firstName.trim(),
-      lastName: lastName.trim(),
-      email: email.trim(),
-      phoneNumber: phoneNumber.trim(),
-    };
-    const newAllInfo = (({
-      personal_information,
-      additional_information,
-      ...rest
-    }) => rest)(allInfo);
+      const personal_information = {
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email: email.trim(),
+        phoneNumber: phoneNumber.trim(),
+      };
+      const newAllInfo = (({
+        personal_information,
+        additional_information,
+        ...rest
+      }) => rest)(allInfo);
 
-    setAllInfo({
-      ...newAllInfo,
-      personal_information,
-      additional_information: additionalFields,
-    });
-
-    if (
-      ticketDetails
-        ?.map((ticket) => ticket?.subTotal)
-        .reduce((acc, curr) => acc + curr, 0) === 0
-    ) {
-      setLoading(true);
-      const response = await registerGuest.mutateAsync({
+      setAllInfo({
         ...newAllInfo,
         personal_information,
         additional_information: additionalFields,
-        eventId: eventDetails?.id,
       });
 
-      if (response.status === 200) {
-        setSuccessModal(true);
+      if (
+        ticketDetails
+          ?.map((ticket) => ticket?.subTotal)
+          .reduce((acc, curr) => acc + curr, 0) === 0
+      ) {
+        setLoading(true);
+        const response = await registerGuest.mutateAsync({
+          ...newAllInfo,
+          personal_information,
+          additional_information: additionalFields,
+          eventId: eventDetails?.id,
+        });
+
+        if (response.status === 200) {
+          setSuccessModal(true);
+          setLoading(false);
+          removeCookie("ticketDetails");
+          removeCookie("selectedTickets");
+          removeCookie("ticketDataQ");
+          removeCookie("allInfo");
+          removeCookie("isToggled");
+        }
+      } else {
         setLoading(false);
-        removeCookie("ticketDetails");
-        removeCookie("selectedTickets");
-        removeCookie("ticketDataQ");
-        removeCookie("allInfo");
-        removeCookie("isToggled");
+        setCurrentPage("payment");
+        router.push(`/discover/${params?.event}/tickets?page=payment`);
       }
-    } else {
+    } catch (error) {
+      console.error("Error during form submission: ", error);
       setLoading(false);
-      setCurrentPage("payment");
-      router.push(`/discover/${params?.event}/tickets?page=payment`);
     }
   };
   const onFinishFailed: FormProps<any>["onFinishFailed"] = (errorInfo) => {
@@ -1341,8 +1370,6 @@ const TicketsSelection = () => {
     event_unique_code: params?.event,
     fees: 0,
     total_amount_paid: 0,
-    discountCode: "",
-    discount: 0,
     total_purchased: 0,
     payment_method: PAYMENT_METHODS.FREE,
   };
@@ -1368,86 +1395,92 @@ const TicketsSelection = () => {
   const initializePayment = usePaystackPayment(config);
 
   const onSuccess = async (reference: any) => {
-    setVerifyPaymentModal(true);
-    const sanitizedData = {
-      ...allInfo, // Spread the existing data
-      attendees_information: allInfo.attendees_information.map(
-        ({ id, personal_information, ...attendee }) => ({
-          ...attendee,
-          personal_information: {
-            ...personal_information,
-            confirmEmail: undefined, // Remove `confirmEmail`
-          },
-          payment_method: PAYMENT_METHODS.CARD, // Update the payment method for each attendee
-        })
-      ),
-    };
-    const response = await registerGuest.mutateAsync({
-      ...sanitizedData,
-      payment_method: PAYMENT_METHODS.CARD,
-      eventId: eventDetails?.id,
-    });
-    removeCookie("ticketDetails");
-    removeCookie("selectedTickets");
-    removeCookie("ticketDataQ");
-    removeCookie("allInfo");
-    removeCookie("isToggled");
-
-    if (response.status === 200) {
-      setLoading(false);
+    try {
+      setVerifyPaymentModal(true);
+      const sanitizedData = {
+        ...allInfo, // Spread the existing data
+        attendees_information: allInfo.attendees_information.map(
+          ({ id, personal_information, ...attendee }) => ({
+            ...attendee,
+            personal_information: {
+              ...personal_information,
+              confirmEmail: undefined, // Remove `confirmEmail`
+            },
+            payment_method: PAYMENT_METHODS.CARD, // Update the payment method for each attendee
+          })
+        ),
+      };
+      const response = await registerGuest.mutateAsync({
+        ...sanitizedData,
+        payment_method: PAYMENT_METHODS.CARD,
+        eventId: eventDetails?.id,
+      });
       removeCookie("ticketDetails");
       removeCookie("selectedTickets");
       removeCookie("ticketDataQ");
       removeCookie("allInfo");
       removeCookie("isToggled");
-      setVerifyPaymentModal(false);
-      setSuccessModal(true);
-      setTicketDetails([]);
-      setTicketDataQ(initialTicketDataQ);
-      setAllInfo(initialState);
-      setSelectedTickets({});
-      isFieldTouched.current = false;
-      form.resetFields();
-      setTermsAndCondition(false);
-      const details = response?.data?.data?.ticket_information?.map(
-        (ticket: any) => ({
-          order_number: ticket?.order_number,
-          order_date: dateFormat(response?.data?.data?.createdAt),
-          event_date_time: dateFormat(eventDetails?.startDate),
-          event_address: eventDetails?.address,
-          buyer_name: response?.data?.data?.personal_information?.firstName,
-          ticket_name: ticket?.ticket_name,
-          ticket_type: ticket?.ticket_type,
-          event_name: eventDetails?.eventName,
-          // qr_code: JSON.stringify({order_numer: ticket?.order_number, guest}),
-          ostivities_logo:
-            "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
-          ticket_banner:
-            "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735773616/ticketheader_vihwar.png",
-        })
-      );
-      let combinedDetails = [...details];
-      if (response?.data?.data?.attendees_information?.length > 0) {
-        const extraDetails = response?.data?.data?.attendees_information?.map(
-          (attendees: any) => ({
-            order_number: attendees?.ticket_information?.order_number,
+
+      if (response.status === 200) {
+        setLoading(false);
+        removeCookie("ticketDetails");
+        removeCookie("selectedTickets");
+        removeCookie("ticketDataQ");
+        removeCookie("allInfo");
+        removeCookie("isToggled");
+        setVerifyPaymentModal(false);
+        setSuccessModal(true);
+        setTicketDetails([]);
+        setTicketDataQ(initialTicketDataQ);
+        setAllInfo(initialState);
+        setSelectedTickets({});
+        isFieldTouched.current = false;
+        form.resetFields();
+        setTermsAndCondition(false);
+        const details = response?.data?.data?.ticket_information?.map(
+          (ticket: any) => ({
+            order_number: ticket?.order_number,
             order_date: dateFormat(response?.data?.data?.createdAt),
             event_date_time: dateFormat(eventDetails?.startDate),
             event_address: eventDetails?.address,
-            buyer_name: attendees?.personal_information?.firstName,
-            ticket_name: attendees?.ticket_information?.ticket_name,
-            ticket_type: attendees?.ticket_information?.ticket_type,
+            buyer_name: response?.data?.data?.personal_information?.firstName,
+            ticket_name: ticket?.ticket_name,
+            ticket_type: ticket?.ticket_type,
             event_name: eventDetails?.eventName,
-            // qr_code: attendees?.ticket_information?.qr_code,
+            // qr_code: JSON.stringify({order_numer: ticket?.order_number, guest}),
             ostivities_logo:
               "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
             ticket_banner:
               "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735773616/ticketheader_vihwar.png",
           })
         );
-        combinedDetails = [...details, ...extraDetails];
+        let combinedDetails = [...details];
+        if (response?.data?.data?.attendees_information?.length > 0) {
+          const extraDetails = response?.data?.data?.attendees_information?.map(
+            (attendees: any) => ({
+              order_number: attendees?.ticket_information?.order_number,
+              order_date: dateFormat(response?.data?.data?.createdAt),
+              event_date_time: dateFormat(eventDetails?.startDate),
+              event_address: eventDetails?.address,
+              buyer_name: attendees?.personal_information?.firstName,
+              ticket_name: attendees?.ticket_information?.ticket_name,
+              ticket_type: attendees?.ticket_information?.ticket_type,
+              event_name: eventDetails?.eventName,
+              // qr_code: attendees?.ticket_information?.qr_code,
+              ostivities_logo:
+                "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
+              ticket_banner:
+                "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735773616/ticketheader_vihwar.png",
+            })
+          );
+          combinedDetails = [...details, ...extraDetails];
+        }
+        setDownloadDetails(combinedDetails);
       }
-      setDownloadDetails(combinedDetails);
+    } catch (error) {
+      console.error("Error during payment success process: ", error);
+      setLoading(false);
+      setVerifyPaymentModal(false);
     }
   };
 
@@ -1591,8 +1624,7 @@ const TicketsSelection = () => {
   //       config,
   //     });
   //   }
-  // }; 
-
+  // };
 
   interface DebounceFunction {
     (...args: any[]): void;
@@ -2660,7 +2692,7 @@ const TicketsSelection = () => {
                 </Checkbox>
               </div>
             </div>
-            {verifyPaymentModal && (<PaymentValidation />)}
+            {verifyPaymentModal && <PaymentValidation />}
             {successModal && (
               <PaymentSuccessModal downloadDetails={downloadDetails} />
             )}
