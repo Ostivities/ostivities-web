@@ -460,8 +460,8 @@ const AboutEvent = () => {
             styles={{ fontWeight: "normal !important" }}
           />
         </Space>
-        <div className="grid grid-cols-2 gap-x-4">
-          <div className="flex flex-col space-y-4 pr-6">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-x-4">
+          <div className="flex flex-col space-y-4 md:pr-6">
             <Controller
               name="eventName"
               control={control}
@@ -738,7 +738,7 @@ const AboutEvent = () => {
               )}
             />
           </div>
-          <div className="flex flex-col space-y-4 pl-6">
+          <div className="flex flex-col space-y-4 md:pl-6">
             <Controller
               name="eventURL"
               control={control}
@@ -988,7 +988,7 @@ const AboutEvent = () => {
                       )}
                     />
                   </div>
-                  ;{/* End Date & Time */}
+                  {/* End Date & Time */}
                   <div style={{ flex: "1 1 auto", minWidth: "150px" }}>
                     <Label content="End Date & Time" htmlFor="endDate" />
                     <Controller

@@ -11,7 +11,7 @@ import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
 import { useRouter, useParams } from "next/navigation";
 import DeleteDiscount from "../OstivitiesModal/DeleteDiscount";
 import { Heading5, Label, Paragraph } from "../typography/Typography";
-import { USAGE_LIMIT } from "@/app/utils/enums";
+import { USAGE_LIMIT, DISCOUNT_TYPE } from "@/app/utils/enums";
 import { useQueryClient } from "@tanstack/react-query"
 import { GET_EVENT_DISCOUNT } from "@/app/utils/constants";
 
@@ -66,6 +66,8 @@ const DiscountRecord = (): JSX.Element => {
         key: item?.id,
         discountCode: item?.discountCode,
         uses: item?.usageLimit,
+        discount_value: item?.discount_value,
+        discountType: item?.discountType,
         dateEnding: item?.endDateAndTime,
         ticketApplicable: item?.ticket?.map((ticketDetails: any) => { 
           return ticketDetails?.ticketName
@@ -102,6 +104,18 @@ const DiscountRecord = (): JSX.Element => {
         const allTicketsSelected = ticketApplicableArray?.length === ticketData?.length; 
         return allTicketsSelected ? "All Tickets" : text;
       },
+    },
+    {
+      title: (
+        <Label
+          content="Discount Value"
+          className="font-semibold text-OWANBE_TABLE_TITLE"
+        />
+      ),
+      dataIndex: "discount_value",
+      render: (text: string, record: any) => {
+        return record?.discountType === DISCOUNT_TYPE.PERCENTAGE ? `${text}%` : `₦${text}`;
+      }
     },
     {
       title: (

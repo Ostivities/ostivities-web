@@ -419,6 +419,7 @@ export interface ITicketData {
   event: string | number;
   ticketEntity: string | number;
   ticketType: string;
+  ticket_fee: number;
   ticketName: string;
   ticketStock: TICKET_STOCK;
   ticketQty: number;
@@ -452,9 +453,10 @@ export interface ITicketDetails {
   ticket_sold: number;
   ticket_net_sales_revenue: number;
   ticket_sales_revenue: number;
-  fees: number;
+  ticket_fee: number;
   status: string;
-  ticketPrice?: number
+  ticketPrice?: number;
+  cummulative_ticket_fee?: number;
   ticketSold: number
   groupSize?: number
   groupPrice?: number
@@ -577,6 +579,7 @@ export interface IGuestData {
     ticket_id: string,
     ticket_name: string,
     quantity: number,
+    order_number: string,
     total_amount: number
   }[],
   personal_information?: {
@@ -629,6 +632,8 @@ export interface IGuestCreate  {
     ticket_type: string;
     ticket_stock: string;
     order_number: string;
+    discount: number;
+    discountCode?: string;  
   }[];
   personal_information: {
     firstName: string;
@@ -648,6 +653,8 @@ export interface IGuestCreate  {
       ticket_type: string;
       ticket_stock: string;
       order_number: string;
+      discount: number;
+      discountCode?: string;    
     };
     personal_information: {
       firstName: string;
@@ -667,9 +674,7 @@ export interface IGuestCreate  {
   }[];
   guest_category: GUEST_CATEGORY;
   fees: number;
-  discount: number;
   total_amount_paid: number;
-  discountCode?: string;
   total_purchased: number;
   payment_method: PAYMENT_METHODS;  
   eventId: string;

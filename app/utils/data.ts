@@ -160,6 +160,9 @@ export const SUPPORT: INavLinks[] = [
     target: undefined,
     rel: undefined
   },
+  { link: "https://ostivities.statuspage.io", name: "Status Page", 
+    target: "_blank", 
+    rel: "noopener noreferrer" },
 ];
 
 export const NEWSLETTER: INavLinks[] = [

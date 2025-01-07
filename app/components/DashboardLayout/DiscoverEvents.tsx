@@ -7,6 +7,8 @@ import { IEventDetails } from "@/app/utils/interface";
 import { EVENT_INFO, PUBLISH_TYPE } from "@/app/utils/enums";
 import placeholder from "@/public/placeholder.svg";
 import Select, { StylesConfig } from "react-select";
+import notfound from '@/public/notfound.svg';
+import Image from 'next/image';
 
 const DiscoverEvents = () => {
   const [searchText, setSearchText] = useState("");
@@ -46,7 +48,7 @@ const DiscoverEvents = () => {
         title="Featured Events"
         titleClass="custom-title-class"
         style={{
-          fontSize: "22px",
+          fontSize: "20px",
           fontFamily: "Bricolage Grotesque, font-semibold",
         }} // Inline style
       >
@@ -67,9 +69,9 @@ const DiscoverEvents = () => {
               />
             ))}
           </>
-        ) : (
+        ) : filteredEvents && filteredEvents.length > 0 ? (
           // Once data is loaded, map through discoveryEvents and render InfoCard components
-          filteredEvents?.map((event: IEventDetails, index: number) => (
+          filteredEvents.map((event: IEventDetails, index: number) => (
             <InfoCard
               key={index}
               title={event?.eventName}
@@ -82,10 +84,34 @@ const DiscoverEvents = () => {
               titleClass="font-bricolage-grotesque font-medium"
               aboutClass="font-bricolage-grotesque"
               statusClass="font-bricolage-grotesque font-medium"
-            />
-          ))
-        )}
-      </EventSection>
+              />
+            ))
+          ) : (
+            // Render a message when no events are available
+            <div
+            className="flex justify-center w-full"
+            style={{alignItems: "center" }}
+          >
+            <div className="flex flex-col items-center gap-8 p-4 text-center">
+              <Image
+                src={notfound}
+                alt="Event not found"
+                width={200}
+                height={200}
+                style={{ objectFit: "contain" }}
+              />
+              <div>
+                <h2 className="font-BricolageGrotesqueMedium text-xl font-semibold">
+                  Oops.... no events available!
+                </h2>
+                <p className="font-BricolageGrotesqueMedium text-md">
+                  Kindly check back later.
+                </p>
+              </div>
+            </div>
+          </div>  
+          )}
+        </EventSection>
     </>
   );
 };

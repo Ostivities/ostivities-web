@@ -29,7 +29,7 @@ const PaymentDetails = ({
   const { getAllBanks } = useGetAllBanks();
   const { verifyBankAccount } = useVerifyBankAccount();
   const { createSettlementAccount } = useCreateSettlementAccount();
-  // 
+  console.log(data, "data")
   const allBanks = getAllBanks?.data?.data?.data;
   // const { getSettlementAccount } = useGetSettlementAccount("1");
 
@@ -67,7 +67,9 @@ const PaymentDetails = ({
 
         if (fetchedAccountName.status === 200) {
           setAccountName(fetchedAccountName?.data?.data?.data?.account_name);
-        }
+        } else if (fetchedAccountName.status === 403) {
+          setAccountName('')
+        } 
 
         // 
       } catch (error) {
@@ -97,7 +99,9 @@ const PaymentDetails = ({
 
           if (fetchedAccountName.status === 200) {
             setAccountName(fetchedAccountName?.data?.data?.data?.account_name);
-          }
+          } else if (fetchedAccountName.status === 403) {
+            setAccountName('')
+          } 
 
           // 
         } catch (error) {
@@ -110,7 +114,11 @@ const PaymentDetails = ({
     }
   };
   useEffect(() => {
-    form.setFieldsValue({ account_name: accountName }); // Update the form field dynamically
+    if(accountName !== "") {
+      form.setFieldsValue({ account_name: accountName }); // Update the form field dynamically
+    } else {
+      form.setFieldsValue({ account_name: "" }); // Clear the form field
+    }
   }, [accountName]);
 
   return (

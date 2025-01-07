@@ -58,7 +58,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
   ]);
 
   const pathname = usePathname();
-  // 
+  //
   const ticketStock: string = Form.useWatch("ticketStock", form);
   const ticketType: string = Form.useWatch("ticketType", form); // Watch ticketType changes
   const groupPrice: number = Form.useWatch("groupPrice", form);
@@ -66,18 +66,24 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
   const guestAsChargeBearer = Form.useWatch("guestAsChargeBearer", form);
   const ticketQty = Form.useWatch("ticketQty", form);
 
-  // 
+  //
 
   useEffect(() => {
-    if(showAdditionalField === false){
+    if (showAdditionalField === false) {
       setAdditionalFields([]);
     }
-  }, [showAdditionalField])
-  
+  }, [showAdditionalField]);
+  useEffect(() => {
+    if (groupPrice) {
+      const fee = groupPrice * 0.04 + 100;
+      form.setFieldsValue({ ticket_fee: fee });
+    }
+  }, [groupPrice]);
+
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
     const { ticketQuestions, ticketType, guestAsChargeBearer, ...rest } =
       values;
-    // return 
+    // return
     setLoading(true);
     if (
       // @ts-ignore
@@ -93,7 +99,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
           question: string;
         }) => {
           const { question, is_compulsory } = questionObj;
-          
+
           return { question, is_compulsory };
         }
       );
@@ -110,14 +116,13 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
         guestAsChargeBearer: guestAsChargeBearer,
         purchaseLimit: 1,
       };
-      // 
+      //
 
       // make api call here
 
       if (payload) {
         const response = await createTicket.mutateAsync(payload);
         if (response.status === 201) {
-          
           form.resetFields();
           setCookies("stage_three", "processing");
           // linkRef.current?.click();
@@ -148,7 +153,6 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
       if (payload) {
         const response = await createTicket.mutateAsync(payload);
         if (response.status === 201) {
-          
           form.resetFields();
           setCookies("stage_three", "processing");
           onOk && onOk();
@@ -169,7 +173,6 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
   const onFinishFailed: FormProps<ITicketData>["onFinishFailed"] = (
     errorInfo
   ) => {
-    
     return errorInfo;
   };
 
@@ -209,7 +212,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
       if (price_per_ticket) {
         form.setFieldValue("ticketPrice", price_per_ticket);
       }
-      // 
+      //
     } else if (groupPrice === 0 && groupPrice === null) {
       form.setFieldValue("ticketPrice", "");
     } else {
@@ -368,6 +371,20 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
           disabled={ticketType === TICKET_TYPE.FREE}
           readOnly={true}
         />
+      </Form.Item>
+
+      <Form.Item<ITicketData>
+        label="Ticket category"
+        name="ticket_fee"
+        rules={[
+          {
+            required: true,
+            message: "Please input your ticket category!",
+          },
+        ]}
+        style={{ marginBottom: "8px", display: "none" }}
+      >
+        <Input placeholder="Enter ticket category" />
       </Form.Item>
 
       {/* <Form.Item<ITicketData>

@@ -11,7 +11,7 @@ import { Space } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { Heading5, Paragraph, Small } from "../typography/Typography";
+import { Paragraph, Small } from "../typography/Typography";
 import Script from "next/script";
 
 
@@ -55,7 +55,17 @@ function Footer(): JSX.Element {
             </div>
             {/* 2 */}
             <div className="flex flex-col space-y-3">
-              <Heading5 content="Legal" className="" />
+              <h3
+                style={{
+                  fontFamily: "'Bricolage Grotesque', sans-serif",
+                  fontWeight: '500', // Medium weight
+                  fontSize: '18px',
+                  lineHeight: '1.5',
+                }}
+              >
+                Legal
+              </h3>
+
               {LEGAL.map((item, index) => (
                 <Link
                   key={index} // Changed to index for uniqueness
@@ -70,7 +80,17 @@ function Footer(): JSX.Element {
             </div>
             {/* 3 */}
             <div className="flex flex-col space-y-3">
-              <Heading5 content="Support" className="" />
+              <h3
+                style={{
+                  fontFamily: "'Bricolage Grotesque', sans-serif",
+                  fontWeight: '500', // Medium weight
+                  fontSize: '18px',
+                  lineHeight: '1.5',
+                }}
+              >
+                Support
+              </h3>
+
               {SUPPORT.map((item, index) => (
                 <Link
                   key={index} // Changed to index for uniqueness
@@ -85,7 +105,17 @@ function Footer(): JSX.Element {
             </div>
             {/* 4 */}
             <div className="flex flex-col space-y-3">
-              <Heading5 content="Newsletter" className="" />
+              <h3
+                style={{
+                  fontFamily: "'Bricolage Grotesque', sans-serif",
+                  fontWeight: '500', // Medium weight
+                  fontSize: '18px',
+                  lineHeight: '1.5',
+                }}
+              >
+                Newsletter
+              </h3>
+
               <Small
                 content={"Sign up to our newsletter to keep yourself updated about us."}
                 className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
@@ -151,13 +181,23 @@ function Footer(): JSX.Element {
 
             </div>
           </div>
-          <div className="flex flex-row items-center justify-start md:justify-end lg:justify-end xl:justify-end">
-            <Space direction="horizontal" size={24}>
+        </div>
+        <hr className="hor-rule" />
+        <div className="footer-bottom pt-5 flex flex-row justify-between items-center w-full">
+          <Paragraph
+            content={`© ${currentYear} Ostivities, Inc.`}
+            className="text-start text-OWANBE_H4 font-light font-BricolageGrotesqueLight text-[12px] md:text-base"
+          // Align text to the start (left)
+          />
+          <div className="flex flex-row items-center">
+            <Space direction="horizontal" size={12}>
               <a href="https://www.instagram.com/ostivities" target="_blank" rel="noopener noreferrer">
                 <Image
                   src={Instagram}
                   alt="Instagram"
                   className="cursor-pointer"
+                  width={24}
+                  height={24} 
                 />
               </a>
               <a href="https://x.com/Ostivities" target="_blank" rel="noopener noreferrer">
@@ -165,13 +205,18 @@ function Footer(): JSX.Element {
                   src={Twitter}
                   alt="Twitter"
                   className="cursor-pointer"
+                  width={24}
+                  height={24} 
                 />
+
               </a>
               <a href="https://www.linkedin.com/company/ostivities" target="_blank" rel="noopener noreferrer">
                 <Image
                   src={Linkedln}
                   alt="LinkedIn"
                   className="cursor-pointer"
+                  width={24}
+                  height={24} 
                 />
               </a>
               <a href="https://whatsapp.com/channel/0029ValuXFsC6Zvq6enUQe1z" target="_blank" rel="noopener noreferrer">
@@ -179,19 +224,15 @@ function Footer(): JSX.Element {
                   src={Whatsapp}
                   alt="Whatsapp"
                   className="cursor-pointer"
+                  width={24}
+                  height={24} 
                 />
-
               </a>
             </Space>
           </div>
         </div>
-        <hr className="hor-rule" />
-        <div className="footer-bottom pt-5">
-          <Paragraph
-            content={`Copyright © ${currentYear}. Ostivities Technology Limited. All rights reserved.`}
-            className="text-center md:text-center text-OWANBE_H4 font-light font-BricolageGrotesqueLight text-[14px] md:text-base" // Adjusted alignment for mobile
-          />
-        </div>
+
+
       </div>
     </footer>
   );

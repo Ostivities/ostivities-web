@@ -17,11 +17,10 @@ import {
   useAddEventToDiscovery,
   usePublishEvent,
 } from "@/app/hooks/event/event.hook";
-import {
-  useGetSettlementAccount,
-} from "@/app/hooks/settlement/settlement.hook";
+import { useGetSettlementAccount } from "@/app/hooks/settlement/settlement.hook";
 import { EVENT_INFO, PUBLISH_TYPE } from "@/app/utils/enums";
 import { QuestionCircleOutlined } from "@ant-design/icons";
+import { useGetEventTickets } from "@/app/hooks/ticket/ticket.hook";
 
 interface EventProps {
   totalTickets?: number;
@@ -42,16 +41,17 @@ export default function EventDetailsComponent({
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const { getUserEvent } = useGetUserEvent(params?.id);
+  const { getTickets } = useGetEventTickets(params?.id);
   const { addEventToDiscovery } = useAddEventToDiscovery();
   const { publishEvent } = usePublishEvent();
   const [accountDetailsAdded, setAccountDetailsAdded] = useState(false);
   const eventDetails = getUserEvent?.data?.data?.data;
-  const { getSettlementAccount } = useGetSettlementAccount(eventDetails?.user?.id)
+  const { getSettlementAccount } = useGetSettlementAccount(
+    eventDetails?.user?.id
+  );
   const [isPublished, setIsPublished] = useState(false); // State to track publish status
   const [isDiscover, setIsDiscover] = useState(false); // State to track discovery status
-  // 
-  // 
-
+  const tickets = getTickets?.data?.data?.data;
   const eventDate = eventDetails?.endDate;
   const eventdates = new Date(eventDate).getTime();
 
@@ -90,7 +90,7 @@ export default function EventDetailsComponent({
         getUserEvent.refetch();
         setIsDiscover(false);
         message.success("Event unpublished successfully");
-        // 
+        //
       }
     } else if (
       eventDetails?.mode === PUBLISH_TYPE.INACTIVE ||
@@ -113,7 +113,7 @@ export default function EventDetailsComponent({
         getUserEvent.refetch();
         setIsPublished(!isPublished);
         message.success("Event published successfully");
-        // 
+        //
       }
     }
   };
@@ -139,7 +139,7 @@ export default function EventDetailsComponent({
         message.success("Event added to discovery successfully");
         setIsDiscover(true);
         getUserEvent.refetch();
-        // 
+        //
       }
     } else if (eventDetails?.discover === true) {
       const res = await addEventToDiscovery.mutateAsync({
@@ -203,10 +203,11 @@ export default function EventDetailsComponent({
         label: (
           <Link
             href={`/discover/events-created/${params?.id}/tickets`}
-            className={`font-BricolageGrotesqueRegular font-normal text-sm ${pathname.includes("tickets")
+            className={`font-BricolageGrotesqueRegular font-normal text-sm ${
+              pathname.includes("tickets")
                 ? "text-OWANBE_PRY"
                 : "text-OWANBE_DARK"
-              }`}
+            }`}
           >
             Tickets
           </Link>
@@ -216,8 +217,19 @@ export default function EventDetailsComponent({
       {
         label: (
           <Link
-            href={`/discover/events-created/${params?.id}/tickets/discounts`}
-            className="font-BricolageGrotesqueRegular font-normal text-sm text-OWANBE_DARK"
+            href={
+              tickets?.length === 0
+                ? "#"
+                : `/discover/events-created/${params?.id}/tickets/discounts`
+            } // If discount is disabled, set href to "#"
+            className={`font-BricolageGrotesqueRegular font-normal text-sm ${
+              tickets?.length === 0
+                ? "text-OWANBE_DARK opacity-50 cursor-not-allowed" // Disable styling
+                : "text-OWANBE_DARK"
+            }`}
+            onClick={(e) => {
+              if (tickets?.length === 0) e.preventDefault(); // Prevent link click if disabled
+            }}
           >
             Discounts
           </Link>
@@ -289,7 +301,7 @@ export default function EventDetailsComponent({
         ),
         key: "2",
         disabled: true, // Keeps the item disabled
-      }
+      },
     ];
 
     const MerchandiseItems: MenuProps["items"] = [
@@ -339,8 +351,9 @@ export default function EventDetailsComponent({
           <Button
             type={pathname.includes("about") ? "primary" : "text"}
             size={"large"}
-            className={`font-BricolageGrotesqueRegular ${pathname.includes("about") ? "sign-up" : ""
-              } cursor-pointer font-medium w-32 rounded-2xl`}
+            className={`font-BricolageGrotesqueRegular ${
+              pathname.includes("about") ? "sign-up" : ""
+            } cursor-pointer font-medium w-32 rounded-2xl`}
             style={{
               borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
@@ -359,8 +372,9 @@ export default function EventDetailsComponent({
           >
             <Button
               type={pathname.includes("tickets") ? "primary" : "text"}
-              className={`font-BricolageGrotesqueRegular cursor-pointer font-medium w-32 rounded-2xl ${pathname.includes("tickets") ? "sign-up" : ""
-                }`}
+              className={`font-BricolageGrotesqueRegular cursor-pointer font-medium w-32 rounded-2xl ${
+                pathname.includes("tickets") ? "sign-up" : ""
+              }`}
               style={{
                 borderRadius: "25px",
                 fontFamily: "BricolageGrotesqueMedium",
@@ -370,8 +384,9 @@ export default function EventDetailsComponent({
               <Space>
                 Tickets
                 <IoChevronDown
-                  color={`${pathname.includes("tickets") ? "#ffffff" : "#000000"
-                    }`}
+                  color={`${
+                    pathname.includes("tickets") ? "#ffffff" : "#000000"
+                  }`}
                 />
               </Space>
             </Button>
@@ -380,8 +395,9 @@ export default function EventDetailsComponent({
           <Button
             type={pathname.includes("event_page_view") ? "primary" : "text"}
             size="large"
-            className={`font-BricolageGrotesqueRegular ${pathname.includes("event_page_view") ? "sign-up" : ""
-              } cursor-pointer font-medium w-40 rounded-2xl`}
+            className={`font-BricolageGrotesqueRegular ${
+              pathname.includes("event_page_view") ? "sign-up" : ""
+            } cursor-pointer font-medium w-40 rounded-2xl`}
             style={{
               borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
@@ -434,8 +450,9 @@ export default function EventDetailsComponent({
           <Button
             type={pathname.includes("sales") ? "primary" : "text"}
             size="large"
-            className={`font-BricolageGrotesqueRegular ${pathname.includes("sales") ? "sign-up" : ""
-              } cursor-pointer font-medium w-32 rounded-2xl`}
+            className={`font-BricolageGrotesqueRegular ${
+              pathname.includes("sales") ? "sign-up" : ""
+            } cursor-pointer font-medium w-32 rounded-2xl`}
             style={{
               borderRadius: "25px",
               fontFamily: "BricolageGrotesqueMedium",
@@ -469,25 +486,25 @@ export default function EventDetailsComponent({
               </Button>
             </Tooltip>
           </Dropdown>
-
         </div>
-        {pathname.includes("sales") && getSettlementAccount?.data === undefined && (
-          <div className="flex flex-row">
-            <Button
-              type={"default"}
-              size={"large"}
-              className={`font-BricolageGrotesqueSemiBold  cursor-pointer font-bold w-48 rounded-2xl place-self-end float-right`}
-              style={{
-                borderRadius: "25px",
-                fontFamily: "BricolageGrotesqueRegular",
-                float: "right",
-              }}
-              onClick={() => setIsModalOpen(true)}
-            >
-              Add Account Details
-            </Button>
-          </div>
-        )}
+        {pathname.includes("sales") &&
+          getSettlementAccount?.data === undefined && (
+            <div className="flex flex-row">
+              <Button
+                type={"default"}
+                size={"large"}
+                className={`font-BricolageGrotesqueSemiBold  cursor-pointer font-bold w-48 rounded-2xl place-self-end float-right`}
+                style={{
+                  borderRadius: "25px",
+                  fontFamily: "BricolageGrotesqueRegular",
+                  float: "right",
+                }}
+                onClick={() => setIsModalOpen(true)}
+              >
+                Add Account Details
+              </Button>
+            </div>
+          )}
       </div>
     );
   };
@@ -693,7 +710,6 @@ export default function EventDetailsComponent({
     );
   };
 
-
   const OrderMetrics = (): JSX.Element => {
     const CardMetrics = ({
       title,
@@ -813,13 +829,15 @@ export default function EventDetailsComponent({
             <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
               {isDiscover ? "Remove from discovery" : "Add to discovery"}
               <a
-                href="https://ostivities.tawk.help/article/how-to-add-or-remove-events-from-discovery-on-ostivities" // Replace with your actual URL 
+                href="https://ostivities.tawk.help/article/how-to-add-or-remove-events-from-discovery-on-ostivities" // Replace with your actual URL
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ marginLeft: "8px" }}
               >
                 <Tooltip title="Click to learn more">
-                  <QuestionCircleOutlined style={{ fontSize: "18px", color: "#858990" }} />
+                  <QuestionCircleOutlined
+                    style={{ fontSize: "18px", color: "#858990" }}
+                  />
                 </Tooltip>
               </a>
             </span>
@@ -860,7 +878,9 @@ export default function EventDetailsComponent({
               height={14}
               className="cursor-pointer text-lg"
             />
-            <span className="font-BricolageGrotesqueMedium">Copy Link</span>
+            <span className="font-BricolageGrotesqueMedium">
+              Copy Event Link
+            </span>
           </Button>
         </div>
       )}
@@ -873,8 +893,8 @@ export default function EventDetailsComponent({
         open={isModalOpen}
         data={eventDetails?.user?.id}
         onOk={() => {
-          setAccountDetailsAdded(true)
-          setIsModalOpen(false)
+          setAccountDetailsAdded(true);
+          setIsModalOpen(false);
         }}
         onCancel={() => setIsModalOpen(false)}
       />
@@ -884,8 +904,13 @@ export default function EventDetailsComponent({
         isLoggedIn
         extraComponents={
           <div
-            className={`flex flex-col ${pathname.includes("sales") || pathname.includes("order") || pathname.includes("product") ? "space-y-8" : ""
-              }`}
+            className={`flex flex-col ${
+              pathname.includes("sales") ||
+              pathname.includes("order") ||
+              pathname.includes("product")
+                ? "space-y-8"
+                : ""
+            }`}
           >
             <ExtraTab />
             {pathname.includes("sales") && <SalesMetrics />}
@@ -893,7 +918,6 @@ export default function EventDetailsComponent({
             {pathname.includes("order") && <OrderMetrics />}
           </div>
         }
-
       >
         <div className="w-full mx-auto flex flex-col space-y-5 py-2">
           <>{children}</>

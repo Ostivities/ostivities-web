@@ -36,7 +36,7 @@ const CoordinatorsDetail = ({ open, onCancel, onOk, data, id }: IModal) => {
         staff_email: coordinatorsDetails?.staff_email,
         staff_phone_number: coordinatorsDetails?.staff_phone_number,
         staff_role: coordinatorsDetails?.staff_role,
-        password: coordinatorsDetails?.password_text
+        password_text: coordinatorsDetails?.password_text
       })
     }
   }, [coordinatorsDetails])

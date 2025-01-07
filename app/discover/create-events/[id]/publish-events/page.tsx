@@ -418,170 +418,82 @@ export default function PublishEvent(): JSX.Element {
                 />
               </div>
             )}
-          </div>
-          <div>
-            {getUserEvent?.isLoading ? (
-              <Skeleton.Button
-                active
-                className="relative h-7 sm: w-[150px] md:w-[120px] sm:w-200px] rounded-[1rem]"
-                shape="round"
-                style={{
-                  height: "100%",
-                  width: "100%",
-                  margin: "6px",
-                  maxWidth: "100%",
-                }}
-              />
-            ) : (
-              <h2 className="text-xl font-BricolageGrotesqueMedium">
-                {eventDetails?.eventName}
-              </h2>
-            )}
-          </div>
-          {getUserEvent?.isLoading ? (
-            <div className="flex flex-col py-8 gap-3">
-              {[...Array(5)].map((_, index) => (
-                <Skeleton
-                  key={index}
-                  avatar
-                  paragraph={{ rows: 1 }}
+            <div>
+              {getUserEvent?.isLoading ? (
+                <Skeleton.Button
                   active
+                  className="relative h-7 sm: w-[150px] md:w-[120px] sm:w-200px] rounded-[1rem]"
+                  shape="round"
                   style={{
-                    width: "250px",
-                    margin: "10px 0",
+                    height: "100%",
+                    width: "100%",
+                    margin: "6px",
+                    maxWidth: "100%",
                   }}
                 />
-              ))}
+              ) : (
+                <h2 className="text-xl font-BricolageGrotesqueMedium">
+                  {eventDetails?.eventName}
+                </h2>
+              )}
             </div>
-          ) : (
-            <div className="mt-2 flex flex-col gap-8">
-              <div className="flex items-start">
-                {/* Image Section */}
-                <div className="bg-OWANBE_PRY/20 p-2 max-h-[41px] min-w-[41px] rounded-xl flex-center justify-center">
-                  <Image
-                    src="/icons/calendar.svg"
-                    alt=""
-                    height={25}
-                    width={25}
+            {getUserEvent?.isLoading ? (
+              <div className="flex flex-col py-8 gap-3">
+                {[...Array(5)].map((_, index) => (
+                  <Skeleton
+                    key={index}
+                    avatar
+                    paragraph={{ rows: 1 }}
+                    active
+                    style={{
+                      width: "250px",
+                      margin: "10px 0",
+                    }}
                   />
-                </div>
+                ))}
+              </div>
+            ) : (
+              <div className="mt-2 flex flex-col gap-8">
+                <div className="flex items-start">
+                  {/* Image Section */}
+                  <div className="bg-OWANBE_PRY/20 p-2 max-h-[41px] min-w-[41px] rounded-xl flex-center justify-center">
+                    <Image
+                      src="/icons/calendar.svg"
+                      alt=""
+                      height={25}
+                      width={25}
+                    />
+                  </div>
 
-                {/* Text Section */}
-                <div className="ml-2">
-                  <div
-                    className="text-sm"
-                    style={{
-                      fontWeight: 600,
-                      fontFamily: "'Bricolage Grotesque', sans-serif",
-                    }}
-                  >
-                    Date
-                  </div>
-                  <div
-                    style={{
-                      whiteSpace: "normal",
-                      wordWrap: "break-word",
-                      fontWeight: 300,
-                      fontFamily: "'Bricolage Grotesque', sans-serif",
-                    }}
-                  >
-                    {dateFormat(eventDetails?.startDate)} -{" "}
-                    {dateFormat(eventDetails?.endDate)}
-                  </div>
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
-                  <Image src="/icons/time.svg" alt="" height={25} width={25} />
-                </div>
-                <div>
-                  <div
-                    className="text-sm"
-                    style={{
-                      fontWeight: 600,
-                      fontFamily: "'Bricolage Grotesque', sans-serif",
-                    }}
-                  >
-                    Time
-                  </div>
-                  <div
-                    style={{
-                      fontWeight: 300,
-                      fontFamily: "'Bricolage Grotesque', sans-serif",
-                    }}
-                  >
-                    {timeFormat(eventDetails?.startDate)} -{" "}
-                    {timeFormat(eventDetails?.endDate)} {eventDetails?.timeZone}
-                  </div>
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
-                  <Image
-                    src="/icons/location.svg"
-                    alt=""
-                    height={25}
-                    width={25}
-                  />
-                </div>
-                <div>
-                  <div
-                    className="text-sm"
-                    style={{
-                      fontWeight: 600,
-                      fontFamily: "'Bricolage Grotesque', sans-serif",
-                    }}
-                  >
-                    Location
-                  </div>
-                  <div
-                    style={{
-                      whiteSpace: "normal",
-                      wordWrap: "break-word",
-                      fontWeight: 300,
-                      fontFamily: "'Bricolage Grotesque', sans-serif",
-                    }}
-                  >
-                    {eventDetails?.address}
-                  </div>
-                </div>
-              </div>
-              <div className="flex gap-3">
-                <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
-                  <Image src="/icons/host.svg" alt="" height={25} width={25} />
-                </div>
-                <div>
-                  <div
-                    className="text-sm"
-                    style={{
-                      fontWeight: 600,
-                      fontFamily: "'Bricolage Grotesque', sans-serif",
-                    }}
-                  >
-                    Host
-                  </div>
-                  <div>
+                  {/* Text Section */}
+                  <div className="ml-2">
+                    <div
+                      className="text-sm"
+                      style={{
+                        fontWeight: 600,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
+                      Date
+                    </div>
                     <div
                       style={{
+                        whiteSpace: "normal",
+                        wordWrap: "break-word",
                         fontWeight: 300,
                         fontFamily: "'Bricolage Grotesque', sans-serif",
                       }}
                     >
-                      {userFullName}
+                      {dateFormat(eventDetails?.startDate)} -{" "}
+                      {dateFormat(eventDetails?.endDate)}
                     </div>
                   </div>
                 </div>
-              </div>
-              {twitterLink?.url ||
-              instagramLink?.url ||
-              websiteLink?.url ||
-              facebookLink?.url ? (
-                // If not loading and links exist, show the Contact Us section
-                <div className="flex gap-3 items-center">
-                  <div className="bg-OWANBE_PRY/20 p-2 max-h-[41px] min-w-[41px] rounded-xl flex items-center justify-center">
+                <div className="flex gap-3">
+                  <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
                     <Image
-                      src="/icons/phone.svg"
-                      alt="Phone Icon"
+                      src="/icons/time.svg"
+                      alt=""
                       height={25}
                       width={25}
                     />
@@ -594,75 +506,241 @@ export default function PublishEvent(): JSX.Element {
                         fontFamily: "'Bricolage Grotesque', sans-serif",
                       }}
                     >
-                      Contact Us
+                      Time
                     </div>
-                    <div className="flex items-center gap-4 mt-1">
-                      {websiteLink?.url && (
-                        <Link
-                          href={websiteLink.url}
-                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <Image
-                            src="/icons/link.svg"
-                            alt="Website Icon"
-                            height={14}
-                            width={14}
-                          />
-                        </Link>
-                      )}
-                      {twitterLink?.url && (
-                        <Link
-                          href={twitterLink.url}
-                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <Image
-                            src="/icons/x.svg"
-                            alt="Twitter Icon"
-                            height={14}
-                            width={14}
-                          />
-                        </Link>
-                      )}
-                      {facebookLink?.url && (
-                        <Link
-                          href={facebookLink.url}
-                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <Image
-                            src="/icons/facebook.svg"
-                            alt="Facebook Icon"
-                            height={10}
-                            width={10}
-                          />
-                        </Link>
-                      )}
-                      {instagramLink?.url && (
-                        <Link
-                          href={instagramLink.url}
-                          className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          <Image
-                            src="/icons/instagram.svg"
-                            alt="Instagram Icon"
-                            height={16}
-                            width={16}
-                          />
-                        </Link>
-                      )}
+                    <div
+                      style={{
+                        fontWeight: 300,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
+                      {timeFormat(eventDetails?.startDate)} -{" "}
+                      {timeFormat(eventDetails?.endDate)}{" "}
+                      {eventDetails?.timeZone}
                     </div>
                   </div>
                 </div>
-              ) : null}
+                <div className="flex gap-3">
+                  <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
+                    <Image
+                      src="/icons/location.svg"
+                      alt=""
+                      height={25}
+                      width={25}
+                    />
+                  </div>
+                  <div>
+                    <div
+                      className="text-sm"
+                      style={{
+                        fontWeight: 600,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
+                      Location
+                    </div>
+                    <div
+                      style={{
+                        whiteSpace: "normal",
+                        wordWrap: "break-word",
+                        fontWeight: 300,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
+                      {eventDetails?.address}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <div className="bg-OWANBE_PRY/20 max-h-[41px] min-w-[41px] p-2 rounded-xl flex-center justify-center">
+                    <Image
+                      src="/icons/host.svg"
+                      alt=""
+                      height={25}
+                      width={25}
+                    />
+                  </div>
+                  <div>
+                    <div
+                      className="text-sm"
+                      style={{
+                        fontWeight: 600,
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                      }}
+                    >
+                      Host
+                    </div>
+                    <div>
+                      <div
+                        style={{
+                          fontWeight: 300,
+                          fontFamily: "'Bricolage Grotesque', sans-serif",
+                        }}
+                      >
+                        {userFullName}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {twitterLink?.url ||
+                instagramLink?.url ||
+                websiteLink?.url ||
+                facebookLink?.url ? (
+                  // If not loading and links exist, show the Contact Us section
+                  <div className="flex gap-3 items-center">
+                    <div className="bg-OWANBE_PRY/20 p-2 max-h-[41px] min-w-[41px] rounded-xl flex items-center justify-center">
+                      <Image
+                        src="/icons/phone.svg"
+                        alt="Phone Icon"
+                        height={25}
+                        width={25}
+                      />
+                    </div>
+                    <div>
+                      <div
+                        className="text-sm"
+                        style={{
+                          fontWeight: 600,
+                          fontFamily: "'Bricolage Grotesque', sans-serif",
+                        }}
+                      >
+                        Contact Us
+                      </div>
+                      <div className="flex items-center gap-4 mt-1">
+                        {websiteLink?.url && (
+                          <Link
+                            href={websiteLink.url}
+                            className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <Image
+                              src="/icons/link.svg"
+                              alt="Website Icon"
+                              height={14}
+                              width={14}
+                            />
+                          </Link>
+                        )}
+                        {twitterLink?.url && (
+                          <Link
+                            href={twitterLink.url}
+                            className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <Image
+                              src="/icons/x.svg"
+                              alt="Twitter Icon"
+                              height={14}
+                              width={14}
+                            />
+                          </Link>
+                        )}
+                        {facebookLink?.url && (
+                          <Link
+                            href={facebookLink.url}
+                            className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <Image
+                              src="/icons/facebook.svg"
+                              alt="Facebook Icon"
+                              height={10}
+                              width={10}
+                            />
+                          </Link>
+                        )}
+                        {instagramLink?.url && (
+                          <Link
+                            href={instagramLink.url}
+                            className="bg-black w-6 h-6 rounded-full flex items-center justify-center"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <Image
+                              src="/icons/instagram.svg"
+                              alt="Instagram Icon"
+                              height={16}
+                              width={16}
+                            />
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            )}
+            <div>
+              <Heading5
+                className="text-lg font-bold mb-3"
+                content={"About this event"}
+              />
+              {getUserEvent?.isLoading ? (
+                <div className="flex flex-col gap-1 ">
+                  {Array(2)
+                    .fill(null)
+                    .map((_, index) => (
+                      <Skeleton
+                        key={index}
+                        // className="relative h-60 w-[200px] md:w-[200px] sm:w-[150px] rounded"
+                        paragraph={{ rows: 1 }}
+                        active
+                        style={{
+                          height: "50px",
+                          width: "100%",
+                          margin: "10px",
+                          maxWidth: "100%",
+                        }}
+                      />
+                    ))}
+                </div>
+              ) : (
+                <>
+                  <ReadMoreHTML
+                    htmlContent={eventDetails?.eventDetails || ""}
+                    maxLength={250}
+                  />
+
+                  {eventDetails?.event_coordinates && (
+                    <iframe
+                      src={eventDetails?.event_coordinates}
+                      width="100%"
+                      height="120"
+                      style={{
+                        border: 0,
+                        marginTop: "24px",
+                        borderRadius: "0.5rem", // Corner radius
+                      }}
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    />
+                  )}
+                </>
+              )}
             </div>
-          )}
+            <div className="flex justify-center mt-12">
+              <Button
+                type="primary"
+                className="primary-btn w-full"
+                style={{
+                  borderRadius: "25px",
+                  fontFamily: "BricolageGrotesqueMedium",
+                  float: "right",
+                  height: "50px", // Adjust height as needed
+                  fontSize: "16px", // Increase text size
+                  border: "none", // Remove border if needed
+                }}
+                disabled={publishEvent.isPending}
+                loading={publishEvent.isPending}
+                onClick={handlePublishEvent}
+              >
+                Publish Event
+              </Button>
+            </div>
+          </div>
         </section>
       </DashboardLayout>
 
