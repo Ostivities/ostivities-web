@@ -185,12 +185,12 @@ function Footer(): JSX.Element {
         <hr className="hor-rule" />
         <div className="footer-bottom pt-5 flex flex-row justify-between items-center w-full">
           <Paragraph
-            content={`© ${currentYear} Ostivities, Inc.`}
-            className="text-start text-OWANBE_H4 font-light font-BricolageGrotesqueLight text-[12px] md:text-base"
+            content={`© ${currentYear} Ostivities Tech Ltd.`}
+            className="text-start text-OWANBE_H4 font-light font-BricolageGrotesqueLight text-[14px] md:text-base"
           // Align text to the start (left)
           />
           <div className="flex flex-row items-center">
-            <Space direction="horizontal" size={12}>
+            <Space direction="horizontal" size={16}>
               <a href="https://www.instagram.com/ostivities" target="_blank" rel="noopener noreferrer">
                 <Image
                   src={Instagram}
