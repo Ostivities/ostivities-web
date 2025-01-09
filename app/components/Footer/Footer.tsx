@@ -32,7 +32,7 @@ function Footer(): JSX.Element {
                 style={{ height: "52px" }}
                 className="w-[170px]"
               />
-              <div className="flex flex-row items-center space-x-3">
+              <div className="flex flex-row items-center space-x-3 ml-3">
                 <Image src={Mail} alt="icon" />
                 <Small
                   content={
@@ -44,14 +44,28 @@ function Footer(): JSX.Element {
                 />
 
               </div>
-
-              <div className="flex flex-row items-center space-x-3">
+              <div className="flex flex-row items-center space-x-3 ml-3">
+              <a
+                href="https://www.producthunt.com/posts/ostivities?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-ostivities"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=480097&theme=light&t=1736447392470"
+                  alt="Ostivities - Revolutionizing&#0032;Social&#0032;Event&#0032;Management&#0032; | Product Hunt"
+                  style={{ width: '200px', height: '54px' }}
+                  width="250"
+                  height="54"
+                />
+              </a> 
+              </div>
+              {/* <div className="flex flex-row items-center space-x-3 ml-4">
                 <Image src={Phone} alt="icon" />
                 <Small
                   content={"+234 810 1218 257"}
                   className="text-sm lg:text-base xl:text-base text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
                 />
-              </div>
+              </div> */}
             </div>
             {/* 2 */}
             <div className="flex flex-col space-y-2">
@@ -113,7 +127,7 @@ function Footer(): JSX.Element {
                   lineHeight: '1.5',
                 }}
               >
-                Socials
+                Connect with us
               </h3>
 
               {SOCIALS.map((item, index) => (
@@ -138,11 +152,11 @@ function Footer(): JSX.Element {
                   lineHeight: '1.5',
                 }}
               >
-                Newsletter
+                Stay Updated
               </h3>
 
               <Small
-                content={"Sign up to our newsletter to keep yourself updated about us."}
+                content={"Subscribe to our features platform to keep yourself updated about us."}
                 className="text-sm lg:text-base xl:text-base text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
               />
               <div id="custom-substack-embed" className="mt-5">
@@ -171,31 +185,6 @@ function Footer(): JSX.Element {
                   strategy="afterInteractive"
                 />
               </div>
-
-              {/* {NEWSLETTER.map((item, index) => (
-                <Link
-                  key={index}
-                  href={item.link}
-                  target={item.target}
-                  rel={item.rel}
-                  className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
-                >
-                  {item.name}
-                </Link>
-              ))} */}
-              {/* <a
-                href="https://www.producthunt.com/products/ostivities?utm_source=badge-follow&utm_medium=badge&utm_souce=badge-ostivities"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  src="https://api.producthunt.com/widgets/embed-image/v1/follow.svg?product_id=599681&theme=light"
-                  alt="Ostivities - Revolutionizing&#0032;Social&#0032;Event&#0032;Management&#0032; | Product Hunt"
-                  style={{ width: '250px', height: '54px' }}
-                  width="250"
-                  height="54"
-                />
-              </a> */}
               {/* <a href="#"
                 onClick={() => window.open('https://www.sitelock.com/verify.php?site=ostivities.com', 'SiteLock', 'width=600,height=600,left=160,top=170')}>
                 <img
@@ -210,51 +199,10 @@ function Footer(): JSX.Element {
         <hr className="hor-rule" />
         <div className="footer-bottom pt-5 flex flex-row justify-between items-center w-full">
           <Paragraph
-            content={`© ${currentYear} Ostivities Technology Limited.`}
-            className="text-start text-OWANBE_H4 font-light font-BricolageGrotesqueLight text-[14px] md:text-base"
+            content={`© ${currentYear} Ostivities Technology Limited. All rights reserved`}
+            className="text-start text-OWANBE_H4 font-light font-BricolageGrotesqueLight text-[13px] md:text-sm"
           // Align text to the start (left)
           />
-          {/* <div className="flex flex-row items-center">
-            <Space direction="horizontal" size={16}>
-              <a href="https://www.instagram.com/ostivities" target="_blank" rel="noopener noreferrer">
-                <Image
-                  src={Instagram}
-                  alt="Instagram"
-                  className="cursor-pointer"
-                  width={24}
-                  height={24} 
-                />
-              </a>
-              <a href="https://x.com/Ostivities" target="_blank" rel="noopener noreferrer">
-                <Image
-                  src={Twitter}
-                  alt="Twitter"
-                  className="cursor-pointer"
-                  width={24}
-                  height={24} 
-                />
-
-              </a>
-              <a href="https://www.linkedin.com/company/ostivities" target="_blank" rel="noopener noreferrer">
-                <Image
-                  src={Linkedln}
-                  alt="LinkedIn"
-                  className="cursor-pointer"
-                  width={24}
-                  height={24} 
-                />
-              </a>
-              <a href="https://whatsapp.com/channel/0029ValuXFsC6Zvq6enUQe1z" target="_blank" rel="noopener noreferrer">
-                <Image
-                  src={Whatsapp}
-                  alt="Whatsapp"
-                  className="cursor-pointer"
-                  width={24}
-                  height={24} 
-                />
-              </a>
-            </Space>
-          </div> */}
         </div>
       </div>
     </footer>
