@@ -177,10 +177,6 @@ export const SOCIALS: INavLinks[] = [
     { link: "https://www.linkedin.com/company/ostivities", name: "LinkedIn", 
       target: "_blank", 
       rel: "noopener noreferrer" },
-      
-    { link: "https://www.producthunt.com/products/ostivities", name: "Product Hunt", 
-        target: "_blank", 
-        rel: "noopener noreferrer" },
 ];
 
 export const NEWSLETTER: INavLinks[] = [
