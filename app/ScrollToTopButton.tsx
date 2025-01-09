@@ -12,7 +12,7 @@ const ScrollToTopButton: React.FC = () => {
   return (
     <button
       onClick={handleScrollToTop}
-      className="fixed bottom-32 right-4 bg-white p-3 rounded-full shadow-lg flex items-center justify-center"
+      className="fixed bottom-24 right-4 bg-white p-3 rounded-full shadow-lg flex items-center justify-center"
       aria-label="Scroll to Top"
     >
       <CaretUpOutlined color="#e20000" size={30} /> 

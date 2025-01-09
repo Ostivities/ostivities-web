@@ -162,7 +162,7 @@ const TicketsSelection = () => {
       additionalInformation: { question: string; is_compulsory: boolean }[];
     }[]
   >([]);
-  // console.log(ticketDetails, "ticketDetails");
+  console.log(ticketDetails, "ticketDetails");
 
   const [ticketDataQ, setTicketDataQ] = useState<{
     ticket_information: {
@@ -174,7 +174,7 @@ const TicketsSelection = () => {
       ticketFee: number;
       eventName?: string;
       ticketDiscountType: string;
-      ticketDiscountCode: string;
+      ticketDiscountCode?: string[];
       ticketDiscountValue: number;
       ticketNumber: number;
       ticket_type: string;
@@ -509,6 +509,10 @@ const TicketsSelection = () => {
                 ticket?.guestAsChargeBearer === true
                   ? Math.round(discountedTicketPrice + ticket?.ticketFee)
                   : Math.round(discountedTicketPrice),
+              total_amount:
+                ticket?.guestAsChargeBearer === true
+                  ? Math.round(discountedTicketPrice + ticket?.ticketFee)
+                  : Math.round(discountedTicketPrice),
             };
           }
 
@@ -520,6 +524,10 @@ const TicketsSelection = () => {
             discountedTicketPrice: undefined,
             discountToDeduct: undefined,
             subTotal:
+              ticket?.guestAsChargeBearer === true
+                ? Math.round(ticket?.ticket_price + ticket?.ticketFee)
+                : ticket?.ticket_price,
+            total_amount:
               ticket?.guestAsChargeBearer === true
                 ? Math.round(ticket?.ticket_price + ticket?.ticketFee)
                 : ticket?.ticket_price,
@@ -555,10 +563,13 @@ const TicketsSelection = () => {
             ticket_stock: ticket.ticket_stock,
             order_number: ticket.order_number,
             discount: ticket.ticketDiscountValue,
-            discountCode: discountCode,
+            discountCode: ticket?.ticketDiscountCode?.includes(discountCode) === true ? discountCode : "",
           })),
           fees: updatedFees,
-          total_amount_paid: updatedTotalAmountPaid,
+          total_amount_paid: discountCodeUsed ? updatedTotalAmountPaid : updatedTicketInformation.reduce(
+            (acc, ticket) => acc + ticket.subTotal, // Total of all ticket amounts
+            0
+          ),
           total_purchased: updatedTotalPurchased,
         };
       });
@@ -568,7 +579,10 @@ const TicketsSelection = () => {
         ticket_information: updatedTicketInformation,
         fees: updatedFees,
         discount: updatedDiscount,
-        total_amount_paid: updatedTotalAmountPaid,
+        total_amount_paid: updatedTicketInformation.reduce(
+          (acc, ticket) => acc + ticket.subTotal, // Total of all ticket amounts
+          0
+        ),
         total_purchased: updatedTotalPurchased,
         discountCode: discountCodeUsed ? discountCode : "",
       };
@@ -624,20 +638,55 @@ const TicketsSelection = () => {
                   discountValue,
           };
         } else {
+          // const isDiscountCodeApplied =
+          //   ticket?.discountCode &&
+          //   Array.isArray(ticket?.discountCode) &&
+          //   ticket?.discountCode.some((code) =>
+          //     existingTicket?.ticketDiscountCode.includes(code)
+          //   );
+
+          const isDiscountCodeApplied =
+            ticket?.discountCode?.includes(discountCode);
+          // Only apply discount if a matching code is found
+
+          const discountCodeUsed = discountDetails?.find(
+            (discount: any) =>
+              discount?.discountCode?.toLowerCase() ===
+              discountCode?.toLowerCase()
+          );
+
+          const discountTypeUsed =
+            discountCodeUsed && discountCodeUsed?.discountType; // Use null or a default value if not found
+          const discountValueUsed =
+            discountCodeUsed && discountCodeUsed?.discount_value;
+          // Calculate the discounted ticket price or any other property you want to update
+          const discountValue = isDiscountCodeApplied === true ?
+            discountTypeUsed === DISCOUNT_TYPE.PERCENTAGE
+              ? ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE
+                ? (realPrice * discountValueUsed) / 100
+                : (realPrice * discountValueUsed) / 100
+              : discountValueUsed : 0;
+
+          const discountedTicketPrice = realPrice - discountValue;
+          const discountToDeduct =
+            ticket?.discount?.discountType === DISCOUNT_TYPE.PERCENTAGE
+              ? (realPrice * discountValue) / 100
+              : discountValue;
           updatedDetails.push({
             ticketName: ticket?.ticketName,
             ticketPrice: realPrice,
             ticketFee: currentFee,
             ticketNumber: 1,
+            discountToDeduct: isDiscountCodeApplied ? Math.round(discountToDeduct) : 0,
             ticketType: ticket?.ticketType,
             ticketStock: ticket?.ticketStock,
             ticketDiscountCode: ticket?.discountCode,
-            ticketDiscountType: ticket?.discount?.discountType,
-            ticketDiscountValue: ticket?.discount?.discount_value,
+            ticketDiscountType: isDiscountCodeApplied ? discountTypeUsed : ticket?.discount?.discountType,
+            ticketDiscountValue: isDiscountCodeApplied ? Math.round(discountValueUsed) : ticket?.discount?.discount_value,
             subTotal:
               ticket?.guestAsChargeBearer === true
-                ? realPrice + currentFee
-                : realPrice,
+                ? realPrice + currentFee - discountValue
+                : realPrice - discountValue,
             ticketId: ticket?.id,
             guestAsChargeBearer: ticket?.guestAsChargeBearer,
             constantTicketPrice: ticket?.ticketPrice,
@@ -698,7 +747,7 @@ const TicketsSelection = () => {
           ticketFee: currentFee,
           eventName: ticket?.eventName,
           ticketDiscountType: ticket?.discount?.discountType,
-          ticketDiscountCode: discountCode,
+          ticketDiscountCode: ticket?.discountCode,
           ticketDiscountValue: ticket?.discount?.discount_value,
           ticketNumber: 1, // Default quantity for the new ticket
           ticket_type: ticket?.ticketType,
@@ -735,6 +784,42 @@ const TicketsSelection = () => {
             existingTicket?.discountedTicketPrice;
           newTicket.ticketDiscountCode = existingTicket?.ticketDiscountCode;
           newTicket.discountedTicketPrice = existingTicket?.ticketDiscountType;
+        }
+
+        // If newTicket also contains the applied discount code
+        if (
+          !existingTicket &&
+          newTicket?.ticketDiscountCode?.includes(discountCode)
+        ) {
+          const discountCodeUsed = discountDetails?.find(
+            (discount: any) =>
+              discount?.discountCode?.toLowerCase() ===
+              discountCode?.toLowerCase()
+          );
+          const discountTypeUsed =
+            discountCodeUsed && discountCodeUsed?.discountType; // Use null or a default value if not found
+          const discountValueUsed =
+            discountCodeUsed && discountCodeUsed?.discount_value;
+          // Calculate the discounted ticket price or any other property you want to update
+          const discountValue =
+            discountTypeUsed === DISCOUNT_TYPE.PERCENTAGE
+              ? newTicket?.ticketEntity === TICKET_ENTITY.COLLECTIVE
+                ? (newTicket?.ticket_price * discountValueUsed) / 100
+                : (newTicket?.ticket_price * discountValueUsed) / 100
+              : discountValueUsed;
+
+          const discountedTicketPrice = newTicket?.ticket_price - discountValue;
+
+          newTicket.discountedTicketPrice = Math.round(
+            Math.max(discountedTicketPrice, 0)
+          ); // Ensure price isn't negative
+          (newTicket.ticketDiscountType = discountTypeUsed),
+            (newTicket.ticketDiscountValue = Math.round(discountValueUsed)),
+            (newTicket.discountToDeduct = Math.round(discountValue));
+          newTicket.subTotal =
+            newTicket?.guestAsChargeBearer === false
+              ? newTicket?.ticket_price - discountValue
+              : newTicket?.ticket_price + currentFee - discountValue;
         }
 
         // Update the ticket information with the new ticket
@@ -777,7 +862,7 @@ const TicketsSelection = () => {
             ticket_stock: ticket.ticket_stock,
             order_number: ticket.order_number,
             discount: ticket.ticketDiscountValue,
-            discountCode: ticket?.ticketDiscountCode,
+            discountCode: newTicket?.ticketDiscountCode?.includes(discountCode) ? discountCode : "",
           })),
           fees: updatedFees,
           total_amount_paid: updatedTotalAmountPaid,

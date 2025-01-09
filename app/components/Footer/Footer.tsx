@@ -1,5 +1,5 @@
 "use client";
-import { LEGAL, NEWSLETTER, SUPPORT } from "@/app/utils/data";
+import { LEGAL, NEWSLETTER, SOCIALS, SUPPORT } from "@/app/utils/data";
 import Instagram from "@/public/Instagram.svg";
 import Linkedln from "@/public/LinkedIn.svg";
 import Twitter from "@/public/X.svg";
@@ -23,16 +23,16 @@ function Footer(): JSX.Element {
     <footer className="overflow-hidden mt-3">
       <div className="container mx-auto py-6">
         <div className="flex flex-col space-y-5 py-4 w-4/5 px-6 md:px-0 xl:px-0 lg:px-0 md:w-4/5 md:mx-auto lg:w-full xl:w-full">
-          <div className="grid grid-cols-1 gap-12 md:gap-10 lg:gap-0 xl:gap-0 md:grid md:grid-cols-2 lg:grid lg:grid-cols-4 xl:grid xl:grid-cols-4 pb-3">
+          <div className="grid grid-cols-1 gap-12 md:gap-10 lg:gap-0 xl:gap-0 md:grid md:grid-cols-2 lg:grid lg:grid-cols-5 xl:grid xl:grid-cols-5 pb-3">
             {/* 1 */}
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-3">
               <Image
                 src={OwanbeLogo}
                 alt="Ostivities Logo"
-                style={{ height: "58px" }}
+                style={{ height: "52px" }}
                 className="w-[170px]"
               />
-              <div className="flex flex-row items-center space-x-5">
+              <div className="flex flex-row items-center space-x-3">
                 <Image src={Mail} alt="icon" />
                 <Small
                   content={
@@ -40,7 +40,7 @@ function Footer(): JSX.Element {
                       hello&#64;ostivities.com
                     </a>
                   }
-                  className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+                  className="text-sm lg:text-base xl:text-base text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
                 />
 
               </div>
@@ -49,12 +49,12 @@ function Footer(): JSX.Element {
                 <Image src={Phone} alt="icon" />
                 <Small
                   content={"+234 810 1218 257"}
-                  className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+                  className="text-sm lg:text-base xl:text-base text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
                 />
               </div>
             </div>
             {/* 2 */}
-            <div className="flex flex-col space-y-3">
+            <div className="flex flex-col space-y-2">
               <h3
                 style={{
                   fontFamily: "'Bricolage Grotesque', sans-serif",
@@ -72,14 +72,14 @@ function Footer(): JSX.Element {
                   href={item.link}
                   target={item.target}
                   rel={item.rel}
-                  className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+                  className="text-sm lg:text-base xl:text-base text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
                 >
                   {item.name}
                 </Link>
               ))}
             </div>
             {/* 3 */}
-            <div className="flex flex-col space-y-3">
+            <div className="flex flex-col space-y-2">
               <h3
                 style={{
                   fontFamily: "'Bricolage Grotesque', sans-serif",
@@ -97,14 +97,39 @@ function Footer(): JSX.Element {
                   href={item.link}
                   target={item.target}
                   rel={item.rel}
-                  className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+                  className="text-sm lg:text-base xl:text-base text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
                 >
                   {item.name}
                 </Link>
               ))}
             </div>
-            {/* 4 */}
-            <div className="flex flex-col space-y-3">
+             {/* 4 */}
+             <div className="flex flex-col space-y-2">
+              <h3
+                style={{
+                  fontFamily: "'Bricolage Grotesque', sans-serif",
+                  fontWeight: '500', // Medium weight
+                  fontSize: '18px',
+                  lineHeight: '1.5',
+                }}
+              >
+                Socials
+              </h3>
+
+              {SOCIALS.map((item, index) => (
+                <Link
+                  key={index} // Changed to index for uniqueness
+                  href={item.link}
+                  target={item.target}
+                  rel={item.rel}
+                  className="text-sm lg:text-base xl:text-base text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+            {/* 5 */}
+            <div className="flex flex-col space-y-2">
               <h3
                 style={{
                   fontFamily: "'Bricolage Grotesque', sans-serif",
@@ -118,7 +143,7 @@ function Footer(): JSX.Element {
 
               <Small
                 content={"Sign up to our newsletter to keep yourself updated about us."}
-                className="text-sm lg:text-lg xl:text-lg text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
+                className="text-sm lg:text-base xl:text-base text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
               />
               <div id="custom-substack-embed" className="mt-5">
                 <Script
@@ -185,11 +210,11 @@ function Footer(): JSX.Element {
         <hr className="hor-rule" />
         <div className="footer-bottom pt-5 flex flex-row justify-between items-center w-full">
           <Paragraph
-            content={`© ${currentYear} Ostivities Tech Ltd.`}
+            content={`© ${currentYear} Ostivities Technology Limited.`}
             className="text-start text-OWANBE_H4 font-light font-BricolageGrotesqueLight text-[14px] md:text-base"
           // Align text to the start (left)
           />
-          <div className="flex flex-row items-center">
+          {/* <div className="flex flex-row items-center">
             <Space direction="horizontal" size={16}>
               <a href="https://www.instagram.com/ostivities" target="_blank" rel="noopener noreferrer">
                 <Image
@@ -229,10 +254,8 @@ function Footer(): JSX.Element {
                 />
               </a>
             </Space>
-          </div>
+          </div> */}
         </div>
-
-
       </div>
     </footer>
   );

@@ -127,18 +127,23 @@ useEffect(() => {
     }
   };
 
-  useEffect(() => {
-    if (ticketDetails?.length === 0) {
-      setShowInput(false);
-    }
-  }, [ticketDetails]);
 
   const handleClearDiscount = () => {
     setDiscountCode("");
+    setDiscountMessage("");
     setDiscountApplied(false);
     onDiscountApplied && onDiscountApplied("");
     setShowInput(false); // Disable input after clearing
   };
+
+  useEffect(() => {
+    if (ticketDetails?.length === 0) {
+      setShowInput(false);
+      handleClearDiscount()
+      setDiscountMessage("");
+    }
+  }, [ticketDetails]);
+
 
   return (
     <section className="flex-1">
