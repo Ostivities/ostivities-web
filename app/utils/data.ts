@@ -165,6 +165,24 @@ export const SUPPORT: INavLinks[] = [
     rel: "noopener noreferrer" },
 ];
 
+export const SOCIALS: INavLinks[] = [
+  { link: "https://www.instagram.com/ostivities", name: "Instagram", 
+    target: "_blank", 
+    rel: "noopener noreferrer" },
+
+  { link: "https://x.com/Ostivities",  name: "X (Twitter)", 
+    target: "_blank", 
+    rel: "noopener noreferrer" },
+    
+    { link: "https://www.linkedin.com/company/ostivities", name: "LinkedIn", 
+      target: "_blank", 
+      rel: "noopener noreferrer" },
+      
+    { link: "https://www.producthunt.com/products/ostivities", name: "Product Hunt", 
+        target: "_blank", 
+        rel: "noopener noreferrer" },
+];
+
 export const NEWSLETTER: INavLinks[] = [
   { link: "https://ostivities.substack.com/subscribe", name: "Subscribe to our newsletter", target: "_blank", rel: "noopener noreferrer" },
 ];
