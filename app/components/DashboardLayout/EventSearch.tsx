@@ -32,7 +32,7 @@ const EventSearch = ({ eventName, state, eventCat }: IEventSearchProps) => {
   return (
     <>
       <EventSection
-        title="Hangout Events"
+        title={eventCat ? `${eventCat} Event(s)` : "Hangout Events"}
         titleClass="custom-title-class"
         style={{
           fontSize: "20px",

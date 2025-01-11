@@ -21,7 +21,7 @@ const EventSection: React.FC<PropsI> = ({ title, uri, children, titleClass = 'fo
     { value: "Wedding", label: "Wedding" },
     { value: "Birthday", label: "Birthday" },
     { value: "Concert", label: "Concert" },
-    { value: "Paint & Sip", label: "Paint & Sip" },
+    { value: "Paint %26 Sip", label: "Paint & Sip" },
     { value: "Hangout", label: "Hangout" },
     { value: "Carnival", label: "Carnival" },
     { value: "Seminar", label: "Seminar" },

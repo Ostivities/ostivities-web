@@ -13,7 +13,7 @@ export const useRegisterGuest = () => {
         },
         mutationKey: [CREATE_GUEST],
         onSuccess: (data: AxiosResponse) => {
-        successFormatter(data);
+        // successFormatter(data);
         },
         onError: (error: AxiosError | any) => {
         errorFormatter(error);

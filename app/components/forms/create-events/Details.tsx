@@ -129,6 +129,7 @@ function Details(): JSX.Element {
     watch,
     trigger,
     reset,
+    clearErrors,
   } = useForm<IFormInput>({
     mode: "all", // Use your preferred validation mode
   });
@@ -374,6 +375,7 @@ function Details(): JSX.Element {
   const handleSelectLocation = (address: string) => {
     setValue("address", address); // Update the form field value
     setPopoverVisible(false); // Close the popover
+    clearErrors("address"); // Clear any existing errors
   };
 
   const handleClickOutside = (event: MouseEvent) => {
