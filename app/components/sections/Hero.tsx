@@ -53,7 +53,7 @@ function Hero(): JSX.Element {
     "/Hangouts.svg",
   ];
 
-  const words = ["events", "hangouts", "concerts", "seminars"];
+  const words = ["Events", "Hangouts", "Concerts", "Seminars"];
   const colors = ["#e20000", "#1834D2", "#FF7700", "#E406B4"];
   const [currentWord, setCurrentWord] = useState(words[0]);
   const [currentColor, setCurrentColor] = useState(colors[0]);
