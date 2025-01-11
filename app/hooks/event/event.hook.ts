@@ -105,7 +105,7 @@ export const useAddEventToDiscovery = () => {
       return API_SERVICE._addEventToDiscovery(data);
     },
     onSuccess: (data: AxiosResponse) => {
-      successFormatter(data);
+      // successFormatter(data);
     },
     onError: (error: AxiosError | any) => {
       errorFormatter(error);

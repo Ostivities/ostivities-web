@@ -1852,10 +1852,10 @@ const TicketsSelection = () => {
     (ticket) =>
       ticket?.ticketEntity === TICKET_ENTITY.SINGLE && ticket?.ticketNumber > 1
   );
-  const disableConditionTwo = ticketDetails?.some(
-    (ticket) =>
-      ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE && ticket?.groupSize > 1
-  );
+  // const disableConditionTwo = ticketDetails?.some(
+  //   (ticket) =>
+  //     ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE && ticket?.groupSize > 1
+  // );
 
   return (
     <DashboardLayout title={title} isLoggedIn>
@@ -2582,7 +2582,6 @@ const TicketsSelection = () => {
                   <span
                     className={`font-BricolageGrotesqueMedium font-medium text-sm ${
                       !disableConditionOne &&
-                      !disableConditionTwo &&
                       ticketDetails?.length === 1
                         ? "text-gray-400"
                         : "text-OWANBE_DARK"
@@ -2607,7 +2606,6 @@ const TicketsSelection = () => {
                     }}
                     isDisabled={
                       !disableConditionOne &&
-                      !disableConditionTwo &&
                       ticketDetails?.length === 1
                     }
                     label="Registration toggle"

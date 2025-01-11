@@ -33,7 +33,8 @@ function Footer(): JSX.Element {
                 className="w-[170px]"
               />
               <div className="flex flex-row items-center space-x-3 ml-3">
-                <Image src={Mail} alt="icon" />
+                <Image src={Mail} alt="icon" width={20}
+                  height={20} />
                 <Small
                   content={
                     <a href="mailto:hello&#64;ostivities.com" style={{ color: "#383A47", textDecoration: "none" }}>
@@ -45,27 +46,29 @@ function Footer(): JSX.Element {
 
               </div>
               <div className="flex flex-row items-center space-x-3 ml-3">
-              <a
-                href="https://www.producthunt.com/posts/ostivities?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-ostivities"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=480097&theme=light&t=1736447392470"
-                  alt="Ostivities - Revolutionizing&#0032;Social&#0032;Event&#0032;Management&#0032; | Product Hunt"
-                  style={{ width: '200px', height: '54px' }}
-                  width="250"
-                  height="54"
-                />
-              </a> 
-              </div>
-              {/* <div className="flex flex-row items-center space-x-3 ml-4">
-                <Image src={Phone} alt="icon" />
+                <Image src={Phone} alt="icon" width={24}
+                  height={24} />
                 <Small
                   content={"+234 810 1218 257"}
                   className="text-sm lg:text-base xl:text-base text-OWANBE_H4 font-light font-BricolageGrotesqueLight"
                 />
-              </div> */}
+              </div>
+              <div className="flex flex-row items-center space-x-3 ml-3">
+                <a
+                  href="https://www.producthunt.com/posts/ostivities?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-ostivities"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=480097&theme=light&t=1736447392470"
+                    alt="Ostivities - Revolutionizing&#0032;Social&#0032;Event&#0032;Management&#0032; | Product Hunt"
+                    style={{ width: '200px', height: '54px' }}
+                    width="250"
+                    height="54"
+                  />
+                </a>
+              </div>
+
             </div>
             {/* 2 */}
             <div className="flex flex-col space-y-2">
@@ -117,8 +120,8 @@ function Footer(): JSX.Element {
                 </Link>
               ))}
             </div>
-             {/* 4 */}
-             <div className="flex flex-col space-y-2">
+            {/* 4 */}
+            <div className="flex flex-col space-y-2">
               <h3
                 style={{
                   fontFamily: "'Bricolage Grotesque', sans-serif",

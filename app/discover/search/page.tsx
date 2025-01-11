@@ -85,6 +85,8 @@ const SearchResult = () => {
       setSelectedValue(query);
     }
   }, [query]);
+  console.log(searchParams, "saecrdjjgvh")
+  console.log(query, "query")
 
   const handleEventTypeChange = (value: string | null) => {
     const params = new URLSearchParams(searchParams?.toString() || "");
