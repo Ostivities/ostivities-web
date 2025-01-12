@@ -334,8 +334,8 @@ const EventsGuestListEmail = () => {
           className="flex flex-col space-y-6 w-full pb-4 mb-6"
           form={form}
         >
-          <div className="grid grid-cols-2 gap-x-12">
-            <Form.Item
+          <div className="grid grid-cols-3 gap-x-12">
+            {/* <Form.Item
               label="Sender Name"
               name="sender_name"
               rules={[
@@ -344,7 +344,7 @@ const EventsGuestListEmail = () => {
               style={{ marginBottom: "8px" }}
             >
               <Input placeholder="Enter sender name" />
-            </Form.Item>
+            </Form.Item> */}
 
             <Form.Item
               label="Sender Email"
@@ -355,6 +355,17 @@ const EventsGuestListEmail = () => {
               style={{ marginBottom: "8px" }}
             >
               <Input placeholder="Enter reply email" />
+            </Form.Item>
+            
+            <Form.Item
+              label="Email Subject"
+              name="email_subject"
+              rules={[
+                { required: true, message: "Please input email subject!" },
+              ]}
+              style={{ marginBottom: "8px" }}
+            >
+              <Input placeholder="Enter email subject" />
             </Form.Item>
 
             <Form.Item
@@ -393,18 +404,6 @@ const EventsGuestListEmail = () => {
                 </Select.Option>
               </Select>
             </Form.Item>
-
-            <Form.Item
-              label="Email Subject"
-              name="email_subject"
-              rules={[
-                { required: true, message: "Please input email subject!" },
-              ]}
-              style={{ marginBottom: "8px" }}
-            >
-              <Input placeholder="Enter email subject" />
-            </Form.Item>
-          </div>
 
           {recipientType === "all" && (
             <Form.Item
@@ -508,6 +507,7 @@ const EventsGuestListEmail = () => {
               </Button>
             </Upload>
           </Form.Item>
+          </div>
 
           <div className="mb-3 pb-12 w-full">
             <EmailEditor initialValue="<p></p>" onChange={handleEditorChange} />
