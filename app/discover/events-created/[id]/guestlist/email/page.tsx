@@ -334,7 +334,7 @@ const EventsGuestListEmail = () => {
           className="flex flex-col space-y-6 w-full pb-4 mb-6"
           form={form}
         >
-          <div className="grid grid-cols-3 gap-x-12">
+          <div className="grid grid-cols-2 gap-x-12">
             {/* <Form.Item
               label="Sender Name"
               name="sender_name"
