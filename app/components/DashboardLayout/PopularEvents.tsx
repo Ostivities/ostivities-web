@@ -12,6 +12,10 @@ const PopularEvents = () => {
   const [pageSize, setpageSize] = useState(12);
   const { getDiscoveryEvents } = useGetDiscoveryEvents(page, pageSize);
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
+  const sortedEvents = discoveryEvents?.sort(
+    (a: IEventDetails, b: IEventDetails) =>
+      (b?.total_ticket_sold ?? 0) - (a?.total_ticket_sold ?? 0)
+  );
   const isPending = getDiscoveryEvents?.isLoading;
 
   return (
@@ -19,7 +23,7 @@ const PopularEvents = () => {
       title="Popular Events"
       titleClass="custom-title-class"
       style={{
-        fontSize: "20px", 
+        fontSize: "20px",
         fontFamily: "Bricolage Grotesque, font-semibold",
       }} // Inline style
       uri="/discover/popularevents"
@@ -44,7 +48,7 @@ const PopularEvents = () => {
         </>
       ) : (
         // Once data is loaded, map through discoveryEvents and render InfoCard components
-        discoveryEvents?.map((event: IEventDetails, index: number) => (
+        sortedEvents?.map((event: IEventDetails, index: number) => (
           <>
             <InfoCard
               className="lg:flex hidden"

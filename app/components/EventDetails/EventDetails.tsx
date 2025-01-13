@@ -801,7 +801,7 @@ export default function EventDetailsComponent({
   };
 
   const title = (
-    <div className="flex  items-center w-full relative pb-2 space-x-8">
+    <div className="flex overflow-x-auto items-center w-full relative pb-2 space-x-8">
       <div className="hidden lg:flex flex-row items-center space-x-2 cursor-pointer">
         <Image
           src="/icons/back-arrow.svg"
@@ -815,9 +815,9 @@ export default function EventDetailsComponent({
         <h1 style={{ fontSize: "24px" }}>Event Details</h1>
       </div>
 
-      <div className="flex overflow-x-scroll flex-row items-center space-x-4">
+      <div className="flex flex-row items-center md:space-x-4">
         {isPublished && (
-          <div className="flex flex-row items-center gap-4">
+          <div className="flex flex-row min-w-[263px] items-center gap-4">
             <ToggleSwitch
               isActive={isActive}
               onToggle={(checked: boolean) => {
