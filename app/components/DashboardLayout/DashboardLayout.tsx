@@ -796,7 +796,7 @@ function DashboardLayout({
           >
             <Header
               className={`${
-                !pathname.split("/").includes("events-created") ? "hidden" : ""
+                !pathname.split("/").includes("events-created") ? "hidden" : "flex"
               } lg:flex`}
               style={{
                 // display: "flex",

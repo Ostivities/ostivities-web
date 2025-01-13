@@ -436,8 +436,8 @@ const AboutEvent = () => {
   const { greeting, icon } = getGreeting();
 
   return (
-    <EventDetailsComponent>
-      {getUserEvent.isLoading ? (
+    <EventDetailsComponent isLoading={getUserEvent.isLoading}>
+      {/* {getUserEvent.isLoading ? (
         <div className="w-full h-full flex flex-row gap-10">
             <Skeleton.Button
               style={{
@@ -459,6 +459,7 @@ const AboutEvent = () => {
             />
         </div>
       ) : (
+      )} */}
         <form
           name="basic"
           autoComplete="off"
@@ -1469,7 +1470,6 @@ const AboutEvent = () => {
             )}
           </Space>
         </form>
-      )}
     </EventDetailsComponent>
   );
 };
