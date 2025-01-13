@@ -180,7 +180,7 @@ function DashboardLayout({
           removeCookie("stage_one");
           removeCookie("stage_two");
           removeCookie("stage_three");
-          removeCookie("profileData")
+          removeCookie("profileData");
           router.push("/login");
         }
       },
@@ -723,7 +723,7 @@ function DashboardLayout({
                     removeCookie("stage_one");
                     removeCookie("stage_two");
                     removeCookie("stage_three");
-                    removeCookie("profileData")
+                    removeCookie("profileData");
                     router.push("/login");
                   }
                 }}
@@ -795,7 +795,9 @@ function DashboardLayout({
             }
           >
             <Header
-              className=" hidden lg:flex"
+              className={`${
+                !pathname.split("/").includes("events-created") ? "hidden" : ""
+              } lg:flex`}
               style={{
                 // display: "flex",
                 alignItems: "center",
@@ -828,7 +830,7 @@ function DashboardLayout({
                 overflowY: "auto",
               }}
             >
-              <Content className="flex flex-col space-y-8 md:py-8">
+              <Content className="flex flex-col space-y-8 py-8">
                 {steppers && (
                   <div
                     className={`min-[577px]:mx-auto text-center min-[577px]:flex flex-row items-center min-[577px]:justify-center max-[577px]:pl-3 pb-3 ${
@@ -847,7 +849,6 @@ function DashboardLayout({
                     background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
                   }}
                   className="px-4 py-10 md:px-12 md:py-16  md:rounded-[30px]"
-
                 >
                   <div>{children}</div>
                 </div>

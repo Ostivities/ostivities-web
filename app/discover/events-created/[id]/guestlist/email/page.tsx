@@ -78,9 +78,9 @@ const EventsGuestListEmail = () => {
   const senderEmail = Form.useWatch("sender_email", form);
   const recipientsApplicableForm = Form.useWatch("recipientsApplicable", form);
   const rep = Form.useWatch("receipients", form);
-  // 
-  
-  // 
+  //
+
+  //
   // Update eventName when eventDetails is available
   useEffect(() => {
     if (eventDetails && eventDetails?.eventName) {
@@ -121,7 +121,7 @@ const EventsGuestListEmail = () => {
           `${cloud_api}/${cloud_name}/auto/upload`,
           formData
         );
-        // 
+        //
         if (response.status === 200) {
           const name = response?.data?.display_name;
           const content = response?.data?.resource_type;
@@ -213,10 +213,10 @@ const EventsGuestListEmail = () => {
       });
 
       if (response.status === 200) {
-        // 
+        //
       }
 
-      // 
+      //
     } else if (recipientsApplicableForm === "selected") {
       const { attachments, recipientsApplicable, receipients, ...rest } =
         values;
@@ -236,7 +236,7 @@ const EventsGuestListEmail = () => {
       });
 
       if (response.status === 200) {
-        // 
+        //
       }
     } else {
       const { attachments, recipientsApplicable, ...rest } = values;
@@ -356,7 +356,7 @@ const EventsGuestListEmail = () => {
             >
               <Input placeholder="Enter reply email" />
             </Form.Item>
-            
+
             <Form.Item
               label="Email Subject"
               name="email_subject"
@@ -405,108 +405,109 @@ const EventsGuestListEmail = () => {
               </Select>
             </Form.Item>
 
-          {recipientType === "all" && (
-            <Form.Item
-              label="Guest Name"
-              name="receipients"
-              style={{ display: "none" }}
-              initialValue={allGuestsData?.map((guest: IGuestData) => {
-                return {
-                  name: `${guest?.personal_information?.firstName}`,
-                  email: guest?.personal_information?.email,
-                };
-              })}
-            >
-              <Select
-                mode="multiple"
-                placeholder="Select guest name"
-                value={allGuestsData?.map((guest: IGuestData) => {
+            {recipientType === "all" && (
+              <Form.Item
+                label="Guest Name"
+                name="receipients"
+                style={{ display: "none" }}
+                initialValue={allGuestsData?.map((guest: IGuestData) => {
                   return {
                     name: `${guest?.personal_information?.firstName}`,
                     email: guest?.personal_information?.email,
                   };
                 })}
               >
-                {allGuestsData?.map((guest: IGuestData) => (
-                  <Select.Option key={guest?.id} value={guest?.guestName}>
-                    {guest?.guestName}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
-          )}
-
-          {recipientType === "ticket" && (
-            <Form.Item
-              label="Select Tickets"
-              name="receipients"
-              style={{ marginBottom: "8px" }}
-            >
-              <Select
-                // mode="multiple"
-                placeholder="Select tickets"
-                onChange={handleTicketTypeChange}
-              >
-                {ticketData?.map((ticket: ITicketDetails) => (
-                  <Select.Option key={ticket?.id} value={ticket?.id}>
-                    {ticket?.ticketName}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item>
-          )}
-
-          {recipientType === "selected" && (
-            <Form.Item
-              label="Select Attendees"
-              name="receipients"
-              style={{ marginBottom: "8px" }}
-            >
-              <AsyncSelect
-                cacheOptions
-                loadOptions={fetchOptions} 
-                defaultOptions={allGuestsData?.map((guest: IGuestData) => ({
-                  value: guest.id,
-                  label: guest?.personal_information?.firstName,
-                }))} 
-                isMulti 
-                placeholder="Select tickets"
-                isClearable
-                onChange={handleSelectChange}
-              />
-            </Form.Item>
-          )}
-
-          <Form.Item
-            label="Attachments"
-            name="attachments"
-            style={{ marginBottom: "8px" }}
-          >
-            <Upload
-              {...props}
-              // fileList={fileList}
-              onChange={handleFileChange}
-              beforeUpload={(file) => {
-                handleFileUpload(file);
-              }}
-              itemRender={(originNode) => (
-                <div
-                  className="ant-upload-list-item"
-                  style={{ display: "flex", alignItems: "center" }}
+                <Select
+                  mode="multiple"
+                  placeholder="Select guest name"
+                  value={allGuestsData?.map((guest: IGuestData) => {
+                    return {
+                      name: `${guest?.personal_information?.firstName}`,
+                      email: guest?.personal_information?.email,
+                    };
+                  })}
                 >
-                  {originNode}
-                </div>
-              )}
-            >
-              <Button
-                disabled={loader}
-                loading={loader}
-                icon={<UploadOutlined />}
+                  {allGuestsData?.map((guest: IGuestData) => (
+                    <Select.Option key={guest?.id} value={guest?.guestName}>
+                      {guest?.personal_information?.firstName}{" "}
+                      {guest?.personal_information?.lastName}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            )}
+
+            {recipientType === "ticket" && (
+              <Form.Item
+                label="Select Tickets"
+                name="receipients"
+                style={{ marginBottom: "8px" }}
               >
-                Click to Upload
-              </Button>
-            </Upload>
-          </Form.Item>
+                <Select
+                  // mode="multiple"
+                  placeholder="Select tickets"
+                  onChange={handleTicketTypeChange}
+                >
+                  {ticketData?.map((ticket: ITicketDetails) => (
+                    <Select.Option key={ticket?.id} value={ticket?.id}>
+                      {ticket?.ticketName}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            )}
+
+            {recipientType === "selected" && (
+              <Form.Item
+                label="Select Attendees"
+                name="receipients"
+                style={{ marginBottom: "8px" }}
+              >
+                <AsyncSelect
+                  cacheOptions
+                  loadOptions={fetchOptions}
+                  defaultOptions={allGuestsData?.map((guest: IGuestData) => ({
+                    value: guest.id,
+                    label: `${guest?.personal_information?.firstName} ${guest?.personal_information?.lastName}` ,
+                  }))}
+                  isMulti
+                  placeholder="Select tickets"
+                  isClearable
+                  onChange={handleSelectChange}
+                />
+              </Form.Item>
+            )}
+
+            <Form.Item
+              label="Attachments"
+              name="attachments"
+              style={{ marginBottom: "8px" }}
+            >
+              <Upload
+                {...props}
+                // fileList={fileList}
+                onChange={handleFileChange}
+                beforeUpload={(file) => {
+                  handleFileUpload(file);
+                }}
+                itemRender={(originNode) => (
+                  <div
+                    className="ant-upload-list-item"
+                    style={{ display: "flex", alignItems: "center" }}
+                  >
+                    {originNode}
+                  </div>
+                )}
+              >
+                <Button
+                  disabled={loader}
+                  loading={loader}
+                  icon={<UploadOutlined />}
+                >
+                  Click to Upload
+                </Button>
+              </Upload>
+            </Form.Item>
           </div>
 
           <div className="mb-3 pb-12 w-full">

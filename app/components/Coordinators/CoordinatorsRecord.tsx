@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Button, Input, Space, Table } from "antd";
+import { Button, Input, Space, Table, Flex, Skeleton } from "antd";
 import {
   FileExcelOutlined,
   FilePdfOutlined,
@@ -81,15 +81,15 @@ const CoordinatorsList = () => {
 
   const [debouncedSearchText] = useDebounce(searchText, 1000); // Debounce delay: 300ms
 
-const handleSearch = (value: string) => {
-  setSearchText(value.toLowerCase());
-};
+  const handleSearch = (value: string) => {
+    setSearchText(value.toLowerCase());
+  };
 
-const filteredData = data?.filter(
-  (item) =>
-    item.staff_name.toLowerCase().includes(debouncedSearchText) ||
-    item.staff_role.toLowerCase().includes(debouncedSearchText)
-);
+  const filteredData = data?.filter(
+    (item) =>
+      item.staff_name.toLowerCase().includes(debouncedSearchText) ||
+      item.staff_role.toLowerCase().includes(debouncedSearchText)
+  );
 
   const columns: ColumnsType<ICoordinatorData> = [
     {
@@ -112,8 +112,7 @@ const filteredData = data?.filter(
               ? "Ticketing Agent"
               : record?.staff_role === STAFF_ROLE.AUDITOR
               ? "Auditor"
-              : "Usher"
-            }
+              : "Usher"}
           </>
         );
       },
@@ -283,15 +282,40 @@ const filteredData = data?.filter(
           >
             Add Coordinators
           </Button>
-          <Paragraph
-            className="text-OWANBE_PRY font-normal font-BricolageGrotesqueRegular text-center mx-auto border border-OWANBE_PRY bg-OWANBE_PRY2 rounded-lg w-[500px] h-14 flex flex-row items-center justify-center text-3xl py-8 place-self-center"
-            content={
-              totalCoordinators
-                ? `${totalCoordinators} Coordinators`
-                : "0 Coordinators"
-            }
-            styles={{ fontWeight: "normal !important" }}
-          />
+          <div className="w-full">
+            {getAllEventCoordinators?.isLoading ? (
+              <Flex
+                gap="middle"
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                vertical
+              >
+                <Skeleton.Button
+                  style={{
+                    height: "80px",
+                    minWidth: "320px",
+                    maxWidth: "1000px",
+                    display: "flex",
+                    justifyContent: "center",
+                    borderRadius: "12px",
+                  }}
+                  active
+                />
+              </Flex>
+            ) : (
+              <Paragraph
+                className="text-OWANBE_PRY font-normal font-BricolageGrotesqueRegular text-center mx-auto border border-OWANBE_PRY bg-OWANBE_PRY2 rounded-lg max-w-[500px] h-14 flex flex-row items-center justify-center text-3xl py-8 place-self-center"
+                content={
+                  totalCoordinators
+                    ? `${totalCoordinators} Coordinators`
+                    : "0 Coordinators"
+                }
+                styles={{ fontWeight: "normal !important" }}
+              />
+            )}
+          </div>
         </Space>
 
         <Space direction="vertical" size="middle" style={{ width: "100%" }}>

@@ -801,8 +801,8 @@ export default function EventDetailsComponent({
   };
 
   const title = (
-    <div className="flex items-center w-full relative pb-2 space-x-8">
-      <div className="flex flex-row items-center space-x-2 cursor-pointer">
+    <div className="flex  items-center w-full relative pb-2 space-x-8">
+      <div className="hidden lg:flex flex-row items-center space-x-2 cursor-pointer">
         <Image
           src="/icons/back-arrow.svg"
           alt=""
@@ -815,9 +815,9 @@ export default function EventDetailsComponent({
         <h1 style={{ fontSize: "24px" }}>Event Details</h1>
       </div>
 
-      <div className="flex flex-row items-center space-x-4">
+      <div className="flex overflow-x-scroll flex-row items-center space-x-4">
         {isPublished && (
-          <div className="flex flex-row items-center space-x-2">
+          <div className="flex flex-row items-center gap-4">
             <ToggleSwitch
               isActive={isActive}
               onToggle={(checked: boolean) => {
@@ -826,7 +826,7 @@ export default function EventDetailsComponent({
               }}
               label="Add to discovery page"
             />
-            <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
+            <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK min-w-8">
               {isDiscover ? "Remove from discovery" : "Add to discovery"}
               <a
                 href="https://ostivities.tawk.help/article/how-to-add-or-remove-events-from-discovery-on-ostivities" // Replace with your actual URL

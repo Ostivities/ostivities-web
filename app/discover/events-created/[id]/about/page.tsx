@@ -47,6 +47,8 @@ import {
   Upload,
   UploadFile,
   Tooltip,
+  Flex,
+  Skeleton,
 } from "antd";
 import { useRouter, useParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
@@ -435,90 +437,112 @@ const AboutEvent = () => {
 
   return (
     <EventDetailsComponent>
-      <form
-        name="basic"
-        autoComplete="off"
-        className="flex flex-col space-y-8 pb-5"
-      >
-        <Space direction="vertical" size={"small"} style={{ width: "100%" }}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              width: "100%",
-            }}
-          >
-            <Heading5
-              className=""
-              content={`${greeting} ${icon}, ${userName}`}
+      {getUserEvent.isLoading ? (
+        <div className="w-full h-full flex flex-row gap-10">
+            <Skeleton.Button
+              style={{
+                height: "80vh",
+                minWidth: "320px",
+                maxWidth: "100vw",
+                borderRadius: "12px",
+              }}
+              active
             />
-          </div>
-          <Paragraph
-            className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular mb-2"
-            content={"Update your event details here."}
-            styles={{ fontWeight: "normal !important" }}
-          />
-        </Space>
-        <div className="grid md:grid-cols-2 grid-cols-1 gap-x-4">
-          <div className="flex flex-col space-y-4 md:pr-6">
-            <Controller
-              name="eventName"
-              control={control}
-              render={({ field }) => (
-                <Space direction="vertical" size={"small"}>
-                  <Label
-                    content="Event Name"
-                    className=""
-                    htmlFor="eventName"
-                  />
-                  <Input
-                    {...field}
-                    onChange={(e) => {
-                      field.onChange(e.target.value);
-                    }}
-                    disabled={componentDisabled}
-                    placeholder="Enter Event Name"
-                  />
-                </Space>
-              )}
+            <Skeleton.Button
+              style={{
+                height: "80vh",
+                minWidth: "320px",
+                maxWidth: "100vw",
+                borderRadius: "12px",
+              }}
+              active
             />
-
-            <Paragraph
-              className="text-OWANBE_DARK text-sm font-normal font-BricolageGrotesqueRegular"
-              content={"Event Details"}
-              styles={{ fontWeight: "bold !important" }}
-            />
+        </div>
+      ) : (
+        <form
+          name="basic"
+          autoComplete="off"
+          className="flex flex-col space-y-8 pb-5"
+        >
+          <Space direction="vertical" size={"small"} style={{ width: "100%" }}>
             <div
               style={{
-                marginBottom: "35px",
-                marginTop: "10px",
-                position: "relative",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
               }}
             >
-              {componentDisabled && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    backgroundColor: "rgba(255,255,255,0.5)",
-                    zIndex: 10,
-                    cursor: "not-allowed",
-                  }}
-                />
-              )}
-              {getUserEvent.isSuccess === true && (
-                <EmailEditor
-                  initialValue={`${eventDetails?.eventDetails}`}
-                  onChange={handleEditorChange}
-                />
-              )}
+              <Heading5
+                className=""
+                content={`${greeting} ${icon}, ${userName}`}
+              />
             </div>
+            <Paragraph
+              className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular mb-2"
+              content={"Update your event details here."}
+              styles={{ fontWeight: "normal !important" }}
+            />
+          </Space>
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-x-4">
+            <div className="flex flex-col space-y-4 md:pr-6">
+              <Controller
+                name="eventName"
+                control={control}
+                render={({ field }) => (
+                  <Space direction="vertical" size={"small"}>
+                    <Label
+                      content="Event Name"
+                      className=""
+                      htmlFor="eventName"
+                    />
+                    <Input
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
+                      }}
+                      disabled={componentDisabled}
+                      placeholder="Enter Event Name"
+                    />
+                  </Space>
+                )}
+              />
 
-            {/* <Controller
+              <Paragraph
+                className="text-OWANBE_DARK text-sm font-normal font-BricolageGrotesqueRegular"
+                content={"Event Details"}
+                styles={{ fontWeight: "bold !important" }}
+              />
+              <div
+                style={{
+                  marginBottom: "35px",
+                  marginTop: "10px",
+                  position: "relative",
+                }}
+              >
+                {componentDisabled && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      backgroundColor: "rgba(255,255,255,0.5)",
+                      zIndex: 10,
+                      cursor: "not-allowed",
+                    }}
+                  />
+                )}
+                {getUserEvent.isSuccess === true && (
+                  <EmailEditor
+                    initialValue={`${eventDetails?.eventDetails}`}
+                    onChange={handleEditorChange}
+                  />
+                )}
+              </div>
+
+              {/* <Controller
               name="vendor_registration"
               control={control}
               render={({ field }) => (
@@ -669,227 +693,235 @@ const AboutEvent = () => {
                 </Space>
               )} */}
 
-            <Controller
-              name="state"
-              control={control}
-              render={({ field }) => (
-                <Space
-                  direction="vertical"
-                  size={"small"}
-                  className="w-full"
-                  style={{ marginTop: "35px" }} // Adjust the value as needed
-                >
-                  <Label content="Event State" className="" htmlFor="state" />
-                  <Select
-                    disabled={componentDisabled}
-                    placeholder="Select State"
-                    {...field}
+              <Controller
+                name="state"
+                control={control}
+                render={({ field }) => (
+                  <Space
+                    direction="vertical"
+                    size={"small"}
+                    className="w-full"
+                    style={{ marginTop: "35px" }} // Adjust the value as needed
+                  >
+                    <Label content="Event State" className="" htmlFor="state" />
+                    <Select
+                      disabled={componentDisabled}
+                      placeholder="Select State"
+                      {...field}
+                      style={{ width: "100%" }}
+                    >
+                      {STATES_IN_NIGERIA.map((_i) => (
+                        <Option value={_i.state} key={_i.state}>
+                          {_i.state}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Space>
+                )}
+              />
+
+              <Controller
+                name="address"
+                control={control}
+                render={({ field }) => (
+                  <Space
+                    direction="vertical"
+                    size={"small"}
                     style={{ width: "100%" }}
                   >
-                    {STATES_IN_NIGERIA.map((_i) => (
-                      <Option value={_i.state} key={_i.state}>
-                        {_i.state}
-                      </Option>
-                    ))}
-                  </Select>
-                </Space>
-              )}
-            />
-
-            <Controller
-              name="address"
-              control={control}
-              render={({ field }) => (
-                <Space
-                  direction="vertical"
-                  size={"small"}
-                  style={{ width: "100%" }}
-                >
-                  <label htmlFor="address">Event Address</label>
-                  <div
-                    style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
-                  >
-                    <Input
-                      {...field}
-                      disabled={componentDisabled}
-                      placeholder="Enter Address"
-                      style={{
-                        flex: 1,
-                        minWidth: "200px",
-                        maxWidth: "calc(100% - 128px)",
-                      }}
-                    />
-                    <Popover
-                      content={content}
-                      trigger="click"
-                      open={popoverVisible}
+                    <label htmlFor="address">Event Address</label>
+                    <div
+                      style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
                     >
-                      <Button
-                        type="default"
+                      <Input
+                        {...field}
                         disabled={componentDisabled}
-                        style={{ borderRadius: "5px", minWidth: "120px" }}
-                        onClick={() => setPopoverVisible(!popoverVisible)}
+                        placeholder="Enter Address"
+                        style={{
+                          flex: 1,
+                          minWidth: "200px",
+                          maxWidth: "calc(100% - 128px)",
+                        }}
+                      />
+                      <Popover
+                        content={content}
+                        trigger="click"
+                        open={popoverVisible}
                       >
-                        Select on Map
-                      </Button>
-                    </Popover>
-                  </div>
-                </Space>
-              )}
-            />
-          </div>
-          <div className="flex flex-col space-y-4 md:pl-6">
-            <Controller
-              name="eventURL"
-              control={control}
-              render={({ field }) => (
-                <Space direction="vertical" size="small">
-                  <Label content="Event URL" className="" htmlFor="eventURL" />
-
-                  <Space.Compact className="w-full">
-                    <Input
-                      style={{
-                        width: "48%",
-                        borderTopRightRadius: "0px !important",
-                        borderBottomRightRadius: "0px !important",
-                        color: "#000000",
-                      }}
-                      defaultValue={discovery_url}
-                      value={discovery_url}
-                      disabled
-                    />
-                    <Input
-                      style={{
-                        width: "52%",
-                        borderTopLeftRadius: "0px !important",
-                        borderBottomLeftRadius: "0px !important",
-                      }}
-                      disabled={componentDisabled}
-                      readOnly
-                      {...field}
-                      placeholder="your event url name will show here"
-                      defaultValue={eventUrl}
-                    />
-                  </Space.Compact>
-                </Space>
-              )}
-            />
-
-            <Space direction="vertical" size="small">
+                        <Button
+                          type="default"
+                          disabled={componentDisabled}
+                          style={{ borderRadius: "5px", minWidth: "120px" }}
+                          onClick={() => setPopoverVisible(!popoverVisible)}
+                        >
+                          Select on Map
+                        </Button>
+                      </Popover>
+                    </div>
+                  </Space>
+                )}
+              />
+            </div>
+            <div className="flex flex-col space-y-4 md:pl-6">
               <Controller
-                name="eventDocumentName"
+                name="eventURL"
                 control={control}
                 render={({ field }) => (
                   <Space direction="vertical" size="small">
                     <Label
-                      content={
-                        <span>
-                          Upload Supporting Doc{" "}
-                          <span className="optional-text">(optional)</span>
-                        </span>
-                      }
-                      htmlFor="supportingDocument"
+                      content="Event URL"
+                      className=""
+                      htmlFor="eventURL"
                     />
 
-                    <Space.Compact className="w-full h-8">
+                    <Space.Compact className="w-full">
                       <Input
-                        // name="eventDocumentName"
-                        {...field}
                         style={{
-                          width: "75%",
+                          width: "48%",
                           borderTopRightRadius: "0px !important",
                           borderBottomRightRadius: "0px !important",
+                          color: "#000000",
+                        }}
+                        defaultValue={discovery_url}
+                        value={discovery_url}
+                        disabled
+                      />
+                      <Input
+                        style={{
+                          width: "52%",
+                          borderTopLeftRadius: "0px !important",
+                          borderBottomLeftRadius: "0px !important",
                         }}
                         disabled={componentDisabled}
-                        value={field.value || ""}
-                        onChange={(e) => field.onChange(e.target.value)}
-                        placeholder="Enter file name (optional)"
+                        readOnly
+                        {...field}
+                        placeholder="your event url name will show here"
+                        defaultValue={eventUrl}
                       />
-                      <Upload
-                        className="upload-button"
-                        {...props}
-                        beforeUpload={(file) => {
-                          // handleFileUpload(file);
-                          // return false; // Prevent automatic upload
-                        }}
-                      >
-                        <Button
-                          icon={<UploadOutlined />}
-                          className="custom-upload-button"
-                          loading={loader}
-                          disabled={componentDisabled}
-                        >
-                          Click to Upload
-                        </Button>
-                      </Upload>
                     </Space.Compact>
-                    <span className="font-BricolageGrotesqueLight text-OWANBE_PRY text-xs font-light">
-                      *Supporting doc can be Wedding Card, Birthday Card among
-                      many others. *Only JPEG, PNG & PDF Allowed and file size
-                      should not be more than 10MB.
-                    </span>
-                    {fileList.length > 0 && (
-                      <div className="font-BricolageGrotesqueLight text-xs text-gray-400">
-                        Uploaded Files:{" "}
-                        <Space>
-                          {fileList.map((file) => (
-                            <Space key={file.uid}>
-                              <span>{file.name}</span>
-                              <DeleteOutlined
-                                style={{
-                                  color: "#e20000",
-                                  cursor: "pointer",
-                                  marginLeft: "8px",
-                                }}
-                                onClick={() => handleDeleteFile(file.uid)}
-                              />
-                            </Space>
-                          ))}
-                        </Space>
-                      </div>
-                    )}
                   </Space>
                 )}
               />
-              <Controller
-                name="eventDocument"
-                control={control}
-                render={({ field }) => <input type="hidden" {...field} />}
-              />
-              <Controller
-                name="eventType"
-                control={control}
-                rules={{ required: "Event Type is required!" }}
-                render={({ field }) => (
-                  <Space direction="vertical" size={"small"} className="w-full">
-                    <Label
-                      content="Event Type"
-                      className=""
-                      htmlFor="eventType"
-                    />
-                    <Select
-                      placeholder="Select Event Type"
-                      {...field}
-                      style={{ width: "100%" }}
-                      disabled={componentDisabled}
-                    >
-                      {EVENT_TYPES.map((_i) => (
-                        <Option value={_i.value} key={_i.label}>
-                          {_i.label}
-                        </Option>
-                      ))}
-                    </Select>
-                    {errors.eventType && (
-                      <span style={{ color: "red" }}>
-                        {errors.eventType.message}
-                      </span>
-                    )}
-                  </Space>
-                )}
-              />
-            </Space>
 
-            {/* <Controller
+              <Space direction="vertical" size="small">
+                <Controller
+                  name="eventDocumentName"
+                  control={control}
+                  render={({ field }) => (
+                    <Space direction="vertical" size="small">
+                      <Label
+                        content={
+                          <span>
+                            Upload Supporting Doc{" "}
+                            <span className="optional-text">(optional)</span>
+                          </span>
+                        }
+                        htmlFor="supportingDocument"
+                      />
+
+                      <Space.Compact className="w-full h-8">
+                        <Input
+                          // name="eventDocumentName"
+                          {...field}
+                          style={{
+                            width: "75%",
+                            borderTopRightRadius: "0px !important",
+                            borderBottomRightRadius: "0px !important",
+                          }}
+                          disabled={componentDisabled}
+                          value={field.value || ""}
+                          onChange={(e) => field.onChange(e.target.value)}
+                          placeholder="Enter file name (optional)"
+                        />
+                        <Upload
+                          className="upload-button"
+                          {...props}
+                          beforeUpload={(file) => {
+                            // handleFileUpload(file);
+                            // return false; // Prevent automatic upload
+                          }}
+                        >
+                          <Button
+                            icon={<UploadOutlined />}
+                            className="custom-upload-button"
+                            loading={loader}
+                            disabled={componentDisabled}
+                          >
+                            Click to Upload
+                          </Button>
+                        </Upload>
+                      </Space.Compact>
+                      <span className="font-BricolageGrotesqueLight text-OWANBE_PRY text-xs font-light">
+                        *Supporting doc can be Wedding Card, Birthday Card among
+                        many others. *Only JPEG, PNG & PDF Allowed and file size
+                        should not be more than 10MB.
+                      </span>
+                      {fileList.length > 0 && (
+                        <div className="font-BricolageGrotesqueLight text-xs text-gray-400">
+                          Uploaded Files:{" "}
+                          <Space>
+                            {fileList.map((file) => (
+                              <Space key={file.uid}>
+                                <span>{file.name}</span>
+                                <DeleteOutlined
+                                  style={{
+                                    color: "#e20000",
+                                    cursor: "pointer",
+                                    marginLeft: "8px",
+                                  }}
+                                  onClick={() => handleDeleteFile(file.uid)}
+                                />
+                              </Space>
+                            ))}
+                          </Space>
+                        </div>
+                      )}
+                    </Space>
+                  )}
+                />
+                <Controller
+                  name="eventDocument"
+                  control={control}
+                  render={({ field }) => <input type="hidden" {...field} />}
+                />
+                <Controller
+                  name="eventType"
+                  control={control}
+                  rules={{ required: "Event Type is required!" }}
+                  render={({ field }) => (
+                    <Space
+                      direction="vertical"
+                      size={"small"}
+                      className="w-full"
+                    >
+                      <Label
+                        content="Event Type"
+                        className=""
+                        htmlFor="eventType"
+                      />
+                      <Select
+                        placeholder="Select Event Type"
+                        {...field}
+                        style={{ width: "100%" }}
+                        disabled={componentDisabled}
+                      >
+                        {EVENT_TYPES.map((_i) => (
+                          <Option value={_i.value} key={_i.label}>
+                            {_i.label}
+                          </Option>
+                        ))}
+                      </Select>
+                      {errors.eventType && (
+                        <span style={{ color: "red" }}>
+                          {errors.eventType.message}
+                        </span>
+                      )}
+                    </Space>
+                  )}
+                />
+              </Space>
+
+              {/* <Controller
               name="eventInfo"
               control={control}
               render={({ field }) => (
@@ -924,328 +956,92 @@ const AboutEvent = () => {
             />
 
             {watchEventInfo === EVENT_INFO.SINGLE_EVENT && ( */}
-            <>
-              <Controller
-                name="timeZone"
-                control={control}
-                render={({ field }) => (
-                  <Space direction="vertical" size={"small"} className="w-full">
-                    <Label
-                      content="Time Zone"
-                      className=""
-                      htmlFor="timeZone"
-                    />
-                    <Select
-                      placeholder="Select Time Zone"
-                      {...field}
-                      disabled={componentDisabled}
-                      style={{ width: "100%" }}
+              <>
+                <Controller
+                  name="timeZone"
+                  control={control}
+                  render={({ field }) => (
+                    <Space
+                      direction="vertical"
+                      size={"small"}
+                      className="w-full"
                     >
-                      {AFRICAN_TIME_ZONES.map((zone) => (
-                        <Option value={zone.value} key={zone.value}>
-                          {zone.label}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Space>
-                )}
-              />
-              <Space direction="horizontal" size="large" className="w-full">
-                <div
-                  style={{ display: "flex", flexWrap: "nowrap", gap: "16px" }}
-                >
-                  {/* Start Date & Time */}
-                  <div style={{ flex: "1 1 auto", minWidth: "150px" }}>
-                    <Label content="Start Date & Time" htmlFor="startDate" />
-                    <Controller
-                      name="startDate"
-                      control={control}
-                      render={({ field }) => (
-                        <Tooltip
-                          title={
-                            componentDisabled === false &&
-                            eventDetails?.total_ticket_sold > 0
-                              ? "Start Date & Time cannot be edited as tickets have already been sold."
-                              : ""
-                          }
-                        >
+                      <Label
+                        content="Time Zone"
+                        className=""
+                        htmlFor="timeZone"
+                      />
+                      <Select
+                        placeholder="Select Time Zone"
+                        {...field}
+                        disabled={componentDisabled}
+                        style={{ width: "100%" }}
+                      >
+                        {AFRICAN_TIME_ZONES.map((zone) => (
+                          <Option value={zone.value} key={zone.value}>
+                            {zone.label}
+                          </Option>
+                        ))}
+                      </Select>
+                    </Space>
+                  )}
+                />
+                <Space direction="horizontal" size="large" className="w-full">
+                  <div
+                    style={{ display: "flex", flexWrap: "nowrap", gap: "16px" }}
+                  >
+                    {/* Start Date & Time */}
+                    <div style={{ flex: "1 1 auto", minWidth: "150px" }}>
+                      <Label content="Start Date & Time" htmlFor="startDate" />
+                      <Controller
+                        name="startDate"
+                        control={control}
+                        render={({ field }) => (
+                          <Tooltip
+                            title={
+                              componentDisabled === false &&
+                              eventDetails?.total_ticket_sold > 0
+                                ? "Start Date & Time cannot be edited as tickets have already been sold."
+                                : ""
+                            }
+                          >
+                            <DatePicker
+                              {...field}
+                              disabled={
+                                componentDisabled ||
+                                eventDetails?.total_ticket_sold > 0
+                              }
+                              onChange={(date) => {
+                                field.onChange(date);
+                                setStartDateValue(date);
+                              }}
+                              showTime
+                              format="YYYY-MM-DD HH:mm:ss"
+                              style={{ width: "100%", height: "33px" }}
+                              disabledDate={disabledDate}
+                            />
+                          </Tooltip>
+                        )}
+                      />
+                    </div>
+                    {/* End Date & Time */}
+                    <div style={{ flex: "1 1 auto", minWidth: "150px" }}>
+                      <Label content="End Date & Time" htmlFor="endDate" />
+                      <Controller
+                        name="endDate"
+                        control={control}
+                        render={({ field }) => (
                           <DatePicker
                             {...field}
-                            disabled={
-                              componentDisabled ||
-                              eventDetails?.total_ticket_sold > 0
-                            }
-                            onChange={(date) => {
-                              field.onChange(date);
-                              setStartDateValue(date);
-                            }}
+                            disabled={componentDisabled}
                             showTime
                             format="YYYY-MM-DD HH:mm:ss"
                             style={{ width: "100%", height: "33px" }}
                             disabledDate={disabledDate}
+                            disabledTime={disabledTime}
                           />
-                        </Tooltip>
-                      )}
-                    />
-                  </div>
-                  {/* End Date & Time */}
-                  <div style={{ flex: "1 1 auto", minWidth: "150px" }}>
-                    <Label content="End Date & Time" htmlFor="endDate" />
-                    <Controller
-                      name="endDate"
-                      control={control}
-                      render={({ field }) => (
-                        <DatePicker
-                          {...field}
-                          disabled={componentDisabled}
-                          showTime
-                          format="YYYY-MM-DD HH:mm:ss"
-                          style={{ width: "100%", height: "33px" }}
-                          disabledDate={disabledDate}
-                          disabledTime={disabledTime}
-                        />
-                      )}
-                    />
-                  </div>
-                </div>
-              </Space>
-
-              <Space
-                direction="vertical"
-                size="small"
-                style={{ marginBottom: "4px" }}
-              >
-                <label
-                  htmlFor="socialdetails"
-                  className=""
-                  style={{
-                    marginBottom: "4px",
-                    fontSize: "14.5px",
-                    fontFamily: "BricolageGrotesqueregular",
-                  }}
-                >
-                  Social Media Details{" "}
-                  <span style={{ color: "#e20000" }}>(optional)</span>
-                </label>
-
-                <Row gutter={[16, 8]}>
-                  {/* Website Link Field */}
-                  <Col xs={24} sm={12}>
-                    <Controller
-                      name="websiteUrl" // Use a descriptive name (e.g., websiteUrl)
-                      control={control}
-                      render={({ field }) => (
-                        <Space
-                          direction="vertical"
-                          size="small"
-                          style={{ width: "100%" }}
-                        >
-                          <Input
-                            prefix={<LinkOutlined />}
-                            style={{
-                              width: "100%",
-                              color: "#000000",
-                              marginTop: "8px", // Adjust spacing between label and field
-                            }}
-                            disabled={componentDisabled}
-                            {...field}
-                            placeholder="Enter your website URL"
-                          />
-                        </Space>
-                      )}
-                    />
-                  </Col>
-
-                  {/* Twitter Field */}
-                  <Col xs={24} sm={12}>
-                    <Controller
-                      name="twitterUrl" // Use a descriptive name (e.g., twitterUrl)
-                      control={control}
-                      render={({ field }) => (
-                        <Space
-                          direction="vertical"
-                          size="small"
-                          style={{ width: "100%" }}
-                        >
-                          <Input
-                            prefix={<XOutlined />}
-                            style={{
-                              width: "100%",
-                              color: "#000000",
-                              marginTop: "8px", // Adjust spacing between label and field
-                            }}
-                            disabled={componentDisabled}
-                            {...field}
-                            placeholder="Enter your Twitter/X URL"
-                          />
-                        </Space>
-                      )}
-                    />
-                  </Col>
-
-                  {/* Facebook Field */}
-                  <Col xs={24} sm={12}>
-                    <Controller
-                      name="facebookUrl" // Use a descriptive name (e.g., facebookUrl)
-                      control={control}
-                      render={({ field }) => (
-                        <Space
-                          direction="vertical"
-                          size="small"
-                          style={{ width: "100%" }}
-                        >
-                          <Input
-                            prefix={<FacebookFilled />}
-                            style={{
-                              width: "100%",
-                              color: "#000000",
-                              marginTop: "8px", // Adjust spacing between label and field
-                            }}
-                            disabled={componentDisabled}
-                            {...field}
-                            placeholder="Enter your Facebook URL"
-                          />
-                        </Space>
-                      )}
-                    />
-                  </Col>
-
-                  {/* Instagram Field */}
-                  <Col xs={24} sm={12}>
-                    <Controller
-                      name="instagramUrl" // Use a descriptive name (e.g., instagramUrl)
-                      control={control}
-                      render={({ field }) => (
-                        <Space
-                          direction="vertical"
-                          size="small"
-                          style={{ width: "100%" }}
-                        >
-                          <Input
-                            prefix={<InstagramFilled />}
-                            style={{
-                              width: "100%",
-                              color: "#000000",
-                              marginTop: "8px", // Adjust spacing between label and field
-                            }}
-                            disabled={componentDisabled}
-                            {...field}
-                            placeholder="Enter your Instagram URL"
-                          />
-                        </Space>
-                      )}
-                    />
-                  </Col>
-
-                  {/* ... Add similar Controllers for other social media fields ... */}
-                </Row>
-              </Space>
-            </>
-            {/* )} */}
-
-            {watchEventInfo === EVENT_INFO.RECURRING_EVENT && (
-              <>
-                <Space direction="horizontal" size="large" className="w-full">
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "16px",
-                    }}
-                  >
-                    <div style={{ display: "flex", gap: "16px" }}>
-                      {/* Time Zone */}
-                      <div style={{ flex: "1 1 300px", minWidth: "150px" }}>
-                        <Label content="Time Zone" htmlFor="timeZone" />
-                        <Controller
-                          name="timeZone"
-                          control={control}
-                          render={({ field }) => (
-                            <Select
-                              placeholder="Select Time Zone"
-                              disabled={componentDisabled}
-                              {...field}
-                              style={{ width: "100%", height: "33px" }}
-                            >
-                              {AFRICAN_TIME_ZONES.map((zone) => (
-                                <Option value={zone.value} key={zone.value}>
-                                  {zone.label}
-                                </Option>
-                              ))}
-                            </Select>
-                          )}
-                        />
-                      </div>
-
-                      {/* Frequency */}
-                      <div style={{ flex: "1 1 300px", minWidth: "150px" }}>
-                        <Label content="Frequency" htmlFor="eventFrequency" />
-                        <Controller
-                          name="frequency"
-                          control={control}
-                          render={({ field }) => (
-                            <Select
-                              placeholder="Select Event Frequency"
-                              {...field}
-                              disabled={componentDisabled}
-                              style={{ width: "100%", height: "33px" }}
-                            >
-                              {EVENT_FREQUENCIES.map((frequency) => (
-                                <Option
-                                  value={frequency.value}
-                                  key={frequency.value}
-                                >
-                                  {frequency.label}
-                                </Option>
-                              ))}
-                            </Select>
-                          )}
-                        />
-                      </div>
-                    </div>
-
-                    <div style={{ display: "flex", gap: "16px" }}>
-                      {/* Start Date & Time */}
-                      <div style={{ flex: "1 1 353px", minWidth: "150px" }}>
-                        <Label
-                          content="Start Date & Time"
-                          htmlFor="startDate"
-                        />
-                        <Controller
-                          name="startDate"
-                          control={control}
-                          render={({ field }) => (
-                            <DatePicker
-                              {...field}
-                              disabled={componentDisabled}
-                              showTime
-                              format="YYYY-MM-DD HH:mm:ss"
-                              style={{ width: "100%", height: "33px" }}
-                              disabledDate={disabledDate}
-                            />
-                          )}
-                        />
-                      </div>
-
-                      {/* End Date & Time */}
-                      <div style={{ flex: "1 1 353px", minWidth: "150px" }}>
-                        <Label content="End Date & Time" htmlFor="endDate" />
-                        <Controller
-                          name="endDate"
-                          control={control}
-                          render={({ field }) => (
-                            <DatePicker
-                              disabled={componentDisabled}
-                              {...field}
-                              showTime
-                              format="YYYY-MM-DD HH:mm:ss"
-                              style={{ width: "100%", height: "33px" }}
-                              disabledDate={disabledDate}
-                              disabledTime={disabledTime}
-                            />
-                          )}
-                        />
-                      </div>
+                        )}
+                      />
                     </div>
                   </div>
                 </Space>
@@ -1282,12 +1078,12 @@ const AboutEvent = () => {
                           >
                             <Input
                               prefix={<LinkOutlined />}
-                              disabled={componentDisabled}
                               style={{
                                 width: "100%",
                                 color: "#000000",
                                 marginTop: "8px", // Adjust spacing between label and field
                               }}
+                              disabled={componentDisabled}
                               {...field}
                               placeholder="Enter your website URL"
                             />
@@ -1309,12 +1105,12 @@ const AboutEvent = () => {
                           >
                             <Input
                               prefix={<XOutlined />}
-                              disabled={componentDisabled}
                               style={{
                                 width: "100%",
                                 color: "#000000",
                                 marginTop: "8px", // Adjust spacing between label and field
                               }}
+                              disabled={componentDisabled}
                               {...field}
                               placeholder="Enter your Twitter/X URL"
                             />
@@ -1336,12 +1132,12 @@ const AboutEvent = () => {
                           >
                             <Input
                               prefix={<FacebookFilled />}
-                              disabled={componentDisabled}
                               style={{
                                 width: "100%",
                                 color: "#000000",
                                 marginTop: "8px", // Adjust spacing between label and field
                               }}
+                              disabled={componentDisabled}
                               {...field}
                               placeholder="Enter your Facebook URL"
                             />
@@ -1363,12 +1159,12 @@ const AboutEvent = () => {
                           >
                             <Input
                               prefix={<InstagramFilled />}
-                              disabled={componentDisabled}
                               style={{
                                 width: "100%",
                                 color: "#000000",
                                 marginTop: "8px", // Adjust spacing between label and field
                               }}
+                              disabled={componentDisabled}
                               {...field}
                               placeholder="Enter your Instagram URL"
                             />
@@ -1381,58 +1177,299 @@ const AboutEvent = () => {
                   </Row>
                 </Space>
               </>
-            )}
-          </div>
-        </div>
+              {/* )} */}
 
-        <Space
-          direction="horizontal"
-          size={"small"}
-          align="center"
-          style={{ justifyContent: "center", width: "100%" }}
-        >
-          {componentDisabled === false ? (
-            <Button
-              type="default"
-              htmlType="submit" // This will only trigger the submit when 'Save Changes' is clicked
-              size={"large"}
-              disabled={updateEvent.isPending}
-              loading={updateEvent.isPending}
-              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
-              style={{
-                borderRadius: "20px",
-                fontFamily: "BricolageGrotesqueMedium",
-                marginTop: "25px",
-              }}
-              onClick={(e) => {
-                e.preventDefault(); // Prevent form default submission behavior
-                handleSubmit(onSubmit)();
-              }}
-            >
-              Save Changes
-            </Button>
-          ) : (
-            <Button
-              type="default"
-              htmlType="button" // No form submission, just a state change
-              size={"large"}
-              disabled={false}
-              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
-              style={{
-                borderRadius: "20px",
-                fontFamily: "BricolageGrotesqueMedium",
-                marginTop: "25px",
-              }}
-              onClick={(e) => {
-                e.preventDefault();
-                setComponentDisabled(false);
-              }}
-            >
-              Update
-            </Button>
-          )}
-        </Space>
-      </form>
+              {watchEventInfo === EVENT_INFO.RECURRING_EVENT && (
+                <>
+                  <Space direction="horizontal" size="large" className="w-full">
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "16px",
+                      }}
+                    >
+                      <div style={{ display: "flex", gap: "16px" }}>
+                        {/* Time Zone */}
+                        <div style={{ flex: "1 1 300px", minWidth: "150px" }}>
+                          <Label content="Time Zone" htmlFor="timeZone" />
+                          <Controller
+                            name="timeZone"
+                            control={control}
+                            render={({ field }) => (
+                              <Select
+                                placeholder="Select Time Zone"
+                                disabled={componentDisabled}
+                                {...field}
+                                style={{ width: "100%", height: "33px" }}
+                              >
+                                {AFRICAN_TIME_ZONES.map((zone) => (
+                                  <Option value={zone.value} key={zone.value}>
+                                    {zone.label}
+                                  </Option>
+                                ))}
+                              </Select>
+                            )}
+                          />
+                        </div>
+
+                        {/* Frequency */}
+                        <div style={{ flex: "1 1 300px", minWidth: "150px" }}>
+                          <Label content="Frequency" htmlFor="eventFrequency" />
+                          <Controller
+                            name="frequency"
+                            control={control}
+                            render={({ field }) => (
+                              <Select
+                                placeholder="Select Event Frequency"
+                                {...field}
+                                disabled={componentDisabled}
+                                style={{ width: "100%", height: "33px" }}
+                              >
+                                {EVENT_FREQUENCIES.map((frequency) => (
+                                  <Option
+                                    value={frequency.value}
+                                    key={frequency.value}
+                                  >
+                                    {frequency.label}
+                                  </Option>
+                                ))}
+                              </Select>
+                            )}
+                          />
+                        </div>
+                      </div>
+
+                      <div style={{ display: "flex", gap: "16px" }}>
+                        {/* Start Date & Time */}
+                        <div style={{ flex: "1 1 353px", minWidth: "150px" }}>
+                          <Label
+                            content="Start Date & Time"
+                            htmlFor="startDate"
+                          />
+                          <Controller
+                            name="startDate"
+                            control={control}
+                            render={({ field }) => (
+                              <DatePicker
+                                {...field}
+                                disabled={componentDisabled}
+                                showTime
+                                format="YYYY-MM-DD HH:mm:ss"
+                                style={{ width: "100%", height: "33px" }}
+                                disabledDate={disabledDate}
+                              />
+                            )}
+                          />
+                        </div>
+
+                        {/* End Date & Time */}
+                        <div style={{ flex: "1 1 353px", minWidth: "150px" }}>
+                          <Label content="End Date & Time" htmlFor="endDate" />
+                          <Controller
+                            name="endDate"
+                            control={control}
+                            render={({ field }) => (
+                              <DatePicker
+                                disabled={componentDisabled}
+                                {...field}
+                                showTime
+                                format="YYYY-MM-DD HH:mm:ss"
+                                style={{ width: "100%", height: "33px" }}
+                                disabledDate={disabledDate}
+                                disabledTime={disabledTime}
+                              />
+                            )}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </Space>
+
+                  <Space
+                    direction="vertical"
+                    size="small"
+                    style={{ marginBottom: "4px" }}
+                  >
+                    <label
+                      htmlFor="socialdetails"
+                      className=""
+                      style={{
+                        marginBottom: "4px",
+                        fontSize: "14.5px",
+                        fontFamily: "BricolageGrotesqueregular",
+                      }}
+                    >
+                      Social Media Details{" "}
+                      <span style={{ color: "#e20000" }}>(optional)</span>
+                    </label>
+
+                    <Row gutter={[16, 8]}>
+                      {/* Website Link Field */}
+                      <Col xs={24} sm={12}>
+                        <Controller
+                          name="websiteUrl" // Use a descriptive name (e.g., websiteUrl)
+                          control={control}
+                          render={({ field }) => (
+                            <Space
+                              direction="vertical"
+                              size="small"
+                              style={{ width: "100%" }}
+                            >
+                              <Input
+                                prefix={<LinkOutlined />}
+                                disabled={componentDisabled}
+                                style={{
+                                  width: "100%",
+                                  color: "#000000",
+                                  marginTop: "8px", // Adjust spacing between label and field
+                                }}
+                                {...field}
+                                placeholder="Enter your website URL"
+                              />
+                            </Space>
+                          )}
+                        />
+                      </Col>
+
+                      {/* Twitter Field */}
+                      <Col xs={24} sm={12}>
+                        <Controller
+                          name="twitterUrl" // Use a descriptive name (e.g., twitterUrl)
+                          control={control}
+                          render={({ field }) => (
+                            <Space
+                              direction="vertical"
+                              size="small"
+                              style={{ width: "100%" }}
+                            >
+                              <Input
+                                prefix={<XOutlined />}
+                                disabled={componentDisabled}
+                                style={{
+                                  width: "100%",
+                                  color: "#000000",
+                                  marginTop: "8px", // Adjust spacing between label and field
+                                }}
+                                {...field}
+                                placeholder="Enter your Twitter/X URL"
+                              />
+                            </Space>
+                          )}
+                        />
+                      </Col>
+
+                      {/* Facebook Field */}
+                      <Col xs={24} sm={12}>
+                        <Controller
+                          name="facebookUrl" // Use a descriptive name (e.g., facebookUrl)
+                          control={control}
+                          render={({ field }) => (
+                            <Space
+                              direction="vertical"
+                              size="small"
+                              style={{ width: "100%" }}
+                            >
+                              <Input
+                                prefix={<FacebookFilled />}
+                                disabled={componentDisabled}
+                                style={{
+                                  width: "100%",
+                                  color: "#000000",
+                                  marginTop: "8px", // Adjust spacing between label and field
+                                }}
+                                {...field}
+                                placeholder="Enter your Facebook URL"
+                              />
+                            </Space>
+                          )}
+                        />
+                      </Col>
+
+                      {/* Instagram Field */}
+                      <Col xs={24} sm={12}>
+                        <Controller
+                          name="instagramUrl" // Use a descriptive name (e.g., instagramUrl)
+                          control={control}
+                          render={({ field }) => (
+                            <Space
+                              direction="vertical"
+                              size="small"
+                              style={{ width: "100%" }}
+                            >
+                              <Input
+                                prefix={<InstagramFilled />}
+                                disabled={componentDisabled}
+                                style={{
+                                  width: "100%",
+                                  color: "#000000",
+                                  marginTop: "8px", // Adjust spacing between label and field
+                                }}
+                                {...field}
+                                placeholder="Enter your Instagram URL"
+                              />
+                            </Space>
+                          )}
+                        />
+                      </Col>
+
+                      {/* ... Add similar Controllers for other social media fields ... */}
+                    </Row>
+                  </Space>
+                </>
+              )}
+            </div>
+          </div>
+
+          <Space
+            direction="horizontal"
+            size={"small"}
+            align="center"
+            style={{ justifyContent: "center", width: "100%" }}
+          >
+            {componentDisabled === false ? (
+              <Button
+                type="default"
+                htmlType="submit" // This will only trigger the submit when 'Save Changes' is clicked
+                size={"large"}
+                disabled={updateEvent.isPending}
+                loading={updateEvent.isPending}
+                className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
+                style={{
+                  borderRadius: "20px",
+                  fontFamily: "BricolageGrotesqueMedium",
+                  marginTop: "25px",
+                }}
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent form default submission behavior
+                  handleSubmit(onSubmit)();
+                }}
+              >
+                Save Changes
+              </Button>
+            ) : (
+              <Button
+                type="default"
+                htmlType="button" // No form submission, just a state change
+                size={"large"}
+                disabled={false}
+                className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-64"
+                style={{
+                  borderRadius: "20px",
+                  fontFamily: "BricolageGrotesqueMedium",
+                  marginTop: "25px",
+                }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setComponentDisabled(false);
+                }}
+              >
+                Update
+              </Button>
+            )}
+          </Space>
+        </form>
+      )}
     </EventDetailsComponent>
   );
 };

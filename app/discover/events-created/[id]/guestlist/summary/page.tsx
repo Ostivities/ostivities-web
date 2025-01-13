@@ -1,10 +1,14 @@
 "use client";
 import EventDetailsComponent from "@/app/components/EventDetails/EventDetails";
-import { Heading5, Label, Paragraph } from "@/app/components/typography/Typography";
+import {
+  Heading5,
+  Label,
+  Paragraph,
+} from "@/app/components/typography/Typography";
 import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
 import { SummaryDataType, ICheckInSummary } from "@/app/utils/interface";
 import { useGetCheckInSummary } from "@/app/hooks/event/event.hook";
-import { Button, Input, Space, Table } from "antd";
+import { Button, Input, Space, Table, Flex, Skeleton } from "antd";
 import { FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -15,32 +19,21 @@ import { ColumnsType } from "antd/es/table";
 
 const { Search } = Input;
 
-function getRandomGuestName(): string {
-  const names = ["John Doe", "Jane Smith", "Michael Johnson", "Emily Brown", "David Wilson"];
-  return names[Math.floor(Math.random() * names.length)];
-}
-
-function getRandomCheckInName(): string {
-  const checkers = ["Alice Manager", "Bob Supervisor", "Charlie Checker", "Dana Admin"];
-  return checkers[Math.floor(Math.random() * checkers.length)];
-}
-
-function getRandomTicketType(): string {
-  const checkers = ["Single", "Collective"];
-  return checkers[Math.floor(Math.random() * checkers.length)];
-}
-
 const EventsGuestListSummary = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const params = useParams<{ id: string }>();
   const [searchText, setSearchText] = useState<string>("");
-  const { getCheckInSummary } = useGetCheckInSummary(params?.id, currentPage, pageSize, searchText);
+  const { getCheckInSummary } = useGetCheckInSummary(
+    params?.id,
+    currentPage,
+    pageSize,
+    searchText
+  );
   const summaryInfo = getCheckInSummary?.data?.data?.data?.check_in_summary;
   const totalCheckedIn = getCheckInSummary?.data?.data?.data?.total;
-  // 
-
+  //
 
   const data: ICheckInSummary[] = summaryInfo?.map((item: ICheckInSummary) => {
     return {
@@ -50,8 +43,8 @@ const EventsGuestListSummary = () => {
       // ticketType: item?.ticket_information?.[0]?.ticket_type,
       checkedInTime: item?.check_in_date_time,
       checkedInBy: item?.check_in_by,
-    }
-  })
+    };
+  });
 
   const columns: ColumnsType<ICheckInSummary> = [
     {
@@ -112,7 +105,9 @@ const EventsGuestListSummary = () => {
 
   const handleExport = (format: string) => {
     const exportData = selectedRowKeys.length
-      ? data?.filter((item: ICheckInSummary) => selectedRowKeys.includes(item?.key!))
+      ? data?.filter((item: ICheckInSummary) =>
+          selectedRowKeys.includes(item?.key!)
+        )
       : data;
 
     const formattedExportData = exportData.map((item: ICheckInSummary) => ({
@@ -141,46 +136,78 @@ const EventsGuestListSummary = () => {
   return (
     <EventDetailsComponent>
       <Space direction="vertical" size={"small"} style={{ width: "100%" }}>
-          <div
-            style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}
-          >
-        <Heading5 className="" content={"Checked In Summary"} />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          <Heading5 className="" content={"Checked In Summary"} />
         </div>
-          <Paragraph
-            className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
-            content={"This displays a record of guests whose tickets have been scanned and checked in by the ticketing agent."}
-            styles={{ fontWeight: "normal !important" }}
-          />
-          
-        <Button
-              type="primary"
-              size="large"
-              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl float-end"
-              style={{
-                borderRadius: "20px",
-                fontFamily: "BricolageGrotesqueMedium",
-                margin: '10px'
-              }}
-              onClick={() => getCheckInSummary.refetch()}
-            >
-              Refresh
-            </Button> 
-
         <Paragraph
-              className="text-OWANBE_PRY font-normal font-BricolageGrotesqueRegular text-center mx-auto border border-OWANBE_PRY bg-OWANBE_PRY2 rounded-lg w-[500px] h-14 flex flex-row items-center justify-center text-3xl py-8 place-self-center"
+          className="text-OWANBE_PRY text-sm font-normal font-BricolageGrotesqueRegular"
+          content={
+            "This displays a record of guests whose tickets have been scanned and checked in by the ticketing agent."
+          }
+          styles={{ fontWeight: "normal !important" }}
+        />
+
+        <Button
+          type="primary"
+          size="large"
+          className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl float-end"
+          style={{
+            borderRadius: "20px",
+            fontFamily: "BricolageGrotesqueMedium",
+            margin: "10px",
+          }}
+          onClick={() => getCheckInSummary.refetch()}
+        >
+          Refresh
+        </Button>
+
+        <div className="w-full">
+          {getCheckInSummary?.isLoading ? (
+            <Flex
+              gap="middle"
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              vertical
+            >
+              <Skeleton.Button
+                style={{
+                  height: "80px",
+                  minWidth: "320px",
+                  maxWidth: "1000px",
+                  display: "flex",
+                  justifyContent: "center",
+                  borderRadius: "12px",
+                }}
+                active
+              />
+            </Flex>
+          ) : (
+            <Paragraph
+              className="text-OWANBE_PRY font-normal font-BricolageGrotesqueRegular text-center mx-auto border border-OWANBE_PRY bg-OWANBE_PRY2 rounded-lg max-w-[500px] h-14 flex flex-row items-center justify-center text-3xl py-8 place-self-center"
               content={`${totalCheckedIn} Checked In Guests`}
               styles={{ fontWeight: "normal !important" }}
             />
-          </Space>
+          )}
+        </div>
+      </Space>
 
-          <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-            <Space
-              direction="horizontal"
-              align="center"
-              size="middle"
-              style={{ width: "100%" }}
-              className="justify-between pt-5"
-            >
+      <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+        <Space
+          direction="horizontal"
+          align="center"
+          size="middle"
+          style={{ width: "100%" }}
+          className="justify-between pt-5"
+        >
           <Search
             placeholder="Search Guest Name"
             onChange={handleSearch}

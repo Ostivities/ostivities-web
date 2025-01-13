@@ -18,6 +18,7 @@ import {
   useGetEventGuests,
   useGetEventGuestsByUniqueKey,
 } from "@/app/hooks/guest/guest.hook";
+import { useGetEventTicketsByUniqueKey } from "@/app/hooks/ticket/ticket.hook";
 import EventPageLoader from "@/app/components/Loaders/EventPageLoader";
 import {
   FacebookShareButton,
