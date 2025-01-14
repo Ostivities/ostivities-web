@@ -125,7 +125,7 @@ function Header2(): JSX.Element {
 
           {/* <Image
             src={Hamburger}
-            alt="Hamburger Menu"
+            alt=""
             style={{ width: "40px", height: "35px" }}
             onClick={showDrawer}
           />
@@ -141,7 +141,7 @@ function Header2(): JSX.Element {
           extra={
             <Image
               src={CloseIcon}
-              alt="Ostivities Logo"
+              alt=""
               style={{ width: "40px", height: "35px" }}
               onClick={onClose}
             />
