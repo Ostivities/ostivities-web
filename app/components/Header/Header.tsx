@@ -57,7 +57,7 @@ function Header(): JSX.Element {
             <Link href="/" shallow>
               <Image
                 src={OwanbeLogo}
-                alt="Ostivities Logo"
+                alt=""
                 style={{ height: "40px" }}
                 className="w-[140px]"
               />
@@ -114,14 +114,14 @@ function Header(): JSX.Element {
           <Link href="/" shallow>
             <Image
               src={OwanbeLogo}
-              alt="Ostivities Logo"
+              alt=""
               style={{ width: "130px", height: "50px" }}
             />
           </Link>
 
           <Image
             src={Hamburger}
-            alt="Hamburger Menu"
+            alt=""
             style={{ width: "40px", height: "35px" }}
             onClick={showDrawer}
           />
@@ -137,7 +137,7 @@ function Header(): JSX.Element {
           extra={
             <Image
               src={CloseIcon}
-              alt="Ostivities Logo"
+              alt=""
               style={{ width: "40px", height: "35px" }}
               onClick={onClose}
             />

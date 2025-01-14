@@ -352,7 +352,7 @@ function DashboardLayout({
             <a href="/">
               <Image
                 src={OwanbeLogo}
-                alt="Ostivities Logo"
+                alt=""
                 style={{ height: "40px" }}
                 className="w-[110px] cursor-pointer"
               />
@@ -531,14 +531,14 @@ function DashboardLayout({
           <Link href="/" shallow>
             <Image
               src={OwanbeLogo}
-              alt="Ostivities Logo"
+              alt=""
               style={{ width: "130px", height: "50px", cursor: "pointer" }}
             />
           </Link>
 
           <Image
             src={Hamburger}
-            alt="Hamburger Menu"
+            alt=""
             style={{ width: "40px", height: "35px", cursor: "pointer" }}
             onClick={showDrawer}
           />
@@ -547,14 +547,14 @@ function DashboardLayout({
           closeIcon={
             <Image
               src={blank}
-              alt="Owanbe Logo"
+              alt=""
               style={{ width: "130px", height: "50px" }}
             />
           }
           extra={
             <Image
               src={CloseIcon}
-              alt="Ostivities Logo"
+              alt=""
               style={{ width: "40px", height: "35px" }}
               onClick={onClose}
             />
@@ -759,7 +759,7 @@ function DashboardLayout({
           >
             <Image
               src={Hamburger}
-              alt="Hamburger Menu"
+              alt=""
               style={{
                 width: "40px",
                 height: "35px",

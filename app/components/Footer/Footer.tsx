@@ -28,7 +28,7 @@ function Footer(): JSX.Element {
             <div className="flex flex-col space-y-3">
               <Image
                 src={OwanbeLogo}
-                alt="Ostivities Logo"
+                alt=""
                 style={{ height: "52px" }}
                 className="w-[170px]"
               />
