@@ -68,7 +68,7 @@ const ContactForm = ({
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
   const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
 
-  // console.log(ticketDetails, "ticketDetails from contact page");
+  // 
 
   const [form] = Form.useForm();
   const [isFormValid, setIsFormValid] = useState(false);
@@ -86,7 +86,7 @@ const ContactForm = ({
       confirmEmail: string;
     }[]
   >([]);
-  console.log(attendeesInformation);
+  
 
   useEffect(() => {
     // Create a counter to assign sequential IDs to each attendee
@@ -190,7 +190,7 @@ const ContactForm = ({
   // };
 
   const handleFirstNameChange = (id: number, firstName: string) => {
-    console.log("here");
+    
     setAttendeesInformation(
       attendeesInformation.map((field) =>
         field.id === id ? { ...field, firstName } : field
@@ -205,7 +205,7 @@ const ContactForm = ({
   // }, [formRef]);
 
   // const onFinish = (values: IGuestData) => {
-  //   console.log(values);
+  //   
   // };
 
   const onFinish = (values: IGuestData) => {
@@ -237,7 +237,7 @@ const ContactForm = ({
       };
 
       // Log values for debugging
-      console.log(payload, "Processed values for submission");
+      
 
       // Call onSubmit with the payload
       onSubmit(payload);

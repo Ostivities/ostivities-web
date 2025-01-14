@@ -33,6 +33,25 @@ export default function Home() {
         <Faqs />
         <ComingSoon />
         {/* <Partners /> */}
+         {/* Google Analytics Script */}
+         <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-SG0987C8LT"
+          strategy="afterInteractive"
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-SG0987C8LT');
+            `,
+          }}
+        />
+        {/* Tawk.to Chat Widget */}
         <Script
           src="https://embed.tawk.to/66aa1bcd32dca6db2cb7f021/1i447p70n"
           strategy="afterInteractive"

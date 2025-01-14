@@ -90,7 +90,7 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
 
   useEffect(() => {
     if (ticketPrice) {
-      const fee = ticketPrice * 0.04 + 100;
+      const fee = Math.round(ticketPrice * 0.04 + 100);
       form.setFieldsValue({ ticket_fee: fee });
     }
   },[ticketPrice])

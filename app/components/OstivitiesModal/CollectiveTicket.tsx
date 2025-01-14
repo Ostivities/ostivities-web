@@ -75,7 +75,7 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
   }, [showAdditionalField]);
   useEffect(() => {
     if (groupPrice) {
-      const fee = groupPrice * 0.04 + 100;
+      const fee = Math.round(groupPrice * 0.04 + 100);
       form.setFieldsValue({ ticket_fee: fee });
     }
   }, [groupPrice]);

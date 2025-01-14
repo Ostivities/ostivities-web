@@ -621,7 +621,6 @@ export interface IGuestData {
 
 
 export interface IGuestCreate  {
-  event: string;
   event_unique_code: string;
   ticket_information: {
     ticket_id: string;
@@ -642,7 +641,6 @@ export interface IGuestCreate  {
     phoneNumber: string;
   };
   attendees_information: {
-    event: string;
     event_unique_code: string;
     ticket_information: {
       ticket_id: string;

@@ -47,17 +47,36 @@ const PaymentSetting = () => {
   const bankCode = form.getFieldValue("bank_code");
   const bankName = form.getFieldValue("bank_name");
 
+  // useEffect(() => {
+  //   if (accountDetails) {
+  //     form.setFieldsValue({
+  //       bank_code: accountDetails?.bank_name,
+  //       account_number: accountDetails?.account_number,
+  //       account_name: accountDetails?.account_name,
+  //     });
+  //     setAccountName(accountDetails?.account_name);
+  //   }
+  // }, [accountDetails]);
+
   useEffect(() => {
     if (accountDetails) {
-      form.setFieldsValue({
-        bank_code: accountDetails?.bank_name,
-        account_number: accountDetails?.account_number,
-        account_name: accountDetails?.account_name,
-      });
-      setAccountName(accountDetails?.account_name);
+      // Find the bank code based on the bank name from the list of all banks
+      const selectedBank = allBanks?.find(
+        (bank: BankData) => bank.name === accountDetails?.bank_name
+      );
+      
+      if (selectedBank) {
+        form.setFieldsValue({
+          bank_code: selectedBank.code, // Set the correct bank_code
+          account_number: accountDetails?.account_number,
+          account_name: accountDetails?.account_name,
+        });
+        setAccountName(accountDetails?.account_name);
+      }
     }
-  }, [accountDetails]);
+  }, [accountDetails, allBanks]);
 
+  
   useEffect(() => {
     form.setFieldsValue({ account_name: accountName }); // Update the form field dynamically
   }, [accountName]);

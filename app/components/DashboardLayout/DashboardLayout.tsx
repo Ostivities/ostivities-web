@@ -180,7 +180,7 @@ function DashboardLayout({
           removeCookie("stage_one");
           removeCookie("stage_two");
           removeCookie("stage_three");
-          removeCookie("profileData")
+          removeCookie("profileData");
           router.push("/login");
         }
       },
@@ -216,7 +216,7 @@ function DashboardLayout({
   //     setProfileData(localStorage.getItem('profileData'));
   //   }
   //   }, []);
-  // console.log("profileData", profileData);
+  // 
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -237,13 +237,13 @@ function DashboardLayout({
     }
   }, [initialProfileData]);
 
-  // console.log(profileData, "profileData");
+  // 
 
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useLocalStorage<boolean>("sidebar", true);
 
   // const userProfile = isLoggedIn ? profile : null;
-  // console.log(userProfile, "userProfile");
+  // 
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -258,7 +258,7 @@ function DashboardLayout({
   const accountType =
     profile?.data?.data?.data?.accountType || profileData?.accountType;
 
-  // console.log(accountType, "accountType");
+  // 
 
   const userName =
     accountType === ACCOUNT_TYPE.PERSONAL
@@ -269,7 +269,7 @@ function DashboardLayout({
       : profile?.data?.data?.data?.businessName ||
         profileData?.businessName ||
         "";
-  // console.log(userName, "userName");
+  // 
   // setCookie("user_fullname", userName)
   const avatarName =
     accountType === ACCOUNT_TYPE.PERSONAL
@@ -305,7 +305,7 @@ function DashboardLayout({
   const showNavLinks = !pathCheck && pathname !== "/discover";
 
   const toggleSidebar = () => {
-    // console.log(collapsed);
+    // 
     setCollapsed((prevValues) => !prevValues);
   };
 
@@ -723,7 +723,7 @@ function DashboardLayout({
                     removeCookie("stage_one");
                     removeCookie("stage_two");
                     removeCookie("stage_three");
-                    removeCookie("profileData")
+                    removeCookie("profileData");
                     router.push("/login");
                   }
                 }}
@@ -754,7 +754,7 @@ function DashboardLayout({
               fontFamily: "BricolageGrotesqueMedium !important",
             }}
             onBreakpoint={(broken: any) => {
-              // console.log(broken, 'broken');
+              // 
             }}
           >
             <Image
@@ -795,7 +795,9 @@ function DashboardLayout({
             }
           >
             <Header
-              className=" hidden lg:flex"
+              className={`${
+                !pathname.split("/").includes("events-created") ? "hidden" : "flex"
+              } lg:flex`}
               style={{
                 // display: "flex",
                 alignItems: "center",
@@ -828,7 +830,7 @@ function DashboardLayout({
                 overflowY: "auto",
               }}
             >
-              <Content className="flex flex-col space-y-8 md:py-8">
+              <Content className="flex flex-col space-y-8 py-8">
                 {steppers && (
                   <div
                     className={`min-[577px]:mx-auto text-center min-[577px]:flex flex-row items-center min-[577px]:justify-center max-[577px]:pl-3 pb-3 ${
@@ -847,7 +849,6 @@ function DashboardLayout({
                     background: "linear-gradient(0deg, #FFFFFF, #FFFFFF)",
                   }}
                   className="px-4 py-10 md:px-12 md:py-16  md:rounded-[30px]"
-
                 >
                   <div>{children}</div>
                 </div>

@@ -2,6 +2,7 @@
 import DashboardLayout from "@/app/components/DashboardLayout/DashboardLayout";
 import useModal from "@/app/hooks/useModal";
 import type { MenuProps } from "antd";
+import { Skeleton } from "antd";
 import { Button, Card, Dropdown, message, Space, Switch, Tooltip } from "antd";
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -26,12 +27,14 @@ interface EventProps {
   totalTickets?: number;
   totalRevenue?: number;
   nextDate?: string;
+  isLoading?: boolean;
 }
 export default function EventDetailsComponent({
   children,
   totalTickets,
   totalRevenue,
   nextDate,
+  isLoading,
 }: {
   children: React.ReactNode;
 } & EventProps): JSX.Element {
@@ -49,7 +52,7 @@ export default function EventDetailsComponent({
   const { getSettlementAccount } = useGetSettlementAccount(
     eventDetails?.user?.id
   );
-  const [isPublished, setIsPublished] = useState(false); // State to track publish status
+  const [isPublished, setIsPublished] = useState(eventDetails?.mode || null); // State to track publish status
   const [isDiscover, setIsDiscover] = useState(false); // State to track discovery status
   const tickets = getTickets?.data?.data?.data;
   const eventDate = eventDetails?.endDate;
@@ -801,7 +804,7 @@ export default function EventDetailsComponent({
   };
 
   const title = (
-    <div className="flex items-center w-full relative pb-2 space-x-8">
+    <div className="flex items-center w-full relative space-x-8">
       <div className="flex flex-row items-center space-x-2 cursor-pointer">
         <Image
           src="/icons/back-arrow.svg"
@@ -811,77 +814,115 @@ export default function EventDetailsComponent({
           onClick={() => {
             router.push(`/discover/events-created`);
           }}
+          className="hidden md:flex"
         />
         <h1 style={{ fontSize: "24px" }}>Event Details</h1>
       </div>
 
-      <div className="flex flex-row items-center space-x-4">
-        {isPublished && (
-          <div className="flex flex-row items-center space-x-2">
-            <ToggleSwitch
-              isActive={isActive}
-              onToggle={(checked: boolean) => {
-                handleSwitchChange(checked);
-                handleToggle("someLabel"); // Replace 'someLabel' with the actual label you want to toggle
-              }}
-              label="Add to discovery page"
-            />
-            <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK">
-              {isDiscover ? "Remove from discovery" : "Add to discovery"}
-              <a
-                href="https://ostivities.tawk.help/article/how-to-add-or-remove-events-from-discovery-on-ostivities" // Replace with your actual URL
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ marginLeft: "8px" }}
-              >
-                <Tooltip title="Click to learn more">
-                  <QuestionCircleOutlined
-                    style={{ fontSize: "18px", color: "#858990" }}
-                  />
-                </Tooltip>
-              </a>
-            </span>
+      {isLoading && getUserEvent?.isLoading === true ? (
+        <Skeleton.Button
+          style={{
+            height: "40px",
+            minWidth: "100%",
+            width: "100%",
+            maxWidth: "100%",
+            borderRadius: "12px",
+          }}
+          active
+        />
+      ) : (
+        <div className="overflow-x-auto">
+          <div className="flex flex-row gap-6 items-center">
+            {isPublished === true && (
+              <div className="flex flex-row min-w-[263px] items-center gap-4">
+                <ToggleSwitch
+                  isActive={isActive}
+                  onToggle={(checked: boolean) => {
+                    handleSwitchChange(checked);
+                    handleToggle("someLabel"); // Replace 'someLabel' with the actual label you want to toggle
+                  }}
+                  label="Add to discovery page"
+                />
+                <span className="font-BricolageGrotesqueMedium font-medium text-sm text-OWANBE_DARK min-w-8">
+                  {isDiscover ? "Remove from discovery" : "Add to discovery"}
+                  <a
+                    href="https://ostivities.tawk.help/article/how-to-add-or-remove-events-from-discovery-on-ostivities" // Replace with your actual URL
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ marginLeft: "8px" }}
+                  >
+                    <Tooltip title="Click to learn more">
+                      <QuestionCircleOutlined
+                        style={{ fontSize: "18px", color: "#858990" }}
+                      />
+                    </Tooltip>
+                  </a>
+                </span>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-
-      <Button
-        type="primary"
-        size={"middle"}
-        className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl"
-        style={{
-          borderRadius: "20px",
-          fontFamily: "BricolageGrotesqueMedium",
-          backgroundColor:
-            eventDetails?.total_ticket_sold > 0
-              ? "#cccccc" // Gray for disabled
-              : "#e20000", // Red for active
-          color: eventDetails?.total_ticket_sold > 0 ? "#666666" : "white",
-        }}
-        onClick={handlePublishEvent}
-        loading={publishEvent.isPending}
-      >
-        {isPublished ? "Unpublish Event" : "Publish Event"}
-      </Button>
-
-      {isPublished && (
-        <div className="flex flex-row items-center space-x-1">
-          <Button
-            type="text"
-            target="_self"
-            className="font-BricolageGrotesqueMedium text-sm text-OWANBE_DARK cursor-pointer"
-            onClick={copyToClipBoard}
-          >
-            <LiaExternalLinkAltSolid
-              color="#E20000"
-              width={14}
-              height={14}
-              className="cursor-pointer text-lg"
-            />
-            <span className="font-BricolageGrotesqueMedium">
-              Copy Event Link
-            </span>
-          </Button>
+          {isPublished === false && (
+            <Button
+              type="primary"
+              size={"middle"}
+              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl"
+              style={{
+                borderRadius: "20px",
+                fontFamily: "BricolageGrotesqueMedium",
+                backgroundColor:
+                  eventDetails?.total_ticket_sold > 0
+                    ? "#cccccc" // Gray for disabled
+                    : "#e20000", // Red for active
+                color:
+                  eventDetails?.total_ticket_sold > 0 ? "#666666" : "white",
+              }}
+              onClick={handlePublishEvent}
+              loading={publishEvent.isPending}
+            >
+              Publish Event
+            </Button>
+          )}
+          {isPublished === true && (
+            <Button
+              type="primary"
+              size={"middle"}
+              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl"
+              style={{
+                borderRadius: "20px",
+                fontFamily: "BricolageGrotesqueMedium",
+                backgroundColor:
+                  eventDetails?.total_ticket_sold > 0
+                    ? "#cccccc" // Gray for disabled
+                    : "#e20000", // Red for active
+                color:
+                  eventDetails?.total_ticket_sold > 0 ? "#666666" : "white",
+              }}
+              onClick={handlePublishEvent}
+              loading={publishEvent.isPending}
+            >
+              Unpublish Event
+            </Button>
+          )}
+          {isPublished === true && (
+            <div className="flex flex-row items-center space-x-1">
+              <Button
+                type="text"
+                target="_self"
+                className="font-BricolageGrotesqueMedium text-sm text-OWANBE_DARK cursor-pointer"
+                onClick={copyToClipBoard}
+              >
+                <LiaExternalLinkAltSolid
+                  color="#E20000"
+                  width={14}
+                  height={14}
+                  className="cursor-pointer text-lg"
+                />
+                <span className="font-BricolageGrotesqueMedium">
+                  Copy Event Link
+                </span>
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </div>

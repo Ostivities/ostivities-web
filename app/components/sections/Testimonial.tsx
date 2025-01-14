@@ -41,14 +41,14 @@ function Faqs(): JSX.Element {
   };
 
   const slides = [
-    "/testimonial1.svg",
-    "/testimonial2.svg",
-    "/testimonial3.svg",
-    "/testimonial2.svg",
-    "/testimonial1.svg",
-    "/testimonial2.svg",
-    "/testimonial3.svg",
-    "/testimonial1.svg",
+    "/testimonial1.png",
+    "/testimonial2.png",
+    "/testimonial3.png",
+    "/testimonial2.png",
+    "/testimonial1.png",
+    "/testimonial2.png",
+    "/testimonial3.png",
+    "/testimonial1.png",
   ];
 
   return (

@@ -18,6 +18,7 @@ import {
   useGetEventGuests,
   useGetEventGuestsByUniqueKey,
 } from "@/app/hooks/guest/guest.hook";
+import { useGetEventTicketsByUniqueKey } from "@/app/hooks/ticket/ticket.hook";
 import EventPageLoader from "@/app/components/Loaders/EventPageLoader";
 import {
   FacebookShareButton,
@@ -1058,72 +1059,70 @@ const EventDetail = () => {
               />
             </div>
           )}
-          <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between items-center -mt-3">
-            <div>
-              {getUserEventByUniqueKey?.isLoading ? (
-                <Skeleton.Button
-                  active
-                  className="relative h-7 sm: w-[150px] md:w-[120px] sm:w-200px] rounded-[1rem]"
-                  shape="round"
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    margin: "6px",
-                    maxWidth: "100%",
-                  }}
-                />
-              ) : (
-                <h2 className="text-xl font-BricolageGrotesqueMedium">
-                  {eventDetails?.eventName}
-                </h2>
-              )}
-            </div>
-            <div className="flex items-center space-x-3">
-              {/* Wrapper for buttons with tighter spacing */}
-              <Button
-                icon={<ShareAltOutlined className="text-black text-2xl" />}
-                onClick={handleOpenModal}
-                className="bg-white border-none p-0"
-              />
-
-              <Tooltip
-                title={
-                  isLoggedIn && userFullName === loggedInUser
-                    ? "Click to Scan Event Tickets"
-                    : "Click to Create Your Attendee Flyer"
-                }
-              >
-                {isLoggedIn && userFullName === loggedInUser ? (
-                  <Button
-                    icon={<ScanOutlined className="text-black text-2xl" />}
-                    onClick={() =>
-                      window.open("https://scanner.ostivities.com/", "_blank")
-                    }
-                    className="bg-white border-none p-0"
-                  />
-                ) : (
-                  <Button
-                    icon={<EditOutlined className="text-black text-2xl" />}
-                    onClick={handleShowModal}
-                    className="bg-white border-none p-0"
-                  />
-                )}
-              </Tooltip>
-            </div>
-
-            <Modal
-              open={isModalOpen}
-              onCancel={handleCloseModal}
-              footer={null}
-              centered
+          {getUserEventByUniqueKey?.isLoading ? (
+            <Skeleton.Button
+              active
+              className="relative h-20 w-[126px] md:w-[100px] sm:w-[80px] rounded-[1rem]"
+              shape="round"
               style={{
-                borderRadius: "15px",
-                padding: "20px", // Include padding here instead of using bodyStyle
+                height: "100%",
+                width: "100%",
+                margin: "6px",
+                maxWidth: "100%",
               }}
-            >
-              <ShareModalContent url={eventUrl} title={eventTitle} />
-            </Modal>
-          </div>{" "}
+            />
+          ) : (
+            <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between items-center -mt-3">
+              <h2 className="text-xl font-BricolageGrotesqueMedium">
+                {eventDetails?.eventName}
+              </h2>
+              <div className="flex items-center space-x-3">
+                {/* Wrapper for buttons with tighter spacing */}
+                <Button
+                  icon={<ShareAltOutlined className="text-black text-2xl" />}
+                  onClick={handleOpenModal}
+                  className="bg-white border-none p-0"
+                />
+
+                <Tooltip
+                  title={
+                    isLoggedIn && userFullName === loggedInUser
+                      ? "Click to Scan Event Tickets"
+                      : "Click to Create Your Attendee Flyer"
+                  }
+                >
+                  {isLoggedIn && userFullName === loggedInUser ? (
+                    <Button
+                      icon={<ScanOutlined className="text-black text-2xl" />}
+                      onClick={() =>
+                        window.open("https://scanner.ostivities.com/", "_blank")
+                      }
+                      className="bg-white border-none p-0"
+                    />
+                  ) : (
+                    <Button
+                      icon={<EditOutlined className="text-black text-2xl" />}
+                      onClick={handleShowModal}
+                      className="bg-white border-none p-0"
+                    />
+                  )}
+                </Tooltip>
+              </div>
+
+              <Modal
+                open={isModalOpen}
+                onCancel={handleCloseModal}
+                footer={null}
+                centered
+                style={{
+                  borderRadius: "15px",
+                  padding: "20px", // Include padding here instead of using bodyStyle
+                }}
+              >
+                <ShareModalContent url={eventUrl} title={eventTitle} />
+              </Modal>
+            </div>
+          )}
           {getUserEventByUniqueKey?.isLoading ? (
             <Skeleton.Button
               active
@@ -1564,30 +1563,66 @@ const EventDetail = () => {
                 )}
               </>
             )}
-            <div
-              style={{
-                position: "fixed",
-                bottom: 0,
-                left: 0,
-                width: "100%",
-                padding: "20px",
-                backgroundColor: "white",
-                zIndex: 99,
-              }}
-              className="flex justify-center mt-12"
-            >
-              {eventDetails?.vendor_registration === true ? (
-                <>
-                  <Dropdown
-                    disabled={isRegistrationClosed} // Disable if registration is closed
-                    menu={{
-                      items: RegistrationTypes,
-                      onClick: handleMenuClick,
-                    }}
-                  >
+            {!getUserEventByUniqueKey?.isLoading && (
+              <div
+                style={{
+                  position: "fixed",
+                  bottom: 0,
+                  left: 0,
+                  width: "100%",
+                  padding: "20px",
+                  backgroundColor: "white",
+                  zIndex: 99,
+                }}
+                className="flex justify-center mt-12"
+              >
+                {eventDetails?.vendor_registration === true ? (
+                  <>
+                    <Dropdown
+                      disabled={isRegistrationClosed} // Disable if registration is closed
+                      menu={{
+                        items: RegistrationTypes,
+                        onClick: handleMenuClick,
+                      }}
+                    >
+                      <Button
+                        type={
+                          pathname.includes("register") ? "primary" : "text"
+                        }
+                        className="primary-btn w-full "
+                        style={{
+                          borderRadius: "25px",
+                          fontFamily: "BricolageGrotesqueMedium",
+                          backgroundColor: isRegistrationClosed
+                            ? "#cccccc"
+                            : "#e20000", // Gray for disabled, red for active
+                          color: isRegistrationClosed ? "#666666" : "white",
+                          height: "50px", // Adjust height as needed
+                          fontSize: "16px", // Increase text size
+                          border: "none", // Remove border if needed
+                        }}
+                        title={
+                          isRegistrationClosed ? "Registration Closed" : ""
+                        }
+                        disabled={isRegistrationClosed} // Disable button when registration is closed
+                      >
+                        <Space>
+                          {eventDetails?.enable_registration === false
+                            ? "Registration Closed"
+                            : "Get Tickets"}
+                          <IoChevronDown />
+                        </Space>
+                      </Button>
+                    </Dropdown>
+                  </>
+                ) : (
+                  <>
                     <Button
                       type={pathname.includes("register") ? "primary" : "text"}
-                      className="primary-btn w-full "
+                      onClick={() =>
+                        router.push(`/discover/${params?.event}/tickets`)
+                      }
+                      className="primary-btn w-full"
                       style={{
                         borderRadius: "25px",
                         fontFamily: "BricolageGrotesqueMedium",
@@ -1606,42 +1641,12 @@ const EventDetail = () => {
                         {eventDetails?.enable_registration === false
                           ? "Registration Closed"
                           : "Get Tickets"}
-                        <IoChevronDown />
                       </Space>
                     </Button>
-                  </Dropdown>
-                </>
-              ) : (
-                <>
-                  <Button
-                    type={pathname.includes("register") ? "primary" : "text"}
-                    onClick={() =>
-                      router.push(`/discover/${params?.event}/tickets`)
-                    }
-                    className="primary-btn w-full"
-                    style={{
-                      borderRadius: "25px",
-                      fontFamily: "BricolageGrotesqueMedium",
-                      backgroundColor: isRegistrationClosed
-                        ? "#cccccc"
-                        : "#e20000", // Gray for disabled, red for active
-                      color: isRegistrationClosed ? "#666666" : "white",
-                      height: "50px", // Adjust height as needed
-                      fontSize: "16px", // Increase text size
-                      border: "none", // Remove border if needed
-                    }}
-                    title={isRegistrationClosed ? "Registration Closed" : ""}
-                    disabled={isRegistrationClosed} // Disable button when registration is closed
-                  >
-                    <Space>
-                      {eventDetails?.enable_registration === false
-                        ? "Registration Closed"
-                        : "Get Tickets"}
-                    </Space>
-                  </Button>
-                </>
-              )}
-            </div>
+                  </>
+                )}
+              </div>
+            )}
           </div>
           <Modal
             title="Create your attendee flyer, download and share with everyone 🥳"

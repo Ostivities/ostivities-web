@@ -162,7 +162,7 @@ const TicketsSelection = () => {
       additionalInformation: { question: string; is_compulsory: boolean }[];
     }[]
   >([]);
-  console.log(ticketDetails, "ticketDetails");
+  
 
   const [ticketDataQ, setTicketDataQ] = useState<{
     ticket_information: {
@@ -229,7 +229,6 @@ const TicketsSelection = () => {
     }[];
     attendees_information: {
       id: number;
-      event: string;
       event_unique_code: string;
       ticket_information: {
         ticket_id: string;
@@ -256,7 +255,6 @@ const TicketsSelection = () => {
       discount: number;
     }[];
     guest_category: GUEST_CATEGORY;
-    event: string;
     event_unique_code: string;
     fees: number;
     total_amount_paid: number;
@@ -272,7 +270,6 @@ const TicketsSelection = () => {
     additional_information: [],
     attendees_information: [],
     ticket_information: [],
-    event: eventDetails?.id,
     guest_category: GUEST_CATEGORY.BUYER,
     event_unique_code: params?.event,
     fees: 0,
@@ -281,8 +278,8 @@ const TicketsSelection = () => {
     payment_method: PAYMENT_METHODS.FREE,
   });
 
-  console.log(ticketDataQ, "ticketDataQ");
-  console.log(allInfo, "allInfo");
+  
+  
 
   useEffect(() => {
     if (!cookies?.ticketDetails || ticketDetails?.length > 0) {
@@ -563,13 +560,18 @@ const TicketsSelection = () => {
             ticket_stock: ticket.ticket_stock,
             order_number: ticket.order_number,
             discount: ticket.ticketDiscountValue,
-            discountCode: ticket?.ticketDiscountCode?.includes(discountCode) === true ? discountCode : "",
+            discountCode:
+              ticket?.ticketDiscountCode?.includes(discountCode) === true
+                ? discountCode
+                : "",
           })),
           fees: updatedFees,
-          total_amount_paid: discountCodeUsed ? updatedTotalAmountPaid : updatedTicketInformation.reduce(
-            (acc, ticket) => acc + ticket.subTotal, // Total of all ticket amounts
-            0
-          ),
+          total_amount_paid: discountCodeUsed
+            ? updatedTotalAmountPaid
+            : updatedTicketInformation.reduce(
+                (acc, ticket) => acc + ticket.subTotal, // Total of all ticket amounts
+                0
+              ),
           total_purchased: updatedTotalPurchased,
         };
       });
@@ -660,12 +662,14 @@ const TicketsSelection = () => {
           const discountValueUsed =
             discountCodeUsed && discountCodeUsed?.discount_value;
           // Calculate the discounted ticket price or any other property you want to update
-          const discountValue = isDiscountCodeApplied === true ?
-            discountTypeUsed === DISCOUNT_TYPE.PERCENTAGE
-              ? ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE
-                ? (realPrice * discountValueUsed) / 100
-                : (realPrice * discountValueUsed) / 100
-              : discountValueUsed : 0;
+          const discountValue =
+            isDiscountCodeApplied === true
+              ? discountTypeUsed === DISCOUNT_TYPE.PERCENTAGE
+                ? ticket?.ticketEntity === TICKET_ENTITY.COLLECTIVE
+                  ? (realPrice * discountValueUsed) / 100
+                  : (realPrice * discountValueUsed) / 100
+                : discountValueUsed
+              : 0;
 
           const discountedTicketPrice = realPrice - discountValue;
           const discountToDeduct =
@@ -677,12 +681,18 @@ const TicketsSelection = () => {
             ticketPrice: realPrice,
             ticketFee: currentFee,
             ticketNumber: 1,
-            discountToDeduct: isDiscountCodeApplied ? Math.round(discountToDeduct) : 0,
+            discountToDeduct: isDiscountCodeApplied
+              ? Math.round(discountToDeduct)
+              : 0,
             ticketType: ticket?.ticketType,
             ticketStock: ticket?.ticketStock,
             ticketDiscountCode: ticket?.discountCode,
-            ticketDiscountType: isDiscountCodeApplied ? discountTypeUsed : ticket?.discount?.discountType,
-            ticketDiscountValue: isDiscountCodeApplied ? Math.round(discountValueUsed) : ticket?.discount?.discount_value,
+            ticketDiscountType: isDiscountCodeApplied
+              ? discountTypeUsed
+              : ticket?.discount?.discountType,
+            ticketDiscountValue: isDiscountCodeApplied
+              ? Math.round(discountValueUsed)
+              : ticket?.discount?.discount_value,
             subTotal:
               ticket?.guestAsChargeBearer === true
                 ? realPrice + currentFee - discountValue
@@ -861,8 +871,10 @@ const TicketsSelection = () => {
             ticket_type: ticket.ticket_type,
             ticket_stock: ticket.ticket_stock,
             order_number: ticket.order_number,
-            discount: ticket.ticketDiscountValue,
-            discountCode: newTicket?.ticketDiscountCode?.includes(discountCode) ? discountCode : "",
+            discount: ticket.ticketDiscountValue || 0,
+            discountCode: newTicket?.ticketDiscountCode?.includes(discountCode)
+              ? discountCode
+              : "",
           })),
           fees: updatedFees,
           total_amount_paid: updatedTotalAmountPaid,
@@ -917,7 +929,7 @@ const TicketsSelection = () => {
                   100
                 : existingTicket?.ticketDiscountValue * newTicketNumber
               : 0;
-            console.log(discountValue, "discotbjsf");
+            
             updatedDetails[existingTicketIndex] = {
               ...existingTicket,
               ticketPrice: price * newTicketNumber,
@@ -1063,11 +1075,10 @@ const TicketsSelection = () => {
     { id: number; question: string; answer: string; is_compulsory: boolean }[]
   >([]);
 
-  // console.log(ticketDataQ, "ticketDataQ");
+  // 
 
   const [attendeesInformation, setAttendeesInformation] = useState<
     {
-      event: string;
       event_unique_code: string;
       ticket_information: {
         ticket_id: string;
@@ -1094,7 +1105,7 @@ const TicketsSelection = () => {
       total_amount_paid: number;
     }[]
   >([]);
-  // console.log(attendeesInformation, "attendeesInformation");
+  // 
   const [modal, setModal] = useState(false);
   const [downloadDetails, setDownloadDetails] = useState<
     {
@@ -1111,7 +1122,7 @@ const TicketsSelection = () => {
       // ticket_banner?: string;
     }[]
   >([]);
-  // console.log(downloadDetails, "downloadDetails")
+  // 
   const [isFormValid, setIsFormValid] = useState(false);
 
   const renderedAttendees = useMemo(() => {
@@ -1301,7 +1312,7 @@ const TicketsSelection = () => {
       // Map remaining tickets to updated attendees
       const updatedAttendees = remainingTickets.map((ticket, index) => ({
         id: index, // Ensure IDs start from 1
-        event: prevAllInfo.event,
+        // event: prevAllInfo.event,
         event_unique_code: prevAllInfo.event_unique_code,
         ticket_information: {
           ticket_id: ticket.ticket_id,
@@ -1450,7 +1461,6 @@ const TicketsSelection = () => {
     additional_information: [],
     attendees_information: [],
     ticket_information: [],
-    event: eventDetails?.id, // Example default value, you can modify
     guest_category: GUEST_CATEGORY.BUYER,
     event_unique_code: params?.event,
     fees: 0,
@@ -1532,11 +1542,15 @@ const TicketsSelection = () => {
             ticket_name: ticket?.ticket_name,
             ticket_type: ticket?.ticket_type,
             event_name: eventDetails?.eventName,
-            // qr_code: JSON.stringify({order_numer: ticket?.order_number, guest}),
-            ostivities_logo:
-              "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
-            ticket_banner:
-              "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735773616/ticketheader_vihwar.png",
+            qr_code: JSON.stringify({
+              order_number: ticket?.order_number,
+              guest_id: response?.data?.data?.id,
+              event_id: eventDetails?.id,
+            }),
+            // ostivities_logo:
+            //   "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
+            // ticket_banner:
+            //   "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735773616/ticketheader_vihwar.png",
           })
         );
         let combinedDetails = [...details];
@@ -1551,11 +1565,15 @@ const TicketsSelection = () => {
               ticket_name: attendees?.ticket_information?.ticket_name,
               ticket_type: attendees?.ticket_information?.ticket_type,
               event_name: eventDetails?.eventName,
-              // qr_code: attendees?.ticket_information?.qr_code,
-              ostivities_logo:
-                "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
-              ticket_banner:
-                "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735773616/ticketheader_vihwar.png",
+              qr_code: JSON.stringify({
+                order_number: attendees?.order_number,
+                guest_id: response?.data?.data?.id,
+                event_id: eventDetails?.id,
+              }),
+              // ostivities_logo:
+              //   "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
+              // ticket_banner:
+              //   "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735773616/ticketheader_vihwar.png",
             })
           );
           combinedDetails = [...details, ...extraDetails];
@@ -1608,7 +1626,7 @@ const TicketsSelection = () => {
   //     email: allInfo?.personal_information?.email,
   //     event_unique_key: params?.event,
   //   });
-  //   console.log(res, "initialisePayment")
+  //   
   //   if (res.status === 200) {
   //     const onSuccess = async () => {
   //       const verify = await verifyPayment.mutateAsync(
@@ -2581,8 +2599,7 @@ const TicketsSelection = () => {
                 <div className="flex flex-row items-center justify-between space-x-2">
                   <span
                     className={`font-BricolageGrotesqueMedium font-medium text-sm ${
-                      !disableConditionOne &&
-                      ticketDetails?.length === 1
+                      !disableConditionOne && ticketDetails?.length === 1
                         ? "text-gray-400"
                         : "text-OWANBE_DARK"
                     }`}
@@ -2605,8 +2622,7 @@ const TicketsSelection = () => {
                       }
                     }}
                     isDisabled={
-                      !disableConditionOne &&
-                      ticketDetails?.length === 1
+                      !disableConditionOne && ticketDetails?.length === 1
                     }
                     label="Registration toggle"
                   />
