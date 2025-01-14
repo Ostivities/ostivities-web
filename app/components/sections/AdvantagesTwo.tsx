@@ -1,6 +1,6 @@
 "use client";
 import { ADVANTAGES_TWO } from "@/app/utils/data";
-import AdvantagesBg from "@/public/adv2.svg";
+import AdvantagesBg from "@/public/adv2.png";
 import Image from "next/image";
 import React from "react";
 import { Heading3, Paragraph, Small } from "../typography/Typography";
