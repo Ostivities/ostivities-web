@@ -1,6 +1,6 @@
 "use client";
 import { FEATURES } from "@/app/utils/data";
-import LaptopHero from '@/public/laptop.svg';
+import LaptopHero from '@/public/laptop.png';
 import Image from "next/image";
 import React from "react";
 import { Heading3, Paragraph, Small } from "../typography/Typography";
