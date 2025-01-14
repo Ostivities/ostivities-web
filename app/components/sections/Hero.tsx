@@ -1,5 +1,5 @@
 "use client";
-import FeatureBg from "@/public/feature.svg";
+import FeatureBg from "@/public/feature.png";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
@@ -40,17 +40,17 @@ function Hero(): JSX.Element {
   };
 
   const slides = [
-    "/events.svg",
-    "/Conferences.svg",
-    "/Weddings.svg",
-    "/concerts.svg",
-    "/Hangouts.svg",
-    "/Seminar.svg",
-    "/events.svg",
-    "/Birthdays.svg",
-    "/Weddings.svg",
-    "/concerts.svg",
-    "/Hangouts.svg",
+    "/events.png",
+    "/Conferences.png",
+    "/Weddings.png",
+    "/concerts.png",
+    "/Hangouts.png",
+    "/Seminar.png",
+    "/events.png",
+    "/Birthdays.png",
+    "/Weddings.png",
+    "/concerts.png",
+    "/Hangouts.png",
   ];
 
   const words = ["Events", "Hangouts", "Concerts", "Seminars"];
@@ -88,14 +88,14 @@ function Hero(): JSX.Element {
       >
         <div className="flex flex-col items-center space-y-8 md:space-y-6 lg:items-start lg:w-1/2">
           <h3 className="text-center text-xl lg:text-3xl lg:text-left lg:w-[70%] font-semibold">
-            Connecting You to the{" "}
+          <h1>Connecting You to the{" "}
             <span
               className={`animated-word ${animation}`}
               style={{ color: currentColor }}
             >
               {currentWord}
             </span>{" "}
-            That Matter Most.
+            That Matter Most.</h1>
           </h3>
           <motion.div
             className="flex flex-col space-y-4"
@@ -104,9 +104,9 @@ function Hero(): JSX.Element {
             transition={{ duration: 1, delay: 0.5 }}
           >
             <p className="font-BricolageGrotesqueMedium text-center lg:text-left lg:w-[87%] text-OWANBE_ASH text-lg">
-              Discover Events and Elevate Your Celebrations with Ostivities!
+             <h1> Discover Events and Elevate Your Celebrations with Ostivities!
               Craft unforgettable memories through seamless planning, ticket
-              selling, and event management. Start your journey with us today!
+              selling, and event management. Start your journey with us today!</h1>
             </p>
           </motion.div>
           <Link

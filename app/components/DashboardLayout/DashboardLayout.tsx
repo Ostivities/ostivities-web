@@ -216,7 +216,7 @@ function DashboardLayout({
   //     setProfileData(localStorage.getItem('profileData'));
   //   }
   //   }, []);
-  // console.log("profileData", profileData);
+  // 
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -237,13 +237,13 @@ function DashboardLayout({
     }
   }, [initialProfileData]);
 
-  // console.log(profileData, "profileData");
+  // 
 
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useLocalStorage<boolean>("sidebar", true);
 
   // const userProfile = isLoggedIn ? profile : null;
-  // console.log(userProfile, "userProfile");
+  // 
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -258,7 +258,7 @@ function DashboardLayout({
   const accountType =
     profile?.data?.data?.data?.accountType || profileData?.accountType;
 
-  // console.log(accountType, "accountType");
+  // 
 
   const userName =
     accountType === ACCOUNT_TYPE.PERSONAL
@@ -269,7 +269,7 @@ function DashboardLayout({
       : profile?.data?.data?.data?.businessName ||
         profileData?.businessName ||
         "";
-  // console.log(userName, "userName");
+  // 
   // setCookie("user_fullname", userName)
   const avatarName =
     accountType === ACCOUNT_TYPE.PERSONAL
@@ -305,7 +305,7 @@ function DashboardLayout({
   const showNavLinks = !pathCheck && pathname !== "/discover";
 
   const toggleSidebar = () => {
-    // console.log(collapsed);
+    // 
     setCollapsed((prevValues) => !prevValues);
   };
 
@@ -754,7 +754,7 @@ function DashboardLayout({
               fontFamily: "BricolageGrotesqueMedium !important",
             }}
             onBreakpoint={(broken: any) => {
-              // console.log(broken, 'broken');
+              // 
             }}
           >
             <Image

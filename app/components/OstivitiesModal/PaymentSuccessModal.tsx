@@ -13,7 +13,7 @@ const PaymentSuccessModal = ({
   const router = useRouter();
   const params = useParams<{ event: string }>();
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
-  console.log(downloadDetails, "downloadDetails");
+  
   // Check for event details
   const eventDetails =
     getUserEventByUniqueKey?.data?.data?.data === null

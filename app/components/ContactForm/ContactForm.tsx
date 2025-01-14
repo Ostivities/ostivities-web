@@ -68,7 +68,7 @@ const ContactForm = ({
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
   const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
 
-  // console.log(ticketDetails, "ticketDetails from contact page");
+  // 
 
   const [form] = Form.useForm();
   const [isFormValid, setIsFormValid] = useState(false);
@@ -85,7 +85,7 @@ const ContactForm = ({
   const [additionalFields, setAdditionalFields] = useState<
     { id: number; question: string; answer: string }[]
   >([]);
-  // console.log(attendeesInformation);
+  // 
 
   // Function to handle attendee information updates
   const handleInputChange = (
@@ -144,7 +144,7 @@ const ContactForm = ({
     // Do any additional handling if needed
     if (onSubmit) {
       const {firstName, lastName, } = values;
-      console.log(values, "values from contact page");
+      
       onSubmit(values);
     }
   };

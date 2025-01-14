@@ -94,7 +94,7 @@ const LocationSearch: React.FC<LocationSearchProps> = ({ onSelectLocation }) => 
         const lng = location.lng();
   
         // Log to verify the coordinates
-        console.log("Latitude:", lat, "Longitude:", lng);
+        
   
         // Construct the iframe src URL using both address and coordinates
         setMapSrc(

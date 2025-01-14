@@ -77,7 +77,7 @@ const CoordinatorsList = () => {
     }
   );
 
-  // console.log(allCoordinators, totalCoordinators);
+  // 
 
   const [debouncedSearchText] = useDebounce(searchText, 1000); // Debounce delay: 300ms
 

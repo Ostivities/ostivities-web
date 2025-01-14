@@ -162,7 +162,7 @@ const TicketsSelection = () => {
       additionalInformation: { question: string; is_compulsory: boolean }[];
     }[]
   >([]);
-  console.log(ticketDetails, "ticketDetails");
+  
 
   const [ticketDataQ, setTicketDataQ] = useState<{
     ticket_information: {
@@ -278,8 +278,8 @@ const TicketsSelection = () => {
     payment_method: PAYMENT_METHODS.FREE,
   });
 
-  console.log(ticketDataQ, "ticketDataQ");
-  console.log(allInfo, "allInfo");
+  
+  
 
   useEffect(() => {
     if (!cookies?.ticketDetails || ticketDetails?.length > 0) {
@@ -929,7 +929,7 @@ const TicketsSelection = () => {
                   100
                 : existingTicket?.ticketDiscountValue * newTicketNumber
               : 0;
-            console.log(discountValue, "discotbjsf");
+            
             updatedDetails[existingTicketIndex] = {
               ...existingTicket,
               ticketPrice: price * newTicketNumber,
@@ -1075,7 +1075,7 @@ const TicketsSelection = () => {
     { id: number; question: string; answer: string; is_compulsory: boolean }[]
   >([]);
 
-  // console.log(ticketDataQ, "ticketDataQ");
+  // 
 
   const [attendeesInformation, setAttendeesInformation] = useState<
     {
@@ -1105,7 +1105,7 @@ const TicketsSelection = () => {
       total_amount_paid: number;
     }[]
   >([]);
-  // console.log(attendeesInformation, "attendeesInformation");
+  // 
   const [modal, setModal] = useState(false);
   const [downloadDetails, setDownloadDetails] = useState<
     {
@@ -1122,7 +1122,7 @@ const TicketsSelection = () => {
       // ticket_banner?: string;
     }[]
   >([]);
-  // console.log(downloadDetails, "downloadDetails")
+  // 
   const [isFormValid, setIsFormValid] = useState(false);
 
   const renderedAttendees = useMemo(() => {
@@ -1626,7 +1626,7 @@ const TicketsSelection = () => {
   //     email: allInfo?.personal_information?.email,
   //     event_unique_key: params?.event,
   //   });
-  //   console.log(res, "initialisePayment")
+  //   
   //   if (res.status === 200) {
   //     const onSuccess = async () => {
   //       const verify = await verifyPayment.mutateAsync(
