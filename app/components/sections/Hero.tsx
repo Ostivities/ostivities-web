@@ -88,14 +88,14 @@ function Hero(): JSX.Element {
       >
         <div className="flex flex-col items-center space-y-8 md:space-y-6 lg:items-start lg:w-1/2">
           <h3 className="text-center text-xl lg:text-3xl lg:text-left lg:w-[70%] font-semibold">
-          <h1>Connecting You to the{" "}
+          Connecting You to the{" "}
             <span
               className={`animated-word ${animation}`}
               style={{ color: currentColor }}
             >
               {currentWord}
             </span>{" "}
-            That Matter Most.</h1>
+            That Matter Most.
           </h3>
           <motion.div
             className="flex flex-col space-y-4"
