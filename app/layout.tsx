@@ -13,7 +13,7 @@ const inter = Bricolage_Grotesque({
 
 export const metadata: Metadata = {
   title: "Ostivities",
-  description: "Ostivities is the ultimate platform for creating, managing and discovering unforgettable events across Nigeria. Whether you're planning your next big celebration or searching for exciting experiences, we've got you covered",
+  description: "Ostivities is your go-to platform for creating, managing, and discovering unforgettable events in Nigeria.",
 };
 
 export default function RootLayout({
