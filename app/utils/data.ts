@@ -173,8 +173,12 @@ export const SOCIALS: INavLinks[] = [
   { link: "https://x.com/Ostivities",  name: "X (Twitter)", 
     target: "_blank", 
     rel: "noopener noreferrer" },
+
+  { link: "https://www.facebook.com/profile.php?id=61571432716534",  name: "Facebook", 
+      target: "_blank", 
+      rel: "noopener noreferrer" },
     
-    { link: "https://www.linkedin.com/company/ostivities", name: "LinkedIn", 
+  { link: "https://www.linkedin.com/company/ostivities", name: "LinkedIn", 
       target: "_blank", 
       rel: "noopener noreferrer" },
 ];
