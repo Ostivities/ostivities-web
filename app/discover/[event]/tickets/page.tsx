@@ -1461,7 +1461,6 @@ const TicketsSelection = () => {
     additional_information: [],
     attendees_information: [],
     ticket_information: [],
-    event: eventDetails?.id, // Example default value, you can modify
     guest_category: GUEST_CATEGORY.BUYER,
     event_unique_code: params?.event,
     fees: 0,

@@ -804,8 +804,8 @@ export default function EventDetailsComponent({
   };
 
   const title = (
-    <div className="flex overflow-x-auto items-center w-full relative space-x-8">
-      <div className="hidden lg:flex flex-row items-center space-x-2 cursor-pointer">
+    <div className="flex items-center w-full relative space-x-8">
+      <div className="flex flex-row items-center space-x-2 cursor-pointer">
         <Image
           src="/icons/back-arrow.svg"
           alt=""
@@ -814,6 +814,7 @@ export default function EventDetailsComponent({
           onClick={() => {
             router.push(`/discover/events-created`);
           }}
+          className="hidden md:flex"
         />
         <h1 style={{ fontSize: "24px" }}>Event Details</h1>
       </div>
@@ -822,15 +823,15 @@ export default function EventDetailsComponent({
         <Skeleton.Button
           style={{
             height: "40px",
-            minWidth: "320px",
+            minWidth: "100%",
             width: "100%",
-            maxWidth: "100vw",
+            maxWidth: "100%",
             borderRadius: "12px",
           }}
           active
         />
       ) : (
-        <>
+        <div className="overflow-x-auto">
           <div className="flex flex-row gap-6 items-center">
             {isPublished === true && (
               <div className="flex flex-row min-w-[263px] items-center gap-4">
@@ -922,7 +923,7 @@ export default function EventDetailsComponent({
               </Button>
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   );
