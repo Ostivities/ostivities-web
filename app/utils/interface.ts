@@ -679,6 +679,7 @@ export interface IGuestCreate  {
 }
 
 export interface IBulkMailData {
+  event_id: string
   sender_name: string,
   sender_email: string,
   reply_to: string,

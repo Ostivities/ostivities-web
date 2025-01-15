@@ -210,6 +210,7 @@ const EventsGuestListEmail = () => {
         email_attachment: emailAttachment,
         email_content: editorContent,
         receipients: recipientsTicketData,
+        event_id: params?.id,
       });
 
       if (response.status === 200) {
@@ -233,6 +234,7 @@ const EventsGuestListEmail = () => {
         email_attachment: emailAttachment,
         email_content: editorContent,
         receipients: recipientsDataTicket,
+        event_id: params?.id,
       });
 
       if (response.status === 200) {
@@ -251,6 +253,7 @@ const EventsGuestListEmail = () => {
         ...rest,
         email_attachment: emailAttachment,
         email_content: editorContent,
+        event_id: params?.id,
       });
 
       if (response.status === 200) {
