@@ -68,7 +68,6 @@ function Discover(): JSX.Element {
       )}
     </div>
   );
-
   return (
     <DashboardLayout title={header}>
       <div className="flex flex-col gap-10">
