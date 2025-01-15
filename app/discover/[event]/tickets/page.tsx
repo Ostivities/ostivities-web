@@ -88,6 +88,7 @@ const TicketsSelection = () => {
   >("tickets");
   const [discountCode, setDiscountCode] = useState("");
   const eventDetails = getUserEventByUniqueKey?.data?.data?.data;
+  const eventID = eventDetails?.id;
   const { getTicketsByUniqueKey } = useGetEventTicketsByUniqueKey(
     eventDetails?.unique_key
   );
@@ -162,7 +163,6 @@ const TicketsSelection = () => {
       additionalInformation: { question: string; is_compulsory: boolean }[];
     }[]
   >([]);
-  
 
   const [ticketDataQ, setTicketDataQ] = useState<{
     ticket_information: {
@@ -277,9 +277,6 @@ const TicketsSelection = () => {
     total_purchased: 0,
     payment_method: PAYMENT_METHODS.FREE,
   });
-
-  
-  
 
   useEffect(() => {
     if (!cookies?.ticketDetails || ticketDetails?.length > 0) {
@@ -929,7 +926,7 @@ const TicketsSelection = () => {
                   100
                 : existingTicket?.ticketDiscountValue * newTicketNumber
               : 0;
-            
+
             updatedDetails[existingTicketIndex] = {
               ...existingTicket,
               ticketPrice: price * newTicketNumber,
@@ -1075,7 +1072,7 @@ const TicketsSelection = () => {
     { id: number; question: string; answer: string; is_compulsory: boolean }[]
   >([]);
 
-  // 
+  //
 
   const [attendeesInformation, setAttendeesInformation] = useState<
     {
@@ -1105,7 +1102,7 @@ const TicketsSelection = () => {
       total_amount_paid: number;
     }[]
   >([]);
-  // 
+  //
   const [modal, setModal] = useState(false);
   const [downloadDetails, setDownloadDetails] = useState<
     {
@@ -1122,7 +1119,7 @@ const TicketsSelection = () => {
       // ticket_banner?: string;
     }[]
   >([]);
-  // 
+  //
   const [isFormValid, setIsFormValid] = useState(false);
 
   const renderedAttendees = useMemo(() => {
@@ -1372,7 +1369,36 @@ const TicketsSelection = () => {
     setAdditionalFields(initialAdditionalFields);
   }, [ticketDetails]);
 
+  const initialState = {
+    personal_information: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+    },
+    additional_information: [],
+    attendees_information: [],
+    ticket_information: [],
+    guest_category: GUEST_CATEGORY.BUYER,
+    event_unique_code: params?.event,
+    fees: 0,
+    total_amount_paid: 0,
+    total_purchased: 0,
+    payment_method: PAYMENT_METHODS.FREE,
+  };
+  const initialTicketDataQ = {
+    ticket_information: [],
+    fees: 0,
+    discount: 0,
+    total_amount_paid: 0,
+    discountCode: "",
+    total_purchased: 0,
+    payment_method: PAYMENT_METHODS.CARD,
+  };
+  const isFieldTouched = useRef(false);
+
   const [loading, setLoading] = useState(false);
+
   const onFinish: FormProps<any>["onFinish"] = async (values: any) => {
     try {
       const validateFields = await form.validateFields();
@@ -1425,7 +1451,7 @@ const TicketsSelection = () => {
           ...newAllInfo,
           personal_information,
           additional_information: additionalFields,
-          eventId: eventDetails?.id,
+          eventId: eventID,
         });
 
         if (response.status === 200) {
@@ -1436,6 +1462,55 @@ const TicketsSelection = () => {
           removeCookie("ticketDataQ");
           removeCookie("allInfo");
           removeCookie("isToggled");
+          setVerifyPaymentModal(false);
+          setSuccessModal(true);
+          setTicketDetails([]);
+          setTicketDataQ(initialTicketDataQ);
+          setAllInfo(initialState);
+          setSelectedTickets({});
+          isFieldTouched.current = false;
+          form.resetFields();
+          setTermsAndCondition(false);
+          const details = response?.data?.data?.ticket_information?.map(
+            (ticket: any) => ({
+              order_number: ticket?.order_number,
+              order_date: dateFormat(response?.data?.data?.createdAt),
+              event_date_time: dateFormat(eventDetails?.startDate),
+              event_address: eventDetails?.address,
+              buyer_name: response?.data?.data?.personal_information?.firstName,
+              ticket_name: ticket?.ticket_name,
+              ticket_type: ticket?.ticket_type,
+              event_name: eventDetails?.eventName,
+              qr_code: JSON.stringify({
+                order_number: ticket?.order_number,
+                guest_id: response?.data?.data?.id,
+                event_id: eventID,
+              }),
+            })
+          );
+          let combinedDetails = [...details];
+          if (response?.data?.data?.attendees_information?.length > 0) {
+            const extraDetails =
+              response?.data?.data?.attendees_information?.map(
+                (attendees: any) => ({
+                  order_number: attendees?.ticket_information?.order_number,
+                  order_date: dateFormat(response?.data?.data?.createdAt),
+                  event_date_time: dateFormat(eventDetails?.startDate),
+                  event_address: eventDetails?.address,
+                  buyer_name: attendees?.personal_information?.firstName,
+                  ticket_name: attendees?.ticket_information?.ticket_name,
+                  ticket_type: attendees?.ticket_information?.ticket_type,
+                  event_name: eventDetails?.eventName,
+                  qr_code: JSON.stringify({
+                    order_number: attendees?.order_number,
+                    guest_id: response?.data?.data?.id,
+                    event_id: eventID,
+                  }),
+                })
+              );
+            combinedDetails = [...details, ...extraDetails];
+          }
+          setDownloadDetails(combinedDetails);
         }
       } else {
         setLoading(false);
@@ -1450,34 +1525,6 @@ const TicketsSelection = () => {
   const onFinishFailed: FormProps<any>["onFinishFailed"] = (errorInfo) => {
     return errorInfo;
   };
-
-  const initialState = {
-    personal_information: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phoneNumber: "",
-    },
-    additional_information: [],
-    attendees_information: [],
-    ticket_information: [],
-    guest_category: GUEST_CATEGORY.BUYER,
-    event_unique_code: params?.event,
-    fees: 0,
-    total_amount_paid: 0,
-    total_purchased: 0,
-    payment_method: PAYMENT_METHODS.FREE,
-  };
-  const initialTicketDataQ = {
-    ticket_information: [],
-    fees: 0,
-    discount: 0,
-    total_amount_paid: 0,
-    discountCode: "",
-    total_purchased: 0,
-    payment_method: PAYMENT_METHODS.CARD,
-  };
-  const isFieldTouched = useRef(false);
 
   const config = {
     email: allInfo?.personal_information?.email,
@@ -1508,7 +1555,7 @@ const TicketsSelection = () => {
       const response = await registerGuest.mutateAsync({
         ...sanitizedData,
         payment_method: PAYMENT_METHODS.CARD,
-        eventId: eventDetails?.id,
+        eventId: eventID,
       });
       removeCookie("ticketDetails");
       removeCookie("selectedTickets");
@@ -1545,12 +1592,8 @@ const TicketsSelection = () => {
             qr_code: JSON.stringify({
               order_number: ticket?.order_number,
               guest_id: response?.data?.data?.id,
-              event_id: eventDetails?.id,
+              event_id: eventID,
             }),
-            // ostivities_logo:
-            //   "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
-            // ticket_banner:
-            //   "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735773616/ticketheader_vihwar.png",
           })
         );
         let combinedDetails = [...details];
@@ -1568,12 +1611,8 @@ const TicketsSelection = () => {
               qr_code: JSON.stringify({
                 order_number: attendees?.order_number,
                 guest_id: response?.data?.data?.id,
-                event_id: eventDetails?.id,
+                event_id: eventID,
               }),
-              // ostivities_logo:
-              //   "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735688542/Ostivities_Logo_mxolw6.png",
-              // ticket_banner:
-              //   "https://res.cloudinary.com/ddgehpmnq/image/upload/v1735773616/ticketheader_vihwar.png",
             })
           );
           combinedDetails = [...details, ...extraDetails];
@@ -1626,7 +1665,7 @@ const TicketsSelection = () => {
   //     email: allInfo?.personal_information?.email,
   //     event_unique_key: params?.event,
   //   });
-  //   
+  //
   //   if (res.status === 200) {
   //     const onSuccess = async () => {
   //       const verify = await verifyPayment.mutateAsync(

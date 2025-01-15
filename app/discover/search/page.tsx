@@ -86,6 +86,14 @@ const SearchResult = () => {
     }
   }, [query]);
 
+  useEffect(() => {
+    if (eventName !== "") {
+      setEventCat("");
+      setState("");
+      form.resetFields(["eventType", "eventState"]);
+    }
+  }, [eventName]);
+
   const handleEventTypeChange = (value: string | null) => {
     const params = new URLSearchParams(searchParams?.toString() || "");
 
