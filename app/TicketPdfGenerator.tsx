@@ -6,6 +6,8 @@ import { TICKET_BANNER } from "@/app/utils/ticketBanner";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 
+// playground requires you to assign document definition to a variable called dd
+// pdfMake.vfs = pdfFonts.pdfMake.vfs;
 interface PdfDto {
   content: {
     order_number: string;
@@ -151,16 +153,20 @@ export const pdfGenerator = (dto: PdfDto) => {
     generatePageContent(data, index === dto.content.length - 1)
   );
 
+  // const printer = new PdfPrinter(fonts);
+
   const docDefinition = {
     content,
     styles: {
       header: {
         fontSize: 22,
         bold: true,
+        // font: "BricolageGrotesque",
       },
       bigger: {
         fontSize: 15,
         italics: true,
+        // font: "BricolageGrotesque",
       },
     },
     defaultStyle: {
@@ -172,10 +178,13 @@ export const pdfGenerator = (dto: PdfDto) => {
         alignment: "center",
         margin: [0, 10],
         fontSize: 12,
+        // font: "BricolageGrotesque",
       };
     },
   } as any;
+  const options = {};
   pdfMake
     .createPdf(docDefinition)
     .download(`${dto?.content?.map((con) => con?.order_number)}.pdf`);
 };
+
