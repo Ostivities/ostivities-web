@@ -4,7 +4,7 @@ import { TDocumentDefinitions } from "pdfmake/interfaces";
 import { OSTIVITIES_LOGO } from "@/app/utils/logo";
 import { TICKET_BANNER } from "@/app/utils/ticketBanner";
 import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
+import vfsFonts from "pdfmake/build/vfs_fonts";
 
 // playground requires you to assign document definition to a variable called dd
 // pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -26,21 +26,24 @@ export const pdfGenerator = (dto: PdfDto) => {
   const logo = OSTIVITIES_LOGO;
   const ticketBanner = TICKET_BANNER;
 
-  pdfMake.vfs = {
-    "BricolageGrotesque-Regular.ttf": "...base64-encoded-font-data...", // Replace with actual base64 data
-    "BricolageGrotesque-Bold-BF648bd57888479.ttf":
-      "...base64-encoded-font-data...",
-    // Add other font files as needed
-  };
+  // const {vfs} = vfsFonts.pdfMake;
+	// pdfMake.vfs = vfs;
+
+  // pdfMake.vfs = {
+  //   "BricolageGrotesque-Regular.ttf": "...base64-encoded-font-data...", // Replace with actual base64 data
+  //   "BricolageGrotesque-Bold-BF648bd57888479.ttf":
+  //     "...base64-encoded-font-data...",
+  //   // Add other font files as needed
+  // };
   
-  const fonts = {
-    Roboto: {
-      normal: "BricolageGrotesque-Regular.ttf",
-      bold: "BricolageGrotesque-Bold-BF648bd57888479.ttf",
-      italics: "BricolageGrotesque-Regular.ttf",
-      bolditalics: "BricolageGrotesque-Bold-BF648bd57888479.ttf",
-    },
-  };
+  // const fonts = {
+  //   Roboto: {
+  //     normal: "BricolageGrotesque-Regular.ttf",
+  //     bold: "BricolageGrotesque-Bold-BF648bd57888479.ttf",
+  //     italics: "BricolageGrotesque-Regular.ttf",
+  //     bolditalics: "BricolageGrotesque-Bold-BF648bd57888479.ttf",
+  //   },
+  // };
   const generatePageContent = (
     data: PdfDto["content"][0],
     isLastPage?: boolean
