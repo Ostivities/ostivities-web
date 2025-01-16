@@ -24,6 +24,7 @@ Disallow: /refund-policy
 Disallow: /faqs
 Disallow: /terms-and-condition
 Disallow: /verify-account
+Disallow: /release-notes
 
 # Host
 Host: https://www.ostivities.com
