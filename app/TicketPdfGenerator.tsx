@@ -3,8 +3,10 @@ import PdfPrinter from "pdfmake";
 import { TDocumentDefinitions } from "pdfmake/interfaces";
 import { OSTIVITIES_LOGO } from "@/app/utils/logo";
 import { TICKET_BANNER } from "@/app/utils/ticketBanner";
+import { ROBOTO_REGULAR } from "@/app/utils/robotRegular";
+import { ROBOTO_BOLD } from "@/app/utils/robotoBold";
 import pdfMake from "pdfmake/build/pdfmake";
-import vfsFonts from "pdfmake/build/vfs_fonts";
+import pdfFonts from "pdfmake/build/vfs_fonts";
 
 // playground requires you to assign document definition to a variable called dd
 // pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -26,15 +28,12 @@ export const pdfGenerator = (dto: PdfDto) => {
   const logo = OSTIVITIES_LOGO;
   const ticketBanner = TICKET_BANNER;
 
-  // const {vfs} = vfsFonts.pdfMake;
-	// pdfMake.vfs = vfs;
 
-  // pdfMake.vfs = {
-  //   "BricolageGrotesque-Regular.ttf": "...base64-encoded-font-data...", // Replace with actual base64 data
-  //   "BricolageGrotesque-Bold-BF648bd57888479.ttf":
-  //     "...base64-encoded-font-data...",
-  //   // Add other font files as needed
-  // };
+  pdfMake.vfs = {
+    "BricolageGrotesque-Regular.ttf": ROBOTO_REGULAR,
+    "BricolageGrotesque-Bold-BF648bd57888479.ttf": ROBOTO_BOLD,
+    // Add other font files as needed
+  };
   
   // const fonts = {
   //   Roboto: {
