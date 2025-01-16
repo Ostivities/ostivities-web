@@ -27,7 +27,7 @@ interface PdfDto {
 export const pdfGenerator = (dto: PdfDto) => {
   const logo = OSTIVITIES_LOGO;
   const ticketBanner = TICKET_BANNER;
-
+  pdfMake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfMake.vfs;
   pdfMake.vfs = {
     "BricolageGrotesque-Regular.ttf": ROBOTO_REGULAR,
     "BricolageGrotesque-Bold-BF648bd57888479.ttf": ROBOTO_BOLD,
@@ -35,10 +35,10 @@ export const pdfGenerator = (dto: PdfDto) => {
   };
   pdfMake.fonts = {
     Roboto: {
-      normal: "BricolageGrotesque-Regular.ttf",
-      bold: "BricolageGrotesque-Bold-BF648bd57888479.ttf",
-      italics: "BricolageGrotesque-Regular.ttf",
-      bolditalics: "BricolageGrotesque-Bold-BF648bd57888479.ttf",
+      normal: "Roboto-Regular.ttf",
+      bold: "Roboto-Medium.ttf",
+      italics: "Roboto-Italic.ttf",
+      bolditalics: "Roboto-MediumItalic.ttf",
     },
   };
   const fonts = {
@@ -189,8 +189,7 @@ export const pdfGenerator = (dto: PdfDto) => {
     },
   } as any;
   const options = {};
-  pdfMake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfMake.vfs;
   pdfMake
-    .createPdf(docDefinition, undefined, fonts)
+    .createPdf(docDefinition)
     .download(`${dto?.content?.map((con) => con?.order_number)}.pdf`);
 };
