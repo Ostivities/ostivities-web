@@ -2,7 +2,7 @@ import InfoCard from "./InfoCard";
 import EventSection from "./DiscoverEventSection";
 import { useGetDiscoveryEvents, useAddEventToDiscovery, usePublishEvent } from "@/app/hooks/event/event.hook";
 import { Skeleton } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { IEventDetails } from "@/app/utils/interface";
 import { EVENT_INFO, PUBLISH_TYPE } from "@/app/utils/enums";
 import placeholder from "@/public/placeholder.svg";
@@ -30,17 +30,19 @@ const DiscoverEvents = () => {
   const expiredEvents = allEventsDate?.filter((event: IEventDetails) => new Date(event?.endDate).getTime() < new Date().getTime());
   const expiredEventsIdList = expiredEvents?.map((event: IEventDetails) => event?.id);
   const filteredEvents = discoveryEvents?.filter((event: IEventDetails) => new Date(event.endDate).getTime() > new Date().getTime());
-  useEffect(() => {
-    const checkEventStatus = async () => {
-      const response =  await publishEvent.mutateAsync({
+
+  const checkEventStatus = useCallback(async () => {
+    if (expiredEventsIdList?.length > 0) {
+      await publishEvent.mutateAsync({
         ids: [...expiredEventsIdList],
-        mode: PUBLISH_TYPE.INACTIVE
-      })
+        mode: PUBLISH_TYPE.INACTIVE,
+      });
     }
-    if(expiredEventsIdList?.length > 0) {
-      checkEventStatus();
-    }
-  },[expiredEventsIdList])
+  }, [expiredEventsIdList, publishEvent]);
+
+  useEffect(() => {
+    checkEventStatus();
+  }, [checkEventStatus]);
 
   return (
     <>

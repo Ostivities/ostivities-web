@@ -25,10 +25,8 @@ interface PdfDto {
 }
 
 export const pdfGenerator = (dto: PdfDto) => {
-  
   const logo = OSTIVITIES_LOGO;
   const ticketBanner = TICKET_BANNER;
-
 
   pdfMake.vfs = {
     "BricolageGrotesque-Regular.ttf": ROBOTO_REGULAR,
@@ -42,13 +40,13 @@ export const pdfGenerator = (dto: PdfDto) => {
       italics: "BricolageGrotesque-Regular.ttf",
       bolditalics: "BricolageGrotesque-Bold-BF648bd57888479.ttf",
     },
-  }
+  };
   const fonts = {
     Roboto: {
-      normal: 'Roboto-Regular.ttf',
-    bold: 'Roboto-Medium.ttf',
-    italics: 'Roboto-Italic.ttf',
-    bolditalics: 'Roboto-MediumItalic.ttf'
+      normal: "Roboto-Regular.ttf",
+      bold: "Roboto-Medium.ttf",
+      italics: "Roboto-Italic.ttf",
+      bolditalics: "Roboto-MediumItalic.ttf",
     },
   };
   const generatePageContent = (
@@ -163,7 +161,6 @@ export const pdfGenerator = (dto: PdfDto) => {
     generatePageContent(data, index === dto.content.length - 1)
   );
 
-
   const docDefinition = {
     content,
     styles: {
@@ -192,8 +189,8 @@ export const pdfGenerator = (dto: PdfDto) => {
     },
   } as any;
   const options = {};
+  pdfMake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfMake.vfs;
   pdfMake
     .createPdf(docDefinition, undefined, fonts)
     .download(`${dto?.content?.map((con) => con?.order_number)}.pdf`);
 };
-
