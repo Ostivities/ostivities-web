@@ -91,8 +91,11 @@ const SearchResult = () => {
       setEventCat("");
       setState("");
       form.resetFields(["eventType", "eventState"]);
+    } else if(state !== "" || eventCat !== "") {
+      setEventName('')
+      form.resetFields(["eventName"])
     }
-  }, [eventName]);
+  }, [eventCat, eventName, state]);
 
   const handleEventTypeChange = (value: string | null) => {
     const params = new URLSearchParams(searchParams?.toString() || "");
