@@ -651,7 +651,6 @@ export interface IGuestCreate  {
       ticket_type: string;
       ticket_stock: string;
       order_number: string;
-      // discount: number;
       discountCode?: string;    
     };
     personal_information: {
