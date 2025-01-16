@@ -182,7 +182,7 @@ const EventsGuestListSummary = () => {
               onClick={() => getCheckInSummary.refetch()}
               className="flex items-center justify-center p-2 rounded-full"
               style={{ backgroundColor: "#fadede" }}
-              aria-label="Go back to discovery"
+              aria-label="Refresh Table"
             >
               <Image
                 src="/icons/refresh.svg"
