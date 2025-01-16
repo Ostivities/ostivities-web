@@ -34,7 +34,14 @@ export const pdfGenerator = (dto: PdfDto) => {
     "BricolageGrotesque-Bold-BF648bd57888479.ttf": ROBOTO_BOLD,
     // Add other font files as needed
   };
-  
+  pdfMake.fonts = {
+    Roboto: {
+      normal: "BricolageGrotesque-Regular.ttf",
+      bold: "BricolageGrotesque-Bold-BF648bd57888479.ttf",
+      italics: "BricolageGrotesque-Regular.ttf",
+      bolditalics: "BricolageGrotesque-Bold-BF648bd57888479.ttf",
+    },
+  }
   // const fonts = {
   //   Roboto: {
   //     normal: "BricolageGrotesque-Regular.ttf",
@@ -155,7 +162,6 @@ export const pdfGenerator = (dto: PdfDto) => {
     generatePageContent(data, index === dto.content.length - 1)
   );
 
-  // const printer = new PdfPrinter(fonts);
 
   const docDefinition = {
     content,
