@@ -1542,11 +1542,15 @@ const TicketsSelection = () => {
       const sanitizedData = {
         ...allInfo, // Spread the existing data
         attendees_information: allInfo.attendees_information.map(
-          ({ id, personal_information, ...attendee }) => ({
+          ({ id, personal_information, ticket_information, ...attendee }) => ({
             ...attendee,
             personal_information: {
               ...personal_information,
               confirmEmail: undefined, // Remove `confirmEmail`
+            },
+            ticket_information: {
+              ...ticket_information,
+              discount: undefined,
             },
             payment_method: PAYMENT_METHODS.CARD, // Update the payment method for each attendee
           })
