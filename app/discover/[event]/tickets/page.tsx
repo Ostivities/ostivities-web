@@ -239,7 +239,7 @@ const TicketsSelection = () => {
         ticket_type: string;
         ticket_stock: string;
         order_number: string;
-        discount: number;
+        // discount: number;
         discountCode?: string;
       };
       personal_information: {
@@ -1320,7 +1320,7 @@ const TicketsSelection = () => {
           ticket_type: ticket.ticket_type,
           ticket_stock: ticket.ticket_stock,
           order_number: ticket.order_number,
-          discount: ticket.discount,
+          // discount: ticket.discount,
         },
         personal_information: {
           firstName: "",
