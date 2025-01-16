@@ -6,8 +6,8 @@ import { useGetDiscoveryEvents } from "@/app/hooks/event/event.hook";
 import { Skeleton } from "antd";
 import { useState } from "react";
 import placeholder from "@/public/placeholder.svg";
-import notfound from '@/public/notfound.svg';
-import Image from 'next/image';
+import notfound from "@/public/notfound.svg";
+import Image from "next/image";
 
 interface IEventSearchProps {
   eventName?: string;
@@ -25,14 +25,25 @@ const EventSearch = ({ eventName, state, eventCat }: IEventSearchProps) => {
     eventCat
   );
   const discoveryEvents = getDiscoveryEvents?.data?.data?.data?.events;
-  
 
   const isPending = getDiscoveryEvents?.isLoading;
 
   return (
     <>
       <EventSection
-        title={eventCat ? `${eventCat} Event(s)` : "Hangout Events"}
+        title={
+          !eventCat && !eventName && !state
+            ? "All Events"
+            : state && eventCat && !eventName
+            ? `${eventCat} Event(s) in ${state}`
+            : state && !eventCat && !eventName
+            ? `All Events in ${state}`
+            : !state && eventCat && !eventName
+            ? `${eventCat} Event(s)`
+            : !state && !eventCat && eventName
+            ? `Search Results for ${eventName}`
+            : ""
+        }
         titleClass="custom-title-class"
         style={{
           fontSize: "20px",

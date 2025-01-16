@@ -805,7 +805,7 @@ export default function EventDetailsComponent({
 
   const title = (
     <div className="flex items-center w-full relative space-x-8">
-      <div className="flex flex-row items-center space-x-2 cursor-pointer">
+      <div className="flex flex-row items-center space-x-2 cursor-pointer min-w-[130px] md:min-w-[180px]">
         <Image
           src="/icons/back-arrow.svg"
           alt=""
@@ -816,7 +816,7 @@ export default function EventDetailsComponent({
           }}
           className="hidden md:flex"
         />
-        <h1 style={{ fontSize: "24px" }}>Event Details</h1>
+        <h1 className="md:text-2xl text-xl w-max">Event Details</h1>
       </div>
 
       {isLoading && getUserEvent?.isLoading === true ? (
@@ -831,7 +831,7 @@ export default function EventDetailsComponent({
           active
         />
       ) : (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto flex flex-row gap-4">
           <div className="flex flex-row gap-6 items-center">
             {isPublished === true && (
               <div className="flex flex-row min-w-[263px] items-center gap-4">
@@ -886,7 +886,7 @@ export default function EventDetailsComponent({
             <Button
               type="primary"
               size={"middle"}
-              className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl"
+              className="font-BricolageGrotesqueSemiBold sign-up  cursor-pointer font-bold  w-40 rounded-2xl"
               style={{
                 borderRadius: "20px",
                 fontFamily: "BricolageGrotesqueMedium",

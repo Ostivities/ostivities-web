@@ -47,17 +47,24 @@ const EventsGuestList = () => {
   // const totalPages = getEventGuests?.data?.data?.data?.pages
   
   const data: IGuestData[] = allGuestsData?.map((item: IGuestData) => {
+    const summedQuantities = item?.ticket_information?.reduce((acc, ticket) => {
+      // If the ticket_id is already in the accumulator, add the quantity to it
+      if (acc[ticket.ticket_id]) {
+        acc[ticket.ticket_id] += ticket.quantity;
+      } else {
+        // If the ticket_id is not in the accumulator, initialize it with the ticket quantity
+        acc[ticket.ticket_id] = ticket.quantity;
+      }
+      return acc;
+    }, {} as { [key: string]: number });
     return {
       key: item?.id,
       guestName: `${item?.personal_information?.firstName} ${item?.personal_information?.lastName}`,
-      ticketName: item?.ticket_information?.map(
-        (ticket) => ticket?.ticket_name
-      ),
+      ticketName: Array.from(new Set(item?.ticket_information?.map(ticket => ticket.ticket_name))),
       ticketQuantity: item?.total_purchased,
       orderNumber: item?.ticket_information?.[0]?.order_number,
       createdAt: item?.createdAt,
-      eachTicketQuantity:
-        item?.ticket_information?.map((ticket) => ticket?.quantity) || [],
+      eachTicketQuantity: summedQuantities ? Object.values(summedQuantities) : [],
       email: item?.personal_information?.email,
       phone: item?.personal_information?.phoneNumber,
       fees: item?.fees,
@@ -305,26 +312,6 @@ const EventsGuestList = () => {
               selectedRowKeys,
               onChange: (keys) => setSelectedRowKeys(keys),
             }}
-            // onRow={(record: IGuestData) => {
-            //   return {
-            //     onClick: () => {
-            //       setModalData({
-            //         ticketName: record?.ticketName,
-            //         ticketSold: record?.eachTicketQuantity, // Quantities for each ticket
-            //         revenue: `₦${record?.total_amount_paid?.toLocaleString()}`,
-            //         fees: `₦${record?.fees?.toLocaleString()}`,
-            //         sales: record?.total_purchased?.toLocaleString(),
-            //         dateCreated: dateFormat(record?.createdAt),
-            //         email: record?.email,
-            //         phone: record?.phone,
-            //         guestName: record?.guestName,
-            //         orderNumber: record?.orderNumber,
-            //         additionalInfo: record?.additional_information,
-            //       });
-            //       setIsModalOpen(true);
-            //     },
-            //   };
-            // }}
             columns={columns}
             dataSource={data}
             pagination={{

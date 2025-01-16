@@ -8,7 +8,7 @@ import {
 import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
 import { SummaryDataType, ICheckInSummary } from "@/app/utils/interface";
 import { useGetCheckInSummary } from "@/app/hooks/event/event.hook";
-import { Button, Input, Space, Table, Flex, Skeleton } from "antd";
+import { Button, Input, Space, Table, Flex, Skeleton, Tooltip } from "antd";
 import { FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -16,6 +16,7 @@ import { useRouter, useParams } from "next/navigation";
 import * as XLSX from "xlsx";
 import React, { useState } from "react";
 import { ColumnsType } from "antd/es/table";
+import Image from "next/image";
 
 const { Search } = Input;
 
@@ -106,8 +107,8 @@ const EventsGuestListSummary = () => {
   const handleExport = (format: string) => {
     const exportData = selectedRowKeys.length
       ? data?.filter((item: ICheckInSummary) =>
-          selectedRowKeys.includes(item?.key!)
-        )
+        selectedRowKeys.includes(item?.key!)
+      )
       : data;
 
     const formattedExportData = exportData.map((item: ICheckInSummary) => ({
@@ -154,19 +155,44 @@ const EventsGuestListSummary = () => {
           styles={{ fontWeight: "normal !important" }}
         />
 
-        <Button
-          type="primary"
-          size="large"
-          className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl float-end"
+        <div
           style={{
-            borderRadius: "20px",
-            fontFamily: "BricolageGrotesqueMedium",
-            margin: "10px",
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: "10px",
+            marginTop: "30px",
+            marginBottom: "30px" // Adds space between buttons
           }}
-          onClick={() => getCheckInSummary.refetch()}
         >
-          Refresh
-        </Button>
+          <Button
+            type="primary"
+            size="large"
+            className="font-BricolageGrotesqueSemiBold sign-up cursor-pointer font-bold w-40 rounded-2xl"
+            style={{
+              borderRadius: "20px",
+              fontFamily: "BricolageGrotesqueMedium",
+            }}
+            onClick={() => window.open('https://scanner.ostivities.com/', '_blank')}
+          >
+            Scan Tickets
+          </Button>
+
+          <Tooltip title="Refresh Table">
+            <button
+              onClick={() => getCheckInSummary.refetch()}
+              className="flex items-center justify-center p-2 rounded-full"
+              style={{ backgroundColor: "#fadede" }}
+              aria-label="Refresh Table"
+            >
+              <Image
+                src="/icons/refresh.svg"
+                alt="refresh Icon"
+                height={24}
+                width={24}
+              />
+            </button>
+          </Tooltip>
+        </div>
 
         <div className="w-full">
           {getCheckInSummary?.isLoading ? (

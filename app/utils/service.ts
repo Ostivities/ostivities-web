@@ -303,10 +303,11 @@ export class API_SERVICE {
   }
 
   static async _sendBulkEmail(data: IBulkMailData): Promise<AxiosResponse> {
+    const { event_id, ...rest} = data
     return await instance({
-      url: `/bulk_email/send`,
+      url: `/guest/bulk_email/${event_id}`,
       method: HttpMethod.POST,
-      data,
+      data: { ...rest },
     });
   }
 

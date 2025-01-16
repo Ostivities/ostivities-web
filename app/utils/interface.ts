@@ -651,7 +651,6 @@ export interface IGuestCreate  {
       ticket_type: string;
       ticket_stock: string;
       order_number: string;
-      discount: number;
       discountCode?: string;    
     };
     personal_information: {
@@ -679,17 +678,18 @@ export interface IGuestCreate  {
 }
 
 export interface IBulkMailData {
+  event_id: string
   sender_name: string,
   sender_email: string,
   reply_to: string,
-  receipients: [
+  recipients: [
     {
       name: string,
       email: string
     }
   ],
-  email_subject: string,
-  email_content: string,
+  subject: string,
+  message: string,
   email_attachment: [
     {
       name: string,

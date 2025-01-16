@@ -77,7 +77,7 @@ const EventsGuestListEmail = () => {
   const totalGuests = getEventGuests?.data?.data?.data?.total;
   const senderEmail = Form.useWatch("sender_email", form);
   const recipientsApplicableForm = Form.useWatch("recipientsApplicable", form);
-  const rep = Form.useWatch("receipients", form);
+  const rep = Form.useWatch("recipients", form);
   //
 
   //
@@ -188,7 +188,7 @@ const EventsGuestListEmail = () => {
 
   const onFinish = async (values: any) => {
     if (recipientsApplicableForm === "ticket") {
-      const { attachments, recipientsApplicable, receipients, ...rest } =
+      const { attachments, recipientsApplicable, recipients, ...rest } =
         values;
       const recipientsTicketData =
         ticketGuests &&
@@ -208,17 +208,20 @@ const EventsGuestListEmail = () => {
       const response = await sendBulkEmail.mutateAsync({
         ...rest,
         email_attachment: emailAttachment,
-        email_content: editorContent,
-        receipients: recipientsTicketData,
+        message: editorContent,
+        recipients: recipientsTicketData,
+        event_id: params?.id,
+        sender_name: eventDetails?.user?.firstName,
       });
 
       if (response.status === 200) {
+        form.resetFields();
         //
       }
 
       //
     } else if (recipientsApplicableForm === "selected") {
-      const { attachments, recipientsApplicable, receipients, ...rest } =
+      const { attachments, recipientsApplicable, recipients, ...rest } =
         values;
 
       if (editorContent === "" || editorContent === "<p><br></p>") {
@@ -231,11 +234,14 @@ const EventsGuestListEmail = () => {
       const response = await sendBulkEmail.mutateAsync({
         ...rest,
         email_attachment: emailAttachment,
-        email_content: editorContent,
-        receipients: recipientsDataTicket,
+        message: editorContent,
+        recipients: recipientsDataTicket,
+        event_id: params?.id,
+        sender_name: eventDetails?.user?.firstName,
       });
 
       if (response.status === 200) {
+        form.resetFields();
         //
       }
     } else {
@@ -250,10 +256,13 @@ const EventsGuestListEmail = () => {
       const response = await sendBulkEmail.mutateAsync({
         ...rest,
         email_attachment: emailAttachment,
-        email_content: editorContent,
+        message: editorContent,
+        event_id: params?.id,
+        sender_name: eventDetails?.user?.firstName,
       });
 
       if (response.status === 200) {
+        form.resetFields();
       }
     }
   };
@@ -359,7 +368,7 @@ const EventsGuestListEmail = () => {
 
             <Form.Item
               label="Email Subject"
-              name="email_subject"
+              name="subject"
               rules={[
                 { required: true, message: "Please input email subject!" },
               ]}
@@ -408,7 +417,7 @@ const EventsGuestListEmail = () => {
             {recipientType === "all" && (
               <Form.Item
                 label="Guest Name"
-                name="receipients"
+                name="recipients"
                 style={{ display: "none" }}
                 initialValue={allGuestsData?.map((guest: IGuestData) => {
                   return {
@@ -440,7 +449,7 @@ const EventsGuestListEmail = () => {
             {recipientType === "ticket" && (
               <Form.Item
                 label="Select Tickets"
-                name="receipients"
+                name="recipients"
                 style={{ marginBottom: "8px" }}
               >
                 <Select
@@ -460,7 +469,7 @@ const EventsGuestListEmail = () => {
             {recipientType === "selected" && (
               <Form.Item
                 label="Select Attendees"
-                name="receipients"
+                name="recipients"
                 style={{ marginBottom: "8px" }}
               >
                 <AsyncSelect

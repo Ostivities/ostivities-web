@@ -1653,7 +1653,7 @@ const EventDetail = () => {
             open={showModal}
             onCancel={handleCloseModal2}
             footer={null} // Removes the default footer
-            width="50%" // Optional: Adjust width for a better overlay feel
+            className="md:w-[50%] w-[90%] mx-auto"
             styles={{
               body: {
                 padding: "20px",
