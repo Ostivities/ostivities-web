@@ -63,6 +63,7 @@ import soldout from "@/public/Soldout.svg";
 import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
 import { useCookies } from "react-cookie";
 import { PaystackButton, usePaystackPayment } from "react-paystack";
+import stringGenerator from '@nakarmi23/random-string-generator';
 
 const paystack_public_key: any = process.env.OSTIVITIES_PAYSTACK_TEST_KEY;
 
@@ -133,7 +134,7 @@ const TicketsSelection = () => {
     return randomDigits.toString();
   };
 
-  const order_number = `ORD${generateOrderNumber()}`;
+  const order_number = `ORD-${stringGenerator(6, { lowercase: false, symbol: false })}`;
   // State to manage selected ticket counts
   const [selectedTickets, setSelectedTickets] = useState<{
     [key: string]: number;
@@ -277,6 +278,8 @@ const TicketsSelection = () => {
     total_purchased: 0,
     payment_method: PAYMENT_METHODS.FREE,
   });
+
+  console.log(allInfo, "allInfo")
 
   useEffect(() => {
     if (!cookies?.ticketDetails || ticketDetails?.length > 0) {
@@ -771,7 +774,7 @@ const TicketsSelection = () => {
           ticketEntity: ticket?.ticketEntity,
           guestAsChargeBearer: ticket?.guestAsChargeBearer,
           groupSize: ticket?.groupSize,
-          order_number: `ORD${generateOrderNumber()}`, // Unique order number for each new ticket
+          order_number: `ORD-${stringGenerator(6, { lowercase: false, symbol: false })}`, // Unique order number for each new ticket
           quantity: 1,
         };
 

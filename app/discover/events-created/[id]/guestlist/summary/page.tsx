@@ -262,6 +262,7 @@ const EventsGuestListSummary = () => {
         </Space>
 
         <Table
+          loading={getCheckInSummary?.isLoading}
           rowSelection={{
             selectedRowKeys,
             onChange: (keys) => setSelectedRowKeys(keys),

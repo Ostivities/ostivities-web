@@ -35,11 +35,12 @@ export const pdfGenerator = (dto: PdfDto) => {
   };
   pdfMake.fonts = {
     Roboto: {
-      normal: "Roboto-Regular.ttf",
-      bold: "Roboto-Medium.ttf",
-      italics: "Roboto-Italic.ttf",
-      bolditalics: "Roboto-MediumItalic.ttf",
+      normal: "BricolageGrotesque-Regular.ttf",
+      bold: "BricolageGrotesque-Bold-BF648bd57888479.ttf",
+      italics: "BricolageGrotesque-Regular.ttf",
+      bolditalics: "BricolageGrotesque-Bold-BF648bd57888479.ttf",
     },
+    
   };
   const fonts = {
     Roboto: {
