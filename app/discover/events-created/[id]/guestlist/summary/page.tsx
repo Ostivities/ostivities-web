@@ -5,6 +5,7 @@ import {
   Label,
   Paragraph,
 } from "@/app/components/typography/Typography";
+import "@/app/globals.css";
 import { generateRandomString, getRandomEventName } from "@/app/utils/helper";
 import { SummaryDataType, ICheckInSummary } from "@/app/utils/interface";
 import { useGetCheckInSummary } from "@/app/hooks/event/event.hook";
@@ -134,6 +135,19 @@ const EventsGuestListSummary = () => {
     }
   };
 
+
+  const [isRolling, setIsRolling] = useState(false);
+
+  const handleClick = () => {
+    setIsRolling(true); // Start rolling animation
+    getCheckInSummary.refetch(); // Trigger your function
+
+    // Stop rolling after 2 seconds
+    setTimeout(() => {
+      setIsRolling(false);
+    }, 2000);
+  };
+
   return (
     <EventDetailsComponent>
       <Space direction="vertical" size={"small"} style={{ width: "100%" }}>
@@ -179,7 +193,7 @@ const EventsGuestListSummary = () => {
 
           <Tooltip title="Refresh Table">
             <button
-              onClick={() => getCheckInSummary.refetch()}
+              onClick={handleClick}
               className="flex items-center justify-center p-2 rounded-full"
               style={{ backgroundColor: "#fadede" }}
               aria-label="Refresh Table"
@@ -189,6 +203,7 @@ const EventsGuestListSummary = () => {
                 alt="refresh Icon"
                 height={24}
                 width={24}
+                className={isRolling ? "spin" : ""}
               />
             </button>
           </Tooltip>
