@@ -63,7 +63,7 @@ import soldout from "@/public/Soldout.svg";
 import ToggleSwitch from "@/app/ui/atoms/ToggleSwitch";
 import { useCookies } from "react-cookie";
 import { PaystackButton, usePaystackPayment } from "react-paystack";
-import stringGenerator from '@nakarmi23/random-string-generator';
+import stringGenerator from "@nakarmi23/random-string-generator";
 
 const paystack_public_key: any = process.env.OSTIVITIES_PAYSTACK_TEST_KEY;
 
@@ -134,7 +134,10 @@ const TicketsSelection = () => {
     return randomDigits.toString();
   };
 
-  const order_number = `ORD-${stringGenerator(6, { lowercase: false, symbol: false })}`;
+  const order_number = `ORD-${stringGenerator(6, {
+    lowercase: false,
+    symbol: false,
+  })}`;
   // State to manage selected ticket counts
   const [selectedTickets, setSelectedTickets] = useState<{
     [key: string]: number;
@@ -279,7 +282,7 @@ const TicketsSelection = () => {
     payment_method: PAYMENT_METHODS.FREE,
   });
 
-  console.log(allInfo, "allInfo")
+  // console.log(allInfo, "allInfo")
 
   useEffect(() => {
     if (!cookies?.ticketDetails || ticketDetails?.length > 0) {
@@ -774,7 +777,10 @@ const TicketsSelection = () => {
           ticketEntity: ticket?.ticketEntity,
           guestAsChargeBearer: ticket?.guestAsChargeBearer,
           groupSize: ticket?.groupSize,
-          order_number: `ORD-${stringGenerator(6, { lowercase: false, symbol: false })}`, // Unique order number for each new ticket
+          order_number: `ORD-${stringGenerator(6, {
+            lowercase: false,
+            symbol: false,
+          })}`, // Unique order number for each new ticket
           quantity: 1,
         };
 
@@ -1480,7 +1486,7 @@ const TicketsSelection = () => {
               order_date: dateFormat(response?.data?.data?.createdAt),
               event_date_time: dateFormat(eventDetails?.startDate),
               event_address: eventDetails?.address,
-              buyer_name: response?.data?.data?.personal_information?.firstName,
+              buyer_name: `${response?.data?.data?.personal_information?.firstName} ${response?.data?.data?.personal_information?.lastName}`,
               ticket_name: ticket?.ticket_name,
               ticket_type: ticket?.ticket_type,
               event_name: eventDetails?.eventName,
@@ -1500,7 +1506,7 @@ const TicketsSelection = () => {
                   order_date: dateFormat(response?.data?.data?.createdAt),
                   event_date_time: dateFormat(eventDetails?.startDate),
                   event_address: eventDetails?.address,
-                  buyer_name: attendees?.personal_information?.firstName,
+                  buyer_name: `${attendees?.personal_information?.firstName} ${attendees?.personal_information?.lastName}`,
                   ticket_name: attendees?.ticket_information?.ticket_name,
                   ticket_type: attendees?.ticket_information?.ticket_type,
                   event_name: eventDetails?.eventName,
@@ -1592,7 +1598,7 @@ const TicketsSelection = () => {
             order_date: dateFormat(response?.data?.data?.createdAt),
             event_date_time: dateFormat(eventDetails?.startDate),
             event_address: eventDetails?.address,
-            buyer_name: response?.data?.data?.personal_information?.firstName,
+            buyer_name: `${response?.data?.data?.personal_information?.firstName} ${response?.data?.data?.personal_information?.lastName}`,
             ticket_name: ticket?.ticket_name,
             ticket_type: ticket?.ticket_type,
             event_name: eventDetails?.eventName,
@@ -1611,7 +1617,7 @@ const TicketsSelection = () => {
               order_date: dateFormat(response?.data?.data?.createdAt),
               event_date_time: dateFormat(eventDetails?.startDate),
               event_address: eventDetails?.address,
-              buyer_name: attendees?.personal_information?.firstName,
+              buyer_name: `${attendees?.personal_information?.firstName} ${attendees?.personal_information?.lastName}`,
               ticket_name: attendees?.ticket_information?.ticket_name,
               ticket_type: attendees?.ticket_information?.ticket_type,
               event_name: eventDetails?.eventName,
