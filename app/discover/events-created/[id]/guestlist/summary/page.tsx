@@ -256,22 +256,27 @@ const EventsGuestListSummary = () => {
           />
           {selectedRowKeys.length > 0 && (
             <Space>
-              <Button
-                type="default"
-                className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
-                style={{ borderRadius: 15, marginRight: 8 }}
-                onClick={() => handleExport("excel")}
-              >
-                <FileExcelOutlined />
-              </Button>
-              <Button
-                type="default"
-                className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
-                style={{ borderRadius: 15 }}
-                onClick={() => handleExport("pdf")}
-              >
-                <FilePdfOutlined />
-              </Button>
+             <Tooltip title="Export as Excel">
+                <Button
+                  type="default"
+                  className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                  style={{ borderRadius: 15, marginRight: 8 }}
+                  onClick={() => handleExport("excel")}
+                >
+                  <FileExcelOutlined />
+                </Button>
+                </Tooltip>
+
+                <Tooltip title="Export as PDF">
+                <Button
+                  type="default"
+                  className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                  style={{ borderRadius: 15 }}
+                  onClick={() => handleExport("pdf")}
+                >
+                  <FilePdfOutlined />
+                </Button> 
+                </Tooltip>
             </Space>
           )}
         </Space>

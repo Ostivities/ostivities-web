@@ -9,7 +9,7 @@ import {
 } from "@/app/utils/helper";
 import { SalesDataType, IGuestData, IModal2 } from "@/app/utils/interface";
 import { FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
-import { Button, Skeleton, Flex, Input, Space, Table } from "antd";
+import { Button, Skeleton, Flex, Input, Space, Table, Tooltip } from "antd";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { useDebounce } from "use-debounce";
@@ -286,6 +286,7 @@ const EventsGuestList = () => {
             />
             {selectedRowKeys?.length > 0 && (
               <Space>
+                <Tooltip title="Export as Excel">
                 <Button
                   type="default"
                   className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
@@ -294,6 +295,9 @@ const EventsGuestList = () => {
                 >
                   <FileExcelOutlined />
                 </Button>
+                </Tooltip>
+
+                <Tooltip title="Export as PDF">
                 <Button
                   type="default"
                   className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
@@ -301,7 +305,8 @@ const EventsGuestList = () => {
                   onClick={() => handleExport("pdf")}
                 >
                   <FilePdfOutlined />
-                </Button>
+                </Button> 
+                </Tooltip>
               </Space>
             )}
           </Space>

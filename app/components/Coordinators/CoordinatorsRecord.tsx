@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Button, Input, Space, Table, Flex, Skeleton } from "antd";
+import { Button, Input, Space, Table, Flex, Skeleton, Tooltip } from "antd";
 import {
   FileExcelOutlined,
   FilePdfOutlined,
@@ -334,6 +334,7 @@ const CoordinatorsList = () => {
             />
             {selectedRowKeys.length > 0 && (
               <Space>
+                <Tooltip title="Export as Excel">
                 <Button
                   type="default"
                   className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
@@ -342,6 +343,9 @@ const CoordinatorsList = () => {
                 >
                   <FileExcelOutlined />
                 </Button>
+                </Tooltip>
+
+                <Tooltip title="Export as PDF">
                 <Button
                   type="default"
                   className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
@@ -349,7 +353,8 @@ const CoordinatorsList = () => {
                   onClick={() => handleExport("pdf")}
                 >
                   <FilePdfOutlined />
-                </Button>
+                </Button> 
+                </Tooltip>
               </Space>
             )}
           </Space>
