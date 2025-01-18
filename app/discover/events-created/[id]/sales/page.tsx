@@ -166,13 +166,12 @@ const EventSales = () => {
         />
       ),
       dataIndex: "guestAsChargeBearer",
-      filters: [
-        { text: "Guest", value: "Guest" },
-        { text: "Organizer", value: "Organizer" },
-      ],
-      // onFilter: (value, record) => record.guestAsChargeBearer?.includes(value as string), // Ensure property name matches
-      // sorter: (a, b) => a.guestAsChargeBearer?.localeCompare(b.guestAsChargeBearer), // Ensure property name matches
-    },
+      sorter: (a, b) => {
+        const valueA = typeof a.guestAsChargeBearer === "string" ? a.guestAsChargeBearer : "";
+        const valueB = typeof b.guestAsChargeBearer === "string" ? b.guestAsChargeBearer : "";
+        return valueA.localeCompare(valueB);
+      },
+    },    
     {
       title: (
         <Label
