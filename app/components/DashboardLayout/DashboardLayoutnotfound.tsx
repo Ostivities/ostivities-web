@@ -185,7 +185,7 @@ function DashboardLayout({
           <div className="demo-logo flex flex-row items-center space-x-12">
             <Image
               src={OwanbeLogo}
-              alt=""
+              alt="ostivities Logo"
               style={{ height: "40px" }}
               className="w-[110px] cursor-pointer"
               onClick={() => {
@@ -196,31 +196,6 @@ function DashboardLayout({
           {!isLoggedIn && (
             <>
              
-
-              {/* Show buttons based on isRegistered status
-              <div className="flex flex-row items-end justify-end space-x-3">
-                {isRegistered ? (
-                  // If user is registered but not logged in, show only Sign In button
-                  <Button
-                    variant="outline"
-                    label="Sign in"
-                    onClick={() => router.push("/login")}
-                  />
-                ) : (
-                  // If user is not registered, show both Sign In and Sign Up buttons
-                  <>
-                    <Button
-                      variant="outline"
-                      label="Sign in"
-                      onClick={() => router.push("/login")}
-                    />
-                    <Button
-                      label="Sign Up"
-                      onClick={() => router.push("/signup")}
-                    />
-                  </>
-                )}
-              </div> */}
             </>
           )}
 
@@ -232,99 +207,7 @@ function DashboardLayout({
                 align="center"
                 size={"small"}
               >
-                {/* <div className="mt-5 relative">
-                  <Badge count={2}>
-                    <BellFilled
-                      className="cursor-pointer"
-                      style={{
-                        fontSize: "26px",
-                        color: "#8C95A1",
-                      }}
-                      onClick={() => setToggleNotifications((prev) => !prev)}
-                    />
-                  </Badge>
-                  <div
-                   ref={notificationRef}
-                    className={`fixed top-16 right-0 min-w-[30rem] w-[30rem] transition-all z-50 ${
-                      toggleNotifications
-                        ? " translate-y-0"
-                        : "-translate-y-[150%]"
-                    }`}
-                  >
-                    <div className="bg-white rounded-[1.25rem] pl-6 pr-7 pt-4 pb-10 shadow-ticket-card">
-                      <div className="text-center font-semibold">
-                        Notifications
-                      </div>
-                      <div className="flex flex-col gap-3">
-                        <div className="flex-center gap-3">
-                          <div className="!bg-OWANBE_NOTIFICATION w-4 h-4 rounded-full"></div>
-                          <p
-                            className="text-base font-normal"
-                            style={{ fontSize: "14px" }}
-                          >
-                            You have a new sale{" "}
-                            <a
-                              href="#"
-                              style={{
-                                color: "#e20000",
-                                textDecoration: "underline",
-                                fontSize: "14px",
-                              }}
-                            >
-                              click to view
-                            </a>
-                            .
-                          </p>
-                        </div>
-                        <div className="flex-center gap-3">
-                          <div className=" !bg-OWANBE_NOTIFICATION w-4 h-4 rounded-full"></div>
-                          <p
-                            className="text-base font-normal"
-                            style={{ fontSize: "14px" }}
-                          >
-                            You have a new attendee{" "}
-                            <a
-                              href="#"
-                              style={{
-                                color: "#e20000",
-                                textDecoration: "underline",
-                                fontSize: "14px",
-                              }}
-                            >
-                              click to view
-                            </a>
-                            .
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
-                {/* <Dropdown menu={{ items }} trigger={["click", "hover"]}>
-                  <div className="flex-center gap-4 cursor-pointer">
-                    <Avatar
-                      size={40}
-                      style={{
-                        background: "#E20000",
-                        fontFamily: "BricolageGrotesqueMedium",
-                        cursor: "pointer",
-                      }}
-                    >
-                      {avatarName}
-                    </Avatar>
-                    <div className="h-fit flex gap-4">
-                      <div className="flex flex-col justify-start">
-                        <h3 className=" text-sm text-OWANBE_TABLE_CELL">
-                          {userName}
-                        </h3>
-                        <span className="text-xs text-[#8C95A1]">
-                          {account_type}
-                        </span>
-                      </div>
-                      <CaretDownFilled />
-                    </div>
-                  </div>
-                </Dropdown> */}
+                
               </Space>
             </>
           )}

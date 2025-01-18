@@ -61,7 +61,7 @@ function Header2(): JSX.Element {
             <Link href="/" shallow>
               <Image
                 src={OwanbeLogo}
-                alt=""
+                alt="ostivities Logo"
                 style={{ height: '40px' }}
                 className="w-[140px]"
               />
@@ -118,85 +118,11 @@ function Header2(): JSX.Element {
           <Link href="/" shallow>
             <Image
               src={OwanbeLogo}
-              alt=""
+              alt="ostivities Logo"
               style={{ width: "110px", height: "50px" }}
             />
           </Link>
-
-          {/* <Image
-            src={Hamburger}
-            alt=""
-            style={{ width: "40px", height: "35px" }}
-            onClick={showDrawer}
-          />
         </div>
-        <Drawer
-          closeIcon={
-            <Image
-              src={blank}
-              alt="Owanbe Logo"
-              style={{ width: "130px", height: "50px" }}
-            />
-          }
-          extra={
-            <Image
-              src={CloseIcon}
-              alt=""
-              style={{ width: "40px", height: "35px" }}
-              onClick={onClose}
-            />
-          }
-          placement="right"
-          open={open}
-          style={{ borderBottom: "0px solid !important", width: "100%" }}
-        > */}
-        </div>
-          {/* {showNavLinks && (
-            <>
-              {NAV_LINKS.map((link: INavLinks) => (
-                <p
-                  key={link.link + link.name}
-                  className="font-BricolageGrotesqueMedium py-3 text-center"
-                >
-                  <Link href={link.link} onClick={onClose}>
-                    {link.name}
-                  </Link>
-                </p>
-              ))}
-            </>
-          )}
-          <div className="flex flex-col items-center justify-center space-y-4 mt-7 mx-auto w-3/5 md:w-1/5">
-            {!pathCheck && (
-              <>
-                {!isLoggedIn ? (
-                  isRegistered ? (
-                    // Show only Sign In button if user is registered but not logged in
-                    <Link href="/login" passHref>
-                      <Button variant="outline" label="Sign in" 
-                      className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"/>
-                    </Link>
-                  ) : (
-                    // Show both Sign In and Sign Up buttons if user is not registered
-                    <>
-                      <Link href="/login" passHref>
-                        <Button variant="outline" label="Sign in" 
-                        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"/>
-                      </Link>
-                      <Link href="/signup" passHref>
-                        <Button label="Sign Up" />
-                      </Link>
-                    </>
-                  )
-                ) : (
-                  // Show My Account button if user is logged in
-                  <Link href="/discover" passHref>
-                    <Button label="My Account" />
-                  </Link>
-                )}
-              </>
-            )}
-          </div> */}
-        {/* </Drawer> */}
       </header>
     </ConfigProvider>
   );

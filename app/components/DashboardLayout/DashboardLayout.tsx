@@ -352,7 +352,7 @@ function DashboardLayout({
             <a href="/">
               <Image
                 src={OwanbeLogo}
-                alt=""
+                alt="ostivities Logo"
                 style={{ height: "40px" }}
                 className="w-[110px] cursor-pointer"
               />
@@ -424,74 +424,7 @@ function DashboardLayout({
                   align="center"
                   size={"small"}
                 >
-                  {/* <div className="mt-5 relative">
-                  <Badge count={2}>
-                    <BellFilled
-                      className="cursor-pointer"
-                      style={{
-                        fontSize: "26px",
-                        color: "#8C95A1",
-                      }}
-                      onClick={() => setToggleNotifications((prev) => !prev)}
-                    />
-                  </Badge>
-                  <div
-                   ref={notificationRef}
-                    className={`fixed top-16 right-0 min-w-[30rem] w-[30rem] transition-all z-50 ${
-                      toggleNotifications
-                        ? " translate-y-0"
-                        : "-translate-y-[150%]"
-                    }`}
-                  >
-                    <div className="bg-white rounded-[1.25rem] pl-6 pr-7 pt-4 pb-10 shadow-ticket-card">
-                      <div className="text-center font-semibold">
-                        Notifications
-                      </div>
-                      <div className="flex flex-col gap-3">
-                        <div className="flex-center gap-3">
-                          <div className="!bg-OWANBE_NOTIFICATION w-4 h-4 rounded-full"></div>
-                          <p
-                            className="text-base font-normal"
-                            style={{ fontSize: "14px" }}
-                          >
-                            You have a new sale{" "}
-                            <a
-                              href="#"
-                              style={{
-                                color: "#e20000",
-                                textDecoration: "underline",
-                                fontSize: "14px",
-                              }}
-                            >
-                              click to view
-                            </a>
-                            .
-                          </p>
-                        </div>
-                        <div className="flex-center gap-3">
-                          <div className=" !bg-OWANBE_NOTIFICATION w-4 h-4 rounded-full"></div>
-                          <p
-                            className="text-base font-normal"
-                            style={{ fontSize: "14px" }}
-                          >
-                            You have a new attendee{" "}
-                            <a
-                              href="#"
-                              style={{
-                                color: "#e20000",
-                                textDecoration: "underline",
-                                fontSize: "14px",
-                              }}
-                            >
-                              click to view
-                            </a>
-                            .
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
+                 
                   <Dropdown menu={{ items }} trigger={["click", "hover"]}>
                     <div className="flex-center gap-4 cursor-pointer">
                       <Image
@@ -530,15 +463,15 @@ function DashboardLayout({
         <div className=" bg-white shadow-sm flex flex-row items-center justify-between px-2 py-3 lg:hidden">
           <Link href="/" shallow>
             <Image
-              src={OwanbeLogo}
-              alt=""
+                src={OwanbeLogo}
+                alt="ostivities Logo"
               style={{ width: "130px", height: "50px", cursor: "pointer" }}
             />
           </Link>
 
           <Image
             src={Hamburger}
-            alt=""
+            alt="menu drawer"
             style={{ width: "40px", height: "35px", cursor: "pointer" }}
             onClick={showDrawer}
           />
@@ -554,7 +487,7 @@ function DashboardLayout({
           extra={
             <Image
               src={CloseIcon}
-              alt=""
+              alt="close icon"
               style={{ width: "40px", height: "35px" }}
               onClick={onClose}
             />
@@ -592,30 +525,7 @@ function DashboardLayout({
                     {link.name}
                   </Link>
                 ))}
-                {/* {isRegistered ? (
-                  // If user is registered but not logged in, show only Sign In button
-                  <Link href="/login" passHref>
-                    <Button
-                      variant="outline"
-                      label="Sign in"
-                      className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
-                    />
-                  </Link>
-                ) : (
-                  // If user is not registered, show both Sign In and Sign Up buttons
-                  <>
-                    <Link href="/login" passHref>
-                      <Button
-                        variant="outline"
-                        label="Sign in"
-                        className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
-                      />
-                    </Link>
-                    <Link href="/signup" passHref>
-                      <Button label="Sign Up" />
-                    </Link>
-                  </>
-                )} */}
+                
               </div>
             </>
           ) : (
@@ -759,7 +669,7 @@ function DashboardLayout({
           >
             <Image
               src={Hamburger}
-              alt=""
+              alt="menu drawer"
               style={{
                 width: "40px",
                 height: "35px",
