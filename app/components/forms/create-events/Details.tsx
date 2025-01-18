@@ -49,6 +49,7 @@ import {
   GetProps,
   message,
   Tooltip,
+  RadioChangeEvent,
 } from "antd";
 import { dateFormat, timeFormat } from "@/app/utils/helper";
 import axios from "axios";
@@ -99,7 +100,6 @@ function Details(): JSX.Element {
     "profileData",
   ]);
 
-  
   const [vendorRegRadio, setVendorRegRadio] = useState(false);
   const [showRadio, setShowRadio] = useState(false);
   const [editorContent, setEditorContent] = useState("");
@@ -214,7 +214,7 @@ function Details(): JSX.Element {
           `${cloud_api}/${cloud_name}/auto/upload`,
           formData
         );
-        
+
         if (response.status === 200) {
           const urlString: string | any =
             response?.data?.secure_url || response?.data?.url;
@@ -300,7 +300,7 @@ function Details(): JSX.Element {
     } = data;
     const start_date_time = dateFormat(startDate);
     const end_date_time = dateFormat(endDate);
-    
+
     // return 
 
     if (editorContent === "" || editorContent === "<p><br></p>") {
@@ -369,6 +369,7 @@ function Details(): JSX.Element {
     }
   };
 
+  const [locationType, setLocationType] = useState("physical"); // virtual or physical
   const [popoverVisible, setPopoverVisible] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
 
@@ -399,6 +400,12 @@ function Details(): JSX.Element {
       <LocationSearch onSelectLocation={handleSelectLocation} />
     </div>
   );
+
+  const handleLocationChange = (e: RadioChangeEvent) => {
+    setLocationType(e.target.value); // Ant Design's RadioChangeEvent has 'target.value'
+    setValue("address", ""); // Clear the address field when switching
+    setValue("link", "");    // Clear the link field when switching
+  };
 
   const getGreeting = () => {
     const currentHour = new Date().getHours();
@@ -437,8 +444,8 @@ function Details(): JSX.Element {
               formStep === 1
                 ? `${greeting} ${icon}, ${userName}`
                 : formStep === 2
-                ? "Event Page Appearance"
-                : "Event Ticket"
+                  ? "Event Page Appearance"
+                  : "Event Ticket"
             }
           />
           <Paragraph
@@ -447,8 +454,8 @@ function Details(): JSX.Element {
               formStep === 1
                 ? "Welcome! Ready to create your next event?"
                 : formStep === 2
-                ? "Upload your event image here by clicking the camera icon (File size should not be more than 10MB)."
-                : "For free events, Ostivities is free. For paid events, we charge a percentage-based transaction fee on ticket sales."
+                  ? "Upload your event image here by clicking the camera icon (File size should not be more than 10MB)."
+                  : "For free events, Ostivities is free. For paid events, we charge a percentage-based transaction fee on ticket sales."
             }
             styles={{ fontWeight: "normal !important" }}
           />
@@ -714,6 +721,102 @@ function Details(): JSX.Element {
               )}
             />
 
+
+            {/* <Space direction="vertical" size="large" style={{ width: "100%" }}>
+              <Radio.Group
+                onChange={handleLocationChange}
+                value={locationType}
+                style={{ marginBottom: "-15px", marginTop: "10px", }}
+              >
+                <Radio value="physical">Physical Event</Radio>
+                <Radio value="virtual">Virtual Event</Radio>
+              </Radio.Group>
+
+              {locationType === "physical" && (
+                <Controller
+                  name="address"
+                  control={control}
+                  rules={{ required: "Address is required!" }}
+                  render={({ field }) => (
+                    <Space
+                      direction="vertical"
+                      size={"small"}
+                      style={{ width: "100%" }}
+                    >
+                      <label htmlFor="address">Event Address</label>
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "8px",
+                          flexWrap: "wrap",
+                        }}
+                      >
+                        <Input
+                          {...field}
+                          placeholder="Enter Address"
+                          style={{
+                            flex: 1,
+                            minWidth: "200px",
+                            maxWidth: "calc(100% - 128px)",
+                          }}
+                        />
+                        <Popover
+                          content={content}
+                          trigger="click"
+                          open={popoverVisible}
+                        >
+                          <Button
+                            type="default"
+                            style={{ borderRadius: "5px", minWidth: "120px" }}
+                            onClick={() => setPopoverVisible(!popoverVisible)}
+                          >
+                            Select on Map
+                          </Button>
+                        </Popover>
+                      </div>
+                      {errors.address && (
+                        <span style={{ color: "red" }}>
+                          {errors.address.message}
+                        </span>
+                      )}
+                    </Space>
+                  )}
+                />
+              )}
+
+              {locationType === "virtual" && (
+                <Controller
+                  name="link"
+                  control={control}
+                  rules={{
+                    required: "Link is required!",
+                    pattern: {
+                      value: /^(https?:\/\/)?([\w\-])+(\.[\w\-]+)+[/#?]?.*$/i,
+                      message: "Please enter a valid URL!",
+                    },
+                  }}
+                  render={({ field }) => (
+                    <Space
+                      direction="vertical"
+                      size={"small"}
+                      style={{ width: "100%" }}
+                    >
+                      <label htmlFor="link">Event Link</label>
+                      <Input
+                        {...field}
+                        placeholder="Enter Zoom/Teams/Meet Link"
+                        style={{ minWidth: "200px" }}
+                      />
+                      {errors.link && (
+                        <span style={{ color: "red" }}>{errors.link.message}</span>
+                      )}
+                    </Space>
+                  )}
+                />
+              )}
+            </Space> */}
+
+
             <Controller
               name="address"
               control={control}
@@ -795,9 +898,9 @@ function Details(): JSX.Element {
                       // value={eventUrl}
                       {...field}
                       placeholder="your event url name will show here"
-                      // onChange={(e) => {
-                      //   field.onChange(e.target.value.replace(/\s+/g, "")); // Remove spaces as the user types
-                      // }}
+                    // onChange={(e) => {
+                    //   field.onChange(e.target.value.replace(/\s+/g, "")); // Remove spaces as the user types
+                    // }}
                     />
                   </Space.Compact>
                   {errors.eventURL && (
