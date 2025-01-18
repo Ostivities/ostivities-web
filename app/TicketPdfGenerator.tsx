@@ -40,6 +40,7 @@ export const pdfGenerator = (dto: PdfDto) => {
       italics: "Roboto-Italic.ttf",
       bolditalics: "Roboto-MediumItalic.ttf",
     },
+    
   };
   const fonts = {
     Roboto: {

@@ -1,5 +1,5 @@
 "use client";
-import { Button, Input, Space, Table } from "antd";
+import { Button, Input, Space, Table, Tooltip } from "antd";
 import { FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -105,22 +105,27 @@ const Billing = () => {
         />
         {selectedRowKeys.length > 0 && (
           <Space>
-            <Button
-              type="default"
-              className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
-              style={{ borderRadius: 15, marginRight: 8 }}
-              onClick={() => handleExport("excel")}
-            >
-              <FileExcelOutlined />
-            </Button>
-            <Button
-              type="default"
-              className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
-              style={{ borderRadius: 15 }}
-              onClick={() => handleExport("pdf")}
-            >
-              <FilePdfOutlined />
-            </Button>
+            <Tooltip title="Export as Excel">
+                <Button
+                  type="default"
+                  className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                  style={{ borderRadius: 15, marginRight: 8 }}
+                  onClick={() => handleExport("excel")}
+                >
+                  <FileExcelOutlined />
+                </Button>
+                </Tooltip>
+
+                <Tooltip title="Export as PDF">
+                <Button
+                  type="default"
+                  className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                  style={{ borderRadius: 15 }}
+                  onClick={() => handleExport("pdf")}
+                >
+                  <FilePdfOutlined />
+                </Button> 
+                </Tooltip>
           </Space>
         )}
       </div>

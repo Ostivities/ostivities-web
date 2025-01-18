@@ -8,7 +8,7 @@ import {
   PaymentDataType,
   ITicketDetails,
 } from "@/app/utils/interface";
-import { Button, Input, Space, Table, Tabs } from "antd";
+import { Button, Input, Space, Table, Tabs, Tooltip } from "antd";
 import { FileExcelOutlined, FilePdfOutlined } from "@ant-design/icons";
 import jsPDF from "jspdf";
 import { useDebounce } from "use-debounce";
@@ -166,13 +166,12 @@ const EventSales = () => {
         />
       ),
       dataIndex: "guestAsChargeBearer",
-      filters: [
-        { text: "Guest", value: "Guest" },
-        { text: "Organizer", value: "Organizer" },
-      ],
-      // onFilter: (value, record) => record.guestAsChargeBearer?.includes(value as string), // Ensure property name matches
-      // sorter: (a, b) => a.guestAsChargeBearer?.localeCompare(b.guestAsChargeBearer), // Ensure property name matches
-    },
+      sorter: (a, b) => {
+        const valueA = typeof a.guestAsChargeBearer === "string" ? a.guestAsChargeBearer : "";
+        const valueB = typeof b.guestAsChargeBearer === "string" ? b.guestAsChargeBearer : "";
+        return valueA.localeCompare(valueB);
+      },
+    },    
     {
       title: (
         <Label
@@ -494,6 +493,7 @@ const EventSales = () => {
               />
               {selectedRowKeys.length > 0 && (
                 <Space>
+                  <Tooltip title="Export as Excel">
                   <Button
                     type="default"
                     className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
@@ -512,6 +512,9 @@ const EventSales = () => {
                   >
                     <FileExcelOutlined />
                   </Button>
+                  </Tooltip>
+
+                  <Tooltip title="Export as PDF">
                   <Button
                     type="default"
                     className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
@@ -530,6 +533,8 @@ const EventSales = () => {
                   >
                     <FilePdfOutlined />
                   </Button>
+                  </Tooltip>
+
                 </Space>
               )}
             </Space>
@@ -607,6 +612,7 @@ const EventSales = () => {
               />
               {selectedPaymentRowKeys.length > 0 && (
                 <Space>
+                  <Tooltip title="Export as Excel">
                   <Button
                     type="default"
                     className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
@@ -624,6 +630,9 @@ const EventSales = () => {
                   >
                     <FileExcelOutlined />
                   </Button>
+                  </Tooltip>
+
+                  <Tooltip title="Export as PDF">
                   <Button
                     type="default"
                     className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
@@ -641,6 +650,8 @@ const EventSales = () => {
                   >
                     <FilePdfOutlined />
                   </Button>
+                  </Tooltip>
+
                 </Space>
               )}
             </Space>

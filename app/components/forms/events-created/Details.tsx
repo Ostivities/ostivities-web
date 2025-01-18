@@ -10,7 +10,7 @@ import {
   FilePdfOutlined,
 } from "@ant-design/icons";
 import { GET_ALL_USER_EVENTS } from "@/app/utils/constants";
-import { Button, Input, Table } from "antd";
+import { Button, Input, Table, Tooltip } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -303,6 +303,7 @@ const EventsCreatedTable: React.FC = () => {
           />
           {hasSelected && (
             <div>
+               <Tooltip title="Delete Record(s)">
               <Button
                 type="primary"
                 className="font-BricolageGrotesqueSemiBold continue font-bold custom-button"
@@ -315,22 +316,29 @@ const EventsCreatedTable: React.FC = () => {
               >
                 <DeleteOutlined />
               </Button>
-              <Button
-                type="default"
-                className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
-                style={{ borderRadius: 15, marginRight: 8 }}
-                onClick={() => handleExport("excel")}
-              >
-                <FileExcelOutlined />
-              </Button>
-              <Button
-                type="default"
-                className="font-BricolageGrotesqueSemiBold  continue cursor-pointer font-bold"
-                style={{ borderRadius: 15 }}
-                onClick={() => handleExport("pdf")}
-              >
-                <FilePdfOutlined />
-              </Button>
+              </Tooltip>
+
+              <Tooltip title="Export as Excel">
+                <Button
+                  type="default"
+                  className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                  style={{ borderRadius: 15, marginRight: 8 }}
+                  onClick={() => handleExport("excel")}
+                >
+                  <FileExcelOutlined />
+                </Button>
+                </Tooltip>
+
+                <Tooltip title="Export as PDF">
+                <Button
+                  type="default"
+                  className="font-BricolageGrotesqueSemiBold continue cursor-pointer font-bold"
+                  style={{ borderRadius: 15 }}
+                  onClick={() => handleExport("pdf")}
+                >
+                  <FilePdfOutlined />
+                </Button> 
+                </Tooltip>
             </div>
           )}
         </div>

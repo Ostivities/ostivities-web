@@ -181,7 +181,6 @@ const DiscountRecord = (): JSX.Element => {
           setIsShown(false);
           getEventDiscount.refetch();
         }}
-        id={selectedRowKeys}
         actionType={actionType}
       />
 
@@ -213,19 +212,6 @@ const DiscountRecord = (): JSX.Element => {
           <Table
           loading={getEventDiscount?.isFetching} 
 
-            rowSelection={{
-              selectedRowKeys,
-              onChange: (keys) => setSelectedRowKeys(keys),
-            }}
-            onRow={(record, rowIndex) => {
-              return {
-                onClick: () => {
-                  if (record?.key !== undefined) {
-                    setSelectedRowKeys([record.key]);
-                  }
-                },
-              };
-            }}
             columns={columns}
             dataSource={filteredData}
             className="font-BricolageGrotesqueRegular w-full"
