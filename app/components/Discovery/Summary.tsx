@@ -15,6 +15,7 @@ import { MdOutlineDiscount } from "react-icons/md";
 import {
   useGetEventDiscount,
   useGetTicketDiscount,
+  useApplyDiscountCode
 } from "@/app/hooks/discount/discount.hook";
 import { useCookies } from "react-cookie";
 
@@ -81,6 +82,7 @@ const Summary = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const params = useParams<{ event: string }>();
   const router = useRouter();
+  const { applyDiscountCode } = useApplyDiscountCode();
 
   const { getEventDiscount } = useGetEventDiscount(eventId ?? "");
   const discountDetails = getEventDiscount?.data?.data?.data;
@@ -116,7 +118,14 @@ useEffect(() => {
     setShowInput(true);
   };
 
-  const handleApplyDiscount = () => {
+  const handleApplyDiscount = async () => {
+    // const response = await applyDiscountCode.mutateAsync({
+    //   ticket: ticketDetails?.map((ticket) => ticket?.ticketId) ?? [],
+    //   discount_code: discountCode,
+    //   event_unique_key: params?.event,
+    //   guest_email: allInfo?.personal_information?.email,
+    // });
+    // return console.log(response, "response");
     // Logic to apply the discount code (e.g., validate code, apply discount)
     if (discountCode.trim() !== "") {
       setDiscountApplied(true);
@@ -171,7 +180,7 @@ useEffect(() => {
                 ticketDetails.length > 0 &&
                 ticketDetails
                   .map((ticket) => ticket?.subTotal || 0)
-                  .reduce((acc, curr) => acc + curr, 0) > 0
+                  .reduce((acc, curr) => acc + curr, 0) > 0  && currentPage === "payment" 
                   ? handleAddDiscountClick
                   : undefined
               }
@@ -180,7 +189,7 @@ useEffect(() => {
                 ticketDetails?.length > 0 &&
                 ticketDetails
                   ?.map((ticket) => ticket?.subTotal || 0)
-                  ?.reduce((acc, curr) => acc + curr, 0) > 0
+                  ?.reduce((acc, curr) => acc + curr, 0) > 0  && currentPage === "payment" 
                   ? "text-OWANBE_PRY cursor-pointer"
                   : "text-gray-400 cursor-not-allowed"
               }`}

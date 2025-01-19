@@ -27,29 +27,25 @@ interface PdfDto {
 export const pdfGenerator = (dto: PdfDto) => {
   const logo = OSTIVITIES_LOGO;
   const ticketBanner = TICKET_BANNER;
-  pdfMake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfMake.vfs;
+
+  // pdfMake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfMake.vfs;
+  pdfMake.vfs = pdfFonts.pdfMake.vfs;
   pdfMake.vfs = {
-    "BricolageGrotesque-Regular.ttf": ROBOTO_REGULAR,
-    "BricolageGrotesque-Bold-BF648bd57888479.ttf": ROBOTO_BOLD,
-    // Add other font files as needed
+    "BricolageGrotesque-Regular.ttf": "/fonts/BricolageGrotesque-Regular.ttf",
+    "BricolageGrotesque-Bold.ttf": "/fonts/BricolageGrotesque-Bold-BF648bd57888479.ttf",
   };
+  // pdfMake.vfs["BricolageGrotesque-Regular.ttf"] = ROBOTO_REGULAR
+  // pdfMake.vfs["BricolageGrotesque-Bold.ttf"] = ROBOTO_BOLD
+
   pdfMake.fonts = {
-    Roboto: {
-      normal: "Roboto-Regular.ttf",
-      bold: "Roboto-Medium.ttf",
-      italics: "Roboto-Italic.ttf",
-      bolditalics: "Roboto-MediumItalic.ttf",
-    },
-    
-  };
-  const fonts = {
-    Roboto: {
-      normal: "Roboto-Regular.ttf",
-      bold: "Roboto-Medium.ttf",
-      italics: "Roboto-Italic.ttf",
-      bolditalics: "Roboto-MediumItalic.ttf",
+    BricolageGrotesque: {
+      normal: "BricolageGrotesque-Regular.ttf",
+      bold: "BricolageGrotesque-Bold.ttf",
+      italics: "BricolageGrotesque-Regular.ttf",
+      bolditalics: "BricolageGrotesque-Bold.ttf",
     },
   };
+
   const generatePageContent = (
     data: PdfDto["content"][0],
     isLastPage?: boolean
@@ -168,16 +164,17 @@ export const pdfGenerator = (dto: PdfDto) => {
       header: {
         fontSize: 22,
         bold: true,
-        // font: "BricolageGrotesque",
+        font: "BricolageGrotesque",
       },
       bigger: {
         fontSize: 15,
         italics: true,
-        // font: "BricolageGrotesque",
+        font: "BricolageGrotesque",
       },
     },
     defaultStyle: {
       columnGap: 20,
+      font: "BricolageGrotesque",
     },
     footer: (currentPage: any, pageCount: any) => {
       return {
@@ -185,7 +182,7 @@ export const pdfGenerator = (dto: PdfDto) => {
         alignment: "center",
         margin: [0, 10],
         fontSize: 12,
-        // font: "BricolageGrotesque",
+        font: "BricolageGrotesque",
       };
     },
   } as any;

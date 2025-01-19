@@ -22,7 +22,7 @@ import Image from "next/image";
 const { Search } = Input;
 
 const EventsGuestListSummary = () => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const params = useParams<{ id: string }>();
@@ -36,7 +36,7 @@ const EventsGuestListSummary = () => {
   const summaryInfo = getCheckInSummary?.data?.data?.data?.check_in_summary;
   const totalCheckedIn = getCheckInSummary?.data?.data?.data?.total;
   //
-
+  console.log(selectedRowKeys, "selectedRowKeys")
   const data: ICheckInSummary[] = summaryInfo?.map((item: ICheckInSummary) => {
     return {
       key: item?.id,
@@ -106,18 +106,20 @@ const EventsGuestListSummary = () => {
   };
 
   const handleExport = (format: string) => {
-    const exportData = selectedRowKeys.length
+    const exportData = selectedRowKeys?.length
       ? data?.filter((item: ICheckInSummary) =>
-        selectedRowKeys.includes(item?.key!)
+        selectedRowKeys.includes(String(item?.key))
       )
       : data;
 
-    const formattedExportData = exportData.map((item: ICheckInSummary) => ({
-      "Guest Name": `${item?.personal_information?.firstName} ${item?.personal_information?.lastName}`,
-      "Ticket Name": item?.ticket_information?.[0]?.ticket_name,
+      console.log(exportData);
+
+    const formattedExportData = exportData.map((item: any) => ({
+      "Guest Name": `${item?.guestName}`,
+      "Ticket Name": item?.ticketName,
       // "Ticket Type": item.ticketType,
-      "Checked in Time": item?.check_in_date_time,
-      "Checked in By": item?.check_in_by, // Include in the export data
+      "Checked in Time": item?.checkedInTime,
+      "Checked in By": item?.checkedInBy, // Include in the export data
     }));
 
     if (format === "excel") {
@@ -285,7 +287,7 @@ const EventsGuestListSummary = () => {
           loading={getCheckInSummary?.isLoading}
           rowSelection={{
             selectedRowKeys,
-            onChange: (keys) => setSelectedRowKeys(keys),
+            onChange: (keys) => setSelectedRowKeys(keys.map(String)),
           }}
           columns={columns}
           dataSource={data}

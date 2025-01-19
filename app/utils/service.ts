@@ -5,6 +5,7 @@ import {
   ICreateEvent,
   IDiscountCreate,
   IDiscountData,
+  IApplyDiscountData,
   IFormInput,
   IGuestCreate,
   ILogin,
@@ -238,6 +239,14 @@ export class API_SERVICE {
       url: `/discount/create/${eventId}`,
       method: HttpMethod.POST,
       data: { ...rest },
+    });
+  }
+
+  static async _applyDiscountCode(data: IApplyDiscountData): Promise<AxiosResponse> {
+    return await instance({
+      url: `/discount/apply_discount_code`,
+      method: HttpMethod.POST,
+      data,
     });
   }
 

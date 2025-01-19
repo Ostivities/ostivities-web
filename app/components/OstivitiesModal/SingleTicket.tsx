@@ -95,8 +95,8 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
     }
   },[ticketPrice])
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
-    const { ticketQuestions, guestAsChargeBearer, ...rest } = values;
-    // return 
+    try {
+      const { ticketQuestions, guestAsChargeBearer, ...rest } = values;
     setLoading(true);
     if (
       // @ts-ignore
@@ -173,6 +173,9 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
           }
         }
       }
+    }
+    } catch (error) {
+      setLoading(false);
     }
   };
 
@@ -255,7 +258,9 @@ const SingleTicket: React.FC<SingleTicketProps> = ({ onCancel, onOk }) => {
         ]}
         style={{ marginBottom: "8px" }}
       >
-        <Input placeholder="Enter ticket name" />
+        <Input 
+          placeholder="Enter ticket name"
+        />
       </Form.Item>
 
       <Form.Item<ITicketData>

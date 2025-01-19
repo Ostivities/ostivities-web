@@ -138,14 +138,6 @@ function Details(): JSX.Element {
   const watchStartDate = watch("startDate");
   const watchEndDate = watch("endDate");
 
-  // useEffect(() => {
-  //   if(watchStartDate) {
-  //     setValue("start_date_time", dateFormat(watchStartDate));
-  //   }
-  //   if(watchEndDate) {
-  //     setValue("end_date_time", dateFormat(watchEndDate));
-  //   }
-  // }, [watchStartDate, watchEndDate, setValue]);
 
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
     const startDate = dayjs(startDateValue); // Replace `startDateValue` with your actual start date

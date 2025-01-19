@@ -17,7 +17,6 @@ import React, { useEffect, useState } from "react";
 import EmailEditor from "../QuillEditor/EmailEditor";
 import { ITicketCreate, ITicketData } from "@/app/utils/interface";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { useProfile } from "@/app/hooks/auth/auth.hook";
 import { TICKET_ENTITY, TICKET_STOCK, TICKET_TYPE } from "@/app/utils/enums";
 import { useCookies } from "react-cookie";
 
@@ -32,7 +31,6 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
   onOk,
 }) => {
   const { createTicket } = useCreateTicket();
-  const { profile } = useProfile();
   const params = useParams<{ id: string }>();
   const { getTickets } = useGetEventTickets(params?.id);
   const { TextArea } = Input;
@@ -81,92 +79,97 @@ const CollectiveTicket: React.FC<CollectiveTicketProps> = ({
   }, [groupPrice]);
 
   const onFinish: FormProps<ITicketData>["onFinish"] = async (values) => {
-    const { ticketQuestions, ticketType, guestAsChargeBearer, ...rest } =
-      values;
-    // return
-    setLoading(true);
-    if (
-      // @ts-ignore
-      ticketQuestions?.length > 0 &&
-      additionalFields?.length > 0 &&
-      ticketQuestions?.length === additionalFields.length &&
-      showAdditionalField === true
-    ) {
-      const reducedTicketQuestions = additionalFields?.map(
-        (questionObj: {
-          id: number;
-          is_compulsory: boolean;
-          question: string;
-        }) => {
-          const { question, is_compulsory } = questionObj;
+    try {
+      const { ticketQuestions, ticketType, guestAsChargeBearer, ...rest } =
+        values;
+      // return
+      setLoading(true);
+      if (
+        // @ts-ignore
+        ticketQuestions?.length > 0 &&
+        additionalFields?.length > 0 &&
+        ticketQuestions?.length === additionalFields.length &&
+        showAdditionalField === true
+      ) {
+        const reducedTicketQuestions = additionalFields?.map(
+          (questionObj: {
+            id: number;
+            is_compulsory: boolean;
+            question: string;
+          }) => {
+            const { question, is_compulsory } = questionObj;
 
-          return { question, is_compulsory };
-        }
-      );
-
-      const payload: ITicketCreate = {
-        ...rest,
-        ticketQuestions: reducedTicketQuestions,
-        ticketDescription: editorContent,
-        event: params?.id,
-        ticketEntity: TICKET_ENTITY.COLLECTIVE,
-        user: cookies?.profileData?.id,
-        groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
-        ticketType,
-        guestAsChargeBearer: guestAsChargeBearer,
-        purchaseLimit: 1,
-      };
-      //
-
-      // make api call here
-
-      if (payload) {
-        const response = await createTicket.mutateAsync(payload);
-        if (response.status === 201) {
-          form.resetFields();
-          setCookies("stage_three", "processing");
-          // linkRef.current?.click();
-          getTickets.refetch();
-          onOk && onOk();
-          setLoading(false);
-          if (pathname.startsWith("/discover/create-events")) {
-            router.push(
-              `/discover/create-events/${params?.id}/tickets_created`
-            );
+            return { question, is_compulsory };
           }
+        );
+
+        const payload: ITicketCreate = {
+          ...rest,
+          ticketQuestions: reducedTicketQuestions,
+          ticketDescription: editorContent,
+          event: params?.id,
+          ticketEntity: TICKET_ENTITY.COLLECTIVE,
+          user: cookies?.profileData?.id,
+          groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
+          ticketType,
+          guestAsChargeBearer: guestAsChargeBearer,
+          purchaseLimit: 1,
+        };
+        //
+
+        // make api call here
+
+        if (payload) {
+          const response = await createTicket.mutateAsync(payload);
+          if (response.status === 201) {
+            form.resetFields();
+            setCookies("stage_three", "processing");
+            // linkRef.current?.click();
+            getTickets.refetch();
+            onOk && onOk();
+            setLoading(false);
+            if (pathname.startsWith("/discover/create-events")) {
+              router.push(
+                `/discover/create-events/${params?.id}/tickets_created`
+              );
+            }
+          }
+        } else {
+          setLoading(false);
         }
       } else {
-        setLoading(false);
-      }
-    } else {
-      const payload: ITicketCreate = {
-        ...rest,
-        ticketDescription: editorContent,
-        event: params?.id,
-        ticketEntity: TICKET_ENTITY.COLLECTIVE,
-        user: cookies?.profileData?.id,
-        groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
-        ticketType,
-        guestAsChargeBearer: guestAsChargeBearer,
-        purchaseLimit: 1,
-      };
-      if (payload) {
-        const response = await createTicket.mutateAsync(payload);
-        if (response.status === 201) {
-          form.resetFields();
-          setCookies("stage_three", "processing");
-          onOk && onOk();
-          setLoading(false);
-          getTickets.refetch();
-          // linkRef.current?.click();
-          if (pathname.startsWith("/discover/create-events")) {
-            router.push(
-              `/discover/create-events/${params?.id}/tickets_created`
-            );
+        const payload: ITicketCreate = {
+          ...rest,
+          ticketDescription: editorContent,
+          event: params?.id,
+          ticketEntity: TICKET_ENTITY.COLLECTIVE,
+          user: cookies?.profileData?.id,
+          groupPrice: ticketType === TICKET_TYPE.FREE ? 0 : groupPrice,
+          ticketType,
+          guestAsChargeBearer: guestAsChargeBearer,
+          purchaseLimit: 1,
+        };
+        if (payload) {
+          const response = await createTicket.mutateAsync(payload);
+          if (response.status === 201) {
+            form.resetFields();
+            setCookies("stage_three", "processing");
+            onOk && onOk();
+            setLoading(false);
+            getTickets.refetch();
+            // linkRef.current?.click();
+            if (pathname.startsWith("/discover/create-events")) {
+              router.push(
+                `/discover/create-events/${params?.id}/tickets_created`
+              );
+            }
           }
         }
+        setLoading(false);
       }
+    } catch (error) {
       setLoading(false);
+      return error;
     }
   };
 
