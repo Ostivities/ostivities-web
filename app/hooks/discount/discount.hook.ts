@@ -1,7 +1,7 @@
 import { API_SERVICE } from "@/app/utils/service";
 import { useMutation, useQuery, } from "@tanstack/react-query";
-import { CREATE_DISCOUNT, GET_EVENT_DISCOUNT, GET_TICKET_DISCOUNT } from "@/app/utils/constants";
-import { IDiscountCreate, IDiscountData } from "@/app/utils/interface";
+import { CREATE_DISCOUNT, GET_EVENT_DISCOUNT, GET_TICKET_DISCOUNT, APPLY_DISCOUNT_CODE } from "@/app/utils/constants";
+import { IDiscountCreate, IDiscountData, IApplyDiscountData } from "@/app/utils/interface";
 import { AxiosError, AxiosResponse } from "axios";
 import { errorFormatter, successFormatter } from "@/app/utils/helper";
 
@@ -20,6 +20,22 @@ export const useCreateDiscount = () => {
         },
     });
     return { createDiscount };
+}
+
+export const useApplyDiscountCode = () => {
+    const applyDiscountCode = useMutation({
+        mutationFn: (data: IApplyDiscountData) => {
+        return API_SERVICE._applyDiscountCode(data);
+        },
+        mutationKey: [APPLY_DISCOUNT_CODE],
+        onSuccess: (data: AxiosResponse) => {
+        successFormatter(data);
+        },
+        onError: (error: AxiosError | any) => {
+        errorFormatter(error);
+        },
+    });
+    return { applyDiscountCode };
 }
 
 export const useGetEventDiscount = (id: string) => {

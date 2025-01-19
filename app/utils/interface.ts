@@ -552,6 +552,13 @@ export interface IDiscountCreate extends Partial<IDiscountData> {
   user: string;
 }
 
+export interface IApplyDiscountData {
+    ticket: string[],
+    event_unique_key: string,
+    discount_code: string,
+    guest_email: string
+}
+
 export interface InfoNeeded {
   ticketDetails?: {
     ticketName: string;

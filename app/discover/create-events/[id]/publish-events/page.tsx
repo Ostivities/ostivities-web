@@ -135,7 +135,7 @@ export default function PublishEvent(): JSX.Element {
                 />
                 <div className="absolute inset-0 bg-image-card"></div>
               </div>
-              <div className="py-8">
+              <div className="py-8" style={{ maxWidth: "21%" }}>
                 <Heading5 className="text-2xl" content={"About this event"} />
                 <div className="mt-14 flex flex-col gap-8">
                   <div className="flex items-start">
@@ -346,7 +346,7 @@ export default function PublishEvent(): JSX.Element {
                   ) : null}
                 </div>
               </div>
-              <div className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-6">
+              <div style={{ minWidth: "40%" }} className="font-BricolageGrotesqueRegular flex-1 h-fit my-auto border-l border-black px-6">
                 <div className="py-8">
                   <div className="border rounded-lg p-3 bg-white card-shadow flex justify-between">
                     <h2 className="text-2xl font-BricolageGrotesqueMedium">

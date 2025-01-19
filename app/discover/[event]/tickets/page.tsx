@@ -134,7 +134,7 @@ const TicketsSelection = () => {
     return randomDigits.toString();
   };
 
-  const order_number = `ORD-${stringGenerator(6, {
+  const order_number = `ORD-${stringGenerator(10, {
     lowercase: false,
     symbol: false,
   })}`;
@@ -282,7 +282,7 @@ const TicketsSelection = () => {
     payment_method: PAYMENT_METHODS.FREE,
   });
 
-  // console.log(allInfo, "allInfo")
+  console.log(allInfo, "allInfo")
 
   useEffect(() => {
     if (!cookies?.ticketDetails || ticketDetails?.length > 0) {
@@ -777,7 +777,7 @@ const TicketsSelection = () => {
           ticketEntity: ticket?.ticketEntity,
           guestAsChargeBearer: ticket?.guestAsChargeBearer,
           groupSize: ticket?.groupSize,
-          order_number: `ORD-${stringGenerator(6, {
+          order_number: `ORD-${stringGenerator(10, {
             lowercase: false,
             symbol: false,
           })}`, // Unique order number for each new ticket
@@ -1123,12 +1123,10 @@ const TicketsSelection = () => {
       ticket_name: string;
       ticket_type: string;
       event_name: string;
-      // qr_code: string;
-      // ostivities_logo?: string;
-      // ticket_banner?: string;
+      qr_code: string;
     }[]
   >([]);
-  //
+  console.log(downloadDetails, "downloadDetails")
   const [isFormValid, setIsFormValid] = useState(false);
 
   const renderedAttendees = useMemo(() => {
@@ -1158,7 +1156,7 @@ const TicketsSelection = () => {
                 placeholder="Enter Attendee First Name"
                 onChange={(e) =>
                   handlePersonalInfoChange(
-                    e.target.value,
+                    e.target.value.trim(),
                     attendee.id,
                     "firstName"
                   )
@@ -1185,7 +1183,7 @@ const TicketsSelection = () => {
                 placeholder="Enter Attendee Last Name"
                 onChange={(e) =>
                   handlePersonalInfoChange(
-                    e.target.value,
+                    e.target.value.trim(),
                     attendee.id,
                     "lastName"
                   )
@@ -1211,7 +1209,11 @@ const TicketsSelection = () => {
                 type="email"
                 placeholder="Enter Attendee Email Address"
                 onChange={(e) =>
-                  handlePersonalInfoChange(e.target.value, attendee.id, "email")
+                  handlePersonalInfoChange(
+                    e.target.value.trim(), 
+                    attendee.id, 
+                    "email"
+                  )
                 }
               />
             </Form.Item>
@@ -1245,7 +1247,7 @@ const TicketsSelection = () => {
                 placeholder="Confirm Attendee Email Address"
                 onChange={(e) =>
                   handlePersonalInfoChange(
-                    e.target.value,
+                    e.target.value.trim(),
                     attendee.id,
                     "confirmEmail"
                   )
@@ -1502,13 +1504,13 @@ const TicketsSelection = () => {
             const extraDetails =
               response?.data?.data?.attendees_information?.map(
                 (attendees: any) => ({
-                  order_number: attendees?.ticket_information?.order_number,
+                  order_number: attendees?.ticket_information?.[0]?.order_number,
                   order_date: dateFormat(response?.data?.data?.createdAt),
                   event_date_time: dateFormat(eventDetails?.startDate),
                   event_address: eventDetails?.address,
                   buyer_name: `${attendees?.personal_information?.firstName} ${attendees?.personal_information?.lastName}`,
-                  ticket_name: attendees?.ticket_information?.ticket_name,
-                  ticket_type: attendees?.ticket_information?.ticket_type,
+                  ticket_name: attendees?.ticket_information?.[0]?.ticket_name,
+                  ticket_type: attendees?.ticket_information?.[0]?.ticket_type,
                   event_name: eventDetails?.eventName,
                   qr_code: JSON.stringify({
                     order_number: attendees?.order_number,
@@ -1613,13 +1615,13 @@ const TicketsSelection = () => {
         if (response?.data?.data?.attendees_information?.length > 0) {
           const extraDetails = response?.data?.data?.attendees_information?.map(
             (attendees: any) => ({
-              order_number: attendees?.ticket_information?.order_number,
+              order_number: attendees?.ticket_information?.[0]?.order_number,
               order_date: dateFormat(response?.data?.data?.createdAt),
               event_date_time: dateFormat(eventDetails?.startDate),
               event_address: eventDetails?.address,
               buyer_name: `${attendees?.personal_information?.firstName} ${attendees?.personal_information?.lastName}`,
-              ticket_name: attendees?.ticket_information?.ticket_name,
-              ticket_type: attendees?.ticket_information?.ticket_type,
+              ticket_name: attendees?.ticket_information?.[0]?.ticket_name,
+              ticket_type: attendees?.ticket_information?.[0]?.ticket_type,
               event_name: eventDetails?.eventName,
               qr_code: JSON.stringify({
                 order_number: attendees?.order_number,
@@ -2557,7 +2559,6 @@ const TicketsSelection = () => {
                         },
                       ]}
                       style={{}}
-                      // className=""
                     >
                       <Input placeholder="Enter First Name" />
                     </Form.Item>

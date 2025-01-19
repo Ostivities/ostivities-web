@@ -5,15 +5,19 @@ import Image from "next/image";
 import { useGetUserEventByUniqueKey } from "@/app/hooks/event/event.hook";
 import { useParams, useRouter } from "next/navigation";
 import { pdfGenerator } from "../../TicketPdfGenerator";
+import PDFGenerator from "../../TicketPdfGeneratorReact";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import { Tooltip } from "antd";
 
 const PaymentSuccessModal = ({
-  downloadDetails, open, onClose
+  downloadDetails,
+  open,
+  onClose,
 }: downloadDataItem): JSX.Element => {
   const router = useRouter();
   const params = useParams<{ event: string }>();
   const { getUserEventByUniqueKey } = useGetUserEventByUniqueKey(params?.event);
-  
+
   // Check for event details
   const eventDetails =
     getUserEventByUniqueKey?.data?.data?.data === null
@@ -72,48 +76,7 @@ const PaymentSuccessModal = ({
   };
 
   const payload = {
-    content: [
-      {
-        order_number: "123456",
-        order_date: "2024-11-01",
-        event_date_time: "2024-12-15 18:00",
-        event_address: "123 Event St, Cityville, CV123",
-        buyer_name: "John Doe",
-        ticket_name: "VIP Pass",
-        ticket_type: "VIP",
-        event_name: "Ostivities Fest 2024",
-        qr_code: "https://example.com/qrcode123456",
-        ostivities_logo: "../../public/owanbe.svg",
-        ticket_banner: "../../public/owanbe.svg",
-      },
-      {
-        order_number: "789012",
-        order_date: "2024-11-05",
-        event_date_time: "2024-12-20 20:00",
-        event_address: "456 Festival Ave, Townsville, TS456",
-        buyer_name: "Jane Smith",
-        ticket_name: "General Admission",
-        ticket_type: "GA",
-        event_name: "Ostivities Concert Night",
-        qr_code: "https://example.com/qrcode789012",
-        ostivities_logo: "../../public/owanbe.svg",
-        ticket_banner: "../../public/owanbe.svg",
-      },
-      {
-        order_number: "345678",
-        order_date: "2024-11-10",
-        event_date_time: "2024-12-25 15:00",
-        event_address: "789 Gala Blvd, Metropolis, MP789",
-        buyer_name: "Alice Johnson",
-        ticket_name: "Early Bird",
-        ticket_type: "Early Bird",
-        event_name: "Ostivities Winter Gala",
-        qr_code: "https://example.com/qrcode345678",
-        ostivities_logo: "../../public/owanbe.svg",
-        ticket_banner: "../../public/owanbe.svg",
-      },
-    ],
-    order_number: "345678",
+    content: downloadDetails ?? [],
   };
 
   return (
@@ -158,6 +121,16 @@ const PaymentSuccessModal = ({
               >
                 Download Ticket
               </button>
+              <PDFDownloadLink
+                document={<PDFGenerator dto={payload} />}
+                fileName="tickets.pdf"
+              >
+                  <button
+                    className="primary-btn font-normal text-base flex-1 whitespace-nowrap px-3 py-2"
+                  >
+                    Download Ticket
+                  </button>
+              </PDFDownloadLink>
               <Tooltip title="Click to sync to calendar">
                 <button
                   onClick={handleSyncToCalendar}

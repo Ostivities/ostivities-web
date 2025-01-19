@@ -558,6 +558,81 @@ export default function EventDetailsComponent({
         </Card>
       );
     };
+    const CardMetric = ({
+      title,
+      value,
+      paidOutValue,
+      cardStyle = {},
+      titleStyle = {},
+      valueStyle = {},
+      containerStyle = {},
+    }: {
+      title: string;
+      value: number | string;
+      paidOutValue: number | string;
+      cardStyle?: React.CSSProperties;
+      titleStyle?: React.CSSProperties;
+      valueStyle?: React.CSSProperties;
+      containerStyle?: React.CSSProperties;
+    }): JSX.Element => {
+      return (
+        <Card
+          className="rounded-3xl p-0"
+          style={{
+            borderRadius: "30px",
+            padding: "0px",
+            boxShadow: "0px 8px 24px 0px #00000014",
+            ...cardStyle,
+          }}
+        >
+          <div
+            className="flex flex-col mx-auto text-center"
+            style={containerStyle}
+          >
+            <p
+              className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_PRY"
+              style={titleStyle}
+            >
+              {title}
+            </p>
+            <p
+              className="font-BricolageGrotesqueSemiBold font-semibold text-OWANBE_DARK"
+              style={valueStyle}
+            >
+              {value}
+            </p>
+          </div>
+          <hr />
+          <div className="flex flex-row justify-between pt-2">
+            <div className="flex flex-row gap-1">
+              <p
+                className="font-BricolageGrotesqueSemiBold text-sm font-semibold text-OWANBE_PRY"
+              >
+                Paid Out:
+              </p>
+              <p
+                className="font-BricolageGrotesqueSemiBold text-sm font-semibold text-OWANBE_DARK"
+              >
+                {paidOutValue}
+              </p>
+            </div>
+            <div className="flex flex-row gap-1">
+              <p
+                className="font-BricolageGrotesqueSemiBold text-sm font-semibold text-OWANBE_PRY"
+              >
+                Balance:
+              </p>
+              <p
+                className="font-BricolageGrotesqueSemiBold text-sm font-semibold text-OWANBE_DARK"
+              >
+                {Number(value) - Number(paidOutValue)}
+              </p>
+            </div>
+          </div>
+        </Card>
+      );
+    };
+
 
     const cardStyle = {
       width: "full", // Adjust card width
@@ -603,9 +678,10 @@ export default function EventDetailsComponent({
           valueStyle={valueStyle}
           containerStyle={containerStyle}
         /> */}
-        <CardMetrics
+        <CardMetric
           title="Total Net Sales Revenue"
           value={formattedRevenue}
+          paidOutValue={salesRevenue}
           cardStyle={cardStyle}
           titleStyle={titleStyle}
           valueStyle={valueStyle}
